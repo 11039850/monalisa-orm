@@ -4,7 +4,6 @@ import java.util.List;
 
 import com.tsc9526.monalisa.core.datasource.DataSourceManager;
 import com.tsc9526.monalisa.core.query.Query;
-import com.tsc9526.monalisa.core.query.dialect.Dialect;
 
 @SuppressWarnings({"unchecked"})
 public class Field<X,Y extends Criteria>{
@@ -15,14 +14,12 @@ public class Field<X,Y extends Criteria>{
 	private String formatName;
 	
 	private Query q;
-	private Dialect dialect;
-	
+	 
 	public Field(String name,Y criteria){
 		this.name=name;
 		this.criteria=criteria;	
 		this.q=criteria.getQuery();
-		this.dialect=dsm.getDialect(q.getDb());
-		this.formatName=dialect.getColumnName(name);
+		
 	}	
 		 
 	public Y equalsTo(X value){
@@ -75,7 +72,7 @@ public class Field<X,Y extends Criteria>{
 			q.add(" AND ");
 		}
 				 
-		q.add(formatName).in(values);
+		q.add(getFormatName()).in(values);
 		return criteria;
 	}
 	
@@ -84,7 +81,7 @@ public class Field<X,Y extends Criteria>{
 			q.add(" AND ");
 		}
 	 		 
-		q.add(formatName).notin(values);
+		q.add(getFormatName()).notin(values);
 		return criteria;
 	}
 	
@@ -93,7 +90,7 @@ public class Field<X,Y extends Criteria>{
 			q.add(" AND ");
 		}
 				 
-		q.add(formatName).in(values);
+		q.add(getFormatName()).in(values);
 		return criteria;
 	}
 	
@@ -102,18 +99,18 @@ public class Field<X,Y extends Criteria>{
 			q.add(" AND ");
 		}
 		
-		q.add(formatName).notin(values);
+		q.add(getFormatName()).notin(values);
 		return criteria;
 	}
 	
 	public Y asc(){
-		criteria.addOrderByAsc(formatName);
+		criteria.addOrderByAsc(getFormatName());
 		
 		return criteria;
 	}
 		
 	public Y desc(){
-		criteria.addOrderByDesc(formatName);
+		criteria.addOrderByDesc(getFormatName());
 		
 		return criteria;
 	}
@@ -123,10 +120,17 @@ public class Field<X,Y extends Criteria>{
 			q.add(" AND ");
 		}
 				 
-		q.add(formatName).add(op, values);
+		q.add(getFormatName()).add(op, values);
 		return criteria;
 	}	
-	 
+	
+	private String getFormatName(){
+		if(formatName==null){
+			this.formatName=dsm.getDialect(q.getDb()).getColumnName(name);			
+		}
+		return formatName;
+	}
+	
 	  
 	public String name(){
 		return name;
