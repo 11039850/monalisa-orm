@@ -14,8 +14,8 @@
 	</properties>
 
 	<scm>
-		<connection>scm:svn:${svnURL}/monalisa/trunk/</connection>
-		<developerConnection>scm:svn:${svnURL}/monalisa/trunk/</developerConnection>
+		<connection>scm:svn:${svnURL}/${project.artifactId}/trunk/</connection>
+		<developerConnection>scm:svn:${svnURL}/${project.artifactId}/trunk/</developerConnection>
 	</scm>
 
 	<dependencies>
@@ -58,21 +58,7 @@
 					</compilerArguments>
 				</configuration>
 			</plugin>
-  
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-release-plugin</artifactId>
-				<configuration>
-					<tagBase>${svnURL}/monalisa/tags/</tagBase>
-					<checkModificationExcludes>
-						<checkModificationExclude>.project</checkModificationExclude>
-						<checkModificationExclude>.classpath</checkModificationExclude>
-					</checkModificationExcludes>
-					<username>${svnUsername}</username>
-					<password>${svnPassword}</password>
-				</configuration>
-			</plugin>
-
+ 
 		</plugins>
 	</build>
 </project>
