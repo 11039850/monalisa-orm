@@ -47,17 +47,7 @@
 			</resource>
 		</resources>
 		<plugins>
-			<plugin>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.1</version>
-				<configuration>
-					<source>1.6</source>
-					<target>1.6</target>
-					<compilerArguments>
-						<extdirs>D:/programs/eclipse-jee-luna-R-1403754094601/eclipse/plugins</extdirs>
-					</compilerArguments>
-				</configuration>
-			</plugin>
+			
  
 		</plugins>
 	</build>
