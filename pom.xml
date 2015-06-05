@@ -2,7 +2,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.tsc9526</groupId>
 	<artifactId>monalisa-core</artifactId>
-	<version>0.5.2-SNAPSHOT</version>
+	<version>0.5.2</version>
 
 	<parent>
 		<groupId>com.leyogame</groupId>
@@ -47,8 +47,38 @@
 			</resource>
 		</resources>
 		<plugins>
+			<plugin>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.1</version>
+				<configuration>
+					<source>1.6</source>
+					<target>1.6</target>
+					<compilerArguments>
+						<extdirs>D:/programs/eclipse-jee-luna-R-1403754094601/eclipse/plugins</extdirs>
+					</compilerArguments>
+				</configuration>
+			</plugin>
 			
- 
+			<plugin>
+		      <artifactId>maven-source-plugin</artifactId>
+		      <executions>
+		        <execution>
+		          <id>attach-sources</id>
+		          <phase>deploy</phase>
+		          <goals><goal>jar-no-fork</goal></goals> 
+		        </execution>
+		      </executions>
+		    </plugin>	
+		    <plugin> 		       
+		      <artifactId>maven-deploy-plugin</artifactId> 
+		      <executions> 
+		        <execution> 
+		          <id>deploy</id>
+		          <phase>deploy</phase>
+		          <goals><goal>deploy</goal></goals> 
+		        </execution> 
+		      </executions> 
+		    </plugin>		 
 		</plugins>
 	</build>
 </project>
