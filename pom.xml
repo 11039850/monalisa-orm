@@ -2,7 +2,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.tsc9526</groupId>
 	<artifactId>monalisa-core</artifactId>
-	<version>0.5.2-SNAPSHOT</version>
+	<version>0.5.2</version>
 
 	<parent>
 		<groupId>com.leyogame</groupId>
@@ -14,8 +14,8 @@
 	</properties>
 
 	<scm>
-		<connection>scm:svn:${svnURL}/${project.artifactId}/trunk/</connection>
-		<developerConnection>scm:svn:${svnURL}/${project.artifactId}/trunk/</developerConnection>
+		<connection>scm:svn:svn://120.26.51.207/data/svn/research/monalisa-core/tags/monalisa-core-0.5.2</connection>
+		<developerConnection>scm:svn:svn://120.26.51.207/data/svn/research/monalisa-core/tags/monalisa-core-0.5.2</developerConnection>
 	</scm>
 
 	<dependencies>
