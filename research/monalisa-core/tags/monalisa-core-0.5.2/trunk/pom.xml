@@ -1,0 +1,54 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.tsc9526</groupId>
+	<artifactId>monalisa-core</artifactId>
+	<version>0.5.2</version>
+
+	<parent>
+		<groupId>com.leyogame</groupId>
+		<artifactId>parent</artifactId>
+		<version>1.0.0</version>
+	</parent>
+	<properties>
+		<svnURL>svn://120.26.51.207/data/svn/research</svnURL>
+	</properties>
+
+	<scm>
+		<connection>scm:svn:svn://120.26.51.207/data/svn/research/monalisa-core/tags/monalisa-core-0.5.2</connection>
+		<developerConnection>scm:svn:svn://120.26.51.207/data/svn/research/monalisa-core/tags/monalisa-core-0.5.2</developerConnection>
+	</scm>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.freemarker</groupId>
+			<artifactId>freemarker</artifactId>
+			<version>2.3.20</version>
+		</dependency>
+
+		<dependency>
+			<groupId>c3p0</groupId>
+			<artifactId>c3p0</artifactId>
+			<version>0.9.1.2</version>
+		</dependency>
+
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<version>5.1.24</version>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<sourceDirectory>src</sourceDirectory>
+		<resources>
+			<resource>
+				<directory>META-INF</directory>
+				<targetPath>META-INF</targetPath>
+			</resource>
+		</resources>
+		<plugins>
+			
+ 
+		</plugins>
+	</build>
+</project>
