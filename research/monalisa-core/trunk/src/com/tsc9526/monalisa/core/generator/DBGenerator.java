@@ -1,5 +1,7 @@
 package com.tsc9526.monalisa.core.generator;
 
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.util.List;
 
@@ -8,10 +10,10 @@ import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.MirroredTypeException;
 import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.Types;
+import javax.tools.Diagnostic.Kind;
 import javax.tools.FileObject;
 import javax.tools.JavaFileObject;
 import javax.tools.StandardLocation;
-import javax.tools.Diagnostic.Kind;
 
 import com.tsc9526.monalisa.core.datasource.DBConfig;
 import com.tsc9526.monalisa.core.datasource.DataSourceManager;
@@ -78,9 +80,10 @@ public class DBGenerator {
 	
 	protected void generatorResources(List<MetaTable> tables){		
 		try{			 					
-			FileObject java = processingEnv.getFiler().createResource(StandardLocation.SOURCE_OUTPUT, "resources."+dbcfg.key().toLowerCase(), "create_table.sql", typeElement);
+			FileObject res = processingEnv.getFiler().createResource(StandardLocation.SOURCE_OUTPUT, "resources."+dbcfg.key().toLowerCase(), "create_table.sql", typeElement);
+			OutputStream out=res.openOutputStream();
 			
-			Writer w = java.openWriter();
+			Writer w = new OutputStreamWriter(out,"UTF-8");
 			for(MetaTable table:tables){
 				if(table.getCreateTable()!=null){
 					w.write("/***CREATE TABLE: "+table.getNameWithoutPartition()+" :: "+table.getName()+"***/\r\n");
