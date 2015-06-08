@@ -16,17 +16,14 @@ public abstract class Example<X extends Criteria>{
 	 		X c=cs.get(i);
 	 		
 	 		Query cq=c.getQuery();
-	 		if(cq.isEmpty()==false){
-	 			boolean empty=q.isEmpty();
-				if(!empty){
+	 		if(cq.isEmpty()==false){	 			
+				if(q.isEmpty()){
+					q.add(cq.getSql(),cq.getParameters());
+				}else{
 					q.add(" OR (");
-				}
-							
-				q.add(cq.getSql(),cq.getParameters());
-				
-				if(!empty){
+					q.add(cq.getSql(),cq.getParameters());
 					q.add(")");
-				}
+				}				 
 	 		}
 	 		
 	 		for(String by:c.getOrderBy()){
