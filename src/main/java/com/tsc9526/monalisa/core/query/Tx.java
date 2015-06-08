@@ -38,4 +38,12 @@ public class Tx {
 			throw new RuntimeException("Rollback error, transaction not start, call begin first!");
 		}
 	}
+	
+	public static void close()throws SQLException{
+		TxQuery x=local.get();
+		if(x!=null){
+			local.remove();
+			x.close();
+		}
+	}
 }
