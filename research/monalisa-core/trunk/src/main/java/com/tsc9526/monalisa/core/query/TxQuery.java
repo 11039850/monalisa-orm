@@ -28,29 +28,32 @@ public class TxQuery {
 		try{
 			for(CI ci:hcs.values()){
 				ci.conn.commit();			
-			}
+			}		 
 		}finally{
-			finished();
+			close();
 		}
 	}
 
-	public void rollback() throws SQLException{
+	public void rollback(){
 		try{
 			for(CI ci:hcs.values()){
 				ci.conn.rollback();			
 			}
+		}catch(SQLException e){
+			throw new RuntimeException(e);
 		}finally{
-			finished();
-		}
-		
+			close();
+		}		
 	}
 	
-	private void finished() throws SQLException{
+	public void close(){
 		try{
 			for(CI ci:hcs.values()){
 				ci.conn.setAutoCommit(ci.autoCommit);
 				ci.conn.close();
 			}
+		}catch(SQLException e){
+			throw new RuntimeException(e);		
 		}finally{
 			hcs.clear();
 		}
