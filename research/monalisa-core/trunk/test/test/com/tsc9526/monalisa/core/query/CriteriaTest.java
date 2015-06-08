@@ -1,15 +1,12 @@
 package test.com.tsc9526.monalisa.core.query;
 
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
 
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import com.tsc9526.monalisa.core.datasource.DataSourceManager;
 import com.tsc9526.monalisa.core.query.Query;
-import com.tsc9526.monalisa.core.query.dao.Insert;
 
 @Test
 public class CriteriaTest {
