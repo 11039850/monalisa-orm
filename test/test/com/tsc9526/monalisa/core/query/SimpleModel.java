@@ -46,7 +46,7 @@ public class SimpleModel extends Model<SimpleModel> implements SimpleDB{
 			
 			Class<?> clazz=ClassHelper.findClassWithAnnotation(SimpleModel.class,DB.class);
 			DBConfig db=dsm.getDBConfig(clazz);
-			  
+			   
 			x.getQuery().use(db);
 			return x;
 		}
