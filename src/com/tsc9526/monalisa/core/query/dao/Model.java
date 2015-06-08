@@ -114,7 +114,7 @@ public abstract class Model<T extends Model> implements Serializable{
 	 * 
 	 * @return 返回数据库方言
 	 */
-	protected Dialect getDialect(){
+	public Dialect getDialect(){
 		return dsm.getDialect(this.db);
 	}
 	
