@@ -53,6 +53,9 @@
 	<build>		 
 		<resources>
 			<resource>
+				<directory>src/main/resources</directory>
+			</resource>
+			<resource>
 				<directory>META-INF</directory>
 				<targetPath>META-INF</targetPath>
 			</resource>			 
