@@ -21,13 +21,13 @@
 
 	<dependencies>
 		<dependency>
-	      <groupId>org.testng</groupId>
-	      <artifactId>testng</artifactId>
-	      <version>5.0.2</version>
-	      <scope>test</scope>
-	      <classifier>jdk15</classifier>
+			<groupId>org.testng</groupId>
+			<artifactId>testng</artifactId>
+			<version>5.0.2</version>
+			<scope>test</scope>
+			<classifier>jdk15</classifier>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.freemarker</groupId>
 			<artifactId>freemarker</artifactId>
@@ -46,11 +46,17 @@
 			<version>5.1.24</version>
 		</dependency>
 
+		<dependency>
+			<groupId>com.sun</groupId>
+			<artifactId>tools</artifactId>
+			<version>1.6.0</version>
+			<scope>system</scope>			
+			<systemPath>${project.basedir}/libs/net.java.openjdk.custom-javac6.jar</systemPath>
+		</dependency>
 
-		
 	</dependencies>
 
-	<build>		 
+	<build>
 		<resources>
 			<resource>
 				<directory>src/main/resources</directory>
@@ -58,7 +64,7 @@
 			<resource>
 				<directory>META-INF</directory>
 				<targetPath>META-INF</targetPath>
-			</resource>			 
+			</resource>
 		</resources>
 		<plugins>
 			<plugin>
