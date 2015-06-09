@@ -55,7 +55,7 @@
 			<resource>
 				<directory>META-INF</directory>
 				<targetPath>META-INF</targetPath>
-			</resource>
+			</resource>			 
 		</resources>
 		<plugins>
 			<plugin>
