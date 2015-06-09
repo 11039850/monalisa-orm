@@ -14,7 +14,7 @@ public class DBProject {
 		try{
 			Class<DBProject> clazz=(Class<DBProject>)Class.forName("com.tsc9526.monalisa.plugin.eclipse.generator.EclipseDBProject");
 			Constructor<DBProject> c=clazz.getConstructor(ProcessingEnvironment.class,TypeElement.class);
-			DBProject project= c.newInstance();
+			DBProject project= c.newInstance(processingEnv,typeElement);
 			
 			System.out.println("Building project within eclipse environment ...");			
 			return project;
