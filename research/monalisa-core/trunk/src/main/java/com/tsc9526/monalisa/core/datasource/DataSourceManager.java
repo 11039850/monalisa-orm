@@ -20,7 +20,7 @@ public class DataSourceManager {
 	
 	private Map<String, DBConfig> dss=new ConcurrentHashMap<String,DBConfig>();
 	
-	private Map<String, Dialect> dialects=new HashMap<String,Dialect>();
+	private Map<String, Dialect> dialects=new ConcurrentHashMap<String,Dialect>();
 	
 	
 	private DataSourceManager(){		
