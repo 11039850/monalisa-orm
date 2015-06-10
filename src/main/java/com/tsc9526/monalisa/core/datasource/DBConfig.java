@@ -163,7 +163,7 @@ public class DBConfig implements com.tsc9526.monalisa.core.annotation.DB{
 		return null;
 	}
 	
-	public void close(){
+	public synchronized void close(){
 		if(ds!=null){
 			try{
 				CloseQuietly.close(ds);	
