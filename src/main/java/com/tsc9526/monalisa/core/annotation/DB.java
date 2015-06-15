@@ -93,7 +93,7 @@ public @interface DB{
 	 * 其中有个默认日期分区类为: DatePartitionTable, 参数1: 日期格式, 参数2: 日期字段名 
 	 * 例如按天存储的日志表定义: log_access_{DatePartitionTable(yyyyMMdd,log_time)}
 	 */
-	String partitionTables() default "";
+	String partitions() default "";
 	
 	/**
 	 * @return 表名映射, 默认值: "" <br>
@@ -107,6 +107,13 @@ public @interface DB{
 	 * @return
 	 */
 	String modelClass()       default "";
+	
+	/**
+	 * 指定表模型监听类,  该类须实现 {@link com.tsc9526.monalisa.core.query.dao.ModelListener} 
+	 * @return
+	 */
+	String modelListener()    default "";
+	
 	
 	/**
 	 * 数据源Class

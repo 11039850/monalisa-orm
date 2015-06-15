@@ -213,7 +213,7 @@ public class DBMetadata {
 
 	private List<MetaPartition> getPartitions(){
 		List<MetaPartition> partitions=new ArrayList<MetaPartition>();
-		String pts=dbcfg.partitionTables();
+		String pts=dbcfg.partitions();
 		if(pts!=null && pts.trim().length()>0){
 			String[] ps=pts.trim().split(";");
 			for(String p:ps){

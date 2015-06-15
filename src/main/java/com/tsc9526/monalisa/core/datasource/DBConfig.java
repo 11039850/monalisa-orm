@@ -27,7 +27,8 @@ public class DBConfig implements com.tsc9526.monalisa.core.annotation.DB{
 	private String username;
 	private String password;
 	private String tables;
-	private String partitionTables;
+	private String partitions;
+	private String modelListener;
 	private String mapping;		
 	private String configFile;
 	private String configName;
@@ -89,7 +90,8 @@ public class DBConfig implements com.tsc9526.monalisa.core.annotation.DB{
 		this.username        = getValue(p,"username", db.username(),prefixs);
 		this.password        = getValue(p,"password", db.password(),prefixs);
 		this.tables          = getValue(p,"tables", db.tables(),prefixs);
-		this.partitionTables = getValue(p,"partitionTables", db.partitionTables(),prefixs);		 
+		this.partitions      = getValue(p,"partitions", db.partitions(),prefixs);	
+		this.modelListener   = getValue(p,"modelListener", db.modelListener(),prefixs);
 		this.mapping         = getValue(p,"mapping", db.mapping(),prefixs);				 
 	}
 	
@@ -214,8 +216,12 @@ public class DBConfig implements com.tsc9526.monalisa.core.annotation.DB{
 		return this.mapping;
 	}	
   
-	public String partitionTables(){
-		return this.partitionTables;
+	public String partitions(){
+		return this.partitions;
+	}
+	
+	public String modelListener(){
+		return this.modelListener;
 	}
 	
 	public DB getDb() {
