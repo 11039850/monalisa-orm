@@ -2,9 +2,7 @@ package com.tsc9526.monalisa.core.tools;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-
-import javax.servlet.ServletRequest;
-
+ 
 import com.tsc9526.monalisa.core.query.dao.Model;
 import com.tsc9526.monalisa.core.query.dao.ModelParser;
 import com.tsc9526.monalisa.core.tools.ClassHelper.FGS;
@@ -19,7 +17,7 @@ public class ModelHelper {
 		
 		try{
 			Class.forName("javax.servlet.ServletRequest");
-			registerModelParser(ServletRequest.class,new ServletRequestModelParser());
+			registerModelParser(javax.servlet.ServletRequest.class,new ServletRequestModelParser());
 		}catch(ClassNotFoundException e){}
 	}
 	  
@@ -49,9 +47,9 @@ public class ModelHelper {
 		return false;
 	}
 	
-	public static class ServletRequestModelParser implements ModelParser<ServletRequest>{
+	public static class ServletRequestModelParser implements ModelParser<javax.servlet.ServletRequest>{
 		
-		public boolean parseModel(Model<?> m, ServletRequest data) {			
+		public boolean parseModel(Model<?> m, javax.servlet.ServletRequest data) {			
 			for(FGS fgs:m.fields()){
 				String name =fgs.getFieldName();				
 				String value=data.getParameter(name);
