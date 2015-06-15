@@ -43,7 +43,8 @@ public abstract class Model<T extends Model> implements Serializable{
  	protected boolean updateKey=false;
  	
  	protected Partition partition;
-    	
+ 	protected ModelListener	modelListener;
+ 	
 	public Model(){
 		Class<?> clazz=ClassHelper.findClassWithAnnotation(this.getClass(),DB.class);
 		if(clazz==null){
@@ -58,6 +59,15 @@ public abstract class Model<T extends Model> implements Serializable{
 			throw new RuntimeException("Model: "+this.getClass()+" must with a annotation: "+Table.class);
 		}
 	 
+		String ls=this.db.modelListener();
+		if(ls!=null && ls.trim().length()>0){
+			try{
+				modelListener=(ModelListener)Class.forName(ls.trim()).newInstance();
+			}catch(Exception e){
+				throw new RuntimeException("Invalid model listener class: "+ls.trim()+", "+e,e);
+			}
+		}
+		
 		this.metaClass=ClassHelper.getMetaClass(this.getClass());
 		this.fields=metaClass.getFieldsWithAnnotation(Column.class);
 		
@@ -80,7 +90,17 @@ public abstract class Model<T extends Model> implements Serializable{
 	 * @return 成功变更的记录数
 	 */
 	public int save(){
-		return new Insert(this).insertSelective();
+		if(modelListener!=null){
+			modelListener.before(ModelEvent.INSERT, this);
+		}
+		
+		int r= new Insert(this).insertSelective();
+		
+		if(modelListener!=null){
+			modelListener.after(ModelEvent.INSERT, this,r);
+		}
+		
+		return r;
 	}
 	
 	/**
@@ -89,7 +109,17 @@ public abstract class Model<T extends Model> implements Serializable{
 	 * @return 成功变更的记录数
 	 */
 	public int saveOrUpdate(){
-		return new Insert(this).insertSelective(true);
+		if(modelListener!=null){
+			modelListener.before(ModelEvent.INSERT_OR_UPDATE, this);
+		}
+		
+		int r= new Insert(this).insertSelective(true);
+		
+		if(modelListener!=null){
+			modelListener.after(ModelEvent.INSERT_OR_UPDATE, this,r);
+		}
+		
+		return r;
 	}
 	
 	/**
@@ -98,7 +128,17 @@ public abstract class Model<T extends Model> implements Serializable{
 	 * @return 成功变更的记录数
 	 */
 	public int update(){
-		return new Update(this).update();
+		if(modelListener!=null){
+			modelListener.before(ModelEvent.UPDATE, this);
+		}
+		
+		int r= new Update(this).update();
+		
+		if(modelListener!=null){
+			modelListener.after(ModelEvent.UPDATE, this,r);
+		}
+		
+		return r;
 	}
 	
 	/**
@@ -107,7 +147,17 @@ public abstract class Model<T extends Model> implements Serializable{
 	 * @return 成功变更的记录数
 	 */
 	public int delete(){
-		return new Delete(this).delete();
+		if(modelListener!=null){
+			modelListener.before(ModelEvent.DELETE, this);
+		}
+		
+		int r= new Delete(this).delete();
+		
+		if(modelListener!=null){
+			modelListener.after(ModelEvent.DELETE, this,r);
+		}
+		
+		return r;
 	}
 	
 	/**
