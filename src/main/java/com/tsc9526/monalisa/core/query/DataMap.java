@@ -11,7 +11,7 @@ public class DataMap extends LinkedHashMap<String,Object>{
 	public Object put(String key,Object value){
 		if(key!=null){
 			key=key.toLowerCase();
-		}
+		}		
 		return super.put(key, value);
 	}
 	
