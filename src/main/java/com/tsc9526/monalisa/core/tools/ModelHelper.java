@@ -16,8 +16,8 @@ public class ModelHelper {
 		registerModelParser(String.class,new StringModelParser());
 		
 		try{
-			Class.forName("javax.servlet.ServletRequest");
-			registerModelParser(javax.servlet.ServletRequest.class,new ServletRequestModelParser());
+			Class<?> servletRequestClass=Class.forName("javax.servlet.ServletRequest");
+			registerModelParser(servletRequestClass,new ServletRequestModelParser());
 		}catch(ClassNotFoundException e){}
 	}
 	  
