@@ -17,6 +17,7 @@ import com.tsc9526.monalisa.core.query.partition.Partition;
 import com.tsc9526.monalisa.core.tools.ClassHelper;
 import com.tsc9526.monalisa.core.tools.ClassHelper.FGS;
 import com.tsc9526.monalisa.core.tools.ClassHelper.MetaClass;
+import com.tsc9526.monalisa.core.tools.ModelHelper;
 
 /**
  * 数据库表模型
@@ -82,6 +83,16 @@ public abstract class Model<T extends Model> implements Serializable{
 		}
 	}	 
  
+	/**
+	 * @see com.tsc9526.monalisa.core.query.dao.ModelParser#parseModel(Model, Object)
+	 */
+	public T parse(Object dataObject) {
+		if(ModelHelper.parseModel(this, dataObject)){
+			return (T)this;
+		}else{
+			return null;
+		}
+	}
 	
 	
 	/**
