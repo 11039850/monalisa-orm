@@ -84,7 +84,7 @@ public abstract class Model<T extends Model> implements Serializable{
 	}	 
  
 	/**
-	 * @see com.tsc9526.monalisa.core.query.dao.ModelParser#parseModel(Model, Object)
+	 * @see com.tsc9526.monalisa.core.tools.ModelHelper#parseModel(Model, Object)
 	 */
 	public T parse(Object dataObject) {
 		ModelHelper.parseModel(this, dataObject);
