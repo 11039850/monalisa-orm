@@ -43,7 +43,7 @@ public class ModelHelper {
 	
 	/**
 	 * @param model
-	 * @param data  (ServletRequest|Map|JsonString) 
+	 * @param data  (ServletRequest|Map|JsonString|...) 
 	 * @return
 	 */
 	public static boolean parseModel(Model<?> model,Object data) {
