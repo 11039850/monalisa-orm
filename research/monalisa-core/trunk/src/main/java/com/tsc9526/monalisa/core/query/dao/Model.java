@@ -345,7 +345,7 @@ public abstract class Model<T extends Model> implements Serializable{
 	}		
 	
 	/**
-	 * 复制对象
+	 * 复制对象数据
 	 */
 	public T copy(){
 		try{
@@ -356,6 +356,7 @@ public abstract class Model<T extends Model> implements Serializable{
 				fgs.setObject(x, value);
 			}
 	 	 	
+			x.updateKey=updateKey;
 			x.fieldFilterExcludeMode=fieldFilterExcludeMode;
 			x.fieldFilterSets.addAll(fieldFilterSets);
 			
