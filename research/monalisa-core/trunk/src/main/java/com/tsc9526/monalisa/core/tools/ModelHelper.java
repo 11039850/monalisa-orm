@@ -1,7 +1,7 @@
 package com.tsc9526.monalisa.core.tools;
 
+import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 import org.apache.commons.beanutils.ConvertUtils;
 import org.apache.commons.beanutils.converters.DateConverter;
@@ -12,7 +12,7 @@ import com.tsc9526.monalisa.core.tools.ClassHelper.FGS;
 
 @SuppressWarnings({"unchecked","rawtypes"})
 public class ModelHelper {
-	private static Map<Class<?>,ModelParser<Object>> parsers=new ConcurrentHashMap<Class<?>,ModelParser<Object>>();
+	private static Map<Class<?>,ModelParser<Object>> parsers=new LinkedHashMap<Class<?>,ModelParser<Object>>();
 	
 	static{
 		DateConverter dc = new DateConverter(); 
