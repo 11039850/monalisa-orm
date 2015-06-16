@@ -10,6 +10,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+
+import org.apache.commons.beanutils.ConvertUtils;
  
 
 public class ClassHelper {
@@ -78,7 +80,8 @@ public class ClassHelper {
 	public static void setObject(Object bean, FGS fgs, Object obj) {
 		try {			 			 
 			Method set = fgs.getSetMethod();
-			set.invoke(bean, obj);
+			Object value=ConvertUtils.convert(obj, fgs.getField().getType());
+			set.invoke(bean, value);
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}

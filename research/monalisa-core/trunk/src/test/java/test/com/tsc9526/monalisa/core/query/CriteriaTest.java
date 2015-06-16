@@ -1,6 +1,9 @@
 package test.com.tsc9526.monalisa.core.query;
 
 import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -12,6 +15,35 @@ import com.tsc9526.monalisa.core.query.Query;
 public class CriteriaTest {
 	static {
 		DataSourceManager.getInstance();
+	}
+	
+	public void testParse()throws Exception{
+		Date d1=new Date();
+		
+		String d2="2015-06-08 11:10:31";
+		SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		
+		Map<String, Object> h=new HashMap<String, Object>();
+		h.put("intField1", 1);
+		h.put("intField2", "2");
+		
+		h.put("dateField1", d1);
+		h.put("dateField2", d2);
+		
+		h.put("stringField1", "xxx");
+		h.put("stringField2", 123);
+		
+		SimpleModel model=new SimpleModel();
+		model.parse(h);
+		
+		Assert.assertEquals(model.getIntField1().intValue(),1);
+		Assert.assertEquals(model.getIntField2().intValue(),2);
+		
+		Assert.assertEquals(model.getDateField1(), d1);
+		Assert.assertEquals(model.getDateField2(), sdf.parseObject(d2));
+		
+		Assert.assertEquals(model.getStringField1(), "xxx");
+		Assert.assertEquals(model.getStringField2(), "123");
 	}
 	 
 	public void testOrderByOne(){

@@ -2,7 +2,10 @@ package com.tsc9526.monalisa.core.tools;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
- 
+
+import org.apache.commons.beanutils.ConvertUtils;
+import org.apache.commons.beanutils.converters.DateConverter;
+
 import com.tsc9526.monalisa.core.query.dao.Model;
 import com.tsc9526.monalisa.core.query.dao.ModelParser;
 import com.tsc9526.monalisa.core.tools.ClassHelper.FGS;
@@ -12,6 +15,12 @@ public class ModelHelper {
 	private static Map<Class<?>,ModelParser<Object>> parsers=new ConcurrentHashMap<Class<?>,ModelParser<Object>>();
 	
 	static{
+		DateConverter dc = new DateConverter(); 
+		dc.setUseLocaleFormat(true);
+		String[] datePattern = {"yyyy-MM-dd","yyyy-MM-dd HH:mm:ss","yyyy-MM-dd HH:mm:ss.SSS"};    
+		dc.setPatterns(datePattern);    
+		ConvertUtils.register(dc, java.util.Date.class);
+		
 		registerModelParser(Map.class,new MapModelParser());
 		registerModelParser(String.class,new StringModelParser());
 		
@@ -29,19 +38,25 @@ public class ModelHelper {
 		parsers.remove(clazz);
 	}
 	
+	/**
+	 * @param model
+	 * @param data  (ServletRequest|Map|JsonString) 
+	 * @return
+	 */
 	public static boolean parseModel(Model<?> model,Object data) {
 		if(data!=null){
-			Class<?> parserClass=null;
-			for(Class<?> clazz:parsers.keySet()){
-				if(data.getClass().isAssignableFrom(clazz)){
-					parserClass=clazz;
-					break;
+			ModelParser<Object> parser=parsers.get(data.getClass());
+			if(parser==null){
+				for(Class<?> clazz:parsers.keySet()){
+					if(clazz.isAssignableFrom(data.getClass())){
+						parser=parsers.get(clazz);
+						break;
+					}
 				}
 			}
 			
-			if(parserClass!=null){
-				ModelParser<Object> parser=parsers.get(parserClass);
-				parser.parseModel(model, data);
+			if(parser!=null){				 
+				return parser.parseModel(model, data);
 			}
 		}
 		return false;
