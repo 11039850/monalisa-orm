@@ -10,6 +10,7 @@ import org.testng.annotations.Test;
 
 import com.tsc9526.monalisa.core.datasource.DataSourceManager;
 import com.tsc9526.monalisa.core.query.Query;
+import com.tsc9526.monalisa.core.tools.ModelHelper;
 
 @Test
 public class CriteriaTest {
@@ -44,6 +45,54 @@ public class CriteriaTest {
 		
 		Assert.assertEquals(model.getStringField1(), "xxx");
 		Assert.assertEquals(model.getStringField2(), "123");
+		
+		ModelHelper.MapModelParser.NAME_IGNORE_CASE=true;
+		ModelHelper.MapModelParser.NAME_TO_JAVA_STYLE=true;
+		
+		
+		
+		ModelHelper.MapModelParser.NAME_IGNORE_CASE=false;
+		ModelHelper.MapModelParser.NAME_TO_JAVA_STYLE=false;
+	}
+	
+	
+	public void testParseIgnoreCase()throws Exception{
+		ModelHelper.MapModelParser.NAME_IGNORE_CASE=true;
+		ModelHelper.MapModelParser.NAME_TO_JAVA_STYLE=true;
+		
+		
+		Date d1=new Date();
+		
+		String d2="2015-06-08 11:10:31";
+		SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		
+		Map<String, Object> h=new HashMap<String, Object>();
+		h.put("int_field_1", 1);
+		h.put("int_field_2", "2");
+		
+		h.put("date_field_1", d1);
+		h.put("date_field_2", d2);
+		
+		h.put("string_field_1", "xxx");
+		h.put("string_field_2", 123);
+		
+		SimpleModel model=new SimpleModel();
+		model.parse(h);
+		
+		Assert.assertEquals(model.getIntField1().intValue(),1);
+		Assert.assertEquals(model.getIntField2().intValue(),2);
+		
+		Assert.assertEquals(model.getDateField1(), d1);
+		Assert.assertEquals(model.getDateField2(), sdf.parseObject(d2));
+		
+		Assert.assertEquals(model.getStringField1(), "xxx");
+		Assert.assertEquals(model.getStringField2(), "123");
+		
+		
+		
+		
+		ModelHelper.MapModelParser.NAME_IGNORE_CASE=false;
+		ModelHelper.MapModelParser.NAME_TO_JAVA_STYLE=false;
 	}
 	 
 	public void testOrderByOne(){
