@@ -221,7 +221,7 @@ public class Query {
 			queryCheck();
 			
 			Query countQuery=getDialect().getCountQuery(this);
-			int total=countQuery.getResult();
+			long total=countQuery.getResult();
 			 
 			Query listQuery=getDialect().getLimitQuery(this, limit, offset);
 			List<T>  list=listQuery.getList();

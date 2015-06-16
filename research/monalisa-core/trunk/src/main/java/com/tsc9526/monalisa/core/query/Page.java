@@ -14,10 +14,10 @@ public class Page<T> implements Serializable {
 	
 	private List<T> list=new ArrayList<T>();	
 	 
-	private int pageNo   = 1;				 
-	private int pageSize = 10;				 
-	private int totalPage= 0;				 
-	private int totalRow = 0;				 
+	private long pageNo   = 1;				 
+	private long pageSize = 10;				 
+	private long totalPage= 0;				 
+	private long totalRow = 0;				 
  
 	public Page(){
 	}
@@ -30,7 +30,7 @@ public class Page<T> implements Serializable {
 	 * @param limit   页面大小
 	 * @param offset  本记录起始位置（0 表示第一条）
 	 */
-	public Page(List<T> list,int total, int limit , int offset) {
+	public Page(List<T> list,long total, long limit , long offset) {
 		this.list = list==null?new ArrayList<T>():list;
 		
 		this.totalRow   = total;
