@@ -220,8 +220,8 @@ public class Query {
 		if(!DBExchange.doExchange(this)){			
 			queryCheck();
 			
-			Query countQuery=getDialect().getCountQuery(this);
-			long total=countQuery.getResult();
+			Query countQuery=getDialect().getCountQuery(this);			
+			long total=countQuery.setResultClass(Long.class).getResult();			
 			 
 			Query listQuery=getDialect().getLimitQuery(this, limit, offset);
 			List<T>  list=listQuery.getList();

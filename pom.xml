@@ -61,15 +61,7 @@
 			<version>3.1-b02</version>
 			<type>jar</type>
 			<scope>provided</scope>
-		</dependency>
-		
-		<dependency>
-			<groupId>com.sun</groupId>
-			<artifactId>tools</artifactId>
-			<version>1.6.0</version>
-			<scope>system</scope>			
-			<systemPath>${project.basedir}/libs/net.java.openjdk.custom-javac6.jar</systemPath>
-		</dependency>
+		</dependency>	 
 
 	</dependencies>
 
