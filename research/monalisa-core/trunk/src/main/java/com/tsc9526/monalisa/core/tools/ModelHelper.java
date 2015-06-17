@@ -4,8 +4,6 @@ import java.io.Serializable;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import org.apache.commons.beanutils.ConvertUtils;
-import org.apache.commons.beanutils.converters.DateConverter;
 import org.apache.commons.collections.map.AbstractHashedMap;
 
 import com.tsc9526.monalisa.core.query.dao.Model;
@@ -18,12 +16,6 @@ public class ModelHelper {
 	private static Map<Class<?>,ModelParser<Object>> parsers=new LinkedHashMap<Class<?>,ModelParser<Object>>();
 	
 	static{
-		DateConverter dc = new DateConverter(); 
-		dc.setUseLocaleFormat(true);
-		String[] datePattern = {"yyyy-MM-dd","yyyy-MM-dd HH:mm:ss","yyyy-MM-dd HH:mm:ss.SSS"};    
-		dc.setPatterns(datePattern);    
-		ConvertUtils.register(dc, java.util.Date.class);
-		
 		registerModelParser(Map.class,new MapModelParser());
 		registerModelParser(String.class,new StringModelParser());
 		
