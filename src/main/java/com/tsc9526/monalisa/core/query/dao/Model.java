@@ -17,7 +17,7 @@ import com.tsc9526.monalisa.core.query.partition.Partition;
 import com.tsc9526.monalisa.core.tools.ClassHelper;
 import com.tsc9526.monalisa.core.tools.ClassHelper.FGS;
 import com.tsc9526.monalisa.core.tools.ClassHelper.MetaClass;
-import com.tsc9526.monalisa.core.tools.ModelHelper;
+import com.tsc9526.monalisa.core.tools.ModelParseHelper;
 
 /**
  * 数据库表模型
@@ -84,10 +84,13 @@ public abstract class Model<T extends Model> implements Serializable{
 	}	 
  
 	/**
-	 * @see com.tsc9526.monalisa.core.tools.ModelHelper#parseModel(Model, Object)
+	 * @see com.tsc9526.monalisa.core.tools.ModelParseHelper#parseModel(Model, Object)
+	 * 
+	 * @param dataObject 
+	 * @param mappings  [Options] Translate dataObject field to model field for example:  "user_id=id","user_name=name" ...
 	 */
-	public T parse(Object dataObject) {
-		ModelHelper.parseModel(this, dataObject);
+	public T parse(Object dataObject,String... mappings) {
+		ModelParseHelper.parseModel(this, dataObject,mappings);
 		
 		return (T)this;
 	}

@@ -10,13 +10,36 @@ import org.testng.annotations.Test;
 
 import com.tsc9526.monalisa.core.datasource.DataSourceManager;
 import com.tsc9526.monalisa.core.query.Query;
-import com.tsc9526.monalisa.core.tools.ModelHelper;
+import com.tsc9526.monalisa.core.tools.ModelParseHelper;
 
 @Test
 public class CriteriaTest {
 	static {
 		DataSourceManager.getInstance();
 	}
+	
+	
+	public void testParseMapping(){
+		Date d1=new Date();
+		Map<String, Object> h=new HashMap<String, Object>();
+		h.put("d1", d1);
+		SimpleModel model=new SimpleModel();
+		model.parse(h,"d1=dateField1");
+		
+		Assert.assertEquals(model.getDateField1(), d1);
+	}
+	
+	public void testParsePrefixMapping(){
+		Date d1=new Date();
+		Map<String, Object> h=new HashMap<String, Object>();
+		h.put("simpleMode@d1", d1);
+		SimpleModel model=new SimpleModel();
+		model.parse(h,"d1=dateField1","~simpleMode@");
+		
+		Assert.assertEquals(model.getDateField1(), d1);
+	}
+	
+	
 	
 	public void testNullDate()throws Exception{
 		Map<String, Object> h=new HashMap<String, Object>();
@@ -53,21 +76,35 @@ public class CriteriaTest {
 		Assert.assertEquals(model.getStringField1(), "xxx");
 		Assert.assertEquals(model.getStringField2(), "123");
 		
-		ModelHelper.MapModelParser.NAME_IGNORE_CASE=true;
-		ModelHelper.MapModelParser.NAME_TO_JAVA_STYLE=true;
-		
-		
-		
-		ModelHelper.MapModelParser.NAME_IGNORE_CASE=false;
-		ModelHelper.MapModelParser.NAME_TO_JAVA_STYLE=false;
+		 
 	}
 	
+	public void testParseNameCaseInsensitive()throws Exception{		 
+		Map<String, Object> h=new HashMap<String, Object>();
+		h.put("intField1", 1);
+		h.put("INTField2", 2);
+		
+		SimpleModel model=new SimpleModel();
+		model.parse(h);
+		
+		Assert.assertEquals(model.getIntField1().intValue(),1);	 
+		Assert.assertEquals(model.getIntField2().intValue(),2);
+	}
 	
-	public void testParseIgnoreCase()throws Exception{
-		ModelHelper.MapModelParser.NAME_IGNORE_CASE=true;
-		ModelHelper.MapModelParser.NAME_TO_JAVA_STYLE=true;
+	public void testParseNameCaseSensitive()throws Exception{		 
+		Map<String, Object> h=new HashMap<String, Object>();
+		h.put("intField1", 1);
+		h.put("INTField2", 2);
 		
+		SimpleModel model=new SimpleModel();
+		model.parse(h,ModelParseHelper.OPTIONS_NAME_CASE_SENSITIVE);
 		
+		Assert.assertEquals(model.getIntField1().intValue(),1);
+	 
+		Assert.assertNull(model.getIntField2());
+	}
+	
+	public void testParseNameToJavaStyle()throws Exception{
 		Date d1=new Date();
 		
 		String d2="2015-06-08 11:10:31";
@@ -93,13 +130,7 @@ public class CriteriaTest {
 		Assert.assertEquals(model.getDateField2(), sdf.parseObject(d2));
 		
 		Assert.assertEquals(model.getStringField1(), "xxx");
-		Assert.assertEquals(model.getStringField2(), "123");
-		
-		
-		
-		
-		ModelHelper.MapModelParser.NAME_IGNORE_CASE=false;
-		ModelHelper.MapModelParser.NAME_TO_JAVA_STYLE=false;
+		Assert.assertEquals(model.getStringField2(), "123");				 
 	}
 	 
 	public void testOrderByOne(){
