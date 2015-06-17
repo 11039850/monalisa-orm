@@ -232,9 +232,7 @@ public abstract class Model<T extends Model> implements Serializable{
 	 * @return 逗号分隔的字段名， *： 表示返回所有字段
 	 */
 	public String filterFields(){
-		if(fieldFilterSets.size()>0){
-			List<FGS> fields=metaClass.getFieldsWithAnnotation(Column.class);	
-			
+		if(fieldFilterSets.size()>0){			
 			Set<String> fs=new LinkedHashSet<String>();
 			//Add primary key
 			for(FGS fgs:fields){
