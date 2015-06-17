@@ -139,11 +139,16 @@ public class ${table.javaName} extends ${modelClass}<${table.javaName}> implemen
 	}
 	
 	public static Criteria createCriteria(){
-		return new Example().createCriteria();
+		return new Example(new ${table.javaName}()).createCriteria();
 	}
 	
 		
-	public static class Example extends com.tsc9526.monalisa.core.query.criteria.Example<Criteria>{
+	public static class Example extends com.tsc9526.monalisa.core.query.criteria.Example<Criteria,${table.javaName}>{
+		public Example(){}
+		public Example(${table.javaName} model) {
+			super(model);
+		}
+		
 		protected Criteria createInternal(){
 			Criteria x= new Criteria(this);
 			
@@ -153,6 +158,23 @@ public class ${table.javaName} extends ${modelClass}<${table.javaName}> implemen
 			x.getQuery().use(db);
 			return x;
 		}
+		
+		<#if table.keyColumns?size = 1 >
+		<#assign k=table.keyColumns[0]>
+		/**
+		* List result to Map, The map key is primary-key: ${k.name} 
+		*/
+		public Map<${k.javaType},${table.javaName}> selectToMap(){
+			List<${table.javaName}> list=super.select();
+			
+			Map<${k.javaType},${table.javaName}> m=new LinkedHashMap<${k.javaType},${table.javaName}>();
+			for(${table.javaName} x:list){
+				m.put(x.${k.javaNameGet}(),x);
+			}
+			return m;
+		}
+		</#if>
+		
 	}
 	
 	public static class Criteria extends com.tsc9526.monalisa.core.query.criteria.Criteria{

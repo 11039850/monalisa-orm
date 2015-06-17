@@ -3,11 +3,23 @@ package com.tsc9526.monalisa.core.query.criteria;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.tsc9526.monalisa.core.query.Page;
 import com.tsc9526.monalisa.core.query.Query;
+import com.tsc9526.monalisa.core.query.dao.Model;
+import com.tsc9526.monalisa.core.query.dao.Select;
 
-public abstract class Example<X extends Criteria>{
+@SuppressWarnings({"rawtypes","unchecked"})
+public abstract class Example<X extends Criteria,T extends Model>{
 	private List<X> cs=new ArrayList<X>();
-	 	
+	
+	private Model<T> model;
+	public Example(){	
+	}
+	
+	public Example(Model<T> model){
+		this.model=model;
+	}
+
 	public Query getQuery(){		
 		Query  q=new Query();
 		
@@ -65,4 +77,21 @@ public abstract class Example<X extends Criteria>{
     }
 	
 	protected abstract X createInternal();
+	 
+	 
+	public T selectOne(){
+		Select<T> select=new Select(model);
+		return select.selectOneByExample(this);
+	}
+ 	 
+	public List<T> select(){
+		Select<T> select=new Select(model);
+		return select.selectByExample(this);
+	}	
+ 
+	public Page<T> select(int limit,int offset){
+		Select<T> select=new Select(model);
+		return select.selectByExample(limit,offset,this);
+	}
+   
 }
