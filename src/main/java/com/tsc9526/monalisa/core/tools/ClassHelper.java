@@ -12,9 +12,18 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.apache.commons.beanutils.ConvertUtils;
+import org.apache.commons.beanutils.converters.DateConverter;
  
 
 public class ClassHelper {
+	static{
+		DateConverter dc = new DateConverter(null); 
+		dc.setUseLocaleFormat(true);
+		String[] datePattern = {"yyyy-MM-dd","yyyy-MM-dd HH:mm:ss","yyyy-MM-dd HH:mm:ss.SSS"};    
+		dc.setPatterns(datePattern);    
+		ConvertUtils.register(dc, java.util.Date.class);
+	}
+	
 	private static ConcurrentHashMap<String, MetaClass> hBeanClasses = new ConcurrentHashMap<String, MetaClass>();
 	  
 	public static MetaClass getMetaClass(Class<?> clazz) {

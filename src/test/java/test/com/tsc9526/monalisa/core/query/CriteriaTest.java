@@ -18,6 +18,13 @@ public class CriteriaTest {
 		DataSourceManager.getInstance();
 	}
 	
+	public void testNullDate()throws Exception{
+		Map<String, Object> h=new HashMap<String, Object>();
+		h.put("dateField1", null);
+		SimpleModel model=new SimpleModel();
+		model.parse(h);
+	}
+	
 	public void testParse()throws Exception{
 		Date d1=new Date();
 		
