@@ -36,11 +36,15 @@ public class SimpleModel extends Model<SimpleModel> implements SimpleDB{
 	private Date dateField2;
 	
 	public static Criteria createCriteria(){
-		return new Example().createCriteria();
+		return new Example(new SimpleModel()).createCriteria();
 	}
 	
 		
-	public static class Example extends com.tsc9526.monalisa.core.query.criteria.Example<Criteria>{
+	public static class Example extends com.tsc9526.monalisa.core.query.criteria.Example<Criteria,SimpleModel>{
+		public Example(){}
+		public Example(SimpleModel model) {
+			super(model);
+		}
 		protected Criteria createInternal(){
 			Criteria x= new Criteria(this);
 			
