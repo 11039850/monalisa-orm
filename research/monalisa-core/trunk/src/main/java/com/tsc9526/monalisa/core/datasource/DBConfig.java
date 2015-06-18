@@ -5,14 +5,23 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.lang.annotation.Annotation;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 
 import javax.sql.DataSource;
 
+import org.apache.commons.beanutils.BeanUtils;
+
 import com.tsc9526.monalisa.core.annotation.DB;
 import com.tsc9526.monalisa.core.tools.CloseQuietly;
 
-public class DBConfig implements com.tsc9526.monalisa.core.annotation.DB{ 	 
+public class DBConfig implements com.tsc9526.monalisa.core.annotation.DB{ 	
+	/**
+	 * <code>DEFAULT_PATH= ".";</code> <br>
+	 * The file path for DB.configFile() is :<br>
+	 * <code>System.getProperty("DB@"+DB.key(),DEFAULT_PATH)+"/"+configFile;</code> 
+	 */
 	public static String DEFAULT_PATH=".";
 	
 	private DB     db;
@@ -35,6 +44,13 @@ public class DBConfig implements com.tsc9526.monalisa.core.annotation.DB{
  	 
 	private Properties p=new Properties();
 	
+	private List<DBHost> dbHosts=new ArrayList<DBHost>();
+	private DataSource ds;
+	
+	
+	private DBConfig(){
+	}
+	
 	public DBConfig(String key,DB db){	 
 		this.db=db;
 		this.key=key;
@@ -45,34 +61,7 @@ public class DBConfig implements com.tsc9526.monalisa.core.annotation.DB{
 	public void init(DB db){
 		this.db=db;
 		
-		configFile=db.configFile();
-		
-		if(configFile!=null && configFile.trim().length()>0){
-			configFile=configFile.trim();
-			
-			if(configFile.startsWith("/")==false){
-				if(configFile.length()>1 && configFile.charAt(1)==':'){
-					//Windows ROOT C: D: E: ...
-				}else{
-					configFile=System.getProperty("DB@"+key,DEFAULT_PATH)+"/"+configFile;
-				}				
-			}
-			
-			File file=new File(configFile);
-			if(file.exists()){
-				System.out.println("Load DB("+key+") config from: "+file.getAbsolutePath());
-				
-				try{
-					InputStreamReader reader=new InputStreamReader(new FileInputStream(file),"utf-8");
-					p.load(reader);
-					reader.close();
-				}catch(IOException e){
-					throw new RuntimeException("Load db config file: "+file.getAbsolutePath()+", exception: "+e,e);
-				}
-			}else{
-				throw new RuntimeException("DB config file: "+file.getAbsolutePath()+" not found!");
-			}
-		}		
+		loadCfgFromFile();	
 		
 		this.configName      = db.configName();
 		
@@ -92,10 +81,61 @@ public class DBConfig implements com.tsc9526.monalisa.core.annotation.DB{
 		this.tables          = getValue(p,"tables", db.tables(),prefixs);
 		this.partitions      = getValue(p,"partitions", db.partitions(),prefixs);	
 		this.modelListener   = getValue(p,"modelListener", db.modelListener(),prefixs);
-		this.mapping         = getValue(p,"mapping", db.mapping(),prefixs);				 
+		this.mapping         = getValue(p,"mapping", db.mapping(),prefixs);			
+			
+		processUrlHosts();
+	}
+		
+	protected void processUrlHosts() {
+		int x1=url.indexOf("[");
+		if(x1>0){
+			int x2=url.indexOf("]",x1);
+			
+			String prefix=url.substring(0,x1);
+			String suffix=url.substring(0,x2+1);
+			
+			String[] hosts=url.substring(x1+1,x2).split(",");
+			for(String h:hosts){
+				DBHost dbh=new DBHost(h,prefix,suffix);
+				dbHosts.add(dbh);
+			}
+			
+			this.url=dbHosts.get(0).URL;
+		}
+	}
+  
+	protected void loadCfgFromFile() {
+		configFile=db.configFile();
+		
+		if(configFile!=null && configFile.trim().length()>0){
+			configFile=configFile.trim();
+			
+			if(configFile.startsWith("/")==false){
+				if(configFile.length()>1 && configFile.charAt(1)==':'){
+					//Windows ROOT C: D: E: ...
+				}else{
+					configFile=System.getProperty("DB@"+key,DEFAULT_PATH)+"/"+configFile;
+				}				
+			}
+			
+			File file=new File(configFile);
+			if(file.exists()){
+				System.out.println("Load DB("+key+") config from: "+file.getAbsolutePath());				
+				try{
+					InputStreamReader reader=new InputStreamReader(new FileInputStream(file),"utf-8");
+					p.clear();
+					p.load(reader);
+					reader.close();
+				}catch(IOException e){
+					throw new RuntimeException("Load db config file: "+file.getAbsolutePath()+", exception: "+e,e);
+				}
+			}else{
+				throw new RuntimeException("DB config file: "+file.getAbsolutePath()+" not found!");
+			}
+		}	
 	}
 	
-	private String getValue(Properties p,String key,String defaultValue,String[] prefixs){
+	protected String getValue(Properties p,String key,String defaultValue,String[] prefixs){
 		String r=null;
 		if(prefixs.length>0){
 			for(String prefix:prefixs){
@@ -117,8 +157,10 @@ public class DBConfig implements com.tsc9526.monalisa.core.annotation.DB{
 		
 	}
 	
-	
-	private DataSource ds;
+	public List<DBHost> getHosts(){
+		return this.dbHosts;
+	}
+	 		
 	public synchronized DataSource getDataSource(){
 		if(ds!=null){
 			String cc=datasourceClass();
@@ -253,4 +295,69 @@ public class DBConfig implements com.tsc9526.monalisa.core.annotation.DB{
 		return DB.class;
 	}
  	
+	static enum DBType{
+		ONLY_READ, ONLY_WRITE, READ_AND_WRITE
+	}
+	
+	public class DBHost{
+		public String   NAME;
+		public DBType   TYPE = DBType.READ_AND_WRITE;
+		public String   HOST_PORT;
+		public String   URL;
+		
+		private DBConfig cfg;
+		private DBHost(String host,String prefix,String suffix){
+			host=host.trim();
+			
+			int x=host.indexOf("@");
+			if(x>0){
+				NAME=host.substring(0,x);
+				host=host.substring(x+1);
+			}
+			
+			if(host.startsWith("+")){
+				TYPE=DBType.ONLY_WRITE;
+				
+				host=host.substring(1);
+			}else if(host.startsWith("-")){
+				TYPE=DBType.ONLY_READ;
+				
+				host=host.substring(1);
+			}
+			
+			HOST_PORT=host;
+			
+			URL=prefix+HOST_PORT+suffix;
+			
+			
+			initDBConfig();
+		}
+		
+		private void initDBConfig(){
+			cfg=new DBConfig();
+									 
+			cfg.db=DBConfig.this.db;
+			cfg.key=DBConfig.this.key;
+			cfg.modelClass=DBConfig.this.modelClass;
+			cfg.datasourceClass=DBConfig.this.datasourceClass;			 
+			cfg.driver=DBConfig.this.driver;
+			cfg.catalog=DBConfig.this.catalog;
+			cfg.schema=DBConfig.this.schema;
+			cfg.username=DBConfig.this.username;
+			cfg.password=DBConfig.this.password;
+			cfg.tables=DBConfig.this.tables;
+			cfg.partitions=DBConfig.this.partitions;
+			cfg.modelListener=DBConfig.this.modelListener;
+			cfg.mapping=DBConfig.this.mapping;		
+			cfg.configFile=DBConfig.this.configFile;
+			cfg.configName=DBConfig.this.configName;
+			cfg.p=DBConfig.this.p;	
+			
+			cfg.url=URL;
+		}
+		
+		public DBConfig getConfig(){
+			return cfg;
+		}
+	}
 }
