@@ -33,10 +33,18 @@ public class CriteriaTest {
 		Date d1=new Date();
 		Map<String, Object> h=new HashMap<String, Object>();
 		h.put("simpleMode@d1", d1);
+		
 		SimpleModel model=new SimpleModel();
 		model.parse(h,"d1=dateField1","~simpleMode@");
 		
 		Assert.assertEquals(model.getDateField1(), d1);
+		
+		
+		SimpleModel model2=new SimpleModel();
+		model2.parse(h,"d1=dateField1","~simpleMode");
+		
+		Assert.assertEquals(model.getDateField1(), d1);
+		
 	}
 	
 	

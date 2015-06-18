@@ -100,14 +100,18 @@ public class ModelParseHelper {
 	    private static final long serialVersionUID = -1074655917369299456L;
  
 	    private boolean caseSensitive = false;
-	     
+	    private String  prefix=null; 
 	    private Map<String, String> hNameMapping=new CaseInsensitiveMap();
 	    
 	    public StringMap(Map data, String... mappings){
 	    	super(DEFAULT_CAPACITY, DEFAULT_LOAD_FACTOR, DEFAULT_THRESHOLD);
-	        
-	    	String prefix=null;
-	        if(mappings!=null){
+	        	  
+	    	initCheck(data,mappings);
+	    	inputData(data,mappings);
+	    }
+	    
+	    private void initCheck(Map data, String... mappings){
+	    	if(mappings!=null){
 	        	for(String m:mappings){
 	        		if(m.indexOf("=")<0){
 	        			if(m.indexOf(OPTIONS_NAME_CASE_SENSITIVE)>=0){
@@ -126,8 +130,9 @@ public class ModelParseHelper {
 	        		}
 	        	}
 	        }
+	    }
 	        
-	        
+	    private void inputData(Map data, String... mappings){	        
 	        for(Object key:data.keySet()){
 	        	String k=key.toString();
 	        	Object v=data.get(key);
@@ -135,6 +140,16 @@ public class ModelParseHelper {
 	        	if(prefix!=null){
         			if(k.startsWith(prefix)){
         				k=k.substring(prefix.length());
+        				if(k.length()>0){
+        					char c=k.charAt(0);
+        					if( !(c>='a' && c<='z') || (c>='A' && c<='Z') ){
+        						k=k.substring(1);
+        					}
+        				}
+        				
+        				if(k.length()<1){
+        					continue;
+        				}
         			}else{
         				continue;
         			}
