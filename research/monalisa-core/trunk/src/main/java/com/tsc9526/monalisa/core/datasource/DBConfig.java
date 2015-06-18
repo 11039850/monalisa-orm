@@ -35,7 +35,7 @@ public class DBConfig implements com.tsc9526.monalisa.core.annotation.DB{
  	 
 	private Properties p=new Properties();
 	
-	DBConfig(String key,DB db){	 
+	public DBConfig(String key,DB db){	 
 		this.db=db;
 		this.key=key;
 		
