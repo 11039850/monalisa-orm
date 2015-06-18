@@ -11,8 +11,6 @@ import java.util.Properties;
 
 import javax.sql.DataSource;
 
-import org.apache.commons.beanutils.BeanUtils;
-
 import com.tsc9526.monalisa.core.annotation.DB;
 import com.tsc9526.monalisa.core.tools.CloseQuietly;
 
@@ -44,7 +42,7 @@ public class DBConfig implements com.tsc9526.monalisa.core.annotation.DB{
  	 
 	private Properties p=new Properties();
 	
-	private List<DBHost> dbHosts=new ArrayList<DBHost>();
+	private List<Host> dbHosts=new ArrayList<Host>();
 	private DataSource ds;
 	
 	
@@ -96,7 +94,7 @@ public class DBConfig implements com.tsc9526.monalisa.core.annotation.DB{
 			
 			String[] hosts=url.substring(x1+1,x2).split(",");
 			for(String h:hosts){
-				DBHost dbh=new DBHost(h,prefix,suffix);
+				Host dbh=new Host(h,prefix,suffix);
 				dbHosts.add(dbh);
 			}
 			
@@ -157,7 +155,7 @@ public class DBConfig implements com.tsc9526.monalisa.core.annotation.DB{
 		
 	}
 	
-	public List<DBHost> getHosts(){
+	public List<Host> getHosts(){
 		return this.dbHosts;
 	}
 	 		
@@ -295,18 +293,18 @@ public class DBConfig implements com.tsc9526.monalisa.core.annotation.DB{
 		return DB.class;
 	}
  	
-	static enum DBType{
+	public static enum Level{
 		ONLY_READ, ONLY_WRITE, READ_AND_WRITE
 	}
 	
-	public class DBHost{
+	public class Host{
 		public String   NAME;
-		public DBType   TYPE = DBType.READ_AND_WRITE;
+		public Level    LEVEL = Level.READ_AND_WRITE;
 		public String   HOST_PORT;
 		public String   URL;
 		
 		private DBConfig cfg;
-		private DBHost(String host,String prefix,String suffix){
+		private Host(String host,String prefix,String suffix){
 			host=host.trim();
 			
 			int x=host.indexOf("@");
@@ -316,11 +314,11 @@ public class DBConfig implements com.tsc9526.monalisa.core.annotation.DB{
 			}
 			
 			if(host.startsWith("+")){
-				TYPE=DBType.ONLY_WRITE;
+				LEVEL=Level.ONLY_WRITE;
 				
 				host=host.substring(1);
 			}else if(host.startsWith("-")){
-				TYPE=DBType.ONLY_READ;
+				LEVEL=Level.ONLY_READ;
 				
 				host=host.substring(1);
 			}
