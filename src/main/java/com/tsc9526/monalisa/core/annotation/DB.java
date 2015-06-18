@@ -51,7 +51,13 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface DB{
 	/**
-	 * @return JDBC-URL链接. 例如mysql: jdbc:mysql://127.0.0.1:3306/world
+	 * @return JDBC-URL链接. 例如mysql: <br>
+	 * <code>jdbc:mysql://127.0.0.1:3306/world </code><br>
+	 * <br>
+	 * 多个数据库例子: <br>
+	 * <code>jdbc:mysql://[127.0.0.1:3306,127.0.0.1:3307]/world </code><br>
+	 * <br>
+	 * Host格式: <code>[name1@host1:port1,name2@host2:port2 ...]</code>
 	 */
 	String url()      default "";
 	

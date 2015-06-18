@@ -47,6 +47,8 @@ public class Query {
 	protected DBConfig db;
  	
 	protected int cacheTime=0;
+	
+	protected Boolean readonly;
  	 
 	public Query(){		 
 	}
@@ -142,18 +144,23 @@ public class Query {
 		return this;
 	}
 
+	protected Connection getConnectionFromTx(TxQuery tx) throws SQLException{
+		return tx.getConnection(db);		 
+	}
+	
+	protected Connection getConnectionFromDB() throws SQLException{
+		Connection conn=db.getDataSource().getConnection();
+		conn.setAutoCommit(true);
+		return conn;
+	}
+	
 	private <X> X doExecute(Execute<X> x){
 		TxQuery tx=Tx.getTxQuery();
 		
 		Connection conn=null;
 		PreparedStatement pst=null;
 		try{
-			if(tx!=null){
-				conn=tx.getConnection(db);
-			}else{
-				conn=db.getDataSource().getConnection();
-				conn.setAutoCommit(true);
-			}
+			conn= tx==null?getConnectionFromDB():getConnectionFromTx(tx);
 			
 			pst=x.preparedStatement(conn,sql.toString());
 			 
@@ -380,6 +387,23 @@ public class Query {
 		this.resultClass = resultClass;
 		this.metaClass=ClassHelper.getMetaClass(resultClass);
 		return this;
+	}
+
+	public boolean isReadonly() {
+		if(readonly!=null){
+			return readonly;
+		}else{
+			String x=sql.toString().toLowerCase().trim();
+			if(x.startsWith("select")){
+				return true;
+			}else{
+				return false;
+			}
+		}		
+	}
+
+	public void setReadonly(Boolean readonly) {
+		this.readonly = readonly;
 	}
   
 }
