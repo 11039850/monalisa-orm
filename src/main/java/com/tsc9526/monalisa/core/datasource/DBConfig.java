@@ -45,6 +45,7 @@ public class DBConfig implements com.tsc9526.monalisa.core.annotation.DB{
 	private List<Host> dbHosts=new ArrayList<Host>();
 	private DataSource ds;
 	
+	private DBConfig owner; 
 	
 	private DBConfig(){
 	}
@@ -55,7 +56,11 @@ public class DBConfig implements com.tsc9526.monalisa.core.annotation.DB{
 		
 		init(this.db);
 	}
-	 
+	
+	public DBConfig getOwner(){
+		return owner;
+	}
+	
 	public void init(DB db){
 		this.db=db;
 		
@@ -333,9 +338,10 @@ public class DBConfig implements com.tsc9526.monalisa.core.annotation.DB{
 		
 		private void initDBConfig(){
 			cfg=new DBConfig();
-									 
+			cfg.owner=DBConfig.this;
+			
+			
 			cfg.db=DBConfig.this.db;
-			cfg.key=DBConfig.this.key;
 			cfg.modelClass=DBConfig.this.modelClass;
 			cfg.datasourceClass=DBConfig.this.datasourceClass;			 
 			cfg.driver=DBConfig.this.driver;
@@ -350,8 +356,22 @@ public class DBConfig implements com.tsc9526.monalisa.core.annotation.DB{
 			cfg.configFile=DBConfig.this.configFile;
 			cfg.configName=DBConfig.this.configName;
 			cfg.p=DBConfig.this.p;	
+			cfg.url=URL;			
+			String x=DBConfig.this.key;
 			
-			cfg.url=URL;
+			if(LEVEL==Level.ONLY_READ){
+				x="-"+x;
+			}else if(LEVEL==Level.ONLY_WRITE){
+				x="+"+x;
+			}
+			
+			if(NAME!=null){
+				x=NAME+"@"+x;
+			}
+			
+			cfg.key="#"+x;
+			
+			
 		}
 		
 		public DBConfig getConfig(){

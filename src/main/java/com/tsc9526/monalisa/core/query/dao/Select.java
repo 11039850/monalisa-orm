@@ -2,6 +2,7 @@ package com.tsc9526.monalisa.core.query.dao;
 
 import java.util.List;
 
+import com.tsc9526.monalisa.core.datasource.DBConfig;
 import com.tsc9526.monalisa.core.query.Page;
 import com.tsc9526.monalisa.core.query.Query;
 import com.tsc9526.monalisa.core.query.criteria.Example;
@@ -13,7 +14,9 @@ public class Select<T extends Model> {
 	
 	public Select(T model){
 		this.model=model;
-	}	  
+		model.readonly(true);		
+	}
+	 
 	 
 	public T selectOne(String whereStatement,Object ... args){
 		Query query=model.getDialect().selectOne(model,whereStatement, args);
