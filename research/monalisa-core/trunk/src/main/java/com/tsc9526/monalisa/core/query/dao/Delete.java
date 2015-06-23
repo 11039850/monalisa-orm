@@ -1,5 +1,6 @@
 package com.tsc9526.monalisa.core.query.dao;
 
+import com.tsc9526.monalisa.core.datasource.DBConfig;
 import com.tsc9526.monalisa.core.query.Query;
 import com.tsc9526.monalisa.core.query.criteria.Example;
 
@@ -9,6 +10,14 @@ public class Delete {
 	
 	public  Delete(Model model){
 		this.model=model;
+		use(model.db());
+	}
+	
+	private DBConfig db;
+	
+	public Delete use(DBConfig db){
+		this.db=db;
+		return this;
 	}
 	
 
@@ -19,7 +28,7 @@ public class Delete {
 	 */
 	public int delete(){
 		Query query=model.getDialect().delete(model);
-		query.use(model.db());
+		query.use(this.db);
 		return query.execute();
 	}
 	
@@ -31,7 +40,7 @@ public class Delete {
 	 */
 	public int delete(String whereStatement,Object ... args){
 		Query query=model.getDialect().delete(model,whereStatement,args);
-		query.use(model.db());
+		query.use(this.db);
 		return query.execute();
 	}
 	
@@ -39,7 +48,7 @@ public class Delete {
 		Query w=example.getQuery();
 		
 		Query query=model.getDialect().delete(model,w.getSql(), w.getParameters());
-		query.use(model.db());
+		query.use(this.db);
 		
 		return query.execute();
 	}

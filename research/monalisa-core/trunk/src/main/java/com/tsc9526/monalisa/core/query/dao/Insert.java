@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import com.tsc9526.monalisa.core.datasource.DBConfig;
 import com.tsc9526.monalisa.core.query.Execute;
 import com.tsc9526.monalisa.core.query.Query;
 import com.tsc9526.monalisa.core.tools.ClassHelper.FGS;
@@ -28,6 +29,15 @@ public class Insert{
 	 */
 	public Insert(Model model){
 		this.model=model;
+		
+		use(model.db());
+	}
+	
+	private DBConfig db;
+	
+	public Insert use(DBConfig db){
+		this.db=db;
+		return this;
 	}
 	
 	/**
@@ -49,7 +59,7 @@ public class Insert{
 	 */
 	public int insert(boolean updateOnDuplicateKey){	 
 		Query query=model.getDialect().insert(model, updateOnDuplicateKey);
-		query.use(model.db());
+		query.use(this.db);
 		return query.execute(new AutoKeyCallback());  
 	}	
 	
@@ -73,7 +83,7 @@ public class Insert{
 	 */
 	public int insertSelective(boolean updateOnDuplicateKey){	 
 		Query query=model.getDialect().insertSelective(model, updateOnDuplicateKey);
-		query.use(model.db());
+		query.use(this.db);
 		return query.execute(new AutoKeyCallback());
 	}	
 	

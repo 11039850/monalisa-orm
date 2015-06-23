@@ -46,6 +46,8 @@ public abstract class Model<T extends Model> implements Serializable{
  	protected Partition partition;
  	protected ModelListener	modelListener;
  	
+ 	protected boolean readonly=false;
+ 	
 	public Model(){
 		Class<?> clazz=ClassHelper.findClassWithAnnotation(this.getClass(),DB.class);
 		if(clazz==null){
@@ -103,16 +105,19 @@ public abstract class Model<T extends Model> implements Serializable{
 	 */
 	public int save(){
 		if(modelListener!=null){
-			modelListener.before(ModelEvent.INSERT, this);
+			int r=-1;
+			try{
+				modelListener.before(ModelEvent.INSERT, this);
+		 		r= new Insert(this).insertSelective();
+		 		return r;
+			}finally{
+				modelListener.after(ModelEvent.INSERT, this,r);
+			}
+		}else{
+			return new Insert(this).insertSelective();
 		}
 		
-		int r= new Insert(this).insertSelective();
 		
-		if(modelListener!=null){
-			modelListener.after(ModelEvent.INSERT, this,r);
-		}
-		
-		return r;
 	}
 	
 	/**
@@ -122,16 +127,17 @@ public abstract class Model<T extends Model> implements Serializable{
 	 */
 	public int saveOrUpdate(){
 		if(modelListener!=null){
-			modelListener.before(ModelEvent.INSERT_OR_UPDATE, this);
-		}
-		
-		int r= new Insert(this).insertSelective(true);
-		
-		if(modelListener!=null){
-			modelListener.after(ModelEvent.INSERT_OR_UPDATE, this,r);
-		}
-		
-		return r;
+			int r=-1;
+			try{
+				modelListener.before(ModelEvent.INSERT_OR_UPDATE, this);
+				r= new Insert(this).insertSelective(true);
+				return r;
+			}finally{
+				modelListener.after(ModelEvent.INSERT_OR_UPDATE, this,r);
+			}
+		}else{
+			return new Insert(this).insertSelective(true);
+		} 
 	}
 	
 	/**
@@ -141,16 +147,17 @@ public abstract class Model<T extends Model> implements Serializable{
 	 */
 	public int update(){
 		if(modelListener!=null){
-			modelListener.before(ModelEvent.UPDATE, this);
-		}
-		
-		int r= new Update(this).update();
-		
-		if(modelListener!=null){
-			modelListener.after(ModelEvent.UPDATE, this,r);
-		}
-		
-		return r;
+			int r=-1;		
+			try{
+				modelListener.before(ModelEvent.UPDATE, this);			 			
+				r= new Update(this).update();
+				return r;
+			}finally{
+				modelListener.after(ModelEvent.UPDATE, this,r);
+			}
+		}else{
+			return new Update(this).update();
+		}		 
 	}
 	
 	/**
@@ -160,16 +167,17 @@ public abstract class Model<T extends Model> implements Serializable{
 	 */
 	public int delete(){
 		if(modelListener!=null){
-			modelListener.before(ModelEvent.DELETE, this);
-		}
-		
-		int r= new Delete(this).delete();
-		
-		if(modelListener!=null){
-			modelListener.after(ModelEvent.DELETE, this,r);
-		}
-		
-		return r;
+			int r=-1;
+			try{
+				modelListener.before(ModelEvent.DELETE, this);
+				r= new Delete(this).delete();
+				return r;
+			}finally{
+				modelListener.after(ModelEvent.DELETE, this,r);
+			}
+		}else{
+			return new Delete(this).delete();
+		}		 
 	}
 	
 	/**
@@ -227,6 +235,14 @@ public abstract class Model<T extends Model> implements Serializable{
 		return this.db;
 	}
 	
+	
+	public boolean readonly(){
+		return readonly;
+	}
+	
+	void readonly(boolean readonly){
+		this.readonly=readonly;		
+	}
 	/**
 	 * 
 	 * @return 逗号分隔的字段名， *： 表示返回所有字段
