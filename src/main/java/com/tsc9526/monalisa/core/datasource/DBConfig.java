@@ -47,6 +47,8 @@ public class DBConfig implements com.tsc9526.monalisa.core.annotation.DB{
 	
 	private DBConfig owner; 
 	
+	private String[] prefixs=new String[]{"DB"};		
+	
 	private DBConfig(){
 	}
 	
@@ -68,7 +70,7 @@ public class DBConfig implements com.tsc9526.monalisa.core.annotation.DB{
 		
 		this.configName      = db.configName();
 		
-		String[] prefixs=new String[]{"DB"};		
+		
 		if(configName!=null && configName.trim().length()>0){
 			prefixs=new String[]{"DB."+configName.trim(), "DB"};
 		}
@@ -286,13 +288,23 @@ public class DBConfig implements com.tsc9526.monalisa.core.annotation.DB{
 	} 
 	
 	public String getProperty(String key){
-		return getProperty(key,null);
+		return this.getValue(p, key, null, prefixs);
+		
 	}
 	
 	public String getProperty(String key,String defaultValue){
-		return p.getProperty(key, defaultValue);
+		return this.getValue(p, key, defaultValue, prefixs);
 	}
 
+	
+	public int getProperty(String key,int defaultValue){
+		String v=getProperty(key);
+		if(v==null || v.trim().length()==0){
+			return defaultValue;
+		}else{
+			return Integer.parseInt(v.trim());
+		}
+	}
 	 
 	public Class<? extends Annotation> annotationType() {		 
 		return DB.class;
