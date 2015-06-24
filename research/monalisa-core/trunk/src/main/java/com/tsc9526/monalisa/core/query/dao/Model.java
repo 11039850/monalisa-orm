@@ -180,6 +180,10 @@ public abstract class Model<T extends Model> implements Serializable{
 		}		 
 	}
 	
+	public Select<T> select(){
+		return new Select(this);
+	}
+	
 	/**
 	 * 
 	 * @return 返回数据库方言
