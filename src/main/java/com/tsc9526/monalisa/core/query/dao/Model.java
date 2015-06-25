@@ -386,5 +386,24 @@ public abstract class Model<T extends Model> implements Serializable{
 			throw new RuntimeException(e);
 		}
 	}
+	
+	/**
+	 * 校验字段数据的是否合法.
+	 * 
+	 *  @return 不合法的字段列表{字段名: 错误信息}. 如果没有错误, 则为空列表.
+	 */
+	public List<String> validate(){
+		List<String> result=new ArrayList<String>();
+		
+		for(FGS fgs:fields()){
+			Column c=fgs.getField().getAnnotation(Column.class);
+			Object v=fgs.getObject(this);
+			
+			if(c.notnull() && "NULL".equals(c.value()) && v==null){
+				result.add(fgs.getFieldName()+": CAN NOT BE NULL");
+			}
+		}
+		return result;
+	}
 }
 

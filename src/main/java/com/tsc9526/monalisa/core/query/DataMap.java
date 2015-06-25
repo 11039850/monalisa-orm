@@ -43,7 +43,11 @@ public class DataMap extends LinkedHashMap<String,Object>{
 		if(v==null){
 			return null;
 		}else{
-			return Integer.parseInt(""+v);
+			if(v instanceof Integer){
+				return (Integer)v;
+			}else{
+				return Integer.parseInt(""+v);
+			}
 		}
 	}
 	
@@ -52,7 +56,11 @@ public class DataMap extends LinkedHashMap<String,Object>{
 		if(v==null){
 			return null;
 		}else{
-			return Long.parseLong(""+v);
+			if(v instanceof Long){
+				return (Long)v;
+			}else{
+				return Long.parseLong(""+v);
+			}
 		}
 	}
 	
@@ -61,7 +69,11 @@ public class DataMap extends LinkedHashMap<String,Object>{
 		if(v==null){
 			return null;
 		}else{
-			return Float.parseFloat(""+v);
+			if(v instanceof Float){
+				return (Float)v;
+			}else{
+				return Float.parseFloat(""+v);
+			}
 		}
 	}
 	
@@ -70,7 +82,11 @@ public class DataMap extends LinkedHashMap<String,Object>{
 		if(v==null){
 			return null;
 		}else{
-			return Double.parseDouble(""+v);
+			if(v instanceof Double){
+				return (Double)v;
+			}else{
+				return Double.parseDouble(""+v);
+			}
 		}
 	}
 	
