@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -49,7 +50,9 @@ public class Query {
 	protected int cacheTime=0;
 	
 	protected Boolean readonly;
- 	 
+ 	
+	protected List<List<Object>> batchParameters=new ArrayList<List<Object>>();
+	
 	public Query(){		 
 	}
 	
@@ -144,13 +147,56 @@ public class Query {
 		return this;
 	}
 
+	
+	public Query addBatch(Object... parameters) {
+		if(this.parameters!=null && this.parameters.size()>0){
+			this.batchParameters.add(this.parameters);
+		}
+		
+		this.batchParameters.add(Arrays.asList(parameters));
+				
+		return this;
+	}
+	
+	public int[] executeBatch(){
+		TxQuery tx=Tx.getTxQuery();
+		
+		Connection conn=null;
+		PreparedStatement pst=null;
+		try{
+			conn= tx==null?getConnectionFromDB(false):getConnectionFromTx(tx);
+			
+			pst=conn.prepareStatement(sql.toString());
+			for(List<Object> p:batchParameters){
+				SQLHelper.setPreparedParameters(pst, p);
+				pst.addBatch();
+			}
+			int[] result=pst.executeBatch();
+			if(tx==null){
+				conn.commit();
+			}			
+			return result;
+		}catch(SQLException e){
+			if(tx==null && conn!=null){
+				try{ conn.rollback(); }catch(SQLException ex){}
+			}
+			throw new RuntimeException(e);
+		}finally{
+			CloseQuietly.close(pst);
+			
+			if(tx==null){
+				CloseQuietly.close(conn);
+			}
+		}
+	}
+	
 	protected Connection getConnectionFromTx(TxQuery tx) throws SQLException{
 		return tx.getConnection(db);		 
 	}
 	
-	protected Connection getConnectionFromDB() throws SQLException{
+	protected Connection getConnectionFromDB(boolean autoCommit) throws SQLException{
 		Connection conn=db.getDataSource().getConnection();
-		conn.setAutoCommit(true);
+		conn.setAutoCommit(autoCommit);
 		return conn;
 	}
 	
@@ -160,7 +206,7 @@ public class Query {
 		Connection conn=null;
 		PreparedStatement pst=null;
 		try{
-			conn= tx==null?getConnectionFromDB():getConnectionFromTx(tx);
+			conn= tx==null?getConnectionFromDB(true):getConnectionFromTx(tx);
 			
 			pst=x.preparedStatement(conn,sql.toString());
 			 
