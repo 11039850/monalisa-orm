@@ -45,7 +45,7 @@ public @interface Column {
 	String remarks() default "";
 	
 	/**
-	 * @return 缺省值
+	 * @return 缺省值, 用字符串"NULL", 来表示NULL字段
 	 */
 	String value() default "";
 		
