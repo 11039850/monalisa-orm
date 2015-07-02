@@ -66,6 +66,11 @@ public class ${table.javaName} extends ${modelClass}<${table.javaName}> implemen
 	
 	<#list table.columns as f>
 	<@comments table=table c=f align="	"/> 
+	<#if f.code.annotation??>
+	<#list c.code.annotation?split("\n") as a>
+	${a}
+	</#list>
+	<#if>
 	private ${f.javaType} ${f.javaName};	
 	
 	</#list>
@@ -74,7 +79,11 @@ public class ${table.javaName} extends ${modelClass}<${table.javaName}> implemen
 	<#list table.columns as f>   
 	<@comments table=table c=f align="	"/> 
 	public ${table.javaName} ${f.javaNameSet}(${f.javaType} ${f.javaName}){
-		this.${f.javaName} = ${f.javaName};
+		<#if f.code.set??>
+		${f.code.set}
+		<#else{
+		this.${f.javaName} = ${f.javaName};		
+		}
 		return this;
 	}
 		
@@ -84,7 +93,14 @@ public class ${table.javaName} extends ${modelClass}<${table.javaName}> implemen
 	<#list table.columns as f>   
 	<@comments table=table c=f align="	"/> 
 	public ${f.javaType} ${f.javaNameGet}(){
-		return this.${f.javaName};		
+		<#if f.code.get??>
+		${f.code.get}
+		<#elseif f.code.value??>
+		if(this.${f.javaName}==null){
+			return ${f.code.value};		
+		}
+		return this.${f.javaName};		 		
+		</#if>	
 	}
 		
 	</#list>

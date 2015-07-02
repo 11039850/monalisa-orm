@@ -14,6 +14,7 @@ import com.tsc9526.monalisa.core.datasource.DataSourceManager;
 import com.tsc9526.monalisa.core.query.dialect.Dialect;
 import com.tsc9526.monalisa.core.query.partition.CreateTableCache;
 import com.tsc9526.monalisa.core.query.partition.Partition;
+import com.tsc9526.monalisa.core.query.validator.Validator;
 import com.tsc9526.monalisa.core.tools.ClassHelper;
 import com.tsc9526.monalisa.core.tools.ClassHelper.FGS;
 import com.tsc9526.monalisa.core.tools.ClassHelper.MetaClass;
@@ -108,6 +109,7 @@ public abstract class Model<T extends Model> implements Serializable{
 			int r=-1;
 			try{
 				modelListener.before(ModelEvent.INSERT, this);
+				doValidate();				
 		 		r= new Insert(this).insertSelective();
 		 		return r;
 			}finally{
@@ -130,6 +132,7 @@ public abstract class Model<T extends Model> implements Serializable{
 			int r=-1;
 			try{
 				modelListener.before(ModelEvent.INSERT_OR_UPDATE, this);
+				doValidate();
 				r= new Insert(this).insertSelective(true);
 				return r;
 			}finally{
@@ -149,7 +152,8 @@ public abstract class Model<T extends Model> implements Serializable{
 		if(modelListener!=null){
 			int r=-1;		
 			try{
-				modelListener.before(ModelEvent.UPDATE, this);			 			
+				modelListener.before(ModelEvent.UPDATE, this);	
+				doValidate();
 				r= new Update(this).update();
 				return r;
 			}finally{
@@ -386,24 +390,37 @@ public abstract class Model<T extends Model> implements Serializable{
 			throw new RuntimeException(e);
 		}
 	}
+	  
+	protected void doValidate() {
+		String validate=db.getProperty("validate", "false");
+		if(validate.equalsIgnoreCase("true") || validate.equals("1")){			
+			List<String> errors=validate();
+			if(errors.size()>0){
+				throw new RuntimeException(errors.toString());
+			}
+		}
+	}
 	
+	private Validator validator=null;
 	/**
 	 * 校验字段数据的是否合法.
 	 * 
 	 *  @return 不合法的字段列表{字段名: 错误信息}. 如果没有错误, 则为空列表.
 	 */
 	public List<String> validate(){
-		List<String> result=new ArrayList<String>();
-		
-		for(FGS fgs:fields()){
-			Column c=fgs.getField().getAnnotation(Column.class);
-			Object v=fgs.getObject(this);
-			
-			if(c.notnull() && "NULL".equals(c.value()) && v==null){
-				result.add(fgs.getFieldName()+": CAN NOT BE NULL");
+		if(validator==null){
+			String clazz=db.getProperty("validator");
+			if(clazz==null || clazz.trim().length()==0){
+				validator=new Validator();
+			}else{
+				try{
+					validator=(Validator)Class.forName(clazz.trim()).newInstance();
+				}catch(Exception e){
+					throw new RuntimeException(e);
+				}
 			}
 		}
-		return result;
+		return new Validator().validate(this);
 	}
 }
 

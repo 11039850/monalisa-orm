@@ -5,6 +5,9 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
+
+import org.apache.commons.collections.map.CaseInsensitiveMap;
 
 public class Helper {
 
@@ -135,4 +138,60 @@ public class Helper {
 		}		 
 	}
 	
+	@SuppressWarnings("unchecked")
+	public static Map<String, String> parseRemarks(String remark){		
+		Map<String, String> map=new CaseInsensitiveMap();
+		
+		int len=remark.length();
+		for(int i=0;i<len;i++){
+			char c=remark.charAt(i);
+			if(c=='#'){	
+				StringBuffer n=new StringBuffer();
+				StringBuffer v=new StringBuffer();
+				 
+				while(++i < len){
+					c=remark.charAt(i);
+					
+					if( (c>='a' && c<='z') || (c>='A' && c<='Z')){
+						n.append(c);
+					}else if(c==' ' || c=='\r' || c=='\n' || c=='\t' || c=='{'){						 
+						if(c=='{'){
+							while(++i < len){
+								c=remark.charAt(i);
+								if(c=='}'){								 
+									break;
+								}else{
+									v.append(c);									
+									if(c=='{'){
+										while(++i<len){
+											c=remark.charAt(i);											
+											v.append(c);
+											if(c=='}'){
+												break;
+											}
+										}
+									}
+								}
+							}														 					
+							break;
+						}else{
+							n.append(" ");
+						}
+					}else{
+						n.delete(0, n.length());
+						i--;
+						break;
+					}
+				}
+				
+				String name=n.toString().trim();
+				if(name.length()>0){
+					map.put(name.toLowerCase(),v.toString().trim());
+				}
+			}
+		}
+		
+		return map;
+	
+	}
 }

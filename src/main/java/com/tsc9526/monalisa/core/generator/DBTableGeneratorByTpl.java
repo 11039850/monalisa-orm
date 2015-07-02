@@ -3,15 +3,16 @@ package com.tsc9526.monalisa.core.generator;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
+import java.util.LinkedHashSet;
 import java.util.Map;
+import java.util.Set;
 
 import com.tsc9526.monalisa.core.annotation.Column;
 import com.tsc9526.monalisa.core.annotation.DB;
 import com.tsc9526.monalisa.core.annotation.Table;
 import com.tsc9526.monalisa.core.datasource.DBConfig;
+import com.tsc9526.monalisa.core.meta.MetaColumn;
 import com.tsc9526.monalisa.core.meta.MetaTable;
 import com.tsc9526.monalisa.core.query.Query;
 import com.tsc9526.monalisa.core.resources.Freemarker;
@@ -45,7 +46,7 @@ public class DBTableGeneratorByTpl{
 	         data.put("modelClass", modelClass);
 	         data.put("dbi", dbi);
 	         
-	         List<String> imports=new ArrayList<String>();
+	         Set<String> imports=new LinkedHashSet<String>();
 	         imports.add(DB.class.getName());
 	         imports.add(DBConfig.class.getName());
 	         imports.add(Table.class.getName());
@@ -54,6 +55,9 @@ public class DBTableGeneratorByTpl{
 	         if(table.getKeyColumns().size()>0){
 	        	 imports.add(Query.class.getName());
 		 	 }
+	         for(MetaColumn c:table.getColumns()){
+	        	 imports.addAll(c.getImports());
+	         }
 	         data.put("imports", imports);
 	 		
 	         

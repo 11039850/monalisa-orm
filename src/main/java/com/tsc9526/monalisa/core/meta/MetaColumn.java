@@ -1,5 +1,14 @@
 package com.tsc9526.monalisa.core.meta;
 
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+
+import com.tsc9526.monalisa.core.query.validator.Max;
+import com.tsc9526.monalisa.core.query.validator.Min;
+import com.tsc9526.monalisa.core.query.validator.Regex;
+import com.tsc9526.monalisa.core.tools.Helper;
 import com.tsc9526.monalisa.core.tools.JavaBeansHelper;
 import com.tsc9526.monalisa.core.tools.TypeHelper;
 
@@ -39,6 +48,11 @@ public class MetaColumn extends Name{
 	 * Get方法
 	 */
 	protected String javaNameGet;
+	
+ 	
+	protected Map<String, String> code=new HashMap<String, String>();
+	
+	protected Set<String> imports=new HashSet<String>();
 	
 	
 	public MetaColumn(){
@@ -127,6 +141,83 @@ public class MetaColumn extends Name{
 		this.auto = auto;
 	}
 	
+	static Map<String, String> annotations=new HashMap<String, String>(){		 
+		private static final long serialVersionUID = 5658760303891954974L;
+		{
+			put("@Regex",Regex.class.getName());
+			put("@Max"  ,Max.class.getName());
+			put("@Min"  ,Min.class.getName());
+		}
+	};
+	protected void processRemarkAnnotation(){
+		String as=getCode("annotation");
+		if(as!=null){
+			StringBuffer sb=new StringBuffer();
+			for(String a:as.split("\n")){
+				String x=a.trim();
+				if(x.startsWith("@")){
+					String px="";						
+					int p=x.indexOf("(");
+					if(p>0){
+						x=x.substring(0,p).trim();
+						px=x.substring(p);
+					}
+					
+					p=x.lastIndexOf(".");
+					if(p>0){
+						imports.add(x);
+						x=x.substring(p+1);
+					}else{
+						String i=annotations.get(x);
+						if(i!=null){
+							imports.add(i);
+						}
+					}
+					
+					sb.append(x+px);
+				}else{
+					sb.append(x).append("\r\n");
+				}
+			}
+		}
+	}
+	
+	protected void processRemarkBoolean() {
+		if(getCode("bool")!=null || getCode("boolean")!=null){
+			setJavaType("Boolean");
+		}		
+	}
+	
+	protected void processRemarkEnum() {
+		String enumClass=getCode("enum");
+		if(enumClass!=null){
+			int p=enumClass.lastIndexOf(".");
+			if(p>0){
+				imports.add(enumClass);
+				setJavaType(enumClass.substring(p+1));
+			}else{			
+				setJavaType(enumClass);
+			}
+		}		
+	}
+
+	protected void processRemarks(){
+		processRemarkBoolean();
+		processRemarkEnum();
+		processRemarkAnnotation();
+	}
+	 
+	
+	public Name setRemarks(String remarks) {
+		if(remarks!=null){
+			//#annotation{...}
+			this.code=Helper.parseRemarks(remarks);
+			
+			processRemarks();			 
+		}
+		return super.setRemarks(remarks);
+	}
+	
 	public String toString(){
 		StringBuffer sb=new StringBuffer();
 		sb.append("NAME: ").append(name)
@@ -138,6 +229,22 @@ public class MetaColumn extends Name{
 		  .append(", DEFAULT: ").append(value)
 		  .append(", REMARKS: ").append(remarks);
 		return sb.toString();
+	}
+
+	public Set<String> getImports(){
+		return imports;
+	}
+	
+	public String getCode(String name){
+		return code.get(name);
+	}
+	
+	public Map<String, String> getCode() {
+		return code;
+	}
+
+	public void setCode(Map<String, String> code) {
+		this.code = code;
 	}
  
 }
