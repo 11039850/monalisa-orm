@@ -420,7 +420,7 @@ public abstract class Model<T extends Model> implements Serializable{
 		}
 	}
 	
-	private Validator validator=null;
+	protected Validator validator=null;
 	/**
 	 * 校验字段数据的是否合法.
 	 * 
