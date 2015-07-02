@@ -205,7 +205,17 @@ public abstract class Model<T extends Model> implements Serializable{
 	}		
 	
 	/**
-	 * @return 是否允许更新主键, 默认为false
+	 * How to update the model's primary key:<br>
+	 * <code>
+	 *   Model model=new Model(oldId).load(); <br>
+	 *   model.setId(newId); <br>
+	 *   model.setXxx ... <br>
+	 *   <br>
+	 *   Update update=new Update(model,true); <br>
+	 *   update.update("id",oldId);<br>
+	 * </code>
+	 * 
+	 * @return Enable update the model's primary key, default is: false
 	 */
 	public boolean enableUpdateKey(){
 		return updateKey;
