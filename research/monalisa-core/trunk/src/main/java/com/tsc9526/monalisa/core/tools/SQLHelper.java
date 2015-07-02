@@ -93,8 +93,10 @@ public class SQLHelper {
 					pst.setBoolean(parameterIndex, (Boolean)p);
 				}else if(p instanceof Date){
 					pst.setDate(parameterIndex, new java.sql.Date(((Date)p).getTime()));
-				}else if(p.getClass().isArray()){
+				}else if(p.getClass().isArray()){					
 					pst.setBytes(parameterIndex, (byte[])p);
+				}else if(p.getClass().isEnum()){
+					//
 				}else{
 					pst.setString(parameterIndex, p.toString());
 				}				
