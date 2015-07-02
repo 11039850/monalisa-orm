@@ -188,12 +188,17 @@ public abstract class Model<T extends Model> implements Serializable{
 		return new Select(this);
 	}
 	
+	protected Dialect dialect;
 	/**
 	 * 
 	 * @return 返回数据库方言
 	 */
 	public Dialect getDialect(){
-		return dsm.getDialect(this.db);
+		if(dialect==null){
+			dialect=dsm.getDialect(this.db);
+		}
+		
+		return dialect;
 	}
 	
 	/**
@@ -261,18 +266,21 @@ public abstract class Model<T extends Model> implements Serializable{
 	void readonly(boolean readonly){
 		this.readonly=readonly;		
 	}
+	
+	
 	/**
 	 * 
 	 * @return 逗号分隔的字段名， *： 表示返回所有字段
 	 */
 	public String filterFields(){
-		if(fieldFilterSets.size()>0){			
-			Set<String> fs=new LinkedHashSet<String>();
+		if(fieldFilterSets.size()>0){	
+			Set<String> fs=new LinkedHashSet<String>();			 
 			//Add primary key
 			for(FGS fgs:fields){
 				Column c=fgs.getField().getAnnotation(Column.class);
 				if(c.key()){
 					fs.add(getDialect().getColumnName(c.name()));
+					 
 				}
 			}			
 			
@@ -280,12 +288,13 @@ public abstract class Model<T extends Model> implements Serializable{
 				for(FGS fgs:fields){
 					Column c=fgs.getField().getAnnotation(Column.class);
 					String f=getDialect().getColumnName(c.name());
-					if(fieldFilterSets.contains(f) == false && fs.contains(f)==false){
+					if(fieldFilterSets.contains(f.toLowerCase()) == false && fs.contains(f)==false){
 						fs.add(f);						
 					}
 				}								
 			}else{
 				for(String f:fieldFilterSets){
+					f=getDialect().getColumnName(f);
 					if(fs.contains(f)==false){
 						fs.add(f);
 					}
@@ -324,7 +333,7 @@ public abstract class Model<T extends Model> implements Serializable{
 			fieldFilterSets.clear();
 		}else{
 			for(String f:fields){
-				fieldFilterSets.add(f);
+				fieldFilterSets.add(getDialect().getColumnName(f.toLowerCase()));
 			}
 		}
 		
@@ -353,7 +362,7 @@ public abstract class Model<T extends Model> implements Serializable{
 		for(FGS fgs:fields){
 			Column column=fgs.getField().getAnnotation(Column.class);
 			if(column.length()>=maxLength){
-				es.add(column.name());
+				es.add(getDialect().getColumnName(column.name().toLowerCase()));
 			}
 		}
 		return exclude(es.toArray(new String[0]));
@@ -372,7 +381,7 @@ public abstract class Model<T extends Model> implements Serializable{
 			fieldFilterSets.clear();
 		}else{
 			for(String f:fields){
-				fieldFilterSets.add(f);
+				fieldFilterSets.add(getDialect().getColumnName(f.toLowerCase()));
 			}
 		}
 		

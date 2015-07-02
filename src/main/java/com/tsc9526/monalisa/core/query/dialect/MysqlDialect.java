@@ -41,7 +41,11 @@ public class MysqlDialect extends Dialect{
 	} 
 	
 	public String getColumnName(String name){
-		return "`"+name+"`";
+		if(name.startsWith("`")){
+			return name;
+		}else{
+			return "`"+name+"`";
+		}
 	}
 	
 	public String getTableName(String name){
