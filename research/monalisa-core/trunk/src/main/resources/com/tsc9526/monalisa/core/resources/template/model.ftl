@@ -215,6 +215,8 @@ public class ${table.javaName} extends ${modelClass}<${table.javaName}> implemen
 		public com.tsc9526.monalisa.core.query.criteria.Field.FieldLong<Criteria> ${f.javaName} = new com.tsc9526.monalisa.core.query.criteria.Field.FieldLong<Criteria>("${f.name}", this); 
 		<#elseif f.javaType= "String">
 		public com.tsc9526.monalisa.core.query.criteria.Field.FieldString<Criteria> ${f.javaName} = new com.tsc9526.monalisa.core.query.criteria.Field.FieldString<Criteria>("${f.name}", this);
+		<#elseif f.code.enum??>
+		public com.tsc9526.monalisa.core.query.criteria.Field<${f.javaType},Criteria> ${f.javaName} = new com.tsc9526.monalisa.core.query.criteria.Field<${f.javaType},Criteria>("${f.name}", this, ${f.jdbcType});
 		<#else>
 		public com.tsc9526.monalisa.core.query.criteria.Field<${f.javaType},Criteria> ${f.javaName} = new com.tsc9526.monalisa.core.query.criteria.Field<${f.javaType},Criteria>("${f.name}", this);
 		</#if>		
@@ -223,6 +225,12 @@ public class ${table.javaName} extends ${modelClass}<${table.javaName}> implemen
 		 
 	}
 	 
+	<#list table.columns as f>	 
+	<#if f.code.enum?? && f.code.enum?index_of('{')!=-1>
+	public static enum ${f.code.enum} 
+	<#if>
+		 
+	</#list>
 	
 	public static class Metadata{
 		public final static String table ="${table.name}" ;

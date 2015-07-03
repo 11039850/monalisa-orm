@@ -1,9 +1,13 @@
 package com.tsc9526.monalisa.core.query.criteria;
 
+import java.sql.Types;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.tsc9526.monalisa.core.datasource.DataSourceManager;
 import com.tsc9526.monalisa.core.query.Query;
+import com.tsc9526.monalisa.core.tools.EnumHelper;
+import com.tsc9526.monalisa.core.tools.TypeHelper;
 
 @SuppressWarnings({"unchecked"})
 public class Field<X,Y extends Criteria>{
@@ -15,11 +19,18 @@ public class Field<X,Y extends Criteria>{
 	
 	private Query q;
 	 
+	private String type;
+	
 	public Field(String name,Y criteria){
+		this(name, criteria, Types.INTEGER);
+	}
+	
+	public Field(String name,Y criteria,int jdbcType){
 		this.name=name;
 		this.criteria=criteria;	
 		this.q=criteria.getQuery();
 		
+		this.type=TypeHelper.getJavaType(jdbcType);		
 	}	
 		 
 	public Y equalsTo(X value){
@@ -72,7 +83,7 @@ public class Field<X,Y extends Criteria>{
 			q.add(" AND ");
 		}
 				 
-		q.add(getFormatName()).in(values);
+		q.add(getFormatName()).in(getValues(values));
 		return criteria;
 	}
 	
@@ -81,7 +92,7 @@ public class Field<X,Y extends Criteria>{
 			q.add(" AND ");
 		}
 	 		 
-		q.add(getFormatName()).notin(values);
+		q.add(getFormatName()).notin(getValues(values));
 		return criteria;
 	}
 	
@@ -90,7 +101,7 @@ public class Field<X,Y extends Criteria>{
 			q.add(" AND ");
 		}
 				 
-		q.add(getFormatName()).in(values);
+		q.add(getFormatName()).in(getValues(values));
 		return criteria;
 	}
 	
@@ -99,7 +110,9 @@ public class Field<X,Y extends Criteria>{
 			q.add(" AND ");
 		}
 		
-		q.add(getFormatName()).notin(values);
+		 
+		q.add(getFormatName()).notin(getValues(values));
+		
 		return criteria;
 	}
 	
@@ -119,10 +132,43 @@ public class Field<X,Y extends Criteria>{
 		if(q.isEmpty()==false){
 			q.add(" AND ");
 		}
-				 
-		q.add(getFormatName()).add(op, values);
+				 		
+		q.add(getFormatName()).add(op, getValues(values));
+		
 		return criteria;
 	}	
+	
+	
+	private List<?> getValues(List<X> values){
+		if(values!=null && values.size()>0 && values.get(0).getClass().isEnum()){
+			List<Object> vs=new ArrayList<Object>();
+			for(int i=0;i<values.size();i++){
+				if("String".equals(type)){
+					vs.add(EnumHelper.getStringValue((Enum<?>)values.get(i)));
+				}else{
+					vs.add(EnumHelper.getIntValue((Enum<?>)values.get(i)));
+				}					
+			}
+			return vs;
+		}else{
+			return values;
+		}
+	}
+	private Object[] getValues(X[] values){
+		if(values!=null && values.length>0 && values[0].getClass().isEnum()){
+			Object[] vs=new Object[values.length];
+			for(int i=0;i<values.length;i++){
+				if("String".equals(type)){
+					vs[i]=EnumHelper.getStringValue((Enum<?>)values[i]);
+				}else{
+					vs[i]=EnumHelper.getIntValue((Enum<?>)values[i]);
+				}					
+			}
+			return vs;
+		}else{
+			return values;
+		}
+	}
 	
 	private String getFormatName(){
 		if(formatName==null){
