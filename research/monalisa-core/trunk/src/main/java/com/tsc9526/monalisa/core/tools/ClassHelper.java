@@ -86,10 +86,19 @@ public class ClassHelper {
 	}
 	 
 	
-	public static void setObject(Object bean, FGS fgs, Object obj) {
+	public static void setObject(Object bean, FGS fgs, Object v) {
 		try {			 			 
 			Method set = fgs.getSetMethod();
-			Object value=ConvertUtils.convert(obj, fgs.getField().getType());
+			
+			Object value=null;
+			if(v!=null){
+				if(fgs.getField().getType().isEnum()){
+					value=EnumHelper.getEnum(fgs, v);
+				}else{
+					value=ConvertUtils.convert(v, fgs.getField().getType());
+				}
+			}
+			
 			set.invoke(bean, value);
 		} catch (Exception e) {
 			throw new RuntimeException(e);

@@ -195,16 +195,16 @@ public class CriteriaTest {
 		SimpleModel model=new SimpleModel();
 		model.setIntField1(1);
 		model.setIntField2(2);
-		model.setDateField1(sdf.parse(time));
+		model.setDateField1(sdf.parse(time));		
 		 
 		Query query=model.getDialect().insert(model, true);
 		String sql=query.getSql();
-		String sql_expect="REPLACE INTO `simple_model`(`int_field1`, `int_field2`, `string_field1`, `string_field2`, `date_field1`, `date_field2`)VALUES(?, ?, ?, ?, ?, ?)";
+		String sql_expect="REPLACE INTO `simple_model`(`int_field1`, `int_field2`, `string_field1`, `string_field2`, `date_field1`, `date_field2`, `status`)VALUES(?, ?, ?, ?, ?, ?, ?)";
 		Assert.assertEquals(sql,sql_expect);
 		
 		query=model.getDialect().insert(model, false);
 		sql=query.getSql();
-		sql_expect="INSERT INTO `simple_model`(`int_field1`, `int_field2`, `string_field1`, `string_field2`, `date_field1`, `date_field2`)VALUES(?, ?, ?, ?, ?, ?)";
+		sql_expect="INSERT INTO `simple_model`(`int_field1`, `int_field2`, `string_field1`, `string_field2`, `date_field1`, `date_field2`, `status`)VALUES(?, ?, ?, ?, ?, ?, ?)";
 		Assert.assertEquals(sql,sql_expect);
 		
 		

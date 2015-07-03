@@ -1,5 +1,6 @@
 package com.tsc9526.monalisa.core.tools;
 
+import java.lang.reflect.Method;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.Date;
@@ -96,9 +97,16 @@ public class SQLHelper {
 				}else if(p.getClass().isArray()){					
 					pst.setBytes(parameterIndex, (byte[])p);
 				}else if(p.getClass().isEnum()){
-					//
+					try{
+						Method m=p.getClass().getMethod("value");
+						Object v=m.invoke(p);
+						pst.setObject(parameterIndex,v);
+					}catch(Exception e){
+						String v=((Enum<?>)p).name();
+						pst.setString(parameterIndex,v);
+					}
 				}else{
-					pst.setString(parameterIndex, p.toString());
+					pst.setObject(parameterIndex, p);
 				}				
 				parameterIndex++;
 			}
