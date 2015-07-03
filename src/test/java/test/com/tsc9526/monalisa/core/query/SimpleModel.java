@@ -1,6 +1,7 @@
 package test.com.tsc9526.monalisa.core.query;
 
  
+import java.sql.Types;
 import java.util.Date;
 
 import com.tsc9526.monalisa.core.annotation.Column;
@@ -40,6 +41,10 @@ public class SimpleModel extends Model<SimpleModel> implements SimpleDB{
 	
 	@Column(name="status_b")
 	private StatusB statusB;
+	
+	@Column(name="status_c",jdbcType=Types.VARCHAR)
+	private StatusC statusC;
+	 
 	
 	public static Criteria createCriteria(){
 		return new Example(new SimpleModel()).createCriteria();
@@ -82,6 +87,7 @@ public class SimpleModel extends Model<SimpleModel> implements SimpleDB{
 		public com.tsc9526.monalisa.core.query.criteria.Field<Date,Criteria> dateField2 = new com.tsc9526.monalisa.core.query.criteria.Field<Date,Criteria>("date_field2", this);
 		public com.tsc9526.monalisa.core.query.criteria.Field<StatusA,Criteria> status = new com.tsc9526.monalisa.core.query.criteria.Field<StatusA,Criteria>("status", this);
 		public com.tsc9526.monalisa.core.query.criteria.Field<StatusB,Criteria> statusB = new com.tsc9526.monalisa.core.query.criteria.Field<StatusB,Criteria>("status_b", this);
+		public com.tsc9526.monalisa.core.query.criteria.Field<StatusC,Criteria> statusC = new com.tsc9526.monalisa.core.query.criteria.Field<StatusC,Criteria>("status_c", this);
 	}
 
 	public Integer getIntField1() {
@@ -154,6 +160,14 @@ public class SimpleModel extends Model<SimpleModel> implements SimpleDB{
 
 	public void setStatusB(StatusB statusB) {
 		this.statusB = statusB;
+	}
+	
+	public StatusC getStatusC() {
+		return statusC;
+	}
+
+	public void setStatusC(StatusC statusC) {
+		this.statusC = statusC;
 	}
 	
 }
