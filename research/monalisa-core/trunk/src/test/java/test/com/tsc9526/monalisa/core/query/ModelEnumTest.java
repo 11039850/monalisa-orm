@@ -21,5 +21,16 @@ public class ModelEnumTest {
 	  
 	  mc.getField("status").setObject(model, 2);
 	  Assert.assertEquals(model.getStatus(),StatusA.NOT_FOUND);
+	  
+	  
+	  mc.getField("statusB").setObject(model, 1);
+	  Assert.assertEquals(model.getStatusB(),StatusB.B1);
+	  
+	  mc.getField("statusB").setObject(model, 2);
+	  Assert.assertEquals(model.getStatusB(),StatusB.B2);
+	  
+	  mc.getField("statusB").setObject(model, "B3");
+	  Assert.assertEquals(model.getStatusB(),StatusB.B3);
+	  
   }
 }
