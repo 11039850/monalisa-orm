@@ -4,10 +4,12 @@ public enum StatusB {
 	B1(1),B2(2),B3(3);
 	
 	private int value;	
+	
 	StatusB(int value){
 		this.value=value;		
 	}
-		
+	
+	
 	public int getValue() {
 		return value;
 	}
