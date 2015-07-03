@@ -35,6 +35,9 @@ public class SimpleModel extends Model<SimpleModel> implements SimpleDB{
 	@Column(name="date_field2")
 	private Date dateField2;
 	
+	@Column(name="status")
+	private StatusA status;
+	
 	public static Criteria createCriteria(){
 		return new Example(new SimpleModel()).createCriteria();
 	}
@@ -74,6 +77,7 @@ public class SimpleModel extends Model<SimpleModel> implements SimpleDB{
 		public com.tsc9526.monalisa.core.query.criteria.Field.FieldString<Criteria> stringField2 = new com.tsc9526.monalisa.core.query.criteria.Field.FieldString<Criteria>("string_field2", this);
 		public com.tsc9526.monalisa.core.query.criteria.Field<Date,Criteria> dateField1 = new com.tsc9526.monalisa.core.query.criteria.Field<Date,Criteria>("date_field1", this);
 		public com.tsc9526.monalisa.core.query.criteria.Field<Date,Criteria> dateField2 = new com.tsc9526.monalisa.core.query.criteria.Field<Date,Criteria>("date_field2", this);
+		public com.tsc9526.monalisa.core.query.criteria.Field<StatusA,Criteria> status = new com.tsc9526.monalisa.core.query.criteria.Field<StatusA,Criteria>("status", this);
 	}
 
 	public Integer getIntField1() {
@@ -130,6 +134,14 @@ public class SimpleModel extends Model<SimpleModel> implements SimpleDB{
 
 	public void setAuto(Integer auto) {
 		this.auto = auto;
+	}
+
+	public StatusA getStatus() {
+		return status;
+	}
+
+	public void setStatus(StatusA status) {
+		this.status = status;
 	}
 
 	 

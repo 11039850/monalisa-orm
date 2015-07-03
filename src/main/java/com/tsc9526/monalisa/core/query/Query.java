@@ -9,6 +9,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -18,10 +19,10 @@ import com.tsc9526.monalisa.core.generator.DBExchange;
 import com.tsc9526.monalisa.core.meta.Name;
 import com.tsc9526.monalisa.core.query.dialect.Dialect;
 import com.tsc9526.monalisa.core.tools.ClassHelper;
-import com.tsc9526.monalisa.core.tools.CloseQuietly;
-import com.tsc9526.monalisa.core.tools.SQLHelper;
 import com.tsc9526.monalisa.core.tools.ClassHelper.FGS;
 import com.tsc9526.monalisa.core.tools.ClassHelper.MetaClass;
+import com.tsc9526.monalisa.core.tools.CloseQuietly;
+import com.tsc9526.monalisa.core.tools.SQLHelper;
 
 /**
  * 数据库查询对象, 基本用法: <br>
@@ -344,54 +345,70 @@ public class Query {
 			r=(T)rs.getString(1);
 		}else if(resultClass==BigDecimal.class){
 			r=(T)rs.getBigDecimal(1);
-		}else{			
-			ResultSetMetaData rsmd=rs.getMetaData();
-			
-			if(resultClass!=null || r!=null){
-				try{
-					if(r==null){
-						r=(T)resultClass.newInstance();						 
-					}
-				}catch(Exception e){
-					throw new RuntimeException(e);
-				}
-				
-				for(int i=1;i<=rsmd.getColumnCount();i++){
-					String name =rsmd.getColumnName(i);
-					
-					Name nColumn =new Name(false).setName(name);
-					 
-					FGS fgs=metaClass.getField(nColumn.getJavaName());
-					if(fgs==null){
-						String table=rsmd.getTableName(i);
-						if(table!=null && table.length()>0){
-							Name nTable  =new Name(true).setName(table);
-												
-							String jname=nTable.getJavaName()+"$"+nColumn.getJavaName();
-							fgs=metaClass.getField(jname);
-						}
-					}
-					if(fgs!=null){
-						fgs.setObject(r, rs.getObject(i));
-					}						
-				}
-			}else{ 		
-				//未指定结果类, 则采用HashMap
-				Map<String,Object> x=new DataMap();
-				
-				for(int i=1;i<=rsmd.getColumnCount();i++){
-					String name =rsmd.getColumnName(i);
-					x.put(name, rs.getObject(i));
-				}
-				
-				r=(T)x;
-			}				 						
-						
+		}else if(resultClass==Date.class){
+			r=(T)rs.getDate(1);
+		}else{								 					
+			r=toResult(rs,r);	
 		}
 		
 		return r;
 	}	 
    
+	protected <T> T toResult(ResultSet rs,T r) throws SQLException{
+		ResultSetMetaData rsmd=rs.getMetaData();
+		
+		if(resultClass!=null || r!=null){
+			try{
+				if(r==null){
+					r=(T)resultClass.newInstance();						 
+				}
+			}catch(Exception e){
+				throw new RuntimeException(e);
+			}
+			
+			for(int i=1;i<=rsmd.getColumnCount();i++){
+				String name =rsmd.getColumnName(i);
+				
+				Name nColumn =new Name(false).setName(name);
+				 
+				FGS fgs=metaClass.getField(nColumn.getJavaName());
+				if(fgs==null){
+					String table=rsmd.getTableName(i);
+					if(table!=null && table.length()>0){
+						Name nTable  =new Name(true).setName(table);
+											
+						String jname=nTable.getJavaName()+"$"+nColumn.getJavaName();
+						fgs=metaClass.getField(jname);
+					}
+				}
+				if(fgs!=null){
+					Object v=rs.getObject(i);
+					if(v!=null){
+						if(fgs.getField().getType().isEnum()){
+							
+							
+							fgs.setObject(r, v);
+						}else{
+							fgs.setObject(r,v);
+						}
+					}
+				}						
+			}
+		}else{ 		
+			//未指定结果类, 则采用HashMap
+			Map<String,Object> x=new DataMap();
+			
+			for(int i=1;i<=rsmd.getColumnCount();i++){
+				String name =rsmd.getColumnName(i);
+				x.put(name, rs.getObject(i));
+			}
+			
+			r=(T)x;
+		}	
+		
+		return r;
+	}
+	
 	public int getCacheTime() {
 		return cacheTime;
 	}
