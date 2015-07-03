@@ -15,7 +15,7 @@ public class Field<X,Y extends Criteria>{
 	
 	private Y criteria;
 	private String name;
-	private String formatName;
+	private String columnName;
 	
 	private Query q;
 	 
@@ -83,7 +83,7 @@ public class Field<X,Y extends Criteria>{
 			q.add(" AND ");
 		}
 				 
-		q.add(getFormatName()).in(getValues(values));
+		q.add(getColumnName()).in(getValues(values));
 		return criteria;
 	}
 	
@@ -92,7 +92,7 @@ public class Field<X,Y extends Criteria>{
 			q.add(" AND ");
 		}
 	 		 
-		q.add(getFormatName()).notin(getValues(values));
+		q.add(getColumnName()).notin(getValues(values));
 		return criteria;
 	}
 	
@@ -101,7 +101,7 @@ public class Field<X,Y extends Criteria>{
 			q.add(" AND ");
 		}
 				 
-		q.add(getFormatName()).in(getValues(values));
+		q.add(getColumnName()).in(getValues(values));
 		return criteria;
 	}
 	
@@ -111,19 +111,19 @@ public class Field<X,Y extends Criteria>{
 		}
 		
 		 
-		q.add(getFormatName()).notin(getValues(values));
+		q.add(getColumnName()).notin(getValues(values));
 		
 		return criteria;
 	}
 	
 	public Y asc(){
-		criteria.addOrderByAsc(getFormatName());
+		criteria.addOrderByAsc(getColumnName());
 		
 		return criteria;
 	}
 		
 	public Y desc(){
-		criteria.addOrderByDesc(getFormatName());
+		criteria.addOrderByDesc(getColumnName());
 		
 		return criteria;
 	}
@@ -133,7 +133,7 @@ public class Field<X,Y extends Criteria>{
 			q.add(" AND ");
 		}
 				 		
-		q.add(getFormatName()).add(op, getValues(values));
+		q.add(getColumnName()).add(op, getValues(values));
 		
 		return criteria;
 	}	
@@ -170,11 +170,11 @@ public class Field<X,Y extends Criteria>{
 		}
 	}
 	
-	private String getFormatName(){
-		if(formatName==null){
-			this.formatName=dsm.getDialect(q.getDb()).getColumnName(name);			
+	private String getColumnName(){
+		if(columnName==null){
+			this.columnName=dsm.getDialect(q.getDb()).getColumnName(name);			
 		}
-		return formatName;
+		return columnName;
 	}
 	
 	  
