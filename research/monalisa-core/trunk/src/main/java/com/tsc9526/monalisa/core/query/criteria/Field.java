@@ -74,8 +74,22 @@ public class Field<X,Y extends Criteria>{
 		return add(" IS NOT NULL"); 
 	}
 	
+	/**
+	 * @param from  >= from
+	 * @param to    <= to
+	 * @return
+	 */
 	public Y between(X from,X to){
 		return add(" BETWEEN ? AND ?", from,to); 
+	}
+	
+	/**
+	 * @param from  < from 
+	 * @param to    > to
+	 * @return
+	 */
+	public Y notBetween(X from,X to){
+		return add(" NOT BETWEEN ? AND ?", from,to); 
 	}
 	
 	public Y in(X[] values){
