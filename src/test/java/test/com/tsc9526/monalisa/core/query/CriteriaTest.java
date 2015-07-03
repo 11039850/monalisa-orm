@@ -188,7 +188,7 @@ public class CriteriaTest {
 				
 	}
 	
-	public void testInset()throws Exception{
+	public void testInsert()throws Exception{
 		String time="2015-06-08 11:10:31";
 		SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		
@@ -249,8 +249,7 @@ public class CriteriaTest {
 		SimpleModel model=new SimpleModel();
 		model.setIntField1(1);
 		model.setIntField2(2);
-		model.setDateField1(sdf.parse(time));
-		
+		model.setDateField1(sdf.parse(time));		
 		
 		SimpleModel.Example example=new SimpleModel.Example();
 		SimpleModel.Criteria criteria=example.createCriteria();
