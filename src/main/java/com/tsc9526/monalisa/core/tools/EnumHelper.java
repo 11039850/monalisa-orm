@@ -73,15 +73,7 @@ public class EnumHelper {
 	}
 	
 	public static String getStringValue(Enum<?> e){ 
-		try {			
-			Method m = e.getClass().getMethod("getValue");
-			Object v =m.invoke(e);
-			return v.toString(); 
-		}catch(NoSuchMethodException ex){			
-			return e.name();
-		}catch(Exception ex){
-			throw new RuntimeException(ex);
-		}
+		return e.name(); 
 	}
 	
 }
