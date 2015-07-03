@@ -199,12 +199,12 @@ public class CriteriaTest {
 		 
 		Query query=model.getDialect().insert(model, true);
 		String sql=query.getSql();
-		String sql_expect="REPLACE INTO `simple_model`(`int_field1`, `int_field2`, `string_field1`, `string_field2`, `date_field1`, `date_field2`, `status`, `status_b`)VALUES(?, ?, ?, ?, ?, ?, ?, ?)";
+		String sql_expect="REPLACE INTO `simple_model`(`int_field1`, `int_field2`, `string_field1`, `string_field2`, `date_field1`, `date_field2`, `status`, `status_b`, `status_c`)VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)";
 		Assert.assertEquals(sql,sql_expect);
 		
 		query=model.getDialect().insert(model, false);
 		sql=query.getSql();
-		sql_expect="INSERT INTO `simple_model`(`int_field1`, `int_field2`, `string_field1`, `string_field2`, `date_field1`, `date_field2`, `status`, `status_b`)VALUES(?, ?, ?, ?, ?, ?, ?, ?)";
+		sql_expect="INSERT INTO `simple_model`(`int_field1`, `int_field2`, `string_field1`, `string_field2`, `date_field1`, `date_field2`, `status`, `status_b`, `status_c`)VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)";
 		Assert.assertEquals(sql,sql_expect);
 		
 		
@@ -222,7 +222,22 @@ public class CriteriaTest {
 		query=model.getDialect().insertSelective(model, false);
 		sql=query.getSql();
 		sql_expect="INSERT INTO `simple_model`(`int_field1`, `int_field2`, `date_field1`, `status`)VALUES(?, ?, ?, ?)";
-		System.out.println(query.getExecutableSQL());
+		Assert.assertEquals(sql,sql_expect);
+		
+		sql=query.getExecutableSQL();
+		sql_expect="INSERT INTO `simple_model`(`int_field1`, `int_field2`, `date_field1`, `status`)VALUES(1, 2, '2015-06-08 11:10:31', 1)";
+		Assert.assertEquals(sql,sql_expect);
+		
+		model.setStatusB(StatusB.B2);
+		query=model.getDialect().insertSelective(model, false);
+		sql=query.getExecutableSQL();
+		sql_expect="INSERT INTO `simple_model`(`int_field1`, `int_field2`, `date_field1`, `status`, `status_b`)VALUES(1, 2, '2015-06-08 11:10:31', 1, 2)";
+		Assert.assertEquals(sql,sql_expect);
+		
+		model.setStatusC(StatusC.CC2);
+		query=model.getDialect().insertSelective(model, false);
+		sql=query.getExecutableSQL();
+		sql_expect="INSERT INTO `simple_model`(`int_field1`, `int_field2`, `date_field1`, `status`, `status_b`, `status_c`)VALUES(1, 2, '2015-06-08 11:10:31', 1, 2, 'CC2')";
 		Assert.assertEquals(sql,sql_expect);
 	 
 	}
