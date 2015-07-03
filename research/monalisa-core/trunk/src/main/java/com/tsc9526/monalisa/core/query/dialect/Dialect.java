@@ -14,6 +14,8 @@ import com.tsc9526.monalisa.core.query.Query;
 import com.tsc9526.monalisa.core.query.dao.Model;
 import com.tsc9526.monalisa.core.tools.ClassHelper.FGS;
 import com.tsc9526.monalisa.core.tools.CloseQuietly;
+import com.tsc9526.monalisa.core.tools.EnumHelper;
+import com.tsc9526.monalisa.core.tools.TypeHelper;
 
 import freemarker.log.Logger;
  
@@ -83,7 +85,7 @@ public abstract class Dialect{
 			FGS fgs=(FGS)o;
 			
 			Column c=fgs.getField().getAnnotation(Column.class);
-			Object v=fgs.getObject(model);
+			Object v=getValue(fgs,model);;
 			if(selective){
 				if(v!=null){
 					if(query.parameterCount()>0){
@@ -169,7 +171,7 @@ public abstract class Dialect{
 			FGS fgs=(FGS)o;
 			
 			Column c=fgs.getField().getAnnotation(Column.class);
-			Object v=fgs.getObject(model);
+			Object v=getValue(fgs,model);;
 			if(selective){
 				if((c.key()==false || model.enableUpdateKey()) && v!=null){
 					if(query.parameterCount()>0){
@@ -182,7 +184,7 @@ public abstract class Dialect{
 					if(query.parameterCount()>0){
 						query.add(", ");
 					}
-					query.add(getColumnName(c.name())+"=?",fgs.getObject(model));				 		
+					query.add(getColumnName(c.name())+"=?",v);				 		
 				}
 			}
 		}		
@@ -212,7 +214,7 @@ public abstract class Dialect{
 			
 			Column c=fgs.getField().getAnnotation(Column.class);
 			if(c.key()){
-				Object v=fgs.getObject(model);
+				Object v=getValue(fgs,model);;
 				if(v==null){
 					throw new RuntimeException("Model: "+model.getClass()+" load fail, Primary key is null: "+c.name());
 				}
@@ -292,7 +294,7 @@ public abstract class Dialect{
 			
 			Column c=fgs.getField().getAnnotation(Column.class);
 			if(c.key()){
-				Object v=fgs.getObject(model);
+				Object v=getValue(fgs,model);
 				if(v==null){
 					throw new RuntimeException("Model: "+model.getClass()+", Primary key is null: "+c.name());
 				}				
@@ -306,6 +308,21 @@ public abstract class Dialect{
 		}
 		
 		return query;
+	}
+	
+	protected Object getValue(FGS fgs,Model model) {
+		Object v=fgs.getObject(model);
+		if(v!=null && v.getClass().isEnum()){
+			Column c=fgs.getField().getAnnotation(Column.class);			
+			String type=TypeHelper.getJavaType(c.jdbcType());
+			if(type.equals("String")){
+				 return EnumHelper.getStringValue((Enum<?>)v);
+			}else{
+				return EnumHelper.getIntValue((Enum<?>)v);
+			}
+		}else{
+			return v;
+		}
 	}
 	
 	public Query getCountQuery(Query origin){
