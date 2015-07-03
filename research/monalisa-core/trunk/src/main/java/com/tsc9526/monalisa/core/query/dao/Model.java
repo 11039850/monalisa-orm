@@ -90,7 +90,12 @@ public abstract class Model<T extends Model> implements Serializable{
 	 * @see com.tsc9526.monalisa.core.tools.ModelParseHelper#parseModel(Model, Object)
 	 * 
 	 * @param dataObject 
-	 * @param mappings  [Options] Translate dataObject field to model field for example:  "user_id=id","user_name=name" ...
+	 * @param mappings  [Options] Translate dataObject field to model field <br>
+	 * For example: <br> 
+	 * "user_id=id", ... // Parse dataObject.user_id to Model.id<br>
+	 * Another example:<br>
+	 * "~XXX"  //Only parse the fields with prefix: XXX 
+	 * 
 	 */
 	public T parse(Object dataObject,String... mappings) {
 		ModelParseHelper.parseModel(this, dataObject,mappings);
