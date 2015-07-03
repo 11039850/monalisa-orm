@@ -17,6 +17,6 @@ ${align!}*/
 		<#assign f="Metadata." />
 	</#if>	
 	<#assign names=["name","key","auto","notnull","length","value","remarks"] />	
-${align!}@Column(table=${f}table, <#list names as n><#assign colname=c.nameToJava() /><#assign p=colname?index_of('$') /><#if p gt 0> <#assign colname=colname?substring(p+1) /> </#if> ${n}=${f}${colname}$${n} <#if n_has_next=true>, </#if> </#list>  )
+${align!}@Column(table=${f}table, jdbcType=${c.jdbcType}, <#list names as n><#assign colname=c.nameToJava() /><#assign p=colname?index_of('$') /><#if p gt 0> <#assign colname=colname?substring(p+1) /> </#if> ${n}=${f}${colname}$${n} <#if n_has_next=true>, </#if> </#list>  )
 </#if>
 </#macro> 

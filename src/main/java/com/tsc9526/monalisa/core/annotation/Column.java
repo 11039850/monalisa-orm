@@ -4,6 +4,7 @@ import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
+import java.sql.Types;
 
 @Target({ElementType.METHOD,ElementType.FIELD})
 @Retention(RetentionPolicy.RUNTIME)
@@ -48,5 +49,10 @@ public @interface Column {
 	 * @return 缺省值, 用字符串"NULL", 来表示NULL字段
 	 */
 	String value() default "";
+	
+	/**
+	 * @return JDBC type, Default is INTEGER
+	 */
+	int jdbcType() default Types.INTEGER;
 		
 }

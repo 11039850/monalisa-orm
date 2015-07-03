@@ -383,15 +383,7 @@ public class Query {
 				}
 				if(fgs!=null){
 					Object v=rs.getObject(i);
-					if(v!=null){
-						if(fgs.getField().getType().isEnum()){
-							
-							
-							fgs.setObject(r, v);
-						}else{
-							fgs.setObject(r,v);
-						}
-					}
+					fgs.setObject(r, v);
 				}						
 			}
 		}else{ 		
