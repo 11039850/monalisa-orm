@@ -191,12 +191,23 @@ public class MetaColumn extends Name{
 	protected void processRemarkEnum() {
 		String enumClass=getCode("enum");
 		if(enumClass!=null){
-			int p=enumClass.lastIndexOf(".");
-			if(p>0){
-				imports.add(enumClass);
-				setJavaType(enumClass.substring(p+1));
-			}else{			
-				setJavaType(enumClass);
+			int x=enumClass.indexOf("{");
+			if(x>=0){
+				if(x==0){
+					String jtype=JavaBeansHelper.getJavaName(getName(),true);
+					setJavaType(jtype);
+					code.put("enum",jtype+enumClass);
+				}else{
+					setJavaType(enumClass.substring(0,x).trim());
+				}
+			}else{
+				int p=enumClass.lastIndexOf(".");
+				if(p>0){
+					imports.add(enumClass);
+					setJavaType(enumClass.substring(p+1));
+				}else{			
+					setJavaType(enumClass);
+				}
 			}
 		}		
 	}

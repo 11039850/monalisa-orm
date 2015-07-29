@@ -312,17 +312,25 @@ public abstract class Dialect{
 	
 	protected Object getValue(FGS fgs,Model model) {
 		Object v=fgs.getObject(model);
-		if(v!=null && v.getClass().isEnum()){
-			Column c=fgs.getField().getAnnotation(Column.class);			
-			String type=TypeHelper.getJavaType(c.jdbcType());
-			if(type.equals("String")){
-				 return EnumHelper.getStringValue((Enum<?>)v);
-			}else{
-				return EnumHelper.getIntValue((Enum<?>)v);
+		if(v!=null){
+			if(v.getClass().isEnum()){
+				Column c=fgs.getField().getAnnotation(Column.class);			
+				String type=TypeHelper.getJavaType(c.jdbcType());
+				if(type.equals("String")){
+					 return EnumHelper.getStringValue((Enum<?>)v);
+				}else{
+					return EnumHelper.getIntValue((Enum<?>)v);
+				}
+			}else if(v.getClass() == Boolean.class || v.getClass()==boolean.class){				 
+				if( (Boolean)v ){
+					return 1;
+				}else{
+					return 0;
+				} 
 			}
-		}else{
-			return v;
 		}
+		
+		return v;		
 	}
 	
 	public Query getCountQuery(Query origin){
