@@ -156,7 +156,7 @@ public class ${table.javaName} extends ${modelClass}<${table.javaName}> implemen
 		</#if>
 	}
 	
-	public static Criteria createCriteria(){
+	public static Criteria query(){
 		return new Example(new ${table.javaName}()).createCriteria();
 	}
 	
