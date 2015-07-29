@@ -227,13 +227,15 @@ public class ${table.javaName} extends ${modelClass}<${table.javaName}> implemen
 		 
 	}
 	 
+	<#compress> 
 	<#list table.columns as f>	 
 	<#if f.code.enum?? && f.code.enum?index_of('{')!=-1>
 	public static enum ${f.code.enum} 
 	</#if>
-		 
+			 
 	</#list>
-	
+	</#compress>
+	 
 	public static class Metadata{
 		public final static String table ="${table.name}" ;
 		
