@@ -99,7 +99,9 @@ public class ${table.javaName} extends ${modelClass}<${table.javaName}> implemen
 		if(this.${f.javaName}==null){
 			return ${f.code.value};		
 		}
-		return this.${f.javaName};		 		
+		return this.${f.javaName};
+		<#else>
+		return this.${f.javaName};
 		</#if>	
 	}
 		
