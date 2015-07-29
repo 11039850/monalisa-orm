@@ -21,6 +21,7 @@ import com.tsc9526.monalisa.core.meta.MetaPartition;
 import com.tsc9526.monalisa.core.meta.MetaTable;
 import com.tsc9526.monalisa.core.query.dao.Model;
 import com.tsc9526.monalisa.core.query.partition.Partition;
+import com.tsc9526.monalisa.core.tools.JavaWriter;
 
 public class DBGenerator {
 	public static String PROJECT_TMP_PATH="/target/monalisa";
@@ -102,8 +103,9 @@ public class DBGenerator {
 				modelClass=Model.class.getName();
 			}
 			  
+			JavaWriter writer=new JavaWriter(os);
 			DBTableGeneratorByTpl g2=new DBTableGeneratorByTpl(clone, modelClass, typeElement.getQualifiedName().toString());
-			g2.generate(os);
+			g2.generate(writer);
 			
 			verifyPartition(table);
 		}catch(Exception e){
