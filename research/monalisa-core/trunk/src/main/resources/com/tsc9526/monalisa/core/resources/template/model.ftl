@@ -70,7 +70,7 @@ public class ${table.javaName} extends ${modelClass}<${table.javaName}> implemen
 	<#list c.code.annotation?split("\n") as a>
 	${a}
 	</#list>
-	<#if>
+	</#if>
 	private ${f.javaType} ${f.javaName};	
 	
 	</#list>
@@ -81,9 +81,9 @@ public class ${table.javaName} extends ${modelClass}<${table.javaName}> implemen
 	public ${table.javaName} ${f.javaNameSet}(${f.javaType} ${f.javaName}){
 		<#if f.code.set??>
 		${f.code.set}
-		<#else{
+		<#else>
 		this.${f.javaName} = ${f.javaName};		
-		}
+		</#if>
 		return this;
 	}
 		
@@ -228,7 +228,7 @@ public class ${table.javaName} extends ${modelClass}<${table.javaName}> implemen
 	<#list table.columns as f>	 
 	<#if f.code.enum?? && f.code.enum?index_of('{')!=-1>
 	public static enum ${f.code.enum} 
-	<#if>
+	</#if>
 		 
 	</#list>
 	
