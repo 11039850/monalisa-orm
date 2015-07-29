@@ -17,8 +17,7 @@ public class MetaColumnTest {
 			  +"\r\n@min(10)"
 			  +"\r\n@max(256)"
 			  +"\r\n}"
-			  +"\r\n"
-			  +"\r\n#enum{com.xx.Status}"
+			  +"\r\n"			 
 			  +"\r\n#bool{}"
 			  +"\r\n#value{"
 			  +"\r\nx+y"
@@ -26,5 +25,8 @@ public class MetaColumnTest {
 	  
 	  Assert.assertEquals(c.getCode("Bool"),"");
 	  Assert.assertEquals(c.getJavaType(),"Boolean");
+	  
+	  c.setRemarks("#enum{com.xx.Status}");
+	  Assert.assertEquals(c.getJavaType(),"Status");
   }
 }
