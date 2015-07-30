@@ -5,6 +5,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -19,7 +20,7 @@ public class ClassHelper {
 	static{
 		DateConverter dc = new DateConverter(null); 
 		dc.setUseLocaleFormat(true);
-		String[] datePattern = {"yyyy-MM-dd","yyyy-MM-dd HH:mm:ss","yyyy-MM-dd HH:mm:ss.SSS"};    
+		String[] datePattern = {"yyyy-MM-dd HH:mm:ss","yyyy-MM-dd","yyyy-MM-dd HH:mm:ss.SSS"};    
 		dc.setPatterns(datePattern);    
 		ConvertUtils.register(dc, java.util.Date.class);
 	}
@@ -95,7 +96,13 @@ public class ClassHelper {
 				if(fgs.getField().getType().isEnum()){
 					value=EnumHelper.getEnum(fgs, v);
 				}else{
-					value=ConvertUtils.convert(v, fgs.getField().getType());
+					if(v.getClass().isArray() && fgs.getField().getType() == String.class){
+						value=Arrays.toString((Object[])v);						
+					}else if(Map.class.isAssignableFrom(v.getClass()) && fgs.getField().getType() == String.class){
+						value=mapToString((Map<?,?>)v);						
+					}else{
+						value=ConvertUtils.convert(v, fgs.getField().getType());
+					}
 				}
 			}
 			
@@ -104,7 +111,10 @@ public class ClassHelper {
 			throw new RuntimeException(e);
 		}
 	}
-	 
+		
+	private static String mapToString(Map<?,?> m){		
+		return JsonHelper.toString(m);		
+	}
 	
 	public static Object getObject(Object bean, FGS fgs) {
 		try {			 
