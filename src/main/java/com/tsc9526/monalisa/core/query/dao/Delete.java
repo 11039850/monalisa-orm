@@ -6,7 +6,7 @@ import com.tsc9526.monalisa.core.query.criteria.Example;
 
 @SuppressWarnings({"rawtypes"})
 public class Delete {
-	private Model  model;
+	protected Model  model;
 	
 	public  Delete(Model model){
 		this.model=model;

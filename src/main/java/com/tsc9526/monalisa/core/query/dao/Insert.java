@@ -21,7 +21,7 @@ import com.tsc9526.monalisa.core.tools.ClassHelper.FGS;
  */
 @SuppressWarnings({"rawtypes"})
 public class Insert{
-	private Model model;
+	protected Model model;
 	
 	/**
 	 * 

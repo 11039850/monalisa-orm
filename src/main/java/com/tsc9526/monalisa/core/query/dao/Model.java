@@ -235,6 +235,17 @@ public abstract class Model<T extends Model> implements Serializable{
 		this.updateKey=updateKey;
 	}
 	
+	public T set(String name,Object value){
+		for(FGS fgs:fields){
+			Column c=fgs.getField().getAnnotation(Column.class);
+			if(name.equals(fgs.getFieldName()) || name.equals(c.name())){
+				fgs.setObject(this, value);
+			}
+		}
+		
+		return (T)this;
+	}
+	
 	/**
 	 * 
 	 * @return 返回表名等信息

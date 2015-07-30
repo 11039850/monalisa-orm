@@ -18,8 +18,21 @@ import java.util.LinkedHashMap;
 public class ${table.javaName} extends ${modelClass}<${table.javaName}> implements ${dbi}{
 	private static final long serialVersionUID = ${table.serialID?c}L;
 	
-	public static final Select SELECT =new Select(new ${table.javaName}());	
-	 
+	public static final Insert Insert(){
+	 	return new Insert(new ${table.javaName}());
+	}
+	
+	public static final Delete DELETE(){
+	 	return new Delete(new ${table.javaName}());
+	}
+	
+	public static final Update UPDATE(){
+		return new Update(new ${table.javaName}());
+	}		
+	
+	public static final Select SELECT(){
+	 	return new Select(new ${table.javaName}());
+	}		
 	 
 	public ${table.javaName}(){
 		super();
@@ -107,6 +120,38 @@ public class ${table.javaName} extends ${modelClass}<${table.javaName}> implemen
 		
 	</#list>
 	
+	public static class Insert extends com.tsc9526.monalisa.core.query.dao.Insert{
+		Insert(${table.javaName} model){
+			super(model);
+		}
+		
+		public Insert set(String name,Object value){
+			this.model.set(name,value);
+			return this;
+		}				 
+	}	
+	
+	public static class Delete extends com.tsc9526.monalisa.core.query.dao.Delete{
+		Delete(${table.javaName} model){
+			super(model);
+		}
+		
+		public Delete set(String name,Object value){		
+			this.model.set(name,value);
+			return this;
+		}				 
+	}
+	
+	public static class Update extends com.tsc9526.monalisa.core.query.dao.Update{
+		Update(${table.javaName} model){
+			super(model);
+		}
+		
+		public Update set(String name,Object value){		
+			this.model.set(name,value);
+			return this;
+		}				 
+	}
 	
 	public static class Select extends com.tsc9526.monalisa.core.query.dao.Select<${table.javaName}>{		
 		public Select(${table.javaName} x){
@@ -156,6 +201,10 @@ public class ${table.javaName} extends ${modelClass}<${table.javaName}> implemen
 		</#if>
 	}
 	
+	/**
+	* Simple query with example <br>
+	* 
+	*/
 	public static Criteria query(){
 		return new Example(new ${table.javaName}()).createCriteria();
 	}
