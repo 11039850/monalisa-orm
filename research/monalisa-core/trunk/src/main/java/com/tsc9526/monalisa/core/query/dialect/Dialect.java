@@ -121,6 +121,14 @@ public abstract class Dialect{
 		return doInsert(true,model,updateOnDuplicateKey);
 	} 
 	
+	
+	public Query deleteAll(Model model){
+		Query query=new Query().setResultClass(Long.class);
+		
+		query.add("TRUNCATE TABLE "+getTableName(model.table().name()));
+		return query;
+	}
+	
 	public Query delete(Model model){
 		Query q=getWhereByPrimaryKey(model);
 		
@@ -133,7 +141,7 @@ public abstract class Dialect{
 			throw new RuntimeException("Model: "+model.getClass()+" delete fail, no where cause.");
 		}
 		
-		Query query=new Query().setResultClass(model.getClass());
+		Query query=new Query().setResultClass(Long.class);
 		
 		query.add("DELETE FROM "+getTableName(model.table().name())+" ");
 		if(whereStatement.toUpperCase().trim().startsWith("WHERE")){
@@ -164,7 +172,7 @@ public abstract class Dialect{
 			throw new RuntimeException("Model: "+model.getClass()+" update fail, no where cause.");
 		}		
 	 
-		Query query=new Query().setResultClass(model.getClass());
+		Query query=new Query().setResultClass(Long.class);
 		
 		query.add("UPDATE "+getTableName(model.table().name())+" SET ");
 		for(Object o:model.fields()){
