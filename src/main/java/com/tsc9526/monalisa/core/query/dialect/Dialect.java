@@ -264,6 +264,21 @@ public abstract class Dialect{
 		return query;
 	}
 	
+	public Query count(Model model,String whereStatement,Object ... args){
+		Query query=new Query().setResultClass(Long.class);
+		query.add("SELECT COUNT(*) FROM ").add(getTableName(model.table().name()));
+		if(whereStatement!=null && whereStatement.length()>0){
+			query.add(" ");
+			
+			if(whereStatement.toUpperCase().startsWith("WHERE")){
+				query.add(whereStatement, args);
+			}else{
+				query.add("WHERE ").add(whereStatement,  args);
+			}
+		}
+		return query;
+	}
+	 
 	
 	
 	public Query notin(Query query,Object[] values){
