@@ -18,7 +18,7 @@ import java.util.LinkedHashMap;
 public class ${table.javaName} extends ${modelClass}<${table.javaName}> implements ${dbi}{
 	private static final long serialVersionUID = ${table.serialID?c}L;
 	
-	public static final Insert Insert(){
+	public static final Insert INSERT(){
 	 	return new Insert(new ${table.javaName}());
 	}
 	
@@ -205,7 +205,7 @@ public class ${table.javaName} extends ${modelClass}<${table.javaName}> implemen
 	* Simple query with example <br>
 	* 
 	*/
-	public static Criteria query(){
+	public static Criteria criteria(){
 		return new Example(new ${table.javaName}()).createCriteria();
 	}
 	
