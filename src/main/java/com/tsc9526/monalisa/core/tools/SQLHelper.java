@@ -92,7 +92,7 @@ public class SQLHelper {
 				}else if(p instanceof Boolean || p.getClass()==boolean.class){
 					pst.setBoolean(parameterIndex, (Boolean)p);
 				}else if(p instanceof Date){
-					pst.setDate(parameterIndex, new java.sql.Date(((Date)p).getTime()));
+					pst.setTimestamp(parameterIndex, new java.sql.Timestamp(((Date)p).getTime()));
 				}else if(p.getClass().isArray()){					
 					pst.setBytes(parameterIndex, (byte[])p);
 				}else{
