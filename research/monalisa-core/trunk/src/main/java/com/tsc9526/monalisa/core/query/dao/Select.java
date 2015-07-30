@@ -24,12 +24,18 @@ public class Select<T extends Model> {
 		return r;
 	}
 	
+	public long countAll(){
+		Query query=model.getDialect().count(model,null);		 
+		query.use(model.db());
+		return query.getResult();
+	}	
+
 	public long count(Example example){
 		Query w=example.getQuery();
 		
 		return count(w.getSql(), w.getParameters());	 
 	}
-	
+		
 	public long count(String whereStatement,Object ... args){
 		Query query=model.getDialect().count(model,whereStatement, args);		 
 		query.use(model.db());
