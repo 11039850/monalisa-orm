@@ -6,7 +6,7 @@ import com.tsc9526.monalisa.core.query.criteria.Example;
 
 @SuppressWarnings({"rawtypes"})
 public class Update{
-	private Model model;
+	protected Model model;
 	
 	public Update(Model model){
 		this(model,false);
