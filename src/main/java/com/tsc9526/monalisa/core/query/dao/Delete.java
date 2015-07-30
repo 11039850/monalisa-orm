@@ -32,6 +32,12 @@ public class Delete {
 		return query.execute();
 	}
 	
+	public int deleteAll(){
+		Query query=model.getDialect().deleteAll(model);
+		query.use(this.db);
+		return query.execute();
+	}
+	
 	/**
 	 * Delete records filter by whereStatement  
 	 * @param whereStatement

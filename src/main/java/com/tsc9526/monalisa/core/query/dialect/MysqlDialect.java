@@ -49,7 +49,11 @@ public class MysqlDialect extends Dialect{
 	}
 	
 	public String getTableName(String name){
-		return "`"+name+"`";
+		if(name.startsWith("`")){
+			return name;
+		}else{
+			return "`"+name+"`";
+		}
 	}	 	 	 
 		 
 	public Query getLimitQuery(Query origin,int limit ,int offset){
