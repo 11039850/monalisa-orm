@@ -120,59 +120,28 @@ public class ${table.javaName} extends ${modelClass}<${table.javaName}> implemen
 		
 	</#list>
 	
-	public static class Insert extends com.tsc9526.monalisa.core.query.dao.Insert{
+	public static class Insert extends com.tsc9526.monalisa.core.query.dao.Insert<${table.javaName}>{
 		Insert(${table.javaName} model){
 			super(model);
-		}
-		
-		public ${table.javaName} getModel(){
-			return this.model;
-		}
-		
-		public Insert set(String name,Object value){
-			this.model.set(name,value);
-			return this;
-		}				 
+		}	 
 	}	
 	
-	public static class Delete extends com.tsc9526.monalisa.core.query.dao.Delete{
+	public static class Delete extends com.tsc9526.monalisa.core.query.dao.Delete<${table.javaName}>{
 		Delete(${table.javaName} model){
 			super(model);
-		}
-		
-		public ${table.javaName} getModel(){
-			return this.model;
-		}
-		
-		public Delete set(String name,Object value){		
-			this.model.set(name,value);
-			return this;
-		}				 
+		}	 	
 	}
 	
-	public static class Update extends com.tsc9526.monalisa.core.query.dao.Update{
+	public static class Update extends com.tsc9526.monalisa.core.query.dao.Update<${table.javaName}>{
 		Update(${table.javaName} model){
 			super(model);
-		}
-		
-		public ${table.javaName} getModel(){
-			return this.model;
-		}
-				
-		public Update set(String name,Object value){		
-			this.model.set(name,value);
-			return this;
-		}				 
+		}				 			
 	}
 	
 	public static class Select extends com.tsc9526.monalisa.core.query.dao.Select<${table.javaName}>{		
-		public Select(${table.javaName} x){
+		Select(${table.javaName} x){
 			super(x);
-		}
-		
-		public ${table.javaName} getModel(){
-			return this.model;
-		}
+		}	
 		
 		<#if table.keyColumns?size gt 0 >
 		public ${table.javaName} selectByPrimaryKey(<#list table.keyColumns as k>${k.javaType} ${k.javaName}<#if k_has_next=true>, </#if> </#list>){
