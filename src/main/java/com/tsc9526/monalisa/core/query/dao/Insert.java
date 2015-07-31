@@ -20,26 +20,32 @@ import com.tsc9526.monalisa.core.tools.ClassHelper.FGS;
  * @param <T> 数据库模型类型
  */
 @SuppressWarnings({"rawtypes"})
-public class Insert{
-	protected Model model;
+public class Insert<T extends Model>{
+	protected T  model;
 	
-	/**
-	 * 
-	 * @param model  数据库模型对象
-	 */
-	public Insert(Model model){
-		this.model=model;
-		
-		use(model.db());
+	protected DBConfig db;
+	
+	public  Insert(T model){
+		this.model=model;		 
 	}
 	
-	private DBConfig db;
+	public T getModel(){
+		return this.model;
+	}
+			
+	public Insert set(String name,Object value){		
+		this.model.set(name,value);
+		return this;
+	}	
 	
 	public Insert use(DBConfig db){
 		this.db=db;
 		return this;
 	}
 	
+	public DBConfig db(){
+		return this.db==null?model.db():this.db;
+	}
 	/**
 	 * insert到数据库
 	 * 
@@ -59,7 +65,7 @@ public class Insert{
 	 */
 	public int insert(boolean updateOnDuplicateKey){	 
 		Query query=model.getDialect().insert(model, updateOnDuplicateKey);
-		query.use(this.db);
+		query.use(db());
 		return query.execute(new AutoKeyCallback());  
 	}	
 	
@@ -83,7 +89,7 @@ public class Insert{
 	 */
 	public int insertSelective(boolean updateOnDuplicateKey){	 
 		Query query=model.getDialect().insertSelective(model, updateOnDuplicateKey);
-		query.use(this.db);
+		query.use(db());
 		return query.execute(new AutoKeyCallback());
 	}	
 	

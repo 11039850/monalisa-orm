@@ -5,21 +5,33 @@ import com.tsc9526.monalisa.core.query.Query;
 import com.tsc9526.monalisa.core.query.criteria.Example;
 
 @SuppressWarnings({"rawtypes"})
-public class Delete {
-	protected Model  model;
+public class Delete<T extends Model> {
+	protected T  model;
 	
-	public  Delete(Model model){
-		this.model=model;
-		use(model.db());
+	protected DBConfig db;
+	
+	public  Delete(T model){
+		this.model=model;		 
 	}
 	
-	private DBConfig db;
+	public T getModel(){
+		return this.model;
+	}
+			
+	public Delete set(String name,Object value){		
+		this.model.set(name,value);
+		return this;
+	}	
+ 
 	
 	public Delete use(DBConfig db){
 		this.db=db;
 		return this;
 	}
 	
+	public DBConfig db(){
+		return this.db==null?model.db():this.db;
+	}
 
 	/**
 	 * Delete by primary key
@@ -28,13 +40,13 @@ public class Delete {
 	 */
 	public int delete(){
 		Query query=model.getDialect().delete(model);
-		query.use(this.db);
+		query.use(db());
 		return query.execute();
 	}
 	
 	public int deleteAll(){
 		Query query=model.getDialect().deleteAll(model);
-		query.use(this.db);
+		query.use(db());
 		return query.execute();
 	}
 	
@@ -46,7 +58,7 @@ public class Delete {
 	 */
 	public int delete(String whereStatement,Object ... args){
 		Query query=model.getDialect().delete(model,whereStatement,args);
-		query.use(this.db);
+		query.use(db());
 		return query.execute();
 	}
 	
@@ -54,7 +66,7 @@ public class Delete {
 		Query w=example.getQuery();
 		
 		Query query=model.getDialect().delete(model,w.getSql(), w.getParameters());
-		query.use(this.db);
+		query.use(db());
 		
 		return query.execute();
 	}

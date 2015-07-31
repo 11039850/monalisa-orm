@@ -5,35 +5,48 @@ import com.tsc9526.monalisa.core.query.Query;
 import com.tsc9526.monalisa.core.query.criteria.Example;
 
 @SuppressWarnings({"rawtypes"})
-public class Update{
-	protected Model model;
+public class Update<T extends Model>{
+	protected T model;
 	
-	public Update(Model model){
+	protected DBConfig db;
+	
+	public Update(T model){
 		this(model,false);
-		use(model.db());
+		 
 	}
 	
-	private DBConfig db;
-	
-	public Update use(DBConfig db){
-		this.db=db;
-		return this;
-	}
-	
-	public Update(Model model,boolean updateKey){
+	public Update(T model,boolean updateKey){
 		this.model=model;
 		this.model.enableUpdateKey(updateKey);
 	}
+	
+	public T getModel(){
+		return this.model;
+	}
+			
+	public Update set(String name,Object value){		
+		this.model.set(name,value);
+		return this;
+	}	
+ 
+	public Update use(DBConfig db){
+		this.db=db;
+		return this;
+	}		
 
+	public DBConfig db(){
+		return this.db==null?model.db():this.db;
+	}
+	
 	public int update(){
 		Query query=model.getDialect().update(model);
-		query.use(this.db);
+		query.use(db());
 		return query.execute();
 	}
 	
 	public int update(String whereStatement,Object ... args){
 		Query query=model.getDialect().update(model,whereStatement,args);
-		query.use(this.db);
+		query.use(db());
 		return query.execute();	 				 
 	}
 	
@@ -41,14 +54,14 @@ public class Update{
 		Query w=example.getQuery();
 		
 		Query query=model.getDialect().update(model,w.getSql(), w.getParameters());
-		query.use(this.db);
+		query.use(db());
 		
 		return query.execute();
 	}
 	
 	public int updateSelective(String whereStatement,Object ... args){
 		Query query=model.getDialect().updateSelective(model,whereStatement,args);
-		query.use(this.db);
+		query.use(db());
 		return query.execute();	 				 
 	}
 	
@@ -56,7 +69,7 @@ public class Update{
 		Query w=example.getQuery();
 		
 		Query query=model.getDialect().updateSelective(model,w.getSql(), w.getParameters());
-		query.use(this.db);
+		query.use(db());
 		
 		return query.execute();
 	}

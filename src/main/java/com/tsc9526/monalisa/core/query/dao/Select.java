@@ -2,6 +2,7 @@ package com.tsc9526.monalisa.core.query.dao;
 
 import java.util.List;
 
+import com.tsc9526.monalisa.core.datasource.DBConfig;
 import com.tsc9526.monalisa.core.query.Page;
 import com.tsc9526.monalisa.core.query.Query;
 import com.tsc9526.monalisa.core.query.criteria.Example;
@@ -11,22 +12,40 @@ import com.tsc9526.monalisa.core.query.criteria.Example;
 public class Select<T extends Model> {
 	protected T model;
 	
+	protected DBConfig db;
+	
 	public Select(T model){
-		this.model=model;
-		model.readonly(true);		
+		this.model=model;		 
 	}
-	 
+	
+	public T getModel(){
+		return this.model;
+	}
+			
+	public Select set(String name,Object value){		
+		this.model.set(name,value);
+		return this;
+	}	
+ 
+	public Select use(DBConfig db){
+		this.db=db;
+		return this;
+	}		
+
+	public DBConfig db(){
+		return this.db==null?model.db():this.db;
+	}
 	 
 	public T selectOne(String whereStatement,Object ... args){
 		Query query=model.getDialect().selectOne(model,whereStatement, args);
-		query.use(model.db());
+		query.use(db());
 		T r=query.getResult();
 		return r;
 	}
 	
 	public long countAll(){
 		Query query=model.getDialect().count(model,null);		 
-		query.use(model.db());
+		query.use(db());
 		return query.getResult();
 	}	
 
@@ -38,7 +57,7 @@ public class Select<T extends Model> {
 		
 	public long count(String whereStatement,Object ... args){
 		Query query=model.getDialect().count(model,whereStatement, args);		 
-		query.use(model.db());
+		query.use(db());
 		return query.getResult();
 	}
 	
@@ -46,7 +65,7 @@ public class Select<T extends Model> {
 		Query w=example.getQuery();
 		
 		Query query=model.getDialect().select(model,w.getSql(), w.getParameters());
-		query.use(model.db());
+		query.use(db());
 		
 		T r= query.getResult();
 		return r;
@@ -54,7 +73,7 @@ public class Select<T extends Model> {
  	
 	public List<T> select(String whereStatement,Object ... args){
 		Query query=model.getDialect().select(model,whereStatement, args);
-		query.use(model.db());
+		query.use(db());
 		
 		return query.getList();
 	}
@@ -63,7 +82,7 @@ public class Select<T extends Model> {
 		Query w=example.getQuery();
 		
 		Query query=model.getDialect().select(model,w.getSql(), w.getParameters());
-		query.use(model.db());
+		query.use(db());
 		
 		List<T> r= query.getList();
 		return r;
@@ -71,7 +90,7 @@ public class Select<T extends Model> {
 	
 	public Page<T> select(int limit,int offset,String whereStatement,Object ... args){
 		Query query=model.getDialect().select(model,whereStatement, args);
-		query.use(model.db());
+		query.use(db());
 		
 		Page<T> r=query.getPage(limit, offset);
 		return r;
@@ -81,7 +100,7 @@ public class Select<T extends Model> {
 		Query w=example.getQuery();
 		
 		Query query=model.getDialect().select(model,w.getSql(), w.getParameters());
-		query.use(model.db());
+		query.use(db());
 		
 		Page<T> r=query.getPage(limit,offset);
 		return r;
