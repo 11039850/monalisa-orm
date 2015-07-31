@@ -44,6 +44,12 @@ public class Update<T extends Model>{
 		return query.execute();
 	}
 	
+	public int updateSelective(){
+		Query query=model.getDialect().updateSelective(model);
+		query.use(db());
+		return query.execute();
+	}
+	
 	public int update(String whereStatement,Object ... args){
 		Query query=model.getDialect().update(model,whereStatement,args);
 		query.use(db());
