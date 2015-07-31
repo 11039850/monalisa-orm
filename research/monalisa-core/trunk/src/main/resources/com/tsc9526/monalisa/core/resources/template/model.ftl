@@ -125,6 +125,10 @@ public class ${table.javaName} extends ${modelClass}<${table.javaName}> implemen
 			super(model);
 		}
 		
+		public ${table.javaName} getModel(){
+			return this.model;
+		}
+		
 		public Insert set(String name,Object value){
 			this.model.set(name,value);
 			return this;
@@ -134,6 +138,10 @@ public class ${table.javaName} extends ${modelClass}<${table.javaName}> implemen
 	public static class Delete extends com.tsc9526.monalisa.core.query.dao.Delete{
 		Delete(${table.javaName} model){
 			super(model);
+		}
+		
+		public ${table.javaName} getModel(){
+			return this.model;
 		}
 		
 		public Delete set(String name,Object value){		
@@ -147,6 +155,10 @@ public class ${table.javaName} extends ${modelClass}<${table.javaName}> implemen
 			super(model);
 		}
 		
+		public ${table.javaName} getModel(){
+			return this.model;
+		}
+				
 		public Update set(String name,Object value){		
 			this.model.set(name,value);
 			return this;
@@ -156,6 +168,10 @@ public class ${table.javaName} extends ${modelClass}<${table.javaName}> implemen
 	public static class Select extends com.tsc9526.monalisa.core.query.dao.Select<${table.javaName}>{		
 		public Select(${table.javaName} x){
 			super(x);
+		}
+		
+		public ${table.javaName} getModel(){
+			return this.model;
 		}
 		
 		<#if table.keyColumns?size gt 0 >
