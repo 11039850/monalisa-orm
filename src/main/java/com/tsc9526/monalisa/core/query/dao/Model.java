@@ -105,7 +105,7 @@ public abstract class Model<T extends Model> implements Serializable{
 	
 	
 	/**
-	 * 存储对象到数据库
+	 * 存储对象到数据库, CALL: new Insert(this).insertSelective()
 	 * 
 	 * @return 成功变更的记录数
 	 */
@@ -128,7 +128,7 @@ public abstract class Model<T extends Model> implements Serializable{
 	}
 	
 	/**
-	 * 存储对象到数据库， 如果主键冲突， 则执行更新操作
+	 * 存储对象到数据库， 如果主键冲突， 则执行更新操作, CALL: new Insert(this).insertSelective(true)
 	 * 
 	 * @return 成功变更的记录数
 	 */
@@ -149,7 +149,7 @@ public abstract class Model<T extends Model> implements Serializable{
 	}
 	
 	/**
-	 * 更新对象到数据库
+	 * 更新对象到数据库, CALL: new Update(this).update();
 	 * 
 	 * @return 成功变更的记录数
 	 */
@@ -166,6 +166,27 @@ public abstract class Model<T extends Model> implements Serializable{
 			}
 		}else{
 			return new Update(this).update();
+		}		 
+	}
+	
+	/**
+	 * 更新对象到数据库, CALL: new Update(this).updateSelective();
+	 * 
+	 * @return 成功变更的记录数
+	 */
+	public int updateSelective(){
+		if(modelListener!=null){
+			int r=-1;		
+			try{
+				modelListener.before(ModelEvent.UPDATE, this);	
+				doValidate();
+				r= new Update(this).updateSelective();
+				return r;
+			}finally{
+				modelListener.after(ModelEvent.UPDATE, this,r);
+			}
+		}else{
+			return new Update(this).updateSelective();
 		}		 
 	}
 	
