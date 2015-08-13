@@ -14,6 +14,8 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import org.apache.commons.beanutils.ConvertUtils;
 import org.apache.commons.beanutils.converters.DateConverter;
+
+import com.google.gson.Gson;
  
 
 public class ClassHelper {
@@ -113,7 +115,8 @@ public class ClassHelper {
 	}
 		
 	private static String mapToString(Map<?,?> m){		
-		return JsonHelper.toString(m);		
+		Gson gson=new Gson();
+		return gson.toJson(m);		
 	}
 	
 	public static Object getObject(Object bean, FGS fgs) {
