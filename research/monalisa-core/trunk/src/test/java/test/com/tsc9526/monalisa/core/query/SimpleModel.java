@@ -4,6 +4,7 @@ package test.com.tsc9526.monalisa.core.query;
 import java.sql.Types;
 import java.util.Date;
 
+import com.google.gson.JsonObject;
 import com.tsc9526.monalisa.core.annotation.Column;
 import com.tsc9526.monalisa.core.annotation.DB;
 import com.tsc9526.monalisa.core.annotation.Table;
@@ -44,7 +45,13 @@ public class SimpleModel extends Model<SimpleModel> implements SimpleDB{
 	
 	@Column(name="status_c",jdbcType=Types.VARCHAR)
 	private StatusC statusC;
+	
+	
+	@Column(name="array_1",jdbcType=Types.VARCHAR)
+	private String[] array1;
 	 
+	@Column(name="json_1",jdbcType=Types.VARCHAR)
+	private JsonObject json1;
 	
 	public static Criteria createCriteria(){
 		return new Example(new SimpleModel()).createCriteria();
@@ -88,6 +95,9 @@ public class SimpleModel extends Model<SimpleModel> implements SimpleDB{
 		public com.tsc9526.monalisa.core.query.criteria.Field<StatusA,Criteria> status = new com.tsc9526.monalisa.core.query.criteria.Field<StatusA,Criteria>("status", this);
 		public com.tsc9526.monalisa.core.query.criteria.Field<StatusB,Criteria> statusB = new com.tsc9526.monalisa.core.query.criteria.Field<StatusB,Criteria>("status_b", this);
 		public com.tsc9526.monalisa.core.query.criteria.Field<StatusC,Criteria> statusC = new com.tsc9526.monalisa.core.query.criteria.Field<StatusC,Criteria>("status_c", this);
+		
+		public com.tsc9526.monalisa.core.query.criteria.Field<String[],Criteria> array1  = new com.tsc9526.monalisa.core.query.criteria.Field<String[],Criteria>("array_1", this);
+		public com.tsc9526.monalisa.core.query.criteria.Field<JsonObject,Criteria> json1 = new com.tsc9526.monalisa.core.query.criteria.Field<JsonObject,Criteria>("json_1", this);
 	}
 
 	public Integer getIntField1() {
@@ -168,6 +178,22 @@ public class SimpleModel extends Model<SimpleModel> implements SimpleDB{
 
 	public void setStatusC(StatusC statusC) {
 		this.statusC = statusC;
+	}
+
+	public String[] getArray1() {
+		return array1;
+	}
+
+	public void setArray1(String[] array1) {
+		this.array1 = array1;
+	}
+
+	public JsonObject getJson1() {
+		return json1;
+	}
+
+	public void setJson1(JsonObject json1) {
+		this.json1 = json1;
 	}
 	
 }
