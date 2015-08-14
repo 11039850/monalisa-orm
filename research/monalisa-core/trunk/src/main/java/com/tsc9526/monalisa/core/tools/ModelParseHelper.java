@@ -246,7 +246,13 @@ public class ModelParseHelper {
 					}else{
 						if(e.isJsonPrimitive()){
 							fgs.setObject(m,e.getAsString());
-						}else{						
+						}else if(fgs.getField().getType()==JsonObject.class){
+							if(e.isJsonObject()){
+								fgs.setObject(m,e.getAsJsonObject());
+							}else{
+								//Ignore
+							}
+						}else{
 							fgs.setObject(m,e.toString());
 						}
 					}
