@@ -10,7 +10,7 @@ import org.testng.annotations.Test;
 @Test
 public class ModelParserTest {
 
-	@SuppressWarnings("deprecation")
+	 
 	public void testParseDate() {
 		SimpleModel model=new SimpleModel();
 		
@@ -24,6 +24,16 @@ public class ModelParserTest {
 		Assert.assertEquals(model.getDateField1().getTime(),t1);
 		
 		Assert.assertEquals(sdf.format(model.getDateField2()),sdf.format(now));
+	}
+	
+	public void testJsonNull(){
+		SimpleModel model=new SimpleModel();
+		
+		String json="{\"string_field1\":null, \"string_field2\":\"123\" }";		
+		model.parse(json);
+		
+		Assert.assertNull(model.getStringField1());
+		Assert.assertEquals(model.getStringField2(),"123");
 	}
 
 }
