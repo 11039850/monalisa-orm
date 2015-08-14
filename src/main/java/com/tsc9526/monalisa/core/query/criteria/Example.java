@@ -89,9 +89,14 @@ public abstract class Example<X extends Criteria,T extends Model>{
 		return select.selectByExample(this);
 	}	
  
-	public Page<T> select(int limit,int offset){
+	public List<T> select(int limit,int offset){
 		Select<T> select=new Select(model);
 		return select.selectByExample(limit,offset,this);
+	}
+	
+	public Page<T> selectPage(int limit,int offset){
+		Select<T> select=new Select(model);
+		return select.selectPageByExample(limit,offset,this);
 	}
    
 }
