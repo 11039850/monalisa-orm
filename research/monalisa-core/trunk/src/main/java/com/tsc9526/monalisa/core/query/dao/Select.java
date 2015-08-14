@@ -88,7 +88,25 @@ public class Select<T extends Model> {
 		return r;
 	}
 	
-	public Page<T> select(int limit,int offset,String whereStatement,Object ... args){
+	public List<T> select(int limit,int offset,String whereStatement,Object ... args){
+		Query query=model.getDialect().select(model,whereStatement, args);
+		query.use(db());
+		
+		List<T> r=query.getList(limit, offset);
+		return r;
+	}
+	
+	public List<T> selectByExample(int limit,int offset,Example example){
+		Query w=example.getQuery();
+		
+		Query query=model.getDialect().select(model,w.getSql(), w.getParameters());
+		query.use(db());
+		
+		List<T> r=query.getList(limit, offset);
+		return r;
+	}
+	
+	public Page<T> selectPage(int limit,int offset,String whereStatement,Object ... args){
 		Query query=model.getDialect().select(model,whereStatement, args);
 		query.use(db());
 		
@@ -96,7 +114,7 @@ public class Select<T extends Model> {
 		return r;
 	}
 	
-	public Page<T> selectByExample(int limit,int offset,Example example){
+	public Page<T> selectPageByExample(int limit,int offset,Example example){
 		Query w=example.getQuery();
 		
 		Query query=model.getDialect().select(model,w.getSql(), w.getParameters());
@@ -111,7 +129,11 @@ public class Select<T extends Model> {
 		return select(null);
 	}
 	
-	public Page<T> selectAll(int limit,int offset){
+	public List<T> selectAll(int limit,int offset){
 		return select(limit, offset, null);
+	}	
+	
+	public Page<T> selectAllPage(int limit,int offset){
+		return selectPage(limit, offset, null);
 	}	
 }

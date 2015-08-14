@@ -390,4 +390,8 @@ public class DBConfig implements com.tsc9526.monalisa.core.annotation.DB{
 			return cfg;
 		}
 	}
+	
+	public static DBConfig fromClass(Class<?> clazzWithDBAnnotation){
+		return DataSourceManager.getInstance().getDBConfig(clazzWithDBAnnotation);
+	}
 }

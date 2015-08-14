@@ -288,6 +288,19 @@ public class Query {
 		}
 	}
 	
+	public <T> List<T> getList(int limit,int offset) {
+		if(!DBExchange.doExchange(this)){			
+			queryCheck();
+			   
+			Query listQuery=getDialect().getLimitQuery(this, limit, offset);
+			List<T>  list=listQuery.getList();
+			 
+			return list;
+		}else{
+			return new ArrayList<T>();		 
+		}
+	}
+	
 	public <T> List<T> getList() {
 		if(!DBExchange.doExchange(this)){			 
 			queryCheck();

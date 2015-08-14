@@ -7,20 +7,21 @@ import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.apache.commons.beanutils.ConvertUtils;
-import org.apache.commons.beanutils.converters.DateConverter;
+import org.apache.commons.beanutils.converters.DateTimeConverter;
 
 import com.google.gson.Gson;
  
 
 public class ClassHelper {
 	static{
-		DateConverter dc = new DateConverter(null); 
+		DateValue dc = new DateValue(null);
 		dc.setUseLocaleFormat(true);
 		String[] datePattern = {"yyyy-MM-dd HH:mm:ss","yyyy-MM-dd","yyyy-MM-dd HH:mm:ss.SSS"};    
 		dc.setPatterns(datePattern);    
@@ -281,6 +282,32 @@ public class ClassHelper {
 			return field.getName();
 		}
 		 
+	}
+	
+	public static class DateValue extends DateTimeConverter {
+
+		public DateValue() {
+	        super();
+	        
+	        
+	    }
+  
+	    public DateValue(Object defaultValue) {
+	        super(defaultValue);
+	    }
+ 
+	    protected Class<?> getDefaultType() {
+	        return Date.class;
+	    }
+	    
+	    public <T> T convert(Class<T> type, Object value) {
+	    	try{
+	    		long v=Long.parseLong(value.toString());
+	    		return super.convert(type, v);
+	    	}catch(NumberFormatException e){
+	    		return super.convert(type, value);
+	    	}
+	    }
 
 	}
 }

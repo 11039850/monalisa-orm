@@ -8,12 +8,9 @@ import java.util.Map;
 import org.apache.commons.collections.map.AbstractHashedMap;
 import org.apache.commons.collections.map.CaseInsensitiveMap;
 
-import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import com.google.gson.TypeAdapter;
-import com.google.gson.reflect.TypeToken;
 import com.tsc9526.monalisa.core.annotation.Column;
 import com.tsc9526.monalisa.core.query.dao.Model;
 import com.tsc9526.monalisa.core.query.dao.ModelParser;
@@ -236,8 +233,6 @@ public class ModelParseHelper {
 	
 	public static class JsonObjectModelParser implements ModelParser<JsonObject>{			 
 		public boolean parseModel(Model<?> m, JsonObject json, String... mappings) {
-			Gson gson=new Gson();
-			
 			for(FGS fgs:m.fields()){
 				JsonElement e=json.get(fgs.getFieldName());
 				if(e==null){
@@ -246,9 +241,7 @@ public class ModelParseHelper {
 				}
 				
 				if(e!=null){
-					TypeToken<?> typeToken = (TypeToken<?>) TypeToken.get(fgs.getField().getType());
-					TypeAdapter<?> adapter=gson.getAdapter(typeToken); 
-					Object v=adapter.fromJsonTree(e);
+					String v=e.getAsString();
 					fgs.setObject(m,v);
 				}
 			}
