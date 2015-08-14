@@ -127,7 +127,12 @@ public class ClassHelper {
 							String[] iv=new String[array.size()];
 							for(int i=0;i<array.size();i++){
 								JsonElement e=array.get(i);
-								iv[i]=e.getAsString();
+								if(e.isJsonPrimitive()){
+									iv[i]=e.getAsString();
+								}else{
+									//ingore
+									return;
+								}								
 							}
 							value=iv;
 						}						
