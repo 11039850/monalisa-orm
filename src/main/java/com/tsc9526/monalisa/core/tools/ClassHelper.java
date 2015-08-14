@@ -19,6 +19,7 @@ import org.apache.commons.beanutils.converters.DateTimeConverter;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
  
 
@@ -102,12 +103,18 @@ public class ClassHelper {
 			if(v!=null){
 				if(type.isEnum()){
 					value=EnumHelper.getEnum(fgs, v);
+				}else if(type==JsonObject.class){
+					if(v.getClass()==JsonObject.class){
+						value=v;
+					}else{
+						value=new JsonParser().parse(v.toString());
+					}					
 				}else{
 					if(v.getClass().isArray() && type == String.class){
 						value=Arrays.toString((Object[])v);						
 					}else if(Map.class.isAssignableFrom(v.getClass()) && type == String.class){
 						value=mapToString((Map<?,?>)v);						
-					}else if(v.getClass()==String.class && type.isArray()){
+					}else if(v.getClass().isArray()==false && type.isArray()){
 						JsonArray array=(JsonArray)new JsonParser().parse(v.toString());						
 						if(type==int[].class){
 							int[] iv=new int[array.size()];
