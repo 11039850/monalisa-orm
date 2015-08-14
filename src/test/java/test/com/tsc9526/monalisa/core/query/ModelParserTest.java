@@ -45,5 +45,17 @@ public class ModelParserTest {
 		Assert.assertEquals(model.getStringField1(),"[\"a\",\"b\"]");
 		Assert.assertEquals(model.getStringField2(),"123");
 	}
+	
+	public void testArray(){
+		SimpleModel model=new SimpleModel();
+		
+		String json="{\"array_1\":[\"a\",\"b\"], \"string_field2\":\"123\" }";		
+		model.parse(json);
+		
+		Assert.assertTrue(model.getArray1().length==2);
+		Assert.assertEquals(model.getArray1()[0],"a");
+		Assert.assertEquals(model.getArray1()[1],"b");
+		Assert.assertEquals(model.getStringField2(),"123");
+	}
 
 }

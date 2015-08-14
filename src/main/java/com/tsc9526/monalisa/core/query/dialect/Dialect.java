@@ -4,6 +4,9 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
 import com.tsc9526.monalisa.core.annotation.Column;
 import com.tsc9526.monalisa.core.datasource.DBConfig;
 import com.tsc9526.monalisa.core.datasource.DataSourceManager;
@@ -350,6 +353,16 @@ public abstract class Dialect{
 				}else{
 					return 0;
 				} 
+			}else if(v.getClass().isArray()){
+				JsonArray array=new JsonArray();
+				Object[] os=(Object[])v;
+				for(Object o:os){
+					array.add(new JsonPrimitive(o==null?"":o.toString()));
+				}
+				
+				return array.toString();
+			}else if(v.getClass()==JsonObject.class){
+				return v.toString();
 			}
 		}
 		

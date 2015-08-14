@@ -214,8 +214,16 @@ public class MetaColumn extends Name{
 	}
 
 	protected void processRemarkArray() {
-		if(getCode("array")!=null){
-			setJavaType("String[]");
+		String array=getCode("array");
+		if(array!=null){
+			array=array.trim().toLowerCase();
+			if(array.equals("int") || array.equals("integer")){
+				setJavaType("int[]");
+			}else if(array.equals("long") || array.equals("number")){
+				setJavaType("long[]");
+			}else{
+				setJavaType("String[]");
+			}
 		}		
 	}
 	

@@ -17,6 +17,9 @@ import org.apache.commons.beanutils.ConvertUtils;
 import org.apache.commons.beanutils.converters.DateTimeConverter;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParser;
  
 
 public class ClassHelper {
@@ -93,16 +96,41 @@ public class ClassHelper {
 	public static void setObject(Object bean, FGS fgs, Object v) {
 		try {			 			 
 			Method set = fgs.getSetMethod();
+			Class<?> type=fgs.getField().getType();
 			
 			Object value=null;
 			if(v!=null){
-				if(fgs.getField().getType().isEnum()){
+				if(type.isEnum()){
 					value=EnumHelper.getEnum(fgs, v);
 				}else{
-					if(v.getClass().isArray() && fgs.getField().getType() == String.class){
+					if(v.getClass().isArray() && type == String.class){
 						value=Arrays.toString((Object[])v);						
-					}else if(Map.class.isAssignableFrom(v.getClass()) && fgs.getField().getType() == String.class){
+					}else if(Map.class.isAssignableFrom(v.getClass()) && type == String.class){
 						value=mapToString((Map<?,?>)v);						
+					}else if(v.getClass()==String.class && type.isArray()){
+						JsonArray array=(JsonArray)new JsonParser().parse(v.toString());						
+						if(type==int[].class){
+							int[] iv=new int[array.size()];
+							for(int i=0;i<array.size();i++){
+								JsonElement e=array.get(i);
+								iv[i]=e.getAsInt();
+							}
+							value=iv;
+						}else if(type==long[].class){
+							long[] iv=new long[array.size()];
+							for(int i=0;i<array.size();i++){
+								JsonElement e=array.get(i);
+								iv[i]=e.getAsLong();
+							}
+							value=iv;
+						}else{//String[]
+							String[] iv=new String[array.size()];
+							for(int i=0;i<array.size();i++){
+								JsonElement e=array.get(i);
+								iv[i]=e.getAsString();
+							}
+							value=iv;
+						}						
 					}else{
 						value=ConvertUtils.convert(v, fgs.getField().getType());
 					}

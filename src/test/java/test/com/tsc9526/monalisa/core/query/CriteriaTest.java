@@ -199,12 +199,12 @@ public class CriteriaTest {
 		 
 		Query query=model.getDialect().insert(model, true);
 		String sql=query.getSql();
-		String sql_expect="REPLACE INTO `simple_model`(`int_field1`, `int_field2`, `string_field1`, `string_field2`, `date_field1`, `date_field2`, `status`, `status_b`, `status_c`)VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)";
+		String sql_expect="REPLACE INTO `simple_model`(`int_field1`, `int_field2`, `string_field1`, `string_field2`, `date_field1`, `date_field2`, `status`, `status_b`, `status_c`, `array_1`, `json_1`)VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 		Assert.assertEquals(sql,sql_expect);
 		
 		query=model.getDialect().insert(model, false);
 		sql=query.getSql();
-		sql_expect="INSERT INTO `simple_model`(`int_field1`, `int_field2`, `string_field1`, `string_field2`, `date_field1`, `date_field2`, `status`, `status_b`, `status_c`)VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)";
+		sql_expect="INSERT INTO `simple_model`(`int_field1`, `int_field2`, `string_field1`, `string_field2`, `date_field1`, `date_field2`, `status`, `status_b`, `status_c`, `array_1`, `json_1`)VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 		Assert.assertEquals(sql,sql_expect);
 		
 		
@@ -238,6 +238,12 @@ public class CriteriaTest {
 		query=model.getDialect().insertSelective(model, false);
 		sql=query.getExecutableSQL();
 		sql_expect="INSERT INTO `simple_model`(`int_field1`, `int_field2`, `date_field1`, `status`, `status_b`, `status_c`)VALUES(1, 2, '2015-06-08 11:10:31', 1, 2, 'CC2')";
+		Assert.assertEquals(sql,sql_expect);
+		
+		model.setArray1("a,b".split(","));
+		query=model.getDialect().insertSelective(model, false);
+		sql=query.getExecutableSQL();
+		sql_expect="INSERT INTO `simple_model`(`int_field1`, `int_field2`, `date_field1`, `status`, `status_b`, `status_c`, `array_1`)VALUES(1, 2, '2015-06-08 11:10:31', 1, 2, 'CC2', '[\\\"a\\\",\\\"b\\\"]')";
 		Assert.assertEquals(sql,sql_expect);
 	 
 	}
