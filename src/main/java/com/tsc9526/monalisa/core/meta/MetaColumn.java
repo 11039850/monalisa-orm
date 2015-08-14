@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import com.google.gson.JsonObject;
 import com.tsc9526.monalisa.core.query.validator.Max;
 import com.tsc9526.monalisa.core.query.validator.Min;
 import com.tsc9526.monalisa.core.query.validator.Regex;
@@ -212,10 +213,26 @@ public class MetaColumn extends Name{
 		}		
 	}
 
+	protected void processRemarkArray() {
+		if(getCode("array")!=null){
+			setJavaType("String[]");
+		}		
+	}
+	
+	protected void processRemarkJson() {
+		if(getCode("json")!=null){			 
+			setJavaType("JsonObject");
+			
+			imports.add(JsonObject.class.getName());
+		}		
+	}
+	
 	protected void processRemarks(){
 		processRemarkBoolean();
 		processRemarkEnum();
 		processRemarkAnnotation();
+		processRemarkArray();
+		processRemarkJson();
 	}
 	 
 	
