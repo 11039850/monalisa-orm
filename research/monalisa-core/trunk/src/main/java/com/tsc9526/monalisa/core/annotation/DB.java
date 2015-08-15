@@ -13,12 +13,12 @@ import java.lang.annotation.Target;
  * <br>
  * import com.tsc9526.monalisa.annotation.DB; <br>
  * import com.tsc9526.monalisa.core.datasource.DBConfig; <br>
- * import com.tsc9526.monalisa.core.datasource.DataSourceManager; <br>
+ *
  * <br>
  * <p>@DB(url="jdbc:mysql://127.0.0.1:3306/world", username="root", password="root") <br>
  * public interface DBWorld { <br>
  *   //方便后面的查询使用: Query q=new Query().use(DBWorld.DB); ... <br>
- * 	 public final static DBConfig DB=DataSourceManager.getInstance().getDBConfig(DBWorld.class)
+ * 	 public final static DBConfig DB=DBConfig.fromClass(DBWorld.class)
  * }	 
  * </p>
  * </code>
@@ -37,7 +37,7 @@ import java.lang.annotation.Target;
  * &nbsp;&nbsp;&nbsp;&nbsp; //... <br>
  * &nbsp;&nbsp;&nbsp;&nbsp; db.save(); <br>
  * <br>
- * &nbsp;&nbsp;&nbsp;&nbsp; TableX x2=TableX.SELECT.selectByPrimary(100); <br>
+ * &nbsp;&nbsp;&nbsp;&nbsp; TableX x2=TableX.SELECT().selectByPrimary(100); <br>
  * &nbsp;&nbsp;&nbsp;&nbsp; System.out.println(x2); <br>
  * &nbsp;&nbsp;	} <br>
  * }<br>
