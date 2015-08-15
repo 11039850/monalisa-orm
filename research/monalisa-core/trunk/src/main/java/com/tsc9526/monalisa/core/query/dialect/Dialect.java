@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
@@ -339,9 +340,10 @@ public abstract class Dialect{
 	protected Object getValue(FGS fgs,Model model) {
 		Object v=fgs.getObject(model);
 		if(v!=null){
+			Column c=fgs.getField().getAnnotation(Column.class);			
+			String type=TypeHelper.getJavaType(c.jdbcType());
+			
 			if(v.getClass().isEnum()){
-				Column c=fgs.getField().getAnnotation(Column.class);			
-				String type=TypeHelper.getJavaType(c.jdbcType());
 				if(type.equals("String")){
 					 return EnumHelper.getStringValue((Enum<?>)v);
 				}else{
@@ -349,20 +351,35 @@ public abstract class Dialect{
 				}
 			}else if(v.getClass() == Boolean.class || v.getClass()==boolean.class){				 
 				if( (Boolean)v ){
-					return 1;
+					if(type.equals("String")){
+						return "TRUE";
+					}else{
+						return 1;
+					}
 				}else{
-					return 0;
+					if(type.equals("String")){
+						return "FALSE";
+					}else{
+						return 0;
+					}
 				} 
-			}else if(v.getClass().isArray()){
-				JsonArray array=new JsonArray();
-				Object[] os=(Object[])v;
-				for(Object o:os){
-					array.add(new JsonPrimitive(o==null?"":o.toString()));
-				}
-				
-				return array.toString();
+			}else if(v.getClass().isArray() && v.getClass()!=byte[].class){
+				if(v.getClass()==byte[].class){
+					return v;
+				}else{
+					JsonArray array=new JsonArray();
+					Object[] os=(Object[])v;
+					for(Object o:os){
+						array.add(new JsonPrimitive(o==null?"":o.toString()));
+					}
+					return array.toString();
+				}				
 			}else if(v.getClass()==JsonObject.class){
 				return v.toString();
+			}else if(v.getClass().isPrimitive() || v.getClass().getName().startsWith("java.")){				
+				return v;
+			}else if(type.equals("String")){
+				return new Gson().toJson(v);
 			}
 		}
 		
