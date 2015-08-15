@@ -221,6 +221,8 @@ public class MetaColumn extends Name{
 				setJavaType("int[]");
 			}else if(array.equals("long") || array.equals("number")){
 				setJavaType("long[]");
+			}else if(array.equals("double") || array.equals("Double")){
+				setJavaType("double[]");
 			}else{
 				setJavaType("String[]");
 			}
@@ -228,10 +230,21 @@ public class MetaColumn extends Name{
 	}
 	
 	protected void processRemarkJson() {
-		if(getCode("json")!=null){			 
-			setJavaType("JsonObject");
+		String json=getCode("json");
+		if(json!=null){
+			if(json.trim().length()>0){
+				int p=json.lastIndexOf(".");
+				if(p>0){
+					setJavaType(json.substring(p+1));					
+					imports.add(json);
+				}else{				
+					setJavaType(json);
+				}
+			}else{
+				setJavaType("JsonObject");
 			
-			imports.add(JsonObject.class.getName());
+				imports.add(JsonObject.class.getName());
+			}
 		}		
 	}
 	

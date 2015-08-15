@@ -21,6 +21,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.mchange.v2.c3p0.impl.NewPooledConnection;
  
 
 public class ClassHelper {
@@ -108,7 +109,7 @@ public class ClassHelper {
 						value=v;
 					}else{
 						value=new JsonParser().parse(v.toString());
-					}					
+					}	
 				}else{
 					if(v.getClass().isArray() && type == String.class){
 						value=Arrays.toString((Object[])v);						
@@ -130,6 +131,13 @@ public class ClassHelper {
 								iv[i]=e.getAsLong();
 							}
 							value=iv;
+						}else if(type==double[].class){
+							double[] iv=new double[array.size()];
+							for(int i=0;i<array.size();i++){
+								JsonElement e=array.get(i);
+								iv[i]=e.getAsDouble();
+							}
+							value=iv;
 						}else{//String[]
 							String[] iv=new String[array.size()];
 							for(int i=0;i<array.size();i++){
@@ -143,7 +151,13 @@ public class ClassHelper {
 							}
 							value=iv;
 						}						
-					}else{
+					}else if(type.getClass().isArray()==false 
+							&& type.getClass().isPrimitive()==false 
+							&& type.getClass().getName().startsWith("java.")==false
+							&& v instanceof String){
+						//json to object
+						value=new Gson().fromJson(v.toString(), type.getClass());						
+					}else{					
 						value=ConvertUtils.convert(v, fgs.getField().getType());
 					}
 				}

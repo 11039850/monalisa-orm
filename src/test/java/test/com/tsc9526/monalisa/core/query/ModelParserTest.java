@@ -58,4 +58,8 @@ public class ModelParserTest {
 		Assert.assertEquals(model.getStringField2(),"123");
 	}
 
+	
+	public void testType(){
+		System.out.println(Integer.class.getName());
+	}
 }
