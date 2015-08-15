@@ -7,6 +7,10 @@
 	 
 	<properties>
 		<svnURL>svn://120.26.51.207/data/svn/research</svnURL>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<repositoryURL>${setting.repositoryURL}</repositoryURL>
+		<snapshotRepositoryURL>${setting.snapshotRepositoryURL}</snapshotRepositoryURL>		
+		<maven.javadoc.skip>true</maven.javadoc.skip> 		
 	</properties>
 
 	<scm>
