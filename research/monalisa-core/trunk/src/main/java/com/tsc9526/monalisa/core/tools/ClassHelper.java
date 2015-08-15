@@ -150,12 +150,12 @@ public class ClassHelper {
 							}
 							value=iv;
 						}						
-					}else if(type.getClass().isArray()==false 
-							&& type.getClass().isPrimitive()==false 
-							&& type.getClass().getName().startsWith("java.")==false
-							&& v instanceof String){
+					}else if(type.isArray()==false 
+							&& type.isPrimitive()==false 
+							&& type.getName().startsWith("java.")==false
+							&& v.getClass() == String.class){
 						//json to object
-						value=JsonHelper.getGson().fromJson(v.toString(), type.getClass());						
+						value=JsonHelper.getGson().fromJson(v.toString(), type);						
 					}else{					
 						value=ConvertUtils.convert(v, fgs.getField().getType());
 					}
