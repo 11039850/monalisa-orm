@@ -53,6 +53,12 @@ public class SimpleModel extends Model<SimpleModel> implements SimpleDB{
 	@Column(name="json_1",jdbcType=Types.VARCHAR)
 	private JsonObject json1;
 	
+	@Column(name="object_one",jdbcType=Types.VARCHAR)
+	private SimpleObject objectOne;
+	
+	@Column(name="object_two",jdbcType=Types.VARCHAR)
+	private SimpleObjectTwo objectTwo;
+	
 	public static Criteria createCriteria(){
 		return new Example(new SimpleModel()).createCriteria();
 	}
@@ -194,6 +200,22 @@ public class SimpleModel extends Model<SimpleModel> implements SimpleDB{
 
 	public void setJson1(JsonObject json1) {
 		this.json1 = json1;
+	}
+
+	public SimpleObject getObjectOne() {
+		return objectOne;
+	}
+
+	public void setObjectOne(SimpleObject objectOne) {
+		this.objectOne = objectOne;
+	}
+
+	public SimpleObjectTwo getObjectTwo() {
+		return objectTwo;
+	}
+
+	public void setObjectTwo(SimpleObjectTwo objectTwo) {
+		this.objectTwo = objectTwo;
 	}
 	
 }

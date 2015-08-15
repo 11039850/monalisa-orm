@@ -191,6 +191,22 @@ public class CriteriaTest {
 	public void testInsert()throws Exception{
 		String time="2015-06-08 11:10:31";
 		SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		String[] fs=new String[]{"`int_field1`", "`int_field2`",
+				"`string_field1`", "`string_field2`", "`date_field1`",
+				"`date_field2`", "`status`", "`status_b`",
+				"`status_c`", "`array_1`", "`json_1`",
+				"`object_one`","`object_two`"};
+		String fieldns="";
+		String fieldvs="";
+		for(String f:fs){
+			if(fieldns.length()>0){
+				fieldns+=", "+f;
+				fieldvs+=", ?";
+			}else{
+				fieldns=f;
+				fieldvs="?";
+			}
+		}
 		
 		SimpleModel model=new SimpleModel();
 		model.setIntField1(1);
@@ -199,12 +215,12 @@ public class CriteriaTest {
 		 
 		Query query=model.getDialect().insert(model, true);
 		String sql=query.getSql();
-		String sql_expect="REPLACE INTO `simple_model`(`int_field1`, `int_field2`, `string_field1`, `string_field2`, `date_field1`, `date_field2`, `status`, `status_b`, `status_c`, `array_1`, `json_1`)VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+		String sql_expect="REPLACE INTO `simple_model`("+fieldns+")VALUES("+fieldvs+")";
 		Assert.assertEquals(sql,sql_expect);
 		
 		query=model.getDialect().insert(model, false);
 		sql=query.getSql();
-		sql_expect="INSERT INTO `simple_model`(`int_field1`, `int_field2`, `string_field1`, `string_field2`, `date_field1`, `date_field2`, `status`, `status_b`, `status_c`, `array_1`, `json_1`)VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+		sql_expect="INSERT INTO `simple_model`("+fieldns+")VALUES("+fieldvs+")";
 		Assert.assertEquals(sql,sql_expect);
 		
 		

@@ -19,6 +19,7 @@ public class MetaColumnTest {
 			  +"\r\n}"
 			  +"\r\n"			 
 			  +"\r\n#bool{}"
+			  
 			  +"\r\n#value{"
 			  +"\r\nx+y"
   			  +"\r\n}");
@@ -28,5 +29,8 @@ public class MetaColumnTest {
 	  
 	  c.setRemarks("#enum{com.xx.Status}");
 	  Assert.assertEquals(c.getJavaType(),"Status");
+	  
+	  c.setRemarks("#json{com.xx.Js}");
+	  Assert.assertEquals(c.getJavaType(),"Js");
   }
 }

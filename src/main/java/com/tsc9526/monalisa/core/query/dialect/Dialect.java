@@ -4,7 +4,6 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
@@ -19,6 +18,7 @@ import com.tsc9526.monalisa.core.query.dao.Model;
 import com.tsc9526.monalisa.core.tools.ClassHelper.FGS;
 import com.tsc9526.monalisa.core.tools.CloseQuietly;
 import com.tsc9526.monalisa.core.tools.EnumHelper;
+import com.tsc9526.monalisa.core.tools.JsonHelper;
 import com.tsc9526.monalisa.core.tools.TypeHelper;
 
 import freemarker.log.Logger;
@@ -379,7 +379,7 @@ public abstract class Dialect{
 			}else if(v.getClass().isPrimitive() || v.getClass().getName().startsWith("java.")){				
 				return v;
 			}else if(type.equals("String")){
-				return new Gson().toJson(v);
+				return JsonHelper.getGson().toJson(v);
 			}
 		}
 		
