@@ -233,7 +233,17 @@ public abstract class Model<T extends Model> implements Serializable{
 	 */
 	public List<FGS> fields() {
 		return this.fields;
-	}		
+	}	
+	
+	public FGS field(String name) {
+		for(FGS fgs:this.fields){
+			Column c=fgs.getField().getAnnotation(Column.class);
+			if(fgs.getFieldName().equals(name) || c.name().equals(name)){
+				return fgs;
+			}
+		}
+		return null;
+	}
 	
 	/**
 	 * How to update the model's primary key:<br>

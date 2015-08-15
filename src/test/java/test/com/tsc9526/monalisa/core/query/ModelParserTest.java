@@ -8,6 +8,8 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import com.tsc9526.monalisa.core.query.Query;
+import com.tsc9526.monalisa.core.tools.JsonHelper;
+import com.tsc9526.monalisa.core.tools.ClassHelper.FGS;
 
 @Test
 public class ModelParserTest {
@@ -72,5 +74,17 @@ public class ModelParserTest {
 		Query query=model.getDialect().insertSelective(model, true);
 		String sql=query.getExecutableSQL();
 		System.out.println(sql);
+		
+		SimpleObjectTwo objectTwo=new SimpleObjectTwo();
+		objectTwo.setObj(objectOne);
+		objectTwo.setFs("fx");
+		String jsonTwo=JsonHelper.getGson().toJson(objectTwo);
+		
+		SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		FGS fgs=model.field("object_two");
+		fgs.setObject(model, jsonTwo);
+		Assert.assertEquals(model.getObjectTwo().getFs(),objectTwo.getFs());
+		Assert.assertEquals(sdf.format(model.getObjectTwo().getObj().getThree())
+				,sdf.format(objectTwo.getObj().getThree()));
 	}
 }
