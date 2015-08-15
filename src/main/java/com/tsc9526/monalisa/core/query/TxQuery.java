@@ -10,6 +10,8 @@ import com.tsc9526.monalisa.core.datasource.DBConfig;
 public class TxQuery {	 
 	private Map<String, CI> hcs=new HashMap<String, CI>();
 	
+	TxQuery(){}
+	
 	public Connection getConnection(DBConfig db) throws SQLException{		 
 		String key=db.key();
 		
@@ -25,13 +27,9 @@ public class TxQuery {
 	}
 	
 	public void commit()  throws SQLException{
-		try{
-			for(CI ci:hcs.values()){
-				ci.conn.commit();			
-			}		 
-		}finally{
-			close();
-		}
+		for(CI ci:hcs.values()){
+			ci.conn.commit();			
+		} 
 	}
 
 	public void rollback(){
@@ -41,9 +39,7 @@ public class TxQuery {
 			}
 		}catch(SQLException e){
 			throw new RuntimeException(e);
-		}finally{
-			close();
-		}		
+		} 	
 	}
 	
 	public void close(){

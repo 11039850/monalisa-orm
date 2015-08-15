@@ -9,41 +9,67 @@ public class Tx {
 		return local.get();
 	}
 	
-	public static void begin(){
+	/**
+	 * 
+	 * @return null if the transaction started by other method. 
+	 */
+	public static TxQuery begin(){
 		TxQuery x=local.get();
 		if(x==null){
 			x=new TxQuery();
 			local.set(x);
+			
+			return x;
 		}else{
-			throw new RuntimeException("Transaction started already!");
+			return null;
 		}
 	}
 	
 	public static void commit() throws SQLException{
 		TxQuery x=local.get();
-		if(x!=null){
-			local.remove();
+		if(x!=null){			 
 			x.commit();
 		}else{
 			throw new RuntimeException("Commit error, transaction not start, call begin first!");
 		}
 	}
 	
-	public static void rollback() throws SQLException{
+	public static void rollback(){
 		TxQuery x=local.get();
-		if(x!=null){
-			local.remove();
+		if(x!=null){			 
 			x.rollback();
 		}else{
 			throw new RuntimeException("Rollback error, transaction not start, call begin first!");
 		}
 	}
 	
-	public static void close()throws SQLException{
+	public static void close(){
 		TxQuery x=local.get();
 		if(x!=null){
 			local.remove();
 			x.close();
+		}
+	}
+	
+	/**
+	 * Execute the run() method in transaction	  
+	 */
+	public static void run(Runnable x){
+		TxQuery tq=begin();
+		try{
+			x.run();
+			
+			if(tq!=null){
+				commit();
+			}
+		}catch(Exception e){
+			if(tq!=null){
+				rollback();
+			}
+		}finally{
+			if(tq!=null){
+				close();
+			}
 		}
 	}
 }
