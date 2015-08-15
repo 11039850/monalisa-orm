@@ -7,6 +7,8 @@ import java.util.Date;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import com.tsc9526.monalisa.core.query.Query;
+
 @Test
 public class ModelParserTest {
 
@@ -59,7 +61,16 @@ public class ModelParserTest {
 	}
 
 	
-	public void testType(){
-		System.out.println(Integer.class.getName());
+	public void testParseObjectOne(){
+		Date now=new Date();
+		SimpleModel model=new SimpleModel();
+		SimpleObject objectOne=new SimpleObject();
+		objectOne.setOne("ooo");
+		objectOne.setThree(now);
+		model.setObjectOne(objectOne);
+		
+		Query query=model.getDialect().insertSelective(model, true);
+		String sql=query.getExecutableSQL();
+		System.out.println(sql);
 	}
 }

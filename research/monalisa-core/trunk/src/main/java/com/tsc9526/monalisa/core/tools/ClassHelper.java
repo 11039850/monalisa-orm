@@ -155,7 +155,7 @@ public class ClassHelper {
 							&& type.getClass().getName().startsWith("java.")==false
 							&& v instanceof String){
 						//json to object
-						value=new Gson().fromJson(v.toString(), type.getClass());						
+						value=JsonHelper.getGson().fromJson(v.toString(), type.getClass());						
 					}else{					
 						value=ConvertUtils.convert(v, fgs.getField().getType());
 					}
@@ -169,7 +169,7 @@ public class ClassHelper {
 	}
 		
 	private static String mapToString(Map<?,?> m){		
-		Gson gson=new Gson();
+		Gson gson=JsonHelper.getGson();
 		return gson.toJson(m);		
 	}
 	
