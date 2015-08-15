@@ -154,7 +154,7 @@ public class ClassHelper {
 							&& type.isPrimitive()==false 
 							&& type.getName().startsWith("java.")==false
 							&& v.getClass() == String.class){
-						//json to object
+						//Json String to Java Object
 						value=JsonHelper.getGson().fromJson(v.toString(), type);						
 					}else{					
 						value=ConvertUtils.convert(v, fgs.getField().getType());
