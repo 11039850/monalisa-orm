@@ -451,7 +451,7 @@ public class Query {
 		return this.resultClass;
 	}
 	
-	public Query setResultClass(Class<?> resultClass) {
+	public Query setResultClass(Class<?> resultClass) {		
 		this.resultClass = resultClass;
 		this.metaClass=ClassHelper.getMetaClass(resultClass);
 		return this;
