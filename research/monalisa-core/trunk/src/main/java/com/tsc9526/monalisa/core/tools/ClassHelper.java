@@ -35,6 +35,10 @@ public class ClassHelper {
 	private static ConcurrentHashMap<String, MetaClass> hBeanClasses = new ConcurrentHashMap<String, MetaClass>();
 	  
 	public static MetaClass getMetaClass(Class<?> clazz) {
+		if(clazz==null){
+			return null;
+		}
+				
 		String name = clazz.getName();
 		MetaClass mc = hBeanClasses.get(name);
 		if (mc == null) {
