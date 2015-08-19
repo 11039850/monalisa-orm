@@ -32,7 +32,13 @@ public class ${table.javaName} extends ${modelClass}<${table.javaName}> implemen
 	
 	public static final Select SELECT(){
 	 	return new Select(new ${table.javaName}());
-	}		
+	}
+	 
+	public static final Query createQuery(){
+		Class<?> clazz=ClassHelper.findClassWithAnnotation(${table.javaName}.class,DB.class);
+		DBConfig db=dsm.getDBConfig(clazz);
+		return new Query(db);
+	}
 	 
 	public ${table.javaName}(){
 		super();
