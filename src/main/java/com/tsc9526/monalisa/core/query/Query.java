@@ -242,7 +242,7 @@ public class Query {
 	}
 	 
 	/**
-	 * @return 如果没有调用setResultClass指定结果类, 则对象为HashMap&lt;String,Object&gt;
+	 * @return 如果没有调用setResultClass指定结果类, 则对象为{@link:com.tsc9526.monalisa.core.query.DataMap}
 	 */
 	public <T> T getResult(){
 		if(!DBExchange.doExchange(this)){			
@@ -274,7 +274,7 @@ public class Query {
 	}
 	
 	/**
-	 * 如果没有调用setResultClass指定结果类, 则PageList存储的对象为HashMap&lt;String,Object&gt;
+	 * 如果没有调用setResultClass指定结果类, 则PageList存储的对象为{@link:com.tsc9526.monalisa.core.query.DataMap}
 	 * @return Page对象
 	 */
 	public <T> Page<T> getPage(int limit,int offset) {
@@ -296,7 +296,7 @@ public class Query {
 	}
 	
 	/**
-	 * 如果没有调用setResultClass指定结果类, 则List存储的对象为HashMap&lt;String,Object&gt;
+	 * 如果没有调用setResultClass指定结果类, 则List存储的对象为{@link:com.tsc9526.monalisa.core.query.DataMap}
 	 * @return List对象
 	 */
 	public <T> List<T> getList(int limit,int offset) {
@@ -313,7 +313,7 @@ public class Query {
 	}
 	
 	/**
-	 * 如果没有调用setResultClass指定结果类, 则List存储的对象为HashMap&lt;String,Object&gt;
+	 * 如果没有调用setResultClass指定结果类, 则List存储的对象为{@link:com.tsc9526.monalisa.core.query.DataMap}
 	 * @return List对象
 	 */
 	public <T> List<T> getList() {
