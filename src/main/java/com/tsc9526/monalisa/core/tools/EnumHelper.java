@@ -15,7 +15,7 @@ public class EnumHelper {
 		if(value!=null){
 			Class<?> type=fgs.getField().getType();
 			if(type.isEnum()){
-				if(value.getClass().isEnum()){
+				if(value.getClass().isEnum() && value.getClass()==type){
 					return value;
 				}else{
 					if(value instanceof Number){
