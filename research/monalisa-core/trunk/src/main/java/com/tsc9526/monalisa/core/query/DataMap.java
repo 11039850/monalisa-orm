@@ -38,6 +38,19 @@ public class DataMap extends LinkedHashMap<String,Object>{
 		return super.containsKey(key);
 	}
 	
+	public String getString(String key){
+		if(key!=null){
+			key=key.toLowerCase();
+		}
+		 
+		Object v=super.get(key);
+		if(v==null){
+			return null;
+		}else {
+			return v.toString();
+		}
+	}
+	
 	public Integer getInt(String key){
 		Object v=(Object)get(key);
 		if(v==null){
