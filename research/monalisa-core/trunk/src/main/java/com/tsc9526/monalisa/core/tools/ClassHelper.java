@@ -88,10 +88,10 @@ public class ClassHelper {
 		MetaClass ft=getMetaClass(to);
 		
 		for(FGS fgs:fm.getFields()){
-			Object value=fgs.getObject(from);
-			
 			FGS x=ft.getField(fgs.getFieldName());
 			if(x!=null){
+				Object value=fgs.getObject(from);
+				
 				x.setObject(to, value);
 			}
 		}
@@ -99,10 +99,10 @@ public class ClassHelper {
 	 
 	
 	public static void setObject(Object bean, FGS fgs, Object v) {
+		Method set = fgs.getSetMethod();
+		Class<?> type=fgs.getField().getType();
+		
 		try {			 			 
-			Method set = fgs.getSetMethod();
-			Class<?> type=fgs.getField().getType();
-			
 			Object value=null;
 			if(v!=null){
 				if(type.isEnum()){
@@ -157,9 +157,13 @@ public class ClassHelper {
 					}else if(type.isArray()==false 
 							&& type.isPrimitive()==false 
 							&& type.getName().startsWith("java.")==false
-							&& v.getClass() == String.class){
+							&& (v.getClass() == String.class || v.getClass()==JsonObject.class)){
 						//Json String to Java Object
-						value=JsonHelper.getGson().fromJson(v.toString(), type);						
+						if(v.getClass()==String.class){
+							value=JsonHelper.getGson().fromJson(v.toString(), type);
+						}else{
+							value=JsonHelper.getGson().fromJson((JsonObject)v, type);
+						}
 					}else{					
 						value=ConvertUtils.convert(v, fgs.getField().getType());
 					}
@@ -168,7 +172,7 @@ public class ClassHelper {
 			
 			set.invoke(bean, value);
 		} catch (Exception e) {
-			throw new RuntimeException(e);
+			throw new RuntimeException("Field type: "+type.getName()+", value type: "+v.getClass().getName(),e);
 		}
 	}
 		
@@ -180,10 +184,14 @@ public class ClassHelper {
 	public static Object getObject(Object bean, FGS fgs) {
 		try {			 
 			Method get = fgs.getGetMethod();
-			Object r=get.invoke(bean);
-			return r;
+			if(get!=null){
+				Object r=get.invoke(bean);
+				return r;
+			}else{
+				return null;
+			}			
 		} catch (Exception e) {
-			throw new RuntimeException(e);
+			throw new RuntimeException("Error get method from field: "+fgs.getFieldName(),e);
 		}
 	}	 
 	
