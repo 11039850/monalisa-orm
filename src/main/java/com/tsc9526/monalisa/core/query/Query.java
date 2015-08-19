@@ -241,6 +241,9 @@ public class Query {
 		 return doExecute(execute);
 	}
 	 
+	/**
+	 * @return 如果没有调用setResultClass指定结果类, 则对象为HashMap&lt;String,Object&gt;
+	 */
 	public <T> T getResult(){
 		if(!DBExchange.doExchange(this)){			
 			queryCheck();
@@ -270,6 +273,10 @@ public class Query {
 		}
 	}
 	
+	/**
+	 * 如果没有调用setResultClass指定结果类, 则PageList存储的对象为HashMap&lt;String,Object&gt;
+	 * @return Page对象
+	 */
 	public <T> Page<T> getPage(int limit,int offset) {
 		if(!DBExchange.doExchange(this)){			
 			queryCheck();
@@ -288,6 +295,10 @@ public class Query {
 		}
 	}
 	
+	/**
+	 * 如果没有调用setResultClass指定结果类, 则List存储的对象为HashMap&lt;String,Object&gt;
+	 * @return List对象
+	 */
 	public <T> List<T> getList(int limit,int offset) {
 		if(!DBExchange.doExchange(this)){			
 			queryCheck();
@@ -301,6 +312,10 @@ public class Query {
 		}
 	}
 	
+	/**
+	 * 如果没有调用setResultClass指定结果类, 则List存储的对象为HashMap&lt;String,Object&gt;
+	 * @return List对象
+	 */
 	public <T> List<T> getList() {
 		if(!DBExchange.doExchange(this)){			 
 			queryCheck();
