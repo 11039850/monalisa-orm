@@ -260,6 +260,8 @@ public abstract class Dialect{
 			
 			if(whereStatement.toUpperCase().startsWith("WHERE")){
 				query.add(whereStatement, args);
+			}else if(whereStatement.toUpperCase().startsWith("ORDER")){
+				query.add(whereStatement, args);
 			}else{
 				query.add("WHERE ").add(whereStatement,  args);
 			}
