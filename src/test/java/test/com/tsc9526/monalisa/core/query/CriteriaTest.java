@@ -146,8 +146,8 @@ public class CriteriaTest {
 		SimpleModel.Criteria criteria=SimpleModel.createCriteria();
 		criteria.intField1.between(1, 10).intField1.asc();
 		
-		String sql=criteria.getQuery().getSql();
-		String eql=criteria.getQuery().getExecutableSQL();
+		String sql=QEH.getQuery(criteria).getSql();
+		String eql=QEH.getQuery(criteria).getExecutableSQL();
 		String sql_expect="`int_field1` BETWEEN ? AND ?";
 		String eql_expect="`int_field1` BETWEEN 1 AND 10";
 		
@@ -171,8 +171,8 @@ public class CriteriaTest {
 		criteria.intField1.between(1, 10).intField1.asc();
 		criteria.dateField1.equalsTo(sdf.parse(time)).dateField1.desc();
 		
-		String sql=criteria.getQuery().getSql();
-		String eql=criteria.getQuery().getExecutableSQL();
+		String sql=QEH.getQuery(criteria).getSql();
+		String eql=QEH.getQuery(criteria).getExecutableSQL();
 		String sql_expect="`int_field1` BETWEEN ? AND ? AND `date_field1` = ?";
 		String eql_expect="`int_field1` BETWEEN 1 AND 10 AND `date_field1` = '"+time+"'";
 		

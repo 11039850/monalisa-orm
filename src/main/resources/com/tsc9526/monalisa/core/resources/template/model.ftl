@@ -207,10 +207,9 @@ public class ${table.javaName} extends ${modelClass}<${table.javaName}> implemen
 		protected Criteria createInternal(){
 			Criteria x= new Criteria(this);
 			
-			Class<?> clazz=ClassHelper.findClassWithAnnotation(${table.javaName}.class,DB.class);
-			DBConfig db=dsm.getDBConfig(clazz);
-			  
-			x.getQuery().use(db);
+			Class<?> clazz=ClassHelper.findClassWithAnnotation(${table.javaName}.class,DB.class);			  
+			x.use(dsm.getDBConfig(clazz));
+			
 			return x;
 		}
 		

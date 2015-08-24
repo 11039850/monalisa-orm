@@ -9,6 +9,7 @@ import com.tsc9526.monalisa.core.annotation.Column;
 import com.tsc9526.monalisa.core.annotation.DB;
 import com.tsc9526.monalisa.core.annotation.Table;
 import com.tsc9526.monalisa.core.datasource.DBConfig;
+import com.tsc9526.monalisa.core.query.criteria.QEH;
 import com.tsc9526.monalisa.core.query.dao.Model;
 import com.tsc9526.monalisa.core.tools.ClassHelper;
 
@@ -73,7 +74,7 @@ public class SimpleModel extends Model<SimpleModel> implements SimpleDB{
 			Class<?> clazz=ClassHelper.findClassWithAnnotation(SimpleModel.class,DB.class);
 			DBConfig db=dsm.getDBConfig(clazz);
 			   
-			x.getQuery().use(db);
+			QEH.getQuery(x).use(db);
 			return x;
 		}
 	}
