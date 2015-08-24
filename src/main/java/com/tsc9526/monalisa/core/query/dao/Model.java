@@ -18,7 +18,7 @@ import com.tsc9526.monalisa.core.query.validator.Validator;
 import com.tsc9526.monalisa.core.tools.ClassHelper;
 import com.tsc9526.monalisa.core.tools.ClassHelper.FGS;
 import com.tsc9526.monalisa.core.tools.ClassHelper.MetaClass;
-import com.tsc9526.monalisa.core.tools.ModelParseHelper;
+import com.tsc9526.monalisa.core.tools.ModelHelper;
 
 /**
  * 数据库表模型
@@ -45,7 +45,7 @@ public abstract class Model<T extends Model> implements Serializable{
  	protected boolean updateKey=false;
  	
  	protected Partition partition;
- 	protected ModelListener	modelListener;
+ 	protected Listener	listener;
  	
  	protected boolean readonly=false;
  	
@@ -66,7 +66,7 @@ public abstract class Model<T extends Model> implements Serializable{
 		String ls=this.db.modelListener();
 		if(ls!=null && ls.trim().length()>0){
 			try{
-				modelListener=(ModelListener)Class.forName(ls.trim()).newInstance();
+				listener=(Listener)Class.forName(ls.trim()).newInstance();
 			}catch(Exception e){
 				throw new RuntimeException("Invalid model listener class: "+ls.trim()+", "+e,e);
 			}
@@ -87,7 +87,7 @@ public abstract class Model<T extends Model> implements Serializable{
 	}	 
  
 	/**
-	 * @see com.tsc9526.monalisa.core.tools.ModelParseHelper#parseModel(Model, Object)
+	 * @see com.tsc9526.monalisa.core.tools.ModelHelper#parseModel(Model, Object)
 	 * 
 	 * @param dataObject 
 	 * @param mappings  [Options] Translate dataObject field to model field <br>
@@ -98,116 +98,141 @@ public abstract class Model<T extends Model> implements Serializable{
 	 * 
 	 */
 	public T parse(Object dataObject,String... mappings) {
-		ModelParseHelper.parseModel(this, dataObject,mappings);
+		ModelHelper.parse(this, dataObject,mappings);
 		
 		return (T)this;
 	}
 	
-	
 	/**
-	 * 存储对象到数据库, CALL: new Insert(this).insertSelective()
-	 * 
-	 * @return 成功变更的记录数
+	 * 保存对象到数据库,忽略该对象中值为null的字段
 	 */
 	public int save(){
-		if(modelListener!=null){
-			int r=-1;
-			try{
-				modelListener.before(ModelEvent.INSERT, this);
-				doValidate();				
-		 		r= new Insert(this).insertSelective();
-		 		return r;
-			}finally{
-				modelListener.after(ModelEvent.INSERT, this,r);
-			}
-		}else{
-			return new Insert(this).insertSelective();
-		}
-		
-		
+		return save(true);
 	}
 	
 	/**
-	 * 存储对象到数据库， 如果主键冲突， 则执行更新操作, CALL: new Insert(this).insertSelective(true)
-	 * 
-	 * @return 成功变更的记录数
+	 * 保存或更新对象到数据库,忽略该对象中值为null的字段
 	 */
 	public int saveOrUpdate(){
-		if(modelListener!=null){
-			int r=-1;
-			try{
-				modelListener.before(ModelEvent.INSERT_OR_UPDATE, this);
-				doValidate();
-				r= new Insert(this).insertSelective(true);
-				return r;
-			}finally{
-				modelListener.after(ModelEvent.INSERT_OR_UPDATE, this,r);
-			}
-		}else{
-			return new Insert(this).insertSelective(true);
-		} 
+		return saveOrUpdate(true);
 	}
 	
 	/**
-	 * 更新对象到数据库, CALL: new Update(this).update();
-	 * 
-	 * @return 成功变更的记录数
+	 * 更新对象到数据库,忽略该对象中值为null的字段
 	 */
 	public int update(){
-		if(modelListener!=null){
-			int r=-1;		
-			try{
-				modelListener.before(ModelEvent.UPDATE, this);	
-				doValidate();
-				r= new Update(this).update();
-				return r;
-			}finally{
-				modelListener.after(ModelEvent.UPDATE, this,r);
-			}
-		}else{
-			return new Update(this).update();
-		}		 
-	}
+		return update(true);
+	}	
+	
+	
 	
 	/**
-	 * 更新对象到数据库, CALL: new Update(this).updateSelective();
+	 * 存储对象到数据库
+	 * 
+	 * @param selective
+	 * true-更新时忽略值为null的字段, false-存储所有字段(包括null)到数据库
 	 * 
 	 * @return 成功变更的记录数
 	 */
-	public int updateSelective(){
-		if(modelListener!=null){
-			int r=-1;		
-			try{
-				modelListener.before(ModelEvent.UPDATE, this);	
-				doValidate();
-				r= new Update(this).updateSelective();
-				return r;
-			}finally{
-				modelListener.after(ModelEvent.UPDATE, this,r);
+	public int save(boolean selective){
+		int r=-1;
+		try{
+			before(Event.INSERT);
+			
+			doValidate();
+			
+			if(selective){
+				r= new Insert(this).insertSelective();
+			}else{
+				r= new Insert(this).insert();
 			}
-		}else{
-			return new Update(this).updateSelective();
-		}		 
+			
+			return r;
+		}finally{
+			after(Event.INSERT, r);
+		} 			 		
 	}
 	
+	/**
+	 * 存储对象到数据库， 如果主键冲突， 则执行更新操作
+	 * 
+	 * @param selective
+	 * true-更新时忽略值为null的字段, false-存储所有字段(包括null)到数据库
+	 * 
+	 * @return 成功变更的记录数
+	 */
+	public int saveOrUpdate(boolean selective){
+		int r=-1;
+		try{
+			before(Event.INSERT_OR_UPDATE);
+			
+			doValidate();
+			
+			if(selective){
+				r= new Insert(this).insertSelective(true);
+			}else{
+				r= new Insert(this).insert(true);
+			}
+			
+			return r;
+		}finally{
+			after(Event.INSERT_OR_UPDATE, r);
+		} 			 
+	}
+	
+	/**
+	 * 更新对象到数据库
+	 *  
+	 * @param selective
+	 * true-更新时忽略值为null的字段, false-存储所有字段(包括null)到数据库
+	 * 
+	 * @return 成功变更的记录数
+	 */
+	public int update(boolean selective){
+		int r=-1;
+		try{
+			before(Event.UPDATE);
+			
+			doValidate();
+			
+			if(selective){
+				r= new Update(this).updateSelective();
+			}else{
+				r= new Update(this).update();
+			}
+			
+			return r;
+		}finally{
+			after(Event.UPDATE, r);
+		} 		 		
+	}
+	 
 	/**
 	 * 从数据库删除该记录
 	 * 
 	 * @return 成功变更的记录数
 	 */
 	public int delete(){
-		if(modelListener!=null){
-			int r=-1;
-			try{
-				modelListener.before(ModelEvent.DELETE, this);
-				r= new Delete(this).delete();
-				return r;
-			}finally{
-				modelListener.after(ModelEvent.DELETE, this,r);
-			}
-		}else{
-			return new Delete(this).delete();
-		}		 
+		int r=-1;
+		try{
+			before(Event.DELETE);
+			r= new Delete(this).delete();
+			return r;
+		}finally{
+			after(Event.DELETE, r);
+		} 
+	}
+	
+	protected void before(Event event){
+		if(listener!=null){
+			listener.before(event, this);
+		}
+	}
+	
+	protected void after(Event event, int r) {
+		if(listener!=null){
+			listener.after(event, this,r);
+		}
 	}
 	
 	public Select<T> select(){
@@ -488,5 +513,19 @@ public abstract class Model<T extends Model> implements Serializable{
 		}
 		return new Validator().validate(this);
 	}
+	
+	public static enum Event {
+		INSERT,DELETE,UPDATE,INSERT_OR_UPDATE;
+	}
+	
+	public static interface Listener {
+		public void before(Event event, Model model);
+		public void after (Event event, Model model,int result);
+	}
+	
+	public static interface Parser<T> { 
+		public boolean parse(Model<?> m,T data,String... mappings);
+	}
+
 }
 

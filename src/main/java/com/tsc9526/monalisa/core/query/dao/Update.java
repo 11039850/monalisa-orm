@@ -3,8 +3,9 @@ package com.tsc9526.monalisa.core.query.dao;
 import com.tsc9526.monalisa.core.datasource.DBConfig;
 import com.tsc9526.monalisa.core.query.Query;
 import com.tsc9526.monalisa.core.query.criteria.Example;
+import com.tsc9526.monalisa.core.query.criteria.QEH;
 
-@SuppressWarnings({"rawtypes"})
+@SuppressWarnings({"rawtypes","unchecked"})
 public class Update<T extends Model>{
 	protected T model;
 	
@@ -57,7 +58,7 @@ public class Update<T extends Model>{
 	}
 	
 	public int updateByExample(Example example){
-		Query w=example.getQuery();
+		Query w=QEH.getQuery(example);
 		
 		Query query=model.getDialect().update(model,w.getSql(), w.getParameters());
 		query.use(db());
@@ -72,7 +73,7 @@ public class Update<T extends Model>{
 	}
 	
 	public int updateSelectiveByExample(Example example){
-		Query w=example.getQuery();
+		Query w=QEH.getQuery(example);
 		
 		Query query=model.getDialect().updateSelective(model,w.getSql(), w.getParameters());
 		query.use(db());

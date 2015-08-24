@@ -197,16 +197,13 @@ public class ${table.javaName} extends ${modelClass}<${table.javaName}> implemen
 	* 
 	*/
 	public static Criteria criteria(){
-		return new Example(new ${table.javaName}()).createCriteria();
+		return new Example().createCriteria();
 	}
 	
 		
 	public static class Example extends com.tsc9526.monalisa.core.query.criteria.Example<Criteria,${table.javaName}>{
 		public Example(){}
-		public Example(${table.javaName} model) {
-			super(model);
-		}
-		
+		 
 		protected Criteria createInternal(){
 			Criteria x= new Criteria(this);
 			
@@ -222,8 +219,8 @@ public class ${table.javaName} extends ${modelClass}<${table.javaName}> implemen
 		/**
 		* List result to Map, The map key is primary-key: ${k.name} 
 		*/
-		public Map<${k.javaType},${table.javaName}> selectToMap(){
-			List<${table.javaName}> list=super.select();
+		public Map<${k.javaType},${table.javaName}> selectToMap(){			
+			List<${table.javaName}> list=SELECT().selectByExample(this);
 			
 			Map<${k.javaType},${table.javaName}> m=new LinkedHashMap<${k.javaType},${table.javaName}>();
 			for(${table.javaName} x:list){
@@ -260,7 +257,7 @@ public class ${table.javaName} extends ${modelClass}<${table.javaName}> implemen
 		<#elseif f.code.enum??>
 		public com.tsc9526.monalisa.core.query.criteria.Field<${f.javaType},Criteria> ${f.javaName} = new com.tsc9526.monalisa.core.query.criteria.Field<${f.javaType},Criteria>("${f.name}", this, ${f.jdbcType});
 		<#else>
-		public com.tsc9526.monalisa.core.query.criteria.Field<${f.javaType},Criteria> ${f.javaName} = new com.tsc9526.monalisa.core.query.criteria.Field<${f.javaType},Criteria>("${f.name}", this);
+		public com.tsc9526.monalisa.core.query.criteria.Field.FieldString<Criteria> ${f.javaName} = new com.tsc9526.monalisa.core.query.criteria.Field.FieldString<Criteria>("${f.name}", this);
 		</#if>		
 		
 		</#list>

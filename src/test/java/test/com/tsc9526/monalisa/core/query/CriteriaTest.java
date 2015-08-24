@@ -10,7 +10,8 @@ import org.testng.annotations.Test;
 
 import com.tsc9526.monalisa.core.datasource.DataSourceManager;
 import com.tsc9526.monalisa.core.query.Query;
-import com.tsc9526.monalisa.core.tools.ModelParseHelper;
+import com.tsc9526.monalisa.core.query.criteria.QEH;
+import com.tsc9526.monalisa.core.tools.ModelHelper;
 
 @Test
 public class CriteriaTest {
@@ -105,7 +106,7 @@ public class CriteriaTest {
 		h.put("INTField2", 2);
 		
 		SimpleModel model=new SimpleModel();
-		model.parse(h,ModelParseHelper.OPTIONS_NAME_CASE_SENSITIVE);
+		model.parse(h,ModelHelper.OPTIONS_NAME_CASE_SENSITIVE);
 		
 		Assert.assertEquals(model.getIntField1().intValue(),1);
 	 
@@ -153,8 +154,8 @@ public class CriteriaTest {
 		Assert.assertEquals(sql, sql_expect);
 		Assert.assertEquals(eql, eql_expect);
 		
-		sql=criteria.getExample().getQuery().getSql();
-		eql=criteria.getExample().getQuery().getExecutableSQL();
+		sql=QEH.getQuery(criteria.getExample()).getSql();
+		eql=QEH.getQuery(criteria.getExample()).getExecutableSQL();
 		sql_expect="`int_field1` BETWEEN ? AND ? ORDER BY `int_field1` ASC";
 		eql_expect="`int_field1` BETWEEN 1 AND 10 ORDER BY `int_field1` ASC";
 		
@@ -178,8 +179,8 @@ public class CriteriaTest {
 		Assert.assertEquals(sql, sql_expect);
 		Assert.assertEquals(eql, eql_expect);
 		
-		sql=criteria.getExample().getQuery().getSql();
-		eql=criteria.getExample().getQuery().getExecutableSQL();
+		sql=QEH.getQuery(criteria.getExample()).getSql();
+		eql=QEH.getQuery(criteria.getExample()).getExecutableSQL();
 		sql_expect="`int_field1` BETWEEN ? AND ? AND `date_field1` = ? ORDER BY `int_field1` ASC, `date_field1` DESC";
 		eql_expect="`int_field1` BETWEEN 1 AND 10 AND `date_field1` = '"+time+"' ORDER BY `int_field1` ASC, `date_field1` DESC";
 		
@@ -281,7 +282,7 @@ public class CriteriaTest {
 		SimpleModel.Criteria or=example.or();
 		or.intField2.greatThan(1);
 		
-		Query eq=example.getQuery();
+		Query eq=QEH.getQuery(example);
 		Query query=model.getDialect().select(model, eq.getSql(), eq.getParameters());
 		String sql_expect="SELECT * FROM `simple_model` WHERE `int_field1` BETWEEN ? AND ? AND `date_field1` = ? OR (`int_field1` > ?) ORDER BY `int_field1` ASC, `date_field1` DESC";
 		Assert.assertEquals(query.getSql(), sql_expect);
