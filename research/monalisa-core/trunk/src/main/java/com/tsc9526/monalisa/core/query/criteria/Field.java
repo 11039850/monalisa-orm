@@ -28,7 +28,7 @@ public class Field<X,Y extends Criteria>{
 	public Field(String name,Y criteria,int jdbcType){
 		this.name=name;
 		this.criteria=criteria;	
-		this.q=criteria.getQuery();
+		this.q=criteria.q;
 		
 		this.type=TypeHelper.getJavaType(jdbcType);		
 	}	
