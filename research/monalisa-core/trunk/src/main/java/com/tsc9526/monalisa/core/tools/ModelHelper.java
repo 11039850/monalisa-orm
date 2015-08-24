@@ -13,13 +13,13 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.tsc9526.monalisa.core.annotation.Column;
 import com.tsc9526.monalisa.core.query.dao.Model;
-import com.tsc9526.monalisa.core.query.dao.ModelParser;
+import com.tsc9526.monalisa.core.query.dao.Model.Parser;
 import com.tsc9526.monalisa.core.tools.ClassHelper.FGS;
 import com.tsc9526.monalisa.core.tools.ClassHelper.MetaClass;
 
 @SuppressWarnings({"unchecked","rawtypes"})
-public class ModelParseHelper {
-	private static Map<Class<?>,ModelParser<Object>> parsers=new LinkedHashMap<Class<?>,ModelParser<Object>>();
+public class ModelHelper {
+	private static Map<Class<?>,Parser<Object>> parsers=new LinkedHashMap<Class<?>,Parser<Object>>();
 	
 	/**
 	 * 区分参数名的大小写, 默认: false
@@ -37,7 +37,7 @@ public class ModelParseHelper {
 		}catch(ClassNotFoundException e){}
 	}
 	  
-	public static void registerModelParser(Class<?> clazz, ModelParser parser){
+	public static void registerModelParser(Class<?> clazz, Parser parser){
 		parsers.put(clazz, parser);
 	}
 	
@@ -51,9 +51,9 @@ public class ModelParseHelper {
 	 * @param mappings
 	 * @return
 	 */
-	public static boolean parseModel(Model<?> model,Object data,String... mappings) {
+	public static boolean parse(Model<?> model,Object data,String... mappings) {
 		if(data!=null){
-			ModelParser<Object> parser=parsers.get(data.getClass());
+			Parser<Object> parser=parsers.get(data.getClass());
 			if(parser==null){
 				for(Class<?> clazz:parsers.keySet()){
 					if(clazz.isAssignableFrom(data.getClass())){
@@ -64,7 +64,7 @@ public class ModelParseHelper {
 			}
 			
 			if(parser!=null){				 
-				return parser.parseModel(model, data,mappings);
+				return parser.parse(model, data,mappings);
 			}else{
 				return parseFromFields(model,data,mappings);
 			}
@@ -186,9 +186,9 @@ public class ModelParseHelper {
 	    }   	     
 	}
 		 
-	public static class ServletRequestModelParser implements ModelParser<javax.servlet.ServletRequest>{
+	public static class ServletRequestModelParser implements Parser<javax.servlet.ServletRequest>{
 		
-		public boolean parseModel(Model<?> m, javax.servlet.ServletRequest data, String... mappings) {
+		public boolean parse(Model<?> m, javax.servlet.ServletRequest data, String... mappings) {
 			StringMap map=new StringMap(data.getParameterMap(),mappings);
 			
 			for(FGS fgs:m.fields()){
@@ -204,8 +204,8 @@ public class ModelParseHelper {
 		
 	}
 	
-	public static class MapModelParser implements ModelParser<Map<String,Object>>{		
-		public boolean parseModel(Model<?> m, Map<String,Object> data, String... mappings) {
+	public static class MapModelParser implements Parser<Map<String,Object>>{		
+		public boolean parse(Model<?> m, Map<String,Object> data, String... mappings) {
 			StringMap map=new StringMap(data,mappings);
 			
 			for(FGS fgs:m.fields()){
@@ -220,19 +220,19 @@ public class ModelParseHelper {
 		}		
 	}
 	
-	public static class StringModelParser implements ModelParser<String>{			 
-		public boolean parseModel(Model<?> m, String data, String... mappings) {
+	public static class StringModelParser implements Parser<String>{			 
+		public boolean parse(Model<?> m, String data, String... mappings) {
 			if(data.startsWith("{")){
 				JsonObject  json=(JsonObject)new JsonParser().parse(data);				
-				return new JsonObjectModelParser().parseModel(m, json, mappings);				  			 
+				return new JsonObjectModelParser().parse(m, json, mappings);				  			 
 			}else{
 				return false;
 			}			
 		}		
 	}
 	
-	public static class JsonObjectModelParser implements ModelParser<JsonObject>{			 
-		public boolean parseModel(Model<?> m, JsonObject json, String... mappings) {
+	public static class JsonObjectModelParser implements Parser<JsonObject>{			 
+		public boolean parse(Model<?> m, JsonObject json, String... mappings) {
 			for(FGS fgs:m.fields()){
 				JsonElement e=json.get(fgs.getFieldName());
 				if(e==null){

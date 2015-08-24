@@ -6,9 +6,10 @@ import com.tsc9526.monalisa.core.datasource.DBConfig;
 import com.tsc9526.monalisa.core.query.Page;
 import com.tsc9526.monalisa.core.query.Query;
 import com.tsc9526.monalisa.core.query.criteria.Example;
+import com.tsc9526.monalisa.core.query.criteria.QEH;
 
 
-@SuppressWarnings("rawtypes")
+@SuppressWarnings({"rawtypes","unchecked"})
 public class Select<T extends Model> {
 	protected T model;
 	
@@ -50,7 +51,7 @@ public class Select<T extends Model> {
 	}	
 
 	public long count(Example example){
-		Query w=example.getQuery();
+		Query w=QEH.getQuery(example);
 		
 		return count(w.getSql(), w.getParameters());	 
 	}
@@ -62,7 +63,7 @@ public class Select<T extends Model> {
 	}
 	
 	public T selectOneByExample(Example example){
-		Query w=example.getQuery();
+		Query w=QEH.getQuery(example);
 		
 		Query query=model.getDialect().select(model,w.getSql(), w.getParameters());
 		query.use(db());
@@ -79,7 +80,7 @@ public class Select<T extends Model> {
 	}
 	
 	public List<T> selectByExample(Example example){
-		Query w=example.getQuery();
+		Query w=QEH.getQuery(example);
 		
 		Query query=model.getDialect().select(model,w.getSql(), w.getParameters());
 		query.use(db());
@@ -97,7 +98,7 @@ public class Select<T extends Model> {
 	}
 	
 	public List<T> selectByExample(int limit,int offset,Example example){
-		Query w=example.getQuery();
+		Query w=QEH.getQuery(example);
 		
 		Query query=model.getDialect().select(model,w.getSql(), w.getParameters());
 		query.use(db());
@@ -115,7 +116,7 @@ public class Select<T extends Model> {
 	}
 	
 	public Page<T> selectPageByExample(int limit,int offset,Example example){
-		Query w=example.getQuery();
+		Query w=QEH.getQuery(example);
 		
 		Query query=model.getDialect().select(model,w.getSql(), w.getParameters());
 		query.use(db());
