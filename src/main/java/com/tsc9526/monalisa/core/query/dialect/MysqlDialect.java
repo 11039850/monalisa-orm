@@ -94,22 +94,19 @@ public class MysqlDialect extends Dialect{
 		if(create!=null){			 
 			String createSQL  =create.getCreateSQL();
 			String tableName  =create.getTableName();
-			if(tableName.equalsIgnoreCase(theTableName)==false){
-				String lower=createSQL.toLowerCase();
-				int p1=lower.indexOf("table");
-				int p2=lower.indexOf(tableName.toLowerCase(),p1);
-				
-				String sql=createSQL.substring(0,p1+5); 
-				sql+=" IF NOT EXISTS ";
-				sql+=theTableName;
-				sql+=createSQL.substring(p2+tableName.length()+1);
-				
-				sql=sql.replaceFirst("\\s+AUTO_INCREMENT\\s*=\\s*\\d+", "");
-				
-				return sql;
-			}else{
-				return "";
-			}
+			 
+			String lower=createSQL.toLowerCase();
+			int p1=lower.indexOf("table");
+			int p2=lower.indexOf(tableName.toLowerCase(),p1);
+			
+			String sql=createSQL.substring(0,p1+5); 
+			sql+=" IF NOT EXISTS ";
+			sql+=theTableName;
+			sql+=createSQL.substring(p2+tableName.length()+1);
+			
+			sql=sql.replaceFirst("\\s+AUTO_INCREMENT\\s*=\\s*\\d+", "");
+			
+			return sql;				 
 		}else{
 			return null;
 		}
