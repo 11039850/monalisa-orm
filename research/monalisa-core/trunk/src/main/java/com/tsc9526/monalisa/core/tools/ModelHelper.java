@@ -162,12 +162,7 @@ public class ModelHelper {
 	        	
 	        	if(hNameMapping.containsKey(k)){
 	        		k=hNameMapping.get(k);
-	        	}else{
-	        		if(k.indexOf("_")>=0 || k.indexOf("-")>=0){
-	        			k=JavaBeansHelper.getCamelCaseString(k,false);
-	        		}
-	        	}
-	       	
+	        	} 	       	
 	        	this.put(k,v);
 	        }
 	    }
