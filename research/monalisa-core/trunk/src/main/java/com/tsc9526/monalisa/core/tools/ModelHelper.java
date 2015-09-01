@@ -193,7 +193,12 @@ public class ModelHelper {
 			
 			for(FGS fgs:m.fields()){
 				String name =fgs.getFieldName();
-			 	 
+			 	
+				if(map.containsKey(name)==false){
+					Column column=fgs.getField().getAnnotation(Column.class);
+					name=column.name();
+				} 
+				
 				if(map.containsKey(name)){
 					String[] value=(String[])map.get(name);					
 					fgs.setObject(m, value[0]);
@@ -210,6 +215,11 @@ public class ModelHelper {
 			
 			for(FGS fgs:m.fields()){
 				String name =fgs.getFieldName();
+				
+				if(map.containsKey(name)==false){
+					Column column=fgs.getField().getAnnotation(Column.class);
+					name=column.name();
+				}
 				
 			  	if(map.containsKey(name)){
 					Object value=map.get(name);
