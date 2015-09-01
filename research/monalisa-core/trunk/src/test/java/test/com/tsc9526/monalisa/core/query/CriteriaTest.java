@@ -120,14 +120,14 @@ public class CriteriaTest {
 		SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		
 		Map<String, Object> h=new HashMap<String, Object>();
-		h.put("int_field_1", 1);
-		h.put("int_field_2", "2");
+		h.put("int_field1", 1);
+		h.put("int_field2", "2");
 		
-		h.put("date_field_1", d1);
-		h.put("date_field_2", d2);
+		h.put("date_field1", d1);
+		h.put("date_field2", d2);
 		
-		h.put("string_field_1", "xxx");
-		h.put("string_field_2", 123);
+		h.put("string_field1", "xxx");
+		h.put("string_field2", 123);
 		
 		SimpleModel model=new SimpleModel();
 		model.parse(h);
