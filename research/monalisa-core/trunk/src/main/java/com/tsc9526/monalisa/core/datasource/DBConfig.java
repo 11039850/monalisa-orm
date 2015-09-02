@@ -12,6 +12,7 @@ import java.util.Properties;
 import javax.sql.DataSource;
 
 import com.tsc9526.monalisa.core.annotation.DB;
+import com.tsc9526.monalisa.core.query.Query;
 import com.tsc9526.monalisa.core.tools.CloseQuietly;
 
 public class DBConfig implements com.tsc9526.monalisa.core.annotation.DB{ 	
@@ -306,6 +307,14 @@ public class DBConfig implements com.tsc9526.monalisa.core.annotation.DB{
 		}
 	}
 	 
+	public Query createQuery(){
+		return new Query(this);
+	}
+	
+	public Query createQuery(Class<?> resultClass){
+		return new Query(this,resultClass);
+	}
+	
 	public Class<? extends Annotation> annotationType() {		 
 		return DB.class;
 	}
@@ -390,7 +399,7 @@ public class DBConfig implements com.tsc9526.monalisa.core.annotation.DB{
 			return cfg;
 		}
 	}
-	
+	 
 	public static DBConfig fromClass(Class<?> clazzWithDBAnnotation){
 		return DataSourceManager.getInstance().getDBConfig(clazzWithDBAnnotation);
 	}
