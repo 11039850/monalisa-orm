@@ -196,11 +196,14 @@ public class DBConfig implements com.tsc9526.monalisa.core.annotation.DB{
 			try{				
 				Object obj=Class.forName(cc.trim()).newInstance();	
 				if(obj instanceof PooledDataSource){
+					
 					PooledDataSource pds=(PooledDataSource)obj;
 					pds.setDriver(driver());
 					pds.setPassword(password());
 					pds.setUrl(url());
 					pds.setUsername(username());
+					
+					pds.setProperties(getDBProperties());
 					
 					return pds;
 				}else if(obj instanceof DataSource){				 
@@ -211,6 +214,23 @@ public class DBConfig implements com.tsc9526.monalisa.core.annotation.DB{
 			}
 		}
 		return null;
+	}
+	
+	private Properties getDBProperties(){
+		Properties dbps=new Properties();
+		
+		for(Object o:p.keySet()){
+			String key=o.toString();
+			
+			for(String px:prefixs){
+				String flag=px+".pool.";
+				if(key.startsWith(flag)){
+					dbps.put(key.substring(flag.length()), p.get(key));
+				}
+			}
+		}
+		
+		return dbps;
 	}
 	
 	public synchronized void close(){
@@ -377,7 +397,9 @@ public class DBConfig implements com.tsc9526.monalisa.core.annotation.DB{
 			cfg.configFile=DBConfig.this.configFile;
 			cfg.configName=DBConfig.this.configName;
 			cfg.p=DBConfig.this.p;	
+			cfg.prefixs=DBConfig.this.prefixs;
 			cfg.url=URL;			
+			
 			String x=DBConfig.this.key;
 			
 			if(LEVEL==Level.ONLY_READ){

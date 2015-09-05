@@ -6,6 +6,7 @@ import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.SQLFeatureNotSupportedException;
+import java.util.Properties;
 import java.util.logging.Logger;
 
 public class C3p0DataSource implements PooledDataSource {
@@ -15,7 +16,10 @@ public class C3p0DataSource implements PooledDataSource {
 		
 	}
 	
-	 
+	public void setProperties(Properties properties){
+		cpds.setProperties(properties);		 
+	}
+
 	public Connection getConnection() throws SQLException {
 		return cpds.getConnection();
 	}
@@ -23,7 +27,7 @@ public class C3p0DataSource implements PooledDataSource {
 	 
 	public Connection getConnection(String username, String password)
 			throws SQLException {
-		 
+	 
 		return cpds.getConnection(username, password);
 	}
 
