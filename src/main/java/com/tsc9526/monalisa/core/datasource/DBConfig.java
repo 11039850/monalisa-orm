@@ -196,14 +196,15 @@ public class DBConfig implements com.tsc9526.monalisa.core.annotation.DB{
 			try{				
 				Object obj=Class.forName(cc.trim()).newInstance();	
 				if(obj instanceof PooledDataSource){
-					
 					PooledDataSource pds=(PooledDataSource)obj;
+					
+					pds.setProperties(getDBProperties());
+					
 					pds.setDriver(driver());
 					pds.setPassword(password());
 					pds.setUrl(url());
 					pds.setUsername(username());
 					
-					pds.setProperties(getDBProperties());
 					
 					return pds;
 				}else if(obj instanceof DataSource){				 
