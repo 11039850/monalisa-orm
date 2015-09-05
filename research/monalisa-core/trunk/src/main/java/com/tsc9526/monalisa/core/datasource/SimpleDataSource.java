@@ -12,6 +12,7 @@ import java.sql.SQLFeatureNotSupportedException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Properties;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.Semaphore;
@@ -145,6 +146,10 @@ public class SimpleDataSource implements PooledDataSource {
 		}
 	}
 
+	public void setProperties(Properties properties){
+		
+	}
+	
 	public PrintWriter getLogWriter() throws SQLException {
 		return null;
 	}
