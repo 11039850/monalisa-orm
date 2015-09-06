@@ -264,8 +264,8 @@ public class ${table.javaName} extends ${modelClass}<${table.javaName}> implemen
 			this.example=example;
 		}
 		
-		public Example getExample(){
-			return this.example;
+		public SelectForExample select(){
+			return SELECT().selectForExample(this.example);
 		}
 		
 		<#list table.columns as f>
