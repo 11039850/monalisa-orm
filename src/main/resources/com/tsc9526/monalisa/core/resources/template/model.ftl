@@ -264,7 +264,10 @@ public class ${table.javaName} extends ${modelClass}<${table.javaName}> implemen
 			this.example=example;
 		}
 		
-		public Select.SelectForExample select(){
+		/**
+		 * Create Select for example
+		 */
+		public Select.SelectForExample example(){
 			return SELECT().selectForExample(this.example);
 		}
 		
