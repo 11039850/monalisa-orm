@@ -24,6 +24,8 @@ import com.tsc9526.monalisa.core.tools.ClassHelper.MetaClass;
 import com.tsc9526.monalisa.core.tools.CloseQuietly;
 import com.tsc9526.monalisa.core.tools.SQLHelper;
 
+import freemarker.log.Logger;
+
 /**
  * 数据库查询对象, 基本用法: <br>
  * <code>
@@ -39,6 +41,8 @@ import com.tsc9526.monalisa.core.tools.SQLHelper;
  */
 @SuppressWarnings("unchecked")
 public class Query {	
+	static Logger logger=Logger.getLogger(Query.class.getName());
+	
 	protected DataSourceManager dsm=DataSourceManager.getInstance();
 	
 	protected StringBuffer sql=new StringBuffer();
@@ -172,10 +176,13 @@ public class Query {
 				SQLHelper.setPreparedParameters(pst, p);
 				pst.addBatch();
 			}
+			
 			int[] result=pst.executeBatch();
+			
 			if(tx==null){
 				conn.commit();
 			}			
+			
 			return result;
 		}catch(SQLException e){
 			if(tx==null && conn!=null){
@@ -212,7 +219,11 @@ public class Query {
 			pst=x.preparedStatement(conn,sql.toString());
 			 
 			SQLHelper.setPreparedParameters(pst, parameters);
-		 
+			
+			if( "true".equalsIgnoreCase( db.getProperty("sql.debug","false") ) ){
+				logger.info(getExecutableSQL());
+			}
+			
 			return x.execute(pst);			
 		}catch(SQLException e){
 			throw new RuntimeException(e);
