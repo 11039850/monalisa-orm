@@ -298,9 +298,10 @@ public class ${table.javaName} extends ${modelClass}<${table.javaName}> implemen
 	</#compress>
 	 
 	public static class Metadata{
-		public final static String table ="${table.name}" ;
+		public final static String TABLE ="${table.name}" ;
 		
 		<#list table.columns as f>
+		public final static String  ${f.javaName}         = "${f.name}" ;
 		public final static String  ${f.javaName}$name    = "${f.name}" ;
 		public final static boolean ${f.javaName}$key     = ${f.key?string("true","false")} ;
 		public final static int     ${f.javaName}$length  = ${f.length?c} ;
