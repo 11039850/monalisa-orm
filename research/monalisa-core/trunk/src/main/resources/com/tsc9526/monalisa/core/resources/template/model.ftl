@@ -181,7 +181,7 @@ public class ${table.javaName} extends ${modelClass}<${table.javaName}> implemen
 			c.${k.javaName}.equalsTo(${k.javaName});
 			</#list>			 
 			 
-			return super.selectOneByExample(c.getExample());
+			return super.selectOneByExample(c.example);
 		}			 
 		</#if>		
 		
@@ -264,7 +264,7 @@ public class ${table.javaName} extends ${modelClass}<${table.javaName}> implemen
 			this.example=example;
 		}
 		
-		public SelectForExample select(){
+		public Select.SelectForExample select(){
 			return SELECT().selectForExample(this.example);
 		}
 		
