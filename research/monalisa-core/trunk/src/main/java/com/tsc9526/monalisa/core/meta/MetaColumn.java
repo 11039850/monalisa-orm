@@ -49,7 +49,7 @@ public class MetaColumn extends Name{
 	 * Get方法
 	 */
 	protected String javaNameGet;
-	
+	 
  	
 	protected Map<String, String> code=new HashMap<String, String>();
 	
@@ -125,11 +125,17 @@ public class MetaColumn extends Name{
 	public void setNotnull(boolean notnull) {
 		this.notnull = notnull;
 	}
-
+	
+	/**
+	 * 是否主键
+	 */
 	public boolean isKey() {
 		return key;
 	}
 
+	/**
+	 * 是否主键
+	 */
 	public void setKey(boolean key) {
 		this.key = key;
 	}

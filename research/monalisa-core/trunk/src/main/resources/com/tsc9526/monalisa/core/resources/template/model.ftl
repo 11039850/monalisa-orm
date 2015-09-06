@@ -144,14 +144,15 @@ public class ${table.javaName} extends ${modelClass}<${table.javaName}> implemen
 		}				 			
 	}
 	
-	public static class Select extends com.tsc9526.monalisa.core.query.dao.Select<${table.javaName}>{		
+	public static class Select extends com.tsc9526.monalisa.core.query.dao.Select<${table.javaName},Select>{		
 		Select(${table.javaName} x){
 			super(x);
 		}	
 		
 		<#if table.keyColumns?size gt 0 >
-		public ${table.javaName} selectByPrimaryKey(<#list table.keyColumns as k>${k.javaType} ${k.javaName}<#if k_has_next=true>, </#if> </#list>){
-			${table.javaName} model = new ${table.javaName}();
+		public ${table.javaName} selectByPrimaryKey(<#list table.keyColumns as k>${k.javaType} ${k.javaName}<#if k_has_next=true>, </#if></#list>){
+			${table.javaName} model=new ${table.javaName}();
+						 
 			<#list table.keyColumns as k>
 			model.${k.javaName} = ${k.javaName};
 			</#list>
@@ -162,6 +163,30 @@ public class ${table.javaName} extends ${modelClass}<${table.javaName}> implemen
 		}				 
 		</#if>
 		
+		<#list table.indexes as index>
+		<#assign m='' />			 
+		<#list index.columns as c>
+			<#assign m= m + c.javaName?cap_first />				 
+		</#list>
+		<#if index.unique> 
+		/**
+		* Find by unique key: ${index.name}
+		<#list index.columns as c>
+		* @param ${c.javaName} ${c.remarks}
+		</#list>	
+		*/
+		public ${table.javaName} selectBy${m}(<#list index.columns as k>${k.javaType} ${k.javaName}<#if k_has_next=true>, </#if></#list>){
+			Criteria c=criteria();
+			<#list index.columns as k>
+			c.${k.javaName}.equalsTo(${k.javaName});
+			</#list>			 
+			 
+			return super.selectOneByExample(c.getExample());
+		}			 
+		</#if>		
+		
+		</#list>
+				
 		<#if table.keyColumns?size = 1 >
 		<#assign k=table.keyColumns[0]>
 		/**

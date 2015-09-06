@@ -234,9 +234,18 @@ public abstract class Model<T extends Model> implements Serializable{
 			listener.after(event, this,r);
 		}
 	}
-	
-	public Select<T> select(){
-		return new Select(this);
+	 
+	/**
+	 * 设置所有字段为null
+	 * 
+	 * @return 
+	 */
+	public T clear(){
+		for(FGS fgs:fields){
+			fgs.setObject(this,null);
+		}
+		
+		return (T)this;
 	}
 	
 	protected Dialect dialect;
