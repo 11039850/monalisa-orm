@@ -173,4 +173,36 @@ public class Select<T extends Model,S extends Select> {
 	public Page<T> selectAllPage(int limit,int offset){
 		return selectPage(limit, offset, null);
 	}	
+	
+	public SelectForExample selectForExample(Example example){
+		return new SelectForExample(example);
+	}
+	
+	public class SelectForExample{
+		private Example example;
+		
+		public SelectForExample(Example example){
+			this.example=example;
+		}
+		
+		public long count(){
+			return Select.this.count(example);	 
+		}
+			 
+		public T selectOne(){
+			return Select.this.selectOneByExample(example);
+		}	 	 
+		
+		public List<T> select(){
+			return Select.this.selectByExample(example);
+		}	 
+		
+		public List<T> select(int limit,int offset){
+			return Select.this.selectByExample(limit, offset, example);
+		}		 
+		
+		public Page<T> selectPage(int limit,int offset){
+			return Select.this.selectPageByExample(limit, offset, example);
+		}
+	}
 }
