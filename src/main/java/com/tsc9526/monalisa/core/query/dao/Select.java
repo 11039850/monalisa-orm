@@ -10,7 +10,7 @@ import com.tsc9526.monalisa.core.query.criteria.QEH;
 
 
 @SuppressWarnings({"rawtypes","unchecked"})
-public class Select<T extends Model> {
+public class Select<T extends Model,S extends Select> {
 	protected T model;
 	
 	protected DBConfig db;
@@ -19,15 +19,51 @@ public class Select<T extends Model> {
 		this.model=model;		 
 	}
 	
-	public T getModel(){
-		return this.model;
+	/**
+	 * 只提取某些字段
+	 * 
+	 * @param fields  需要的字段名称
+	 * @return Select本身
+	 */
+	public S include(String... fields){
+		model.include(fields);
+		return (S)this;
 	}
-			
-	public Select set(String name,Object value){		
-		this.model.set(name,value);
-		return this;
-	}	
- 
+	
+	/**
+	 * 排除表的某些字段。 用于在查询表时， 过滤掉某些不必要的字段
+	 * 
+	 * @param fields 要排除的字段名
+	 * 
+	 * @return  Select本身
+	 */
+	public S exclue(String... fields){
+		model.exclude(fields);
+		return (S)this;
+	}
+	
+	/**
+	 * 排除大字段（字段长度 大于等于 #Short.MAX_VALUE)
+	 * 
+	 * @return Select本身
+	 */
+	public S excludeBlobs(String... fields){
+		model.excludeBlobs();
+		return (S)this;
+	}
+	
+	/**
+	 *  排除超过指定长度的字段
+	 * 
+	 * @param maxLength  字段长度
+	 * 
+	 * @return Select本身
+	 */
+	public S excludeBlobs(int maxLength ){
+		model.excludeBlobs(maxLength);
+		return (S)this;
+	}
+	 
 	public Select use(DBConfig db){
 		this.db=db;
 		return this;

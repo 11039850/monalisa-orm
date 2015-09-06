@@ -23,6 +23,7 @@ import javax.sql.DataSource;
 import com.tsc9526.monalisa.core.datasource.DBConfig;
 import com.tsc9526.monalisa.core.datasource.DataSourceManager;
 import com.tsc9526.monalisa.core.meta.MetaColumn;
+import com.tsc9526.monalisa.core.meta.MetaIndex;
 import com.tsc9526.monalisa.core.meta.MetaPartition;
 import com.tsc9526.monalisa.core.meta.MetaTable;
 import com.tsc9526.monalisa.core.meta.MetaTable.CreateTable;
@@ -165,15 +166,19 @@ public class DBMetadata {
 		    for(MetaTable table:tables){
 		    	getTableColumns(metadata, table);
 		    	getTableKeyColumns(metadata, table);	
-		    	
+		    	getTableIndexes(metadata,table);
+		    
 		    	table.setJavaPackage(javaPackage);
-		    }	
+		    }
+		    
+		   
 		    
 		    for(MetaTable table:tables){
 		    	if(table.getPartition()!=null){
 		    		dsm.getDialect(dbcfg).loadMetaTableDetails(dbcfg, table); 
 		    	}
 		    }
+		     
 		    
 		    String dbKey=dbcfg.key();		  
 		    Map<String, MetaTable> hTables=hDBMetaTables.get(dbKey);
@@ -198,7 +203,7 @@ public class DBMetadata {
 		}finally{
 			CloseQuietly.close(conn);			 
 		}
-	}
+	}	 
 	
 	private void cacheTables(Map<String, MetaTable> hTables)throws IOException {
 		ByteArrayOutputStream bufArrayOutputStream=new ByteArrayOutputStream();
@@ -256,7 +261,8 @@ public class DBMetadata {
 			}
 		}
 		rs.close();
-		
+		 
+	    	    
 		processTableMapping(tables);
 		
 		for(MetaPartition p:partitions){
@@ -267,6 +273,35 @@ public class DBMetadata {
 		}
 		
 		return tables;
+	}
+	
+	private void getTableIndexes(DatabaseMetaData metadata,MetaTable table)throws SQLException{
+		ResultSet rs = metadata.getIndexInfo(catalog, schema, table.getName(), false, true);  
+	    while(rs.next()){
+	    	short type=rs.getShort("TYPE");
+	    	if(type != DatabaseMetaData.tableIndexStatistic){		    	
+		    	String indexName  = rs.getString("INDEX_NAME");
+		    	Integer position  = rs.getInt("ORDINAL_POSITION");			    	  
+		    	String columnName = rs.getString("COLUMN_NAME");			    	 		    
+		    	boolean nonUnique = rs.getBoolean("NON_UNIQUE"); 
+		    	
+		    	if(indexName.equalsIgnoreCase("PRIMARY")==false){		    	
+			    	MetaIndex index=table.getIndex(indexName);
+			    	if(index==null){			    	
+				    	index=new MetaIndex();
+				    	index.setName(indexName);
+				    	index.setType(type);
+				    	index.setUnique(!nonUnique);
+				    					    	 
+				    	table.addIndex(index);
+			    	}
+			    	
+			    	MetaColumn c=table.getColumn(columnName);
+			    	index.addColumn(c,position-1); 	
+		    	}
+	    	}		    	
+	    }		    		    
+	    rs.close(); 	 					    		    		 
 	}
 	
 	private void processTableMapping(List<MetaTable> tables){
@@ -298,6 +333,7 @@ public class DBMetadata {
 	    	column.setKey(true);
 	    	keyColumns.put(keyseq, column);
 	    }
+	    
 	    for(MetaColumn c:keyColumns.values()){
 	    	table.addKeyColumn(c);
 	    }

@@ -11,6 +11,8 @@ public class MetaTable extends Name implements Cloneable{
 	
 	private List<MetaColumn> keyColumns=new ArrayList<MetaColumn>();
 	
+	private List<MetaIndex> indexes=new ArrayList<MetaIndex>();
+	
 	private String javaPackage;
 	
 	private long serialID=0L;
@@ -27,6 +29,24 @@ public class MetaTable extends Name implements Cloneable{
 		super(true);
 		
 		this.setName(name);
+	}
+	
+	
+	public void addIndex(MetaIndex index){
+		indexes.add(index);
+	}
+	
+	public MetaIndex getIndex(String indexName){
+		for(MetaIndex index:indexes){
+			if(indexName.equalsIgnoreCase(index.getName())){
+				return index;
+			}
+		}
+		return null;
+	}
+	
+	public List<MetaIndex> getIndexes(){
+		return this.indexes;
 	}
 	
 	public long getSerialID(){
