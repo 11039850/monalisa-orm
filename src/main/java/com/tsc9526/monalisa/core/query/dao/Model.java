@@ -520,7 +520,8 @@ public abstract class Model<T extends Model> implements Serializable{
 				}
 			}
 		}
-		return new Validator().validate(this);
+		
+		return validator.validate(this);
 	}
 	
 	public static enum Event {
