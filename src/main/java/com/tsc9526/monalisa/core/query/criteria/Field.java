@@ -92,7 +92,7 @@ public class Field<X,Y extends Criteria>{
 		return add(" NOT BETWEEN ? AND ?", from,to); 
 	}
 	
-	public Y in(X[] values){
+	public Y in(X... values){
 		if(q.isEmpty()==false){
 			q.add(" AND ");
 		}
@@ -101,7 +101,7 @@ public class Field<X,Y extends Criteria>{
 		return criteria;
 	}
 	
-	public Y notin(X[] values){
+	public Y notin(X... values){
 		if(q.isEmpty()==false){
 			q.add(" AND ");
 		}
