@@ -76,18 +76,18 @@ public class DBConfig implements com.tsc9526.monalisa.core.annotation.DB{
 			prefixs=new String[]{"DB."+configName.trim(), "DB"};
 		}
 		
-		this.modelClass      = getValue(p,"modelClass", db.modelClass(),prefixs);
-		this.datasourceClass = getValue(p,"datasourceClass", db.datasourceClass(),prefixs);
-		this.url             = getValue(p,"url", db.url(),prefixs);
-		this.driver          = getValue(p,"driver", db.driver(),prefixs);
-		this.catalog         = getValue(p,"catalog", db.catalog(),prefixs);
-		this.schema          = getValue(p,"schema", db.schema(),prefixs);
-		this.username        = getValue(p,"username", db.username(),prefixs);
-		this.password        = getValue(p,"password", db.password(),prefixs);
-		this.tables          = getValue(p,"tables", db.tables(),prefixs);
-		this.partitions      = getValue(p,"partitions", db.partitions(),prefixs);	
-		this.modelListener   = getValue(p,"modelListener", db.modelListener(),prefixs);
-		this.mapping         = getValue(p,"mapping", db.mapping(),prefixs);			
+		this.modelClass      = getValue(p,"cfg.modelClass",      db.modelClass(),     prefixs);
+		this.datasourceClass = getValue(p,"cfg.datasourceClass", db.datasourceClass(),prefixs);
+		this.url             = getValue(p,"cfg.url",             db.url(),            prefixs);
+		this.driver          = getValue(p,"cfg.driver",          db.driver(),         prefixs);
+		this.catalog         = getValue(p,"cfg.catalog",         db.catalog(),        prefixs);
+		this.schema          = getValue(p,"cfg.schema",          db.schema(),         prefixs);
+		this.username        = getValue(p,"cfg.username",        db.username(),       prefixs);
+		this.password        = getValue(p,"cfg.password",        db.password(),       prefixs);
+		this.tables          = getValue(p,"cfg.tables",          db.tables(),         prefixs);
+		this.partitions      = getValue(p,"cfg.partitions",      db.partitions(),     prefixs);	
+		this.modelListener   = getValue(p,"cfg.modelListener",   db.modelListener(),  prefixs);
+		this.mapping         = getValue(p,"cfg.mapping",         db.mapping(),        prefixs);			
 			
 		processUrlHosts();
 	}
