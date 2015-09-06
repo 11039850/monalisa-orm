@@ -34,10 +34,13 @@ public class ${table.javaName} extends ${modelClass}<${table.javaName}> implemen
 	 	return new Select(new ${table.javaName}());
 	}
 	 
+	/**
+	 * Create Query, the result class is ${table.javaName}
+	 */ 
 	public static final Query createQuery(){
 		Class<?> clazz=ClassHelper.findClassWithAnnotation(${table.javaName}.class,DB.class);
 		DBConfig db=dsm.getDBConfig(clazz);
-		return new Query(db);
+		return new Query(db,${table.javaName}.class);
 	}
 	 
 	public ${table.javaName}(){
