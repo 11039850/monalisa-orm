@@ -139,7 +139,7 @@ public @interface DB{
 	/**
 	 * 
 	 * 如指定值为: TEST, 则配置前缀为: DB.TEST.xxx <br>
-	 * cfg, sql, pool 这三个保留, 为防止冲突 , 不能作为配置名. 
+	 * cfg 为通用配置项名, 不能作为配置名. 
 	 * 
 	 * @return
 	 */
