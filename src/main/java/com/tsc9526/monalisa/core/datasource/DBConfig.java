@@ -44,27 +44,48 @@ public class DBConfig implements com.tsc9526.monalisa.core.annotation.DB{
 	private Properties p=new Properties();
 	
 	private List<Host> dbHosts=new ArrayList<Host>();
+	
 	private DataSource ds;
 	
 	private DBConfig owner; 
 	
 	private String[] prefixs=new String[]{"DB.cfg"};		
 	
+	private boolean initialized=false;
+	
 	private DBConfig(){
 	}
 	
-	public DBConfig(String key,DB db){	 
+	DBConfig(String key,DB db){	 
 		this.db=db;
-		this.key=key;
-		
-		init(this.db);
+		this.key=key;				 
 	}
 	
+	public DB getDb() {		
+		return db;
+	} 
+	
+	public String key() {		 
+		return key;
+	} 
+	
 	public DBConfig getOwner(){
+		checkInit();
+		
 		return owner;
 	}
 	
-	public void init(DB db){
+	private void checkInit(){
+		if(!initialized){
+			synchronized (this) {
+				if(!initialized){
+					init(db);
+				}
+			}			
+		}
+	}
+	
+	synchronized void init(DB db){
 		this.db=db;
 		
 		loadCfgFromFile();	
@@ -90,6 +111,8 @@ public class DBConfig implements com.tsc9526.monalisa.core.annotation.DB{
 		this.mapping         = getValue(p,"mapping",         db.mapping(),        prefixs);			
 			
 		processUrlHosts();
+		
+		initialized=true;
 	}
 		
 	protected void processUrlHosts() {
@@ -164,10 +187,14 @@ public class DBConfig implements com.tsc9526.monalisa.core.annotation.DB{
 	}
 	
 	public List<Host> getHosts(){
+		checkInit();
+		
 		return this.dbHosts;
 	}
 	 		
 	public synchronized DataSource getDataSource(){
+		checkInit();
+		
 		if(ds!=null){
 			String cc=datasourceClass();
 			
@@ -245,81 +272,107 @@ public class DBConfig implements com.tsc9526.monalisa.core.annotation.DB{
 	}
 	
 	public String modelClass(){
+		checkInit();
+		
 		return this.modelClass;
 	}
 	
 	public String datasourceClass(){
+		checkInit();
+		
 		return this.datasourceClass;
 	}
  
 	public String url(){
+		checkInit();
+		
 		return this.url;
 	}	
 	 
 	public String driver(){
+		checkInit();
+		
 		return this.driver;
 	}
 	
 	public String catalog(){
+		checkInit();
+		
 		return this.catalog;
 	}
 	
 	public String schema(){
+		checkInit();
+		
 		return this.schema;
 	}
    
-	public String username() {		 
+	public String username() {
+		checkInit();
+		
 		return this.username;
 	}
 	
 	public String password(){
+		checkInit();
+		
 		return this.password;
 	}
 		 
 	public String tables(){
+		checkInit();
+		
 		return this.tables;
 	}
 	
 	 
 	public String mapping(){
+		checkInit();
+		
 		return this.mapping;
 	}	
   
 	public String partitions(){
+		checkInit();
+		
 		return this.partitions;
 	}
 	
 	public String modelListener(){
+		checkInit();
+		
 		return this.modelListener;
-	}
-	
-	public DB getDb() {
-		return db;
-	} 
-	
-	public String key() {
-		return key;
-	} 
+	}	
 	 
 	public String configName() {
+		checkInit();
+		
 		return this.configName;
 	}
  
 	public String configFile(){
+		checkInit();
+		
 		return this.configFile;
 	} 
 	
 	public String getProperty(String key){
+		checkInit();
+		
 		return this.getValue(p, key, null, prefixs);
 		
 	}
 	
 	public String getProperty(String key,String defaultValue){
+		checkInit();
+		
 		return this.getValue(p, key, defaultValue, prefixs);
 	}
 
 	
 	public int getProperty(String key,int defaultValue){
+		checkInit();
+		
 		String v=getProperty(key);
 		if(v==null || v.trim().length()==0){
 			return defaultValue;
@@ -328,7 +381,7 @@ public class DBConfig implements com.tsc9526.monalisa.core.annotation.DB{
 		}
 	}
 	 
-	public Query createQuery(){
+	public Query createQuery(){		
 		return new Query(this);
 	}
 	
@@ -380,6 +433,7 @@ public class DBConfig implements com.tsc9526.monalisa.core.annotation.DB{
 		
 		private void initDBConfig(){
 			cfg=new DBConfig();
+			cfg.initialized=true;
 			cfg.owner=DBConfig.this;
 			
 			
@@ -413,9 +467,7 @@ public class DBConfig implements com.tsc9526.monalisa.core.annotation.DB{
 				x=NAME+"@"+x;
 			}
 			
-			cfg.key="#"+x;
-			
-			
+			cfg.key="#"+x;						
 		}
 		
 		public DBConfig getConfig(){

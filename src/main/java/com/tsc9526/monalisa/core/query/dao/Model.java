@@ -32,64 +32,34 @@ public abstract class Model<T extends Model> implements Serializable{
 	private static final long serialVersionUID = 703976566431364670L;
 
 	protected static DataSourceManager dsm=DataSourceManager.getInstance();
-	
-	protected DBConfig db;
- 
+	 
 	protected boolean     fieldFilterExcludeMode=true;	
 	protected Set<String> fieldFilterSets=new LinkedHashSet<String>();
-		 
-	protected MetaClass metaClass;
-	protected List<FGS> fields;	 
-	protected Table table;	
- 	protected FGS   autoField;
- 	protected boolean updateKey=false;
- 	
- 	protected Partition partition;
- 	protected Listener	listener;
- 	
- 	protected boolean readonly=false;
- 	
-	public Model(){
-		Class<?> clazz=ClassHelper.findClassWithAnnotation(this.getClass(),DB.class);
-		if(clazz==null){
-			throw new RuntimeException("Model: "+this.getClass()+" must implement interface annotated by: "+DB.class);
-		}
+	
+	protected boolean     updateKey=false;
+	protected boolean     readonly =false;
+	
+	private transient ModelMeta modelMeta;
+	  	
+	public Model(){	
 		
-		this.table=this.getClass().getAnnotation(Table.class);
-		
-		this.db=dsm.getDBConfig(clazz);
-		
-		if(this.table==null){
-			throw new RuntimeException("Model: "+this.getClass()+" must with a annotation: "+Table.class);
-		}
-	 
-		String ls=this.db.modelListener();
-		if(ls!=null && ls.trim().length()>0){
-			try{
-				listener=(Listener)Class.forName(ls.trim()).newInstance();
-			}catch(Exception e){
-				throw new RuntimeException("Invalid model listener class: "+ls.trim()+", "+e,e);
-			}
-		}
-		
-		this.metaClass=ClassHelper.getMetaClass(this.getClass());
-		this.fields=metaClass.getFieldsWithAnnotation(Column.class);
-		
-		for(Object o:this.fields()){
-			FGS fgs=(FGS)o;
-			
-			Column c=fgs.getField().getAnnotation(Column.class);
-			if(c.auto()){
-				autoField=fgs;
-				break;
-			}
-		}
 	}	 
  
+	protected ModelMeta mm() {
+		if(modelMeta==null){
+			synchronized (this) {
+				if(modelMeta==null){
+					modelMeta=new ModelMeta(this);
+				}
+			}
+		}
+		return modelMeta;
+	}
+	
 	/**
 	 * @see com.tsc9526.monalisa.core.tools.ModelHelper#parseModel(Model, Object)
 	 * 
-	 * @param dataObject 
+	 * @param dataObject HttpServletRequest, Map, JsonObject, String(json format), JavaBean
 	 * @param mappings  [Options] Translate dataObject field to model field <br>
 	 * For example: <br> 
 	 * "user_id=id", ... // Parse dataObject.user_id to Model.id<br>
@@ -224,14 +194,14 @@ public abstract class Model<T extends Model> implements Serializable{
 	}
 	
 	protected void before(Event event){
-		if(listener!=null){
-			listener.before(event, this);
+		if(mm().listener!=null){
+			mm().listener.before(event, this);
 		}
 	}
 	
 	protected void after(Event event, int r) {
-		if(listener!=null){
-			listener.after(event, this,r);
+		if(mm().listener!=null){
+			mm().listener.after(event, this,r);
 		}
 	}
 	 
@@ -241,36 +211,32 @@ public abstract class Model<T extends Model> implements Serializable{
 	 * @return 
 	 */
 	public T clear(){
-		for(FGS fgs:fields){
+		for(FGS fgs:fields()){
 			fgs.setObject(this,null);
 		}
 		
 		return (T)this;
 	}
 	
-	protected Dialect dialect;
+	
 	/**
 	 * 
 	 * @return 返回数据库方言
 	 */
-	public Dialect getDialect(){
-		if(dialect==null){
-			dialect=dsm.getDialect(this.db);
-		}
-		
-		return dialect;
+	public Dialect getDialect(){		 		
+		return mm().dialect;
 	}
 	
 	/**
 	 * 
 	 * @return 返回表的字段列表
 	 */
-	public List<FGS> fields() {
-		return this.fields;
+	public List<FGS> fields() {		 
+		return mm().fields;
 	}	
 	
 	public FGS field(String name) {
-		for(FGS fgs:this.fields){
+		for(FGS fgs:fields()){
 			Column c=fgs.getField().getAnnotation(Column.class);
 			if(fgs.getFieldName().equals(name) || c.name().equals(name)){
 				return fgs;
@@ -301,7 +267,7 @@ public abstract class Model<T extends Model> implements Serializable{
 	}
 	
 	public T set(String name,Object value){
-		for(FGS fgs:fields){
+		for(FGS fgs:fields()){
 			Column c=fgs.getField().getAnnotation(Column.class);
 			if(name.equals(fgs.getFieldName()) || name.equals(c.name())){
 				fgs.setObject(this, value);
@@ -316,10 +282,10 @@ public abstract class Model<T extends Model> implements Serializable{
 	 * @return 返回表名等信息
 	 */
 	public Table table(){
-		if(partition!=null){			 
-			return CreateTableCache.getTable(partition, this, this.table);
+		if(mm().partition!=null){			 
+			return CreateTableCache.getTable(mm().partition, this, mm().table);
 		}else{
-			return this.table;
+			return mm().table;
 		}
 	}
 	 
@@ -327,8 +293,8 @@ public abstract class Model<T extends Model> implements Serializable{
 	 * 
 	 * @return 返回表的自增字段， 如果没有则返回null
 	 */
-	public FGS autoField(){ 
-		return autoField;
+	public FGS autoField(){ 		
+		return mm().autoField;
 	}
 	
 	/**
@@ -336,7 +302,7 @@ public abstract class Model<T extends Model> implements Serializable{
 	 * @return 数据库连接信息
 	 */
 	public DBConfig db(){
-		return this.db;
+		return mm().db;
 	}
 	
 	
@@ -357,7 +323,7 @@ public abstract class Model<T extends Model> implements Serializable{
 		if(fieldFilterSets.size()>0){	
 			Set<String> fs=new LinkedHashSet<String>();			 
 			//Add primary key
-			for(FGS fgs:fields){
+			for(FGS fgs:fields()){
 				Column c=fgs.getField().getAnnotation(Column.class);
 				if(c.key()){
 					fs.add(getDialect().getColumnName(c.name()));
@@ -366,7 +332,7 @@ public abstract class Model<T extends Model> implements Serializable{
 			}			
 			
 			if(fieldFilterExcludeMode){				
-				for(FGS fgs:fields){
+				for(FGS fgs:fields()){
 					Column c=fgs.getField().getAnnotation(Column.class);
 					String f=getDialect().getColumnName(c.name());
 					if(fieldFilterSets.contains(f.toLowerCase()) == false && fs.contains(f)==false){
@@ -440,7 +406,7 @@ public abstract class Model<T extends Model> implements Serializable{
 	public T excludeBlobs(int maxLength){
 		List<String> es=new ArrayList<String>();
 		
-		for(FGS fgs:fields){
+		for(FGS fgs:fields()){
 			Column column=fgs.getField().getAnnotation(Column.class);
 			if(column.length()>=maxLength){
 				es.add(getDialect().getColumnName(column.name().toLowerCase()));
@@ -476,7 +442,7 @@ public abstract class Model<T extends Model> implements Serializable{
 		try{
 			T x=(T)this.getClass().newInstance();
 			
-			for(FGS fgs:fields){
+			for(FGS fgs:fields()){
 				Object value=fgs.getObject(this);
 				fgs.setObject(x, value);
 			}
@@ -492,7 +458,7 @@ public abstract class Model<T extends Model> implements Serializable{
 	}
 	  
 	protected void doValidate() {
-		String validate=db.getProperty("validate", "false");
+		String validate=mm().db.getProperty("validate", "false");
 		if(validate.equalsIgnoreCase("true") || validate.equals("1")){			
 			List<String> errors=validate();
 			if(errors.size()>0){
@@ -509,7 +475,7 @@ public abstract class Model<T extends Model> implements Serializable{
 	 */
 	public List<String> validate(){
 		if(validator==null){
-			String clazz=db.getProperty("validator");
+			String clazz=mm().db.getProperty("validator");
 			if(clazz==null || clazz.trim().length()==0){
 				validator=new Validator();
 			}else{
@@ -522,6 +488,10 @@ public abstract class Model<T extends Model> implements Serializable{
 		}
 		
 		return validator.validate(this);
+	}
+	
+	protected Partition<?> createPartition(){
+		return null;
 	}
 	
 	public static enum Event {
@@ -537,5 +507,55 @@ public abstract class Model<T extends Model> implements Serializable{
 		public boolean parse(Model<?> m,T data,String... mappings);
 	}
 
+	protected static class ModelMeta{
+		protected Dialect dialect;
+		protected DBConfig  db;
+		protected List<FGS> fields;
+		protected FGS       autoField;	
+		protected Table     table;	
+		protected Partition partition;
+		protected Listener  listener;
+		
+		ModelMeta(Model m){
+			Class<?> clazz=ClassHelper.findClassWithAnnotation(m.getClass(),DB.class);
+			if(clazz==null){
+				throw new RuntimeException("Model: "+m.getClass()+" must implement interface annotated by: "+DB.class);
+			}
+			
+			table=m.getClass().getAnnotation(Table.class);
+			
+			db=dsm.getDBConfig(clazz);
+			
+			if(table==null){
+				throw new RuntimeException("Model: "+m.getClass()+" must with a annotation: "+Table.class);
+			}
+		 
+			dialect=dsm.getDialect(db);			 
+			
+			partition=m.createPartition();
+			
+			String ls=db.modelListener();
+			if(ls!=null && ls.trim().length()>0){
+				try{
+					listener=(Listener)Class.forName(ls.trim()).newInstance();
+				}catch(Exception e){
+					throw new RuntimeException("Invalid model listener class: "+ls.trim()+", "+e,e);
+				}
+			}
+			
+			MetaClass metaClass=ClassHelper.getMetaClass(m.getClass());
+			fields=metaClass.getFieldsWithAnnotation(Column.class);
+			
+			for(Object o:fields){
+				FGS fgs=(FGS)o;
+				
+				Column c=fgs.getField().getAnnotation(Column.class);
+				if(c.auto()){
+					autoField=fgs;
+					break;
+				}
+			}
+		}
+	}
 }
 
