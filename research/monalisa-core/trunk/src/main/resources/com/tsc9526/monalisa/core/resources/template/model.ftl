@@ -5,13 +5,13 @@ package ${table.javaPackage};
 <#list imports as i>
 import ${i};
 </#list>
+<#if table.partition??>
+import com.tsc9526.monalisa.core.query.partition.Partition;
+</#if>
 <#if table.keyColumns?size = 1 >
 import java.util.List;
 import java.util.Map;
 import java.util.LinkedHashMap;
-</#if>
-<#if table.partition??>
-import com.tsc9526.monalisa.core.query.partition.Partition;
 </#if>
 
 /**
