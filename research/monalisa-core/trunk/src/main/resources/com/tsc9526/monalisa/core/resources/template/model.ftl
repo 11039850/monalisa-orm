@@ -10,6 +10,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.LinkedHashMap;
 </#if>
+<#if table.partition??>
+import com.tsc9526.monalisa.core.query.partition.Partition;
+</#if>
 
 /**
  * Created by monalisa at ${.now}
@@ -17,7 +20,7 @@ import java.util.LinkedHashMap;
 @Table(name="${table.name}")
 public class ${table.javaName} extends ${modelClass}<${table.javaName}> implements ${dbi}{
 	private static final long serialVersionUID = ${table.serialID?c}L;
-	
+		 
 	public static final Insert INSERT(){
 	 	return new Insert(new ${table.javaName}());
 	}
@@ -37,28 +40,41 @@ public class ${table.javaName} extends ${modelClass}<${table.javaName}> implemen
 	/**
 	 * Create Query, the result class is ${table.javaName}
 	 */ 
-	public static final Query createQuery(){
+	public static final Query query(){
 		Class<?> clazz=ClassHelper.findClassWithAnnotation(${table.javaName}.class,DB.class);
 		DBConfig db=dsm.getDBConfig(clazz);
 		return new Query(db,${table.javaName}.class);
 	}
+	
+	/**
+	* Simple query with example <br>
+	* 
+	*/
+	public static Criteria criteria(){
+		return new Example().createCriteria();
+	} 
 	 
 	public ${table.javaName}(){
 		super();
 		
-		<#if table.partition??  && table.partition.args??>
-		this.partition=new ${table.partition.clazz}();		
+	}
+	
+	<#if table.partition??  && table.partition.args??>
+	protected Partition<?> createPartition(){
+		Partition<?> partition=new ${table.partition.clazz}();		
 		  <#assign args=""/>
 		  <#list table.partition.args as x>		     
 		    <#assign args='${args}, "${x}"'/>			  
 		  </#list>		 
-		this.partition.setup("${table.partition.tablePrefix}"${args});		
-		<#elseif table.partition??>
-		this.partition=new ${table.partition.clazz}();
-		this.partition.setup("${table.partition.tablePrefix}");
-		</#if>
-			
+		partition.setup("${table.partition.tablePrefix}"${args});
+	}		
+	<#elseif table.partition??>
+	protected Partition<?> createPartition(){
+		Partition<?> partition=new ${table.partition.clazz}();
+		partition=new ${table.partition.clazz}();
+		partition.setup("${table.partition.tablePrefix}");
 	}
+	</#if>
 	
 	<#if table.keyColumns?size gt 0 >
 	/**
@@ -219,15 +235,7 @@ public class ${table.javaName} extends ${modelClass}<${table.javaName}> implemen
 		}
 		</#if>
 	}
-	
-	/**
-	* Simple query with example <br>
-	* 
-	*/
-	public static Criteria criteria(){
-		return new Example().createCriteria();
-	}
-	
+	 
 		
 	public static class Example extends com.tsc9526.monalisa.core.query.criteria.Example<Criteria,${table.javaName}>{
 		public Example(){}

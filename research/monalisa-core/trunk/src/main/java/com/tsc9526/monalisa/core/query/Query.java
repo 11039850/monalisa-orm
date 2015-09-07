@@ -43,6 +43,11 @@ import freemarker.log.Logger;
 public class Query {	
 	static Logger logger=Logger.getLogger(Query.class.getName());
 	
+	/**
+	 * 是否显示执行的SQL语句, 默认为: false
+	 */
+	public static boolean SQL_DEBUG=false;
+	
 	protected DataSourceManager dsm=DataSourceManager.getInstance();
 	
 	protected StringBuffer sql=new StringBuffer();
@@ -220,7 +225,7 @@ public class Query {
 			 
 			SQLHelper.setPreparedParameters(pst, parameters);
 			
-			if( "true".equalsIgnoreCase( db.getProperty("sql.debug","false") ) ){
+			if( SQL_DEBUG || "true".equalsIgnoreCase( db.getProperty("sql.debug","false") ) ){
 				logger.info(getExecutableSQL());
 			}
 			
