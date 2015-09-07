@@ -71,4 +71,21 @@ public class Delete<T extends Model> {
 		
 		return query.execute();
 	}
+	
+	public DeleteForExample deleteForExample(Example example){
+		return new DeleteForExample(example);
+	}
+	
+	
+	public class DeleteForExample{
+		private Example example;
+		
+		public DeleteForExample(Example example){
+			this.example=example;
+		}
+		
+		public int delete(){
+			return Delete.this.deleteByExample(example);
+		}	  
+	}
 }

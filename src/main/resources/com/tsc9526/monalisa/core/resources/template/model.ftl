@@ -283,8 +283,22 @@ public class ${table.javaName} extends ${modelClass}<${table.javaName}> implemen
 		/**
 		 * Create Select for example
 		 */
-		public Select.SelectForExample example(){
+		public Select.SelectForExample exampleSelect(){
 			return SELECT().selectForExample(this.example);
+		}
+		
+		/**
+		 * Create Update for example
+		 */
+		public Update.UpdateForExample exampleUpdate(){
+			return UPDATE().updateForExample(this.example);
+		}
+		
+		/**
+		 * Create Delete for example
+		 */
+		public Delete.DeleteForExample exampleDelete(){
+			return DELETE().deleteForExample(this.example);
 		}
 		
 		<#list table.columns as f>

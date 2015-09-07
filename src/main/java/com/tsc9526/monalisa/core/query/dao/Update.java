@@ -81,5 +81,24 @@ public class Update<T extends Model>{
 		return query.execute();
 	}
 	
+	public UpdateForExample updateForExample(Example example){
+		return new UpdateForExample(example);
+	}
+	
+	public class UpdateForExample{
+		private Example example;
+		
+		public UpdateForExample(Example example){
+			this.example=example;
+		}
+		
+		public int update(){
+			return Update.this.updateByExample(example);
+		}
+		
+		public int updateSelective(){
+			return Update.this.updateSelectiveByExample(example);
+		}
+	}
 	 
 }
