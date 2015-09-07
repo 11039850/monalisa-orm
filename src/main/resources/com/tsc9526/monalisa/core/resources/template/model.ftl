@@ -62,17 +62,22 @@ public class ${table.javaName} extends ${modelClass}<${table.javaName}> implemen
 	<#if table.partition??  && table.partition.args??>
 	protected Partition<?> createPartition(){
 		Partition<?> partition=new ${table.partition.clazz}();		
-		  <#assign args=""/>
-		  <#list table.partition.args as x>		     
-		    <#assign args='${args}, "${x}"'/>			  
-		  </#list>		 
+		
+		<#assign args=""/>
+		<#list table.partition.args as x>		     
+			<#assign args='${args}, "${x}"'/>			  
+		</#list>		 
 		partition.setup("${table.partition.tablePrefix}"${args});
+		
+		return partition;
 	}		
 	<#elseif table.partition??>
 	protected Partition<?> createPartition(){
 		Partition<?> partition=new ${table.partition.clazz}();
-		partition=new ${table.partition.clazz}();
+		
 		partition.setup("${table.partition.tablePrefix}");
+		
+		return partition;
 	}
 	</#if>
 	
