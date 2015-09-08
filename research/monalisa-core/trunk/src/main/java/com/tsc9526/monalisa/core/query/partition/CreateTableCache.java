@@ -7,6 +7,8 @@ import java.util.concurrent.ConcurrentHashMap;
 import com.tsc9526.monalisa.core.annotation.Table;
 import com.tsc9526.monalisa.core.datasource.DBConfig;
 import com.tsc9526.monalisa.core.datasource.DataSourceManager;
+import com.tsc9526.monalisa.core.generator.DBMetadata;
+import com.tsc9526.monalisa.core.meta.MetaTable;
 import com.tsc9526.monalisa.core.query.dao.Model;
 
 
@@ -23,8 +25,15 @@ public class CreateTableCache{
 		if(table==null){
 			synchronized (lock) {
 				if(hTables.containsKey(tableKey)==false){
-					DataSourceManager dsm=DataSourceManager.getInstance();		
-					if(dsm.getDialect(db).createTableIfNotExists(db,tableName)){
+					DataSourceManager dsm=DataSourceManager.getInstance();	
+					
+					String tablePrefix=partition.getMetaPartition().getTablePrefix();
+					MetaTable metaTable=DBMetadata.getMetaTable(db.key(), tablePrefix);
+					if(metaTable==null || metaTable.getCreateTable()==null){
+						throw new RuntimeException("Fail create table: "+tableName+", db: "+db.key()+", MetaTable not found: "+tablePrefix);
+					}
+					
+					if(dsm.getDialect(db).createTableIfNotExists(db,metaTable,tableName)){
 						table=new PT(tableName,modelTable);
 						hTables.put(tableKey,table);
 					}else{

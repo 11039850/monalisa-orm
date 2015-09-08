@@ -1,22 +1,14 @@
 package com.tsc9526.monalisa.core.query.dialect;
 
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.sql.Statement;
-
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 import com.tsc9526.monalisa.core.annotation.Column;
 import com.tsc9526.monalisa.core.datasource.DBConfig;
-import com.tsc9526.monalisa.core.datasource.DataSourceManager;
-import com.tsc9526.monalisa.core.generator.DBMetadata;
 import com.tsc9526.monalisa.core.meta.MetaTable;
-import com.tsc9526.monalisa.core.meta.MetaTable.CreateTable;
 import com.tsc9526.monalisa.core.query.Query;
 import com.tsc9526.monalisa.core.query.dao.Model;
 import com.tsc9526.monalisa.core.tools.ClassHelper.FGS;
-import com.tsc9526.monalisa.core.tools.CloseQuietly;
 import com.tsc9526.monalisa.core.tools.EnumHelper;
 import com.tsc9526.monalisa.core.tools.JsonHelper;
 import com.tsc9526.monalisa.core.tools.TypeHelper;
@@ -39,40 +31,10 @@ public abstract class Dialect{
  	
 	public abstract Query getLimitQuery(Query origin,int limit ,int offset);
 	
-	public abstract String getCreateTableSQL(CreateTable create,String tableName);
-	
+	 
 	public abstract void loadMetaTableDetails(DBConfig db,MetaTable table);
 	
-	public boolean createTableIfNotExists(DBConfig db,String theTableName){
-		MetaTable table=DBMetadata.getMetaTable(db.key(), theTableName);
-		if(table==null || table.getCreateTable()==null){
-			return false;
-		}
-		
-		String sql=getCreateTableSQL(table.getCreateTable(),theTableName);
-		if(sql!=null && sql.length()>0){
-			Connection conn=null;
-			Statement stmt=null;
-			try{
-				conn=DataSourceManager.getInstance().getDataSource(db).getConnection();
-				stmt=conn.createStatement();
-				
-				logger.info(sql);
-				
-				stmt.execute(sql);
-				
-				return true;
-			}catch(SQLException e){
-				throw new RuntimeException(e);
-			}finally{
-				CloseQuietly.close(stmt);
-				CloseQuietly.close(conn);
-			}
-		}else{
-			return sql!=null;
-		}
-		
-	}
+	public abstract boolean createTableIfNotExists(DBConfig db,MetaTable table,String theTableName); 
 	
 	protected Query doInsert(boolean selective,Model model,boolean updateOnDuplicateKey){
 		Query query=new Query().setResultClass(model.getClass());

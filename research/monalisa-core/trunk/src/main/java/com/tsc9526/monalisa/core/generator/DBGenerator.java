@@ -77,7 +77,7 @@ public class DBGenerator {
 			Writer w = new OutputStreamWriter(out,"UTF-8");
 			for(MetaTable table:tables){
 				if(table.getCreateTable()!=null){
-					w.write("/***CREATE TABLE: "+table.getNameWithoutPartition()+" :: "+table.getName()+"***/\r\n");
+					w.write("/***CREATE TABLE: "+table.getNamePrefix()+" :: "+table.getName()+"***/\r\n");
 					w.write(table.getCreateTable().getCreateSQL()); 
 					w.write("\r\n\r\n\r\n");
 				}
@@ -91,7 +91,7 @@ public class DBGenerator {
 	protected void generatorJavaFile(MetaTable table){		
 		try{			 
 			MetaTable clone=table.clone();
-			clone.setJavaName(null).setName(clone.getNameWithoutPartition());
+			clone.setJavaName(null).setName(clone.getNamePrefix());
 			
 			String className=clone.getJavaName();						
 			JavaFileObject java = processingEnv.getFiler().createSourceFile(javaPackage+"."+className, typeElement);
@@ -121,8 +121,10 @@ public class DBGenerator {
 			String clazz=partition.getClazz();
 			try{ 
 				Class<?> x=Class.forName(clazz);
+				
 				Partition p=(Partition)x.newInstance();
-				p.setup(partition.getTablePrefix(), partition.getArgs());
+				p.setMetaPartition(partition);
+				
 				String error=p.verify(table);
 				if(error!=null){
 					processingEnv.getMessager().printMessage(Kind.ERROR,"Partition error: "+error, typeElement);

@@ -1,12 +1,15 @@
 package com.tsc9526.monalisa.core.query.partition;
 
+import com.tsc9526.monalisa.core.meta.MetaPartition;
 import com.tsc9526.monalisa.core.meta.MetaTable;
 import com.tsc9526.monalisa.core.query.dao.Model;
 
 @SuppressWarnings("rawtypes")
 public interface Partition<T extends Model> {
 	
-	public void setup(String tablePrefix,String... args);
+	public void setMetaPartition(MetaPartition metaPartition);
+	
+	public MetaPartition getMetaPartition();
 	
 	public String getTableName(T model);
 	

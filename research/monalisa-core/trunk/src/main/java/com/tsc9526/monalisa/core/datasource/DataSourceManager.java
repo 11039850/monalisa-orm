@@ -84,6 +84,12 @@ public class DataSourceManager {
 		if(cfg==null && db!=null){
 			cfg=new DBConfig(dbKey,db);
 			dss.put(dbKey, cfg);
+		}else if(cfg!=null && cfg.isCfgFileChanged()){
+			dss.remove(dbKey);			 
+			cfg=null;
+			
+			cfg=new DBConfig(dbKey,db);			 
+			dss.put(dbKey, cfg);	
 		}
 		
 		return cfg;

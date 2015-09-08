@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 import com.tsc9526.monalisa.core.datasource.DBConfig;
+import com.tsc9526.monalisa.core.datasource.DataSourceManager;
 import com.tsc9526.monalisa.core.meta.MetaTable;
 import com.tsc9526.monalisa.core.meta.MetaTable.CreateTable;
 import com.tsc9526.monalisa.core.query.Query;
@@ -74,10 +75,15 @@ public class MysqlDialect extends Dialect{
 		try{
 			conn=db.getDataSource().getConnection();
 			stmt=conn.createStatement();
-			
-			rs=stmt.executeQuery("SHOW CREATE TABLE "+table.getName());
+			 
+			rs=stmt.executeQuery("SHOW CREATE TABLE "+getTableName(table.getName()));
 			if(rs.next()){
 				String createSQL=rs.getString(2);
+				
+				int p=createSQL.indexOf("(");
+				
+				createSQL="CREATE TABLE IF NOT EXISTS "+getTableName(CreateTable.TABLE_VAR)+createSQL.substring(p);
+				
 				CreateTable createTable=new CreateTable(table.getName(), createSQL);
 				table.setCreateTable(createTable);
 			}
@@ -90,26 +96,28 @@ public class MysqlDialect extends Dialect{
 		}
 	}
 
-	public String getCreateTableSQL(CreateTable create,String theTableName){
-		if(create!=null){			 
-			String createSQL  =create.getCreateSQL();
-			String tableName  =create.getTableName();
-			 
-			String lower=createSQL.toLowerCase();
-			int p1=lower.indexOf("table");
-			int p2=lower.indexOf(tableName.toLowerCase(),p1);
+	public boolean createTableIfNotExists(DBConfig db,MetaTable table,String theTableName){
+		String sql  =table.getCreateTable().getCreateSQL(theTableName);			 
+		sql=sql.replaceFirst("\\s+AUTO_INCREMENT\\s*=\\s*\\d+", "");
 			
-			String sql=createSQL.substring(0,p1+5); 
-			sql+=" IF NOT EXISTS ";
-			sql+=theTableName;
-			sql+=createSQL.substring(p2+tableName.length()+1);
+		Connection conn=null;
+		Statement stmt=null;
+		try{
+			conn=DataSourceManager.getInstance().getDataSource(db).getConnection();
+			stmt=conn.createStatement();
 			
-			sql=sql.replaceFirst("\\s+AUTO_INCREMENT\\s*=\\s*\\d+", "");
+			logger.info(sql);
 			
-			return sql;				 
-		}else{
-			return null;
-		}
+			stmt.execute(sql);
+			
+			return true;
+		}catch(SQLException e){
+			throw new RuntimeException(e);
+		}finally{
+			CloseQuietly.close(stmt);
+			CloseQuietly.close(conn);
+		}				
 	}
+	
 	
 }
