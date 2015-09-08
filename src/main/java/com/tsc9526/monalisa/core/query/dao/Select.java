@@ -73,6 +73,15 @@ public class Select<T extends Model,S extends Select> {
 		return this.db==null?model.db():this.db;
 	}
 	 
+	/**
+	 * 
+	 * @param whereStatement
+	 * @param args
+	 * 
+	 * @return The model object
+	 * 
+	 * @see com.tsc9526.monalisa.core.resources.HelpDoc#helpQuery(String, Object...)
+	 */
 	public T selectOne(String whereStatement,Object ... args){
 		Query query=model.getDialect().selectOne(model,whereStatement, args);
 		query.use(db());
@@ -86,18 +95,40 @@ public class Select<T extends Model,S extends Select> {
 		return query.getResult();
 	}	
 
+	/**
+	 * 
+	 * @param example
+	 * @return
+	 * 
+	 * @see com.tsc9526.monalisa.core.resources.HelpDoc#helpQuery(int,int,Example,String, Object...)
+	 */
 	public long count(Example example){
 		Query w=QEH.getQuery(example);
 		
 		return count(w.getSql(), w.getParameters());	 
 	}
-		
+	
+	/**
+	 * 
+	 * @param whereStatement
+	 * @param args
+	 * @return
+	 * 
+	 * @see com.tsc9526.monalisa.core.resources.HelpDoc#helpQuery(String, Object...)
+	 */
 	public long count(String whereStatement,Object ... args){
 		Query query=model.getDialect().count(model,whereStatement, args);		 
 		query.use(db());
 		return query.getResult();
 	}
 	
+	/**
+	 * 
+	 * @param example
+	 * @return
+	 * 
+	 * @see com.tsc9526.monalisa.core.resources.HelpDoc#helpQuery(int,int,Example,String, Object...)
+	 */
 	public T selectOneByExample(Example example){
 		Query w=QEH.getQuery(example);
 		
@@ -108,6 +139,14 @@ public class Select<T extends Model,S extends Select> {
 		return r;
 	}
  	
+	/**
+	 * 
+	 * @param whereStatement
+	 * @param args
+	 * @return
+	 * 
+	 * @see com.tsc9526.monalisa.core.resources.HelpDoc#helpQuery(String, Object...)
+	 */
 	public List<T> select(String whereStatement,Object ... args){
 		Query query=model.getDialect().select(model,whereStatement, args);
 		query.use(db());
@@ -115,6 +154,13 @@ public class Select<T extends Model,S extends Select> {
 		return query.getList();
 	}
 	
+	/**
+	 * 
+	 * @param example
+	 * @return
+	 * 
+	 * @see com.tsc9526.monalisa.core.resources.HelpDoc#helpQuery(int,int,Example,String, Object...)
+	 */
 	public List<T> selectByExample(Example example){
 		Query w=QEH.getQuery(example);
 		
@@ -125,6 +171,16 @@ public class Select<T extends Model,S extends Select> {
 		return r;
 	}
 	
+	/**
+	 * 
+	 * @param limit
+	 * @param offset
+	 * @param whereStatement
+	 * @param args
+	 * @return
+	 * 
+	 * @see com.tsc9526.monalisa.core.resources.HelpDoc#helpQuery(int,int,Example,String, Object...)
+	 */
 	public List<T> select(int limit,int offset,String whereStatement,Object ... args){
 		Query query=model.getDialect().select(model,whereStatement, args);
 		query.use(db());
@@ -133,6 +189,15 @@ public class Select<T extends Model,S extends Select> {
 		return r;
 	}
 	
+	/**
+	 * 
+	 * @param limit
+	 * @param offset
+	 * @param example
+	 * @return
+	 * 
+	 * @see com.tsc9526.monalisa.core.resources.HelpDoc#helpQuery(int,int,Example,String, Object...)
+	 */
 	public List<T> selectByExample(int limit,int offset,Example example){
 		Query w=QEH.getQuery(example);
 		
@@ -143,6 +208,15 @@ public class Select<T extends Model,S extends Select> {
 		return r;
 	}
 	
+	/**
+	 * @param limit
+	 * @param offset
+	 * @param whereStatement
+	 * @param args
+	 * @return
+	 * 
+	 * @see com.tsc9526.monalisa.core.resources.HelpDoc#helpQuery(int,int,Example,String, Object...)
+	 */
 	public Page<T> selectPage(int limit,int offset,String whereStatement,Object ... args){
 		Query query=model.getDialect().select(model,whereStatement, args);
 		query.use(db());
@@ -151,6 +225,15 @@ public class Select<T extends Model,S extends Select> {
 		return r;
 	}
 	
+	/**
+	 * 
+	 * @param limit
+	 * @param offset
+	 * @param example
+	 * @return
+	 * 
+	 * @see com.tsc9526.monalisa.core.resources.HelpDoc#helpQuery(int,int,Example,String, Object...)
+	 */
 	public Page<T> selectPageByExample(int limit,int offset,Example example){
 		Query w=QEH.getQuery(example);
 		
@@ -166,17 +249,31 @@ public class Select<T extends Model,S extends Select> {
 		return select(null);
 	}
 	
+	/**
+	 * 
+	 * @param limit
+	 * @param offset
+	 * @return
+	 * 
+	 * @see com.tsc9526.monalisa.core.resources.HelpDoc#helpQuery(int,int,Example,String, Object...)
+	 */
 	public List<T> selectAll(int limit,int offset){
 		return select(limit, offset, null);
 	}	
 	
+	/**
+	 * 
+	 * @param limit
+	 * @param offset
+	 * @return
+	 * 
+	 * @see com.tsc9526.monalisa.core.resources.HelpDoc#helpQuery(int,int,Example,String, Object...)
+	 */
 	public Page<T> selectAllPage(int limit,int offset){
 		return selectPage(limit, offset, null);
 	}	
 	
-	public SelectForExample selectForExample(Example example){
-		return new SelectForExample(example);
-	}
+	 
 	
 	public class SelectForExample{
 		private Example example;
@@ -197,10 +294,26 @@ public class Select<T extends Model,S extends Select> {
 			return Select.this.selectByExample(example);
 		}	 
 		
+		/**
+		 * 
+		 * @param limit
+		 * @param offset
+		 * @return
+		 * 
+		 * @see com.tsc9526.monalisa.core.resources.HelpDoc#helpQuery(int,int,Example,String, Object...)
+		 */
 		public List<T> select(int limit,int offset){
 			return Select.this.selectByExample(limit, offset, example);
 		}		 
 		
+		/**
+		 * 
+		 * @param limit
+		 * @param offset
+		 * @return
+		 * 
+		 * @see com.tsc9526.monalisa.core.resources.HelpDoc#helpQuery(int,int,Example,String, Object...)
+		 */
 		public Page<T> selectPage(int limit,int offset){
 			return Select.this.selectPageByExample(limit, offset, example);
 		}

@@ -20,11 +20,7 @@ public class Update<T extends Model>{
 		this.model=model;
 		this.model.enableUpdateKey(updateKey);
 	}
-	
-	public T getModel(){
-		return this.model;
-	}
-			
+	 		
 	public Update set(String name,Object value){		
 		this.model.set(name,value);
 		return this;
@@ -51,12 +47,27 @@ public class Update<T extends Model>{
 		return query.execute();
 	}
 	
+	/**
+	 * 
+	 * @param whereStatement
+	 * @param args
+	 * @return
+	 * 
+	 * @see com.tsc9526.monalisa.core.resources.HelpDoc#helpQuery(int,int,Example,String, Object...)
+	 */
 	public int update(String whereStatement,Object ... args){
 		Query query=model.getDialect().update(model,whereStatement,args);
 		query.use(db());
 		return query.execute();	 				 
 	}
 	
+	/**
+	 * 
+	 * @param example
+	 * @return
+	 * 
+	 * @see com.tsc9526.monalisa.core.resources.HelpDoc#helpQuery(int,int,Example,String, Object...)
+	 */
 	public int updateByExample(Example example){
 		Query w=QEH.getQuery(example);
 		
@@ -66,12 +77,27 @@ public class Update<T extends Model>{
 		return query.execute();
 	}
 	
+	/**
+	 * 
+	 * @param whereStatement
+	 * @param args
+	 * @return
+	 * 
+	 * @see com.tsc9526.monalisa.core.resources.HelpDoc#helpQuery(int,int,Example,String, Object...)
+	 */
 	public int updateSelective(String whereStatement,Object ... args){
 		Query query=model.getDialect().updateSelective(model,whereStatement,args);
 		query.use(db());
 		return query.execute();	 				 
 	}
 	
+	/**
+	 * 
+	 * @param example
+	 * @return
+	 * 
+	 * @see com.tsc9526.monalisa.core.resources.HelpDoc#helpQuery(int,int,Example,String, Object...)
+	 */
 	public int updateSelectiveByExample(Example example){
 		Query w=QEH.getQuery(example);
 		
@@ -79,11 +105,7 @@ public class Update<T extends Model>{
 		query.use(db());
 		
 		return query.execute();
-	}
-	
-	public UpdateForExample updateForExample(Example example){
-		return new UpdateForExample(example);
-	}
+	} 
 	
 	public class UpdateForExample{
 		private Example example;
@@ -92,10 +114,22 @@ public class Update<T extends Model>{
 			this.example=example;
 		}
 		
+		/**
+		 * 
+		 * @return
+		 * 
+		 * @see Update#updateByExample(Example)
+		 */
 		public int update(){
 			return Update.this.updateByExample(example);
 		}
 		
+		/**
+		 * 
+		 * @return
+		 * 
+		 * @see Update#updateSelectiveByExample(Example)
+		 */
 		public int updateSelective(){
 			return Update.this.updateSelectiveByExample(example);
 		}
