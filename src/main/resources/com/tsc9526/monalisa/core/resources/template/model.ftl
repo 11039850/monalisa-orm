@@ -54,7 +54,8 @@ public class ${table.javaName} extends ${modelClass}<${table.javaName}> implemen
 	protected Partition<?> createPartition(){
 		Partition<?> partition=new ${table.partition.clazz}();
 		
-		partition.setMetaPartition(DBConfig.fromClass(${dbi}.class).getPartition(this));		 
+		Class<?> clazz=ClassHelper.findClassWithAnnotation(LogApi.class,DB.class);
+		partition.setMetaPartition(dsm.getDBConfig(clazz).getPartition(this));		 
 		 
 		return partition;
 	}
