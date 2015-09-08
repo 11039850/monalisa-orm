@@ -47,7 +47,7 @@ public class Select<T extends Model,S extends Select> {
 	 * 
 	 * @return Select本身
 	 */
-	public S excludeBlobs(String... fields){
+	public S excludeBlobs(){
 		model.excludeBlobs();
 		return (S)this;
 	}
