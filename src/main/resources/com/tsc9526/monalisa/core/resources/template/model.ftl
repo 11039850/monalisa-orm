@@ -183,7 +183,7 @@ public class ${table.javaName} extends ${modelClass}<${table.javaName}> implemen
 		<#list index.columns as c>
 			<#assign m= m + c.javaName?cap_first />				 
 		</#list>
-		<#if m='PrimaryKey'><#assign m= 'ColumnPrimaryKey'/></#if>
+		<#if m='PrimaryKey'><#assign m= 'PrimaryKey2'/></#if>
 		<#if index.unique> 
 		/**
 		* Find by unique key: ${index.name}
