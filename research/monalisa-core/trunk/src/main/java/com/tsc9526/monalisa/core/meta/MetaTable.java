@@ -54,7 +54,7 @@ public class MetaTable extends Name implements Cloneable{
 			StringBuffer sb=new StringBuffer();
 			sb.append(name).append("-").append(getJavaName()).append("-").append(getJavaPackage()).append("-").append(": {\r\n");
 			for(MetaColumn c:columns){
-				sb.append(c.toString()).append("\r\n");
+				sb.append(c.name).append(c.getJavaType()).append("\r\n");
 			}
 			sb.append("}");
 			
