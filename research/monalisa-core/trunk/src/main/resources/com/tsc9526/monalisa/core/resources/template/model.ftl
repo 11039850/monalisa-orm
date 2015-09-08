@@ -5,9 +5,6 @@ package ${table.javaPackage};
 <#list imports as i>
 import ${i};
 </#list>
-<#if table.partition??>
-import com.tsc9526.monalisa.core.query.partition.Partition;
-</#if>
 <#if table.keyColumns?size = 1 >
 import java.util.List;
 import java.util.Map;
@@ -48,18 +45,7 @@ public class ${table.javaName} extends ${modelClass}<${table.javaName}> implemen
 	public ${table.javaName}(){
 		super();
 		
-	}
-	
-	<#if table.partition??>
-	protected Partition<?> createPartition(){
-		Partition<?> partition=new ${table.partition.clazz}();
-		
-		Class<?> clazz=ClassHelper.findClassWithAnnotation(LogApi.class,DB.class);
-		partition.setMetaPartition(dsm.getDBConfig(clazz).getPartition(this));		 
-		 
-		return partition;
-	}
-	</#if>
+	}		 
 	
 	<#if table.keyColumns?size gt 0 >
 	/**

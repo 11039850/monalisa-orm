@@ -11,6 +11,7 @@ import com.tsc9526.monalisa.core.annotation.DB;
 import com.tsc9526.monalisa.core.annotation.Table;
 import com.tsc9526.monalisa.core.datasource.DBConfig;
 import com.tsc9526.monalisa.core.datasource.DataSourceManager;
+import com.tsc9526.monalisa.core.meta.MetaPartition;
 import com.tsc9526.monalisa.core.query.dialect.Dialect;
 import com.tsc9526.monalisa.core.query.partition.CreateTableCache;
 import com.tsc9526.monalisa.core.query.partition.Partition;
@@ -49,7 +50,11 @@ public abstract class Model<T extends Model> implements Serializable{
 		if(modelMeta==null){
 			synchronized (this) {
 				if(modelMeta==null){
-					modelMeta=new ModelMeta(this);
+					try{
+						modelMeta=new ModelMeta(this);
+					}catch(Exception e){
+						throw new RuntimeException(e);
+					}
 				}
 			}
 		}
@@ -500,11 +505,7 @@ public abstract class Model<T extends Model> implements Serializable{
 		
 		return validator.validate(this);
 	}
-	
-	protected Partition<?> createPartition(){
-		return null;
-	}
-	
+	 
 	public static enum Event {
 		INSERT,DELETE,UPDATE,INSERT_OR_UPDATE;
 	}
@@ -527,7 +528,7 @@ public abstract class Model<T extends Model> implements Serializable{
 		protected Partition partition;
 		protected Listener  listener;
 		
-		ModelMeta(Model m){
+		ModelMeta(Model m)throws Exception{
 			Class<?> clazz=ClassHelper.findClassWithAnnotation(m.getClass(),DB.class);
 			if(clazz==null){
 				throw new RuntimeException("Model: "+m.getClass()+" must implement interface annotated by: "+DB.class);
@@ -543,8 +544,12 @@ public abstract class Model<T extends Model> implements Serializable{
 		 
 			dialect=dsm.getDialect(db);
 			
-			partition=m.createPartition();
-			
+			MetaPartition mp=db.getPartition(table.name());
+			if(mp!=null){
+				partition=(Partition)Class.forName(mp.getClazz()).newInstance();
+				partition.setMetaPartition(mp);
+			}
+		  
 			String ls=db.modelListener();
 			if(ls!=null && ls.trim().length()>0){
 				try{
