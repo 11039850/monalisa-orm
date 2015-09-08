@@ -71,13 +71,7 @@ public class DBMetadata {
 				}				
 			}
 			
-			for(String key:hRuntimeTables.keySet()){
-				if(theTableName.startsWith(key)){
-					return hRuntimeTables.get(key);
-				}
-			}
-			
-			return null;			
+			return hRuntimeTables.get(theTableName);			 		
 		}catch(Exception e){
 			throw new RuntimeException(e);
 		}
@@ -215,21 +209,7 @@ public class DBMetadata {
 		File taget=new File(metafile);
 		FileHelper.write(taget, bufArrayOutputStream.toByteArray());  			 
 	}
-
-	private List<MetaPartition> getPartitions(){
-		List<MetaPartition> partitions=new ArrayList<MetaPartition>();
-		String pts=dbcfg.partitions();
-		if(pts!=null && pts.trim().length()>0){
-			String[] ps=pts.trim().split(";");
-			for(String p:ps){
-				p=p.trim();
-				if(p.length()>0){
-					partitions.add(new MetaPartition(p));
-				}
-			}
-		}
-		return partitions;
-	}
+ 
 	
 	private MetaPartition findPartition(List<MetaPartition> partitions,MetaTable table){
 		for(MetaPartition p:partitions){
@@ -244,7 +224,7 @@ public class DBMetadata {
 	}
 	
 	protected List<MetaTable> getTables(DatabaseMetaData metadata)throws SQLException{
-		List<MetaPartition> partitions=getPartitions();
+		List<MetaPartition> partitions=dbcfg.getPartitions();
 		
 		List<MetaTable> tables=new ArrayList<MetaTable>();
 		ResultSet rs=metadata.getTables(catalog, schema, tableName, new String[]{"TABLE"});			 

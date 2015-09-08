@@ -126,13 +126,9 @@ public class MetaTable extends Name implements Cloneable{
 		return this.createTable;
 	}
 	
-	public String getNameWithoutPartition() {		 
+	public String getNamePrefix() {		 
     	if(partition!=null){
-    		String prefix=partition.getTablePrefix();
-    		if(prefix.endsWith("_")){
-    			prefix=prefix.substring(0,prefix.length()-1);
-    		}
-    		return prefix;
+    		return partition.getTablePrefix();    		  
     	}else{		
     		return this.name;
     	}
@@ -145,6 +141,8 @@ public class MetaTable extends Name implements Cloneable{
 	
 	public static class CreateTable implements Serializable{		 
 		private static final long serialVersionUID = 4435179643490161535L;
+		
+		public final static String TABLE_VAR="#{table}";
 		
 		private String tableName;
 		private String createSQL;
@@ -161,9 +159,15 @@ public class MetaTable extends Name implements Cloneable{
 			this.tableName = tableName;
 		}
 	 	
+		public String getCreateSQL(String theNewTableName) {
+			int p=createSQL.indexOf(TABLE_VAR);
+			return createSQL.substring(0,p)+theNewTableName+createSQL.substring(p+TABLE_VAR.length());
+		}
+		
 		public String getCreateSQL() {
 			return createSQL;
 		}
+		
 		public void setCreateSQL(String createSQL) {
 			this.createSQL = createSQL;
 		}

@@ -1,5 +1,6 @@
 package com.tsc9526.monalisa.core.datasource;
 
+import java.io.Closeable;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -12,10 +13,12 @@ import java.util.Properties;
 import javax.sql.DataSource;
 
 import com.tsc9526.monalisa.core.annotation.DB;
+import com.tsc9526.monalisa.core.meta.MetaPartition;
 import com.tsc9526.monalisa.core.query.Query;
+import com.tsc9526.monalisa.core.query.dao.Model;
 import com.tsc9526.monalisa.core.tools.CloseQuietly;
 
-public class DBConfig implements com.tsc9526.monalisa.core.annotation.DB{ 	
+public class DBConfig implements com.tsc9526.monalisa.core.annotation.DB, Closeable{ 	
 	/**
 	 * <code>DEFAULT_PATH= ".";</code> <br>
 	 * The file path for DB.configFile() is :<br>
@@ -53,12 +56,47 @@ public class DBConfig implements com.tsc9526.monalisa.core.annotation.DB{
 	
 	private boolean initialized=false;
 	
+	private File cfgFile;
+	
+	private long cfgFileTime=0L;	 
+	
+	private List<MetaPartition> metaPartitions;
 	private DBConfig(){
 	}
 	
 	DBConfig(String key,DB db){	 
 		this.db=db;
 		this.key=key;				 
+	}
+	
+	public List<MetaPartition> getPartitions(){
+		if(metaPartitions==null){
+			metaPartitions=new ArrayList<MetaPartition>();
+			String pts=partitions();
+			if(pts!=null && pts.trim().length()>0){
+				String[] ps=pts.trim().split(";");
+				for(String p:ps){
+					p=p.trim();
+					if(p.length()>0){
+						metaPartitions.add(new MetaPartition(p));
+					}
+				}
+			}
+		}
+		return metaPartitions;
+	}
+	
+	public MetaPartition getPartition(String tablePrefix){
+		for(MetaPartition p:getPartitions()){
+			if(p.getTablePrefix().equalsIgnoreCase(tablePrefix)){
+				return p;
+			}
+		}
+		return null;
+	}
+	
+	public MetaPartition getPartition(Model<?> m){
+		return getPartition(m.table().name());
 	}
 	
 	public DB getDb() {		
@@ -75,7 +113,14 @@ public class DBConfig implements com.tsc9526.monalisa.core.annotation.DB{
 		return owner;
 	}
 	
-	private void checkInit(){
+	boolean isCfgFileChanged(){
+		if(cfgFile!=null && cfgFileTime>0){
+			return cfgFileTime < cfgFile.lastModified();				 
+		}
+		return false;
+	}
+	
+	private void checkInit(){		 	
 		if(!initialized){
 			synchronized (this) {
 				if(!initialized){
@@ -147,23 +192,25 @@ public class DBConfig implements com.tsc9526.monalisa.core.annotation.DB{
 				}				
 			}
 			
-			File file=new File(configFile);
-			if(file.exists()){
-				System.out.println("Load DB("+key+") config from: "+file.getAbsolutePath());				
+			cfgFile=new File(configFile);
+			if(cfgFile.exists()){
+				System.out.println("Load DB("+key+") config from: "+cfgFile.getAbsolutePath());				
 				try{
-					InputStreamReader reader=new InputStreamReader(new FileInputStream(file),"utf-8");
+					cfgFileTime=cfgFile.lastModified();
+					 
+					InputStreamReader reader=new InputStreamReader(new FileInputStream(cfgFile),"utf-8");
 					p.clear();
 					p.load(reader);
-					reader.close();
+					reader.close();					 
 				}catch(IOException e){
-					throw new RuntimeException("Load db config file: "+file.getAbsolutePath()+", exception: "+e,e);
+					throw new RuntimeException("Load db config file: "+cfgFile.getAbsolutePath()+", exception: "+e,e);
 				}
 			}else{
-				throw new RuntimeException("DB config file: "+file.getAbsolutePath()+" not found!");
+				throw new RuntimeException("DB config file: "+cfgFile.getAbsolutePath()+" not found!");
 			}
 		}	
 	}
-	
+	 
 	protected String getValue(Properties p,String key,String defaultValue,String[] prefixs){
 		String r=null;
 		if(prefixs.length>0){
@@ -261,7 +308,13 @@ public class DBConfig implements com.tsc9526.monalisa.core.annotation.DB{
 		return dbps;
 	}
 	
-	public synchronized void close(){
+	protected void finalize()throws Throwable{
+		close();
+		
+		super.finalize();
+	}
+	
+	public synchronized void close(){		
 		if(ds!=null){
 			try{
 				CloseQuietly.close(ds);	
