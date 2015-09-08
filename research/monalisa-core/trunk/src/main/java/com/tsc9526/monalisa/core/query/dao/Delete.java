@@ -14,11 +14,7 @@ public class Delete<T extends Model> {
 	public  Delete(T model){
 		this.model=model;		 
 	}
-	
-	public T getModel(){
-		return this.model;
-	}
-			
+	 
 	public Delete set(String name,Object value){		
 		this.model.set(name,value);
 		return this;
@@ -45,6 +41,10 @@ public class Delete<T extends Model> {
 		return query.execute();
 	}
 	
+	/**
+	 * 
+	 * @return Number of delete records 
+	 */
 	public int deleteAll(){
 		Query query=model.getDialect().deleteAll(model);
 		query.use(db());
@@ -53,16 +53,24 @@ public class Delete<T extends Model> {
 	
 	/**
 	 * Delete records filter by whereStatement  
-	 * @param whereStatement
-	 * @param args
-	 * @return
+	 * @param whereStatement 
+	 * @param args  
+	 * @see com.tsc9526.monalisa.core.resources.HelpDoc#helpQuery(int,int,Example,String, Object...)
+	 * @return The rows has been deleted
 	 */
 	public int delete(String whereStatement,Object ... args){
 		Query query=model.getDialect().delete(model,whereStatement,args);
 		query.use(db());
 		return query.execute();
 	}
-		 
+	
+	/**
+	 * 
+	 * @param example
+	 * @return The rows has been deleted
+	 * 
+	 * @see com.tsc9526.monalisa.core.resources.HelpDoc#helpQuery(int,int,Example,String, Object...)
+	 */
 	public int deleteByExample(Example example){
 		Query w=QEH.getQuery(example);
 		
@@ -71,11 +79,7 @@ public class Delete<T extends Model> {
 		
 		return query.execute();
 	}
-	
-	public DeleteForExample deleteForExample(Example example){
-		return new DeleteForExample(example);
-	}
-	
+	  
 	
 	public class DeleteForExample{
 		private Example example;
@@ -84,6 +88,11 @@ public class Delete<T extends Model> {
 			this.example=example;
 		}
 		
+		/**
+		 * @return  
+		 * 
+		 * @see Delete#deleteByExample(Example)
+		 */
 		public int delete(){
 			return Delete.this.deleteByExample(example);
 		}	  

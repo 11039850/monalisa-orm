@@ -305,6 +305,17 @@ public abstract class Model<T extends Model> implements Serializable{
 		return mm().db;
 	}
 	
+	/**
+	 * 设置访问数据库
+	 * 
+	 * @param db
+	 * @return
+	 */
+	public T use(DBConfig db){
+		mm().db=db;
+		
+		return (T)this;
+	}
 	
 	public boolean readonly(){
 		return readonly;

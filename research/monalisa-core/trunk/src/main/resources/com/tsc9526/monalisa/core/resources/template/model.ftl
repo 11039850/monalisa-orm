@@ -150,18 +150,34 @@ public class ${table.javaName} extends ${modelClass}<${table.javaName}> implemen
 	public static class Delete extends com.tsc9526.monalisa.core.query.dao.Delete<${table.javaName}>{
 		Delete(${table.javaName} model){
 			super(model);
-		}	 	
+		}
+			
+		DeleteForExample deleteForExample(Example example){
+			return new DeleteForExample(example);
+		} 	
 	}
 	
 	public static class Update extends com.tsc9526.monalisa.core.query.dao.Update<${table.javaName}>{
 		Update(${table.javaName} model){
 			super(model);
+		}
+		
+		Update(${table.javaName} model,boolean updateKey){
+			super(model,updateKey);
+		}
+		
+		UpdateForExample updateForExample(Example example){
+			return new UpdateForExample(example);
 		}				 			
 	}
 	
 	public static class Select extends com.tsc9526.monalisa.core.query.dao.Select<${table.javaName},Select>{		
 		Select(${table.javaName} x){
 			super(x);
+		}	
+		
+		SelectForExample selectForExample(Example example){
+			return new SelectForExample(example);
 		}	
 		
 		<#if table.keyColumns?size gt 0 >
@@ -280,10 +296,25 @@ public class ${table.javaName} extends ${modelClass}<${table.javaName}> implemen
 		}
 		
 		/**
-		 * Create Update for example
+		 * Create Update for example, Ignore update the primary key;
+		 *
+		 * @see #forUpdate(${table.javaName},boolean)
 		 */
-		public Update.UpdateForExample forUpdate(){
-			return UPDATE().updateForExample(this.example);
+		public Update.UpdateForExample forUpdate(${table.javaName} m){
+			return forUpdate(m,false);
+		}
+		
+		/**
+		 * Create Update for example
+		 *
+		 * @param m Update the table data with this model.
+		 * @param updateKey <br>
+		 *    true: Update the primary key if the primary key was set by m <br>
+		 *    false: Ignore update the primary key    
+		 */
+		public Update.UpdateForExample forUpdate(${table.javaName} m, boolean updateKey){
+			Update update=new Update(m,updateKey);
+			return update.updateForExample(this.example);
 		}
 		
 		/**

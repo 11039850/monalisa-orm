@@ -11,7 +11,6 @@ import java.util.Set;
 import com.tsc9526.monalisa.core.annotation.Column;
 import com.tsc9526.monalisa.core.annotation.DB;
 import com.tsc9526.monalisa.core.annotation.Table;
-import com.tsc9526.monalisa.core.datasource.DBConfig;
 import com.tsc9526.monalisa.core.meta.MetaColumn;
 import com.tsc9526.monalisa.core.meta.MetaTable;
 import com.tsc9526.monalisa.core.query.Query;
@@ -47,8 +46,7 @@ public class DBTableGeneratorByTpl{
 	         data.put("dbi", dbi);
 	         
 	         Set<String> imports=new LinkedHashSet<String>();
-	         imports.add(DB.class.getName());
-	         imports.add(DBConfig.class.getName());
+	         imports.add(DB.class.getName());	        
 	         imports.add(Table.class.getName());
 	         imports.add(Column.class.getName());
 	         imports.add(ClassHelper.class.getName());
