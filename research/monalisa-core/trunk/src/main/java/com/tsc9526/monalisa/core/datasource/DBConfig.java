@@ -13,6 +13,7 @@ import java.util.Properties;
 import javax.sql.DataSource;
 
 import com.tsc9526.monalisa.core.annotation.DB;
+import com.tsc9526.monalisa.core.annotation.Table;
 import com.tsc9526.monalisa.core.meta.MetaPartition;
 import com.tsc9526.monalisa.core.query.Query;
 import com.tsc9526.monalisa.core.query.dao.Model;
@@ -96,7 +97,8 @@ public class DBConfig implements com.tsc9526.monalisa.core.annotation.DB, Closea
 	}
 	
 	public MetaPartition getPartition(Model<?> m){
-		return getPartition(m.table().name());
+		String tablePrefix=m.getClass().getAnnotation(Table.class).name();
+		return getPartition(tablePrefix);
 	}
 	
 	public DB getDb() {		
