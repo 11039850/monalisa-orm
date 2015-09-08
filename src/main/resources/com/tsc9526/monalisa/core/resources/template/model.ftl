@@ -35,16 +35,7 @@ public class ${table.javaName} extends ${modelClass}<${table.javaName}> implemen
 	
 	public static final Select SELECT(){
 	 	return new Select(new ${table.javaName}());
-	}
-	 
-	/**
-	 * Create Query, the result class is ${table.javaName}
-	 */ 
-	public static final Query query(){
-		Class<?> clazz=ClassHelper.findClassWithAnnotation(${table.javaName}.class,DB.class);
-		DBConfig db=dsm.getDBConfig(clazz);
-		return new Query(db,${table.javaName}.class);
-	}
+	}	 	 
 	
 	/**
 	* Simple query with example <br>
@@ -192,6 +183,7 @@ public class ${table.javaName} extends ${modelClass}<${table.javaName}> implemen
 		<#list index.columns as c>
 			<#assign m= m + c.javaName?cap_first />				 
 		</#list>
+		<#if m='PrimaryKey'><#assign m= 'ColumnPrimaryKey'/></#if>
 		<#if index.unique> 
 		/**
 		* Find by unique key: ${index.name}
@@ -283,21 +275,21 @@ public class ${table.javaName} extends ${modelClass}<${table.javaName}> implemen
 		/**
 		 * Create Select for example
 		 */
-		public Select.SelectForExample exampleSelect(){
+		public Select.SelectForExample forSelect(){
 			return SELECT().selectForExample(this.example);
 		}
 		
 		/**
 		 * Create Update for example
 		 */
-		public Update.UpdateForExample exampleUpdate(){
+		public Update.UpdateForExample forUpdate(){
 			return UPDATE().updateForExample(this.example);
 		}
 		
 		/**
 		 * Create Delete for example
 		 */
-		public Delete.DeleteForExample exampleDelete(){
+		public Delete.DeleteForExample forDelete(){
 			return DELETE().deleteForExample(this.example);
 		}
 		
