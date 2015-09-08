@@ -541,7 +541,7 @@ public abstract class Model<T extends Model> implements Serializable{
 				throw new RuntimeException("Model: "+m.getClass()+" must with a annotation: "+Table.class);
 			}
 		 
-			dialect=dsm.getDialect(db);			 
+			dialect=dsm.getDialect(db);
 			
 			partition=m.createPartition();
 			
