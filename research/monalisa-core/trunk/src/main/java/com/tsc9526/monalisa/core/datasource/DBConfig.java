@@ -115,7 +115,7 @@ public class DBConfig implements com.tsc9526.monalisa.core.annotation.DB, Closea
 		return owner;
 	}
 	
-	boolean isCfgFileChanged(){
+	public boolean isCfgFileChanged(){
 		if(cfgFile!=null && cfgFileTime>0){
 			return cfgFileTime < cfgFile.lastModified();				 
 		}
