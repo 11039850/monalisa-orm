@@ -79,11 +79,11 @@ public class Query {
 		 setResultClass(resultClass);
 	}
 	 
-	public Query notin(Object[] values){
+	public Query notin(Object... values){
 		 return getDialect().notin(this, values);
 	}
 	 
-	public Query in(Object[] values){
+	public Query in(Object... values){
 		 return getDialect().in(this, values);
 	}
 	
