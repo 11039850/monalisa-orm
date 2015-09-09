@@ -459,7 +459,11 @@ public class Query {
 	}
 
 	public Query use(DBConfig db) {
-		this.db = db;
+		if(db.isCfgFileChanged()){
+			this.db=dsm.getDBConfig(db.key(),db.getDb());
+		}else{
+			this.db = db;
+		}
 		return this;
 	}
 	

@@ -73,12 +73,9 @@ public class DataSourceManager {
 		}
 		return cfg;
 	}
+ 
 	
-	public DBConfig getDBConfig(String dbKey){
-		return dss.get(dbKey);
-	}
-	
-	private synchronized DBConfig getDBConfig(String dbKey,DB db){
+	public synchronized DBConfig getDBConfig(String dbKey,DB db){
 		DBConfig cfg=dss.get(dbKey);
 		
 		if(cfg==null && db!=null){
