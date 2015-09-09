@@ -371,7 +371,7 @@ public abstract class Dialect{
     	
     	int groupByIndex=loweredString.indexOf("group by");
     	if(groupByIndex>0){
-    		return "select count(*) as cnt from( "+cql+") as tmp";
+    		return "SELECT COUNT(*) AS cnt FROM( "+cql+") AS tmp";
     	}else{    		
 	    	int p=loweredString.indexOf("from");
 	    	while(p>0){	    		
@@ -385,7 +385,7 @@ public abstract class Dialect{
 	    	}
 	    	
 	    	if(p>0){
-	    		cql="select count(*) as cnt "+cql.substring(p);
+	    		cql="SELECT COUNT(*) AS cnt "+cql.substring(p);
 	    		return cql;
 	    	}else{
 	    		return sql;
