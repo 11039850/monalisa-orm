@@ -257,7 +257,7 @@ public abstract class Dialect{
 		return inOrNotIn("IN",query,values);
 	}
 	
-	private Query inOrNotIn(String keyInOrNotin,Query query,Object[] values){
+	protected Query inOrNotIn(String keyInOrNotin,Query query,Object[] values){
 		String sql=query.getSql();
 		if(sql.length()>0){
 			char c=sql.charAt(sql.length()-1);
