@@ -91,6 +91,13 @@ public abstract class Dialect{
 	public Query deleteAll(Model model){
 		Query query=new Query().setResultClass(Long.class);
 		
+		query.add("DELETE FROM "+getTableName(model.table().name()));
+		return query;
+	}
+	
+	public Query truncate(Model model){
+		Query query=new Query().setResultClass(Long.class);
+		
 		query.add("TRUNCATE TABLE "+getTableName(model.table().name()));
 		return query;
 	}

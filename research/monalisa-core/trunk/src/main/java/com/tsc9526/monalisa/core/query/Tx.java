@@ -66,6 +66,12 @@ public class Tx {
 			if(tq!=null){
 				rollback();
 			}
+			
+			if(e instanceof RuntimeException){
+				throw (RuntimeException)e;
+			}else{
+				throw new RuntimeException(e);
+			}
 		}finally{
 			if(tq!=null){
 				close();
