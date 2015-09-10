@@ -42,10 +42,23 @@ public class Delete<T extends Model> {
 	}
 	
 	/**
+	 * Delete all data use DML-SQL(Can rollback): delete from xxxTable<br>
+	 * 
 	 * 
 	 * @return Number of delete records 
 	 */
 	public int deleteAll(){
+		Query query=model.getDialect().deleteAll(model);
+		query.use(db());
+		return query.execute();
+	}
+	
+	/**
+	 * Delete all data use DDL-SQL(Cannot rollback): truncate table xxx;<br>
+	 *  
+	 * @return Number of delete records 
+	 */
+	public int truncate(){
 		Query query=model.getDialect().deleteAll(model);
 		query.use(db());
 		return query.execute();
