@@ -282,6 +282,51 @@ public class Select<T extends Model,S extends Select> {
 			this.example=example;
 		}
 		
+		/**
+		 * 只提取某些字段
+		 * 
+		 * @param fields  需要的字段名称
+		 * @return SelectForExample
+		 */
+		public SelectForExample include(String... fields){
+			model.include(fields);
+			return this;
+		}
+		
+		/**
+		 * 排除表的某些字段。 用于在查询表时， 过滤掉某些不必要的字段
+		 * 
+		 * @param fields 要排除的字段名
+		 * 
+		 * @return  SelectForExample
+		 */
+		public SelectForExample exclue(String... fields){
+			model.exclude(fields);
+			return this;
+		}
+		
+		/**
+		 * 排除大字段（字段长度 大于等于 #Short.MAX_VALUE)
+		 * 
+		 * @return SelectForExample
+		 */
+		public SelectForExample excludeBlobs(){
+			model.excludeBlobs();
+			return this;
+		}
+		
+		/**
+		 *  排除超过指定长度的字段
+		 * 
+		 * @param maxLength  字段长度
+		 * 
+		 * @return SelectForExample
+		 */
+		public SelectForExample excludeBlobs(int maxLength ){
+			Select.this.excludeBlobs(maxLength);
+			return this;
+		}
+		
 		public long count(){
 			return Select.this.count(example);	 
 		}
