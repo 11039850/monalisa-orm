@@ -507,8 +507,13 @@ public abstract class Model<T extends Model> implements Serializable{
 	}
 	 
 	public static enum Event {
-		INSERT,DELETE,UPDATE,INSERT_OR_UPDATE;
+		INSERT,DELETE,UPDATE,INSERT_OR_UPDATE,LOAD;
 	}
+	
+	public Listener getListener(){
+		return mm().listener;
+	}
+ 
 	
 	public static interface Listener {
 		public void before(Event event, Model model);
