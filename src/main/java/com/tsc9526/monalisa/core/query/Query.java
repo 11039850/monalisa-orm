@@ -17,6 +17,8 @@ import com.tsc9526.monalisa.core.datasource.DBConfig;
 import com.tsc9526.monalisa.core.datasource.DataSourceManager;
 import com.tsc9526.monalisa.core.generator.DBExchange;
 import com.tsc9526.monalisa.core.meta.Name;
+import com.tsc9526.monalisa.core.query.dao.Model;
+import com.tsc9526.monalisa.core.query.dao.Model.Event;
 import com.tsc9526.monalisa.core.query.dialect.Dialect;
 import com.tsc9526.monalisa.core.tools.ClassHelper;
 import com.tsc9526.monalisa.core.tools.ClassHelper.FGS;
@@ -399,8 +401,6 @@ public class Query {
 	}	 
    
 	protected <T> T toResult(ResultSet rs,T r) throws SQLException{
-		ResultSetMetaData rsmd=rs.getMetaData();
-		
 		if(resultClass!=null || r!=null){
 			try{
 				if(r==null){
@@ -409,40 +409,68 @@ public class Query {
 			}catch(Exception e){
 				throw new RuntimeException(e);
 			}
+						 
+			load(rs,r);
 			
-			for(int i=1;i<=rsmd.getColumnCount();i++){
-				String name =rsmd.getColumnName(i);
-				
-				Name nColumn =new Name(false).setName(name);
-				 
-				FGS fgs=metaClass.getField(nColumn.getJavaName());
-				if(fgs==null){
-					String table=rsmd.getTableName(i);
-					if(table!=null && table.length()>0){
-						Name nTable  =new Name(true).setName(table);
-											
-						String jname=nTable.getJavaName()+"$"+nColumn.getJavaName();
-						fgs=metaClass.getField(jname);
-					}
-				}
-				if(fgs!=null){
-					Object v=rs.getObject(i);
-					fgs.setObject(r, v);
-				}						
-			}
 		}else{ 		
 			//未指定结果类, 则采用HashMap
 			Map<String,Object> x=new DataMap();
 			
-			for(int i=1;i<=rsmd.getColumnCount();i++){
-				String name =rsmd.getColumnName(i);
-				x.put(name, rs.getObject(i));
-			}
+			loadToDataMap(rs,x); 
 			
 			r=(T)x;
 		}	
 		
 		return r;
+	}
+	
+	protected <T> void loadToDataMap(ResultSet rs,T r)throws SQLException{
+		ResultSetMetaData rsmd=rs.getMetaData();
+		Map<String,Object> x=new DataMap();
+		
+		for(int i=1;i<=rsmd.getColumnCount();i++){
+			String name =rsmd.getColumnName(i);
+			x.put(name, rs.getObject(i));
+		}
+	}
+	
+	protected <T> void load(ResultSet rs,T r)throws SQLException{
+		if(r instanceof Model<?>){
+			Model<?> m=(Model<?>)r;
+			if(m.getListener()!=null){
+				m.getListener().before(Event.LOAD, m);
+			}
+		}
+		
+		ResultSetMetaData rsmd=rs.getMetaData();
+		
+		for(int i=1;i<=rsmd.getColumnCount();i++){
+			String name =rsmd.getColumnName(i);
+			
+			Name nColumn =new Name(false).setName(name);
+			 
+			FGS fgs=metaClass.getField(nColumn.getJavaName());
+			if(fgs==null){
+				String table=rsmd.getTableName(i);
+				if(table!=null && table.length()>0){
+					Name nTable  =new Name(true).setName(table);
+										
+					String jname=nTable.getJavaName()+"$"+nColumn.getJavaName();
+					fgs=metaClass.getField(jname);
+				}
+			}
+			if(fgs!=null){
+				Object v=rs.getObject(i);
+				fgs.setObject(r, v);
+			}						
+		}
+		
+		if(r instanceof Model<?>){
+			Model<?> m=(Model<?>)r;
+			if(m.getListener()!=null){
+				m.getListener().after(Event.LOAD, m,0);
+			}
+		}
 	}
 	
 	public int getCacheTime() {
