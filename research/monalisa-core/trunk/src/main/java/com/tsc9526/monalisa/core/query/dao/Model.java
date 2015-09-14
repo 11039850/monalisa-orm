@@ -243,7 +243,7 @@ public abstract class Model<T extends Model> implements Serializable{
 	public FGS field(String name) {
 		for(FGS fgs:fields()){
 			Column c=fgs.getField().getAnnotation(Column.class);
-			if(fgs.getFieldName().equals(name) || c.name().equals(name)){
+			if(fgs.getFieldName().equalsIgnoreCase(name) || c.name().equalsIgnoreCase(name)){
 				return fgs;
 			}
 		}
