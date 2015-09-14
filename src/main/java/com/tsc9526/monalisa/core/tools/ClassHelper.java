@@ -83,7 +83,15 @@ public class ClassHelper {
 		return null;
 	}
 
-	public static void copy(Object from,Object to){
+	/**
+	 * Copy object 
+	 * 
+	 * @param from
+	 * @param to
+	 * 
+	 * @return The to Object
+	 */
+	public static <T> T copy(Object from,T to){
 		MetaClass fm=getMetaClass(from);
 		MetaClass ft=getMetaClass(to);
 		
@@ -95,6 +103,8 @@ public class ClassHelper {
 				x.setObject(to, value);
 			}
 		}
+		
+		return to;
 	}
 	 
 	
