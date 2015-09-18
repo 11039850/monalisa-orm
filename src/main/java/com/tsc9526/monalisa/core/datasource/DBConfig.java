@@ -70,7 +70,7 @@ public class DBConfig implements com.tsc9526.monalisa.core.annotation.DB, Closea
 		this.key=key;				 
 	}
 	
-	public List<MetaPartition> getPartitions(){
+	public synchronized List<MetaPartition> getPartitions(){
 		if(metaPartitions==null){
 			metaPartitions=new ArrayList<MetaPartition>();
 			String pts=partitions();
