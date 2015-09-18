@@ -52,7 +52,7 @@ public class ${table.javaName} extends ${modelClass}<${table.javaName}> implemen
 	 * Constructor use primary keys.
 	 *
 	 <#list table.keyColumns as k>
-	 * @param ${k.javaName} ${k.remarks}
+	 * @param ${k.javaName} ${k.remarks?html?replace('*/','**')}
 	 </#list>	 
 	 */
 	public ${table.javaName}(<#list table.keyColumns as k>${k.javaType} ${k.javaName}<#if k_has_next=true>, </#if></#list>){
@@ -179,7 +179,7 @@ public class ${table.javaName} extends ${modelClass}<${table.javaName}> implemen
 		/**
 		* Find by unique key: ${index.name}
 		<#list index.columns as c>
-		* @param ${c.javaName} ${c.remarks}
+		* @param ${c.javaName} ${c.remarks?html?replace('*/','**')}
 		</#list>	
 		*/
 		public ${table.javaName} selectBy${m}(<#list index.columns as k>${k.javaType} ${k.javaName}<#if k_has_next=true>, </#if></#list>){
