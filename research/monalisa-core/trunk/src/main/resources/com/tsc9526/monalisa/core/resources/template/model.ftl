@@ -26,8 +26,8 @@ public class ${table.javaName} extends ${modelClass}<${table.javaName}> implemen
 	 	return new Delete(new ${table.javaName}());
 	}
 	
-	public static final Update UPDATE(){
-		return new Update(new ${table.javaName}());
+	public static final Update UPDATE(${table.javaName} model){
+		return new Update(model);
 	}		
 	
 	public static final Select SELECT(){
