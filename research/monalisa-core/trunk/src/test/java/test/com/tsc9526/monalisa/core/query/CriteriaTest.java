@@ -169,7 +169,7 @@ public class CriteriaTest {
 		 
 		SimpleModel.Criteria criteria=SimpleModel.createCriteria();
 		criteria.intField1.between(1, 10).intField1.asc();
-		criteria.dateField1.equalsTo(sdf.parse(time)).dateField1.desc();
+		criteria.dateField1.eq(sdf.parse(time)).dateField1.desc();
 		
 		String sql=QEH.getQuery(criteria).getSql();
 		String eql=QEH.getQuery(criteria).getExecutableSQL();
@@ -277,10 +277,10 @@ public class CriteriaTest {
 		SimpleModel.Example example=new SimpleModel.Example();
 		SimpleModel.Criteria criteria=example.createCriteria();
 		criteria.intField1.between(1, 10).intField1.asc();
-		criteria.dateField1.equalsTo(sdf.parse(time)).dateField1.desc();
+		criteria.dateField1.eq(sdf.parse(time)).dateField1.desc();
 		
 		SimpleModel.Criteria or=example.or();
-		or.intField2.greatThan(1);
+		or.intField2.gt(1);
 		
 		Query eq=QEH.getQuery(example);
 		Query query=model.getDialect().select(model, eq.getSql(), eq.getParameters());
