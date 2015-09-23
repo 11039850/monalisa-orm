@@ -215,7 +215,7 @@ public class Query {
 		return conn;
 	}
 	
-	private <X> X doExecute(Execute<X> x){
+	protected <X> X doExecute(Execute<X> x){
 		TxQuery tx=Tx.getTxQuery();
 		
 		Connection conn=null;
