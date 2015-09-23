@@ -185,7 +185,7 @@ public class ${table.javaName} extends ${modelClass}<${table.javaName}> implemen
 		public ${table.javaName} selectBy${m}(<#list index.columns as k>${k.javaType} ${k.javaName}<#if k_has_next=true>, </#if></#list>){
 			Criteria c=criteria();
 			<#list index.columns as k>
-			c.${k.javaName}.equalsTo(${k.javaName});
+			c.${k.javaName}.eq(${k.javaName});
 			</#list>			 
 			 
 			return super.selectOneByExample(c.example);
