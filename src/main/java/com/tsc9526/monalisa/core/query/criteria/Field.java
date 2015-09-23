@@ -33,48 +33,80 @@ public class Field<X,Y extends Criteria>{
 		this.type=TypeHelper.getJavaType(jdbcType);		
 	}	
 		 
-	public Y equalsTo(X value){
+	/**
+	 * SQL: <code>=</code>
+	 */	 
+	public Y eq(X value){
 		return add(" = ?", value); 
 	}
 	
-	public Y notEqualsTo(X value){
+	/**
+	 * SQL: <code><></code>
+	 */	
+	public Y ne(X value){
 		return add(" <> ?", value); 
 	}
 	
-	public Y greatThan(X value){
+	/**
+	 *  SQL: <code>></code>
+	 */
+	public Y gt(X value){
 		return add(" > ?", value); 
 	}
 	
-	public Y greatThanOrEqualsTo(X value){
+	/**
+	 * SQL: <code>>=</code>
+	 */
+	public Y ge(X value){
 		return add(" >= ?", value); 
 	}
 	
-	public Y lessThan(X value){
+	/**
+	 * SQL: <code><</code>
+	 */
+	public Y lt(X value){
 		return add(" < ?", value); 
 	}
 	
-	public Y lessThanOrEqualsTo(X value){
+	/**
+	 * SQL: <code><=</code>
+	 */
+	public Y le(X value){
 		return add(" <= ?", value); 
 	}
 
 	/**
-	 * SQL Like statement, for example:  like("%name%");
+	 * Example: <br>
+	 * <li><code>like("%value%"); -> like '%value%'</code></li>
+	 * <li><code>like("value%");  -> like 'value%' </code></li>
+	 * <li><code>like("%value");  -> like '%value' </code></li>
+	 * 
+	 *
 	 * 
 	 * @param value 
 	 */
 	public Y like(X value){
 		return add(" like ?", value); 
-	}	 
+	}		 
 	
+	/**
+	 * SQL: <code>IS NULL</code>
+	 */
 	public Y isNull(){
 		return add(" IS NULL"); 
 	}
 	
+	/**
+	 * SQL: <code>IS NOT NULL</code>
+	 */
 	public Y isNotNull(){
 		return add(" IS NOT NULL"); 
 	}
 	
 	/**
+	 * 
+	 * SQL: <code>BETWEEN ? AND ?</code>
+	 *  
 	 * @param from  >= from
 	 * @param to    <= to
 	 * @return
@@ -84,6 +116,8 @@ public class Field<X,Y extends Criteria>{
 	}
 	
 	/**
+	 * SQL: <code>NOT BETWEEN ? AND ?</code>
+	 * 
 	 * @param from  < from 
 	 * @param to    > to
 	 * @return
@@ -92,6 +126,9 @@ public class Field<X,Y extends Criteria>{
 		return add(" NOT BETWEEN ? AND ?", from,to); 
 	}
 	
+	/**
+	 * SQL: <code>IN(...)</code>
+	 */
 	public Y in(X... values){
 		if(q.isEmpty()==false){
 			q.add(" AND ");
@@ -101,6 +138,9 @@ public class Field<X,Y extends Criteria>{
 		return criteria;
 	}
 	
+	/**
+	 * SQL: <code>NOT IN (...)</code>
+	 */
 	public Y notin(X... values){
 		if(q.isEmpty()==false){
 			q.add(" AND ");
@@ -110,6 +150,9 @@ public class Field<X,Y extends Criteria>{
 		return criteria;
 	}
 	
+	/**
+	 * SQL: <code>IN(...)=</code>
+	 */
 	public Y in(List<X> values){
 		if(q.isEmpty()==false){
 			q.add(" AND ");
@@ -119,6 +162,9 @@ public class Field<X,Y extends Criteria>{
 		return criteria;
 	}
 	
+	/**
+	 * SQL: <code>NOT IN (...)</code>
+	 */
 	public Y notin(List<X> values){
 		if(q.isEmpty()==false){
 			q.add(" AND ");
@@ -130,12 +176,18 @@ public class Field<X,Y extends Criteria>{
 		return criteria;
 	}
 	
+	/**
+	 * SQL: <code>[ORDER BY] ASC</code>
+	 */
 	public Y asc(){
 		criteria.addOrderByAsc(getColumnName());
 		
 		return criteria;
 	}
 		
+	/**
+	 * SQL: <code>[ORDER BY] DESC</code>
+	 */
 	public Y desc(){
 		criteria.addOrderByDesc(getColumnName());
 		
@@ -168,6 +220,7 @@ public class Field<X,Y extends Criteria>{
 			return values;
 		}
 	}
+	
 	private Object[] getValues(X[] values){
 		if(values!=null && values.length>0 && values[0].getClass().isEnum()){
 			Object[] vs=new Object[values.length];
