@@ -51,7 +51,7 @@ public class DataMap extends LinkedHashMap<String,Object>{
 		}
 	}
 	
-	public Integer getInt(String key){
+	public Integer getInteger(String key){
 		Object v=(Object)get(key);
 		if(v==null){
 			return null;
