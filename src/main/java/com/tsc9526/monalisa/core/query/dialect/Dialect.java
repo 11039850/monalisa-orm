@@ -227,6 +227,8 @@ public abstract class Dialect{
 		if(whereStatement!=null && whereStatement.length()>0){
 			query.add(" ");
 			
+			whereStatement=whereStatement.trim();
+			
 			if(whereStatement.toUpperCase().startsWith("WHERE")){
 				query.add(whereStatement, args);
 			}else if(whereStatement.toUpperCase().startsWith("ORDER")){
