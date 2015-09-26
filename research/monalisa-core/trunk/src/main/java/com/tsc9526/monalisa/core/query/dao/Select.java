@@ -132,7 +132,7 @@ public class Select<T extends Model,S extends Select> {
 	public T selectOneByExample(Example example){
 		Query w=QEH.getQuery(example);
 		
-		Query query=model.getDialect().select(model,w.getSql(), w.getParameters());
+		Query query=model.getDialect().selectOne(model,w.getSql(), w.getParameters());
 		query.use(db());
 		
 		T r= query.getResult();
