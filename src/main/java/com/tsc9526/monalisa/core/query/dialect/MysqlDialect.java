@@ -12,6 +12,10 @@ import com.tsc9526.monalisa.core.meta.MetaTable.CreateTable;
 import com.tsc9526.monalisa.core.query.Query;
 import com.tsc9526.monalisa.core.tools.CloseQuietly;
 
+/**
+ * 
+ * @author zzg.zhou(11039850@qq.com)
+ */
 public class MysqlDialect extends Dialect{
 	
 	public String getUrlPrefix(){

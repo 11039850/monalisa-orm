@@ -15,6 +15,10 @@ import com.tsc9526.monalisa.core.tools.TypeHelper;
 
 import freemarker.log.Logger;
  
+/**
+ * 
+ * @author zzg.zhou(11039850@qq.com)
+ */
 @SuppressWarnings({"rawtypes"})
 public abstract class Dialect{
 	static Logger logger=Logger.getLogger(Dialect.class.getName());

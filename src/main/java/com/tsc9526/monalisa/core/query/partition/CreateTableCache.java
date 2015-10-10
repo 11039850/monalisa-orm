@@ -11,7 +11,10 @@ import com.tsc9526.monalisa.core.generator.DBMetadata;
 import com.tsc9526.monalisa.core.meta.MetaTable;
 import com.tsc9526.monalisa.core.query.dao.Model;
 
-
+/**
+ * 
+ * @author zzg.zhou(11039850@qq.com)
+ */
 public class CreateTableCache{
 	private static Map<String, Table> hTables=new ConcurrentHashMap<String, Table>();
 	private static Object lock=new Object();

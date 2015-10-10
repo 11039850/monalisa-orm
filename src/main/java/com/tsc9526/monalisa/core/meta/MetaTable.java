@@ -4,6 +4,10 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * 
+ * @author zzg.zhou(11039850@qq.com)
+ */
 public class MetaTable extends Name implements Cloneable{
 	private static final long serialVersionUID = 5069827028195702141L;
 	

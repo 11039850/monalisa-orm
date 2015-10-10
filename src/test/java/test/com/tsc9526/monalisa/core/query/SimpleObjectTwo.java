@@ -1,6 +1,9 @@
 package test.com.tsc9526.monalisa.core.query;
 
-
+/**
+ * 
+ * @author zzg.zhou(11039850@qq.com)
+ */
 public class SimpleObjectTwo {
 	private String fs;
 	

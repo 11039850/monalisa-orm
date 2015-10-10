@@ -19,6 +19,10 @@ import com.tsc9526.monalisa.core.query.Query;
 import com.tsc9526.monalisa.core.query.dao.Model;
 import com.tsc9526.monalisa.core.tools.CloseQuietly;
 
+/**
+ * 
+ * @author zzg.zhou(11039850@qq.com)
+ */
 public class DBConfig implements com.tsc9526.monalisa.core.annotation.DB, Closeable{ 	
 	/**
 	 * <code>DEFAULT_PATH= ".";</code> <br>

@@ -12,6 +12,10 @@ import com.tsc9526.monalisa.core.tools.ClassHelper.FGS;
 import com.tsc9526.monalisa.core.tools.ClassHelper.MetaClass;
 import com.tsc9526.monalisa.core.tools.JavaBeansHelper;
 
+/**
+ * 
+ * @author zzg.zhou(11039850@qq.com)
+ */
 @SuppressWarnings("rawtypes")
 public class DatePartitionTable implements Partition<Model>{	 
 	private MetaPartition metaPartition;

@@ -9,6 +9,10 @@ import java.util.Map;
 
 import org.apache.commons.collections.map.CaseInsensitiveMap;
 
+/**
+ * 
+ * @author zzg.zhou(11039850@qq.com)
+ */
 public class Helper {
 
 	public static boolean isEmpty(String s){

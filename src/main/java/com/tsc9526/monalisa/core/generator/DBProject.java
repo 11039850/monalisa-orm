@@ -7,6 +7,10 @@ import javax.lang.model.element.TypeElement;
 
 import com.tsc9526.monalisa.core.datasource.DBConfig;
 
+/**
+ * 
+ * @author zzg.zhou(11039850@qq.com)
+ */
 public class DBProject {
 	
 	@SuppressWarnings("unchecked")

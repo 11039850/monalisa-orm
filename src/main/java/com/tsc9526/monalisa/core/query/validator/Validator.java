@@ -9,6 +9,10 @@ import com.tsc9526.monalisa.core.annotation.Column;
 import com.tsc9526.monalisa.core.query.dao.Model;
 import com.tsc9526.monalisa.core.tools.ClassHelper.FGS;
 
+/**
+ * 
+ * @author zzg.zhou(11039850@qq.com)
+ */
 public class Validator {
 	/**
 	 * 校验字段数据的是否合法.

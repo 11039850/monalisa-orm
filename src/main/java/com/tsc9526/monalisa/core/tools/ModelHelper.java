@@ -17,6 +17,10 @@ import com.tsc9526.monalisa.core.query.dao.Model.Parser;
 import com.tsc9526.monalisa.core.tools.ClassHelper.FGS;
 import com.tsc9526.monalisa.core.tools.ClassHelper.MetaClass;
 
+/**
+ * 
+ * @author zzg.zhou(11039850@qq.com)
+ */
 @SuppressWarnings({"unchecked","rawtypes"})
 public class ModelHelper {
 	private static Map<Class<?>,Parser<Object>> parsers=new LinkedHashMap<Class<?>,Parser<Object>>();

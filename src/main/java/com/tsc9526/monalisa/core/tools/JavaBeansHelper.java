@@ -1,8 +1,10 @@
 package com.tsc9526.monalisa.core.tools;
 
 
-
-  
+/**
+ * 
+ * @author zzg.zhou(11039850@qq.com)
+ */  
 public class JavaBeansHelper { 
     private JavaBeansHelper() {
         super();

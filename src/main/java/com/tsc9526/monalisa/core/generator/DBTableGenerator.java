@@ -21,6 +21,10 @@ import com.tsc9526.monalisa.core.tools.GeneratorHelper;
 import com.tsc9526.monalisa.core.tools.Helper;
 import com.tsc9526.monalisa.core.tools.JavaWriter;
 
+/**
+ * 
+ * @author zzg.zhou(11039850@qq.com)
+ */
 public class DBTableGenerator {
 	private MetaTable table;
 	private String superClass;

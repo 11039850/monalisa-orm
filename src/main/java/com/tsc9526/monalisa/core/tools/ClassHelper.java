@@ -22,7 +22,10 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
  
-
+/**
+ * 
+ * @author zzg.zhou(11039850@qq.com)
+ */
 public class ClassHelper {
 	static{
 		DateValue dc = new DateValue(null);

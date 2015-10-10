@@ -28,6 +28,7 @@ import com.tsc9526.monalisa.core.tools.SQLHelper;
 
 import freemarker.log.Logger;
 
+
 /**
  * 数据库查询对象, 基本用法: <br>
  * <code>
@@ -39,7 +40,7 @@ import freemarker.log.Logger;
  * Result       x=q.getResult();<br>
  * </code>
  * 
- * @author zzg
+ * @author zzg.zhou(11039850@qq.com)
  */
 @SuppressWarnings("unchecked")
 public class Query {	

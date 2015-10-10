@@ -5,6 +5,9 @@ import java.util.Properties;
 
 import javax.sql.DataSource;
 
+/**
+ *  @author zzg.zhou(11039850@qq.com)
+ */
 public interface PooledDataSource extends DataSource,Closeable{
 
 	public void setUrl     (String url);

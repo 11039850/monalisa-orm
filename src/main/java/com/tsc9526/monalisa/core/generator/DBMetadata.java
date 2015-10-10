@@ -30,6 +30,10 @@ import com.tsc9526.monalisa.core.meta.MetaTable.CreateTable;
 import com.tsc9526.monalisa.core.tools.CloseQuietly;
 import com.tsc9526.monalisa.core.tools.FileHelper;
 
+/**
+ * 
+ * @author zzg.zhou(11039850@qq.com)
+ */
 public class DBMetadata {
 	private static Map<String,Map<String, MetaTable>> hDBMetaTables=new ConcurrentHashMap<String,Map<String,MetaTable>>();
 	

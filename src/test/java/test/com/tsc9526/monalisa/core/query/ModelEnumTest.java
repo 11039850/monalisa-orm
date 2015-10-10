@@ -6,6 +6,10 @@ import org.testng.annotations.Test;
 import com.tsc9526.monalisa.core.tools.ClassHelper;
 import com.tsc9526.monalisa.core.tools.ClassHelper.MetaClass;
 
+/**
+ * 
+ * @author zzg.zhou(11039850@qq.com)
+ */
 @Test
 public class ModelEnumTest {
   

@@ -4,10 +4,11 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+
 /**
  * 页面数据
  * 
- * @author zzg
+ * @author zzg.zhou(11039850@qq.com)
  */
 public class Page<T> implements Serializable {
 	private static final long serialVersionUID = -33321L;

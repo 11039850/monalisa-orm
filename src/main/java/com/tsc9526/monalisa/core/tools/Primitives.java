@@ -1,5 +1,9 @@
 package com.tsc9526.monalisa.core.tools;
 
+/**
+ * 
+ * @author zzg.zhou(11039850@qq.com)
+ */
 public class Primitives {
 	private static final Class<?>[] PRIMITIVE_TYPES = { int.class, long.class, short.class, float.class, double.class, byte.class, boolean.class, char.class,
 			Integer.class, Long.class, Short.class, Float.class, Double.class, Byte.class, Boolean.class, Character.class };

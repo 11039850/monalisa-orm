@@ -43,7 +43,7 @@ import java.lang.annotation.Target;
  * </code>
  * 
  * 
- * @author zzg.zhou
+ * @author zzg.zhou(11039850@qq.com)
  *
  */
 @Target(ElementType.TYPE)

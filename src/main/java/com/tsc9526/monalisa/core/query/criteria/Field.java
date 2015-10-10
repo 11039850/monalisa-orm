@@ -9,6 +9,10 @@ import com.tsc9526.monalisa.core.query.Query;
 import com.tsc9526.monalisa.core.tools.EnumHelper;
 import com.tsc9526.monalisa.core.tools.TypeHelper;
 
+/**
+ * 
+ * @author zzg.zhou(11039850@qq.com)
+ */
 @SuppressWarnings({"unchecked"})
 public class Field<X,Y extends Criteria>{
 	private DataSourceManager dsm=DataSourceManager.getInstance();

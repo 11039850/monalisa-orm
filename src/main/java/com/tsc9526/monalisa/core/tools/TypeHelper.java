@@ -8,6 +8,10 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
  
+/**
+ * 
+ * @author zzg.zhou(11039850@qq.com)
+ */
 public class TypeHelper {
 
 	private static Map<Integer, String> typeToName;

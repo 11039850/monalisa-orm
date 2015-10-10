@@ -23,6 +23,10 @@ import com.tsc9526.monalisa.core.query.dao.Model;
 import com.tsc9526.monalisa.core.query.partition.Partition;
 import com.tsc9526.monalisa.core.tools.JavaWriter;
 
+/**
+ * 
+ * @author zzg.zhou(11039850@qq.com)
+ */
 public class DBGenerator {
 	public static String PROJECT_TMP_PATH="/target/monalisa";
 	

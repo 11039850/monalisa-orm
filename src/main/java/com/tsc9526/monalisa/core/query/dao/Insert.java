@@ -15,7 +15,7 @@ import com.tsc9526.monalisa.core.tools.ClassHelper.FGS;
  * 
  * 完成数据库模型的插入操作
  * 
- * @author zzg
+ * @author zzg.zhou(11039850@qq.com)
  *
  * @param <T> 数据库模型类型
  */

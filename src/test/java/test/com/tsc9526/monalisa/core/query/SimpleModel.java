@@ -13,6 +13,10 @@ import com.tsc9526.monalisa.core.query.criteria.QEH;
 import com.tsc9526.monalisa.core.query.dao.Model;
 import com.tsc9526.monalisa.core.tools.ClassHelper;
 
+/**
+ * 
+ * @author zzg.zhou(11039850@qq.com)
+ */
 @Table(name="simple_model")
 public class SimpleModel extends Model<SimpleModel> implements SimpleDB{
 	private static final long serialVersionUID = 3625669623226866359L;

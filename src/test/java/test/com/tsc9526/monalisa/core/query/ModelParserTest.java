@@ -11,6 +11,10 @@ import com.tsc9526.monalisa.core.query.Query;
 import com.tsc9526.monalisa.core.tools.JsonHelper;
 import com.tsc9526.monalisa.core.tools.ClassHelper.FGS;
 
+/**
+ * 
+ * @author zzg.zhou(11039850@qq.com)
+ */
 @Test
 public class ModelParserTest {
 

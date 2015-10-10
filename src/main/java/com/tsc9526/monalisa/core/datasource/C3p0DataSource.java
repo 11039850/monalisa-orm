@@ -9,6 +9,10 @@ import java.sql.SQLFeatureNotSupportedException;
 import java.util.Properties;
 import java.util.logging.Logger;
 
+/**
+ *  
+ * @author zzg.zhou(11039850@qq.com)
+ */
 public class C3p0DataSource implements PooledDataSource {
 	private com.mchange.v2.c3p0.ComboPooledDataSource cpds=new com.mchange.v2.c3p0.ComboPooledDataSource();
 	
