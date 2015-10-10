@@ -183,34 +183,45 @@ public class DBConfig implements com.tsc9526.monalisa.core.annotation.DB, Closea
 	protected void loadCfgFromFile() {
 		configFile=db.configFile();
 		
-		if(configFile!=null && configFile.trim().length()>0){
+		boolean definedCfgFile= configFile!=null && configFile.trim().length()>0;
+		
+		if(definedCfgFile){
 			configFile=configFile.trim();
-			
-			if(configFile.startsWith("/")==false){
-				if(configFile.length()>1 && configFile.charAt(1)==':'){
-					//Windows ROOT C: D: E: ...
-				}else{
-					configFile=System.getProperty("DB@"+key,DEFAULT_PATH)+"/"+configFile;
-				}				
-			}
-			
-			cfgFile=new File(configFile);
-			if(cfgFile.exists()){
-				System.out.println("Load DB("+key+") config from: "+cfgFile.getAbsolutePath());				
-				try{
-					cfgFileTime=cfgFile.lastModified();
-					 
-					InputStreamReader reader=new InputStreamReader(new FileInputStream(cfgFile),"utf-8");
-					p.clear();
-					p.load(reader);
-					reader.close();					 
-				}catch(IOException e){
-					throw new RuntimeException("Load db config file: "+cfgFile.getAbsolutePath()+", exception: "+e,e);
-				}
+		}else{
+			configFile=key;
+		}
+			 
+		
+		if(configFile.startsWith("/")==false){
+			if(configFile.length()>1 && configFile.charAt(1)==':'){
+				//Windows ROOT C: D: E: ...
 			}else{
-				throw new RuntimeException("DB config file: "+cfgFile.getAbsolutePath()+" not found!");
+				configFile=System.getProperty("DB@"+key,DEFAULT_PATH)+"/"+configFile;
+			}				
+		}
+		
+		cfgFile=new File(configFile);
+		if(cfgFile.exists()){
+			System.out.println("Load DB("+key+") config from: "+cfgFile.getAbsolutePath());				
+			try{
+				cfgFileTime=cfgFile.lastModified();
+				 
+				InputStreamReader reader=new InputStreamReader(new FileInputStream(cfgFile),"utf-8");
+				p.clear();
+				p.load(reader);
+				reader.close();					 
+			}catch(IOException e){
+				throw new RuntimeException("Load db config file: "+cfgFile.getAbsolutePath()+", exception: "+e,e);
 			}
-		}	
+		}else{
+			if(definedCfgFile){
+				throw new RuntimeException("DB config file: "+cfgFile.getAbsolutePath()+" not found!");
+			}else{
+				cfgFile=null;
+			}
+		} 
+			
+		 
 	}
 	 
 	protected String getValue(Properties p,String key,String defaultValue,String[] prefixs){
