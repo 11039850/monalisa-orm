@@ -31,7 +31,6 @@ import java.lang.annotation.Target;
  * <br>
  * public class Example{  <br>
  * &nbsp;&nbsp; public void TestTableX(){ <br>
- * &nbsp;&nbsp;&nbsp;&nbsp; DBWorld db=new DBWorld(); <br>
  * &nbsp;&nbsp;&nbsp;&nbsp; TableX x1=new TableX(); <br>
  * &nbsp;&nbsp;&nbsp;&nbsp; x1.setXXX(...); <br>
  * &nbsp;&nbsp;&nbsp;&nbsp; //... <br>
