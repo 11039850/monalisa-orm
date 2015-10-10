@@ -20,6 +20,10 @@ import com.tsc9526.monalisa.core.tools.ClassHelper;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 
+/**
+ * 
+ * @author zzg.zhou(11039850@qq.com)
+ */
 public class DBTableGeneratorByTpl {
 	private MetaTable table;
 	private String modelClass;

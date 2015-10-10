@@ -25,7 +25,7 @@ import com.tsc9526.monalisa.core.tools.ModelHelper;
  * 数据库表模型
  * 
  * 
- * @author zzg
+ * @author zzg.zhou(11039850@qq.com)
  * 
  */
 @SuppressWarnings({"rawtypes","unchecked"})

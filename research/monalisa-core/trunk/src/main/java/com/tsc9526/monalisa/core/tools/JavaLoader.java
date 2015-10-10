@@ -5,6 +5,10 @@ import java.io.ObjectStreamClass;
 import javax.tools.JavaCompiler;
 import javax.tools.ToolProvider;
 
+/**
+ * 
+ * @author zzg.zhou(11039850@qq.com)
+ */
 public class JavaLoader {
 
 	public static void main(String[] args) {

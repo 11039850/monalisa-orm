@@ -2,6 +2,10 @@ package test.com.tsc9526.monalisa.core.query;
 
 import java.util.Date;
 
+/**
+ * 
+ * @author zzg.zhou(11039850@qq.com)
+ */
 public class SimpleObject {
 	private String one;
 	

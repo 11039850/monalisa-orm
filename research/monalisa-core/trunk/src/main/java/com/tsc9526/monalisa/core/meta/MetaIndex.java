@@ -4,6 +4,10 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * 
+ * @author zzg.zhou(11039850@qq.com)
+ */
 public class MetaIndex implements Serializable{	 
 	private static final long serialVersionUID = -2784842725414559141L;
 

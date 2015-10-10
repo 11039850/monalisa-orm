@@ -5,6 +5,10 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.LinkedHashMap;
 
+/**
+ * 
+ * @author zzg.zhou(11039850@qq.com)
+ */
 public class DataMap extends LinkedHashMap<String,Object>{ 
 	private static final long serialVersionUID = -8132926422921115814L;	
 	

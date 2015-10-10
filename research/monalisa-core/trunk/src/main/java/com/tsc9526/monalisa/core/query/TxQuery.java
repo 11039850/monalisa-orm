@@ -7,6 +7,10 @@ import java.util.Map;
 
 import com.tsc9526.monalisa.core.datasource.DBConfig;
 
+/**
+ * 
+ * @author zzg.zhou(11039850@qq.com)
+ */
 public class TxQuery {	 
 	private Map<String, CI> hcs=new HashMap<String, CI>();
 	

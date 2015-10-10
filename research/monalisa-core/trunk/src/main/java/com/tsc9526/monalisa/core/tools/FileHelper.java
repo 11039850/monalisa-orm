@@ -8,6 +8,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
 
+/**
+ * 
+ * @author zzg.zhou(11039850@qq.com)
+ */
 public class FileHelper {
 	
 	public static String combinePath(String... paths){

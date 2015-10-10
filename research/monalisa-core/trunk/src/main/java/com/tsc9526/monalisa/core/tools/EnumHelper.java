@@ -7,6 +7,10 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import com.tsc9526.monalisa.core.tools.ClassHelper.FGS;
  
+/**
+ * 
+ * @author zzg.zhou(11039850@qq.com)
+ */
 public class EnumHelper {
 	private static Map<String, Object> hIntegerEnum=new ConcurrentHashMap<String, Object>();
 	private static Map<String, Object> hStringEnum=new ConcurrentHashMap<String, Object>();

@@ -23,6 +23,10 @@ import com.tsc9526.monalisa.core.tools.JavaBeansHelper;
 import com.tsc9526.monalisa.core.tools.SQLHelper;
 import com.tsc9526.monalisa.core.tools.TypeHelper;
 
+/**
+ * 
+ * @author zzg.zhou(11039850@qq.com)
+ */
 public class DBExchange implements Serializable {
 	private static final long serialVersionUID = 5069827028195702115L;
 	

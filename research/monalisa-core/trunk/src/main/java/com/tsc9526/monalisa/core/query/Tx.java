@@ -2,6 +2,10 @@ package com.tsc9526.monalisa.core.query;
 
 import java.sql.SQLException;
 
+/**
+ * 
+ * @author zzg.zhou(11039850@qq.com)
+ */
 public class Tx {	
 	private static ThreadLocal<TxQuery> local=new ThreadLocal<TxQuery>();  
 	

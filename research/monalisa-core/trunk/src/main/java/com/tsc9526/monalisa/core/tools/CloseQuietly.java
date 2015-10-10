@@ -3,6 +3,10 @@ package com.tsc9526.monalisa.core.tools;
 import java.io.Closeable;
 import java.lang.reflect.Method;
 
+/**
+ * 
+ * @author zzg.zhou(11039850@qq.com)
+ */
 public class CloseQuietly {
 
 	public static void close(Closeable c){

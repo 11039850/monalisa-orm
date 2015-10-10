@@ -18,6 +18,10 @@ import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.Semaphore;
 import java.util.logging.Logger;
 
+/**
+ *  
+ * @author zzg.zhou(11039850@qq.com)
+ */
 public class SimpleDataSource implements PooledDataSource {
 	private String url;
 	private String driver;

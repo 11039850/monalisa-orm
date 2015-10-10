@@ -7,6 +7,10 @@ import java.util.List;
 
 import com.tsc9526.monalisa.core.query.partition.DatePartitionTable;
 
+/**
+ * 
+ * @author zzg.zhou(11039850@qq.com)
+ */
 public class MetaPartition implements java.io.Serializable {
 	 
 	private static final long serialVersionUID = 6730997065415685121L;

@@ -7,6 +7,10 @@ import java.util.List;
 import com.tsc9526.monalisa.core.meta.MetaColumn;
 import com.tsc9526.monalisa.core.meta.MetaTable;
 
+/**
+ * 
+ * @author zzg.zhou(11039850@qq.com)
+ */
 public class GeneratorHelper {	 
 		
 	public static void generatorJavaProperties(MetaTable table,PrintWriter pw){

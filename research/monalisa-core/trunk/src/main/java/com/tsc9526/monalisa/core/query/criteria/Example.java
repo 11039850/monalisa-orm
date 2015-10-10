@@ -5,6 +5,10 @@ import java.util.List;
 
 import com.tsc9526.monalisa.core.query.dao.Model;
 
+/**
+ * 
+ * @author zzg.zhou(11039850@qq.com)
+ */
 public abstract class Example<X extends Criteria,T extends Model<?>>{
 	List<X> cs=new ArrayList<X>();
 		

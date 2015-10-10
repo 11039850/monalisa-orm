@@ -16,6 +16,10 @@ import javax.tools.Diagnostic.Kind;
 import com.tsc9526.monalisa.core.annotation.DB;
 import com.tsc9526.monalisa.core.generator.DBGenerator;
 
+/**
+ * 
+ * @author zzg.zhou(11039850@qq.com)
+ */
 @SupportedAnnotationTypes("com.tsc9526.monalisa.core.annotation.DB")
 @SupportedSourceVersion(SourceVersion.RELEASE_6)
 public class DBAnnotationProcessor extends AbstractProcessor {

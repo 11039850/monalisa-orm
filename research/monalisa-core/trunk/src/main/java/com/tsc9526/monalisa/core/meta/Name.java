@@ -4,6 +4,10 @@ import java.io.Serializable;
 
 import com.tsc9526.monalisa.core.tools.JavaBeansHelper;
 
+/**
+ * 
+ * @author zzg.zhou(11039850@qq.com)
+ */
 public class Name implements Serializable{	 
 	private static final long serialVersionUID = 5069827028195702145L;
  

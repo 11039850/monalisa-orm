@@ -8,7 +8,10 @@ import com.tsc9526.monalisa.core.query.Query;
 import com.tsc9526.monalisa.core.query.criteria.Example;
 import com.tsc9526.monalisa.core.query.criteria.QEH;
 
-
+/**
+ * 
+ * @author zzg.zhou(11039850@qq.com)
+ */
 @SuppressWarnings({"rawtypes","unchecked"})
 public class Select<T extends Model,S extends Select> {
 	protected T model;

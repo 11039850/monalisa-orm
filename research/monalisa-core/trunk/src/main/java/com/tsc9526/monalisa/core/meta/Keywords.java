@@ -3,6 +3,10 @@ package com.tsc9526.monalisa.core.meta;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * 
+ * @author zzg.zhou(11039850@qq.com)
+ */
 public class Keywords {	
 	private static Set<String> javaKeywords=new HashSet<String>();
 	

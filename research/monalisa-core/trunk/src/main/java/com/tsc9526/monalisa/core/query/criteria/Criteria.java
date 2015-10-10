@@ -6,6 +6,10 @@ import java.util.List;
 import com.tsc9526.monalisa.core.datasource.DBConfig;
 import com.tsc9526.monalisa.core.query.Query;
 
+/**
+ * 
+ * @author zzg.zhou(11039850@qq.com)
+ */
 public abstract class Criteria {	
 	Query q=new Query();
 	

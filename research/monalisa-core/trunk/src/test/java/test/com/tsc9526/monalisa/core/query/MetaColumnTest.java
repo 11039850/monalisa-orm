@@ -5,6 +5,10 @@ import org.testng.annotations.Test;
 
 import com.tsc9526.monalisa.core.meta.MetaColumn;
 
+/**
+ * 
+ * @author zzg.zhou(11039850@qq.com)
+ */
 @Test
 public class MetaColumnTest {
   

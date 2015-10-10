@@ -9,6 +9,10 @@ import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.io.Writer;
 
+/**
+ * 
+ * @author zzg.zhou(11039850@qq.com)
+ */
 public class JavaWriter extends PrintWriter {
 	private static final String DEFAULT_OUDENT = "\t";
 	

@@ -5,6 +5,10 @@ import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
  
+/**
+ * 
+ * @author zzg.zhou(11039850@qq.com)
+ */
 public class SQLHelper {	
 	
 	public static String getExecutableSQL(String original,List<Object> parameters) {		 

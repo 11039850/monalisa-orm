@@ -10,6 +10,10 @@ import com.tsc9526.monalisa.core.annotation.DB;
 import com.tsc9526.monalisa.core.query.dialect.Dialect;
 import com.tsc9526.monalisa.core.query.dialect.MysqlDialect;
 
+/**
+ * 
+ * @author zzg.zhou(11039850@qq.com)
+ */
 public class DataSourceManager {
 	private static DataSourceManager dm=new DataSourceManager();
 	

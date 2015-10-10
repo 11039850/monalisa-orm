@@ -2,6 +2,10 @@ package com.tsc9526.monalisa.core.resources;
 
 import freemarker.template.Configuration;
 
+/**
+ * 
+ * @author zzg.zhou(11039850@qq.com)
+ */
 public class Freemarker {
 
 	public static Configuration getFreemarkConfiguration(){
