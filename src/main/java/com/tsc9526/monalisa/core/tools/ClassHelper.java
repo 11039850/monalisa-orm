@@ -132,41 +132,46 @@ public class ClassHelper {
 					}else if(Map.class.isAssignableFrom(v.getClass()) && type == String.class){
 						value=mapToString((Map<?,?>)v);						
 					}else if(v.getClass().isArray()==false && type.isArray()){
-						JsonArray array=(JsonArray)new JsonParser().parse(v.toString());						
-						if(type==int[].class){
-							int[] iv=new int[array.size()];
-							for(int i=0;i<array.size();i++){
-								JsonElement e=array.get(i);
-								iv[i]=e.getAsInt();
-							}
-							value=iv;
-						}else if(type==long[].class){
-							long[] iv=new long[array.size()];
-							for(int i=0;i<array.size();i++){
-								JsonElement e=array.get(i);
-								iv[i]=e.getAsLong();
-							}
-							value=iv;
-						}else if(type==double[].class){
-							double[] iv=new double[array.size()];
-							for(int i=0;i<array.size();i++){
-								JsonElement e=array.get(i);
-								iv[i]=e.getAsDouble();
-							}
-							value=iv;
-						}else{//String[]
-							String[] iv=new String[array.size()];
-							for(int i=0;i<array.size();i++){
-								JsonElement e=array.get(i);
-								if(e.isJsonPrimitive()){
-									iv[i]=e.getAsString();
-								}else{
-									//ingore
-									return;
-								}								
-							}
-							value=iv;
-						}						
+						JsonElement je=new JsonParser().parse(v.toString());
+						if(je==null || je.isJsonNull()){
+							value=null;
+						}else{
+							JsonArray array=je.getAsJsonArray();						
+							if(type==int[].class){
+								int[] iv=new int[array.size()];
+								for(int i=0;i<array.size();i++){
+									JsonElement e=array.get(i);
+									iv[i]=e.getAsInt();
+								}
+								value=iv;
+							}else if(type==long[].class){
+								long[] iv=new long[array.size()];
+								for(int i=0;i<array.size();i++){
+									JsonElement e=array.get(i);
+									iv[i]=e.getAsLong();
+								}
+								value=iv;
+							}else if(type==double[].class){
+								double[] iv=new double[array.size()];
+								for(int i=0;i<array.size();i++){
+									JsonElement e=array.get(i);
+									iv[i]=e.getAsDouble();
+								}
+								value=iv;
+							}else{//String[]
+								String[] iv=new String[array.size()];
+								for(int i=0;i<array.size();i++){
+									JsonElement e=array.get(i);
+									if(e.isJsonPrimitive()){
+										iv[i]=e.getAsString();
+									}else{
+										//ingore
+										return;
+									}								
+								}
+								value=iv;
+							}	
+						}
 					}else if(type.isArray()==false 
 							&& type.isPrimitive()==false 
 							&& type.getName().startsWith("java.")==false
