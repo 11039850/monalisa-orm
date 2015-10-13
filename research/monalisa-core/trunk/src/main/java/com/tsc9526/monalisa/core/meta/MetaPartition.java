@@ -5,6 +5,10 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.tsc9526.monalisa.core.query.partition.DatePartitionTable;
 
 /**
@@ -14,6 +18,96 @@ import com.tsc9526.monalisa.core.query.partition.DatePartitionTable;
 public class MetaPartition implements java.io.Serializable {
 	 
 	private static final long serialVersionUID = 6730997065415685121L;
+	
+	public static List<MetaPartition> parsePartitions(String pts){
+		try{
+			List<MetaPartition> metaPartitions=new ArrayList<MetaPartition>();
+			
+			if(pts!=null && pts.trim().length()>0){
+				pts=pts.trim();
+				if(pts.startsWith("[") || pts.startsWith("{")){
+					JsonElement je=new JsonParser().parse(pts);
+					if(je.isJsonArray()){
+						JsonArray array=je.getAsJsonArray();
+						for(int i=0;i<array.size();i++){
+							MetaPartition mp=parseFromJson(array.get(i).getAsJsonObject());
+							metaPartitions.add(mp);
+						}
+					}else{
+						MetaPartition mp=parseFromJson(je.getAsJsonObject());
+						metaPartitions.add(mp);
+					}
+				}else{
+					String[] ps=pts.split(";");
+					for(String p:ps){
+						p=p.trim();
+						if(p.length()>0){
+							MetaPartition mp=parseFromString(p);
+							
+							metaPartitions.add(mp);
+						}
+					}					
+				}		
+			}
+			return metaPartitions;		
+		}catch(Exception e){
+			throw new RuntimeException("Invalid partition: "+pts,e);
+		}		
+	}
+	
+	public static MetaPartition parseFromJson(JsonObject json){
+		MetaPartition mp=new MetaPartition();
+		
+		mp.tablePrefix = json.get("prefix").getAsString();
+		mp.clazz       = json.get("class").getAsString();
+		
+		JsonArray args=json.get("args").getAsJsonArray();
+		mp.args=new String[args.size()];
+		if(args.size()>0){
+			for(int i=0;i<args.size();i++){
+				mp.args[i]=args.get(i).getAsString();
+			}
+		}
+		
+		return mp;
+	}
+
+	public static MetaPartition parseFromString(String partition){
+		//log_access_{DatePartitionTable(yyyyMMdd,log_time)}
+		
+		MetaPartition mp=new MetaPartition();
+		
+		int p1=partition.indexOf("{");
+		int p2=partition.indexOf("(",p1);
+		int p3=partition.indexOf(")",p2);
+		 
+		mp.tablePrefix=partition.substring(0,p1);
+		mp.clazz=partition.substring(p1+1,p2).trim();
+		
+		
+		if(mp.clazz.equals("DatePartitionTable")){
+			mp.clazz=DatePartitionTable.class.getName();
+		}
+		
+		String parameters=partition.substring(p2+1,p3).trim();
+		if(parameters.length()>0){
+			String[] ps=parameters.split(",");
+			mp.args=new String[ps.length];
+			for(int i=0;i<ps.length;i++){
+				String x=ps[i].trim();
+				if(x.startsWith("\"") || x.startsWith("'")){
+					x=x.substring(1);
+				}
+				if(x.endsWith("\"") || x.endsWith("'")){
+					x=x.substring(0,x.length()-1);
+				}
+				
+				mp.args[i]=x;
+			}
+		}
+		
+		return mp;
+	}
 	
 	private String   tablePrefix;
 	
@@ -25,44 +119,11 @@ public class MetaPartition implements java.io.Serializable {
 	private List<MetaTable> tables=new ArrayList<MetaTable>();
 	
 	
-	public MetaPartition(String partition){
-		//log_access_{DatePartitionTable(yyyyMMdd,log_time)}
-		try{
-			partition=partition.trim();
-			
-			int p1=partition.indexOf("{");
-			int p2=partition.indexOf("(",p1);
-			int p3=partition.indexOf(")",p2);
-			 
-			tablePrefix=partition.substring(0,p1);
-			clazz=partition.substring(p1+1,p2).trim();
-			
-			
-			if(clazz.equals("DatePartitionTable")){
-				clazz=DatePartitionTable.class.getName();
-			}
-			
-			String parameters=partition.substring(p2+1,p3).trim();
-			if(parameters.length()>0){
-				String[] ps=parameters.split(",");
-				args=new String[ps.length];
-				for(int i=0;i<ps.length;i++){
-					String x=ps[i].trim();
-					if(x.startsWith("\"") || x.startsWith("'")){
-						x=x.substring(1);
-					}
-					if(x.endsWith("\"") || x.endsWith("'")){
-						x=x.substring(0,x.length()-1);
-					}
-					
-					args[i]=x;
-				}
-			}
-			
-		}catch(Exception e){
-			throw new RuntimeException("Invalid partition: "+partition,e);
-		}
+	public MetaPartition(){
+				
 	}
+	
+	
 	
 	public void addTable(MetaTable table){
 		tables.add(table);

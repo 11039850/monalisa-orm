@@ -75,18 +75,9 @@ public class DBConfig implements com.tsc9526.monalisa.core.annotation.DB, Closea
 	}
 	
 	public synchronized List<MetaPartition> getPartitions(){
-		if(metaPartitions==null){
-			metaPartitions=new ArrayList<MetaPartition>();
+		if(metaPartitions==null){			
 			String pts=partitions();
-			if(pts!=null && pts.trim().length()>0){
-				String[] ps=pts.trim().split(";");
-				for(String p:ps){
-					p=p.trim();
-					if(p.length()>0){
-						metaPartitions.add(new MetaPartition(p));
-					}
-				}
-			}
+			metaPartitions=MetaPartition.parsePartitions(pts);
 		}
 		return metaPartitions;
 	}

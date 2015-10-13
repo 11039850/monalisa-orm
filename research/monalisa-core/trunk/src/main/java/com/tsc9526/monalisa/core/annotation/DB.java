@@ -96,7 +96,13 @@ public @interface DB{
 	/**
 	 * @return  分号分隔的分区表. 格式: 表名前缀{分区类(参数,...)}; ... <br>
 	 * 其中有个默认日期分区类为: DatePartitionTable, 参数1: 日期格式, 参数2: 日期字段名 
-	 * 例如按天存储的日志表定义: log_access_{DatePartitionTable(yyyyMMdd,log_time)}
+	 * 例如按天存储的日志表定义: <br>
+	 * <code>log_access_{DatePartitionTable(yyyyMMdd,log_time)}</code>
+	 * 
+	 * <br><br>
+	 * 或Json格式定义:<br>
+	 * <code> {prefix:'log_access_', class='DatePartitionTable', args=['yyyyMMdd','log_time']} </code><br> or<br>
+	 * <code>[{prefix:'log_access_', class='DatePartitionTable', args=['yyyyMMdd','log_time']},...] </code>
 	 */
 	String partitions() default "";
 	
