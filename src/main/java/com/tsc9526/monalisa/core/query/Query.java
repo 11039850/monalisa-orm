@@ -11,7 +11,6 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 import com.tsc9526.monalisa.core.datasource.DBConfig;
 import com.tsc9526.monalisa.core.datasource.DataSourceManager;
@@ -415,7 +414,7 @@ public class Query {
 			
 		}else{ 		
 			//未指定结果类, 则采用HashMap
-			Map<String,Object> x=new DataMap();
+			DataMap x=new DataMap();
 			
 			loadToDataMap(rs,x); 
 			
@@ -425,13 +424,12 @@ public class Query {
 		return r;
 	}
 	
-	protected <T> void loadToDataMap(ResultSet rs,T r)throws SQLException{
+	protected <T> void loadToDataMap(ResultSet rs,DataMap r)throws SQLException{
 		ResultSetMetaData rsmd=rs.getMetaData();
-		Map<String,Object> x=new DataMap();
-		
+		 
 		for(int i=1;i<=rsmd.getColumnCount();i++){
 			String name =rsmd.getColumnName(i);
-			x.put(name, rs.getObject(i));
+			r.put(name, rs.getObject(i));
 		}
 	}
 	
