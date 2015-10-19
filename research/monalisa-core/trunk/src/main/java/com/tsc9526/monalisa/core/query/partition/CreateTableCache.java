@@ -4,6 +4,7 @@ import java.lang.annotation.Annotation;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import com.tsc9526.monalisa.core.annotation.Index;
 import com.tsc9526.monalisa.core.annotation.Table;
 import com.tsc9526.monalisa.core.datasource.DBConfig;
 import com.tsc9526.monalisa.core.datasource.DataSourceManager;
@@ -54,6 +55,7 @@ public class CreateTableCache{
 	private static class PT implements Table{
 		private String tableName;
 		private Table modelTable;
+		
 		PT(String tableName,Table modelTable){
 			this.tableName=tableName;
 			this.modelTable=modelTable;
@@ -70,5 +72,8 @@ public class CreateTableCache{
 		public String remarks() {
 			return modelTable.remarks();
 		}	
+		public Index[] indexes(){
+			return modelTable.indexes();
+		}
 	}
 }
