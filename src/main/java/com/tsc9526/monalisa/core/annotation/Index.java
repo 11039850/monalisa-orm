@@ -5,26 +5,31 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+
 /**
  *  
  * @author zzg.zhou(11039850@qq.com)
  */
-@Target(ElementType.TYPE)
+@Target({ElementType.METHOD,ElementType.FIELD})
 @Retention(RetentionPolicy.RUNTIME)
-public @interface Table {
-
+public @interface Index {
 	/**
-	 * @return 表名
+	 * @return 索引名
 	 */
 	String name() default "";
 	
 	/**
-	 * @return 备注
+	 * @return 索引类型
 	 */
-	String remarks() default "";
+	int type() default 0;	
 	
 	/**
-	 * @return 索引
+	 * @return 是否唯一键
 	 */
-	Index[] indexes() default {} ;
+	boolean unique() default false;
+	
+	/**
+	 * @return 索引字段名
+	 */
+	String[] fields() default {} ;
 }

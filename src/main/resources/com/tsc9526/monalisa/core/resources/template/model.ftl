@@ -130,6 +130,42 @@ public class ${table.javaName} extends ${modelClass}<${table.javaName}> implemen
 		DeleteForExample deleteForExample(Example example){
 			return new DeleteForExample(example);
 		} 	
+		
+		
+		<#if table.keyColumns?size gt 0 >
+		public int deleteByPrimaryKey(<#list table.keyColumns as k>${k.javaType} ${k.javaName}<#if k_has_next=true>, </#if></#list>){			 			 
+			<#list table.keyColumns as k>
+			model.${k.javaName} = ${k.javaName};
+			</#list>
+				 			 
+			return model.delete();				
+		}				 
+		</#if>
+		
+		<#list table.indexes as index>
+		<#assign m='' />			 
+		<#list index.columns as c>
+			<#assign m= m + c.javaName?cap_first />				 
+		</#list>
+		<#if m='PrimaryKey'><#assign m= 'PrimaryKey2'/></#if>
+		<#if index.unique> 
+		/**
+		* Find by unique key: ${index.name}
+		<#list index.columns as c>
+		* @param ${c.javaName} ${c.remarks?html?replace('*/','**')}
+		</#list>	
+		*/
+		public int deleteBy${m}(<#list index.columns as k>${k.javaType} ${k.javaName}<#if k_has_next=true>, </#if></#list>){			 
+			<#list index.columns as k>
+			model.${k.javaName}=${k.javaName};
+			</#list>			 
+			 
+			return model.delete();
+		}			 
+		</#if>		
+		
+		</#list>
+		
 	}
 	
 	public static class Update extends com.tsc9526.monalisa.core.query.dao.Update<${table.javaName}>{

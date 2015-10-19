@@ -1,5 +1,7 @@
 package com.tsc9526.monalisa.core.query.dialect;
 
+import java.util.List;
+
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
@@ -107,7 +109,7 @@ public abstract class Dialect{
 	}
 	
 	public Query delete(Model model){
-		Query q=getWhereByPrimaryKey(model);
+		Query q=findWhereKey(model);
 		
 		return delete(model,q.getSql(),q.getParameters());
 	}
@@ -131,7 +133,7 @@ public abstract class Dialect{
 	}
 	
 	public Query update(Model model){		 
-		Query q=getWhereByPrimaryKey(model);
+		Query q=findWhereKey(model);
 		
 		return update(model,q.getSql(),q.getParameters());
 	}	
@@ -185,7 +187,7 @@ public abstract class Dialect{
 	}
 	
 	public Query updateSelective(Model model){		 
-		Query q=getWhereByPrimaryKey(model);		 
+		Query q=findWhereKey(model);		 
 		
 		return updateSelective(model,q.getSql(),q.getParameters());
 	}
@@ -289,29 +291,78 @@ public abstract class Dialect{
 		return query;
 	}
 	
+	protected Query findWhereKey(Model model) {
+		Query query=getWhereByPrimaryKey(model);
+		if(query==null){
+			query=getWhereByUniqueKey(model);			
+		}
+		
+		if(query!=null){
+			return query;
+		}else{
+			throw new RuntimeException("Model: "+model.getClass()+", Primary key is null, or unique key is null");
+		}
+	}
 	
 	protected Query getWhereByPrimaryKey(Model model){
 		Query query=new Query();
-		  
+		
+		int keyType=-1; //-1: 初始化, 0-无匹配的键, 1-primary key, 2-unique key	 
 		for(Object o:model.fields()){
 			FGS fgs=(FGS)o;
 			
 			Column c=fgs.getField().getAnnotation(Column.class);
 			if(c.key()){
-				Object v=getValue(fgs,model);
-				if(v==null){
-					throw new RuntimeException("Model: "+model.getClass()+", Primary key is null: "+c.name());
-				}				
-				 
-				if(!query.isEmpty()){
-					query.add(" AND ");
-				}
+				keyType=1;
 				
-				query.add(getColumnName(c.name())+" = ?",v);				
-			}
-		}
+				Object v=getValue(fgs,model);
+				if(v!=null){
+					if(!query.isEmpty()){
+						query.add(" AND ");
+					}					
+					query.add(getColumnName(c.name())+" = ?",v);
+				}else{	
+					keyType=0;					 
+					break;										
+				}
+			}						
+		}	 
 		
-		return query;
+		if(keyType==1){
+			return query;
+		}else{
+			return null;
+		} 
+	}
+	
+	protected Query getWhereByUniqueKey(Model model){
+		for(Object x:model.getUniqueIndexes()){
+			Model.ModelIndex index=(Model.ModelIndex)x;
+			
+			Query query=new Query();
+			 
+			List<FGS> fs=index.getFields();
+			boolean keyExists=fs.size()>0;
+			for(FGS fgs:fs){
+				Column c=fgs.getField().getAnnotation(Column.class);
+				
+				Object v=getValue(fgs,model);
+				if(v!=null){
+					if(!query.isEmpty()){
+						query.add(" AND ");
+					}					
+					query.add(getColumnName(c.name())+" = ?",v);
+				}else{	
+					keyExists=false;
+					break;										
+				}
+			}	
+			
+			if(keyExists){
+				return query;
+			}			
+		}		
+		return null;
 	}
 	
 	protected Object getValue(FGS fgs,Model model) {

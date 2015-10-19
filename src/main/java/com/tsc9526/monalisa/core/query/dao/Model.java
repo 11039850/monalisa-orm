@@ -2,12 +2,16 @@ package com.tsc9526.monalisa.core.query.dao;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import com.tsc9526.monalisa.core.annotation.Column;
 import com.tsc9526.monalisa.core.annotation.DB;
+import com.tsc9526.monalisa.core.annotation.Index;
 import com.tsc9526.monalisa.core.annotation.Table;
 import com.tsc9526.monalisa.core.datasource.DBConfig;
 import com.tsc9526.monalisa.core.datasource.DataSourceManager;
@@ -236,18 +240,12 @@ public abstract class Model<T extends Model> implements Serializable{
 	 * 
 	 * @return 返回表的字段列表
 	 */
-	public List<FGS> fields() {		 
-		return mm().fields;
+	public Collection<FGS> fields() {		 
+		return mm().hFieldsByColumnName.values();
 	}	
 	
 	public FGS field(String name) {
-		for(FGS fgs:fields()){
-			Column c=fgs.getField().getAnnotation(Column.class);
-			if(fgs.getFieldName().equalsIgnoreCase(name) || c.name().equalsIgnoreCase(name)){
-				return fgs;
-			}
-		}
-		return null;
+		return mm().findFieldByName(name);		 
 	}
 	
 	/**
@@ -272,13 +270,10 @@ public abstract class Model<T extends Model> implements Serializable{
 	}
 	
 	public T set(String name,Object value){
-		for(FGS fgs:fields()){
-			Column c=fgs.getField().getAnnotation(Column.class);
-			if(name.equals(fgs.getFieldName()) || name.equals(c.name())){
-				fgs.setObject(this, value);
-			}
-		}
-		
+		FGS fgs=field(name);
+		if(fgs!=null){
+			fgs.setObject(this, value);			
+		}		
 		return (T)this;
 	}
 	
@@ -505,6 +500,20 @@ public abstract class Model<T extends Model> implements Serializable{
 		
 		return validator.validate(this);
 	}
+	
+	public List<ModelIndex> getIndexes(){
+		return mm().indexes;
+	}
+	
+	public List<ModelIndex> getUniqueIndexes(){
+		List<ModelIndex> unique=new ArrayList<Model.ModelIndex>();
+		for(ModelIndex index:mm().indexes){
+			if(index.isUnique()){
+				unique.add(index);
+			}
+		}		  
+		return unique;
+	}
 	 
 	public static enum Event {
 		INSERT,DELETE,UPDATE,INSERT_OR_UPDATE,LOAD;
@@ -524,14 +533,71 @@ public abstract class Model<T extends Model> implements Serializable{
 		public boolean parse(Model<?> m,T data,String... mappings);
 	}
 
+	public static class ModelIndex{
+		/**
+		 * 索引名
+		 */
+		private String name;
+		
+		/**
+		 * 索引类型
+		 */
+		private int      type;
+		
+		/**
+		 * 是否唯一性索引
+		 */
+		private boolean  unique;
+		
+		/**
+		 * 索引字段
+		 */
+		private List<FGS> fields;
+
+		public String getName() {
+			return name;
+		}
+
+		public void setName(String name) {
+			this.name = name;
+		}
+
+		public int getType() {
+			return type;
+		}
+
+		public void setType(int type) {
+			this.type = type;
+		}
+
+		public boolean isUnique() {
+			return unique;
+		}
+
+		public void setUnique(boolean unique) {
+			this.unique = unique;
+		}
+
+		public List<FGS> getFields() {
+			return fields;
+		}
+
+		public void setFields(List<FGS> fields) {
+			this.fields = fields;
+		}
+		
+	}
+	
 	protected static class ModelMeta{
 		protected Dialect dialect;
 		protected DBConfig  db;
-		protected List<FGS> fields;
+		protected Map<String,FGS> hFieldsByColumnName=new LinkedHashMap<String, ClassHelper.FGS>();
+		protected Map<String,FGS> hFieldsByJavaName  =new LinkedHashMap<String, ClassHelper.FGS>();
 		protected FGS       autoField;	
 		protected Table     table;	
 		protected Partition partition;
-		protected Listener  listener;
+		protected Listener  listener;		
+		protected List<ModelIndex> indexes=new ArrayList<Model.ModelIndex>();
 		
 		ModelMeta(Model m)throws Exception{
 			Class<?> clazz=ClassHelper.findClassWithAnnotation(m.getClass(),DB.class);
@@ -539,7 +605,7 @@ public abstract class Model<T extends Model> implements Serializable{
 				throw new RuntimeException("Model: "+m.getClass()+" must implement interface annotated by: "+DB.class);
 			}
 			
-			table=m.getClass().getAnnotation(Table.class);
+			table=m.getClass().getAnnotation(Table.class);	
 			
 			db=dsm.getDBConfig(clazz);
 			
@@ -565,18 +631,52 @@ public abstract class Model<T extends Model> implements Serializable{
 			}
 			
 			MetaClass metaClass=ClassHelper.getMetaClass(m.getClass());
-			fields=metaClass.getFieldsWithAnnotation(Column.class);
+			List<FGS> fields=metaClass.getFieldsWithAnnotation(Column.class);
 			
 			for(Object o:fields){
-				FGS fgs=(FGS)o;
-				
+				FGS fgs=(FGS)o;				
 				Column c=fgs.getField().getAnnotation(Column.class);
-				if(c.auto()){
-					autoField=fgs;
-					break;
+				
+				hFieldsByColumnName.put(c.name().toLowerCase(),fgs);
+				hFieldsByJavaName  .put(fgs.getFieldName().toLowerCase(),fgs);
+				
+				if(c.auto() && autoField==null){
+					autoField=fgs;					 
+				}
+			}
+			
+			Index[] tbIndexes=table.indexes();
+			if(tbIndexes!=null && tbIndexes.length>0){
+				for(Index index:tbIndexes){
+					ModelIndex mIndex=new ModelIndex();
+					mIndex.setName(index.name());
+					mIndex.setType(index.type());
+					mIndex.setUnique(index.unique());
+					
+					List<FGS> fs=new ArrayList<ClassHelper.FGS>();
+					for(String f:index.fields()){
+						FGS x=findFieldByName(f);
+						
+						assert x!=null;
+						
+						fs.add(x);
+					}
+					mIndex.setFields(fs);
+					
+					indexes.add(mIndex);
 				}
 			}
 		}
-	}
+		
+		public FGS findFieldByName(String name){
+			name=name.toLowerCase();
+			
+			FGS fgs=hFieldsByColumnName.get(name);
+			if(fgs==null){
+				fgs=hFieldsByJavaName.get(name);
+			}
+			return fgs;
+		}
+	}	
 }
 
