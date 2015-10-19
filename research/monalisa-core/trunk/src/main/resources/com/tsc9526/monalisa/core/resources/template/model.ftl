@@ -150,7 +150,7 @@ public class ${table.javaName} extends ${modelClass}<${table.javaName}> implemen
 		<#if m='PrimaryKey'><#assign m= 'PrimaryKey2'/></#if>
 		<#if index.unique> 
 		/**
-		* Find by unique key: ${index.name}
+		* Delete by unique key: ${index.name}
 		<#list index.columns as c>
 		* @param ${c.javaName} ${c.remarks?html?replace('*/','**')}
 		</#list>	
@@ -228,6 +228,34 @@ public class ${table.javaName} extends ${modelClass}<${table.javaName}> implemen
 		}			 
 		</#if>		
 		
+		<#if index.columns?size = 1>
+		<#assign k=index.columns[0]>
+		/**
+		* List result to Map, The map key is unique-key: ${k.name} 
+		*/
+		public Map<${k.javaType},${table.javaName}> selectToMapWith${k.javaName}(String whereStatement,Object ... args){
+			List<${table.javaName}> list=super.select(whereStatement,args);
+			
+			Map<${k.javaType},${table.javaName}> m=new LinkedHashMap<${k.javaType},${table.javaName}>();
+			for(${table.javaName} x:list){
+				m.put(x.${k.javaNameGet}(),x);
+			}
+			return m;
+		}
+		
+		/**
+		* List result to Map, The map key is unique-key: ${k.name} 
+		*/
+		public Map<${k.javaType},${table.javaName}> selectByExampleToMapWith${k.javaName}(Example example){
+			List<${table.javaName}> list=super.selectByExample(example);
+			
+			Map<${k.javaType},${table.javaName}> m=new LinkedHashMap<${k.javaType},${table.javaName}>();
+			for(${table.javaName} x:list){
+				m.put(x.${k.javaNameGet}(),x);
+			}
+			return m;
+		}
+		</#if>
 		</#list>
 				
 		<#if table.keyColumns?size = 1 >
