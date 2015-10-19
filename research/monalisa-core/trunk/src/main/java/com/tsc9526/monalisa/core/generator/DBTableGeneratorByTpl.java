@@ -57,8 +57,8 @@ public class DBTableGeneratorByTpl {
 			boolean importIndex  =false;
 			for(MetaIndex index:table.getIndexes()){
 				importIndex=true;
-				if(index.isUnique()){
-					importIndex=true;
+				if(index.isUnique() && index.getColumns().size()==1){
+					importListMap=true;
 					break;
 				}
 			}
