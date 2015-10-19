@@ -4,14 +4,18 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 import com.tsc9526.monalisa.core.annotation.Column;
 import com.tsc9526.monalisa.core.annotation.DB;
+import com.tsc9526.monalisa.core.annotation.Index;
 import com.tsc9526.monalisa.core.annotation.Table;
 import com.tsc9526.monalisa.core.meta.MetaColumn;
+import com.tsc9526.monalisa.core.meta.MetaIndex;
 import com.tsc9526.monalisa.core.meta.MetaTable;
 import com.tsc9526.monalisa.core.query.Query;
 import com.tsc9526.monalisa.core.resources.Freemarker;
@@ -49,10 +53,27 @@ public class DBTableGeneratorByTpl {
 			data.put("modelClass", modelClass);
 			data.put("dbi", dbi);
 
+			boolean importListMap=false;
+			boolean importIndex  =false;
+			for(MetaIndex index:table.getIndexes()){
+				importIndex=true;
+				if(index.isUnique()){
+					importIndex=true;
+					break;
+				}
+			}
+			if(table.getKeyColumns().size()==1){
+				importListMap=true;
+			}
+			
+			
 			Set<String> imports = new LinkedHashSet<String>();
 			imports.add(DB.class.getName());
 			imports.add(Table.class.getName());
 			imports.add(Column.class.getName());
+			if(importIndex){
+				imports.add(Index.class.getName());
+			}	
 			imports.add(ClassHelper.class.getName());
 			if (table.getKeyColumns().size() > 0) {
 				imports.add(Query.class.getName());
@@ -60,6 +81,13 @@ public class DBTableGeneratorByTpl {
 			for (MetaColumn c : table.getColumns()) {
 				imports.addAll(c.getImports());
 			}
+		 			
+			if(importListMap){
+				imports.add(List.class.getName());
+				imports.add(Map.class.getName());
+				imports.add(LinkedHashMap.class.getName());
+			}
+			
 			data.put("imports", imports);
 
 			modelTpl.process(data, w);
