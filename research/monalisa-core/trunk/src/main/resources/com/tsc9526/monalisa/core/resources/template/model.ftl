@@ -1,40 +1,22 @@
 package ${table.javaPackage};
 
 <#include "functions.ftl">
-
-<#assign importListMap = (table.keyColumns?size = 1) >
-<#assign importIndex   = false>
-<#list table.indexes as index>
-	<#if index.unique>
-		<#assign importListMap=true>
-		<#assign importIndex  =true>
-	</#if>
-</#list>	
-		
+ 		
 <#list imports as i>
 import ${i};
 </#list>
-<#if importListMap >
-import java.util.List;
-import java.util.Map;
-import java.util.LinkedHashMap;
-</#if>
-<#if importIndex>
-import com.tsc9526.monalisa.core.annotation.Index;
-</#if>
 
 /**
  * Created by monalisa at ${.now}
  */ 
 @Table(
 	name="${table.name}",
-	remark="${table.remarks!?replace('"','\\"')?replace('\r','\\r')?replace('\n','\\n')}",
+	remarks="${table.remarks!?replace('"','\\"')?replace('\r','\\r')?replace('\n','\\n')}",
 	indexes={		
 		<#list table.indexes as index>		
-		@Index(name="${index.name}", type=${index.type}, unique=${index.unique?c}, fields={<#list index.columns as c>"${c.name}"<#if c_has_next=true>,</#if></#list>})
-		<#if index_has_next=true>,
+		@Index(name="${index.name}", type=${index.type}, unique=${index.unique?c}, fields={<#list index.columns as c>"${c.name}"<#if c_has_next=true>,</#if></#list>})<#if index_has_next=true>,
 		</#if>
-		</#list>		
+		</#list>				
 	}
 )
 public class ${table.javaName} extends ${modelClass}<${table.javaName}> implements ${dbi}{
