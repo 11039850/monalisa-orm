@@ -1,7 +1,9 @@
 package com.tsc9526.monalisa.core.meta;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -230,10 +232,33 @@ public class MetaColumn extends Name{
 				setJavaType("int[]");
 			}else if(array.equals("long") || array.equals("number")){
 				setJavaType("long[]");
+			}else if(array.equals("float") || array.equals("Float")){
+				setJavaType("float[]");
 			}else if(array.equals("double") || array.equals("Double")){
 				setJavaType("double[]");
 			}else{
 				setJavaType("String[]");
+			}
+		}		
+	}
+	
+	protected void processRemarkList() {
+		String list=getCode("list");
+		if(list!=null){
+			imports.add(List.class.getName());
+			imports.add(ArrayList.class.getName());
+			
+			list=list.trim().toLowerCase();
+			if(list.equals("int") || list.equals("integer")){
+				setJavaType("List<Integer>");
+			}else if(list.equals("long") || list.equals("number")){
+				setJavaType("List<Long>");
+			}else if(list.equals("float") || list.equals("Float")){
+				setJavaType("List<Float>");
+			}else if(list.equals("double") || list.equals("Double")){
+				setJavaType("List<Double>");
+			}else{
+				setJavaType("List<String>");
 			}
 		}		
 	}
@@ -262,6 +287,7 @@ public class MetaColumn extends Name{
 		processRemarkEnum();
 		processRemarkAnnotation();
 		processRemarkArray();
+		processRemarkList();
 		processRemarkJson();
 	}
 	 
