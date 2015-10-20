@@ -314,7 +314,7 @@ public abstract class Model<T extends Model> implements Serializable{
 		mm().db=db;
 		
 		return (T)this;
-	}
+	}		 	
 	
 	public boolean readonly(){
 		return readonly;
