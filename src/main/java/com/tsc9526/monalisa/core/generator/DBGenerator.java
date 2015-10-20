@@ -102,11 +102,8 @@ public class DBGenerator {
 			
 			Writer os = java.openWriter();			
 			
-			String modelClass=getModelClassValue();
-			if(modelClass==null || modelClass.trim().length()==0){
-				modelClass=Model.class.getName();
-			}
-			  
+			String modelClass=getModelClassValue(clone);
+			   
 			JavaWriter writer=new JavaWriter(os);
 			DBTableGeneratorByTpl g2=new DBTableGeneratorByTpl(clone, modelClass, typeElement.getQualifiedName().toString());
 			g2.generate(writer);
@@ -144,16 +141,21 @@ public class DBGenerator {
 	 
 	
 	
-	protected String getModelClassValue(){
+	protected String getModelClassValue(MetaTable table){
 		String modelClass=null;
 		try{
-			modelClass=dbcfg.modelClass();//.getName();
+			modelClass=dbcfg.getProperty("modelClass."+table.getName(), dbcfg.modelClass());
 		}catch(MirroredTypeException mte ){
 			TypeMirror typeMirror=mte.getTypeMirror();
 			Types TypeUtils = processingEnv.getTypeUtils();
 			TypeElement te= (TypeElement)TypeUtils.asElement(typeMirror);
 			modelClass=te.getQualifiedName().toString();
 		}
+		
+		if(modelClass==null || modelClass.trim().length()==0){
+			modelClass=Model.class.getName();
+		}
+		
 		return modelClass;
 	}
 	 
