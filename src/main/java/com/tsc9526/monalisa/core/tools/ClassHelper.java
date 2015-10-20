@@ -112,9 +112,7 @@ public class ClassHelper {
 	 
 	
 	public static void setObject(Object bean, FGS fgs, Object v) {
-		Method set = fgs.getSetMethod();
 		Class<?> type=fgs.getField().getType();
-		
 		try {			 			 
 			Object value=null;
 			if(v!=null){
@@ -188,7 +186,13 @@ public class ClassHelper {
 				}
 			}
 			
-			set.invoke(bean, value);
+			Method set = fgs.getSetMethod();
+			if(set!=null){
+				set.invoke(bean, value);
+			}else{
+				fgs.field.setAccessible(true);
+				fgs.field.set(bean, value);
+			}
 		} catch (Exception e) {
 			throw new RuntimeException("Field type: "+type.getName()+", value type: "+v.getClass().getName(),e);
 		}
@@ -203,10 +207,10 @@ public class ClassHelper {
 		try {			 
 			Method get = fgs.getGetMethod();
 			if(get!=null){
-				Object r=get.invoke(bean);
-				return r;
+				return get.invoke(bean);				
 			}else{
-				return null;
+				fgs.field.setAccessible(true);
+				return fgs.field.get(bean);				
 			}			
 		} catch (Exception e) {
 			throw new RuntimeException("Error get method from field: "+fgs.getFieldName(),e);
