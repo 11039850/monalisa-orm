@@ -100,6 +100,22 @@ public class ${table.javaName} extends ${modelClass}<${table.javaName}> implemen
 		return dirty(true);
 	}
 	
+	<#if f.code.list??>
+	<@comments table=table c=f align="	"/> 
+	<#assign listType=f.javaType?substring(5, f.javaType?length - 1 )>
+	public ${table.javaName} ${f.javaNameSet?replace('set','add','f')}(${listType}... ${f.javaName}){
+		if(this.${f.javaName} == null){
+			this.${f.javaName}=new Array${f.javaType}();
+		}
+		
+		for(${listType} x:${f.javaName}){
+			this.${f.javaName}.add(x);
+		}
+		
+		return dirty(true);
+	}
+	</#if>
+	
 	</#list>
 	
 	

@@ -52,43 +52,8 @@ public class DBTableGeneratorByTpl {
 			data.put("table", table);
 			data.put("modelClass", modelClass);
 			data.put("dbi", dbi);
-
-			boolean importListMap=false;
-			boolean importIndex  =false;
-			for(MetaIndex index:table.getIndexes()){
-				importIndex=true;
-				if(index.isUnique() && index.getColumns().size()==1){
-					importListMap=true;
-					break;
-				}
-			}
-			if(table.getKeyColumns().size()==1){
-				importListMap=true;
-			}
 			
-			
-			Set<String> imports = new LinkedHashSet<String>();
-			imports.add(DB.class.getName());
-			imports.add(Table.class.getName());
-			imports.add(Column.class.getName());
-			if(importIndex){
-				imports.add(Index.class.getName());
-			}	
-			imports.add(ClassHelper.class.getName());
-			if (table.getKeyColumns().size() > 0) {
-				imports.add(Query.class.getName());
-			}
-			for (MetaColumn c : table.getColumns()) {
-				imports.addAll(c.getImports());
-			}
-		 			
-			if(importListMap){
-				imports.add(List.class.getName());
-				imports.add(Map.class.getName());
-				imports.add(LinkedHashMap.class.getName());
-			}
-			
-			data.put("imports", imports);
+			data.put("imports", getImports());
 
 			modelTpl.process(data, w);
 			w.flush();
@@ -98,6 +63,47 @@ public class DBTableGeneratorByTpl {
 		}
 	}
 
+	protected Set<String> getImports() {
+		Set<String> imports = new LinkedHashSet<String>();
+		
+		boolean importListMap=false;
+		boolean importIndex  =false;
+		for(MetaIndex index:table.getIndexes()){
+			importIndex=true;
+			if(index.isUnique() && index.getColumns().size()==1){
+				importListMap=true;
+				break;
+			}
+		}
+		if(table.getKeyColumns().size()==1){
+			importListMap=true;
+		}
+	   
+		imports.add(DB.class.getName());
+		imports.add(Table.class.getName());
+		imports.add(Column.class.getName());
+		if(importIndex){
+			imports.add(Index.class.getName());
+		}	
+		imports.add(ClassHelper.class.getName());
+		
+		if (table.getKeyColumns().size() > 0) {
+			imports.add(Query.class.getName());
+		}
+		
+		for (MetaColumn c : table.getColumns()) {
+			imports.addAll(c.getImports());
+		}
+	 			
+		if(importListMap){
+			imports.add(List.class.getName());
+			imports.add(Map.class.getName());
+			imports.add(LinkedHashMap.class.getName());
+		}
+		
+		return imports;
+	}
+	
 	public MetaTable getTable() {
 		return table;
 	}
