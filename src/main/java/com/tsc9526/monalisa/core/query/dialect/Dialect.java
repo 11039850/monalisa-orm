@@ -3,6 +3,7 @@ package com.tsc9526.monalisa.core.query.dialect;
 import java.util.List;
 
 import com.google.gson.JsonArray;
+import com.google.gson.JsonNull;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 import com.tsc9526.monalisa.core.annotation.Column;
@@ -400,17 +401,27 @@ public abstract class Dialect{
 						return 0;
 					}
 				} 
-			}else if(v.getClass().isArray() && v.getClass()!=byte[].class){
+			}else if(v.getClass().isArray()){
 				if(v.getClass()==byte[].class){
 					return v;
 				}else{
 					JsonArray array=new JsonArray();
 					Object[] os=(Object[])v;
-					for(Object o:os){
-						array.add(new JsonPrimitive(o==null?"":o.toString()));
+					for(Object o:os){						 
+						if(o!=null){					 
+							array.add(toJsonPrimitive(o));
+						}
 					}
 					return array.toString();
 				}				
+			}else if(List.class.isAssignableFrom(v.getClass())){
+				JsonArray array=new JsonArray();				 
+				for(Object o:(List)v){
+					if(o!=null){
+						array.add(toJsonPrimitive(o));
+					}
+				}
+				return array.toString();
 			}else if(v.getClass()==JsonObject.class){
 				return v.toString();
 			}else if(v.getClass().isPrimitive() || v.getClass().getName().startsWith("java.")){				
@@ -423,6 +434,20 @@ public abstract class Dialect{
 		return v;		
 	}
 	
+	private JsonPrimitive toJsonPrimitive(Object o){		 
+		Class<?> clazz=o.getClass();		 
+		if(clazz==int.class || clazz==Integer.class){			
+			return new JsonPrimitive((Integer)o);
+		}if(clazz==float.class || clazz==Float.class){			
+			return new JsonPrimitive((Float)o);
+		}if(clazz==double.class || clazz==Double.class){			
+			return new JsonPrimitive((Double)o);
+		}if(clazz==long.class || clazz==Long.class){			
+			return new JsonPrimitive((Long)o);
+		}else{
+			return new JsonPrimitive(o.toString());
+		} 
+	}
 	public Query getCountQuery(Query origin){
 		Query query=new Query();
 		query.use(origin.getDb());

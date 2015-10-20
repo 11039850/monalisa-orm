@@ -253,9 +253,9 @@ public class MetaColumn extends Name{
 				setJavaType("List<Integer>");
 			}else if(list.equals("long") || list.equals("number")){
 				setJavaType("List<Long>");
-			}else if(list.equals("float") || list.equals("Float")){
+			}else if(list.equals("float")){
 				setJavaType("List<Float>");
-			}else if(list.equals("double") || list.equals("Double")){
+			}else if(list.equals("double")){
 				setJavaType("List<Double>");
 			}else{
 				setJavaType("List<String>");
