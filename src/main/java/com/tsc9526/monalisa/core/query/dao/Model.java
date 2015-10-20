@@ -18,7 +18,6 @@ import com.tsc9526.monalisa.core.datasource.DataSourceManager;
 import com.tsc9526.monalisa.core.meta.MetaPartition;
 import com.tsc9526.monalisa.core.query.dialect.Dialect;
 import com.tsc9526.monalisa.core.query.partition.CreateTableCache;
-import com.tsc9526.monalisa.core.query.partition.Partition;
 import com.tsc9526.monalisa.core.query.validator.Validator;
 import com.tsc9526.monalisa.core.tools.ClassHelper;
 import com.tsc9526.monalisa.core.tools.ClassHelper.FGS;
@@ -282,8 +281,8 @@ public abstract class Model<T extends Model> implements Serializable{
 	 * @return 返回表名等信息
 	 */
 	public Table table(){
-		if(mm().partition!=null){			 
-			return CreateTableCache.getTable(mm().partition, this, mm().table);
+		if(mm().mp!=null){			 
+			return CreateTableCache.getTable(mm().mp, this, mm().table);
 		}else{
 			return mm().table;
 		}
@@ -594,9 +593,9 @@ public abstract class Model<T extends Model> implements Serializable{
 		protected Map<String,FGS> hFieldsByColumnName=new LinkedHashMap<String, ClassHelper.FGS>();
 		protected Map<String,FGS> hFieldsByJavaName  =new LinkedHashMap<String, ClassHelper.FGS>();
 		protected FGS       autoField;	
-		protected Table     table;	
-		protected Partition partition;
-		protected Listener  listener;		
+		protected Table     table;
+		protected MetaPartition mp;		 
+		protected Listener  listener;
 		protected List<ModelIndex> indexes=new ArrayList<Model.ModelIndex>();
 		
 		ModelMeta(Model m)throws Exception{
@@ -615,11 +614,7 @@ public abstract class Model<T extends Model> implements Serializable{
 		 
 			dialect=dsm.getDialect(db);
 			
-			MetaPartition mp=db.getPartition(table.name());
-			if(mp!=null){
-				partition=(Partition)Class.forName(mp.getClazz()).newInstance();
-				partition.setMetaPartition(mp);
-			}
+			mp=db.getPartition(table.name());			 
 		  
 			String ls=db.modelListener();
 			if(ls!=null && ls.trim().length()>0){
