@@ -42,6 +42,14 @@ public class DataMap extends LinkedHashMap<String,Object>{
 		return super.containsKey(key);
 	}
 	
+	public String getString(String key,String defaultValue){
+		String v=getString(key);
+		if(v==null){
+			v= defaultValue;
+		}
+		return v;
+	}
+	
 	public String getString(String key){
 		if(key!=null){
 			key=key.toLowerCase();
@@ -53,6 +61,14 @@ public class DataMap extends LinkedHashMap<String,Object>{
 		}else {
 			return v.toString();
 		}
+	}
+	
+	public int getInt(String key, int defaultValue){
+		Integer v=getInteger(key);
+		if(v==null){
+			v=defaultValue;
+		}
+		return v;
 	}
 	
 	public Integer getInteger(String key){
@@ -68,6 +84,14 @@ public class DataMap extends LinkedHashMap<String,Object>{
 		}
 	}
 	
+	public long getLong(String key, long defaultValue){
+		Long v=getLong(key);
+		if(v==null){
+			v=defaultValue;
+		}
+		return v;
+	}
+	
 	public Long getLong(String key){
 		Object v=(Object)get(key);
 		if(v==null){
@@ -79,6 +103,14 @@ public class DataMap extends LinkedHashMap<String,Object>{
 				return Long.parseLong(""+v);
 			}
 		}
+	}
+	
+	public float getFloat(String key, float defaultValue){
+		Float v=getFloat(key);
+		if(v==null){
+			v=defaultValue;
+		}
+		return v;
 	}
 	
 	public Float getFloat(String key){
@@ -105,6 +137,14 @@ public class DataMap extends LinkedHashMap<String,Object>{
 				return Double.parseDouble(""+v);
 			}
 		}
+	}
+	
+	public Date getDate(String key, Date defaultValue){
+		Date v=getDate(key);
+		if(v==null){
+			v=defaultValue;
+		}
+		return v;
 	}
 	
 	public Date getDate(String key){
