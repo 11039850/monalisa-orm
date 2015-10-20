@@ -50,7 +50,7 @@ public class DBAnnotationProcessor extends AbstractProcessor {
 					System.out.print("[WARN] @DB should used for interface!");					
 					processingEnv.getMessager().printMessage(Kind.WARNING,"@DB should used for interface!", element);
 				}
-			} 							 
+			}
 		} 
 		return true;
 	}
