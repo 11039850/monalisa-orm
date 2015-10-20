@@ -71,6 +71,10 @@ public class CreateTableCache{
 		public String name() {					 
 			return tableName;
 		}
+		
+		public String value() {					 
+			return tableName;
+		}
 
 		public String remarks() {
 			return modelTable.remarks();
