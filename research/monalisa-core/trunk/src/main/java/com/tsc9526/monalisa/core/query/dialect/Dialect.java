@@ -167,7 +167,7 @@ public abstract class Dialect{
 			FGS fgs=(FGS)o;
 			
 			Column c=fgs.getField().getAnnotation(Column.class);
-			Object v=getValue(fgs,model);;
+			Object v=getValue(fgs,model);
 			if(selective){
 				if((c.key()==false || model.enableUpdateKey()) && v!=null){
 					if(query.parameterCount()>0){
@@ -210,7 +210,7 @@ public abstract class Dialect{
 			
 			Column c=fgs.getField().getAnnotation(Column.class);
 			if(c.key()){
-				Object v=getValue(fgs,model);;
+				Object v=getValue(fgs,model);
 				if(v==null){
 					throw new RuntimeException("Model: "+model.getClass()+" load fail, Primary key is null: "+c.name());
 				}
