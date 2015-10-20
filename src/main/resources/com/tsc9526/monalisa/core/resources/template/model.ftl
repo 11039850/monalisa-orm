@@ -97,9 +97,9 @@ public class ${table.javaName} extends ${modelClass}<${table.javaName}> implemen
 		<#else>
 		this.${f.javaName} = ${f.javaName};		
 		</#if>
-		return this;
+		return dirty(true);
 	}
-		
+	
 	</#list>
 	
 	
