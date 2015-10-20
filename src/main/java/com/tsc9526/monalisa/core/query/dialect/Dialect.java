@@ -6,6 +6,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 import com.tsc9526.monalisa.core.annotation.Column;
+import com.tsc9526.monalisa.core.annotation.Table;
 import com.tsc9526.monalisa.core.datasource.DBConfig;
 import com.tsc9526.monalisa.core.meta.MetaTable;
 import com.tsc9526.monalisa.core.query.Query;
@@ -42,6 +43,14 @@ public abstract class Dialect{
 	
 	public abstract boolean createTableIfNotExists(DBConfig db,MetaTable table,String theTableName); 
 	
+	protected String getTableName(Table table) {
+		String tableName=table.value();
+		if(tableName==null || tableName.trim().length()==0){
+			tableName=table.name();
+		}
+		return getTableName(tableName);
+	}
+	
 	protected Query doInsert(boolean selective,Model model,boolean updateOnDuplicateKey){
 		Query query=new Query().setResultClass(model.getClass());
 		
@@ -51,7 +60,7 @@ public abstract class Dialect{
 			query.add("INSERT "); 
 		}		 
 		
-		query.add("INTO "+getTableName(model.table().name())+"(");
+		query.add("INTO "+getTableName(model.table())+"(");
 		
 		for(Object o:model.fields()){
 			FGS fgs=(FGS)o;
@@ -97,14 +106,14 @@ public abstract class Dialect{
 	public Query deleteAll(Model model){
 		Query query=new Query().setResultClass(Long.class);
 		
-		query.add("DELETE FROM "+getTableName(model.table().name()));
+		query.add("DELETE FROM "+getTableName(model.table()));
 		return query;
 	}
 	
 	public Query truncate(Model model){
 		Query query=new Query().setResultClass(Long.class);
 		
-		query.add("TRUNCATE TABLE "+getTableName(model.table().name()));
+		query.add("TRUNCATE TABLE "+getTableName(model.table()));
 		return query;
 	}
 	
@@ -122,7 +131,7 @@ public abstract class Dialect{
 		
 		Query query=new Query().setResultClass(Long.class);
 		
-		query.add("DELETE FROM "+getTableName(model.table().name())+" ");
+		query.add("DELETE FROM "+getTableName(model.table())+" ");
 		if(whereStatement.toUpperCase().trim().startsWith("WHERE")){
 			query.add(whereStatement, args);
 		}else{
@@ -153,7 +162,7 @@ public abstract class Dialect{
 	 
 		Query query=new Query().setResultClass(Long.class);
 		
-		query.add("UPDATE "+getTableName(model.table().name())+" SET ");
+		query.add("UPDATE "+getTableName(model.table())+" SET ");
 		for(Object o:model.fields()){
 			FGS fgs=(FGS)o;
 			
@@ -195,7 +204,7 @@ public abstract class Dialect{
 	public Query load(Model model){
 		Query query=new Query().setResultObject(model);
 		 
-		query.add("SELECT "+model.filterFields()+" FROM ").add(getTableName(model.table().name())).add(" WHERE ");
+		query.add("SELECT "+model.filterFields()+" FROM ").add(getTableName(model.table())).add(" WHERE ");
 		for(Object o:model.fields()){
 			FGS fgs=(FGS)o;
 			
@@ -229,7 +238,7 @@ public abstract class Dialect{
 	public Query select(Model model,String whereStatement,Object ... args){
 		Query query=new Query().setResultClass(model.getClass());
 		
-		query.add("SELECT "+model.filterFields()+" FROM ").add(getTableName(model.table().name()));
+		query.add("SELECT "+model.filterFields()+" FROM ").add(getTableName(model.table()));
 		if(whereStatement!=null && whereStatement.length()>0){
 			query.add(" ");
 			
@@ -249,7 +258,7 @@ public abstract class Dialect{
 	
 	public Query count(Model model,String whereStatement,Object ... args){
 		Query query=new Query().setResultClass(Long.class);
-		query.add("SELECT COUNT(*) FROM ").add(getTableName(model.table().name()));
+		query.add("SELECT COUNT(*) FROM ").add(getTableName(model.table()));
 		if(whereStatement!=null && whereStatement.length()>0){
 			query.add(" ");
 			

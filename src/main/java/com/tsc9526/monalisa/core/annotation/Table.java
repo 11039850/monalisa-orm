@@ -16,8 +16,13 @@ public @interface Table {
 	/**
 	 * @return 表名
 	 */
-	String name() default "";
+	String value() default "";
 	
+	/**
+	 * @return 表名
+	 */
+	String name() default "";
+	 
 	/**
 	 * @return 备注
 	 */
