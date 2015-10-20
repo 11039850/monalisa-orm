@@ -16,7 +16,7 @@ import ${i};
 		<#list table.indexes as index>		
 		@Index(name="${index.name}", type=${index.type}, unique=${index.unique?c}, fields={<#list index.columns as c>"${c.name}"<#if c_has_next=true>,</#if></#list>})<#if index_has_next=true>,
 		</#if>
-		</#list>				
+		</#list>
 	}
 )
 public class ${table.javaName} extends ${modelClass}<${table.javaName}> implements ${dbi}{
@@ -230,7 +230,6 @@ public class ${table.javaName} extends ${modelClass}<${table.javaName}> implemen
 			 
 			return super.selectOneByExample(c.example);
 		}			 
-		</#if>		
 		
 		<#if index.columns?size = 1>
 		<#assign k=index.columns[0]>
@@ -259,6 +258,7 @@ public class ${table.javaName} extends ${modelClass}<${table.javaName}> implemen
 			}
 			return m;
 		}
+		</#if>
 		</#if>
 		</#list>
 				
