@@ -66,7 +66,7 @@ public abstract class Dialect{
 			FGS fgs=(FGS)o;
 			
 			Column c=fgs.getField().getAnnotation(Column.class);
-			Object v=getValue(fgs,model);;
+			Object v=getValue(fgs,model);
 			if(selective){
 				if(v!=null){
 					if(query.parameterCount()>0){
