@@ -117,24 +117,24 @@ public class DBGenerator {
 	
 	@SuppressWarnings("rawtypes")
 	private void verifyPartition(MetaTable table){
-		MetaPartition partition=table.getPartition();
-		if(partition!=null){
-			String clazz=partition.getClazz();
+		MetaPartition mp=table.getPartition();
+		if(mp!=null){			 
 			try{ 
-				Class<?> x=Class.forName(clazz);
-				
-				Partition p=(Partition)x.newInstance();
-				p.setMetaPartition(partition);
-				
-				String error=p.verify(table);
+				Partition p=mp.getPartition();				 
+				String error=p.verify(mp,table);
 				if(error!=null){
 					processingEnv.getMessager().printMessage(Kind.ERROR,"Partition error: "+error, typeElement);
-				}			
-			}catch(ClassNotFoundException e){
-				
+				}						 				
 			}catch(Exception e) {
-				 e.printStackTrace(System.out);
-				 processingEnv.getMessager().printMessage(Kind.ERROR,e.getClass().getName()+":\r\n"+e.getMessage(), typeElement);
+				if(e instanceof RuntimeException){
+					RuntimeException re=(RuntimeException)e;
+					if(re.getCause()!=null && re.getCause() instanceof ClassNotFoundException){
+						//Ingore this exception
+						return;
+					} 
+				}
+				e.printStackTrace(System.out);
+				processingEnv.getMessager().printMessage(Kind.ERROR,e.getClass().getName()+":\r\n"+e.getMessage(), typeElement);
 			}
 		}
 	}

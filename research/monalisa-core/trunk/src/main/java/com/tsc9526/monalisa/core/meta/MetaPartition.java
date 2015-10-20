@@ -9,7 +9,9 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.tsc9526.monalisa.core.query.dao.Model;
 import com.tsc9526.monalisa.core.query.partition.DatePartitionTable;
+import com.tsc9526.monalisa.core.query.partition.Partition;
 
 /**
  * 
@@ -114,15 +116,29 @@ public class MetaPartition implements java.io.Serializable {
 	private String   clazz;
 	
 	private String[] args;
-	
-	
+	 
 	private List<MetaTable> tables=new ArrayList<MetaTable>();
 	
+	private Partition<Model<?>> partition;
 	
-	public MetaPartition(){
-				
+	public MetaPartition(){			
 	}
 	
+	@SuppressWarnings("unchecked")
+	public Partition<Model<?>> getPartition(){
+		try{
+			if(partition==null){
+				partition=(Partition<Model<?>>)Class.forName(getClazz()).newInstance();
+			}
+			return partition;
+		}catch(Exception e){
+			if(e instanceof RuntimeException){
+				throw (RuntimeException)e;
+			}else{
+				throw new RuntimeException(e);
+			}
+		}		
+	}
 	
 	
 	public void addTable(MetaTable table){

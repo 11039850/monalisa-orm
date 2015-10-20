@@ -18,19 +18,8 @@ import com.tsc9526.monalisa.core.tools.JavaBeansHelper;
  */
 @SuppressWarnings("rawtypes")
 public class DatePartitionTable implements Partition<Model>{	 
-	private MetaPartition metaPartition;
-	
-	public void setMetaPartition(MetaPartition metaPartition){
-		this.metaPartition=metaPartition;
-		
-	}
-	
-	public MetaPartition getMetaPartition(){
-		return this.metaPartition;
-	}
-	
-	public  String verify(MetaTable table) {	
-		String[] args=metaPartition.getArgs();
+	public  String verify(MetaPartition mp,MetaTable table) {	
+		String[] args=mp.getArgs();
 		
 		if(args==null || args.length!=2){
 			return "Need only 2 parameters. First is date format,  the other is the date field name!";
@@ -56,8 +45,8 @@ public class DatePartitionTable implements Partition<Model>{
 		return null;				 
 	}
 	
-	public String getTableName(Model model) {
-		String[] args=metaPartition.getArgs();
+	public String getTableName(MetaPartition mp,Model model) {
+		String[] args=mp.getArgs();
 		
 		String ymd=args[0];
 		String dateField =JavaBeansHelper.getJavaName(args[1],false);
@@ -79,7 +68,7 @@ public class DatePartitionTable implements Partition<Model>{
 		}
 		
 		SimpleDateFormat sdf=new SimpleDateFormat(ymd);
-		String tableName=metaPartition.getTablePrefix()+sdf.format((Date)o);
+		String tableName=mp.getTablePrefix()+sdf.format((Date)o);
 	 
 		return tableName;
 	} 
