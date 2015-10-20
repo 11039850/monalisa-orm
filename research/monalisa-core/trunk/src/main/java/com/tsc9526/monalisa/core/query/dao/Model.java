@@ -43,6 +43,9 @@ public abstract class Model<T extends Model> implements Serializable{
 	protected boolean     updateKey=false;
 	protected boolean     readonly =false;
 	
+	protected boolean     dirty  = true;
+	protected boolean     entity = false;
+	 
 	private transient ModelMeta modelMeta;
 	  	
 	public Model(){	
@@ -62,6 +65,42 @@ public abstract class Model<T extends Model> implements Serializable{
 			}
 		}
 		return modelMeta;
+	}
+	
+	/**
+	 * Check if the model is dirty 
+	 * @return
+	 */
+	public boolean dirty(){
+		return this.dirty;
+	}
+	
+	/**
+	 * Set the model dirty
+	 * @param dirty
+	 * @return
+	 */
+	public T dirty(boolean dirty){
+		this.dirty=dirty;
+		return (T)this;
+	}
+	
+	/**
+	 * Check if the model is db entity
+	 * @return
+	 */
+	public boolean entity(){
+		return this.entity;
+	}
+	
+	/**
+	 * Set the model db entity
+	 * @param entity
+	 * @return
+	 */
+	public T entity(boolean entity){
+		this.entity=entity;
+		return (T)this;
 	}
 	
 	/**
@@ -208,6 +247,18 @@ public abstract class Model<T extends Model> implements Serializable{
 	}
 	
 	protected void after(Event event, int r) {
+		if(r>=0){
+			dirty(false);
+			
+			switch(event) {
+				case INSERT: 			entity(true); 	break;
+				case DELETE: 			entity(false); 	break;
+				case UPDATE: 			entity(true);	break;
+				case INSERT_OR_UPDATE: 	entity(true); 	break;	
+				case LOAD: 				entity(true); 	break;
+			}
+		}
+		
 		if(mm().listener!=null){
 			mm().listener.after(event, this,r);
 		}
@@ -271,7 +322,9 @@ public abstract class Model<T extends Model> implements Serializable{
 	public T set(String name,Object value){
 		FGS fgs=field(name);
 		if(fgs!=null){
-			fgs.setObject(this, value);			
+			fgs.setObject(this, value);	
+			
+			dirty(true);
 		}		
 		return (T)this;
 	}
