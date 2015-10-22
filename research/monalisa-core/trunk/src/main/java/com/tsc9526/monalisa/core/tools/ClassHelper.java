@@ -263,35 +263,43 @@ public class ClassHelper {
 		}				 
 	}
   
+	@SuppressWarnings("rawtypes")
 	public static class FGS {
+		protected String fieldName;
+		private Class<?> type;
+		
 		protected Field field;
 		protected Method getMethod;
 		protected Method setMethod;
 		
 		protected boolean nullNone=false;
 		
-		public FGS(Field field,Class<?> clazz){
-			if(field!=null){
-				this.field=field;
-				
-				String fn = field.getName();
-				String m = fn.substring(0, 1).toUpperCase();
-				if (fn.length() > 1) {
-					m += fn.substring(1);
-				}
-	
-				String get = "get" + m;
-				String set = "set" + m;
-				if (field.getType() == Boolean.class || field.getType() == boolean.class) {
-					get = "is" + m;
-				}
-	
-				getMethod=getMethod(clazz,get);
-				setMethod=getMethod(clazz,set, field.getType());
-			}
+		public FGS(String fieldName,Class<?> type){
+			this.fieldName=fieldName;
+			this.type=type;
 		}
 		
-		protected Method getMethod(Class<?> clazz,String name, Class<?>... parameterTypes) {
+		public FGS(Field field,Class<?> clazz){
+			this.field=field;
+			this.type=field.getType();
+			
+			fieldName = field.getName();
+			String m = fieldName.substring(0, 1).toUpperCase();
+			if (fieldName.length() > 1) {
+				m += fieldName.substring(1);
+			}
+
+			String get = "get" + m;
+			String set = "set" + m;
+			if (field.getType() == Boolean.class || field.getType() == boolean.class) {
+				get = "is" + m;
+			}
+
+			getMethod=getMethod(clazz,get);
+			setMethod=getMethod(clazz,set, field.getType());		
+		}
+		
+		private Method getMethod(Class<?> clazz,String name, Class<?>... parameterTypes) {
 			try {
 				return clazz.getMethod(name, parameterTypes);
 			} catch (NoSuchMethodException e) {				 
@@ -308,32 +316,49 @@ public class ClassHelper {
 		}
 		
 		public Object getObject(Object bean){
-			try {			 
-				if(getMethod!=null){
-					return getMethod.invoke(bean);				
-				}else{
-					field.setAccessible(true);
-					return field.get(bean);				
-				}			
+			try {	
+				if(field==null && bean instanceof Map){
+					return getMapObject((Map)bean);
+				}else{			
+					if(getMethod!=null){
+						return getMethod.invoke(bean);				
+					}else{
+						field.setAccessible(true);
+						return field.get(bean);				
+					}		
+				}
 			} catch (Exception e) {
 				throw new RuntimeException("Error get method from field: "+getFieldName(),e);
 			}
 		}
 		 
 		public void setObject(Object bean,Object v){
-			Class<?> type=getType();
-			try {			 			 
-				Object value=convert(v, type);
-				
-				if(setMethod!=null){
-					setMethod.invoke(bean, value);
+			try {	
+				if(field==null && bean instanceof Map){
+					setMapObject((Map)bean,v);					
 				}else{
-					field.setAccessible(true);
-					field.set(bean, value);
+					Class<?> type=getType();
+					Object value=convert(v, type);
+					
+					if(setMethod!=null){
+						setMethod.invoke(bean, value);
+					}else{
+						field.setAccessible(true);
+						field.set(bean, value);
+					}
 				}
 			} catch (Exception e) {
 				throw new RuntimeException("Field type: "+type.getName()+", value type: "+v.getClass().getName(),e);
 			}
+		}
+	 	
+		protected Object getMapObject(Map m){
+			return m.get(fieldName);
+		}
+		
+		@SuppressWarnings("unchecked")
+		protected void setMapObject(Map m,Object v){
+			m.put(fieldName,v);
 		}
 
 		public boolean isNullNone() {
@@ -345,7 +370,7 @@ public class ClassHelper {
 		}
 
 		public String getFieldName() {
-			return field.getName();
+			return fieldName;
 		}
 		
 	}
