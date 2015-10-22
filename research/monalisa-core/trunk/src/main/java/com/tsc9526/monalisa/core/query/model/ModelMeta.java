@@ -49,7 +49,7 @@ class ModelMeta{
 	protected Map<String,FGS> hFieldsByColumnName=new LinkedHashMap<String, ClassHelper.FGS>();
 	protected Map<String,FGS> hFieldsByJavaName  =new LinkedHashMap<String, ClassHelper.FGS>();
 	 
-	protected Map<String, Object> hModelValues=null;
+	protected Map<String, Object> hModelValues=new HashMap<String,Object>();
 	
 	ModelMeta(){		
 	}
@@ -155,6 +155,11 @@ class ModelMeta{
 		return hFieldsByColumnName.values();
 	}
 	
+	public void use(DBConfig db){
+		this.db=db;
+		
+		//TODO: load model info
+	}
 
 	/**
 	 * 
@@ -229,7 +234,6 @@ class ModelMeta{
 	/**
 	 * 排除大字段（字段长度 大于等于 #Short.MAX_VALUE)
 	 * 
-	 
 	 */
 	public void excludeBlobs(){
 		excludeBlobs(Short.MAX_VALUE);
