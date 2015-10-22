@@ -48,7 +48,7 @@ class ModelMeta{
 	ModelMeta(){		
 	}
 		
-	synchronized void initModelMeta(Model<?> m)throws Exception{
+	synchronized void initModelMeta(Model<?> m){
 		if(initialized){
 			return;
 		}
