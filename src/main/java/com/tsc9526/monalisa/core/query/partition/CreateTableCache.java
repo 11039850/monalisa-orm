@@ -11,7 +11,7 @@ import com.tsc9526.monalisa.core.datasource.DataSourceManager;
 import com.tsc9526.monalisa.core.generator.DBMetadata;
 import com.tsc9526.monalisa.core.meta.MetaPartition;
 import com.tsc9526.monalisa.core.meta.MetaTable;
-import com.tsc9526.monalisa.core.query.dao.Model;
+import com.tsc9526.monalisa.core.query.model.Model;
 
 /**
  * 

@@ -3,7 +3,7 @@ package com.tsc9526.monalisa.core.query.criteria;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.tsc9526.monalisa.core.query.dao.Model;
+import com.tsc9526.monalisa.core.query.model.Model;
 
 /**
  * 

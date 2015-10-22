@@ -3,7 +3,6 @@ package com.tsc9526.monalisa.core.query.dialect;
 import java.util.List;
 
 import com.google.gson.JsonArray;
-import com.google.gson.JsonNull;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 import com.tsc9526.monalisa.core.annotation.Column;
@@ -11,7 +10,8 @@ import com.tsc9526.monalisa.core.annotation.Table;
 import com.tsc9526.monalisa.core.datasource.DBConfig;
 import com.tsc9526.monalisa.core.meta.MetaTable;
 import com.tsc9526.monalisa.core.query.Query;
-import com.tsc9526.monalisa.core.query.dao.Model;
+import com.tsc9526.monalisa.core.query.model.Model;
+import com.tsc9526.monalisa.core.query.model.ModelIndex;
 import com.tsc9526.monalisa.core.tools.ClassHelper.FGS;
 import com.tsc9526.monalisa.core.tools.EnumHelper;
 import com.tsc9526.monalisa.core.tools.JsonHelper;
@@ -170,14 +170,14 @@ public abstract class Dialect{
 			Column c=fgs.getField().getAnnotation(Column.class);
 			Object v=getValue(fgs,model);
 			if(selective){
-				if((c.key()==false || model.enableUpdateKey()) && v!=null){
+				if((c.key()==false || model.updateKey()) && v!=null){
 					if(query.parameterCount()>0){
 						query.add(", ");
 					}
 					query.add(getColumnName(c.name())+"=?",v);				 		
 				}
 			}else{
-				if(c.key()==false || (model.enableUpdateKey() && v!=null)){
+				if(c.key()==false || (model.updateKey() && v!=null)){
 					if(query.parameterCount()>0){
 						query.add(", ");
 					}
@@ -347,7 +347,7 @@ public abstract class Dialect{
 	
 	protected Query getWhereByUniqueKey(Model model){
 		for(Object x:model.uniqueIndexes()){
-			Model.ModelIndex index=(Model.ModelIndex)x;
+			ModelIndex index=(ModelIndex)x;
 			
 			Query query=new Query();
 			 

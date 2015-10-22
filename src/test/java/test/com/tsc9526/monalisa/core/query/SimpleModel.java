@@ -10,7 +10,7 @@ import com.tsc9526.monalisa.core.annotation.DB;
 import com.tsc9526.monalisa.core.annotation.Table;
 import com.tsc9526.monalisa.core.datasource.DBConfig;
 import com.tsc9526.monalisa.core.query.criteria.QEH;
-import com.tsc9526.monalisa.core.query.dao.Model;
+import com.tsc9526.monalisa.core.query.model.Model;
 import com.tsc9526.monalisa.core.tools.ClassHelper;
 
 /**

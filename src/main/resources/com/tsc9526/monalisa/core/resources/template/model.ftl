@@ -191,11 +191,7 @@ public class ${table.javaName} extends ${modelClass}<${table.javaName}> implemen
 	public static class Update extends com.tsc9526.monalisa.core.query.dao.Update<${table.javaName}>{
 		Update(${table.javaName} model){
 			super(model);
-		}
-		
-		Update(${table.javaName} model,boolean updateKey){
-			super(model,updateKey);
-		}
+		}		 
 		
 		UpdateForExample updateForExample(Example example){
 			return new UpdateForExample(example);
@@ -359,20 +355,8 @@ public class ${table.javaName} extends ${modelClass}<${table.javaName}> implemen
 		 *
 		 * @see #forUpdate(${table.javaName},boolean)
 		 */
-		public Update.UpdateForExample forUpdate(${table.javaName} m){
-			return forUpdate(m,false);
-		}
-		
-		/**
-		 * Create Update for example
-		 *
-		 * @param m Update the table data with this model.
-		 * @param updateKey <br>
-		 *    true: Update the primary key if the primary key was set by m <br>
-		 *    false: Ignore update the primary key    
-		 */
-		public Update.UpdateForExample forUpdate(${table.javaName} m, boolean updateKey){
-			Update update=new Update(m,updateKey);
+		public Update.UpdateForExample forUpdate(${table.javaName} m){			 
+			Update update=new Update(m);
 			return update.updateForExample(this.example);
 		}
 		

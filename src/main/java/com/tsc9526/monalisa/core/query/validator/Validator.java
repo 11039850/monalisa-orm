@@ -6,7 +6,7 @@ import java.util.List;
 import org.apache.commons.beanutils.ConvertUtils;
 
 import com.tsc9526.monalisa.core.annotation.Column;
-import com.tsc9526.monalisa.core.query.dao.Model;
+import com.tsc9526.monalisa.core.query.model.Model;
 import com.tsc9526.monalisa.core.tools.ClassHelper.FGS;
 
 /**

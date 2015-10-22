@@ -9,7 +9,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import com.tsc9526.monalisa.core.query.dao.Model;
+import com.tsc9526.monalisa.core.query.model.Model;
 import com.tsc9526.monalisa.core.query.partition.DatePartitionTable;
 import com.tsc9526.monalisa.core.query.partition.Partition;
 

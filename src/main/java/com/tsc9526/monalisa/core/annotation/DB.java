@@ -114,7 +114,7 @@ public @interface DB{
 	String mapping()          default "";
 			
 	/**
-	 * 指定表模型的父类Class,  该Class须继承于 {@link com.tsc9526.monalisa.core.query.dao.Model} 
+	 * 指定表模型的父类Class,  该Class须继承于 {@link com.tsc9526.monalisa.core.query.model.Model} 
 	 * @return
 	 */
 	String modelClass()       default "";

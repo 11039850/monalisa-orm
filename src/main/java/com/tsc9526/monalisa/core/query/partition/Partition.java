@@ -2,7 +2,7 @@ package com.tsc9526.monalisa.core.query.partition;
 
 import com.tsc9526.monalisa.core.meta.MetaPartition;
 import com.tsc9526.monalisa.core.meta.MetaTable;
-import com.tsc9526.monalisa.core.query.dao.Model;
+import com.tsc9526.monalisa.core.query.model.Model;
 
 /**
  * 

@@ -16,9 +16,9 @@ import com.tsc9526.monalisa.core.datasource.DBConfig;
 import com.tsc9526.monalisa.core.datasource.DataSourceManager;
 import com.tsc9526.monalisa.core.generator.DBExchange;
 import com.tsc9526.monalisa.core.meta.Name;
-import com.tsc9526.monalisa.core.query.dao.Model;
-import com.tsc9526.monalisa.core.query.dao.Model.Event;
 import com.tsc9526.monalisa.core.query.dialect.Dialect;
+import com.tsc9526.monalisa.core.query.model.ModelEvent;
+import com.tsc9526.monalisa.core.query.model.Model;
 import com.tsc9526.monalisa.core.tools.ClassHelper;
 import com.tsc9526.monalisa.core.tools.ClassHelper.FGS;
 import com.tsc9526.monalisa.core.tools.ClassHelper.MetaClass;
@@ -437,7 +437,7 @@ public class Query {
 		if(r instanceof Model<?>){
 			Model<?> m=(Model<?>)r;
 			if(m.listener()!=null){
-				m.listener().before(Event.LOAD, m);
+				m.listener().before(ModelEvent.LOAD, m);
 			}
 		}
 		
@@ -467,7 +467,7 @@ public class Query {
 		if(r instanceof Model<?>){
 			Model<?> m=(Model<?>)r;
 			if(m.listener()!=null){
-				m.listener().after(Event.LOAD, m,0);
+				m.listener().after(ModelEvent.LOAD, m,0);
 			}
 		}
 	}
