@@ -268,8 +268,9 @@ class ModelMeta{
 			x.modelMeta.updateKey  = updateKey;			
 			x.modelMeta.tableName  = tableName;
 			x.modelMeta.primaryKeys= primaryKeys;
-			x.modelMeta.dirty  = true;
-			x.modelMeta.entity = false;
+			x.modelMeta.readonly   = readonly;
+			x.modelMeta.dirty      = true;
+			x.modelMeta.entity     = false;
 			
 			x.modelMeta.fieldFilterExcludeMode=fieldFilterExcludeMode;
 			x.modelMeta.fieldFilterSets.addAll(fieldFilterSets);
