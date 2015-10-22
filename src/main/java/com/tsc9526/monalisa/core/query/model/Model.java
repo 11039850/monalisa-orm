@@ -353,7 +353,7 @@ public class Model<T extends Model> implements Serializable{
 	 * @return
 	 */
 	public T use(DBConfig db){
-		mm().db=db;
+		mm().use(db);
 		
 		return (T)this;
 	}		 	
