@@ -23,14 +23,14 @@ public class Validator {
 		List<String> result=new ArrayList<String>();
 		
 		for(FGS fgs:m.fields()){
-			Column c=fgs.getField().getAnnotation(Column.class);
+			Column c=fgs.getAnnotation(Column.class);
 			Object v=fgs.getObject(this);
 			
 			if(c.notnull() && "NULL".equals(c.value()) && v==null){
 				result.add(fgs.getFieldName()+": CAN NOT BE NULL");
 			}else{			
 				if(v!=null){
-					Regex regex=fgs.getField().getAnnotation(Regex.class);
+					Regex regex=fgs.getAnnotation(Regex.class);
 					if(regex!=null){
 						if(v.toString().matches(regex.value())==false){
 							String msg=regex.message();
@@ -41,7 +41,7 @@ public class Validator {
 						}
 					}
 					
-					Max max=fgs.getField().getAnnotation(Max.class);
+					Max max=fgs.getAnnotation(Max.class);
 					if(max!=null){
 						Long x=(Long)ConvertUtils.convert(v,Long.class);
 						if(x > max.value()){
@@ -53,7 +53,7 @@ public class Validator {
 						}
 					}
 					
-					Min min=fgs.getField().getAnnotation(Min.class);
+					Min min=fgs.getAnnotation(Min.class);
 					if(min!=null){
 						Long x=(Long)ConvertUtils.convert(v,Long.class);
 						if(x < min.value()){

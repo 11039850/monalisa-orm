@@ -194,7 +194,7 @@ public class ModelHelper {
 				String name =fgs.getFieldName();
 			 	
 				if(map.containsKey(name)==false){
-					Column column=fgs.getField().getAnnotation(Column.class);
+					Column column=fgs.getAnnotation(Column.class);
 					name=column.name();
 				} 
 				
@@ -216,7 +216,7 @@ public class ModelHelper {
 				String name =fgs.getFieldName();
 				
 				if(map.containsKey(name)==false){
-					Column column=fgs.getField().getAnnotation(Column.class);
+					Column column=fgs.getAnnotation(Column.class);
 					name=column.name();
 				}
 				
@@ -245,7 +245,7 @@ public class ModelHelper {
 			for(FGS fgs:m.fields()){
 				JsonElement e=json.get(fgs.getFieldName());
 				if(e==null){
-					Column column=fgs.getField().getAnnotation(Column.class);
+					Column column=fgs.getAnnotation(Column.class);
 					e=json.get(column.name());
 				}
 				
@@ -255,7 +255,7 @@ public class ModelHelper {
 					}else{
 						if(e.isJsonPrimitive()){
 							fgs.setObject(m,e.getAsString());
-						}else if(fgs.getField().getType()==JsonObject.class){
+						}else if(fgs.getType()==JsonObject.class){
 							if(e.isJsonObject()){
 								fgs.setObject(m,e.getAsJsonObject());
 							}else{
