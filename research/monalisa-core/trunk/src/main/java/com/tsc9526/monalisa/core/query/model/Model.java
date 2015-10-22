@@ -41,11 +41,7 @@ public class Model<T extends Model> implements Serializable{
  
 	protected ModelMeta mm() {
 		if(modelMeta.initialized==false){
-			try{
-				modelMeta.initModelMeta(this);
-			}catch(Exception e){
-				throw new RuntimeException(e);
-			} 
+			modelMeta.initModelMeta(this);			 
 		}
 		return modelMeta;
 	}
