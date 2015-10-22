@@ -261,7 +261,12 @@ class ModelMeta{
 				fgs.setObject(x, value);
 			}
 	 	 	
-			x.modelMeta.updateKey=updateKey;
+			x.modelMeta.updateKey  = updateKey;			
+			x.modelMeta.tableName  = tableName;
+			x.modelMeta.primaryKeys= primaryKeys;
+			x.modelMeta.dirty  = true;
+			x.modelMeta.entity = false;
+			
 			x.modelMeta.fieldFilterExcludeMode=fieldFilterExcludeMode;
 			x.modelMeta.fieldFilterSets.addAll(fieldFilterSets);
 			
