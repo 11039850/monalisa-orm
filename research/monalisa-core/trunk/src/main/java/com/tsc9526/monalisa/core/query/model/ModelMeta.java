@@ -261,7 +261,7 @@ class ModelMeta{
 			Model<?> x=model.getClass().newInstance();
 			
 			for(FGS fgs:model.fields()){
-				Object value=fgs.getObject(this);
+				Object value=fgs.getObject(model);
 				fgs.setObject(x, value);
 			}
 	 	 	
