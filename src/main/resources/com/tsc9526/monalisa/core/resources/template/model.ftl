@@ -11,6 +11,7 @@ import ${i};
  */ 
 @Table(
 	name="${table.name}",
+	primaryKeys={<#list table.keyColumns as k>"${k.name}"<#if k_has_next=true>, </#if></#list>},
 	remarks="${table.remarks!?replace('"','\\"')?replace('\r','\\r')?replace('\n','\\n')}",
 	indexes={		
 		<#list table.indexes as index>		
