@@ -47,8 +47,7 @@ public class ${table.javaName} extends ${modelClass}<${table.javaName}> implemen
 	} 
 	 
 	public ${table.javaName}(){
-		super();
-		
+		super("${table.name}"<#list table.keyColumns as k>, "${k.name}"</#list>);		
 	}		 
 	
 	<#if table.keyColumns?size gt 0 >
@@ -60,6 +59,8 @@ public class ${table.javaName} extends ${modelClass}<${table.javaName}> implemen
 	 </#list>	 
 	 */
 	public ${table.javaName}(<#list table.keyColumns as k>${k.javaType} ${k.javaName}<#if k_has_next=true>, </#if></#list>){
+		super("${table.name}"<#list table.keyColumns as k>, "${k.name}"</#list>);
+	
 		<#list table.keyColumns as k>
 		this.${k.javaName} = ${k.javaName};
 		</#list>
