@@ -86,14 +86,14 @@ public class Select<T extends Model,S extends Select> {
 	 * @see com.tsc9526.monalisa.core.resources.HelpDoc#helpQuery(String, Object...)
 	 */
 	public T selectOne(String whereStatement,Object ... args){
-		Query query=model.getDialect().selectOne(model,whereStatement, args);
+		Query query=model.dialect().selectOne(model,whereStatement, args);
 		query.use(db());
 		T r=query.getResult();
 		return r;
 	}
 	
 	public long countAll(){
-		Query query=model.getDialect().count(model,null);		 
+		Query query=model.dialect().count(model,null);		 
 		query.use(db());
 		return query.getResult();
 	}	
@@ -120,7 +120,7 @@ public class Select<T extends Model,S extends Select> {
 	 * @see com.tsc9526.monalisa.core.resources.HelpDoc#helpQuery(String, Object...)
 	 */
 	public long count(String whereStatement,Object ... args){
-		Query query=model.getDialect().count(model,whereStatement, args);		 
+		Query query=model.dialect().count(model,whereStatement, args);		 
 		query.use(db());
 		return query.getResult();
 	}
@@ -135,7 +135,7 @@ public class Select<T extends Model,S extends Select> {
 	public T selectOneByExample(Example example){
 		Query w=QEH.getQuery(example);
 		
-		Query query=model.getDialect().selectOne(model,w.getSql(), w.getParameters());
+		Query query=model.dialect().selectOne(model,w.getSql(), w.getParameters());
 		query.use(db());
 		
 		T r= query.getResult();
@@ -151,7 +151,7 @@ public class Select<T extends Model,S extends Select> {
 	 * @see com.tsc9526.monalisa.core.resources.HelpDoc#helpQuery(String, Object...)
 	 */
 	public List<T> select(String whereStatement,Object ... args){
-		Query query=model.getDialect().select(model,whereStatement, args);
+		Query query=model.dialect().select(model,whereStatement, args);
 		query.use(db());
 		
 		return query.getList();
@@ -167,7 +167,7 @@ public class Select<T extends Model,S extends Select> {
 	public List<T> selectByExample(Example example){
 		Query w=QEH.getQuery(example);
 		
-		Query query=model.getDialect().select(model,w.getSql(), w.getParameters());
+		Query query=model.dialect().select(model,w.getSql(), w.getParameters());
 		query.use(db());
 		
 		List<T> r= query.getList();
@@ -185,7 +185,7 @@ public class Select<T extends Model,S extends Select> {
 	 * @see com.tsc9526.monalisa.core.resources.HelpDoc#helpQuery(int,int,Example,String, Object...)
 	 */
 	public List<T> select(int limit,int offset,String whereStatement,Object ... args){
-		Query query=model.getDialect().select(model,whereStatement, args);
+		Query query=model.dialect().select(model,whereStatement, args);
 		query.use(db());
 		
 		List<T> r=query.getList(limit, offset);
@@ -204,7 +204,7 @@ public class Select<T extends Model,S extends Select> {
 	public List<T> selectByExample(int limit,int offset,Example example){
 		Query w=QEH.getQuery(example);
 		
-		Query query=model.getDialect().select(model,w.getSql(), w.getParameters());
+		Query query=model.dialect().select(model,w.getSql(), w.getParameters());
 		query.use(db());
 		
 		List<T> r=query.getList(limit, offset);
@@ -221,7 +221,7 @@ public class Select<T extends Model,S extends Select> {
 	 * @see com.tsc9526.monalisa.core.resources.HelpDoc#helpQuery(int,int,Example,String, Object...)
 	 */
 	public Page<T> selectPage(int limit,int offset,String whereStatement,Object ... args){
-		Query query=model.getDialect().select(model,whereStatement, args);
+		Query query=model.dialect().select(model,whereStatement, args);
 		query.use(db());
 		
 		Page<T> r=query.getPage(limit, offset);
@@ -240,7 +240,7 @@ public class Select<T extends Model,S extends Select> {
 	public Page<T> selectPageByExample(int limit,int offset,Example example){
 		Query w=QEH.getQuery(example);
 		
-		Query query=model.getDialect().select(model,w.getSql(), w.getParameters());
+		Query query=model.dialect().select(model,w.getSql(), w.getParameters());
 		query.use(db());
 		
 		Page<T> r=query.getPage(limit,offset);

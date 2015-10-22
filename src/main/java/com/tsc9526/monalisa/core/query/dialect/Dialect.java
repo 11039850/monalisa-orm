@@ -346,7 +346,7 @@ public abstract class Dialect{
 	}
 	
 	protected Query getWhereByUniqueKey(Model model){
-		for(Object x:model.getUniqueIndexes()){
+		for(Object x:model.uniqueIndexes()){
 			Model.ModelIndex index=(Model.ModelIndex)x;
 			
 			Query query=new Query();

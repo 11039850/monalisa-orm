@@ -64,7 +64,7 @@ public class Insert<T extends Model>{
 	 * @return 成功变更的记录数
 	 */
 	public int insert(boolean updateOnDuplicateKey){	 
-		Query query=model.getDialect().insert(model, updateOnDuplicateKey);
+		Query query=model.dialect().insert(model, updateOnDuplicateKey);
 		query.use(db());
 		return query.execute(new AutoKeyCallback());  
 	}	
@@ -88,7 +88,7 @@ public class Insert<T extends Model>{
 	 * @return 成功变更的记录数
 	 */
 	public int insertSelective(boolean updateOnDuplicateKey){	 
-		Query query=model.getDialect().insertSelective(model, updateOnDuplicateKey);
+		Query query=model.dialect().insertSelective(model, updateOnDuplicateKey);
 		query.use(db());
 		return query.execute(new AutoKeyCallback());
 	}	

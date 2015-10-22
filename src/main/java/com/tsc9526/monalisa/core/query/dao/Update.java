@@ -40,13 +40,13 @@ public class Update<T extends Model>{
 	}
 	
 	public int update(){
-		Query query=model.getDialect().update(model);
+		Query query=model.dialect().update(model);
 		query.use(db());
 		return query.execute();
 	}
 	
 	public int updateSelective(){
-		Query query=model.getDialect().updateSelective(model);
+		Query query=model.dialect().updateSelective(model);
 		query.use(db());
 		return query.execute();
 	}
@@ -60,7 +60,7 @@ public class Update<T extends Model>{
 	 * @see com.tsc9526.monalisa.core.resources.HelpDoc#helpQuery(int,int,Example,String, Object...)
 	 */
 	public int update(String whereStatement,Object ... args){
-		Query query=model.getDialect().update(model,whereStatement,args);
+		Query query=model.dialect().update(model,whereStatement,args);
 		query.use(db());
 		return query.execute();	 				 
 	}
@@ -75,7 +75,7 @@ public class Update<T extends Model>{
 	public int updateByExample(Example example){
 		Query w=QEH.getQuery(example);
 		
-		Query query=model.getDialect().update(model,w.getSql(), w.getParameters());
+		Query query=model.dialect().update(model,w.getSql(), w.getParameters());
 		query.use(db());
 		
 		return query.execute();
@@ -90,7 +90,7 @@ public class Update<T extends Model>{
 	 * @see com.tsc9526.monalisa.core.resources.HelpDoc#helpQuery(int,int,Example,String, Object...)
 	 */
 	public int updateSelective(String whereStatement,Object ... args){
-		Query query=model.getDialect().updateSelective(model,whereStatement,args);
+		Query query=model.dialect().updateSelective(model,whereStatement,args);
 		query.use(db());
 		return query.execute();	 				 
 	}
@@ -105,7 +105,7 @@ public class Update<T extends Model>{
 	public int updateSelectiveByExample(Example example){
 		Query w=QEH.getQuery(example);
 		
-		Query query=model.getDialect().updateSelective(model,w.getSql(), w.getParameters());
+		Query query=model.dialect().updateSelective(model,w.getSql(), w.getParameters());
 		query.use(db());
 		
 		return query.execute();

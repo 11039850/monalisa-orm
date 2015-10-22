@@ -436,8 +436,8 @@ public class Query {
 	protected <T> void load(ResultSet rs,T r)throws SQLException{
 		if(r instanceof Model<?>){
 			Model<?> m=(Model<?>)r;
-			if(m.getListener()!=null){
-				m.getListener().before(Event.LOAD, m);
+			if(m.listener()!=null){
+				m.listener().before(Event.LOAD, m);
 			}
 		}
 		
@@ -466,8 +466,8 @@ public class Query {
 		
 		if(r instanceof Model<?>){
 			Model<?> m=(Model<?>)r;
-			if(m.getListener()!=null){
-				m.getListener().after(Event.LOAD, m,0);
+			if(m.listener()!=null){
+				m.listener().after(Event.LOAD, m,0);
 			}
 		}
 	}

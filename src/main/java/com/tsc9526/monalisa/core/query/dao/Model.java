@@ -32,7 +32,7 @@ import com.tsc9526.monalisa.core.tools.ModelHelper;
  * 
  */
 @SuppressWarnings({"rawtypes","unchecked"})
-public abstract class Model<T extends Model> implements Serializable{
+public class Model<T extends Model> implements Serializable{
 	private static final long serialVersionUID = 703976566431364670L;
 
 	protected static DataSourceManager dsm=DataSourceManager.getInstance();
@@ -45,12 +45,18 @@ public abstract class Model<T extends Model> implements Serializable{
 	
 	protected boolean     dirty  = true;
 	protected boolean     entity = false;
-	 
+	protected String      tableName= null;
+	protected String[]    primaryKeys= null;
+	
 	private transient ModelMeta modelMeta;
 	  	
-	public Model(){	
-		
-	}	 
+	public Model(){			
+	}	
+	
+	public Model(String tableName,String... primaryKeys){
+		this.tableName=tableName;
+		this.primaryKeys=primaryKeys;
+	}
  
 	protected ModelMeta mm() {
 		if(modelMeta==null){
@@ -282,7 +288,7 @@ public abstract class Model<T extends Model> implements Serializable{
 	 * 
 	 * @return 返回数据库方言
 	 */
-	public Dialect getDialect(){		 		
+	public Dialect dialect(){		 		
 		return mm().dialect;
 	}
 	
@@ -389,7 +395,7 @@ public abstract class Model<T extends Model> implements Serializable{
 			for(FGS fgs:fields()){
 				Column c=fgs.getField().getAnnotation(Column.class);
 				if(c.key()){
-					fs.add(getDialect().getColumnName(c.name()));
+					fs.add(dialect().getColumnName(c.name()));
 					 
 				}
 			}			
@@ -397,14 +403,14 @@ public abstract class Model<T extends Model> implements Serializable{
 			if(fieldFilterExcludeMode){				
 				for(FGS fgs:fields()){
 					Column c=fgs.getField().getAnnotation(Column.class);
-					String f=getDialect().getColumnName(c.name());
+					String f=dialect().getColumnName(c.name());
 					if(fieldFilterSets.contains(f.toLowerCase()) == false && fs.contains(f)==false){
 						fs.add(f);						
 					}
 				}								
 			}else{
 				for(String f:fieldFilterSets){
-					f=getDialect().getColumnName(f);
+					f=dialect().getColumnName(f);
 					if(fs.contains(f)==false){
 						fs.add(f);
 					}
@@ -443,7 +449,7 @@ public abstract class Model<T extends Model> implements Serializable{
 			fieldFilterSets.clear();
 		}else{
 			for(String f:fields){
-				fieldFilterSets.add(getDialect().getColumnName(f.toLowerCase()));
+				fieldFilterSets.add(dialect().getColumnName(f.toLowerCase()));
 			}
 		}
 		
@@ -472,7 +478,7 @@ public abstract class Model<T extends Model> implements Serializable{
 		for(FGS fgs:fields()){
 			Column column=fgs.getField().getAnnotation(Column.class);
 			if(column.length()>=maxLength){
-				es.add(getDialect().getColumnName(column.name().toLowerCase()));
+				es.add(dialect().getColumnName(column.name().toLowerCase()));
 			}
 		}
 		return exclude(es.toArray(new String[0]));
@@ -491,7 +497,7 @@ public abstract class Model<T extends Model> implements Serializable{
 			fieldFilterSets.clear();
 		}else{
 			for(String f:fields){
-				fieldFilterSets.add(getDialect().getColumnName(f.toLowerCase()));
+				fieldFilterSets.add(dialect().getColumnName(f.toLowerCase()));
 			}
 		}
 		
@@ -553,11 +559,11 @@ public abstract class Model<T extends Model> implements Serializable{
 		return validator.validate(this);
 	}
 	
-	public List<ModelIndex> getIndexes(){
+	public List<ModelIndex> indexes(){
 		return mm().indexes;
 	}
 	
-	public List<ModelIndex> getUniqueIndexes(){
+	public List<ModelIndex> uniqueIndexes(){
 		List<ModelIndex> unique=new ArrayList<Model.ModelIndex>();
 		for(ModelIndex index:mm().indexes){
 			if(index.isUnique()){
@@ -571,7 +577,7 @@ public abstract class Model<T extends Model> implements Serializable{
 		INSERT,DELETE,UPDATE,INSERT_OR_UPDATE,LOAD;
 	}
 	
-	public Listener getListener(){
+	public Listener listener(){
 		return mm().listener;
 	}
  

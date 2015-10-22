@@ -29,6 +29,11 @@ public @interface Table {
 	String remarks() default "";
 	
 	/**
+	 * @return 主键列名
+	 */
+	String[] primaryKeys() default {};
+	
+	/**
 	 * @return 索引
 	 */
 	Index[] indexes() default {} ;
