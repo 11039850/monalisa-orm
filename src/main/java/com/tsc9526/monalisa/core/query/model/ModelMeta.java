@@ -33,17 +33,21 @@ class ModelMeta{
 	protected Validator   validator=null;
 	
 	protected boolean initialized=false;
-	protected Model<?> model;
+	protected Model<?>  model;
 	
 	protected DBConfig  db;
-	protected Dialect dialect;
-	protected Map<String,FGS> hFieldsByColumnName=new LinkedHashMap<String, ClassHelper.FGS>();
-	protected Map<String,FGS> hFieldsByJavaName  =new LinkedHashMap<String, ClassHelper.FGS>();
+	protected Dialect   dialect;
 	protected FGS       autoField;	
 	protected Table     table;
-	protected MetaPartition mp;		 
-	protected ModelListener  listener;
+	
+	protected MetaPartition    mp;		 
+	protected ModelListener    listener;
 	protected List<ModelIndex> indexes=new ArrayList<ModelIndex>();
+	
+	protected Map<String,FGS> hFieldsByColumnName=new LinkedHashMap<String, ClassHelper.FGS>();
+	protected Map<String,FGS> hFieldsByJavaName  =new LinkedHashMap<String, ClassHelper.FGS>();
+	
+	
 	
 	ModelMeta(){		
 	}
