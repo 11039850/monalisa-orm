@@ -40,10 +40,6 @@ public class Model<T extends Model> implements Serializable{
 	}
  
 	protected ModelMeta mm() {
-		if(modelMeta==null){
-			modelMeta=new ModelMeta();
-		}
-		
 		if(modelMeta.initialized==false){
 			try{
 				modelMeta.initModelMeta(this);
