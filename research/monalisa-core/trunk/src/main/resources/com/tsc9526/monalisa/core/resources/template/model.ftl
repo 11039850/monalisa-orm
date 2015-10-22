@@ -69,7 +69,7 @@ public class ${table.javaName} extends ${modelClass}<${table.javaName}> implemen
 	* Load by primary keys
 	*/
 	public ${table.javaName} load(){
-		Query query=getDialect().load(this);
+		Query query=dialect().load(this);
 		query.use(db());
 		
 		${table.javaName} r=query.getResult();
@@ -219,7 +219,7 @@ public class ${table.javaName} extends ${modelClass}<${table.javaName}> implemen
 			model.${k.javaName} = ${k.javaName};
 			</#list>
 				 			 
-			Query query=model.getDialect().load(model);
+			Query query=model.dialect().load(model);
 			query.use(model.db());
 			return (${table.javaName})query.getResult();					
 		}				 

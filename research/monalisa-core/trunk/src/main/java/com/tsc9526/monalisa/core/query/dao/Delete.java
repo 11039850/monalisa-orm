@@ -40,7 +40,7 @@ public class Delete<T extends Model> {
 	 * @return Number of delete records 
 	 */
 	public int delete(){
-		Query query=model.getDialect().delete(model);
+		Query query=model.dialect().delete(model);
 		query.use(db());
 		return query.execute();
 	}
@@ -52,7 +52,7 @@ public class Delete<T extends Model> {
 	 * @return Number of delete records 
 	 */
 	public int deleteAll(){
-		Query query=model.getDialect().deleteAll(model);
+		Query query=model.dialect().deleteAll(model);
 		query.use(db());
 		return query.execute();
 	}
@@ -63,7 +63,7 @@ public class Delete<T extends Model> {
 	 * @return Number of delete records 
 	 */
 	public int truncate(){
-		Query query=model.getDialect().deleteAll(model);
+		Query query=model.dialect().deleteAll(model);
 		query.use(db());
 		return query.execute();
 	}
@@ -76,7 +76,7 @@ public class Delete<T extends Model> {
 	 * @return The rows has been deleted
 	 */
 	public int delete(String whereStatement,Object ... args){
-		Query query=model.getDialect().delete(model,whereStatement,args);
+		Query query=model.dialect().delete(model,whereStatement,args);
 		query.use(db());
 		return query.execute();
 	}
@@ -91,7 +91,7 @@ public class Delete<T extends Model> {
 	public int deleteByExample(Example example){
 		Query w=QEH.getQuery(example);
 		
-		Query query=model.getDialect().delete(model,w.getSql(), w.getParameters());
+		Query query=model.dialect().delete(model,w.getSql(), w.getParameters());
 		query.use(db());
 		
 		return query.execute();

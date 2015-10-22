@@ -75,10 +75,15 @@ public class CreateTableCache{
 		public String value() {					 
 			return tableName;
 		}
-
+ 			
 		public String remarks() {
 			return modelTable.remarks();
-		}	
+		}
+		
+		public String[] primaryKeys(){
+			return modelTable.primaryKeys();
+		}
+		
 		public Index[] indexes(){
 			return modelTable.indexes();
 		}

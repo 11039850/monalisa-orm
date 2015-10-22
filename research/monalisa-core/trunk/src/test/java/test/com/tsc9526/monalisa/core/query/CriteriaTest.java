@@ -218,29 +218,29 @@ public class CriteriaTest {
 		model.setIntField2(2);
 		model.setDateField1(sdf.parse(time));		
 		 
-		Query query=model.getDialect().insert(model, true);
+		Query query=model.dialect().insert(model, true);
 		String sql=query.getSql();
 		String sql_expect="REPLACE INTO `simple_model`("+fieldns+")VALUES("+fieldvs+")";
 		Assert.assertEquals(sql,sql_expect);
 		
-		query=model.getDialect().insert(model, false);
+		query=model.dialect().insert(model, false);
 		sql=query.getSql();
 		sql_expect="INSERT INTO `simple_model`("+fieldns+")VALUES("+fieldvs+")";
 		Assert.assertEquals(sql,sql_expect);
 		
 		
-		query=model.getDialect().insertSelective(model, true);
+		query=model.dialect().insertSelective(model, true);
 		sql=query.getSql();
 		sql_expect="REPLACE INTO `simple_model`(`int_field1`, `int_field2`, `date_field1`)VALUES(?, ?, ?)";
 		Assert.assertEquals(sql,sql_expect);
 		
-		query=model.getDialect().insertSelective(model, false);
+		query=model.dialect().insertSelective(model, false);
 		sql=query.getSql();
 		sql_expect="INSERT INTO `simple_model`(`int_field1`, `int_field2`, `date_field1`)VALUES(?, ?, ?)";
 		Assert.assertEquals(sql,sql_expect);
 		
 		model.setStatus(StatusA.ERROR);
-		query=model.getDialect().insertSelective(model, false);
+		query=model.dialect().insertSelective(model, false);
 		sql=query.getSql();
 		sql_expect="INSERT INTO `simple_model`(`int_field1`, `int_field2`, `date_field1`, `status`)VALUES(?, ?, ?, ?)";
 		Assert.assertEquals(sql,sql_expect);
@@ -250,19 +250,19 @@ public class CriteriaTest {
 		Assert.assertEquals(sql,sql_expect);
 		
 		model.setStatusB(StatusB.B2);
-		query=model.getDialect().insertSelective(model, false);
+		query=model.dialect().insertSelective(model, false);
 		sql=query.getExecutableSQL();
 		sql_expect="INSERT INTO `simple_model`(`int_field1`, `int_field2`, `date_field1`, `status`, `status_b`)VALUES(1, 2, '2015-06-08 11:10:31', 1, 2)";
 		Assert.assertEquals(sql,sql_expect);
 		
 		model.setStatusC(StatusC.CC2);
-		query=model.getDialect().insertSelective(model, false);
+		query=model.dialect().insertSelective(model, false);
 		sql=query.getExecutableSQL();
 		sql_expect="INSERT INTO `simple_model`(`int_field1`, `int_field2`, `date_field1`, `status`, `status_b`, `status_c`)VALUES(1, 2, '2015-06-08 11:10:31', 1, 2, 'CC2')";
 		Assert.assertEquals(sql,sql_expect);
 		
 		model.setArray1("a,b".split(","));
-		query=model.getDialect().insertSelective(model, false);
+		query=model.dialect().insertSelective(model, false);
 		sql=query.getExecutableSQL();
 		sql_expect="INSERT INTO `simple_model`(`int_field1`, `int_field2`, `date_field1`, `status`, `status_b`, `status_c`, `array_1`)VALUES(1, 2, '2015-06-08 11:10:31', 1, 2, 'CC2', '[\\\"a\\\",\\\"b\\\"]')";
 		Assert.assertEquals(sql,sql_expect);
@@ -287,7 +287,7 @@ public class CriteriaTest {
 		or.intField2.gt(1);
 		
 		Query eq=QEH.getQuery(example);
-		Query query=model.getDialect().select(model, eq.getSql(), eq.getParameters());
+		Query query=model.dialect().select(model, eq.getSql(), eq.getParameters());
 		String sql_expect="SELECT * FROM `simple_model` WHERE `int_field1` BETWEEN ? AND ? AND `date_field1` = ? OR (`int_field1` > ?) ORDER BY `int_field1` ASC, `date_field1` DESC";
 		Assert.assertEquals(query.getSql(), sql_expect);
 	}

@@ -75,7 +75,7 @@ public class ModelParserTest {
 		objectOne.setThree(now);
 		model.setObjectOne(objectOne);
 		
-		Query query=model.getDialect().insertSelective(model, true);
+		Query query=model.dialect().insertSelective(model, true);
 		String sql=query.getExecutableSQL();
 		System.out.println(sql);
 		
