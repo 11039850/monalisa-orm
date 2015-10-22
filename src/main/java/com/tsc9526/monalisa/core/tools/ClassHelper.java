@@ -110,112 +110,89 @@ public class ClassHelper {
 		return to;
 	}
 	 
-	
-	public static void setObject(Object bean, FGS fgs, Object v) {
-		Class<?> type=fgs.getField().getType();
-		try {			 			 
-			Object value=null;
-			if(v!=null){
-				if(type.isEnum()){
-					value=EnumHelper.getEnum(fgs, v);
-				}else if(type==JsonObject.class){
-					if(v.getClass()==JsonObject.class){
-						value=v;
-					}else{
-						value=new JsonParser().parse(v.toString());
-					}	
+	public static Object convert(Object v,Class<?> type){
+		Object value=null;
+		if(v!=null){
+			if(type.isEnum()){
+				value=EnumHelper.getEnum(type, v);
+			}else if(type==JsonObject.class){
+				if(v.getClass()==JsonObject.class){
+					value=v;
 				}else{
-					if(v.getClass().isArray() && type == String.class){
-						value=Arrays.toString((Object[])v);						
-					}else if(Map.class.isAssignableFrom(v.getClass()) && type == String.class){
-						value=mapToString((Map<?,?>)v);						
-					}else if(v.getClass().isArray()==false && type.isArray()){
-						JsonElement je=new JsonParser().parse(v.toString());
-						if(je==null || je.isJsonNull()){
-							value=null;
-						}else{
-							JsonArray array=je.getAsJsonArray();						
-							if(type==int[].class){
-								int[] iv=new int[array.size()];
-								for(int i=0;i<array.size();i++){
-									JsonElement e=array.get(i);
-									iv[i]=e.getAsInt();
-								}
-								value=iv;
-							}else if(type==long[].class){
-								long[] iv=new long[array.size()];
-								for(int i=0;i<array.size();i++){
-									JsonElement e=array.get(i);
-									iv[i]=e.getAsLong();
-								}
-								value=iv;
-							}else if(type==double[].class){
-								double[] iv=new double[array.size()];
-								for(int i=0;i<array.size();i++){
-									JsonElement e=array.get(i);
-									iv[i]=e.getAsDouble();
-								}
-								value=iv;
-							}else{//String[]
-								String[] iv=new String[array.size()];
-								for(int i=0;i<array.size();i++){
-									JsonElement e=array.get(i);
-									if(e.isJsonPrimitive()){
-										iv[i]=e.getAsString();
-									}else{
-										//ingore
-										return;
-									}								
-								}
-								value=iv;
-							}	
-						}
-					}else if(type.isArray()==false 
-							&& type.isPrimitive()==false 
-							&& type.getName().startsWith("java.")==false
-							&& (v.getClass() == String.class || v.getClass()==JsonObject.class)){
-						//Json String to Java Object
-						if(v.getClass()==String.class){
-							value=JsonHelper.getGson().fromJson(v.toString(), type);
-						}else{
-							value=JsonHelper.getGson().fromJson((JsonObject)v, type);
-						}
-					}else{					
-						value=ConvertUtils.convert(v, fgs.getField().getType());
+					value=new JsonParser().parse(v.toString());
+				}	
+			}else{
+				if(v.getClass().isArray() && type == String.class){
+					value=Arrays.toString((Object[])v);						
+				}else if(Map.class.isAssignableFrom(v.getClass()) && type == String.class){
+					value=mapToString((Map<?,?>)v);						
+				}else if(v.getClass().isArray()==false && type.isArray()){
+					JsonElement je=new JsonParser().parse(v.toString());
+					if(je==null || je.isJsonNull()){
+						value=null;
+					}else{
+						JsonArray array=je.getAsJsonArray();						
+						if(type==int[].class){
+							int[] iv=new int[array.size()];
+							for(int i=0;i<array.size();i++){
+								JsonElement e=array.get(i);
+								iv[i]=e.getAsInt();
+							}
+							value=iv;
+						}if(type==float[].class){
+							float[] iv=new float[array.size()];
+							for(int i=0;i<array.size();i++){
+								JsonElement e=array.get(i);
+								iv[i]=e.getAsFloat();
+							}
+							value=iv;
+						}else if(type==long[].class){
+							long[] iv=new long[array.size()];
+							for(int i=0;i<array.size();i++){
+								JsonElement e=array.get(i);
+								iv[i]=e.getAsLong();
+							}
+							value=iv;
+						}else if(type==double[].class){
+							double[] iv=new double[array.size()];
+							for(int i=0;i<array.size();i++){
+								JsonElement e=array.get(i);
+								iv[i]=e.getAsDouble();
+							}
+							value=iv;
+						}else{//String[]
+							String[] iv=new String[array.size()];
+							for(int i=0;i<array.size();i++){
+								JsonElement e=array.get(i);
+								iv[i]=e.getAsString(); 
+							}
+							value=iv;
+						}	
 					}
+				}else if(type.isArray()==false 
+						&& type.isPrimitive()==false 
+						&& type.getName().startsWith("java.")==false
+						&& (v.getClass() == String.class || v.getClass()==JsonObject.class)){
+					//Json String to Java Object
+					if(v.getClass()==String.class){
+						value=JsonHelper.getGson().fromJson(v.toString(), type);
+					}else{
+						value=JsonHelper.getGson().fromJson((JsonObject)v, type);
+					}
+				}else{					
+					value=ConvertUtils.convert(v, type);
 				}
 			}
-			
-			Method set = fgs.getSetMethod();
-			if(set!=null){
-				set.invoke(bean, value);
-			}else{
-				fgs.field.setAccessible(true);
-				fgs.field.set(bean, value);
-			}
-		} catch (Exception e) {
-			throw new RuntimeException("Field type: "+type.getName()+", value type: "+v.getClass().getName(),e);
 		}
-	}
 		
+		return value;
+	}
+	
 	private static String mapToString(Map<?,?> m){		
 		Gson gson=JsonHelper.getGson();
 		return gson.toJson(m);		
 	}
-	
-	public static Object getObject(Object bean, FGS fgs) {
-		try {			 
-			Method get = fgs.getGetMethod();
-			if(get!=null){
-				return get.invoke(bean);				
-			}else{
-				fgs.field.setAccessible(true);
-				return fgs.field.get(bean);				
-			}			
-		} catch (Exception e) {
-			throw new RuntimeException("Error get method from field: "+fgs.getFieldName(),e);
-		}
-	}	 
+	 	 
 	
 	private synchronized static MetaClass loadMetaClass(Class<?> clazz) {
 		String name = clazz.getName();
@@ -243,7 +220,7 @@ public class ClassHelper {
 			for (Field f : fields) {
 				int modifiers = f.getModifiers();				 
 				if (!Modifier.isStatic(modifiers) && !Modifier.isTransient(modifiers)) {
-					FGS fgs = createFGS(f);
+					FGS fgs = new FGS(f,clazz);
 					
 					String fn=f.getName();
 					if (!hFields.containsKey(fn)){
@@ -264,38 +241,7 @@ public class ClassHelper {
 				fetchFields(fields,su);
 			}						
 		}
-		
-
-		private FGS createFGS(Field f) {
-			FGS fgs = new FGS();
-			fgs.setField(f);
-
-			String fn = f.getName();
-			String m = fn.substring(0, 1).toUpperCase();
-			if (fn.length() > 1) {
-				m += fn.substring(1);
-			}
-
-			String get = "get" + m;
-			String set = "set" + m;
-			if (f.getType() == Boolean.class || f.getType() == boolean.class) {
-				get = "is" + m;
-			}
-
-			fgs.setGetMethod(getMethod(get));
-			fgs.setSetMethod(getMethod(set, f.getType()));
-
-			 
-			return fgs;
-		}
-
-		private Method getMethod(String name, Class<?>... parameterTypes) {
-			try {
-				return clazz.getMethod(name, parameterTypes);
-			} catch (NoSuchMethodException e) {				 
-				return null;
-			}
-		}
+		  
 
 		public FGS getField(String name) {
 			return hFields.get(name);
@@ -318,43 +264,76 @@ public class ClassHelper {
 	}
   
 	public static class FGS {
-		private Field field;
-		private Method getMethod;
-		private Method setMethod;
+		protected Field field;
+		protected Method getMethod;
+		protected Method setMethod;
 		
-		private boolean nullNone=false;;
+		protected boolean nullNone=false;
 		
+		public FGS(Field field,Class<?> clazz){
+			if(field!=null){
+				this.field=field;
+				
+				String fn = field.getName();
+				String m = fn.substring(0, 1).toUpperCase();
+				if (fn.length() > 1) {
+					m += fn.substring(1);
+				}
+	
+				String get = "get" + m;
+				String set = "set" + m;
+				if (field.getType() == Boolean.class || field.getType() == boolean.class) {
+					get = "is" + m;
+				}
+	
+				getMethod=getMethod(clazz,get);
+				setMethod=getMethod(clazz,set, field.getType());
+			}
+		}
+		
+		protected Method getMethod(Class<?> clazz,String name, Class<?>... parameterTypes) {
+			try {
+				return clazz.getMethod(name, parameterTypes);
+			} catch (NoSuchMethodException e) {				 
+				return null;
+			}
+		}
+		
+		public <T extends Annotation> T getAnnotation(Class<T> annotationClass) {
+			return field.getAnnotation(annotationClass);
+		}
 	 
-		public Field getField() {
-			return field;
-		}
-
-		public void setField(Field field) {
-			this.field = field;
-		}
-
-		public Method getGetMethod() {
-			return getMethod;
-		}
-
-		public void setGetMethod(Method getMethod) {
-			this.getMethod = getMethod;
-		}
-
-		public Method getSetMethod() {
-			return setMethod;
-		}
-
-		public void setSetMethod(Method setMethod) {
-			this.setMethod = setMethod;
+		public Class<?> getType() {
+		    return field.getType();
 		}
 		
 		public Object getObject(Object bean){
-			return ClassHelper.getObject(bean,this);
+			try {			 
+				if(getMethod!=null){
+					return getMethod.invoke(bean);				
+				}else{
+					field.setAccessible(true);
+					return field.get(bean);				
+				}			
+			} catch (Exception e) {
+				throw new RuntimeException("Error get method from field: "+getFieldName(),e);
+			}
 		}
 		 
-		public void setObject(Object bean,Object value){
-			ClassHelper.setObject(bean,this,value);
+		public void setObject(Object bean,Object v){
+			Class<?> type=getType();
+			try {			 			 
+				Object value=convert(v, type);
+				
+				if(setMethod!=null){
+					setMethod.invoke(bean, value);
+				}else{
+					field.setAccessible(true);
+					field.set(bean, value);
+				}
+			} catch (Exception e) {
+				throw new RuntimeException("Field type: "+type.getName()+", value type: "+v.getClass().getName(),e);
+			}
 		}
 
 		public boolean isNullNone() {
@@ -368,15 +347,13 @@ public class ClassHelper {
 		public String getFieldName() {
 			return field.getName();
 		}
-		 
+		
 	}
 	
 	public static class DateValue extends DateTimeConverter {
 
 		public DateValue() {
-	        super();
-	        
-	        
+	        super();        
 	    }
   
 	    public DateValue(Object defaultValue) {

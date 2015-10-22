@@ -56,7 +56,7 @@ public class DatePartitionTable implements Partition<Model>{
 		
 		MetaClass mc=ClassHelper.getMetaClass(model.getClass());
 		FGS fgs=mc.getField(dateField);
-		if(fgs==null || fgs.getGetMethod()==null){
+		if(fgs==null){
 			throw new RuntimeException("DateTime field: "+dateField+" not found in modelClass: "+model.getClass().getName());
 		}
 		

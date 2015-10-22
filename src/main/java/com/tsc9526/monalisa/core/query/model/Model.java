@@ -270,7 +270,7 @@ public class Model<T extends Model> implements Serializable{
 	 * @return 返回表的字段列表
 	 */
 	public Collection<FGS> fields() {		 
-		return mm().hFieldsByColumnName.values();
+		return mm().fields();
 	}	
 	
 	public FGS field(String name) {
@@ -308,6 +308,14 @@ public class Model<T extends Model> implements Serializable{
 			dirty(true);
 		}		
 		return (T)this;
+	}
+	
+	public Object get(String name){
+		FGS fgs=field(name);
+		if(fgs!=null){
+			return fgs.getObject(this);	
+		}		
+		return null;
 	}
 	
 	/**

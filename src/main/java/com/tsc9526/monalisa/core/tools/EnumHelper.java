@@ -4,8 +4,6 @@ package com.tsc9526.monalisa.core.tools;
 import java.lang.reflect.Method;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-
-import com.tsc9526.monalisa.core.tools.ClassHelper.FGS;
  
 /**
  * 
@@ -15,9 +13,8 @@ public class EnumHelper {
 	private static Map<String, Object> hIntegerEnum=new ConcurrentHashMap<String, Object>();
 	private static Map<String, Object> hStringEnum=new ConcurrentHashMap<String, Object>();
 	
-	public static Object getEnum(FGS fgs,Object value){
+	public static Object getEnum(Class<?> type,Object value){
 		if(value!=null){
-			Class<?> type=fgs.getField().getType();
 			if(type.isEnum()){
 				if(value.getClass().isEnum() && value.getClass()==type){
 					return value;

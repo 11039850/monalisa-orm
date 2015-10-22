@@ -66,7 +66,7 @@ public abstract class Dialect{
 		for(Object o:model.fields()){
 			FGS fgs=(FGS)o;
 			
-			Column c=fgs.getField().getAnnotation(Column.class);
+			Column c=fgs.getAnnotation(Column.class);
 			Object v=getValue(fgs,model);
 			if(selective){
 				if(v!=null){
@@ -167,7 +167,7 @@ public abstract class Dialect{
 		for(Object o:model.fields()){
 			FGS fgs=(FGS)o;
 			
-			Column c=fgs.getField().getAnnotation(Column.class);
+			Column c=fgs.getAnnotation(Column.class);
 			Object v=getValue(fgs,model);
 			if(selective){
 				if((c.key()==false || model.updateKey()) && v!=null){
@@ -209,7 +209,7 @@ public abstract class Dialect{
 		for(Object o:model.fields()){
 			FGS fgs=(FGS)o;
 			
-			Column c=fgs.getField().getAnnotation(Column.class);
+			Column c=fgs.getAnnotation(Column.class);
 			if(c.key()){
 				Object v=getValue(fgs,model);
 				if(v==null){
@@ -321,7 +321,7 @@ public abstract class Dialect{
 		for(Object o:model.fields()){
 			FGS fgs=(FGS)o;
 			
-			Column c=fgs.getField().getAnnotation(Column.class);
+			Column c=fgs.getAnnotation(Column.class);
 			if(c.key()){
 				keyType=1;
 				
@@ -354,7 +354,7 @@ public abstract class Dialect{
 			List<FGS> fs=index.getFields();
 			boolean keyExists=fs.size()>0;
 			for(FGS fgs:fs){
-				Column c=fgs.getField().getAnnotation(Column.class);
+				Column c=fgs.getAnnotation(Column.class);
 				
 				Object v=getValue(fgs,model);
 				if(v!=null){
@@ -378,7 +378,7 @@ public abstract class Dialect{
 	protected Object getValue(FGS fgs,Model model) {
 		Object v=fgs.getObject(model);
 		if(v!=null){
-			Column c=fgs.getField().getAnnotation(Column.class);			
+			Column c=fgs.getAnnotation(Column.class);			
 			String type=TypeHelper.getJavaType(c.jdbcType());
 			
 			if(v.getClass().isEnum()){

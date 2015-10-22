@@ -1,6 +1,8 @@
 package com.tsc9526.monalisa.core.query.model;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -46,18 +48,35 @@ class ModelMeta{
 	
 	protected Map<String,FGS> hFieldsByColumnName=new LinkedHashMap<String, ClassHelper.FGS>();
 	protected Map<String,FGS> hFieldsByJavaName  =new LinkedHashMap<String, ClassHelper.FGS>();
-	
-	
+	 
+	protected Map<String, Object> hModelValues=null;
 	
 	ModelMeta(){		
 	}
 		
+	
+	List<FGS> loadModelFields(Model<?> m){
+		MetaClass metaClass=ClassHelper.getMetaClass(m.getClass());
+		List<FGS> fields=metaClass.getFieldsWithAnnotation(Column.class);
+		
+		if(fields.size()==0){
+			
+			
+			hModelValues=new HashMap<String,Object>();
+		}
+		
+		return fields;		
+	}
+	
 	synchronized void initModelMeta(Model<?> m){
 		if(initialized){
 			return;
 		}
-		
+		  	
 		this.model=m;
+		
+		List<FGS> fields=loadModelFields(m);
+		
 		Class<?> clazz=ClassHelper.findClassWithAnnotation(m.getClass(),DB.class);
 		if(clazz==null){
 			throw new RuntimeException("Model: "+m.getClass()+" must implement interface annotated by: "+DB.class);
@@ -84,12 +103,10 @@ class ModelMeta{
 			}
 		}
 		
-		MetaClass metaClass=ClassHelper.getMetaClass(m.getClass());
-		List<FGS> fields=metaClass.getFieldsWithAnnotation(Column.class);
 		
 		for(Object o:fields){
 			FGS fgs=(FGS)o;				
-			Column c=fgs.getField().getAnnotation(Column.class);
+			Column c=fgs.getAnnotation(Column.class);
 			
 			hFieldsByColumnName.put(c.name().toLowerCase(),fgs);
 			hFieldsByJavaName  .put(fgs.getFieldName().toLowerCase(),fgs);
@@ -134,6 +151,9 @@ class ModelMeta{
 		return fgs;
 	}
 	
+	public Collection<FGS> fields(){
+		return hFieldsByColumnName.values();
+	}
 	
 
 	/**
@@ -145,7 +165,7 @@ class ModelMeta{
 			Set<String> fs=new LinkedHashSet<String>();			 
 			//Add primary key
 			for(FGS fgs:model.fields()){
-				Column c=fgs.getField().getAnnotation(Column.class);
+				Column c=fgs.getAnnotation(Column.class);
 				if(c.key()){
 					fs.add(model.dialect().getColumnName(c.name()));
 					 
@@ -154,7 +174,7 @@ class ModelMeta{
 			
 			if(fieldFilterExcludeMode){				
 				for(FGS fgs:model.fields()){
-					Column c=fgs.getField().getAnnotation(Column.class);
+					Column c=fgs.getAnnotation(Column.class);
 					String f=model.dialect().getColumnName(c.name());
 					if(fieldFilterSets.contains(f.toLowerCase()) == false && fs.contains(f)==false){
 						fs.add(f);						
@@ -226,7 +246,7 @@ class ModelMeta{
 		List<String> es=new ArrayList<String>();
 		
 		for(FGS fgs:model.fields()){
-			Column column=fgs.getField().getAnnotation(Column.class);
+			Column column=fgs.getAnnotation(Column.class);
 			if(column.length()>=maxLength){
 				es.add(model.dialect().getColumnName(column.name().toLowerCase()));
 			}
