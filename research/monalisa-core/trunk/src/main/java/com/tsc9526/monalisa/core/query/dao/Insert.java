@@ -9,6 +9,7 @@ import java.sql.Statement;
 import com.tsc9526.monalisa.core.datasource.DBConfig;
 import com.tsc9526.monalisa.core.query.Execute;
 import com.tsc9526.monalisa.core.query.Query;
+import com.tsc9526.monalisa.core.query.model.Model;
 import com.tsc9526.monalisa.core.tools.ClassHelper.FGS;
 
 /**

@@ -4,6 +4,7 @@ import com.tsc9526.monalisa.core.datasource.DBConfig;
 import com.tsc9526.monalisa.core.query.Query;
 import com.tsc9526.monalisa.core.query.criteria.Example;
 import com.tsc9526.monalisa.core.query.criteria.QEH;
+import com.tsc9526.monalisa.core.query.model.Model;
 
 /**
  * 
@@ -15,14 +16,8 @@ public class Update<T extends Model>{
 	
 	protected DBConfig db;
 	
-	public Update(T model){
-		this(model,false);
-		 
-	}
-	
-	public Update(T model,boolean updateKey){
-		this.model=model;
-		this.model.enableUpdateKey(updateKey);
+	public Update(T model){		 
+		this.model=model;		 
 	}
 	 		
 	public Update set(String name,Object value){		
