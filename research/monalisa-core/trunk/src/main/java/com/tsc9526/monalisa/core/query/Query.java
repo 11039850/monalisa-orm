@@ -428,7 +428,11 @@ public class Query {
 		ResultSetMetaData rsmd=rs.getMetaData();
 		 
 		for(int i=1;i<=rsmd.getColumnCount();i++){
-			String name =rsmd.getColumnName(i);
+			String name =rsmd.getColumnLabel(i);
+			if(name==null || name.trim().length()<1){
+				name =rsmd.getColumnName(i);
+			}
+			
 			r.put(name, rs.getObject(i));
 		}
 	}

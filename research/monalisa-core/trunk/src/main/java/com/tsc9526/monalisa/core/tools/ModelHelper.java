@@ -151,7 +151,7 @@ public class ModelHelper {
         				k=k.substring(prefix.length());
         				if(k.length()>0){
         					char c=k.charAt(0);
-        					if( !(c>='a' && c<='z') || (c>='A' && c<='Z') ){
+        					if(!( (c>='a' && c<='z') || (c>='A' && c<='Z') ) ){
         						k=k.substring(1);
         					}
         				}

@@ -25,7 +25,8 @@ public class C3p0DataSource implements PooledDataSource {
 	
 	public C3p0DataSource(){
 		for(Method m:cpds.getClass().getMethods()){
-			if(m.getParameterCount()==1){
+			Class<?>[] ps=m.getParameterTypes(); 
+			if(ps!=null && ps.length==1){
 				hPropertyMethods.put(m.getName(),m);
 			}
 		}
