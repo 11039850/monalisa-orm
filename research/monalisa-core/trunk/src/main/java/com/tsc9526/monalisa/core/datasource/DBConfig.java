@@ -9,6 +9,8 @@ import java.lang.annotation.Annotation;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import javax.sql.DataSource;
 
@@ -246,22 +248,27 @@ public class DBConfig implements com.tsc9526.monalisa.core.annotation.DB, Closea
 		
 		return this.dbHosts;
 	}
+	
+	protected synchronized void delayClose(final DataSource ds){
+		new Timer(true).schedule(new TimerTask() {
+			public void run() {
+				CloseQuietly.close(ds);
+			}
+		}, 30*1000);
+	}
 	 		
 	public synchronized DataSource getDataSource(){
 		checkInit();
 		
-		if(ds!=null){
-			String cc=datasourceClass();
+		if(isCfgFileChanged()){
+			init(db);
 			
-			if(cc==null || cc.trim().length()==0){
-				cc=SimpleDataSource.class.getName();
-			}
-			
-			if(ds.getClass().getName().equals(cc.trim()) == false){
-				close();
+			if(ds!=null){
+				delayClose(ds);
+				ds=null;
 			}
 		}
-		
+ 	
 		if(ds==null){
 			ds=getDataSourceFromConfigClass();
 			
