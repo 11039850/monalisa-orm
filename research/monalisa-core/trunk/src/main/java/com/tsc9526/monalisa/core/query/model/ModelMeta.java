@@ -2,12 +2,13 @@ package com.tsc9526.monalisa.core.query.model;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import org.apache.commons.collections.map.CaseInsensitiveMap;
 
 import com.tsc9526.monalisa.core.annotation.Column;
 import com.tsc9526.monalisa.core.annotation.DB;
@@ -49,9 +50,9 @@ class ModelMeta{
 	protected Map<String,FGS> hFieldsByColumnName=new LinkedHashMap<String, ClassHelper.FGS>();
 	protected Map<String,FGS> hFieldsByJavaName  =new LinkedHashMap<String, ClassHelper.FGS>();
 	 
-	protected Map<String, Object> hModelValues=new HashMap<String,Object>();
+	protected CaseInsensitiveMap hModelValues=null;
 	
-	ModelMeta(){		
+	ModelMeta(){
 	}
 		
 	
@@ -60,9 +61,9 @@ class ModelMeta{
 		List<FGS> fields=metaClass.getFieldsWithAnnotation(Column.class);
 		
 		if(fields.size()==0){
-			
-			
-			hModelValues=new HashMap<String,Object>();
+			if(hModelValues==null){
+				hModelValues=new CaseInsensitiveMap();
+			}
 		}
 		
 		return fields;		
@@ -233,7 +234,6 @@ class ModelMeta{
 		
 	/**
 	 * 排除大字段（字段长度 大于等于 #Short.MAX_VALUE)
-	 * 
 	 */
 	public void excludeBlobs(){
 		excludeBlobs(Short.MAX_VALUE);
@@ -244,7 +244,6 @@ class ModelMeta{
 	 * 
 	 * @param maxLength  字段长度
 	 * 
-	 
 	 */
 	public void excludeBlobs(int maxLength){
 		List<String> es=new ArrayList<String>();
@@ -261,8 +260,7 @@ class ModelMeta{
 	/**
 	 * 只提取某些字段
 	 * 
-	 * @param fields  需要的字段名称
-	 
+	 * @param fields  需要的字段名称	 
 	 */
 	public void include(String ... fields){		 
 		fieldFilterExcludeMode=false;
@@ -284,9 +282,18 @@ class ModelMeta{
 		try{
 			Model<?> x=model.getClass().newInstance();
 			
-			for(FGS fgs:model.fields()){
-				Object value=fgs.getObject(model);
-				fgs.setObject(x, value);
+			if(hModelValues==null){
+				for(FGS fgs:model.fields()){				
+					Object value=fgs.getObject(model);
+					fgs.setObject(x, value);
+				}
+			}else{
+				x.modelMeta.hModelValues=new CaseInsensitiveMap();
+				
+				for(FGS fgs:model.fields()){				
+					Object value=fgs.getObject(hModelValues);
+					fgs.setObject(x.modelMeta.hModelValues, value);
+				}
 			}
 	 	 	
 			x.modelMeta.updateKey  = updateKey;			
