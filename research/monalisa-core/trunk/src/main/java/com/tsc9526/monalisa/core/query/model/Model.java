@@ -105,23 +105,7 @@ public class Model<T extends Model> implements Serializable{
 	public int save(){
 		return save(true);
 	}
-	
-	/**
-	 * 保存或更新对象到数据库,忽略该对象中值为null的字段
-	 */
-	public int saveOrUpdate(){
-		return saveOrUpdate(true);
-	}
-	
-	/**
-	 * 更新对象到数据库,忽略该对象中值为null的字段
-	 */
-	public int update(){
-		return update(true);
-	}	
-	
-	
-	
+ 	
 	/**
 	 * 存储对象到数据库
 	 * 
@@ -149,6 +133,15 @@ public class Model<T extends Model> implements Serializable{
 		} 			 		
 	}
 	
+
+	/**
+	 * 保存或更新对象到数据库,忽略该对象中值为null的字段
+	 */
+	public int saveOrUpdate(){
+		return saveOrUpdate(true);
+	}
+	
+	
 	/**
 	 * 存储对象到数据库， 如果主键冲突， 则执行更新操作
 	 * 
@@ -175,6 +168,13 @@ public class Model<T extends Model> implements Serializable{
 			after(ModelEvent.INSERT_OR_UPDATE, r);
 		} 			 
 	}
+	
+	/**
+	 * 更新对象到数据库,忽略该对象中值为null的字段
+	 */
+	public int update(){
+		return update(true);
+	}	
 	
 	/**
 	 * 更新对象到数据库
