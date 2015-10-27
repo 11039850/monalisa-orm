@@ -100,7 +100,8 @@ public class Model<T extends Model> implements Serializable{
 	}
 	
 	/**
-	 * 保存对象到数据库,忽略该对象中值为null的字段
+	 * 保存对象到数据库,忽略该对象中值为null的字段<br>
+	 * <code>Call save(true)</code>
 	 */
 	public int save(){
 		return save(true);
@@ -135,7 +136,8 @@ public class Model<T extends Model> implements Serializable{
 	
 
 	/**
-	 * 保存或更新对象到数据库,忽略该对象中值为null的字段
+	 * 保存或更新对象到数据库,忽略该对象中值为null的字段<br>
+	 * <code>Call saveOrUpdate(true)</code>
 	 */
 	public int saveOrUpdate(){
 		return saveOrUpdate(true);
@@ -170,7 +172,8 @@ public class Model<T extends Model> implements Serializable{
 	}
 	
 	/**
-	 * 更新对象到数据库,忽略该对象中值为null的字段
+	 * 更新对象到数据库,忽略该对象中值为null的字段<br>
+	 * <code>Call update(true)</code>
 	 */
 	public int update(){
 		return update(true);
