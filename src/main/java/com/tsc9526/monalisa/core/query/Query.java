@@ -297,6 +297,11 @@ public class Query {
 	
 	/**
 	 * 如果没有调用setResultClass指定结果类, 则PageList存储的对象为{@link:com.tsc9526.monalisa.core.query.DataMap}
+	 * @param limit 
+	 *   The max number of records for this query
+	 *    
+	 * @param offset  
+	 *   Base 0, the first record is 0
 	 * @return Page对象
 	 */
 	public <T> Page<T> getPage(int limit,int offset) {
@@ -319,6 +324,11 @@ public class Query {
 	
 	/**
 	 * 如果没有调用setResultClass指定结果类, 则List存储的对象为{@link:com.tsc9526.monalisa.core.query.DataMap}
+	 * @param limit 
+	 *   The max number of records for this query
+	 *    
+	 * @param offset  
+	 *   Base 0, the first record is 0
 	 * @return List对象
 	 */
 	public <T> List<T> getList(int limit,int offset) {
