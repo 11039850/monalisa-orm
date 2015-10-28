@@ -159,15 +159,42 @@ public class DataMap extends LinkedHashMap<String,Object>{
 			}
 		}
 	}
-	 
+	
+	/**
+	 * Auto detect the date format:
+	 * <li>yyyy-MM-dd</li>
+	 * <li>yyyy-MM-dd HH</li>
+	 * <li>yyyy-MM-dd HH:mm</li>
+	 * <li>yyyy-MM-dd HH:mm:ss</li>
+	 *   
+	 * @param key
+	 * 
+	 * @return
+	 */
 	public Date getDate(String key){
 		return getDate(key,null,null);
 	}
 	
+	/**
+	 * @param key
+	 * @param defaultValue
+	 * @return
+	 * 
+	 * @see #getDate(String)
+	 */
 	public Date getDate(String key, Date defaultValue){
 		return getDate(key,null,defaultValue);		  
 	}
 	
+	/**
+	 * 
+	 * @param key
+	 * @param format  new SimpleDateFormat(format): auto detect date format if null or ''
+	 * @param defaultValue
+	 * @return
+	 * 
+	 * @see #getDate(String)
+	 */
 	public Date getDate(String key,String format,Date defaultValue){
 		Object v=(Object)get(key);
 		if(v==null){
@@ -183,12 +210,23 @@ public class DataMap extends LinkedHashMap<String,Object>{
 						SimpleDateFormat sdf=new SimpleDateFormat(format);
 						return sdf.parse(x);
 					}else{
-						if(x.indexOf(" ")>0){
-							SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-							return sdf.parse(x);
+						int m=x.indexOf(":");
+						if(m>0){	
+							if(x.indexOf(":",m+1)>0){
+								SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+								return sdf.parse(x);
+							}else{
+								SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm");
+								return sdf.parse(x);
+							}
 						}else{
-							SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
-							return sdf.parse(x);
+							if(x.indexOf(" ")>0){
+								SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH");
+								return sdf.parse(x);
+							}else{
+								SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
+								return sdf.parse(x);
+							}
 						}	
 					}
 				}catch(ParseException e){
