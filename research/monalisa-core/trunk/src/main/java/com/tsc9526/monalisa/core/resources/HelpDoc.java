@@ -12,10 +12,10 @@ public interface HelpDoc {
 	 * @param limit 
 	 *   The max number of records for this query
 	 *    
-	 * @param offset <br>
+	 * @param offset  
 	 *   Base 0, the first record is 0
 	 * 
-	 * @param example <br>
+	 * @param example  
 	 *   Use new Model.Example(); <br>
 	 *    
 	 * @param whereStatement SQL segment, for example:<br>
