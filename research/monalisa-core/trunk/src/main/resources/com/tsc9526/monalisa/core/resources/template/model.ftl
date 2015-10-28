@@ -179,7 +179,7 @@ public class ${table.javaName} extends ${modelClass}<${table.javaName}> implemen
 		<#list index.columns as c>
 			<#assign m= m + c.javaName?cap_first />				 
 		</#list>
-		<#if m='PrimaryKey'><#assign m= 'PrimaryKey2'/></#if>
+		<#if m='PrimaryKey'><#assign m= 'UKPrimaryKey'/></#if>
 		<#if index.unique> 
 		/**
 		* Delete by unique key: ${index.name}
@@ -236,7 +236,7 @@ public class ${table.javaName} extends ${modelClass}<${table.javaName}> implemen
 		<#list index.columns as c>
 			<#assign m= m + c.javaName?cap_first />				 
 		</#list>
-		<#if m='PrimaryKey'><#assign m= 'PrimaryKey2'/></#if>
+		<#if m='PrimaryKey'><#assign m= 'UKPrimaryKey'/></#if>
 		<#if index.unique> 
 		/**
 		* Find by unique key: ${index.name}
