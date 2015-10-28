@@ -206,26 +206,13 @@ public abstract class Dialect{
 		Query query=new Query().setResultObject(model);
 		 
 		query.add("SELECT "+model.filterFields()+" FROM ").add(getTableName(model.table())).add(" WHERE ");
-		for(Object o:model.fields()){
-			FGS fgs=(FGS)o;
-			
-			Column c=fgs.getAnnotation(Column.class);
-			if(c.key()){
-				Object v=getValue(fgs,model);
-				if(v==null){
-					throw new RuntimeException("Model: "+model.getClass()+" load fail, Primary key is null: "+c.name());
-				}
-				
-				if(query.parameterCount()>0){
-					query.add(" AND ");
-				}
-				query.add(getColumnName(c.name())+"=?", v);
-			}
-		}		
 		
-		if(query.parameterCount()<1){
+		Query w=findWhereKey(model);
+		if(w.parameterCount()<1){
 			throw new RuntimeException("Model: "+model.getClass()+" load fail, no primary key.");
 		}
+		
+		query.add(w);
 		
 		return query;		  
 	}

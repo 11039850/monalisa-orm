@@ -7,6 +7,7 @@ import java.util.List;
 import com.tsc9526.monalisa.core.annotation.Table;
 import com.tsc9526.monalisa.core.datasource.DBConfig;
 import com.tsc9526.monalisa.core.datasource.DataSourceManager;
+import com.tsc9526.monalisa.core.query.Query;
 import com.tsc9526.monalisa.core.query.dao.Delete;
 import com.tsc9526.monalisa.core.query.dao.Insert;
 import com.tsc9526.monalisa.core.query.dao.Update;
@@ -97,6 +98,17 @@ public class Model<T extends Model> implements Serializable{
 		ModelHelper.parse(this, dataObject,mappings);
 		
 		return (T)this;
+	}
+	
+	/**
+	* Load by primary keys
+	*/
+	public T load(){
+		Query query=dialect().load(this);
+		query.use(db());
+		
+		Object r=query.getResult();
+		return (T)r;
 	}
 	
 	/**
