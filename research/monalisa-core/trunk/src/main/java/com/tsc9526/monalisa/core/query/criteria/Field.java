@@ -45,35 +45,35 @@ public class Field<X,Y extends Criteria>{
 	}
 	
 	/**
-	 * SQL: <code><></code>
+	 * SQL: <code>&lt;&gt;</code>
 	 */	
 	public Y ne(X value){
 		return add(" <> ?", value); 
 	}
 	
 	/**
-	 *  SQL: <code>></code>
+	 *  SQL: <code>&gt;</code>
 	 */
 	public Y gt(X value){
 		return add(" > ?", value); 
 	}
 	
 	/**
-	 * SQL: <code>>=</code>
+	 * SQL: <code>&gt;=</code>
 	 */
 	public Y ge(X value){
 		return add(" >= ?", value); 
 	}
 	
 	/**
-	 * SQL: <code><</code>
+	 * SQL: <code>&lt;</code>
 	 */
 	public Y lt(X value){
 		return add(" < ?", value); 
 	}
 	
 	/**
-	 * SQL: <code><=</code>
+	 * SQL: <code>&lt;=</code>
 	 */
 	public Y le(X value){
 		return add(" <= ?", value); 
@@ -84,9 +84,7 @@ public class Field<X,Y extends Criteria>{
 	 * <li><code>like("%value%"); -> like '%value%'</code></li>
 	 * <li><code>like("value%");  -> like 'value%' </code></li>
 	 * <li><code>like("%value");  -> like '%value' </code></li>
-	 * 
-	 *
-	 * 
+	 *  
 	 * @param value 
 	 */
 	public Y like(X value){
@@ -111,8 +109,8 @@ public class Field<X,Y extends Criteria>{
 	 * 
 	 * SQL: <code>BETWEEN ? AND ?</code>
 	 *  
-	 * @param from  >= from
-	 * @param to    <= to
+	 * @param from  &gt;= from
+	 * @param to    &lt;= to
 	 * @return
 	 */
 	public Y between(X from,X to){
@@ -122,8 +120,8 @@ public class Field<X,Y extends Criteria>{
 	/**
 	 * SQL: <code>NOT BETWEEN ? AND ?</code>
 	 * 
-	 * @param from  < from 
-	 * @param to    > to
+	 * @param from  &lt; from OR
+	 * @param to    &gt; to
 	 * @return
 	 */
 	public Y notBetween(X from,X to){
