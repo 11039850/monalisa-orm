@@ -46,6 +46,22 @@ public class ${table.javaName} extends ${modelClass}<${table.javaName}> implemen
 	public static Criteria criteria(){
 		return new Example().createCriteria();
 	} 
+	
+	/**
+	* find model by primary keys
+	*/
+	<#if table.keyColumns?size gt 0 >
+	public static ${table.javaName} load(<#list table.keyColumns as k>${k.javaType} ${k.javaName}<#if k_has_next=true>, </#if></#list>){
+		${table.javaName} model=new ${table.javaName}();
+						 
+		<#list table.keyColumns as k>
+		model.${k.javaName} = ${k.javaName};
+		</#list>
+				 			 
+		return (${table.javaName})model.load();
+	}				 
+	</#if>
+		 
 	 
 	public ${table.javaName}(){
 		super("${table.name}"<#list table.keyColumns as k>, "${k.name}"</#list>);		
@@ -65,19 +81,7 @@ public class ${table.javaName} extends ${modelClass}<${table.javaName}> implemen
 		<#list table.keyColumns as k>
 		this.${k.javaName} = ${k.javaName};
 		</#list>
-	}
-	
-	/**
-	* Load by primary keys
-	*/
-	public ${table.javaName} load(){
-		Query query=dialect().load(this);
-		query.use(db());
-		
-		${table.javaName} r=query.getResult();
-		return r;
-	}
-	</#if>
+	}	 
 	
 	<#list table.columns as f>
 	<@comments table=table c=f align="	"/> 
@@ -216,10 +220,8 @@ public class ${table.javaName} extends ${modelClass}<${table.javaName}> implemen
 			<#list table.keyColumns as k>
 			model.${k.javaName} = ${k.javaName};
 			</#list>
-				 			 
-			Query query=model.dialect().load(model);
-			query.use(model.db());
-			return (${table.javaName})query.getResult();					
+				 			 			 
+			return (${table.javaName})model.load();					
 		}				 
 		</#if>
 		

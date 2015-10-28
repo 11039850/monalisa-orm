@@ -97,6 +97,10 @@ public class Query {
 		 return getDialect().in(this, values.toArray(new Object[]{}));
 	}
 	
+	public Query add(Query q){	
+		return add(q.getSql(),q.getParameters());
+	}
+	
 	public Query add(String segment,Object ... args){		
 		if(segment!=null){			 
 			sql.append(segment);
