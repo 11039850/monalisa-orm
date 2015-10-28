@@ -63,6 +63,27 @@ public class DataMap extends LinkedHashMap<String,Object>{
 		}
 	}
 	
+	public boolean getBool(String key,boolean defaultValue){
+		Boolean v=getBoolean(key);
+		if(v==null){
+			v=defaultValue;
+		}
+		return v;
+	}
+	
+	public Boolean getBoolean(String key){
+		Object v=(Object)get(key);
+		if(v==null){
+			return null;
+		}else{
+			if(v instanceof Boolean){
+				return (Boolean)v;
+			}else{
+				return Boolean.valueOf(""+v);
+			}
+		}
+	}
+	
 	public int getInt(String key, int defaultValue){
 		Integer v=getInteger(key);
 		if(v==null){
@@ -138,19 +159,19 @@ public class DataMap extends LinkedHashMap<String,Object>{
 			}
 		}
 	}
-	
-	public Date getDate(String key, Date defaultValue){
-		Date v=getDate(key);
-		if(v==null){
-			v=defaultValue;
-		}
-		return v;
+	 
+	public Date getDate(String key){
+		return getDate(key,null,null);
 	}
 	
-	public Date getDate(String key){
+	public Date getDate(String key, Date defaultValue){
+		return getDate(key,null,defaultValue);		  
+	}
+	
+	public Date getDate(String key,String format,Date defaultValue){
 		Object v=(Object)get(key);
 		if(v==null){
-			return null;
+			return defaultValue;
 		}else{
 			if(v instanceof Date){
 				return (Date)v;
@@ -158,13 +179,18 @@ public class DataMap extends LinkedHashMap<String,Object>{
 				String x=""+v;
 				
 				try{
-					if(x.indexOf(" ")>0){
-						SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+					if(format!=null && format.length()>0){
+						SimpleDateFormat sdf=new SimpleDateFormat(format);
 						return sdf.parse(x);
 					}else{
-						SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
-						return sdf.parse(x);
-					}	
+						if(x.indexOf(" ")>0){
+							SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+							return sdf.parse(x);
+						}else{
+							SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
+							return sdf.parse(x);
+						}	
+					}
 				}catch(ParseException e){
 					throw new RuntimeException("Invalid date: "+x,e);
 				}
