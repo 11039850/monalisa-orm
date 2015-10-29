@@ -49,6 +49,8 @@ public class ${table.javaName} extends ${modelClass}<${table.javaName}> implemen
 	
 	/**
 	* find model by primary keys
+	*
+	* @return the model associated with the primary keys,  null if not found.
 	*/
 	<#if table.keyColumns?size gt 0 >
 	public static ${table.javaName} find(<#list table.keyColumns as k>${k.javaType} ${k.javaName}<#if k_has_next=true>, </#if></#list>){
@@ -65,7 +67,7 @@ public class ${table.javaName} extends ${modelClass}<${table.javaName}> implemen
 		}else{
 			return null;
 		}
-	}				 
+	}
 	</#if>
 		 
 	 
@@ -219,15 +221,23 @@ public class ${table.javaName} extends ${modelClass}<${table.javaName}> implemen
 			return new SelectForExample(example);
 		}	
 		
+		/**
+		* find model by primary keys
+		*
+		* @return the model associated with the primary keys,  null if not found.
+		*/
 		<#if table.keyColumns?size gt 0 >
 		public ${table.javaName} selectByPrimaryKey(<#list table.keyColumns as k>${k.javaType} ${k.javaName}<#if k_has_next=true>, </#if></#list>){
-			${table.javaName} model=new ${table.javaName}();
-						 
 			<#list table.keyColumns as k>
 			model.${k.javaName} = ${k.javaName};
 			</#list>
-				 			 			 
-			return (${table.javaName})model.load();					
+			model.load();
+				 			 	 
+			if(model.entity()){
+				return model;
+			}else{
+				return null;
+			}
 		}				 
 		</#if>
 		

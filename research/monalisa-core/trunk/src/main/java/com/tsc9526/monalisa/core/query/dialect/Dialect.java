@@ -15,6 +15,7 @@ import com.tsc9526.monalisa.core.query.model.ModelIndex;
 import com.tsc9526.monalisa.core.tools.ClassHelper.FGS;
 import com.tsc9526.monalisa.core.tools.EnumHelper;
 import com.tsc9526.monalisa.core.tools.JsonHelper;
+import com.tsc9526.monalisa.core.tools.SQLHelper;
 import com.tsc9526.monalisa.core.tools.TypeHelper;
 
 import freemarker.log.Logger;
@@ -226,18 +227,40 @@ public abstract class Dialect{
 	public Query select(Model model,String whereStatement,Object ... args){
 		Query query=new Query().setResultClass(model.getClass());
 		
-		query.add("SELECT "+model.filterFields()+" FROM ").add(getTableName(model.table()));
-		if(whereStatement!=null && whereStatement.length()>0){
-			query.add(" ");
-			
-			whereStatement=whereStatement.trim();
-			
-			if(whereStatement.toUpperCase().startsWith("WHERE")){
-				query.add(whereStatement, args);
-			}else if(whereStatement.toUpperCase().startsWith("ORDER")){
-				query.add(whereStatement, args);
+		if(isJoinStatement(whereStatement)){
+			String x=model.filterFields();
+			if(x.equals("*")){
+				x="a.*";
 			}else{
-				query.add("WHERE ").add(whereStatement,  args);
+				StringBuffer sb=new StringBuffer();
+				for(String s:x.split(",")){
+					s="a."+s.trim();
+					
+					if(sb.length()>0){
+						sb.append(", ");
+					}
+					sb.append(s);
+				}
+				x=sb.toString();
+			}
+			query.add("SELECT "+x+" FROM ").add(getTableName(model.table()));
+			query.add(" a ");
+			query.add(whereStatement, args);			 		
+		}else{
+			query.add("SELECT "+model.filterFields()+" FROM ").add(getTableName(model.table()));
+			if(whereStatement!=null){
+				whereStatement=whereStatement.trim();
+				if(whereStatement.length()>0){
+					query.add(" ");
+					
+					List<String> kws=SQLHelper.splitKeyWords(whereStatement);
+					String w=kws.get(0);
+					if(w.equalsIgnoreCase("WHERE") || w.equalsIgnoreCase("ORDER")){
+						query.add(whereStatement, args);
+					}else{ 
+						query.add("WHERE ").add(whereStatement,  args);
+					} 	
+				}
 			}
 		}
 		
@@ -246,21 +269,55 @@ public abstract class Dialect{
 	
 	public Query count(Model model,String whereStatement,Object ... args){
 		Query query=new Query().setResultClass(Long.class);
-		query.add("SELECT COUNT(*) FROM ").add(getTableName(model.table()));
-		if(whereStatement!=null && whereStatement.length()>0){
-			query.add(" ");
+		if(isJoinStatement(whereStatement)){
+			query.add("SELECT COUNT(*) FROM ").add(getTableName(model.table()));
 			
-			if(whereStatement.toUpperCase().startsWith("WHERE")){
-				query.add(whereStatement, args);
-			}else{
-				query.add("WHERE ").add(whereStatement,  args);
-			}
-		}
+			query.add(" a ");
+			query.add(whereStatement, args);
+		}else{
+			query.add("SELECT COUNT(*) FROM ").add(getTableName(model.table()));
+			if(whereStatement!=null){
+				whereStatement=whereStatement.trim();
+				if(whereStatement.length()>0){
+					query.add(" ");
+					
+					List<String> kws=SQLHelper.splitKeyWords(whereStatement);
+					String w=kws.get(0);
+					if(w.equalsIgnoreCase("WHERE") || w.equalsIgnoreCase("ORDER")){
+						query.add(whereStatement, args);
+					}else{ 
+						query.add("WHERE ").add(whereStatement,  args);
+					} 	
+				}
+			}			 
+		}		
 		return query;
 	}
 	 
+	protected boolean isJoinStatement(String whereStatement){
+		if(whereStatement==null){
+			return false;
+		}
+		whereStatement=whereStatement.trim();
+		
+		if(whereStatement.length()<1){
+			return false;
+		}
+				 
+		if(whereStatement.startsWith(",")){
+			return true; 
+		}
+		
+		List kws=SQLHelper.splitKeyWords(whereStatement);
+		if(kws.contains("JOIN")){
+			return true;
+		}
+		
+		return false;
+	}
 	
 	
+	 
 	public Query notin(Query query,Object[] values){
 		return inOrNotIn("NOT IN",query,values);		 
 	}
