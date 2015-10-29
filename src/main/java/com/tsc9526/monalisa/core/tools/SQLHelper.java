@@ -2,6 +2,7 @@ package com.tsc9526.monalisa.core.tools;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
  
@@ -105,5 +106,68 @@ public class SQLHelper {
 				parameterIndex++;
 			}
 		}				
+	}
+	
+	public static List<String> splitKeyWords(String sql){
+		List<String> kws=new ArrayList<String>();
+		
+		StringBuffer word=new StringBuffer();
+		for(int i=0;i<sql.length();i++){
+			char c=sql.charAt(i);
+			if(c==' ' || c=='\t' || c=='\r' || c=='\n' || c==','){
+				if(word.length()>0){
+					kws.add(word.toString().toUpperCase());
+					
+					word.delete(0, word.length());
+				}
+			}else if(c=='=' || c=='>' || c=='<' || c=='!'){
+				if(word.length()>0){
+					kws.add(word.toString().toUpperCase());
+					
+					word.delete(0, word.length());
+				}
+				kws.add(String.valueOf(c));				
+			}else{
+				if(c=='\''){
+					int from=i;
+					
+					i++;
+					for(;i<sql.length();i++){
+						c=sql.charAt(i);
+						if(c=='\\'){
+							i++;
+						}else if(c=='\''){
+							break;
+						}
+					}
+					
+					kws.add(sql.substring(from,i+1)); 
+				}else if(c=='"'){
+					int from=i;
+					
+					i++;
+					for(;i<sql.length();i++){
+						c=sql.charAt(i);
+						if(c=='\\'){
+							i++;
+						}else if(c=='"'){
+							break;
+						}
+					}
+					
+					kws.add(sql.substring(from,i+1)); 
+				}else{
+					word.append(c);
+				}
+			}
+		}
+		
+		if(word.length()>0){
+			kws.add(word.toString().toUpperCase());
+			
+			word.delete(0, word.length());
+		}
+		
+		return kws;
 	}
 }
