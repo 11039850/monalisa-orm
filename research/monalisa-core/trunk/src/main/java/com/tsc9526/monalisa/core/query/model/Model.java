@@ -231,7 +231,7 @@ public class Model<T extends Model> implements Serializable{
 	}
 	 
 	/**
-	 * 设置所有字段为null
+	 * 设置所有字段为null, 并清除改变字段集合
 	 * 
 	 * @return this
 	 */
