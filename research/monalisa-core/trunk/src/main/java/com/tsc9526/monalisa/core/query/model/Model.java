@@ -199,13 +199,13 @@ public class Model<T extends Model> implements Serializable{
 			
 			if(event==ModelEvent.INSERT){
 				FGS createTime=field("create_time");
-				if(createTime!=null){
+				if(createTime!=null && createTime.getObject(this)==null){
 					createTime.setObject(this, now);
 				}
 			}
 			
 			FGS updateTime=field("update_time");
-			if(updateTime!=null){
+			if(updateTime!=null && updateTime.getObject(this)==null){
 				updateTime.setObject(this, now);
 			}
 		} 
