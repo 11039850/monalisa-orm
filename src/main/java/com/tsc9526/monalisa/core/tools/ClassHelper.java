@@ -373,6 +373,13 @@ public class ClassHelper {
 			return fieldName;
 		}
 		
+		public Method getSetMethod(){
+			return setMethod;
+		}
+		
+		public Method getGetMethod(){
+			return getMethod;
+		}
 	}
 	
 	public static class DateValue extends DateTimeConverter {

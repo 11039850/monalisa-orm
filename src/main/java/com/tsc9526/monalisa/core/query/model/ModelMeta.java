@@ -52,6 +52,9 @@ class ModelMeta{
 	 
 	protected CaseInsensitiveMap hModelValues=null;
 	
+	//javaName
+	protected Set<String> 		 changedFields=new LinkedHashSet<String>();
+	
 	ModelMeta(){
 	}
 		
@@ -154,6 +157,17 @@ class ModelMeta{
 	
 	public Collection<FGS> fields(){
 		return hFieldsByColumnName.values();
+	}
+	
+	public Collection<FGS> changedFields(){
+		List<FGS> fields=new ArrayList<FGS>();
+		for(String name:changedFields){
+			FGS fgs=findFieldByName(name);
+			if(fgs!=null){
+				fields.add(fgs);
+			}
+		}
+		return fields;
 	}
 	
 	public void use(DBConfig db){
@@ -275,6 +289,20 @@ class ModelMeta{
 		 
 	}		
 	
+	public void fieldChanged(String fieldJavaName){
+		if(!changedFields.contains(fieldJavaName)){
+			changedFields.add(fieldJavaName);
+		}
+		
+		dirty=true;
+	}
+	
+	public void clearChanges(){
+		changedFields.clear();
+		
+		dirty=false;
+	}
+	
 	/**
 	 * 复制对象数据
 	 */
@@ -305,6 +333,8 @@ class ModelMeta{
 			
 			x.modelMeta.fieldFilterExcludeMode=fieldFilterExcludeMode;
 			x.modelMeta.fieldFilterSets.addAll(fieldFilterSets);
+			x.modelMeta.changedFields.clear();
+			x.modelMeta.changedFields.addAll(changedFields);
 			
 			return x;
 		}catch(Exception e){
@@ -313,7 +343,7 @@ class ModelMeta{
 	}
 	  
 	protected void doValidate() {
-		String validate=db.getProperty("validate", "false");
+		String validate=getProperty("validate", "false");		 
 		if(validate.equalsIgnoreCase("true") || validate.equals("1")){			
 			List<String> errors=validate();
 			if(errors.size()>0){
@@ -322,6 +352,13 @@ class ModelMeta{
 		}
 	}
 	
+	protected String getProperty(String key,String defaultValue){
+		String v=db.getProperty(key+"."+tableName);
+		if(v==null){
+			v=db.getProperty(key,defaultValue);
+		}
+		return v;
+	}
 	
 	/**
 	 * 校验字段数据的是否合法.
@@ -330,7 +367,7 @@ class ModelMeta{
 	 */
 	public List<String> validate(){
 		if(validator==null){
-			String clazz=db.getProperty("validator");
+			String clazz=getProperty("validator","");
 			if(clazz==null || clazz.trim().length()==0){
 				validator=new Validator();
 			}else{

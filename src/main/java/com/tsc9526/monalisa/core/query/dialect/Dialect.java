@@ -53,7 +53,7 @@ public abstract class Dialect{
 		return getTableName(tableName);
 	}
 	
-	protected Query doInsert(boolean selective,Model model,boolean updateOnDuplicateKey){
+	public Query insert(Model model,boolean updateOnDuplicateKey){
 		Query query=new Query().setResultClass(model.getClass());
 		
 		if(updateOnDuplicateKey){
@@ -64,26 +64,18 @@ public abstract class Dialect{
 		
 		query.add("INTO "+getTableName(model.table())+"(");
 		
-		for(Object o:model.fields()){
+		for(Object o:model.changedFields()){
 			FGS fgs=(FGS)o;
 			
 			Column c=fgs.getAnnotation(Column.class);
 			Object v=getValue(fgs,model);
-			if(selective){
-				if(v!=null){
-					if(query.parameterCount()>0){
-						query.add(", ");
-					}
-					query.add(getColumnName(c.name()),v);
+			 
+			if(c.auto()==false || v!=null){
+				if(query.parameterCount()>0){
+					query.add(", ");
 				}
-			}else{
-				if(c.auto()==false || v!=null){
-					if(query.parameterCount()>0){
-						query.add(", ");
-					}
-					query.add(getColumnName(c.name()),v);
-				}
-			}
+				query.add(getColumnName(c.name()),v);
+			}			
 		}
 		query.add(")VALUES(");
 		
@@ -94,15 +86,7 @@ public abstract class Dialect{
 	 
 		 
 		return query;		 
-	}
-	
-	public Query insert(Model model,boolean updateOnDuplicateKey){		 		 
-		return doInsert(false,model,updateOnDuplicateKey);
-	}
-	
-	public Query insertSelective(Model model,boolean updateOnDuplicateKey){
-		return doInsert(true,model,updateOnDuplicateKey);
-	} 
+	}	 
 	
 	
 	public Query deleteAll(Model model){
@@ -148,60 +132,39 @@ public abstract class Dialect{
 		
 		return update(model,q.getSql(),q.getParameters());
 	}	
-	
-	public Query update(Model model,String whereStatement,Object ... args){		
-		return doUpdate(false, model, whereStatement, args);		 				 
-	}
-	
-	public Query updateSelective(Model model,String whereStatement,Object ... args){	
-		return doUpdate(true, model, whereStatement, args);
-	}
-	
-	protected Query doUpdate(boolean selective,Model model,String whereStatement,Object ... args){		
-		if(whereStatement==null || whereStatement.trim().length()==0){
-			throw new RuntimeException("Model: "+model.getClass()+" update fail, no where cause.");
-		}		
 	 
+	public Query update(Model model,String whereStatement,Object ... args){		
 		Query query=new Query().setResultClass(Long.class);
 		
 		query.add("UPDATE "+getTableName(model.table())+" SET ");
-		for(Object o:model.fields()){
+		for(Object o:model.changedFields()){
 			FGS fgs=(FGS)o;
 			
 			Column c=fgs.getAnnotation(Column.class);
 			Object v=getValue(fgs,model);
-			if(selective){
-				if((c.key()==false || model.updateKey()) && v!=null){
-					if(query.parameterCount()>0){
-						query.add(", ");
-					}
-					query.add(getColumnName(c.name())+"=?",v);				 		
+			 
+			if(c.key()==false || (model.updateKey() && v!=null)){
+				if(query.parameterCount()>0){
+					query.add(", ");
 				}
-			}else{
-				if(c.key()==false || (model.updateKey() && v!=null)){
-					if(query.parameterCount()>0){
-						query.add(", ");
-					}
-					query.add(getColumnName(c.name())+"=?",v);				 		
-				}
-			}
+				query.add(getColumnName(c.name())+"=?",v);				 		
+			}				 
 		}		
 		query.add(" ");
 		
-		if(whereStatement.toUpperCase().trim().startsWith("WHERE")){
-			query.add(whereStatement, args);
-		}else{
-			query.add("WHERE ").add(whereStatement,  args);
-		}	  
-		
+		if(whereStatement!=null && whereStatement.trim().length()>0){
+			List<String> kws=SQLHelper.splitKeyWords(whereStatement);
+			String w=kws.get(0);
+			if(w.equalsIgnoreCase("WHERE")){
+				query.add(whereStatement, args);
+			}else{ 
+				query.add("WHERE ").add(whereStatement,  args);
+			} 	
+		}
+		 
 		return query;		 				 
 	}
-	
-	public Query updateSelective(Model model){		 
-		Query q=findWhereKey(model);		 
-		
-		return updateSelective(model,q.getSql(),q.getParameters());
-	}
+	 
 	
 	public Query load(Model model){
 		Query query=new Query().setResultObject(model);

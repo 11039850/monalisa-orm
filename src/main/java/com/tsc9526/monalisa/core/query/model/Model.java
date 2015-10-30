@@ -2,6 +2,7 @@ package com.tsc9526.monalisa.core.query.model;
 
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 
 import com.tsc9526.monalisa.core.annotation.Table;
@@ -110,35 +111,20 @@ public class Model<T extends Model> implements Serializable{
 		Object r=query.getResult();
 		return (T)r;
 	}
-	
-	/**
-	 * 保存对象到数据库,忽略该对象中值为null的字段<br>
-	 * <code>Call save(true)</code>
-	 */
-	public int save(){
-		return save(true);
-	}
- 	
+	 
 	/**
 	 * 存储对象到数据库
 	 * 
-	 * @param selective
-	 * true-更新时忽略值为null的字段, false-存储所有字段(包括null)到数据库
-	 * 
 	 * @return 成功变更的记录数
 	 */
-	public int save(boolean selective){
+	public int save(){
 		int r=-1;
 		try{
 			before(ModelEvent.INSERT);
 			
 			doValidate();
 			
-			if(selective){
-				r= new Insert(this).insertSelective();
-			}else{
-				r= new Insert(this).insert();
-			}
+			r= new Insert(this).insert(false);			
 			
 			return r;
 		}finally{
@@ -148,34 +134,18 @@ public class Model<T extends Model> implements Serializable{
 	
 
 	/**
-	 * 保存或更新对象到数据库,忽略该对象中值为null的字段<br>
-	 * <code>Call saveOrUpdate(true)</code>
-	 */
-	public int saveOrUpdate(){
-		return saveOrUpdate(true);
-	}
-	
-	
-	/**
 	 * 存储对象到数据库， 如果主键冲突， 则执行更新操作
-	 * 
-	 * @param selective
-	 * true-更新时忽略值为null的字段, false-存储所有字段(包括null)到数据库
 	 * 
 	 * @return 成功变更的记录数
 	 */
-	public int saveOrUpdate(boolean selective){
+	public int saveOrUpdate(){
 		int r=-1;
 		try{
 			before(ModelEvent.INSERT_OR_UPDATE);
 			
 			doValidate();
 			
-			if(selective){
-				r= new Insert(this).insertSelective(true);
-			}else{
-				r= new Insert(this).insert(true);
-			}
+			r= new Insert(this).insert(true);			
 			
 			return r;
 		}finally{
@@ -183,35 +153,20 @@ public class Model<T extends Model> implements Serializable{
 		} 			 
 	}
 	
-	/**
-	 * 更新对象到数据库,忽略该对象中值为null的字段<br>
-	 * <code>Call update(true)</code>
-	 */
-	public int update(){
-		return update(true);
-	}	
-	
-	/**
+	/**	
 	 * 更新对象到数据库
-	 *  
-	 * @param selective
-	 * true-更新时忽略值为null的字段, false-存储所有字段(包括null)到数据库
 	 * 
 	 * @return 成功变更的记录数
 	 */
-	public int update(boolean selective){
+	public int update(){
 		int r=-1;
 		try{
 			before(ModelEvent.UPDATE);
 			
 			doValidate();
 			
-			if(selective){
-				r= new Update(this).updateSelective();
-			}else{
-				r= new Update(this).update();
-			}
-			
+			r= new Update(this).update();
+			 
 			return r;
 		}finally{
 			after(ModelEvent.UPDATE, r);
@@ -238,6 +193,22 @@ public class Model<T extends Model> implements Serializable{
 		if(mm().listener!=null){
 			mm().listener.before(event, this);
 		}
+		
+		if(event==ModelEvent.INSERT || event==ModelEvent.UPDATE ){
+			Date now=new Date();
+			
+			if(event==ModelEvent.INSERT){
+				FGS createTime=field("create_time");
+				if(createTime!=null){
+					createTime.setObject(this, now);
+				}
+			}
+			
+			FGS updateTime=field("update_time");
+			if(updateTime!=null){
+				updateTime.setObject(this, now);
+			}
+		} 
 	}
 	
 	protected void after(ModelEvent event, int r) {
@@ -268,6 +239,8 @@ public class Model<T extends Model> implements Serializable{
 			fgs.setObject(this,null);
 		}
 		
+		mm().clearChanges();
+		 
 		return (T)this;
 	}
 	
@@ -287,6 +260,18 @@ public class Model<T extends Model> implements Serializable{
 	public Collection<FGS> fields() {		 
 		return mm().fields();
 	}	
+	
+	/**
+	 * 
+	 * @return fields if called set("xxx",value) or setXxx()
+	 */
+	public Collection<FGS> changedFields() {		 
+		return mm().changedFields();
+	}	
+	
+	protected void fieldChanged(String fieldJavaName){
+		mm().fieldChanged(fieldJavaName);		
+	}
 	
 	public FGS field(String name) {
 		return mm().findFieldByName(name);		 
@@ -318,9 +303,11 @@ public class Model<T extends Model> implements Serializable{
 	public T set(String name,Object value){
 		FGS fgs=field(name);
 		if(fgs!=null){
-			fgs.setObject(this, value);	
+			fgs.setObject(this, value);
 			
-			dirty(true);
+			if(fgs.getSetMethod()==null){
+				mm().fieldChanged(fgs.getFieldName());
+			}
 		}		
 		return (T)this;
 	}

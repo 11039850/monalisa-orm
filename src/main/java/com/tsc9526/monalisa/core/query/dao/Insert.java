@@ -69,31 +69,7 @@ public class Insert<T extends Model>{
 		query.use(db());
 		return query.execute(new AutoKeyCallback());  
 	}	
-	
-	
-	/**
-	 * insert到数据库， 忽略其中为null的字段
-	 * 
-	 * @return 成功变更的记录数
-	 */
-	public int insertSelective(){			
-		return insertSelective(false);
-	}
-		
-	 
-	/**
-	 * insert到数据库， 忽略其中为null的字段
-	 * 
-	 * @param updateOnDuplicateKey   true: 如果插入时出现主键冲突则进行更新操作
-	 * 
-	 * @return 成功变更的记录数
-	 */
-	public int insertSelective(boolean updateOnDuplicateKey){	 
-		Query query=model.dialect().insertSelective(model, updateOnDuplicateKey);
-		query.use(db());
-		return query.execute(new AutoKeyCallback());
-	}	
-	
+		 
 	private class AutoKeyCallback implements Execute<Integer>{
 		private boolean autoKey=false;
 		
