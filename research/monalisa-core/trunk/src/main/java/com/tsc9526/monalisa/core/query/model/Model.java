@@ -242,6 +242,8 @@ public class Model<T extends Model> implements Serializable{
 		
 		mm().clearChanges();
 		 
+		entity(false);
+		
 		return (T)this;
 	}
 	
@@ -260,6 +262,8 @@ public class Model<T extends Model> implements Serializable{
 				fgs.setObject(this,v);
 			}
 		}
+		
+		entity(false);
 		
 		return (T)this;
 	}
