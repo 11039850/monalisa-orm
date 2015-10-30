@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
+import com.tsc9526.monalisa.core.annotation.Column;
 import com.tsc9526.monalisa.core.annotation.Table;
 import com.tsc9526.monalisa.core.datasource.DBConfig;
 import com.tsc9526.monalisa.core.datasource.DataSourceManager;
@@ -232,7 +233,7 @@ public class Model<T extends Model> implements Serializable{
 	/**
 	 * 设置所有字段为null
 	 * 
-	 * @return 
+	 * @return this
 	 */
 	public T clear(){
 		for(FGS fgs:fields()){
@@ -244,6 +245,24 @@ public class Model<T extends Model> implements Serializable{
 		return (T)this;
 	}
 	
+	/**
+	 * 设置所有字段为缺省值
+	 * 
+	 * @return this
+	 */
+	public T defaults(){
+		for(FGS fgs:fields()){
+			Column c=fgs.getAnnotation(Column.class);
+			String v=c.value();
+			if("NULL".equalsIgnoreCase(v)){
+				fgs.setObject(this,null);
+			}else{			
+				fgs.setObject(this,v);
+			}
+		}
+		
+		return (T)this;
+	}
 	
 	/**
 	 * 
