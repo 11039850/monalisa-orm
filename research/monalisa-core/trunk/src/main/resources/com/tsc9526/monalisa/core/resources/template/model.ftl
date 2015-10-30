@@ -47,29 +47,6 @@ public class ${table.javaName} extends ${modelClass}<${table.javaName}> implemen
 		return new Example().createCriteria();
 	} 
 	
-	/**
-	* find model by primary keys
-	*
-	* @return the model associated with the primary keys,  null if not found.
-	*/
-	<#if table.keyColumns?size gt 0 >
-	public static ${table.javaName} find(<#list table.keyColumns as k>${k.javaType} ${k.javaName}<#if k_has_next=true>, </#if></#list>){
-		${table.javaName} model=new ${table.javaName}();
-						 
-		<#list table.keyColumns as k>
-		model.${k.javaName} = ${k.javaName};
-		</#list>
-				 		
-		model.load();
-		
-		if(model.entity()){
-			return model;
-		}else{
-			return null;
-		}
-	}
-	</#if>
-		 
 	 
 	public ${table.javaName}(){
 		super("${table.name}"<#list table.keyColumns as k>, "${k.name}"</#list>);		
@@ -111,7 +88,10 @@ public class ${table.javaName} extends ${modelClass}<${table.javaName}> implemen
 		<#else>
 		this.${f.javaName} = ${f.javaName};		
 		</#if>
-		return dirty(true);
+		
+		fieldChanged("${f.javaName}");
+		
+		return this;
 	}
 	
 	<#if f.code.list??>
@@ -126,7 +106,9 @@ public class ${table.javaName} extends ${modelClass}<${table.javaName}> implemen
 			this.${f.javaName}.add(x);
 		}
 		
-		return dirty(true);
+		fieldChanged("${f.javaName}");
+		
+		return this;
 	}
 	</#if>
 	
@@ -414,7 +396,7 @@ public class ${table.javaName} extends ${modelClass}<${table.javaName}> implemen
 	</#list>
 	</#compress>
 	 
-	public static class Metadata{
+	public static class M{
 		public final static String TABLE ="${table.name}" ;
 		
 		<#list table.columns as f>

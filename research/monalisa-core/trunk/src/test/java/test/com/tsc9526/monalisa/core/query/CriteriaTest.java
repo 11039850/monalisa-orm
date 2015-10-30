@@ -196,22 +196,7 @@ public class CriteriaTest {
 	public void testInsert()throws Exception{
 		String time="2015-06-08 11:10:31";
 		SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		String[] fs=new String[]{"`int_field1`", "`int_field2`",
-				"`string_field1`", "`string_field2`", "`date_field1`",
-				"`date_field2`", "`status`", "`status_b`",
-				"`status_c`", "`array_1`", "`json_1`",
-				"`object_one`","`object_two`"};
-		String fieldns="";
-		String fieldvs="";
-		for(String f:fs){
-			if(fieldns.length()>0){
-				fieldns+=", "+f;
-				fieldvs+=", ?";
-			}else{
-				fieldns=f;
-				fieldvs="?";
-			}
-		}
+		 
 		
 		SimpleModel model=new SimpleModel();
 		model.setIntField1(1);
@@ -220,52 +205,20 @@ public class CriteriaTest {
 		 
 		Query query=model.dialect().insert(model, true);
 		String sql=query.getSql();
-		String sql_expect="REPLACE INTO `simple_model`("+fieldns+")VALUES("+fieldvs+")";
+		String sql_expect="REPLACE INTO `simple_model`(`int_field1`, `int_field2`, `date_field1`)VALUES(?, ?, ?)";
 		Assert.assertEquals(sql,sql_expect);
 		
 		query=model.dialect().insert(model, false);
 		sql=query.getSql();
-		sql_expect="INSERT INTO `simple_model`("+fieldns+")VALUES("+fieldvs+")";
-		Assert.assertEquals(sql,sql_expect);
-		
-		
-		query=model.dialect().insertSelective(model, true);
-		sql=query.getSql();
-		sql_expect="REPLACE INTO `simple_model`(`int_field1`, `int_field2`, `date_field1`)VALUES(?, ?, ?)";
-		Assert.assertEquals(sql,sql_expect);
-		
-		query=model.dialect().insertSelective(model, false);
-		sql=query.getSql();
 		sql_expect="INSERT INTO `simple_model`(`int_field1`, `int_field2`, `date_field1`)VALUES(?, ?, ?)";
 		Assert.assertEquals(sql,sql_expect);
 		
-		model.setStatus(StatusA.ERROR);
-		query=model.dialect().insertSelective(model, false);
-		sql=query.getSql();
-		sql_expect="INSERT INTO `simple_model`(`int_field1`, `int_field2`, `date_field1`, `status`)VALUES(?, ?, ?, ?)";
-		Assert.assertEquals(sql,sql_expect);
-		
+		 
+		model.setStatus(StatusA.OK);
+		query=model.dialect().insert(model, false);
 		sql=query.getExecutableSQL();
-		sql_expect="INSERT INTO `simple_model`(`int_field1`, `int_field2`, `date_field1`, `status`)VALUES(1, 2, '2015-06-08 11:10:31', 1)";
-		Assert.assertEquals(sql,sql_expect);
-		
-		model.setStatusB(StatusB.B2);
-		query=model.dialect().insertSelective(model, false);
-		sql=query.getExecutableSQL();
-		sql_expect="INSERT INTO `simple_model`(`int_field1`, `int_field2`, `date_field1`, `status`, `status_b`)VALUES(1, 2, '2015-06-08 11:10:31', 1, 2)";
-		Assert.assertEquals(sql,sql_expect);
-		
-		model.setStatusC(StatusC.CC2);
-		query=model.dialect().insertSelective(model, false);
-		sql=query.getExecutableSQL();
-		sql_expect="INSERT INTO `simple_model`(`int_field1`, `int_field2`, `date_field1`, `status`, `status_b`, `status_c`)VALUES(1, 2, '2015-06-08 11:10:31', 1, 2, 'CC2')";
-		Assert.assertEquals(sql,sql_expect);
-		
-		model.setArray1("a,b".split(","));
-		query=model.dialect().insertSelective(model, false);
-		sql=query.getExecutableSQL();
-		sql_expect="INSERT INTO `simple_model`(`int_field1`, `int_field2`, `date_field1`, `status`, `status_b`, `status_c`, `array_1`)VALUES(1, 2, '2015-06-08 11:10:31', 1, 2, 'CC2', '[\\\"a\\\",\\\"b\\\"]')";
-		Assert.assertEquals(sql,sql_expect);
+		sql_expect="INSERT INTO `simple_model`(`int_field1`, `int_field2`, `date_field1`, `status`)VALUES(1, 2, '2015-06-08 11:10:31', 0)";
+		Assert.assertEquals(sql,sql_expect);		 
 	 
 	}
 	

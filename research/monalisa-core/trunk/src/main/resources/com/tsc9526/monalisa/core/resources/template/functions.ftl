@@ -12,9 +12,9 @@ ${align!}* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> ${c.table.name}
 ${align!}<#if c.length gt 0 >* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> ${c.length}	</#if>	<#if c.value??> 	&nbsp;<B>value:</B> ${c.value?html} <br> </#if>			
 ${align!}<#if c.remarks?? >* <li><B>remarks:</B> ${c.remarks?html?replace('*/','**')}	</#if>		 
 ${align!}*/
-	<#assign f=c.table.javaName+".Metadata." />
+	<#assign f=c.table.javaName+".M." />
 	<#if c.table.javaPackage == table.javaPackage >
-		<#assign f="Metadata." />
+		<#assign f="M." />
 	</#if>	
 	<#assign names=["name","key","auto","notnull","length","value","remarks"] />	
 ${align!}@Column(table=${f}TABLE, jdbcType=${c.jdbcType}, <#list names as n><#assign colname=c.nameToJava() /><#assign p=colname?index_of('$') /><#if p gt 0> <#assign colname=colname?substring(p+1) /> </#if> ${n}=${f}${colname}$${n} <#if n_has_next=true>, </#if> </#list>  )

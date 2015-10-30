@@ -113,112 +113,142 @@ public class SimpleModel extends Model<SimpleModel> implements SimpleDB{
 		return intField1;
 	}
 
-	public void setIntField1(Integer intField1) {
+	public SimpleModel setIntField1(Integer intField1) {
 		this.intField1 = intField1;
+		
+		fieldChanged("intField1");
+		return this;
 	}
 
 	public Integer getIntField2() {
 		return intField2;
 	}
 
-	public void setIntField2(Integer intField2) {
+	public SimpleModel setIntField2(Integer intField2) {
 		this.intField2 = intField2;
+		
+		fieldChanged("intField2");
+		return this;
 	}
 
 	public String getStringField1() {
 		return stringField1;
 	}
 
-	public void setStringField1(String stringField1) {
+	public SimpleModel setStringField1(String stringField1) {
 		this.stringField1 = stringField1;
+		fieldChanged("stringField1");
+		return this;
 	}
 
 	public String getStringField2() {
 		return stringField2;
 	}
 
-	public void setStringField2(String stringField2) {
+	public SimpleModel setStringField2(String stringField2) {
 		this.stringField2 = stringField2;
+		fieldChanged("stringField2");
+		return this;
 	}
 
 	public Date getDateField1() {
 		return dateField1;
 	}
 
-	public void setDateField1(Date dateField1) {
+	public SimpleModel setDateField1(Date dateField1) {
 		this.dateField1 = dateField1;
+		fieldChanged("dateField1");
+		return this;
 	}
 
 	public Date getDateField2() {
 		return dateField2;
 	}
 
-	public void setDateField2(Date dateField2) {
+	public SimpleModel setDateField2(Date dateField2) {
 		this.dateField2 = dateField2;
+		fieldChanged("dateField2");
+		return this;
 	}
 
 	public Integer getAuto() {
 		return auto;
 	}
 
-	public void setAuto(Integer auto) {
+	public SimpleModel setAuto(Integer auto) {
 		this.auto = auto;
+		fieldChanged("auto");
+		return this;
 	}
 
 	public StatusA getStatus() {
 		return status;
 	}
 
-	public void setStatus(StatusA status) {
+	public SimpleModel setStatus(StatusA status) {
 		this.status = status;
+		fieldChanged("status");
+		return this;
 	}
 
 	public StatusB getStatusB() {
 		return statusB;
 	}
 
-	public void setStatusB(StatusB statusB) {
+	public SimpleModel setStatusB(StatusB statusB) {
 		this.statusB = statusB;
+		fieldChanged("statusB");
+		return this;
 	}
 	
 	public StatusC getStatusC() {
 		return statusC;
 	}
 
-	public void setStatusC(StatusC statusC) {
+	public SimpleModel setStatusC(StatusC statusC) {
 		this.statusC = statusC;
+		fieldChanged("statusC");
+		return this;
 	}
 
 	public String[] getArray1() {
 		return array1;
 	}
 
-	public void setArray1(String[] array1) {
+	public SimpleModel setArray1(String[] array1) {
 		this.array1 = array1;
+		fieldChanged("array1");
+		return this;
 	}
 
 	public JsonObject getJson1() {
 		return json1;
 	}
 
-	public void setJson1(JsonObject json1) {
+	public SimpleModel setJson1(JsonObject json1) {
 		this.json1 = json1;
+		fieldChanged("json1");
+		return this;
 	}
 
 	public SimpleObject getObjectOne() {
 		return objectOne;
 	}
 
-	public void setObjectOne(SimpleObject objectOne) {
+	public SimpleModel setObjectOne(SimpleObject objectOne) {
 		this.objectOne = objectOne;
+		fieldChanged("objectOne");
+		return this;
 	}
 
 	public SimpleObjectTwo getObjectTwo() {
 		return objectTwo;
 	}
 
-	public void setObjectTwo(SimpleObjectTwo objectTwo) {
+	public SimpleModel setObjectTwo(SimpleObjectTwo objectTwo) {
 		this.objectTwo = objectTwo;
+		fieldChanged("objectTwo");
+		return this;
 	}
 	
 }
