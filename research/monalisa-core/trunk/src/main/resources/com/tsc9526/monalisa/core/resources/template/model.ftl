@@ -67,6 +67,7 @@ public class ${table.javaName} extends ${modelClass}<${table.javaName}> implemen
 		this.${k.javaName} = ${k.javaName};
 		</#list>
 	}	 
+	</#if>
 	
 	<#list table.columns as f>
 	<@comments table=table c=f align="	"/> 
