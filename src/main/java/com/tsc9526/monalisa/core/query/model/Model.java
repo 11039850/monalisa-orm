@@ -190,7 +190,7 @@ public class Model<T extends Model> implements Serializable{
 		} 
 	}
 	
-	protected void before(ModelEvent event){
+	public void before(ModelEvent event){
 		if(mm().listener!=null){
 			mm().listener.before(event, this);
 		}
@@ -212,7 +212,7 @@ public class Model<T extends Model> implements Serializable{
 		} 
 	}
 	
-	protected void after(ModelEvent event, int r) {
+	public void after(ModelEvent event, int r) {
 		if(r>=0){
 			dirty(false);
 			
