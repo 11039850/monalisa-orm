@@ -452,11 +452,8 @@ public class Query {
 	}
 	
 	protected <T> void load(ResultSet rs,T r)throws SQLException{
-		if(r instanceof Model<?>){
-			Model<?> m=(Model<?>)r;
-			if(m.listener()!=null){
-				m.listener().before(ModelEvent.LOAD, m);
-			}
+		if(r instanceof Model<?>){		
+			((Model<?>)r).before(ModelEvent.LOAD);
 		}
 		
 		ResultSetMetaData rsmd=rs.getMetaData();
@@ -482,11 +479,8 @@ public class Query {
 			}						
 		}
 		
-		if(r instanceof Model<?>){
-			Model<?> m=(Model<?>)r;
-			if(m.listener()!=null){
-				m.listener().after(ModelEvent.LOAD, m,0);
-			}
+		if(r instanceof Model<?>){		
+			((Model<?>)r).after(ModelEvent.LOAD,0);
 		}
 	}
 	
