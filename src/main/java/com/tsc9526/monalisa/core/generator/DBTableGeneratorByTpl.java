@@ -87,9 +87,9 @@ public class DBTableGeneratorByTpl {
 		}	
 		imports.add(ClassHelper.class.getName());
 		
-		if (table.getKeyColumns().size() > 0) {
-			imports.add(Query.class.getName());
-		}
+//		if (table.getKeyColumns().size() > 0) {
+//			imports.add(Query.class.getName());
+//		}
 		
 		for (MetaColumn c : table.getColumns()) {
 			imports.addAll(c.getImports());
