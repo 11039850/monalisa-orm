@@ -12,7 +12,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentSkipListMap;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
@@ -255,16 +254,31 @@ public class ClassHelper {
 			}						
 		}		 
 		
-		public void removeField(FGS fgs){
+		/**
+		 * 
+		 * @param fs Fields will be remove
+		 * 
+		 * @return Removed fields in the class
+		 */
+		public List<FGS> removeFields(List<FGS> fs){
 			try{
 				lock.writeLock().lock();
 				
-				hFields.remove(fgs.getFieldName());
+				List<FGS> xs=new ArrayList<FGS>();
+				for(FGS fgs:fs){
+					FGS x=hFields.remove(fgs.getFieldName());
+					if(x!=null){
+						xs.add(x);
+					}
+				}
+				
+				return xs;
 			}finally{
 				lock.writeLock().unlock();
 			}
 		}
 		
+	 
 		public void addFields(List<FGS> fs){
 			try{
 				lock.writeLock().lock();
@@ -298,6 +312,24 @@ public class ClassHelper {
 			}			
 		}
 		
+		/**
+		 * Remove fields which field annotation with the annotationClass
+		 * 
+		 * @param annotationClass
+		 * @return Removed fields in the class
+		 */
+		public List<FGS> removeFieldsWithAnnotation(Class<? extends Annotation> annotationClass){
+			List<FGS> fs=getFieldsWithAnnotation(annotationClass);
+			return removeFields(fs);
+		}
+		
+		/**
+		 * Get fields which field annotation with the annotationClass
+		 * 
+		 * @param annotationClass
+		 * 
+		 * @return fields annotation with the annotationClass
+		 */
 		public List<FGS> getFieldsWithAnnotation(Class<? extends Annotation> annotationClass){
 			List<FGS> fgs=new ArrayList<FGS>();
 			for(FGS f:getFields()){
