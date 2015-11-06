@@ -1,5 +1,8 @@
 package com.tsc9526.monalisa.core.query.model;
 
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Field;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedHashMap;
@@ -15,12 +18,16 @@ import com.tsc9526.monalisa.core.annotation.DB;
 import com.tsc9526.monalisa.core.annotation.Index;
 import com.tsc9526.monalisa.core.annotation.Table;
 import com.tsc9526.monalisa.core.datasource.DBConfig;
+import com.tsc9526.monalisa.core.meta.MetaColumn;
 import com.tsc9526.monalisa.core.meta.MetaPartition;
+import com.tsc9526.monalisa.core.meta.MetaTable;
 import com.tsc9526.monalisa.core.query.dialect.Dialect;
 import com.tsc9526.monalisa.core.query.validator.Validator;
 import com.tsc9526.monalisa.core.tools.ClassHelper;
 import com.tsc9526.monalisa.core.tools.ClassHelper.FGS;
 import com.tsc9526.monalisa.core.tools.ClassHelper.MetaClass;
+import com.tsc9526.monalisa.core.tools.JavaBeansHelper;
+import com.tsc9526.monalisa.core.tools.TableHelper;
 
 class ModelMeta{
 	protected boolean     fieldFilterExcludeMode=true;	
@@ -54,60 +61,57 @@ class ModelMeta{
 	
 	//javaName
 	protected Set<String> 		 changedFields=new LinkedHashSet<String>();
-	
+	 
 	ModelMeta(){
 	}
-		
-	
-	List<FGS> loadModelFields(Model<?> m){
-		MetaClass metaClass=ClassHelper.getMetaClass(m.getClass());
-		List<FGS> fields=metaClass.getFieldsWithAnnotation(Column.class);
-		
-		if(fields.size()==0){
-			if(hModelValues==null){
-				hModelValues=new CaseInsensitiveMap();
-			}
-		}
-		
-		return fields;		
-	}
-	
+ 
 	synchronized void initModelMeta(Model<?> m){
 		if(initialized){
 			return;
 		}
 		  	
 		this.model=m;
+		 
+		initDB();
 		
-		List<FGS> fields=loadModelFields(m);
+		initTable();
+				
+		initFields();
 		
-		Class<?> clazz=ClassHelper.findClassWithAnnotation(m.getClass(),DB.class);
-		if(clazz==null){
-			throw new RuntimeException("Model: "+m.getClass()+" must implement interface annotated by: "+DB.class);
-		}
+		initIndexes();
 		
-		table=m.getClass().getAnnotation(Table.class);	
+		initListeners();
 		
-		db=Model.dsm.getDBConfig(clazz);
-		
-		if(table==null){
-			throw new RuntimeException("Model: "+m.getClass()+" must with a annotation: "+Table.class);
-		}
-	 
-		dialect=Model.dsm.getDialect(db);
-		
-		mp=db.getPartition(table.name());			 
-	  
-		String ls=db.modelListener();
-		if(ls!=null && ls.trim().length()>0){
-			try{
-				listener=(ModelListener)Class.forName(ls.trim()).newInstance();
-			}catch(Exception e){
-				throw new RuntimeException("Invalid model listener class: "+ls.trim()+", "+e,e);
+		initPartioners();			 
+		 
+		initialized=true;
+	}
+	
+	protected void initDB() {
+		if(db==null){
+			Class<?> clazz=ClassHelper.findClassWithAnnotation(model.getClass(),DB.class);
+			if(clazz==null){
+				throw new RuntimeException("Model: "+model.getClass()+" must implement interface annotated by: "+DB.class);
 			}
+			db=Model.dsm.getDBConfig(clazz);
 		}
 		
-		
+		dialect=Model.dsm.getDialect(db);
+	}
+	
+	protected void initTable() {
+		table=model.getClass().getAnnotation(Table.class);			  
+		if(table==null){
+			if(tableName==null || tableName.trim().length()==0){
+				tableName=JavaBeansHelper.getTableName(model.getClass().getSimpleName());
+			}
+			
+			table=createTable(tableName,primaryKeys);
+		}
+	}
+	
+	protected void initFields(){
+		List<FGS> fields=loadModelFields();				
 		for(Object o:fields){
 			FGS fgs=(FGS)o;				
 			Column c=fgs.getAnnotation(Column.class);
@@ -119,7 +123,9 @@ class ModelMeta{
 				autoField=fgs;					 
 			}
 		}
-		
+	}
+	
+	protected void initIndexes() {
 		Index[] tbIndexes=table.indexes();
 		if(tbIndexes!=null && tbIndexes.length>0){
 			for(Index index:tbIndexes){
@@ -141,8 +147,179 @@ class ModelMeta{
 				indexes.add(mIndex);
 			}
 		}
+	}
+	
+	protected void initListeners(){
+		String ls=db.modelListener();
+		if(ls!=null && ls.trim().length()>0){
+			try{
+				listener=(ModelListener)Class.forName(ls.trim()).newInstance();
+			}catch(Exception e){
+				throw new RuntimeException("Invalid model listener class: "+ls.trim()+", "+e,e);
+			}
+		}		
+	}
+	
+	protected void initPartioners() {
+		mp=db.getPartition(table.name());
+	}
+	
+	protected List<FGS> loadModelFields(){
+		MetaClass metaClass=ClassHelper.getMetaClass(model.getClass());
+		List<FGS> fields=metaClass.getFieldsWithAnnotation(Column.class);						
+		if(fields.size()==0){
+			if(hModelValues==null){
+				hModelValues=new CaseInsensitiveMap();
+			}
+			
+			loadFieldsFromDB();		
+			fields=metaClass.getFieldsWithAnnotation(Column.class);
+		}
+	  
+		return fields;		
+	}
+	
+	protected void loadFieldsFromDB() {
+		try{
+			MetaTable mTable   =TableHelper.getMetaTable(db, tableName);
+			MetaClass metaClass=ClassHelper.getMetaClass(model.getClass());
+			
+			List<FGS> fs=new ArrayList<FGS>();
+			 
+			for(MetaColumn c:mTable.getColumns()){
+				FGS mfd=metaClass.getField(c.getJavaName());
+				if(mfd==null){
+					metaClass.getField(c.getName());
+				}
+				 
+				FGS fgs=createFGS(c,mfd);	
+				fs.add(fgs);								 
+			}		
+			
+			metaClass.addFields(fs);
+			
+		}catch(SQLException e){
+			throw new RuntimeException(e);
+		}
+	}
+	
+	
+	protected FGS createFGS(final MetaColumn c,final FGS mfd){		 
+		FGS fgs=new FGS(c.getJavaName(), mfd==null?null:mfd.getType()){
+			
+			public void setObject(Object bean,Object v){
+				if(mfd!=null){
+					mfd.setObject(bean, v);
+				}else{
+					hModelValues.put(c.getName(), v);
+				}
+			}
+			
+			public Object getObject(Object bean){
+				if(mfd!=null){
+					return mfd.getObject(bean);
+				}else{
+					return hModelValues.get(c.getName());
+				}
+			}
+			
+			public Field getField(){
+				return mfd==null?null:mfd.getField();
+			}
+			
+			@SuppressWarnings("unchecked")
+			public <T extends Annotation> T getAnnotation(Class<T> annotationClass) {				
+				if(annotationClass==Column.class){
+					return (T)createColumn(c);
+				}else{
+					return null;
+				}
+			}
+			
+			
+			
+			
+		};
 		
-		initialized=true;
+		return fgs;
+	}
+	
+	protected Column createColumn(final MetaColumn c){
+		return new Column(){								 
+			public Class<? extends Annotation> annotationType() {
+				return Column.class;
+			}
+								 
+			public String value() {							 
+				return c.getValue();
+			}
+			
+			 
+			public String table() {							 
+				return c.getTable().getName();
+			}
+			
+			 
+			public String remarks() {							 
+				return c.getRemarks();
+			}
+									 
+			public boolean notnull() {
+				 
+				return c.isNotnull();
+			}
+						 
+			public String name() {
+				return c.getName();
+			}
+			 
+			public int length() {				 
+				return c.getLength();
+			}
+			  
+			public boolean key() {
+				return c.isKey();
+			}
+			 
+			public int jdbcType() {				 
+				return c.getJdbcType();
+			}
+					 
+			public boolean auto() {				 
+				return c.isAuto();
+			}
+		};
+	}
+	
+	protected Table createTable(final String tableName,final String ...primaryKeys){
+		Table tb=new Table(){ 
+			public Class<? extends Annotation> annotationType() {
+				return Table.class;
+			}
+			 
+			public String value() {				 
+				return tableName;
+			}
+
+			 
+			public String name() {				 
+				return tableName;
+			}
+			 
+			public String remarks() {				 
+				return "";
+			}
+ 
+			public String[] primaryKeys() {				 
+				return primaryKeys;
+			}
+			 
+			public Index[] indexes() {				 
+				return new Index[0];
+			}			
+		};
+		
+		return tb;
 	}
 	
 	public FGS findFieldByName(String name){
@@ -160,22 +337,26 @@ class ModelMeta{
 	}
 	
 	public Collection<FGS> changedFields(){
-		List<FGS> fields=new ArrayList<FGS>();
+		Set<FGS> fields=new LinkedHashSet<FGS>();
+		
 		for(String name:changedFields){
 			FGS fgs=findFieldByName(name);
 			if(fgs!=null){
 				fields.add(fgs);
 			}
 		}
+		
+		//Fill user defined fields without annotation: @Column
+		for(FGS fgs:fields()){
+			Field f=fgs.getField();
+			if(f!=null && f.getAnnotation(Column.class)==null){
+				fields.add(fgs);		
+			}
+		}
+		
 		return fields;
 	}
-	
-	public void use(DBConfig db){
-		this.db=db;
-		
-		//TODO: load model info
-	}
-
+	 
 	/**
 	 * 
 	 * @return 逗号分隔的字段名， *： 表示返回所有字段

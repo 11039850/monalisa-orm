@@ -12,6 +12,9 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentSkipListMap;
+import java.util.concurrent.locks.ReadWriteLock;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 import org.apache.commons.beanutils.ConvertUtils;
 import org.apache.commons.beanutils.converters.DateTimeConverter;
@@ -81,6 +84,8 @@ public class ClassHelper {
 					}
 				}					 					
 				clazz=clazz.getSuperclass();
+			}else {
+				return clazz;
 			}
 		}							
 		return null;
@@ -111,6 +116,10 @@ public class ClassHelper {
 	}
 	 
 	public static Object convert(Object v,Class<?> type){
+		if(type==null){
+			return v;
+		}
+		
 		Object value=null;
 		if(v!=null){
 			if(type.isEnum()){
@@ -212,7 +221,8 @@ public class ClassHelper {
 	public static class MetaClass {
 		private Class<?> clazz;
 		private Map<String, FGS> hFields = new LinkedHashMap<String, FGS>();
-		 	
+		private ReadWriteLock lock=new ReentrantReadWriteLock(); 
+		
 		public MetaClass(Class<?> clazz) {
 			this.clazz = clazz;
 			loadClassInfo();
@@ -226,14 +236,13 @@ public class ClassHelper {
 				if (!Modifier.isStatic(modifiers) && !Modifier.isTransient(modifiers)) {
 					FGS fgs = new FGS(f,clazz);
 					
-					String fn=f.getName();
-					if (!hFields.containsKey(fn)){
-						hFields.put(fn, fgs);													
-					}											 
+					if (!hFields.containsKey(fgs.getFieldName())){
+						hFields.put(fgs.getFieldName(), fgs);													
+					}
 				}
 			}
 		}
-		
+		 
 		private void fetchFields(List<Field> fields,Class<?> clazz){			 
 			Field[] fs=clazz.getDeclaredFields();
 			for(Field f:fs){
@@ -244,21 +253,55 @@ public class ClassHelper {
 			if(su!=null){
 				fetchFields(fields,su);
 			}						
+		}		 
+		
+		public void removeField(FGS fgs){
+			try{
+				lock.writeLock().lock();
+				
+				hFields.remove(fgs.getFieldName());
+			}finally{
+				lock.writeLock().unlock();
+			}
 		}
-		  
+		
+		public void addFields(List<FGS> fs){
+			try{
+				lock.writeLock().lock();
+				
+				for(FGS fgs:fs){
+					hFields.put(fgs.getFieldName(), fgs);
+				}
+			}finally{
+				lock.writeLock().unlock();
+			}
+			
+		}
 
 		public FGS getField(String name) {
-			return hFields.get(name);
+			try{
+				lock.readLock().lock();
+				
+				return hFields.get(name);
+			}finally{
+				lock.readLock().unlock();
+			}
 		} 
 		
 		public Collection<FGS> getFields(){
-			return hFields.values();
+			try{
+				lock.readLock().lock();
+				
+				return hFields.values();
+			}finally{
+				lock.readLock().unlock();
+			}			
 		}
 		
 		public List<FGS> getFieldsWithAnnotation(Class<? extends Annotation> annotationClass){
 			List<FGS> fgs=new ArrayList<FGS>();
-			for(FGS f:hFields.values()){
-				if(f.field.getAnnotation(annotationClass)!=null){
+			for(FGS f:getFields()){
+				if(f.getAnnotation(annotationClass)!=null){
 					fgs.add(f);
 				}
 			}
@@ -301,6 +344,10 @@ public class ClassHelper {
 
 			getMethod=getMethod(clazz,get);
 			setMethod=getMethod(clazz,set, field.getType());		
+		}
+		
+		public Field getField(){
+			return this.field;
 		}
 		
 		private Method getMethod(Class<?> clazz,String name, Class<?>... parameterTypes) {

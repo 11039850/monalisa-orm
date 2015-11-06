@@ -15,6 +15,7 @@ import com.tsc9526.monalisa.core.query.dao.Insert;
 import com.tsc9526.monalisa.core.query.dao.Update;
 import com.tsc9526.monalisa.core.query.dialect.Dialect;
 import com.tsc9526.monalisa.core.query.partition.CreateTableCache;
+import com.tsc9526.monalisa.core.tools.ClassHelper;
 import com.tsc9526.monalisa.core.tools.ClassHelper.FGS;
 import com.tsc9526.monalisa.core.tools.ModelHelper;
 
@@ -378,7 +379,7 @@ public class Model<T extends Model> implements Serializable{
 	 * @return
 	 */
 	public T use(DBConfig db){
-		mm().use(db);
+		modelMeta.db=db;
 		
 		return (T)this;
 	}		 	
@@ -481,5 +482,22 @@ public class Model<T extends Model> implements Serializable{
 	public ModelListener listener(){
 		return mm().listener;
 	}	
+	
+	public String toString(){
+		StringBuffer sb=new StringBuffer();		 
+		for(FGS fgs:fields()){
+			Object v=fgs.getObject(this);
+			if(v!=null){
+				String s=""+ClassHelper.convert(v, String.class);
+				if(sb.length()>0){
+					sb.append(", ");
+				}
+				sb.append(fgs.getFieldName()+": ").append(s);
+			}
+		}
+		sb.append("}");
+		sb.insert(0, table().name()+":{");
+		return sb.toString();
+	}
 }
 
