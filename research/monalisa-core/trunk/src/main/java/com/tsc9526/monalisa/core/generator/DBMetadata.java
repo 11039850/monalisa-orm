@@ -15,20 +15,18 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.TreeMap;
 import java.util.concurrent.ConcurrentHashMap;
 
 import javax.sql.DataSource;
 
 import com.tsc9526.monalisa.core.datasource.DBConfig;
 import com.tsc9526.monalisa.core.datasource.DataSourceManager;
-import com.tsc9526.monalisa.core.meta.MetaColumn;
-import com.tsc9526.monalisa.core.meta.MetaIndex;
 import com.tsc9526.monalisa.core.meta.MetaPartition;
 import com.tsc9526.monalisa.core.meta.MetaTable;
 import com.tsc9526.monalisa.core.meta.MetaTable.CreateTable;
 import com.tsc9526.monalisa.core.tools.CloseQuietly;
 import com.tsc9526.monalisa.core.tools.FileHelper;
+import com.tsc9526.monalisa.core.tools.TableHelper;
 
 /**
  * 
@@ -159,18 +157,15 @@ public class DBMetadata {
 		Connection conn=null;
 		try{
 			conn=ds.getConnection();
- 			DatabaseMetaData metadata=conn.getMetaData();
-			List<MetaTable> tables=getTables(metadata);
+ 			DatabaseMetaData dbm=conn.getMetaData();
+			List<MetaTable> tables=getTables(dbm);
 		    for(MetaTable table:tables){
-		    	getTableColumns(metadata, table);
-		    	getTableKeyColumns(metadata, table);	
-		    	getTableIndexes(metadata,table);
+		    	TableHelper.getTableColumns(dbcfg,dbm, table);		    	 
+		    	TableHelper.getTableIndexes(dbcfg,dbm, table);
 		    
 		    	table.setJavaPackage(javaPackage);
-		    }
-		    
-		   
-		    
+		    }		    
+		   		    
 		    for(MetaTable table:tables){
 		    	if(table.getPartition()!=null){
 		    		dsm.getDialect(dbcfg).loadMetaTableDetails(dbcfg, table); 
@@ -258,35 +253,7 @@ public class DBMetadata {
 		
 		return tables;
 	}
-	
-	private void getTableIndexes(DatabaseMetaData metadata,MetaTable table)throws SQLException{
-		ResultSet rs = metadata.getIndexInfo(catalog, schema, table.getName(), false, true);  
-	    while(rs.next()){
-	    	short type=rs.getShort("TYPE");
-	    	if(type != DatabaseMetaData.tableIndexStatistic){		    	
-		    	String indexName  = rs.getString("INDEX_NAME");
-		    	Integer position  = rs.getInt("ORDINAL_POSITION");			    	  
-		    	String columnName = rs.getString("COLUMN_NAME");			    	 		    
-		    	boolean nonUnique = rs.getBoolean("NON_UNIQUE"); 
-		    	
-		    	if(indexName.equalsIgnoreCase("PRIMARY")==false){		    	
-			    	MetaIndex index=table.getIndex(indexName);
-			    	if(index==null){			    	
-				    	index=new MetaIndex();
-				    	index.setName(indexName);
-				    	index.setType(type);
-				    	index.setUnique(!nonUnique);
-				    					    	 
-				    	table.addIndex(index);
-			    	}
-			    	
-			    	MetaColumn c=table.getColumn(columnName);
-			    	index.addColumn(c,position-1); 	
-		    	}
-	    	}		    	
-	    }		    		    
-	    rs.close(); 	 					    		    		 
-	}
+	 
 	
 	private void processTableMapping(List<MetaTable> tables){
 		String mapping=dbcfg.mapping().trim();
@@ -305,53 +272,7 @@ public class DBMetadata {
 			}
 		}
 	}
-	
-	protected void getTableKeyColumns(DatabaseMetaData metadata,MetaTable table)throws SQLException{
-		Map<Short, MetaColumn> keyColumns = new TreeMap<Short, MetaColumn>();
-	    ResultSet rs = metadata.getPrimaryKeys(catalog, schema, table.getName());
-	    while(rs.next()){
-	    	String columnName = rs.getString("COLUMN_NAME"); //$NON-NLS-1$
-	    	short keyseq = rs.getShort("KEY_SEQ"); //$NON-NLS-1$
-	    	
-	    	MetaColumn column=table.getColumn(columnName);
-	    	column.setKey(true);
-	    	keyColumns.put(keyseq, column);
-	    }
-	    
-	    for(MetaColumn c:keyColumns.values()){
-	    	table.addKeyColumn(c);
-	    }
-	    rs.close();
-	}
-	
-	
-	protected void getTableColumns(DatabaseMetaData metadata,MetaTable table)throws SQLException{
-		ResultSet rs = metadata.getColumns(catalog, schema,table.getName(), null);
-	    
-	    while(rs.next()){
-	    	boolean auto=false;
-	    	String ai=(""+rs.getString("IS_AUTOINCREMENT")).toUpperCase();
-	    	if("Y".equals(ai) || "YES".equals(ai) || "TRUE".equals(ai) || "1".equals(ai)){			    		 
-	    		auto=true;
-	    	}			    				    	
-	    	  
-	    	MetaColumn column=new MetaColumn();			    	 
-	    	column.setName(rs.getString("COLUMN_NAME"));
-	    	column.setValue(rs.getString("COLUMN_DEF"));
-	    	column.setKey(false);
-	    	column.setJdbcType(rs.getInt("DATA_TYPE"));
-	    	column.setLength(rs.getInt("COLUMN_SIZE"));
-	    	column.setNotnull(rs.getInt("NULLABLE") != DatabaseMetaData.columnNullable);
-	    	column.setRemarks(rs.getString("REMARKS"));
-	    	column.setAuto(auto);
-	    	
-	    	column.setTable(table);
-	    	
-	    	table.addColumn(column);
-	    	
-		}
-	    rs.close();		 
-	}
+	 
 	 
 	public DBConfig getDb() {
 		return dbcfg;
