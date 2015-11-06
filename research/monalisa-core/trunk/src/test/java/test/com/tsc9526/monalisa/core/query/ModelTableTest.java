@@ -4,7 +4,6 @@ import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import com.mchange.v2.c3p0.impl.NewPooledConnection;
 import com.tsc9526.monalisa.core.annotation.DB;
 import com.tsc9526.monalisa.core.query.model.Model;
 
@@ -12,7 +11,7 @@ import com.tsc9526.monalisa.core.query.model.Model;
 public class ModelTableTest extends Model<ModelTableTest>{ 
 	private static final long serialVersionUID = -1974865252589672370L;
 
-	private String title;
+	String title;
 	
 	public ModelTableTest() {
 		 super("gift");
@@ -27,7 +26,7 @@ public class ModelTableTest extends Model<ModelTableTest>{
 		System.out.println(c);
 		Object c2=hs.values();
 		System.out.println(c2);
-		
+	 	
 		ModelTableTest m=new ModelTableTest();
 		m.set("package_name", "package_name");
 		
@@ -41,11 +40,20 @@ public class ModelTableTest extends Model<ModelTableTest>{
 		
 		System.out.println("Create gift: "+m.get("gift_id"));
 		
-		ModelTableTest x=new ModelTableTest();
-		x.set("gift_id", m.get("gift_id"));
-		x.load();
+		ModelTableTest t=new ModelTableTest();
+		t.set("gift_id", m.get("gift_id"));
+		t.load();
+		System.out.println(t);
 		
-		System.out.println(x);
+		
+		int times=10000;
+		long l1=System.currentTimeMillis();
+		for(int i=0;i<times;i++){
+			ModelTableTest x=new ModelTableTest();
+			x.changedFields();
+		}
+		long l2=System.currentTimeMillis();
+		System.out.println("Use time: "+(l2-l1)+" ms");
 	}
 
 }
