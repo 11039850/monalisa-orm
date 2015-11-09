@@ -24,7 +24,9 @@ public interface HelpDoc {
 	 *   2. col_1=? and col_2=? ORDER BY 1<br>
 	 *   3. null<br>
 	 *   4. ""  <br>
-	 *   5. "ORDER BY ..." 
+	 *   5. "ORDER BY ..." <br>
+	 *   6. ", table2 b WHERE a.id=b.id ..." <br>
+	 *   7. "LEFT JOIN table2 b ON a.id=b.id "<br>
 	 *   </code>
 	 *   
 	 * @param args <br>
