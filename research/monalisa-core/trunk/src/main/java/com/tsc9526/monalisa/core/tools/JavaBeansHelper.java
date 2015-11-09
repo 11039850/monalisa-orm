@@ -62,21 +62,6 @@ public class JavaBeansHelper {
 		return javaName;
     }
     
-    public static String getTableName(String javaName){
-    	StringBuffer sb=new StringBuffer();
-    	for(int i=0;i<javaName.length();i++){
-    		char c=javaName.charAt(i);
-    		
-    		if(i>0 && ( c>='A' && c<='Z')){
-    			sb.append("_").append(c);
-    		}else{
-    			sb.append(c);
-    		}
-    	}
-    	
-    	return sb.toString().toLowerCase();    	 
-    }
-    
     public static String getCamelCaseString(String inputString,boolean firstCharacterUppercase) {
         StringBuilder sb = new StringBuilder();
         
