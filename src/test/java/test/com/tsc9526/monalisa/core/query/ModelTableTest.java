@@ -5,6 +5,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 import com.tsc9526.monalisa.core.annotation.DB;
+import com.tsc9526.monalisa.core.datasource.DBConfig;
 import com.tsc9526.monalisa.core.query.model.Model;
 
 @DB(url="jdbc:mysql://127.0.0.1:3306/jy_market", username="jy_market", password="jy_market")
@@ -19,6 +20,13 @@ public class ModelTableTest extends Model<ModelTableTest>{
 	
 	
 	public static void main(String[] args) {
+		Model<?> tx=new Model<Model<?>>("gift");
+		tx.use(DBConfig.fromClass(ModelTableTest.class));
+		
+		tx.set("gift_id", 1);
+		tx.load();
+		System.out.println("=="+tx);
+		
 		Map<String, Object> hs=new LinkedHashMap<String, Object>();
 		hs.put("x",new ModelTableTest());
 		hs.put("y",new ModelTableTest());

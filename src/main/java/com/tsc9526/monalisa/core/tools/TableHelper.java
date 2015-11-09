@@ -122,7 +122,7 @@ public class TableHelper {
 				if(table.getColumns().size()>0){
 					return table;
 				}else{				
-					throw new RuntimeException("Table not found: "+tableName+", DB: "+db.key());
+					return null;
 				}
 			}finally{
 				CloseQuietly.close(conn);

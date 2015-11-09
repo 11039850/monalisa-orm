@@ -26,7 +26,6 @@ import com.tsc9526.monalisa.core.query.validator.Validator;
 import com.tsc9526.monalisa.core.tools.ClassHelper;
 import com.tsc9526.monalisa.core.tools.ClassHelper.FGS;
 import com.tsc9526.monalisa.core.tools.ClassHelper.MetaClass;
-import com.tsc9526.monalisa.core.tools.JavaBeansHelper;
 import com.tsc9526.monalisa.core.tools.TableHelper;
 
 class ModelMeta{
@@ -103,7 +102,7 @@ class ModelMeta{
 		table=model.getClass().getAnnotation(Table.class);			  
 		if(table==null){
 			if(tableName==null || tableName.trim().length()==0){
-				tableName=JavaBeansHelper.getTableName(model.getClass().getSimpleName());
+				tableName=model.getClass().getSimpleName();
 			}
 			
 			table=createTable(tableName,primaryKeys);
@@ -172,32 +171,34 @@ class ModelMeta{
 				hModelValues=new CaseInsensitiveMap();
 			}
 			
-			loadFieldsFromDB();		
+			loadFieldsFromDB(metaClass);
+			
 			fields=metaClass.getFieldsWithAnnotation(Column.class);
 		}
 	  
 		return fields;		
 	}
 	
-	protected void loadFieldsFromDB() {
+	protected void loadFieldsFromDB(MetaClass metaClass) {
 		try{
-			MetaTable mTable   =TableHelper.getMetaTable(db, tableName);
-			MetaClass metaClass=ClassHelper.getMetaClass(model.getClass());
-			
-			List<FGS> fs=new ArrayList<FGS>();
-			 
-			for(MetaColumn c:mTable.getColumns()){
-				FGS mfd=metaClass.getField(c.getJavaName());
-				if(mfd==null){
-					metaClass.getField(c.getName());
-				}
+			MetaTable mTable=TableHelper.getMetaTable(db, tableName);
+			if(mTable!=null){				 
+				List<FGS> fs=new ArrayList<FGS>();
 				 
-				FGS fgs=createFGS(c,mfd);	
-				fs.add(fgs);								 
-			}		
-			
-			metaClass.addFields(fs);
-			
+				for(MetaColumn c:mTable.getColumns()){
+					FGS mfd=metaClass.getField(c.getJavaName());
+					if(mfd==null){
+						metaClass.getField(c.getName());
+					}
+					 
+					FGS fgs=createFGS(c,mfd);	
+					fs.add(fgs);								 
+				}		
+				
+				metaClass.addFields(fs);
+			}else{
+				throw new RuntimeException("Table not found: "+tableName+", DB: "+db.key());
+			}			
 		}catch(SQLException e){
 			throw new RuntimeException(e);
 		}
