@@ -17,7 +17,6 @@ import com.tsc9526.monalisa.core.tools.ClassHelper.FGS;
  */
 @Test
 public class ModelParserTest {
-
 	 
 	public void testParseDate() {
 		SimpleModel model=new SimpleModel();
@@ -32,6 +31,26 @@ public class ModelParserTest {
 		Assert.assertEquals(model.getDateField1().getTime(),t1);
 		
 		Assert.assertEquals(sdf.format(model.getDateField2()),sdf.format(now));
+	}
+	
+	public void testToJson(){
+		SimpleModel model=new SimpleModel();
+		  
+		SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		long t1=System.currentTimeMillis();
+		Date now=new Date();
+			
+		String json="{\"dateField1\":"+t1+", \"date_field2\":\""+sdf.format(now)+"\" }";		
+		model.parse(json);
+		
+		String xmlString="<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n";
+		xmlString+="<SimpleModel>\r\n";
+		xmlString+="  <dateField1>"+sdf.format(new Date(t1))+"</dateField1>\r\n";
+		xmlString+="  <dateField2>"+sdf.format(model.getDateField2())+"</dateField2>\r\n";
+		xmlString+="</SimpleModel>";
+		Assert.assertEquals(model.toXml(), xmlString);
+		
+		Assert.assertTrue(model.toJson().indexOf(sdf.format(new Date(t1)))>0);
 	}
 	
 	public void testJsonNull(){
@@ -87,8 +106,8 @@ public class ModelParserTest {
 		model.setObjectOne(objectOne);
 		
 		Query query=model.dialect().insert(model, true);
-		String sql=query.getExecutableSQL();
-		System.out.println(sql);
+		String sql=query.getExecutableSQL();		 
+		Assert.assertTrue(sql.indexOf("ooo")>0);
 		
 		SimpleObjectTwo objectTwo=new SimpleObjectTwo();
 		objectTwo.setObj(objectOne);

@@ -1,47 +1,24 @@
-package com.tsc9526.monalisa.core.query;
+package com.tsc9526.monalisa.core.query.model;
 
 import java.util.Date;
-import java.util.LinkedHashMap;
 
 import com.tsc9526.monalisa.core.tools.Helper;
 
 /**
- * 
+ * Simple model with getString, getDate, getInt ...
+ *  
  * @author zzg.zhou(11039850@qq.com)
  */
-public class DataMap extends LinkedHashMap<String,Object>{ 
-	private static final long serialVersionUID = -8132926422921115814L;	
+public class ModelTable extends Model<ModelTable>{ 
+	private static final long serialVersionUID = -5264525130494733202L;
 	
-	public Object put(String key,Object value){
-		if(key!=null){
-			key=key.toLowerCase();
-		}		
-		return super.put(key, value);
+	public ModelTable(){
 	}
 	
-	public Object get(String key){
-		if(key!=null){
-			key=key.toLowerCase();
-		}
-		 
-		return super.get(key);
+	public ModelTable(String tableName,String... primaryKeys) {
+		super(tableName,primaryKeys);
 	}
-	
-	public Object remove(String key){
-		if(key!=null){
-			key=key.toLowerCase();
-		}
-		return super.remove(key);
-	}
-	
-	public boolean containsKey(String key){
-		if(key!=null){
-			key=key.toLowerCase();
-		}
-		 
-		return super.containsKey(key);
-	}
-	
+
 	public String getString(String key,String defaultValue){
 		String v=getString(key);
 		if(v==null){
@@ -191,7 +168,8 @@ public class DataMap extends LinkedHashMap<String,Object>{
 	 * 
 	 * @see #getDate(String)
 	 */
-	public Date getDate(String key,String format,Date defaultValue){
+	public Date getDate(String key,String format,Date defaultValue){		 
 		return Helper.toDate(get(key), format, defaultValue); 
 	}
+
 }
