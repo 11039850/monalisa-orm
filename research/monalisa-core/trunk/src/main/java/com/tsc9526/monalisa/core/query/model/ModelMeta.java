@@ -150,7 +150,7 @@ class ModelMeta{
 	}
 	
 	protected void initListeners(){
-		String ls=db.modelListener();
+		String ls=getProperty(DbProp.PROP_TABLE_MODEL_LISTENER, db.modelListener());		
 		if(ls!=null && ls.trim().length()>0){
 			try{
 				listener=(ModelListener)Class.forName(ls.trim()).newInstance();
@@ -160,7 +160,7 @@ class ModelMeta{
 		}		
 	}
 	
-	protected void initPartioners() {
+	protected void initPartioners(){
 		mp=db.getPartition(table.name());
 	}
 	

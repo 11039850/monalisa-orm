@@ -19,6 +19,7 @@ import com.tsc9526.monalisa.core.datasource.DBConfig;
 import com.tsc9526.monalisa.core.datasource.DataSourceManager;
 import com.tsc9526.monalisa.core.meta.MetaPartition;
 import com.tsc9526.monalisa.core.meta.MetaTable;
+import com.tsc9526.monalisa.core.query.DbProp;
 import com.tsc9526.monalisa.core.query.model.Model;
 import com.tsc9526.monalisa.core.query.partition.Partition;
 import com.tsc9526.monalisa.core.tools.JavaWriter;
@@ -144,7 +145,7 @@ public class DBGenerator {
 	protected String getModelClassValue(MetaTable table){
 		String modelClass=null;
 		try{
-			modelClass=dbcfg.getProperty("modelClass."+table.getName(), dbcfg.modelClass());
+			modelClass=dbcfg.getProperty(DbProp.PROP_TABLE_MODEL_CLASS+"."+table.getName(), dbcfg.modelClass());
 		}catch(MirroredTypeException mte ){
 			TypeMirror typeMirror=mte.getTypeMirror();
 			Types TypeUtils = processingEnv.getTypeUtils();
