@@ -21,8 +21,10 @@ import org.apache.commons.beanutils.converters.DateTimeConverter;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
+import com.google.gson.JsonNull;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.google.gson.JsonPrimitive;
  
 /**
  * 
@@ -119,6 +121,10 @@ public class ClassHelper {
 			return v;
 		}
 		
+		if(v instanceof JsonNull){
+			return null;
+		}
+		
 		Object value=null;
 		if(v!=null){
 			if(type.isEnum()){
@@ -184,14 +190,18 @@ public class ClassHelper {
 				}else if(type.isArray()==false 
 						&& type.isPrimitive()==false 
 						&& type.getName().startsWith("java.")==false
-						&& (v.getClass() == String.class || v.getClass()==JsonObject.class)){
+						&& (v.getClass() == String.class || v instanceof JsonElement)){
 					//Json String to Java Object
 					if(v.getClass()==String.class){
 						value=JsonHelper.getGson().fromJson(v.toString(), type);
 					}else{
-						value=JsonHelper.getGson().fromJson((JsonObject)v, type);
+						value=JsonHelper.getGson().fromJson((JsonElement)v, type);
 					}
-				}else{					
+				}else{
+					if(v instanceof JsonPrimitive){
+						v=JsonHelper.getGson().fromJson((JsonElement)v, String.class);
+					}
+					
 					value=ConvertUtils.convert(v, type);
 				}
 			}
