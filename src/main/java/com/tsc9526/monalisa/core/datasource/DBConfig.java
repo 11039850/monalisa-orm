@@ -17,6 +17,7 @@ import javax.sql.DataSource;
 import com.tsc9526.monalisa.core.annotation.DB;
 import com.tsc9526.monalisa.core.annotation.Table;
 import com.tsc9526.monalisa.core.meta.MetaPartition;
+import com.tsc9526.monalisa.core.query.DbProp;
 import com.tsc9526.monalisa.core.query.Query;
 import com.tsc9526.monalisa.core.query.model.Model;
 import com.tsc9526.monalisa.core.tools.CloseQuietly;
@@ -141,19 +142,21 @@ public class DBConfig implements com.tsc9526.monalisa.core.annotation.DB, Closea
 			prefixs=new String[]{"DB."+configName.trim(), "DB.cfg"};
 		}
 		
-		this.modelClass      = getValue(p,"modelClass",      db.modelClass(),     prefixs);
-		this.datasourceClass = getValue(p,"datasourceClass", db.datasourceClass(),prefixs);
-		this.url             = getValue(p,"url",             db.url(),            prefixs);
-		this.driver          = getValue(p,"driver",          db.driver(),         prefixs);
-		this.catalog         = getValue(p,"catalog",         db.catalog(),        prefixs);
-		this.schema          = getValue(p,"schema",          db.schema(),         prefixs);
-		this.username        = getValue(p,"username",        db.username(),       prefixs);
-		this.password        = getValue(p,"password",        db.password(),       prefixs);
-		this.tables          = getValue(p,"tables",          db.tables(),         prefixs);
-		this.partitions      = getValue(p,"partitions",      db.partitions(),     prefixs);	
-		this.modelListener   = getValue(p,"modelListener",   db.modelListener(),  prefixs);
-		this.mapping         = getValue(p,"mapping",         db.mapping(),        prefixs);			
-			
+	
+		this.url             = getValue(p,DbProp.PROP_DB_URL,               db.url(),            prefixs);
+		this.driver          = getValue(p,DbProp.PROP_DB_DRIVER,            db.driver(),         prefixs);
+		this.catalog         = getValue(p,DbProp.PROP_DB_CATALOG,           db.catalog(),        prefixs);
+		this.schema          = getValue(p,DbProp.PROP_DB_SCHEMA,            db.schema(),         prefixs);
+		this.username        = getValue(p,DbProp.PROP_DB_USERNAME,          db.username(),       prefixs);
+		this.password        = getValue(p,DbProp.PROP_DB_PASSWORD,          db.password(),       prefixs);
+		this.tables          = getValue(p,DbProp.PROP_DB_TABLES,            db.tables(),         prefixs);
+		this.partitions      = getValue(p,DbProp.PROP_DB_PARTITIONS,        db.partitions(),     prefixs);			
+		this.mapping         = getValue(p,DbProp.PROP_DB_MAPPING,           db.mapping(),        prefixs);
+		this.datasourceClass = getValue(p,DbProp.PROP_DB_DATASOURCE_CLASS,  db.datasourceClass(),prefixs);
+		
+		this.modelClass      = getValue(p,DbProp.PROP_TABLE_MODEL_CLASS,    db.modelClass(),     prefixs);
+		this.modelListener   = getValue(p,DbProp.PROP_TABLE_MODEL_LISTENER, db.modelListener(),  prefixs);
+		 	
 		processUrlHosts();
 		
 		initialized=true;
