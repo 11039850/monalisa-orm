@@ -9,6 +9,7 @@ import com.tsc9526.monalisa.core.annotation.Column;
 import com.tsc9526.monalisa.core.annotation.Table;
 import com.tsc9526.monalisa.core.datasource.DBConfig;
 import com.tsc9526.monalisa.core.datasource.DataSourceManager;
+import com.tsc9526.monalisa.core.query.DbProp;
 import com.tsc9526.monalisa.core.query.Query;
 import com.tsc9526.monalisa.core.query.dao.Delete;
 import com.tsc9526.monalisa.core.query.dao.Insert;
@@ -347,7 +348,13 @@ public class Model<T extends Model> implements Serializable {
 			if (fgs.getSetMethod() == null) {
 				mm().fieldChanged(fgs.getFieldName());
 			}
+		}else{
+			String throwException=mm().getProperty(DbProp.PROP_TABLE_EXCEPTION_IF_SET_FIELD_NOT_FOUND, "false");
+			if("true".equalsIgnoreCase(throwException)){
+				throw new RuntimeException("Field not found: "+name);
+			}
 		}
+		
 		return (T) this;
 	}
 
