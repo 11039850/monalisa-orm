@@ -8,6 +8,7 @@ import java.util.Map;
 import org.apache.commons.collections.map.AbstractHashedMap;
 import org.apache.commons.collections.map.CaseInsensitiveMap;
 
+import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -16,6 +17,8 @@ import com.tsc9526.monalisa.core.query.model.Model;
 import com.tsc9526.monalisa.core.query.model.ModelParser;
 import com.tsc9526.monalisa.core.tools.ClassHelper.FGS;
 import com.tsc9526.monalisa.core.tools.ClassHelper.MetaClass;
+
+import freemarker.template.utility.StringUtil;
 
 /**
  * 
@@ -270,5 +273,97 @@ public class ModelHelper {
 
 			return true;
 		}		
+	}
+	
+	public static String toString(Model<?> model){
+		StringBuffer sb = new StringBuffer();
+		for (FGS fgs : model.fields()) {
+			Object v = fgs.getObject(model);
+			if (v != null) {
+				String s = "" + ClassHelper.convert(v, String.class);
+				if (sb.length() > 0) {
+					sb.append(", ");
+				}
+				sb.append(fgs.getFieldName() + ": ").append(s);
+			}
+		}
+		sb.append("}");
+		sb.insert(0, model.table().name() + ":{");
+		return sb.toString();
+	}
+	
+	public static String toJson(Model<?> model) {
+		Gson gson=JsonHelper.getGson();
+		
+		JsonObject json=new JsonObject(); 
+		for (FGS fgs : model.fields()) {
+			String name=fgs.getFieldName();
+			 
+			Object v = fgs.getObject(model);
+			if (v != null) {
+				JsonElement e=null;
+				if(v instanceof JsonElement){
+					e=(JsonElement)v;
+				}else{
+					e=gson.toJsonTree(v);					 
+				}				
+				json.add(name, e);
+			}			 
+		} 		
+		return gson.toJson(json);		 
+	}
+ 
+
+	public static String toXml(Model<?> model,boolean withXmlHeader, boolean ignoreNullFields) {
+		StringBuilder sb = new StringBuilder();
+
+		boolean pretty = true;
+		String CRLN = "\r\n";
+
+		if (withXmlHeader) {
+			sb.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
+			if (pretty) {
+				sb.append(CRLN);
+			}
+		}
+
+		String indent = "";
+
+		String topTag = model.getClass().getSimpleName();
+		if (pretty) {
+			sb.append(indent);
+		}
+		sb.append('<').append(topTag).append('>');
+		if (pretty) {
+			sb.append(CRLN);
+		}
+		for (FGS fgs : model.fields()) {
+			String name = fgs.getFieldName();
+
+			Object v = fgs.getObject(model);
+			if (v != null) {
+				String value = (String) ClassHelper.convert(v, String.class);
+
+				if (pretty) {
+					sb.append("  ").append(indent);
+				}
+				sb.append('<').append(name).append('>');
+				sb.append(StringUtil.XMLEnc(value));
+
+				sb.append("</").append(name).append('>');
+				if (pretty) {
+					sb.append(CRLN);
+				}
+			} else if (!ignoreNullFields) {
+				sb.append('<').append(name).append("/>");
+			}
+		}
+
+		if (pretty) {
+			sb.append(indent);
+		}
+		sb.append("</").append(topTag).append('>');
+
+		return sb.toString();
 	}
 }

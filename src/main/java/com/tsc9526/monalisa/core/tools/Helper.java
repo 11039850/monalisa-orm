@@ -1,6 +1,7 @@
 package com.tsc9526.monalisa.core.tools;
 
 import java.io.File;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -61,6 +62,46 @@ public class Helper {
 			r.append(c);			 
 		}		 
 		return r.toString();		 
+	}
+	
+	public static Date toDate(Object v,String format,Date defaultValue){		 
+		if(v==null){
+			return defaultValue;
+		}else{
+			if(v instanceof Date){
+				return (Date)v;
+			}else{
+				String x=""+v;
+				
+				try{
+					if(format!=null && format.length()>0){
+						SimpleDateFormat sdf=new SimpleDateFormat(format);
+						return sdf.parse(x);
+					}else{
+						int m=x.indexOf(":");
+						if(m>0){	
+							if(x.indexOf(":",m+1)>0){
+								SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+								return sdf.parse(x);
+							}else{
+								SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm");
+								return sdf.parse(x);
+							}
+						}else{
+							if(x.indexOf(" ")>0){
+								SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH");
+								return sdf.parse(x);
+							}else{
+								SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
+								return sdf.parse(x);
+							}
+						}	
+					}
+				}catch(ParseException e){
+					throw new RuntimeException("Invalid date: "+x,e);
+				}
+			}
+		}
 	}
 		
 	
