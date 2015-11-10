@@ -1,9 +1,16 @@
 package com.tsc9526.monalisa.core.tools;
 
+import java.io.ByteArrayInputStream;
 import java.io.Serializable;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Map.Entry;
+
+import javax.xml.stream.XMLInputFactory;
+import javax.xml.stream.XMLStreamConstants;
+import javax.xml.stream.XMLStreamReader;
 
 import org.apache.commons.collections.map.AbstractHashedMap;
 import org.apache.commons.collections.map.CaseInsensitiveMap;
@@ -234,44 +241,59 @@ public class ModelHelper {
 	
 	public static class StringModelParser implements ModelParser<String>{			 
 		public boolean parse(Model<?> m, String data, String... mappings) {
-			if(data.startsWith("{")){
+			if(data.startsWith("{")){//json
 				JsonObject  json=(JsonObject)new JsonParser().parse(data);				
 				return new JsonObjectModelParser().parse(m, json, mappings);				  			 
+			}if(data.startsWith("<")){//xml				 		
+				return new XmlModelParser().parse(m, data, mappings);				  			 
 			}else{
 				return false;
 			}			
+		}					 
+	}
+	
+	public static class XmlModelParser implements ModelParser<String>{			 
+		public boolean parse(Model<?> m, String xml, String... mappings) {
+			try {
+	            XMLStreamReader reader = XMLInputFactory.newInstance().createXMLStreamReader(new ByteArrayInputStream(xml.getBytes("utf-8")),"utf-8");
+	            String attr = null;
+	            String chars = null;
+	            Map<String, Object> data = new HashMap<String, Object>();
+	            while (reader.hasNext()) {
+	                int event = reader.next();
+	                switch (event) {
+	                    case XMLStreamConstants.START_ELEMENT:
+	                        attr = reader.getLocalName();
+	                        break;
+	                    case XMLStreamConstants.CHARACTERS:
+	                        chars = reader.getText().trim();
+	                        break;
+	                    case XMLStreamConstants.END_ELEMENT:
+	                        if (attr != null && chars!=null) {
+	                            data.put(attr, chars);
+	                        }
+	                        attr = chars = null;
+	                        break;
+	                }
+	            }
+	            
+	            return new MapModelParser().parse(m, data, mappings);
+	        }catch(Exception e) {
+	            throw new RuntimeException(e);
+	        }
 		}		
 	}
 	
 	public static class JsonObjectModelParser implements ModelParser<JsonObject>{			 
 		public boolean parse(Model<?> m, JsonObject json, String... mappings) {
-			for(FGS fgs:m.fields()){
-				JsonElement e=json.get(fgs.getFieldName());
-				if(e==null){
-					Column column=fgs.getAnnotation(Column.class);
-					e=json.get(column.name());
-				}
+			Map<String, Object> data = new HashMap<String, Object>();
+			Iterator<Map.Entry<String, JsonElement>> es=json.entrySet().iterator();
+			while(es.hasNext()){
+				Entry<String, JsonElement> e=es.next();
 				
-				if(e!=null){
-					if(e.isJsonNull()){
-						fgs.setObject(m,null);
-					}else{
-						if(e.isJsonPrimitive()){
-							fgs.setObject(m,e.getAsString());
-						}else if(fgs.getType()==JsonObject.class){
-							if(e.isJsonObject()){
-								fgs.setObject(m,e.getAsJsonObject());
-							}else{
-								//Ignore
-							}
-						}else{
-							fgs.setObject(m,e.toString());
-						}
-					}
-				}
-			}
-
-			return true;
+				data.put(e.getKey(),e.getValue());
+			}			
+			return new MapModelParser().parse(m, data, mappings);
 		}		
 	}
 	
