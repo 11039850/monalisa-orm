@@ -21,6 +21,7 @@ import com.tsc9526.monalisa.core.datasource.DBConfig;
 import com.tsc9526.monalisa.core.meta.MetaColumn;
 import com.tsc9526.monalisa.core.meta.MetaPartition;
 import com.tsc9526.monalisa.core.meta.MetaTable;
+import com.tsc9526.monalisa.core.query.DbProp;
 import com.tsc9526.monalisa.core.query.dialect.Dialect;
 import com.tsc9526.monalisa.core.query.validator.Validator;
 import com.tsc9526.monalisa.core.tools.ClassHelper;
@@ -525,7 +526,7 @@ class ModelMeta{
 	}
 	  
 	protected void doValidate() {
-		String validate=getProperty("validate", "false");		 
+		String validate=getProperty(DbProp.PROP_TABLE_VALIDATE, "false");		 
 		if(validate.equalsIgnoreCase("true") || validate.equals("1")){			
 			List<String> errors=validate();
 			if(errors.size()>0){
@@ -549,7 +550,7 @@ class ModelMeta{
 	 */
 	public List<String> validate(){
 		if(validator==null){
-			String clazz=getProperty("validator","");
+			String clazz=getProperty(DbProp.PROP_TABLE_VALIDATOR,"");
 			if(clazz==null || clazz.trim().length()==0){
 				validator=new Validator();
 			}else{

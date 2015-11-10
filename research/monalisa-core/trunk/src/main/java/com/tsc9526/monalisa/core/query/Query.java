@@ -231,7 +231,7 @@ public class Query {
 			 
 			SQLHelper.setPreparedParameters(pst, parameters);
 			
-			if( SQL_DEBUG || "true".equalsIgnoreCase( db.getProperty("sql.debug","false") ) ){
+			if( SQL_DEBUG || "true".equalsIgnoreCase( db.getProperty(DbProp.PROP_DB_SQL_DEBUG,"false") ) ){
 				logger.info(getExecutableSQL());
 			}
 			
