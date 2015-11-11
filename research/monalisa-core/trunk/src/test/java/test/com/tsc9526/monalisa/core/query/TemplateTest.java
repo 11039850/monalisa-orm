@@ -5,7 +5,7 @@ import java.io.ByteArrayOutputStream;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import com.tsc9526.monalisa.core.generator.DBTableGeneratorByTpl;
+import com.tsc9526.monalisa.core.generator.DBTableGenerator;
 import com.tsc9526.monalisa.core.meta.MetaTable;
 import com.tsc9526.monalisa.core.query.model.Model;
 
@@ -20,7 +20,7 @@ public class TemplateTest {
 		mTable.setJavaPackage("test");
 		
 		ByteArrayOutputStream bos=new ByteArrayOutputStream();
-		DBTableGeneratorByTpl tpl=new DBTableGeneratorByTpl(mTable,modelClass,dbi);
+		DBTableGenerator tpl=new DBTableGenerator(mTable,modelClass,dbi);
 		tpl.generate(bos);
 		
 		Assert.assertTrue(bos.size()>500);

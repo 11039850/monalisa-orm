@@ -14,7 +14,7 @@ import javax.lang.model.element.TypeElement;
 import javax.tools.Diagnostic.Kind;
 
 import com.tsc9526.monalisa.core.annotation.DB;
-import com.tsc9526.monalisa.core.generator.DBGenerator;
+import com.tsc9526.monalisa.core.generator.DBGeneratorProcessing;
 
 /**
  * 
@@ -37,9 +37,9 @@ public class DBAnnotationProcessor extends AbstractProcessor {
 			for (Element element : els) {				
 				if (element.getKind() == ElementKind.INTERFACE) { 				 										
 					try{						 
-						DBGenerator dbai=new DBGenerator(processingEnv,(TypeElement)element);
+						DBGeneratorProcessing dbai=new DBGeneratorProcessing(processingEnv,(TypeElement)element);
 						
-						dbai.generatorJavaFiles();
+						dbai.generateFiles();
 						
 					}catch(Throwable e){
 						e.printStackTrace(System.out);
