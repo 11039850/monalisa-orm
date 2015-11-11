@@ -492,33 +492,26 @@ class ModelMeta{
 	public Model<?> copyModel(){
 		try{
 			Model<?> x=model.getClass().newInstance();
-			
-			if(hModelValues==null){
-				for(FGS fgs:model.fields()){				
-					Object value=fgs.getObject(model);
-					fgs.setObject(x, value);
-				}
-			}else{
-				x.modelMeta.hModelValues=new CaseInsensitiveMap();
-				
-				for(FGS fgs:model.fields()){				
-					Object value=fgs.getObject(hModelValues);
-					fgs.setObject(x.modelMeta.hModelValues, value);
-				}
-			}
-	 	 	
-			x.modelMeta.updateKey  = updateKey;			
 			x.modelMeta.tableName  = tableName;
 			x.modelMeta.primaryKeys= primaryKeys;
+			x.modelMeta.updateKey  = updateKey;			
 			x.modelMeta.readonly   = readonly;
 			x.modelMeta.dirty      = true;
 			x.modelMeta.entity     = false;
+			
+			x.modelMeta.model=x;
+			x.mm();
 			
 			x.modelMeta.fieldFilterExcludeMode=fieldFilterExcludeMode;
 			x.modelMeta.fieldFilterSets.addAll(fieldFilterSets);
 			x.modelMeta.changedFields.clear();
 			x.modelMeta.changedFields.addAll(changedFields);
 			
+			for(FGS fgs:model.fields()){				
+				Object value=fgs.getObject(model);
+				fgs.setObject(x, value);
+			}	
+ 			
 			return x;
 		}catch(Exception e){
 			throw new RuntimeException(e);
