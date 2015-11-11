@@ -3,7 +3,6 @@ package com.tsc9526.monalisa.core.datasource;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import javax.lang.model.element.TypeElement;
 import javax.sql.DataSource;
 
 import com.tsc9526.monalisa.core.annotation.DB;
@@ -58,17 +57,7 @@ public class DataSourceManager {
 		return getDBConfig(dbKey,db);
 	}
 	
-	public  DBConfig getDBConfig(TypeElement typeElement,boolean reInit) {
-		DB db=typeElement.getAnnotation(DB.class);
-		if(db==null){
-			throw new RuntimeException("TypeElement without @DB: "+typeElement.toString());
-		}
-		
-		String dbKey=db.key();
-		if(dbKey==null || dbKey.length()<1){
-			dbKey=typeElement.toString();
-		}
-		
+	public DBConfig getDBConfig(String dbKey,DB db,boolean reInit) {		  		
 		DBConfig cfg=dss.get(dbKey);
 		if(cfg==null){			
 			cfg=getDBConfig(dbKey,db);

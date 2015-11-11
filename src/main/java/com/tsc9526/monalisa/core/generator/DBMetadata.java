@@ -41,7 +41,7 @@ public class DBMetadata {
 		}else{
 			Map<String, MetaTable> tables=hDBMetaTables.get(dbKey);
 			if(tables==null){
-				String metafile=FileHelper.combinePath(projectPath,DBGenerator.PROJECT_TMP_PATH,"metatable/"+dbKey+".meta");		
+				String metafile=FileHelper.combinePath(projectPath,DBGeneratorProcessing.PROJECT_TMP_PATH,"metatable/"+dbKey+".meta");		
 				File taget=new File(metafile);
 				tables=FileHelper.readToObject(taget);
 				if(tables!=null){
@@ -204,7 +204,7 @@ public class DBMetadata {
 		outputStream.writeObject(hTables);
 		outputStream.flush();
 		
-		String metafile=FileHelper.combinePath(projectPath,DBGenerator.PROJECT_TMP_PATH,"metatable/"+dbcfg.key()+".meta");		
+		String metafile=FileHelper.combinePath(projectPath,DBGeneratorProcessing.PROJECT_TMP_PATH,"metatable/"+dbcfg.key()+".meta");		
 		File taget=new File(metafile);
 		FileHelper.write(taget, bufArrayOutputStream.toByteArray());  			 
 	}
