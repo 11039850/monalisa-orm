@@ -150,7 +150,12 @@ class ModelMeta{
 	}
 	
 	protected void initListeners(){
-		String ls=getProperty(DbProp.PROP_TABLE_MODEL_LISTENER, db.modelListener());		
+		String ls=DbProp.PROP_TABLE_MODEL_LISTENER.getValue(db,tableName);
+		
+		if(ls==null){
+			ls=db.modelListener();
+		}
+		
 		if(ls!=null && ls.trim().length()>0){
 			try{
 				listener=(ModelListener)Class.forName(ls.trim()).newInstance();
@@ -519,7 +524,8 @@ class ModelMeta{
 	}
 	  
 	protected void doValidate() {
-		String validate=getProperty(DbProp.PROP_TABLE_VALIDATE, "false");		 
+		String validate=DbProp.PROP_TABLE_VALIDATE.getValue(db,tableName);
+		
 		if(validate.equalsIgnoreCase("true") || validate.equals("1")){			
 			List<String> errors=validate();
 			if(errors.size()>0){
@@ -527,14 +533,7 @@ class ModelMeta{
 			}
 		}
 	}
-	
-	protected String getProperty(String key,String defaultValue){
-		String v=db.getProperty(key+"."+tableName);
-		if(v==null){
-			v=db.getProperty(key,defaultValue);
-		}
-		return v;
-	}
+   
 	
 	/**
 	 * 校验字段数据的是否合法.
@@ -543,7 +542,8 @@ class ModelMeta{
 	 */
 	public List<String> validate(){
 		if(validator==null){
-			String clazz=getProperty(DbProp.PROP_TABLE_VALIDATOR,"");
+			String clazz=DbProp.PROP_TABLE_VALIDATOR.getValue(db,tableName);
+			
 			if(clazz==null || clazz.trim().length()==0){
 				validator=new Validator();
 			}else{

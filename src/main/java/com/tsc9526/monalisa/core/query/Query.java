@@ -231,9 +231,7 @@ public class Query {
 			 
 			SQLHelper.setPreparedParameters(pst, parameters);
 			
-			if( SQL_DEBUG || "true".equalsIgnoreCase( db.getProperty(DbProp.PROP_DB_SQL_DEBUG,"false") ) ){
-				logger.info(getExecutableSQL());
-			}
+			logSql();
 			
 			return x.execute(pst);			
 		}catch(SQLException e){
@@ -244,6 +242,12 @@ public class Query {
 			if(tx==null){
 				CloseQuietly.close(conn);
 			}
+		}
+	}
+	
+	protected void logSql(){
+		if( SQL_DEBUG || "true".equalsIgnoreCase( DbProp.PROP_DB_SQL_DEBUG.getValue(db) ) ){
+			logger.info(getExecutableSQL());
 		}
 	}
 	

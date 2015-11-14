@@ -20,6 +20,7 @@ import com.tsc9526.monalisa.core.meta.MetaPartition;
 import com.tsc9526.monalisa.core.query.DbProp;
 import com.tsc9526.monalisa.core.query.Query;
 import com.tsc9526.monalisa.core.query.model.Model;
+import com.tsc9526.monalisa.core.query.model.ModelTable;
 import com.tsc9526.monalisa.core.tools.CloseQuietly;
 
 /**
@@ -223,6 +224,10 @@ public class DBConfig implements com.tsc9526.monalisa.core.annotation.DB, Closea
 			
 		 
 	}
+	
+	protected String getValue(Properties p,DbProp dbp,String defaultValue,String[] prefixs){
+		return getValue(p, dbp.getKey(), defaultValue, prefixs);
+	}
 	 
 	protected String getValue(Properties p,String key,String defaultValue,String[] prefixs){
 		String r=null;
@@ -253,11 +258,13 @@ public class DBConfig implements com.tsc9526.monalisa.core.annotation.DB, Closea
 	}
 	
 	protected synchronized void delayClose(final DataSource ds){
+		int delay=DbProp.PROP_DB_DATASOURCE_DELAY_CLOSE.getIntValue(this, 30);
+		
 		new Timer(true).schedule(new TimerTask() {
 			public void run() {
 				CloseQuietly.close(ds);
 			}
-		}, 30*1000);
+		}, delay*1000);
 	}
 	 		
 	public synchronized DataSource getDataSource(){
@@ -452,6 +459,12 @@ public class DBConfig implements com.tsc9526.monalisa.core.annotation.DB, Closea
 		}
 	}
 	 
+	public ModelTable createModel(String tableName,String ... primaryKeys){		
+		ModelTable m=new ModelTable(tableName,primaryKeys);
+		m.use(this);
+		return m;
+	}
+	
 	public Query createQuery(){		
 		return new Query(this);
 	}

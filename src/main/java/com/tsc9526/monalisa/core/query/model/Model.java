@@ -349,7 +349,7 @@ public class Model<T extends Model> implements Serializable {
 				mm().fieldChanged(fgs.getFieldName());
 			}
 		}else{
-			String throwException=mm().getProperty(DbProp.PROP_TABLE_EXCEPTION_IF_SET_FIELD_NOT_FOUND, "false");
+			String throwException=DbProp.PROP_TABLE_EXCEPTION_IF_SET_FIELD_NOT_FOUND.getValue(mm().db,mm().tableName);
 			if("true".equalsIgnoreCase(throwException)){
 				throw new RuntimeException("Field not found: "+name);
 			}
