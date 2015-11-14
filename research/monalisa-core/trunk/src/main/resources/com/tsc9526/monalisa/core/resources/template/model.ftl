@@ -65,6 +65,7 @@ public class ${table.javaName} extends ${modelClass}<${table.javaName}> implemen
 	
 		<#list table.keyColumns as k>
 		this.${k.javaName} = ${k.javaName};
+		fieldChanged("${k.javaName}");
 		</#list>
 	}	 
 	</#if>
