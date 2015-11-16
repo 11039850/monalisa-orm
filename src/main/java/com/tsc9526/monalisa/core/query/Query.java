@@ -412,8 +412,10 @@ public class Query {
 			r=(T)rs.getBigDecimal(1);
 		}else if(resultClass==Date.class){
 			r=(T)rs.getDate(1);
-		}else{								 					
-			r=toResult(rs,r);	
+		}else if(resultClass==byte[].class){
+			r=(T)rs.getBytes(1);
+		}else{
+			r=toResult(rs,r);				
 		}
 		
 		return r;
