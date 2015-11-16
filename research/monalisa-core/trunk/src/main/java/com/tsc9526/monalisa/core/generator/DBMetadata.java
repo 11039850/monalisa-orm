@@ -168,7 +168,8 @@ public class DBMetadata {
 		   		    
 		    for(MetaTable table:tables){
 		    	if(table.getPartition()!=null){
-		    		dsm.getDialect(dbcfg).loadMetaTableDetails(dbcfg, table); 
+		    		CreateTable createTable=dsm.getDialect(dbcfg).showTable(dbcfg, table.getName());
+		    		table.setCreateTable(createTable);
 		    	}
 		    }
 		     

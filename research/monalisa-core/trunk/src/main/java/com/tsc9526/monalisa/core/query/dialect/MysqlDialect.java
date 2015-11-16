@@ -72,7 +72,7 @@ public class MysqlDialect extends Dialect{
 		return query;
 	}
 	
-	public void loadMetaTableDetails(DBConfig db,MetaTable table) {
+	public CreateTable showTable(DBConfig db,String tableName) {
 		Connection conn=null;
 		Statement stmt=null;
 		ResultSet rs=null;
@@ -80,7 +80,7 @@ public class MysqlDialect extends Dialect{
 			conn=db.getDataSource().getConnection();
 			stmt=conn.createStatement();
 			 
-			rs=stmt.executeQuery("SHOW CREATE TABLE "+getTableName(table.getName()));
+			rs=stmt.executeQuery("SHOW CREATE TABLE "+getTableName(tableName));
 			if(rs.next()){
 				String createSQL=rs.getString(2);
 				
@@ -88,8 +88,10 @@ public class MysqlDialect extends Dialect{
 				
 				createSQL="CREATE TABLE IF NOT EXISTS "+getTableName(CreateTable.TABLE_VAR)+createSQL.substring(p);
 				
-				CreateTable createTable=new CreateTable(table.getName(), createSQL);
-				table.setCreateTable(createTable);
+				CreateTable createTable=new CreateTable(tableName, createSQL);
+				return createTable;
+			}else{
+				throw new RuntimeException("Table not found: "+tableName);
 			}
 		}catch(SQLException e){
 			throw new RuntimeException(e);
@@ -100,7 +102,7 @@ public class MysqlDialect extends Dialect{
 		}
 	}
 
-	public boolean createTableIfNotExists(DBConfig db,MetaTable table,String theTableName){
+	public boolean createTable(DBConfig db,MetaTable table,String theTableName){
 		String sql  =table.getCreateTable().getCreateSQL(theTableName);			 
 		sql=sql.replaceFirst("\\s+AUTO_INCREMENT\\s*=\\s*\\d+", "");
 			

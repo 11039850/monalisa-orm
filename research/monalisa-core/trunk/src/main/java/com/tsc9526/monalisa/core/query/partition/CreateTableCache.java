@@ -40,7 +40,7 @@ public class CreateTableCache{
 						throw new RuntimeException("Fail create table: "+tableName+", db: "+db.getKey()+", MetaTable not found: "+tablePrefix);
 					}
 					
-					if(dsm.getDialect(db).createTableIfNotExists(db,metaTable,tableName)){
+					if(dsm.getDialect(db).createTable(db,metaTable,tableName)){
 						table=createTable(tableName,modelTable);
 						hTables.put(tableKey,table);
 					}else{

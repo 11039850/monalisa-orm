@@ -9,6 +9,7 @@ import com.tsc9526.monalisa.core.annotation.Column;
 import com.tsc9526.monalisa.core.annotation.Table;
 import com.tsc9526.monalisa.core.datasource.DBConfig;
 import com.tsc9526.monalisa.core.meta.MetaTable;
+import com.tsc9526.monalisa.core.meta.MetaTable.CreateTable;
 import com.tsc9526.monalisa.core.query.Query;
 import com.tsc9526.monalisa.core.query.model.Model;
 import com.tsc9526.monalisa.core.query.model.ModelIndex;
@@ -39,11 +40,10 @@ public abstract class Dialect{
 	public abstract String getTableName(String name);
  	
 	public abstract Query getLimitQuery(Query origin,int limit ,int offset);
-	
 	 
-	public abstract void loadMetaTableDetails(DBConfig db,MetaTable table);
+	public abstract CreateTable showTable(DBConfig db,String tableName);
 	
-	public abstract boolean createTableIfNotExists(DBConfig db,MetaTable table,String theTableName); 
+	public abstract boolean 	createTable(DBConfig db,MetaTable table,String theTableName); 
 	
 	protected String getTableName(Table table) {
 		String tableName=table.value();
@@ -255,31 +255,7 @@ public abstract class Dialect{
 			}			 
 		}		
 		return query;
-	}
-	 
-	protected boolean isJoinStatement(String whereStatement){
-		if(whereStatement==null){
-			return false;
-		}
-		whereStatement=whereStatement.trim();
-		
-		if(whereStatement.length()<1){
-			return false;
-		}
-				 
-		if(whereStatement.startsWith(",")){
-			return true; 
-		}
-		
-		List kws=SQLHelper.splitKeyWords(whereStatement);
-		if(kws.contains("JOIN")){
-			return true;
-		}
-		
-		return false;
-	}
-	
-	
+	}	 
 	 
 	public Query notin(Query query,Object[] values){
 		return inOrNotIn("NOT IN",query,values);		 
@@ -455,6 +431,29 @@ public abstract class Dialect{
 			return new JsonPrimitive(o.toString());
 		} 
 	}
+	
+	protected boolean isJoinStatement(String whereStatement){
+		if(whereStatement==null){
+			return false;
+		}
+		whereStatement=whereStatement.trim();
+		
+		if(whereStatement.length()<1){
+			return false;
+		}
+				 
+		if(whereStatement.startsWith(",")){
+			return true; 
+		}
+		
+		List kws=SQLHelper.splitKeyWords(whereStatement);
+		if(kws.contains("JOIN")){
+			return true;
+		}
+		
+		return false;
+	}
+	
 	public Query getCountQuery(Query origin){
 		Query query=new Query();
 		query.use(origin.getDb());
