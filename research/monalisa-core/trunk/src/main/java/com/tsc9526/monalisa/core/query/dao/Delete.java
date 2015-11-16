@@ -20,6 +20,10 @@ public class Delete<T extends Model> {
 		this.model=model;		 
 	}
 	 
+	public T getModel(){
+		return this.model;
+	}
+		 
 	public Delete set(String name,Object value){		
 		this.model.set(name,value);
 		return this;
@@ -105,6 +109,11 @@ public class Delete<T extends Model> {
 		public DeleteForExample(Example example){
 			this.example=example;
 		}
+		
+		public DeleteForExample set(String name,Object value){		
+			set(name,value);
+			return this;
+		}	
 		
 		/**
 		 * @return  

@@ -92,7 +92,7 @@ public class DataSourceManager {
 			return null;
 		}
 		  
-		String jdbcUrl=db.url();
+		String jdbcUrl=db.getCfg().getUrl();
 		
 		for(String key:dialects.keySet()){
 			if(jdbcUrl.startsWith(key)){

@@ -54,6 +54,8 @@ public class ModelTableTest extends Model<ModelTableTest>{
 		System.out.println(t);
 		
 		
+		System.out.println("NEW: "+new ModelTableTest());
+		
 		int times=10000;
 		long l1=System.currentTimeMillis();
 		for(int i=0;i<times;i++){

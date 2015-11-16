@@ -288,10 +288,41 @@ public class ClassHelper {
 			}
 		}
 		
+		public List<FGS> clearFields(){
+			try{
+				lock.writeLock().lock();
+				
+				List<FGS> xs=new ArrayList<FGS>();
+				
+				xs.addAll(hFields.values());
+				
+				hFields.clear();
+				 
+				return xs;
+			}finally{
+				lock.writeLock().unlock();
+			}
+		}
+		
 	 
 		public void addFields(List<FGS> fs){
 			try{
 				lock.writeLock().lock();
+				
+				for(FGS fgs:fs){
+					hFields.put(fgs.getFieldName(), fgs);
+				}
+			}finally{
+				lock.writeLock().unlock();
+			}
+			
+		}
+		
+		public void replaceFields(List<FGS> fs){
+			try{
+				lock.writeLock().lock();
+				
+				hFields.clear();
 				
 				for(FGS fgs:fs){
 					hFields.put(fgs.getFieldName(), fgs);

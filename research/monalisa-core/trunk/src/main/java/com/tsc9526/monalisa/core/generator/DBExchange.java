@@ -97,8 +97,7 @@ public class DBExchange implements Serializable {
 			
 			Connection conn=null;
 			try{
-				exchange.setDbKey(query.getDb().key());
-				
+				exchange.setDbKey(query.getDb().getCfg().getKey());				
 				
 				conn=DataSourceManager.getInstance().getDataSource(query.getDb()).getConnection();
 				PreparedStatement pst=conn.prepareStatement(query.getSql());

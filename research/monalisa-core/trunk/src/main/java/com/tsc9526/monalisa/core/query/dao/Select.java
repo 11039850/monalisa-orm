@@ -23,6 +23,15 @@ public class Select<T extends Model,S extends Select> {
 		this.model=model;		 
 	}
 	
+	public T getModel(){
+		return this.model;
+	}
+			
+	public Select<T, S> set(String name,Object value){		
+		this.model.set(name,value);
+		return this;
+	}	
+	
 	/**
 	 * 只提取某些字段
 	 * 
@@ -285,6 +294,11 @@ public class Select<T extends Model,S extends Select> {
 		public SelectForExample(Example example){
 			this.example=example;
 		}
+		
+		public SelectForExample set(String name,Object value){		
+			set(name,value);
+			return this;
+		}	
 		
 		/**
 		 * 只提取某些字段

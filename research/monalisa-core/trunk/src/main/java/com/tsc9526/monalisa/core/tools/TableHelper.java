@@ -19,7 +19,7 @@ public class TableHelper {
 	}
 	 
 	public static void getTableIndexes(DBConfig db,DatabaseMetaData dbm,MetaTable table)throws SQLException{
-		ResultSet rs = dbm.getIndexInfo(db.catalog(), db.schema(), table.getName(), false, true);  
+		ResultSet rs = dbm.getIndexInfo(db.getCfg().getCatalog(), db.getCfg().getSchema(), table.getName(), false, true);  
 	    while(rs.next()){
 	    	short type=rs.getShort("TYPE");
 	    	if(type != DatabaseMetaData.tableIndexStatistic){		    	
@@ -53,7 +53,7 @@ public class TableHelper {
 	}
 	
 	private static void getTableAllColumns(DBConfig db,DatabaseMetaData dbm,MetaTable table)throws SQLException{
-		ResultSet rs = dbm.getColumns(db.catalog(), db.schema(),table.getName(), null);
+		ResultSet rs = dbm.getColumns(db.getCfg().getCatalog(), db.getCfg().getSchema(),table.getName(), null);
 	    while(rs.next()){
 	    	boolean auto=false;
 	    	String ai=(""+rs.getString("IS_AUTOINCREMENT")).toUpperCase();
@@ -81,7 +81,7 @@ public class TableHelper {
 
 	private static void getTableKeyColumns(DBConfig db,DatabaseMetaData dbm,MetaTable table)throws SQLException{
 		Map<Short, MetaColumn> keyColumns = new TreeMap<Short, MetaColumn>();
-	    ResultSet rs = dbm.getPrimaryKeys(db.catalog(), db.schema(), table.getName());
+	    ResultSet rs = dbm.getPrimaryKeys(db.getCfg().getCatalog(),db.getCfg().getSchema(), table.getName());
 	    while(rs.next()){
 	    	String columnName = rs.getString("COLUMN_NAME"); //$NON-NLS-1$
 	    	short keyseq = rs.getShort("KEY_SEQ"); //$NON-NLS-1$

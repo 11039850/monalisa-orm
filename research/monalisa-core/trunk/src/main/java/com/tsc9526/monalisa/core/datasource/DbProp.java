@@ -1,9 +1,8 @@
-package com.tsc9526.monalisa.core.query;
+package com.tsc9526.monalisa.core.datasource;
 
-import com.tsc9526.monalisa.core.datasource.DBConfig;
 
 public class DbProp {
-	public final static DbProp PROP_DB_SQL_DEBUG =new DbProp("sql.debug",false);
+	public final static DbProp PROP_DB_SQL_DEBUG 		= new DbProp("sql.debug",false);
 	 
 	public final static DbProp PROP_DB_URL	   			= new DbProp("url");
 	public final static DbProp PROP_DB_DRIVER  			= new DbProp("driver");
@@ -51,12 +50,12 @@ public class DbProp {
 	}
 	
 	public String getValue(DBConfig db){
-		return db.getProperty(key, value);
+		return db.getCfg().getProperty(key, value);
 	}
 	
 
 	public int getIntValue(DBConfig db,int defaultValue){
-		String v=db.getProperty(key, value);
+		String v=db.getCfg().getProperty(key, value);
 		if(v!=null && v.trim().length()>0){
 			return Integer.parseInt(v);
 		}else{
@@ -65,11 +64,11 @@ public class DbProp {
 	}
 	
 	public String getValue(DBConfig db,String tableName){
-		String v=db.getProperty(key+"."+tableName);
+		String v=db.getCfg().getProperty(key+"."+tableName);
 		if(v!=null){
 			return v;
 		}else{
-			return db.getProperty(key, value);
+			return db.getCfg().getProperty(key, value);
 		}
 	}
 	

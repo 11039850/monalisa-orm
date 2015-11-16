@@ -3,9 +3,9 @@ package com.tsc9526.monalisa.core.generator;
 import java.util.List;
 
 import com.tsc9526.monalisa.core.datasource.DBConfig;
+import com.tsc9526.monalisa.core.datasource.DbProp;
 import com.tsc9526.monalisa.core.meta.MetaPartition;
 import com.tsc9526.monalisa.core.meta.MetaTable;
-import com.tsc9526.monalisa.core.query.DbProp;
 import com.tsc9526.monalisa.core.query.model.Model;
 import com.tsc9526.monalisa.core.query.partition.Partition;
 /**
@@ -64,7 +64,7 @@ public abstract class DBGenerator {
 	
 	
 	protected String getModelClassValue(MetaTable table){
-		String modelClass=dbcfg.getProperty(DbProp.PROP_TABLE_MODEL_CLASS+"."+table.getName(), dbcfg.modelClass()); 
+		String modelClass=dbcfg.getCfg().getProperty(DbProp.PROP_TABLE_MODEL_CLASS.getKey()+"."+table.getName(), dbcfg.getCfg().getModelClass()); 
 		
 		if(modelClass==null || modelClass.trim().length()==0){
 			modelClass=Model.class.getName(); 

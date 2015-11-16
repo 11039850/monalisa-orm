@@ -17,7 +17,7 @@ public class TxQuery {
 	TxQuery(){}
 	
 	public Connection getConnection(DBConfig db) throws SQLException{		 
-		String key=db.key();
+		String key=db.getKey();
 		
 		CI ci=hcs.get(key);
 		if (ci==null) {
