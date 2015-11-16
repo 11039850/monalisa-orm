@@ -1,5 +1,6 @@
 package com.tsc9526.monalisa.core.generator;
 
+import java.io.File;
 import java.lang.reflect.Constructor;
 
 import javax.annotation.processing.ProcessingEnvironment;
@@ -20,10 +21,10 @@ public class DBProject {
 			Constructor<DBProject> c=clazz.getConstructor(ProcessingEnvironment.class,TypeElement.class);
 			DBProject project= c.newInstance(processingEnv,typeElement);
 			
-			System.out.println("Building project within eclipse environment ...");			
+			System.out.println("Building project:"+project.getProjectPath()+" within eclipse environment ...");			
 			return project;
 		}catch(Exception e){		
-			System.out.println("Building project without eclipse environment ...");
+			System.out.println("Building project:"+new File(".").getAbsolutePath()+" without eclipse environment ...");
 			
 			return new DBProject(processingEnv,typeElement);		
 		}
