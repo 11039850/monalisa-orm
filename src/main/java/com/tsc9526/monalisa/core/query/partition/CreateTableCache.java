@@ -27,7 +27,7 @@ public class CreateTableCache{
 		String tableName=partition.getTableName(mp,model);
 		
 		DBConfig db=model.db();
-		String tableKey=db.key()+":"+tableName;
+		String tableKey=db.getKey()+":"+tableName;
 		Table table=hTables.get(tableKey);
 		if(table==null){
 			synchronized (lock) {
@@ -35,16 +35,16 @@ public class CreateTableCache{
 					DataSourceManager dsm=DataSourceManager.getInstance();	
 					
 					String tablePrefix=mp.getTablePrefix();
-					MetaTable metaTable=DBMetadata.getMetaTable(db.key(), tablePrefix);
+					MetaTable metaTable=DBMetadata.getMetaTable(db.getKey(), tablePrefix);
 					if(metaTable==null || metaTable.getCreateTable()==null){
-						throw new RuntimeException("Fail create table: "+tableName+", db: "+db.key()+", MetaTable not found: "+tablePrefix);
+						throw new RuntimeException("Fail create table: "+tableName+", db: "+db.getKey()+", MetaTable not found: "+tablePrefix);
 					}
 					
 					if(dsm.getDialect(db).createTableIfNotExists(db,metaTable,tableName)){
-						table=new PT(tableName,modelTable);
+						table=createTable(tableName,modelTable);
 						hTables.put(tableKey,table);
 					}else{
-						throw new RuntimeException("Fail create table: "+tableName+", db: "+db.key());
+						throw new RuntimeException("Fail create table: "+tableName+", db: "+db.getKey());
 					}
 				}else{
 					table=hTables.get(tableKey);
@@ -55,37 +55,31 @@ public class CreateTableCache{
 		return table;		 
 	}	
 	
-	private static class PT implements Table{
-		private String tableName;
-		private Table modelTable;
-		
-		PT(String tableName,Table modelTable){
-			this.tableName=tableName;
-			this.modelTable=modelTable;
-		}
-		
-		public Class<? extends Annotation> annotationType() {
-			return Table.class;
-		}
-		 
-		public String name() {					 
-			return tableName;
-		}
-		
-		public String value() {					 
-			return tableName;
-		}
- 			
-		public String remarks() {
-			return modelTable.remarks();
-		}
-		
-		public String[] primaryKeys(){
-			return modelTable.primaryKeys();
-		}
-		
-		public Index[] indexes(){
-			return modelTable.indexes();
-		}
+	public static Table createTable(final String tableName,final Table modelTable){
+		return new Table(){  
+			public String name() {					 
+				return tableName;
+			}
+			
+			public String value() {					 
+				return tableName;
+			}
+	 			
+			public String remarks() {
+				return modelTable.remarks();
+			}
+			
+			public String[] primaryKeys(){
+				return modelTable.primaryKeys();
+			}
+			
+			public Index[] indexes(){
+				return modelTable.indexes();
+			}
+			
+			public Class<? extends Annotation> annotationType() {
+				return Table.class;
+			}
+		};
 	}
 }

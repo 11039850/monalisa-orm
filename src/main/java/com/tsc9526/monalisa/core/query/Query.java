@@ -14,6 +14,7 @@ import java.util.List;
 
 import com.tsc9526.monalisa.core.datasource.DBConfig;
 import com.tsc9526.monalisa.core.datasource.DataSourceManager;
+import com.tsc9526.monalisa.core.datasource.DbProp;
 import com.tsc9526.monalisa.core.generator.DBExchange;
 import com.tsc9526.monalisa.core.meta.Name;
 import com.tsc9526.monalisa.core.query.dialect.Dialect;
@@ -503,8 +504,8 @@ public class Query {
 
 	public Query use(DBConfig db) {
 		if(db!=null){
-			if(db.isCfgFileChanged()){
-				this.db=dsm.getDBConfig(db.key(),db.getDb());
+			if(db.getCfg().isCfgFileChanged()){
+				this.db=dsm.getDBConfig(db.getKey(),db.getDb());
 			}else{
 				this.db = db;
 			}

@@ -33,18 +33,18 @@ public class SimpleDataSource implements PooledDataSource {
 	private int minSize;
 	private Semaphore semaphore;
 
-	public SimpleDataSource(DBConfig cfg) {
-		setDriver(cfg.driver());
-		setUrl(cfg.url());
-		setUsername(cfg.username());
-		setPassword(cfg.password());
+	public SimpleDataSource(DBConfig db) {
+		setDriver(db.getCfg().getDriver());
+		setUrl(db.getCfg().getUrl());
+		setUsername(db.getCfg().getUsername());
+		setPassword(db.getCfg().getPassword());
 		
-		initConnections(cfg);
+		initConnections(db);
 	}
 	
-	private void initConnections(DBConfig cfg){
-		maxSize = cfg.getProperty("pool.max", 20);
-		minSize = cfg.getProperty("pool.min", 1);
+	private void initConnections(DBConfig db){
+		maxSize = db.getCfg().getProperty("pool.max", 20);
+		minSize = db.getCfg().getProperty("pool.min", 1);
 		
 		if(maxSize<1){
 			maxSize=1;

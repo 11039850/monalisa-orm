@@ -20,6 +20,10 @@ public class Update<T extends Model>{
 		this.model=model;		 
 	}
 	 		
+	public T getModel(){
+		return this.model;
+	}
+		 
 	public Update set(String name,Object value){		
 		this.model.set(name,value);
 		return this;
@@ -78,6 +82,11 @@ public class Update<T extends Model>{
 		public UpdateForExample(Example example){
 			this.example=example;
 		}
+		
+		public UpdateForExample set(String name,Object value){		
+			set(name,value);
+			return this;
+		}	
 		
 		/**
 		 * 

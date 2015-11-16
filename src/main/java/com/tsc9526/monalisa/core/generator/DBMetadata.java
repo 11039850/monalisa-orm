@@ -138,19 +138,19 @@ public class DBMetadata {
 		this.javaPackage=javaPackage;
 		this.dbcfg=dbcfg;
 		  
-		catalog=dbcfg.catalog();
-		schema=dbcfg.schema();
-		tableName=dbcfg.tables();
+		catalog=dbcfg.getCfg().getCatalog();
+		schema=dbcfg.getCfg().getSchema();
+		tableName=dbcfg.getCfg().getTables();
 		
 		if(schema==null || schema.length()==0){
-			schema=dsm.getDialect(dbcfg).getSchema(dbcfg.url());
+			schema=dsm.getDialect(dbcfg).getSchema(dbcfg.getCfg().getUrl());
 		}		
 	}
 	 
 	
 	public List<MetaTable> getTables(){
 		if(schema==null || schema.length()==0){
-			throw new RuntimeException("Database not set in DB annotation schema or url: "+dbcfg.url());
+			throw new RuntimeException("Database not set in DB annotation schema or url: "+dbcfg.getCfg().getUrl());
 		}
 		
 		DataSource ds=dbcfg.getDataSource();
@@ -173,7 +173,7 @@ public class DBMetadata {
 		    }
 		     
 		    
-		    String dbKey=dbcfg.key();		  
+		    String dbKey=dbcfg.getCfg().getKey();		  
 		    Map<String, MetaTable> hTables=hDBMetaTables.get(dbKey);
 		    if(hTables==null){
 		    	hTables=new ConcurrentHashMap<String, MetaTable>();
@@ -204,7 +204,7 @@ public class DBMetadata {
 		outputStream.writeObject(hTables);
 		outputStream.flush();
 		
-		String metafile=FileHelper.combinePath(projectPath,DBGeneratorProcessing.PROJECT_TMP_PATH,"metatable/"+dbcfg.key()+".meta");		
+		String metafile=FileHelper.combinePath(projectPath,DBGeneratorProcessing.PROJECT_TMP_PATH,"metatable/"+dbcfg.getCfg().getKey()+".meta");		
 		File taget=new File(metafile);
 		FileHelper.write(taget, bufArrayOutputStream.toByteArray());  			 
 	}
@@ -223,7 +223,7 @@ public class DBMetadata {
 	}
 	
 	protected List<MetaTable> getTables(DatabaseMetaData metadata)throws SQLException{
-		List<MetaPartition> partitions=dbcfg.getPartitions();
+		List<MetaPartition> partitions=dbcfg.getCfg().getMetaPartitions();
 		
 		List<MetaTable> tables=new ArrayList<MetaTable>();
 		ResultSet rs=metadata.getTables(catalog, schema, tableName, new String[]{"TABLE"});			 
@@ -256,7 +256,7 @@ public class DBMetadata {
 	 
 	
 	private void processTableMapping(List<MetaTable> tables){
-		String mapping=dbcfg.mapping().trim();
+		String mapping=dbcfg.getCfg().getMapping().trim();
 		if(mapping.length()>0){
 			Map<String,String> hTableMapping=new HashMap<String,String>();
 			for(String vs:mapping.split(";")){

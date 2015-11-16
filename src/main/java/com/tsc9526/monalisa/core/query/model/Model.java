@@ -9,7 +9,7 @@ import com.tsc9526.monalisa.core.annotation.Column;
 import com.tsc9526.monalisa.core.annotation.Table;
 import com.tsc9526.monalisa.core.datasource.DBConfig;
 import com.tsc9526.monalisa.core.datasource.DataSourceManager;
-import com.tsc9526.monalisa.core.query.DbProp;
+import com.tsc9526.monalisa.core.datasource.DbProp;
 import com.tsc9526.monalisa.core.query.Query;
 import com.tsc9526.monalisa.core.query.dao.Delete;
 import com.tsc9526.monalisa.core.query.dao.Insert;
@@ -32,10 +32,11 @@ public class Model<T extends Model> implements Serializable {
 
 	protected static DataSourceManager dsm = DataSourceManager.getInstance();
 
-	protected transient ModelMeta modelMeta = new ModelMeta();
+	protected transient ModelMeta modelMeta = new ModelMeta();	
+	
+	protected ModelHolder modelHolder = new ModelHolder(this);
 
 	public Model() {
-
 	}
 
 	public Model(String tableName, String... primaryKeys) {
@@ -50,13 +51,17 @@ public class Model<T extends Model> implements Serializable {
 		return modelMeta;
 	}
 
+	protected ModelHolder holder() {
+		return modelHolder;
+	}
+	
 	/**
 	 * Check if the model is dirty
 	 * 
 	 * @return
 	 */
 	public boolean dirty() {
-		return mm().dirty;
+		return holder().dirty;
 	}
 
 	/**
@@ -66,7 +71,7 @@ public class Model<T extends Model> implements Serializable {
 	 * @return
 	 */
 	public T dirty(boolean dirty) {
-		mm().dirty = dirty;
+		holder().dirty = dirty;
 		return (T) this;
 	}
 
@@ -76,7 +81,7 @@ public class Model<T extends Model> implements Serializable {
 	 * @return
 	 */
 	public boolean entity() {
-		return mm().entity;
+		return holder().entity;
 	}
 
 	/**
@@ -86,7 +91,7 @@ public class Model<T extends Model> implements Serializable {
 	 * @return
 	 */
 	public T entity(boolean entity) {
-		mm().entity = entity;
+		holder().entity = entity;
 		return (T) this;
 	}
 
@@ -258,7 +263,7 @@ public class Model<T extends Model> implements Serializable {
 			fgs.setObject(this, null);
 		}
 
-		mm().clearChanges();
+		holder().clearChanges();
 
 		entity(false);
 
@@ -307,11 +312,11 @@ public class Model<T extends Model> implements Serializable {
 	 * @return fields if called set("xxx",value) or setXxx()
 	 */
 	public Collection<FGS> changedFields() {
-		return mm().changedFields();
+		return holder().changedFields();
 	}
 
 	protected void fieldChanged(String fieldJavaName) {
-		mm().fieldChanged(fieldJavaName);
+		holder().fieldChanged(fieldJavaName);
 	}
 
 	public FGS field(String name) {
@@ -319,7 +324,7 @@ public class Model<T extends Model> implements Serializable {
 	}
 
 	public boolean updateKey() {
-		return mm().updateKey;
+		return holder().updateKey;
 	}
 
 	/**
@@ -346,7 +351,7 @@ public class Model<T extends Model> implements Serializable {
 			fgs.setObject(this, value);
 
 			if (fgs.getSetMethod() == null) {
-				mm().fieldChanged(fgs.getFieldName());
+				holder().fieldChanged(fgs.getFieldName());
 			}
 		}else{
 			String throwException=DbProp.PROP_TABLE_EXCEPTION_IF_SET_FIELD_NOT_FOUND.getValue(mm().db,mm().tableName);
@@ -407,11 +412,11 @@ public class Model<T extends Model> implements Serializable {
 	}
 
 	public boolean readonly() {
-		return mm().readonly;
+		return holder().readonly;
 	}
 
 	public void readonly(boolean readonly) {
-		mm().readonly = readonly;
+		holder().readonly = readonly;
 	}
 
 	/**
@@ -419,7 +424,7 @@ public class Model<T extends Model> implements Serializable {
 	 * @return 逗号分隔的字段名， *： 表示返回所有字段
 	 */
 	public String filterFields() {
-		return mm().filterFields();
+		return holder().filterFields();
 	}
 
 	/**
@@ -431,7 +436,7 @@ public class Model<T extends Model> implements Serializable {
 	 * @return 模型本身
 	 */
 	public T exclude(String... fields) {
-		mm().exclude(fields);
+		holder().exclude(fields);
 
 		return (T) this;
 	}
@@ -442,7 +447,7 @@ public class Model<T extends Model> implements Serializable {
 	 * @return 模型本身
 	 */
 	public T excludeBlobs() {
-		mm().excludeBlobs();
+		holder().excludeBlobs();
 
 		return (T) this;
 	}
@@ -456,7 +461,7 @@ public class Model<T extends Model> implements Serializable {
 	 * @return 模型本身
 	 */
 	public T excludeBlobs(int maxLength) {
-		mm().excludeBlobs(maxLength);
+		holder().excludeBlobs(maxLength);
 
 		return (T) this;
 	}
@@ -469,7 +474,7 @@ public class Model<T extends Model> implements Serializable {
 	 * @return 模型本身
 	 */
 	public T include(String... fields) {
-		mm().include(fields);
+		holder().include(fields);
 
 		return (T) this;
 	}
