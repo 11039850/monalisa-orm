@@ -16,18 +16,31 @@ public class TxQuery {
 	
 	TxQuery(){}
 	
+	private int level=-1;
+	
 	public Connection getConnection(DBConfig db) throws SQLException{		 
 		String key=db.getKey();
-		
+		 
 		CI ci=hcs.get(key);
 		if (ci==null) {
 			Connection conn=db.getDataSource().getConnection();
 			ci=new CI(conn);
 			conn.setAutoCommit(false);
 			
+			if(level>-1){
+				conn.setTransactionIsolation(level);
+			}
+			
 			hcs.put(key, ci);
 		}
 		return ci.conn;
+	}
+	
+	public void setTransactionIsolation(int level)throws SQLException{
+		this.level=level;
+		for(CI ci:hcs.values()){
+			ci.conn.setTransactionIsolation(level);
+		}
 	}
 	
 	public void commit()  throws SQLException{
