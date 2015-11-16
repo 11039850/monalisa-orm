@@ -54,15 +54,18 @@ public class DBConfig implements Closeable{
 	
 	public CFG getCfg(){
 		if(!initialized){
-			synchronized(this){
-				if(!initialized){
-					_cfg.init();
-				}
-			}
+			init();			 
 		}
 		return _cfg;
 	}
 	 
+	synchronized void init(){
+		if(!initialized){
+			_cfg.init();
+		}
+		initialized=true;
+	}
+	
 	synchronized void init(DB db){
 		_cfg.db=db;
 		_cfg.init();		 
