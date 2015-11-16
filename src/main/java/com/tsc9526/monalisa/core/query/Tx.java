@@ -55,12 +55,19 @@ public class Tx {
 		}
 	}
 	
+	public static void run(Runnable x){
+		run(x,-1);
+	}
 	/**
 	 * Execute the run() method in transaction	  
 	 */
-	public static void run(Runnable x){
+	public static void run(Runnable x, int level){
 		TxQuery tq=begin();
 		try{
+			if(tq!=null && level>-1){
+				tq.setTransactionIsolation(level);
+			}
+			
 			x.run();
 			
 			if(tq!=null){
