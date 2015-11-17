@@ -44,10 +44,10 @@ public class ModelParserTest {
 		model.parse(json);
 		
 		String xmlString="<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n";
-		xmlString+="<SimpleModel>\r\n";
+		xmlString+="<TestSimpleModel>\r\n";
 		xmlString+="  <dateField1>"+sdf.format(new Date(t1))+"</dateField1>\r\n";
 		xmlString+="  <dateField2>"+sdf.format(model.getDateField2())+"</dateField2>\r\n";
-		xmlString+="</SimpleModel>";
+		xmlString+="</TestSimpleModel>";
 		Assert.assertEquals(model.toXml(), xmlString);
 		
 		Assert.assertTrue(model.toJson().indexOf(sdf.format(new Date(t1)))>0);
