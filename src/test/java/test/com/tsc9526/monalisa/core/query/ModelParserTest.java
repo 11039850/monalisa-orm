@@ -19,7 +19,7 @@ import com.tsc9526.monalisa.core.tools.ClassHelper.FGS;
 public class ModelParserTest {
 	 
 	public void testParseDate() {
-		SimpleModel model=new SimpleModel();
+		TestSimpleModel model=new TestSimpleModel();
 		
 		SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		long t1=System.currentTimeMillis();
@@ -34,7 +34,7 @@ public class ModelParserTest {
 	}
 	
 	public void testToJson(){
-		SimpleModel model=new SimpleModel();
+		TestSimpleModel model=new TestSimpleModel();
 		  
 		SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		long t1=System.currentTimeMillis();
@@ -54,7 +54,7 @@ public class ModelParserTest {
 	}
 	
 	public void testJsonNull(){
-		SimpleModel model=new SimpleModel();
+		TestSimpleModel model=new TestSimpleModel();
 		
 		String json="{\"string_field1\":null, \"string_field2\":\"123\" }";		
 		model.parse(json);
@@ -64,7 +64,7 @@ public class ModelParserTest {
 	}
 	
 	public void testJsonArray(){
-		SimpleModel model=new SimpleModel();
+		TestSimpleModel model=new TestSimpleModel();
 		
 		String json="{\"string_field1\":[\"a\",\"b\"], \"string_field2\":\"123\" }";		
 		model.parse(json);
@@ -74,7 +74,7 @@ public class ModelParserTest {
 	}
 	
 	public void testArray(){
-		SimpleModel model=new SimpleModel();
+		TestSimpleModel model=new TestSimpleModel();
 		
 		String json="{\"array_1\":[\"a\",\"b\"], \"string_field2\":\"123\" }";		
 		model.parse(json);
@@ -86,7 +86,7 @@ public class ModelParserTest {
 	}
 
 	public void testArrayJson(){
-		SimpleModel model=new SimpleModel();
+		TestSimpleModel model=new TestSimpleModel();
 		
 		String json="{\"array_1\":[{a:1},\"b\"], \"string_field2\":\"123\" }";		
 		model.parse(json);
@@ -99,8 +99,8 @@ public class ModelParserTest {
 	
 	public void testParseObjectOne(){
 		Date now=new Date();
-		SimpleModel model=new SimpleModel();
-		SimpleObject objectOne=new SimpleObject();
+		TestSimpleModel model=new TestSimpleModel();
+		TestSimpleObject objectOne=new TestSimpleObject();
 		objectOne.setOne("ooo");
 		objectOne.setThree(now);
 		model.setObjectOne(objectOne);
@@ -109,7 +109,7 @@ public class ModelParserTest {
 		String sql=query.getExecutableSQL();		 
 		Assert.assertTrue(sql.indexOf("ooo")>0);
 		
-		SimpleObjectTwo objectTwo=new SimpleObjectTwo();
+		TestSimpleObjectTwo objectTwo=new TestSimpleObjectTwo();
 		objectTwo.setObj(objectOne);
 		objectTwo.setFs("fx");
 		String jsonTwo=JsonHelper.getGson().toJson(objectTwo);

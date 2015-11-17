@@ -18,7 +18,7 @@ import com.tsc9526.monalisa.core.annotation.Table;
 import com.tsc9526.monalisa.core.meta.MetaPartition;
 import com.tsc9526.monalisa.core.query.Query;
 import com.tsc9526.monalisa.core.query.model.Model;
-import com.tsc9526.monalisa.core.query.model.ModelTable;
+import com.tsc9526.monalisa.core.query.model.SimpleModel;
 import com.tsc9526.monalisa.core.tools.ClassHelper;
 import com.tsc9526.monalisa.core.tools.CloseQuietly;
 
@@ -184,8 +184,8 @@ public class DBConfig implements Closeable{
 	
 	
 	 
-	public ModelTable createModel(String tableName,String ... primaryKeys){		
-		ModelTable m=new ModelTable(tableName,primaryKeys);
+	public SimpleModel createModel(String tableName,String ... primaryKeys){		
+		SimpleModel m=new SimpleModel(tableName,primaryKeys);
 		m.use(this);
 		return m;
 	}

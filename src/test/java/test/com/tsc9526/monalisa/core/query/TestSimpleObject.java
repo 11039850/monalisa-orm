@@ -6,7 +6,7 @@ import java.util.Date;
  * 
  * @author zzg.zhou(11039850@qq.com)
  */
-public class SimpleObject {
+public class TestSimpleObject {
 	private String one;
 	
 	private Integer two;
