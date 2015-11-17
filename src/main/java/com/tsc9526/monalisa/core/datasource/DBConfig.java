@@ -293,8 +293,9 @@ public class DBConfig implements Closeable{
 		private Properties p=new Properties();
 		private List<Host> dbHosts=new ArrayList<Host>();
 				
-		private File cfgFile;
-		private long cfgFileTime=0L;	 
+		private CfgFile cfgFile;		 
+		private CfgFile cfgFileLocal;
+		 
 		private List<MetaPartition> metaPartitions;
 		
 		synchronized void init(){
@@ -363,26 +364,41 @@ public class DBConfig implements Closeable{
 				}				
 			}
 			
-			cfgFile=new File(configFile);
-			if(cfgFile.exists()){
-				System.out.println("Load DB("+key+") config from: "+cfgFile.getAbsolutePath());				
+			Properties prop=new Properties();
+			
+			cfgFile=new CfgFile(configFile);
+			if(!loadCfg(cfgFile,prop)){
+				cfgFile=null;
+			}
+			 
+			cfgFileLocal=new CfgFile(configFile+".local");
+			if(!loadCfg(cfgFileLocal,prop)){
+				cfgFileLocal=null;
+			}
+			
+			if(definedCfgFile && (cfgFile==null && cfgFileLocal==null) ){
+				throw new RuntimeException("DB config file: "+new File(configFile).getAbsolutePath()+" not found!");				
+			} 		
+			
+			this.p=prop;
+		}
+		
+		protected boolean loadCfg(CfgFile cf,Properties prop){
+			if(cf.cfgFile.exists()){
+				System.out.println("Load DB("+key+") config from: "+cf.cfgFile.getAbsolutePath());				
 				try{
-					cfgFileTime=cfgFile.lastModified();
+					cf.lastModified=cf.cfgFile.lastModified();
 					 
-					InputStreamReader reader=new InputStreamReader(new FileInputStream(cfgFile),"utf-8");
-					p.clear();
-					p.load(reader);
-					reader.close();					 
+					InputStreamReader reader=new InputStreamReader(new FileInputStream(cf.cfgFile),"utf-8");					 
+					prop.load(reader);
+					reader.close();
+					
+					return true;
 				}catch(IOException e){
-					throw new RuntimeException("Load db config file: "+cfgFile.getAbsolutePath()+", exception: "+e,e);
+					throw new RuntimeException("Load db config file: "+cf.cfgFile.getAbsolutePath()+", exception: "+e,e);
 				}
-			}else{
-				if(definedCfgFile){
-					throw new RuntimeException("DB config file: "+cfgFile.getAbsolutePath()+" not found!");
-				}else{
-					cfgFile=null;
-				}
-			} 							 
+			}
+			return false;
 		}
 	 
 		 
@@ -426,9 +442,19 @@ public class DBConfig implements Closeable{
 		}
 		
 		public boolean isCfgFileChanged(){
-			if(cfgFile!=null && cfgFileTime>0){
-				return cfgFileTime < cfgFile.lastModified();				 
+			if(cfgFile!=null && cfgFile.lastModified>0){
+				if( cfgFile.lastModified < cfgFile.cfgFile.lastModified()){
+					return true;
+				}
 			}
+			
+			if(cfgFileLocal!=null && cfgFileLocal.lastModified>0){
+				if( cfgFileLocal.lastModified < cfgFileLocal.cfgFile.lastModified()){
+					return true;
+				}
+			}
+			
+			
 			return false;
 		}
 		
@@ -516,10 +542,28 @@ public class DBConfig implements Closeable{
 			return dbHosts;
 		}
 		 
-		public File getCfgFile() {
-			return cfgFile;
-		}		 		 
+		public File[] getCfgFiles() {
+			List<File> fs=new ArrayList<File>();
+			if(cfgFile!=null){
+				fs.add(cfgFile.cfgFile);
+			}
+			
+			if(cfgFileLocal!=null){
+				fs.add(cfgFileLocal.cfgFile);
+			}
+			
+			return fs.toArray(new File[]{});
+		}
 	}
 	
+	
+	private static class CfgFile{
+		private File cfgFile;
+		private long lastModified;
+		
+		CfgFile(String filePath){
+			cfgFile=new File(filePath);
+		}				
+	}
 	
 }
