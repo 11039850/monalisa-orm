@@ -18,7 +18,7 @@ import com.tsc9526.monalisa.core.tools.ClassHelper;
  * @author zzg.zhou(11039850@qq.com)
  */
 @Table(name="simple_model")
-public class SimpleModel extends Model<SimpleModel> implements SimpleDB{
+public class TestSimpleModel extends Model<TestSimpleModel> implements TestSimpleDB{
 	private static final long serialVersionUID = 3625669623226866359L;
 
 	@Column(auto=true,name="auto",key=true, notnull=true)
@@ -59,23 +59,23 @@ public class SimpleModel extends Model<SimpleModel> implements SimpleDB{
 	private JsonObject json1;
 	
 	@Column(name="object_one",jdbcType=Types.VARCHAR)
-	private SimpleObject objectOne;
+	private TestSimpleObject objectOne;
 	
 	@Column(name="object_two",jdbcType=Types.VARCHAR)
-	private SimpleObjectTwo objectTwo;
+	private TestSimpleObjectTwo objectTwo;
 	
 	public static Criteria createCriteria(){
 		return new Example().createCriteria();
 	}
 	
 		
-	public static class Example extends com.tsc9526.monalisa.core.query.criteria.Example<Criteria,SimpleModel>{
+	public static class Example extends com.tsc9526.monalisa.core.query.criteria.Example<Criteria,TestSimpleModel>{
 		public Example(){}
 		 
 		protected Criteria createInternal(){
 			Criteria x= new Criteria(this);
 			
-			Class<?> clazz=ClassHelper.findClassWithAnnotation(SimpleModel.class,DB.class);
+			Class<?> clazz=ClassHelper.findClassWithAnnotation(TestSimpleModel.class,DB.class);
 			DBConfig db=dsm.getDBConfig(clazz);
 			   
 			QEH.getQuery(x).use(db);
@@ -113,7 +113,7 @@ public class SimpleModel extends Model<SimpleModel> implements SimpleDB{
 		return intField1;
 	}
 
-	public SimpleModel setIntField1(Integer intField1) {
+	public TestSimpleModel setIntField1(Integer intField1) {
 		this.intField1 = intField1;
 		
 		fieldChanged("intField1");
@@ -124,7 +124,7 @@ public class SimpleModel extends Model<SimpleModel> implements SimpleDB{
 		return intField2;
 	}
 
-	public SimpleModel setIntField2(Integer intField2) {
+	public TestSimpleModel setIntField2(Integer intField2) {
 		this.intField2 = intField2;
 		
 		fieldChanged("intField2");
@@ -135,7 +135,7 @@ public class SimpleModel extends Model<SimpleModel> implements SimpleDB{
 		return stringField1;
 	}
 
-	public SimpleModel setStringField1(String stringField1) {
+	public TestSimpleModel setStringField1(String stringField1) {
 		this.stringField1 = stringField1;
 		fieldChanged("stringField1");
 		return this;
@@ -145,7 +145,7 @@ public class SimpleModel extends Model<SimpleModel> implements SimpleDB{
 		return stringField2;
 	}
 
-	public SimpleModel setStringField2(String stringField2) {
+	public TestSimpleModel setStringField2(String stringField2) {
 		this.stringField2 = stringField2;
 		fieldChanged("stringField2");
 		return this;
@@ -155,7 +155,7 @@ public class SimpleModel extends Model<SimpleModel> implements SimpleDB{
 		return dateField1;
 	}
 
-	public SimpleModel setDateField1(Date dateField1) {
+	public TestSimpleModel setDateField1(Date dateField1) {
 		this.dateField1 = dateField1;
 		fieldChanged("dateField1");
 		return this;
@@ -165,7 +165,7 @@ public class SimpleModel extends Model<SimpleModel> implements SimpleDB{
 		return dateField2;
 	}
 
-	public SimpleModel setDateField2(Date dateField2) {
+	public TestSimpleModel setDateField2(Date dateField2) {
 		this.dateField2 = dateField2;
 		fieldChanged("dateField2");
 		return this;
@@ -175,7 +175,7 @@ public class SimpleModel extends Model<SimpleModel> implements SimpleDB{
 		return auto;
 	}
 
-	public SimpleModel setAuto(Integer auto) {
+	public TestSimpleModel setAuto(Integer auto) {
 		this.auto = auto;
 		fieldChanged("auto");
 		return this;
@@ -185,7 +185,7 @@ public class SimpleModel extends Model<SimpleModel> implements SimpleDB{
 		return status;
 	}
 
-	public SimpleModel setStatus(StatusA status) {
+	public TestSimpleModel setStatus(StatusA status) {
 		this.status = status;
 		fieldChanged("status");
 		return this;
@@ -195,7 +195,7 @@ public class SimpleModel extends Model<SimpleModel> implements SimpleDB{
 		return statusB;
 	}
 
-	public SimpleModel setStatusB(StatusB statusB) {
+	public TestSimpleModel setStatusB(StatusB statusB) {
 		this.statusB = statusB;
 		fieldChanged("statusB");
 		return this;
@@ -205,7 +205,7 @@ public class SimpleModel extends Model<SimpleModel> implements SimpleDB{
 		return statusC;
 	}
 
-	public SimpleModel setStatusC(StatusC statusC) {
+	public TestSimpleModel setStatusC(StatusC statusC) {
 		this.statusC = statusC;
 		fieldChanged("statusC");
 		return this;
@@ -215,7 +215,7 @@ public class SimpleModel extends Model<SimpleModel> implements SimpleDB{
 		return array1;
 	}
 
-	public SimpleModel setArray1(String[] array1) {
+	public TestSimpleModel setArray1(String[] array1) {
 		this.array1 = array1;
 		fieldChanged("array1");
 		return this;
@@ -225,27 +225,27 @@ public class SimpleModel extends Model<SimpleModel> implements SimpleDB{
 		return json1;
 	}
 
-	public SimpleModel setJson1(JsonObject json1) {
+	public TestSimpleModel setJson1(JsonObject json1) {
 		this.json1 = json1;
 		fieldChanged("json1");
 		return this;
 	}
 
-	public SimpleObject getObjectOne() {
+	public TestSimpleObject getObjectOne() {
 		return objectOne;
 	}
 
-	public SimpleModel setObjectOne(SimpleObject objectOne) {
+	public TestSimpleModel setObjectOne(TestSimpleObject objectOne) {
 		this.objectOne = objectOne;
 		fieldChanged("objectOne");
 		return this;
 	}
 
-	public SimpleObjectTwo getObjectTwo() {
+	public TestSimpleObjectTwo getObjectTwo() {
 		return objectTwo;
 	}
 
-	public SimpleModel setObjectTwo(SimpleObjectTwo objectTwo) {
+	public TestSimpleModel setObjectTwo(TestSimpleObjectTwo objectTwo) {
 		this.objectTwo = objectTwo;
 		fieldChanged("objectTwo");
 		return this;

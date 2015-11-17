@@ -27,7 +27,7 @@ import com.tsc9526.monalisa.core.tools.ModelHelper;
  * 
  */
 @SuppressWarnings({ "rawtypes", "unchecked" })
-public class Model<T extends Model> implements Serializable {
+public abstract class Model<T extends Model> implements Serializable {
 	private static final long serialVersionUID = 703976566431364670L;
 
 	protected static DataSourceManager dsm = DataSourceManager.getInstance();

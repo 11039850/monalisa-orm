@@ -4,10 +4,10 @@ package test.com.tsc9526.monalisa.core.query;
  * 
  * @author zzg.zhou(11039850@qq.com)
  */
-public class SimpleObjectTwo {
+public class TestSimpleObjectTwo {
 	private String fs;
 	
-	private SimpleObject obj;
+	private TestSimpleObject obj;
 
 	public String getFs() {
 		return fs;
@@ -17,11 +17,11 @@ public class SimpleObjectTwo {
 		this.fs = fs;
 	}
 
-	public SimpleObject getObj() {
+	public TestSimpleObject getObj() {
 		return obj;
 	}
 
-	public void setObj(SimpleObject obj) {
+	public void setObj(TestSimpleObject obj) {
 		this.obj = obj;
 	}
 	 

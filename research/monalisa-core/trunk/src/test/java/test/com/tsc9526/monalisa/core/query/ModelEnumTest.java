@@ -14,7 +14,7 @@ import com.tsc9526.monalisa.core.tools.ClassHelper.MetaClass;
 public class ModelEnumTest {
   
   public void testParseRemark()throws Exception {
-	  SimpleModel model=new SimpleModel();
+	  TestSimpleModel model=new TestSimpleModel();
 	  MetaClass mc= ClassHelper.getMetaClass(model.getClass());
 	  mc.getField("status").setObject(model, StatusA.ERROR);
 	  

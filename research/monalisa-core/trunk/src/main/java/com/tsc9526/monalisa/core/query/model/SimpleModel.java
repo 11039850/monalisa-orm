@@ -2,6 +2,7 @@ package com.tsc9526.monalisa.core.query.model;
 
 import java.util.Date;
 
+import com.tsc9526.monalisa.core.query.dao.DAO;
 import com.tsc9526.monalisa.core.tools.Helper;
 
 /**
@@ -9,13 +10,17 @@ import com.tsc9526.monalisa.core.tools.Helper;
  *  
  * @author zzg.zhou(11039850@qq.com)
  */
-public class ModelTable extends Model<ModelTable>{ 
+public class SimpleModel extends Model<SimpleModel>{ 
 	private static final long serialVersionUID = -5264525130494733202L;
 	
-	public ModelTable(){
+	public DAO dao(){
+		return new DAO(this);
 	}
 	
-	public ModelTable(String tableName,String... primaryKeys) {
+	public SimpleModel(){
+	}
+	
+	public SimpleModel(String tableName,String... primaryKeys) {
 		super(tableName,primaryKeys);
 	}
 

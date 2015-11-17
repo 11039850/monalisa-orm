@@ -28,7 +28,7 @@ public class CriteriaTest {
 		Date d1=new Date();
 		Map<String, Object> h=new HashMap<String, Object>();
 		h.put("d1", d1);
-		SimpleModel model=new SimpleModel();
+		TestSimpleModel model=new TestSimpleModel();
 		model.parse(h,"d1=dateField1");
 		
 		Assert.assertEquals(model.getDateField1(), d1);
@@ -39,13 +39,13 @@ public class CriteriaTest {
 		Map<String, Object> h=new HashMap<String, Object>();
 		h.put("simpleMode@d1", d1);
 		
-		SimpleModel model=new SimpleModel();
+		TestSimpleModel model=new TestSimpleModel();
 		model.parse(h,"d1=dateField1","~simpleMode@");
 		
 		Assert.assertEquals(model.getDateField1(), d1);
 		
 		
-		SimpleModel model2=new SimpleModel();
+		TestSimpleModel model2=new TestSimpleModel();
 		model2.parse(h,"d1=dateField1","~simpleMode");
 		
 		Assert.assertEquals(model.getDateField1(), d1);
@@ -57,7 +57,7 @@ public class CriteriaTest {
 	public void testNullDate()throws Exception{
 		Map<String, Object> h=new HashMap<String, Object>();
 		h.put("dateField1", null);
-		SimpleModel model=new SimpleModel();
+		TestSimpleModel model=new TestSimpleModel();
 		model.parse(h);
 	}
 	
@@ -77,7 +77,7 @@ public class CriteriaTest {
 		h.put("stringField1", "xxx");
 		h.put("stringField2", 123);
 		
-		SimpleModel model=new SimpleModel();
+		TestSimpleModel model=new TestSimpleModel();
 		model.parse(h);
 		
 		Assert.assertEquals(model.getIntField1().intValue(),1);
@@ -97,7 +97,7 @@ public class CriteriaTest {
 		h.put("intField1", 1);
 		h.put("INTField2", 2);
 		
-		SimpleModel model=new SimpleModel();
+		TestSimpleModel model=new TestSimpleModel();
 		model.parse(h);
 		
 		Assert.assertEquals(model.getIntField1().intValue(),1);	 
@@ -109,7 +109,7 @@ public class CriteriaTest {
 		h.put("intField1", 1);
 		h.put("INTField2", 2);
 		
-		SimpleModel model=new SimpleModel();
+		TestSimpleModel model=new TestSimpleModel();
 		model.parse(h,ModelHelper.OPTIONS_NAME_CASE_SENSITIVE);
 		
 		Assert.assertEquals(model.getIntField1().intValue(),1);
@@ -133,7 +133,7 @@ public class CriteriaTest {
 		h.put("string_field1", "xxx");
 		h.put("string_field2", 123);
 		
-		SimpleModel model=new SimpleModel();
+		TestSimpleModel model=new TestSimpleModel();
 		model.parse(h);
 		
 		Assert.assertEquals(model.getIntField1().intValue(),1);
@@ -147,7 +147,7 @@ public class CriteriaTest {
 	}
 	 
 	public void testOrderByOne(){
-		SimpleModel.Criteria criteria=SimpleModel.createCriteria();
+		TestSimpleModel.Criteria criteria=TestSimpleModel.createCriteria();
 		criteria.intField1.between(1, 10).intField1.asc();
 		
 		String sql=QEH.getQuery(criteria).getSql();
@@ -171,7 +171,7 @@ public class CriteriaTest {
 		String time="2015-06-08 11:10:31";
 		SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		 
-		SimpleModel.Criteria criteria=SimpleModel.createCriteria();
+		TestSimpleModel.Criteria criteria=TestSimpleModel.createCriteria();
 		criteria.intField1.between(1, 10).intField1.asc();
 		criteria.dateField1.eq(sdf.parse(time)).dateField1.desc();
 		
@@ -198,7 +198,7 @@ public class CriteriaTest {
 		SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		 
 		
-		SimpleModel model=new SimpleModel();
+		TestSimpleModel model=new TestSimpleModel();
 		model.setIntField1(1);
 		model.setIntField2(2);
 		model.setDateField1(sdf.parse(time));		
@@ -226,17 +226,17 @@ public class CriteriaTest {
 		String time="2015-06-08 11:10:31";
 		SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		
-		SimpleModel model=new SimpleModel();
+		TestSimpleModel model=new TestSimpleModel();
 		model.setIntField1(1);
 		model.setIntField2(2);
 		model.setDateField1(sdf.parse(time));		
 		
-		SimpleModel.Example example=new SimpleModel.Example();
-		SimpleModel.Criteria criteria=example.createCriteria();
+		TestSimpleModel.Example example=new TestSimpleModel.Example();
+		TestSimpleModel.Criteria criteria=example.createCriteria();
 		criteria.intField1.between(1, 10).intField1.asc();
 		criteria.dateField1.eq(sdf.parse(time)).dateField1.desc();
 		
-		SimpleModel.Criteria or=example.or();
+		TestSimpleModel.Criteria or=example.or();
 		or.intField2.gt(1);
 		
 		Query eq=QEH.getQuery(example);

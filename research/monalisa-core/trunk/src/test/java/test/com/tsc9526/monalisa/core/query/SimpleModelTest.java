@@ -7,35 +7,36 @@ import java.util.Map;
 import com.tsc9526.monalisa.core.annotation.DB;
 import com.tsc9526.monalisa.core.datasource.DBConfig;
 import com.tsc9526.monalisa.core.query.model.Model;
+import com.tsc9526.monalisa.core.query.model.SimpleModel;
 
 @DB(url="jdbc:mysql://127.0.0.1:3306/jy_market", username="jy_market", password="jy_market")
-public class ModelTableTest extends Model<ModelTableTest>{ 
+public class SimpleModelTest extends Model<SimpleModelTest>{ 
 	private static final long serialVersionUID = -1974865252589672370L;
 
 	String title;
 	
-	public ModelTableTest() {
+	public SimpleModelTest() {
 		 super("gift");
 	}
 	
 	
 	public static void main(String[] args) {
-		Model<?> tx=new Model<Model<?>>("gift");
-		tx.use(DBConfig.fromClass(ModelTableTest.class));
+		SimpleModel tx=new SimpleModel("gift");
+		tx.use(DBConfig.fromClass(SimpleModelTest.class));
 		
 		tx.set("gift_id", 1);
 		tx.load();
 		System.out.println("=="+tx);
 		
 		Map<String, Object> hs=new LinkedHashMap<String, Object>();
-		hs.put("x",new ModelTableTest());
-		hs.put("y",new ModelTableTest());
+		hs.put("x",new SimpleModelTest());
+		hs.put("y",new SimpleModelTest());
 		Object c=hs.values();
 		System.out.println(c);
 		Object c2=hs.values();
 		System.out.println(c2);
 	 	
-		ModelTableTest m=new ModelTableTest();
+		SimpleModelTest m=new SimpleModelTest();
 		m.set("package_name", "package_name");
 		
 		m.title="xxx";
@@ -48,18 +49,18 @@ public class ModelTableTest extends Model<ModelTableTest>{
 		
 		System.out.println("Create gift: "+m.get("gift_id"));
 		
-		ModelTableTest t=new ModelTableTest();
+		SimpleModelTest t=new SimpleModelTest();
 		t.set("gift_id", m.get("gift_id"));
 		t.load();
 		System.out.println(t);
 		
 		
-		System.out.println("NEW: "+new ModelTableTest());
+		System.out.println("NEW: "+new SimpleModelTest());
 		
 		int times=10000;
 		long l1=System.currentTimeMillis();
 		for(int i=0;i<times;i++){
-			ModelTableTest x=new ModelTableTest();
+			SimpleModelTest x=new SimpleModelTest();
 			x.changedFields();
 		}
 		long l2=System.currentTimeMillis();
