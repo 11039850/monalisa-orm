@@ -1,5 +1,8 @@
 package com.tsc9526.monalisa.core.tools;
 
+import java.util.Date;
+import java.util.HashMap;
+
 
 /**
  * 
@@ -10,6 +13,30 @@ public class JavaBeansHelper {
         super();
     }
    
+    private static HashMap<String,Object> hDefaultValue=new HashMap<String, Object>(){    	 
+		private static final long serialVersionUID = 7570819176794474057L;
+		{
+    		put(String.class.getSimpleName(), "");
+    		put(Integer.class.getSimpleName(),new Integer(0)); 
+    		put(Long.class.getSimpleName(),   new Long(0));
+    		put(Float.class.getSimpleName(),  new Float(0));
+    		put(Double.class.getSimpleName(), new Double(0));
+    		put(Byte.class.getSimpleName(),   new Byte((byte)0));    		    		 
+    	}
+    };
+    
+    public static Object getDefaultValue(int jdbcType,Class<?> fieldType){
+    	String type=TypeHelper.getJavaType(jdbcType);
+    	
+    	Object v=hDefaultValue.get(type);
+    	if(v==null){
+    		if(type.equals(Date.class.getName())){
+    			v=new Date();
+    		}
+    	}
+    	
+    	return v;
+    }
     
     public static String getGetterMethodName(String property,String javaType) {
         StringBuilder sb = new StringBuilder();

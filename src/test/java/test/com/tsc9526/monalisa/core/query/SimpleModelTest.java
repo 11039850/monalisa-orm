@@ -21,8 +21,9 @@ public class SimpleModelTest extends Model<SimpleModelTest>{
 	
 	
 	public static void main(String[] args) {
+		DBConfig db=DBConfig.fromClass(SimpleModelTest.class);
 		SimpleModel tx=new SimpleModel("gift");
-		tx.use(DBConfig.fromClass(SimpleModelTest.class));
+		tx.use(db);
 		
 		tx.set("gift_id", 1);
 		tx.load();
@@ -65,6 +66,13 @@ public class SimpleModelTest extends Model<SimpleModelTest>{
 		}
 		long l2=System.currentTimeMillis();
 		System.out.println("Use time: "+(l2-l1)+" ms");
+		
+		
+		SimpleModel sm=new SimpleModel("gift");
+		sm.use(db);
+		for(SimpleModel x:sm.WHERE().field("package_name").like("package_name").field("giftId").gt(10).forSelect().select()){
+			System.err.println(x.toString());
+		}
 	}
 
 }

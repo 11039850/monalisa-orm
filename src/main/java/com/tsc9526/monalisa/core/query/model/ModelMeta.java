@@ -26,14 +26,14 @@ import com.tsc9526.monalisa.core.tools.ClassHelper.MetaClass;
 import com.tsc9526.monalisa.core.tools.TableHelper;
 
 class ModelMeta{
+	protected Model<?>  model;
+	protected DBConfig  db;
+	protected Dialect   dialect;
+	
 	protected String      tableName   = null;
 	protected String[]    primaryKeys = null;
 	protected Validator   validator   = null;
-	
-	protected Model<?>  model;
-	
-	protected DBConfig  db;
-	protected Dialect   dialect;
+	 
 	protected FGS       autoField;	
 	protected Table     table;
 	
@@ -44,30 +44,38 @@ class ModelMeta{
 	protected Map<String,FGS> hFieldsByColumnName=new LinkedHashMap<String, ClassHelper.FGS>();
 	protected Map<String,FGS> hFieldsByJavaName  =new LinkedHashMap<String, ClassHelper.FGS>();
 	  
+	protected boolean initialized=false; 
+	
 	ModelMeta(Model<?> m){		 
 		this.model=m;
-		
-		this.tableName  =m.TABLE_NAME;
-		this.primaryKeys=m.PRIMARY_KEYS;
-		
-		initDB();
-		
-		initTable();
-				
-		initFields();
-		
-		initIndexes();
-		
-		initListeners();
-		
-		initPartioners();			 		 		 
+	}
+	
+	public synchronized void init(){		
+		if(!initialized){
+			this.tableName  =model.TABLE_NAME;
+			this.primaryKeys=model.PRIMARY_KEYS;
+			
+			initDB();
+			
+			initTable();
+					
+			initFields();
+			
+			initIndexes();
+			
+			initListeners();
+			
+			initPartioners();	
+			
+			initialized=true;
+		}
 	}
 	
 	protected void initDB() {
 		if(db==null){
 			Class<?> clazz=ClassHelper.findClassWithAnnotation(model.getClass(),DB.class);
 			if(clazz==null){
-				throw new RuntimeException("Model: "+model.getClass()+" must implement interface annotated by: "+DB.class);
+				throw new RuntimeException("Model: "+model.getClass()+" must implement interface annotated by: "+DB.class+", Or call use(db) first!");
 			}
 			db=Model.dsm.getDBConfig(clazz);
 		}
@@ -87,7 +95,9 @@ class ModelMeta{
 	}
 	
 	protected void initFields(){
-		List<FGS> fields=loadModelFields();				
+		List<FGS> fields=loadModelFields();		
+		
+		List<String> pks=new ArrayList<String>();
 		for(Object o:fields){
 			FGS fgs=(FGS)o;				
 			Column c=fgs.getAnnotation(Column.class);
@@ -98,7 +108,15 @@ class ModelMeta{
 			if(c.auto() && autoField==null){
 				autoField=fgs;					 
 			}
+			
+			if(c.key()){
+				pks.add(c.name());
+			}
 		}
+		
+		if(primaryKeys==null || primaryKeys.length==0){
+			primaryKeys=pks.toArray(new String[0]);
+		}				
 	}
 	
 	protected void initIndexes() {
@@ -286,7 +304,7 @@ class ModelMeta{
 				}else{
 					if(bean instanceof Model<?>){
 						Model<?> m=(Model<?>)bean;
-						m.modelHolder.set(c.getName(), v);						 
+						m.holder().set(c.getName(), v);						 
 					} 					
 				}
 			}
@@ -297,7 +315,7 @@ class ModelMeta{
 				}else{
 					if(bean instanceof Model<?>){
 						Model<?> m=(Model<?>)bean;
-						return m.modelHolder.get(c.getName());
+						return m.holder().get(c.getName());
 					}else{
 						return null;
 					}

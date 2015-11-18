@@ -42,11 +42,21 @@ public class ${table.javaName} extends ${modelClass}<${table.javaName}> implemen
 	/**
 	* Simple query with example <br>
 	* 
+	* Replaced with WHERE()
 	*/
+	@Deprecated
 	public static Criteria criteria(){
 		return new Example().createCriteria();
 	} 
 	
+	
+	/**
+	* Simple query with example <br>
+	* 
+	*/
+	public static Criteria WHERE(){
+		return new Example().createCriteria();
+	} 
 	 
 	public ${table.javaName}(){
 		super("${table.name}"<#list table.keyColumns as k>, "${k.name}"</#list>);		
@@ -144,12 +154,7 @@ public class ${table.javaName} extends ${modelClass}<${table.javaName}> implemen
 		Delete(${table.javaName} model){
 			super(model);
 		}
-			
-		DeleteForExample deleteForExample(Example example){
-			return new DeleteForExample(example);
-		} 	
-		
-		
+		 
 		<#if table.keyColumns?size gt 0 >
 		public int deleteByPrimaryKey(<#list table.keyColumns as k>${k.javaType} ${k.javaName}<#if k_has_next=true>, </#if></#list>){			 			 
 			<#list table.keyColumns as k>
@@ -189,21 +194,13 @@ public class ${table.javaName} extends ${modelClass}<${table.javaName}> implemen
 	public static class Update extends com.tsc9526.monalisa.core.query.dao.Update<${table.javaName}>{
 		Update(${table.javaName} model){
 			super(model);
-		}		 
-		
-		UpdateForExample updateForExample(Example example){
-			return new UpdateForExample(example);
-		}				 			
+		}		 			 			 		
 	}
 	
 	public static class Select extends com.tsc9526.monalisa.core.query.dao.Select<${table.javaName},Select>{		
 		Select(${table.javaName} x){
 			super(x);
-		}	
-		
-		SelectForExample selectForExample(Example example){
-			return new SelectForExample(example);
-		}	
+		}					 
 		
 		/**
 		* find model by primary keys

@@ -20,6 +20,7 @@ import com.tsc9526.monalisa.core.meta.Name;
 import com.tsc9526.monalisa.core.query.dialect.Dialect;
 import com.tsc9526.monalisa.core.query.model.ModelEvent;
 import com.tsc9526.monalisa.core.query.model.Model;
+import com.tsc9526.monalisa.core.query.model.SimpleModel;
 import com.tsc9526.monalisa.core.tools.ClassHelper;
 import com.tsc9526.monalisa.core.tools.ClassHelper.FGS;
 import com.tsc9526.monalisa.core.tools.ClassHelper.MetaClass;
@@ -459,8 +460,13 @@ public class Query {
 	}
 	
 	protected <T> void load(ResultSet rs,T r)throws SQLException{
-		if(r instanceof Model<?>){		
-			((Model<?>)r).before(ModelEvent.LOAD);
+		if(r instanceof Model<?>){
+			Model<?> model=(Model<?>)r;
+			 
+			if(model instanceof SimpleModel){
+				model.use(db);
+			}
+			model.before(ModelEvent.LOAD);
 		}
 		
 		ResultSetMetaData rsmd=rs.getMetaData();

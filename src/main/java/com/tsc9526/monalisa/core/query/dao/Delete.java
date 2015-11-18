@@ -102,6 +102,9 @@ public class Delete<T extends Model> {
 		return query.execute();
 	}
 	  
+	public DeleteForExample deleteForExample(Example example){
+		return new DeleteForExample(example);
+	}
 	
 	public class DeleteForExample{
 		private Example example;
