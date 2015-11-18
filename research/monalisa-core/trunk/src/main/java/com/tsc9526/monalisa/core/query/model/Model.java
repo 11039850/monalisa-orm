@@ -17,6 +17,7 @@ import com.tsc9526.monalisa.core.query.dao.Update;
 import com.tsc9526.monalisa.core.query.dialect.Dialect;
 import com.tsc9526.monalisa.core.query.partition.CreateTableCache;
 import com.tsc9526.monalisa.core.tools.ClassHelper.FGS;
+import com.tsc9526.monalisa.core.tools.JavaBeansHelper;
 import com.tsc9526.monalisa.core.tools.ModelHelper;
 
 /**
@@ -32,7 +33,7 @@ public abstract class Model<T extends Model> implements Serializable {
 
 	protected static DataSourceManager dsm = DataSourceManager.getInstance();
 
-	protected transient ModelMeta   modelMeta;		
+	protected transient ModelMeta   modelMeta=new ModelMeta(this);		
 	protected transient ModelHolder modelHolder;
 
 	protected String   TABLE_NAME;
@@ -49,7 +50,12 @@ public abstract class Model<T extends Model> implements Serializable {
 	protected synchronized ModelMeta mm() {
 		if (modelMeta==null){
 			modelMeta=new ModelMeta(this);		 			 
+		}	
+		
+		if(!modelMeta.initialized){
+			modelMeta.init();
 		}
+		
 		return modelMeta;
 	}
 
@@ -58,6 +64,22 @@ public abstract class Model<T extends Model> implements Serializable {
 			modelHolder=new ModelHolder(this);
 		}
 		return modelHolder;
+	}
+	
+	/**
+	 * 设置访问数据库
+	 * 
+	 * @param db
+	 * @return
+	 */
+	public T use(DBConfig db) {
+		if (modelMeta==null){
+			modelMeta=new ModelMeta(this);		 			 
+		}
+		
+		modelMeta.db = db;
+
+		return (T) this;
 	}
 	
 	/**
@@ -284,9 +306,12 @@ public abstract class Model<T extends Model> implements Serializable {
 		for (FGS fgs : fields()) {
 			Column c = fgs.getAnnotation(Column.class);
 			String v = c.value();
-			if ("NULL".equalsIgnoreCase(v)) {
-				fgs.setObject(this, null);
-			} else {
+			if("NULL".equalsIgnoreCase(v)) {
+				if(c.notnull()){
+					Object x=JavaBeansHelper.getDefaultValue(c.jdbcType(),fgs.getType());
+					fgs.setObject(this, x);
+				}
+			}else {
 				fgs.setObject(this, v);
 			}
 		}
@@ -403,18 +428,7 @@ public abstract class Model<T extends Model> implements Serializable {
 	public DBConfig db() {
 		return mm().db;
 	}
-
-	/**
-	 * 设置访问数据库
-	 * 
-	 * @param db
-	 * @return
-	 */
-	public T use(DBConfig db) {
-		modelMeta.db = db;
-
-		return (T) this;
-	}
+ 
 
 	public boolean readonly() {
 		return holder().readonly;

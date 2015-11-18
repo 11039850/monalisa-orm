@@ -286,7 +286,9 @@ public class Select<T extends Model,S extends Select> {
 		return selectPage(limit, offset, null);
 	}	
 	
-	 
+	public SelectForExample selectForExample(Example example){
+		return new SelectForExample(example);
+	} 
 	
 	public class SelectForExample{
 		private Example example;

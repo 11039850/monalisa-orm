@@ -75,6 +75,9 @@ public class Update<T extends Model>{
 		return query.execute();
 	}
 	 
+	public UpdateForExample updateForExample(Example example){
+		return new UpdateForExample(example);
+	} 
 	 
 	public class UpdateForExample{
 		private Example example;
