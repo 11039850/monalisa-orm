@@ -223,23 +223,23 @@ class ModelMeta{
 			x.modelMeta.tableName  = tableName;
 			x.modelMeta.primaryKeys= primaryKeys;
 			
-			x.modelHolder.updateKey  = model.modelHolder.updateKey;			
-			x.modelHolder.readonly   = model.modelHolder.readonly;
-			x.modelHolder.dirty      = true;
-			x.modelHolder.entity     = false;
+			x.holder().updateKey  = model.holder().updateKey;			
+			x.holder().readonly   = model.holder().readonly;
+			x.holder().dirty      = true;
+			x.holder().entity     = false;
 			
 			x.modelMeta.model=x;
 			x.mm();
 			
-			x.modelHolder.fieldFilterExcludeMode=model.modelHolder.fieldFilterExcludeMode;
-			x.modelHolder.fieldFilterSets.addAll(model.modelHolder.fieldFilterSets);
+			x.holder().fieldFilterExcludeMode=model.holder().fieldFilterExcludeMode;
+			x.holder().fieldFilterSets.addAll(model.holder().fieldFilterSets);
 			 
 			for(FGS fgs:model.fields()){				
 				Object value=fgs.getObject(model);
 				fgs.setObject(x, value);
 			}
-			x.modelHolder.changedFields.clear();
-			x.modelHolder.changedFields.addAll(model.modelHolder.changedFields);
+			x.holder().changedFields.clear();
+			x.holder().changedFields.addAll(model.holder().changedFields);
  			
 			return x;
 		}catch(Exception e){
