@@ -32,26 +32,31 @@ public abstract class Model<T extends Model> implements Serializable {
 
 	protected static DataSourceManager dsm = DataSourceManager.getInstance();
 
-	protected transient ModelMeta modelMeta = new ModelMeta();	
-	
-	protected ModelHolder modelHolder = new ModelHolder(this);
+	protected transient ModelMeta   modelMeta;		
+	protected transient ModelHolder modelHolder;
 
+	protected String   TABLE_NAME;
+	protected String[] PRIMARY_KEYS;
+	
 	public Model() {
 	}
 
 	public Model(String tableName, String... primaryKeys) {
-		modelMeta.tableName = tableName;
-		modelMeta.primaryKeys = primaryKeys;
+		this.TABLE_NAME   = tableName;
+		this.PRIMARY_KEYS = primaryKeys;
 	}
 
-	protected ModelMeta mm() {
-		if (modelMeta.initialized == false) {
-			modelMeta.initModelMeta(this);
+	protected synchronized ModelMeta mm() {
+		if (modelMeta==null){
+			modelMeta=new ModelMeta(this);		 			 
 		}
 		return modelMeta;
 	}
 
-	protected ModelHolder holder() {
+	protected synchronized ModelHolder holder() {
+		if(modelHolder==null){
+			modelHolder=new ModelHolder(this);
+		}
 		return modelHolder;
 	}
 	

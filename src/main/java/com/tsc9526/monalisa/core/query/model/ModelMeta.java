@@ -26,11 +26,10 @@ import com.tsc9526.monalisa.core.tools.ClassHelper.MetaClass;
 import com.tsc9526.monalisa.core.tools.TableHelper;
 
 class ModelMeta{
-	protected String      tableName= null;
-	protected String[]    primaryKeys= null;
-	protected Validator   validator=null;
+	protected String      tableName   = null;
+	protected String[]    primaryKeys = null;
+	protected Validator   validator   = null;
 	
-	protected boolean initialized=false;
 	protected Model<?>  model;
 	
 	protected DBConfig  db;
@@ -45,16 +44,12 @@ class ModelMeta{
 	protected Map<String,FGS> hFieldsByColumnName=new LinkedHashMap<String, ClassHelper.FGS>();
 	protected Map<String,FGS> hFieldsByJavaName  =new LinkedHashMap<String, ClassHelper.FGS>();
 	  
-	ModelMeta(){
-	}
- 
-	synchronized void initModelMeta(Model<?> m){
-		if(initialized){
-			return;
-		}
-		  	
+	ModelMeta(Model<?> m){		 
 		this.model=m;
-		 
+		
+		this.tableName  =m.TABLE_NAME;
+		this.primaryKeys=m.PRIMARY_KEYS;
+		
 		initDB();
 		
 		initTable();
@@ -65,9 +60,7 @@ class ModelMeta{
 		
 		initListeners();
 		
-		initPartioners();			 
-		 
-		initialized=true;
+		initPartioners();			 		 		 
 	}
 	
 	protected void initDB() {
