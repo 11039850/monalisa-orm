@@ -237,17 +237,22 @@ public abstract class Model<T extends Model> implements Serializable {
 
 		if (event == ModelEvent.INSERT || event == ModelEvent.UPDATE) {
 			Date now = new Date();
-
-			if (event == ModelEvent.INSERT) {
-				FGS createTime = field("create_time");
-				if (createTime != null && createTime.getObject(this) == null) {
+			
+			String createTimeColumn=DbProp.PROP_TABLE_AUTO_SET_CREATE_TIME.getValue(mm().db,mm().tableName);
+			String updateTimeColumn=DbProp.PROP_TABLE_AUTO_SET_UPDATE_TIME.getValue(mm().db,mm().tableName);
+			
+			if (event == ModelEvent.INSERT && createTimeColumn!=null && createTimeColumn.trim().length()>0) {
+				FGS createTime = field(createTimeColumn.trim());
+				if (createTime != null) {
 					createTime.setObject(this, now);
 				}
 			}
-
-			FGS updateTime = field("update_time");
-			if (updateTime != null && updateTime.getObject(this) == null) {
-				updateTime.setObject(this, now);
+			
+			if(updateTimeColumn!=null && updateTimeColumn.trim().length()>0){
+				FGS updateTime = field(updateTimeColumn.trim());
+				if (updateTime!= null) {
+					updateTime.setObject(this, now);
+				}
 			}
 		}
 	}
@@ -530,6 +535,8 @@ public abstract class Model<T extends Model> implements Serializable {
 		return mm().listener;
 	}
 
+	
+	
 	public String toString() {
 		return ModelHelper.toString(this);
 	}
