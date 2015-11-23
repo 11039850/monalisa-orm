@@ -85,7 +85,7 @@ public class SimpleModel extends Model<SimpleModel>{
 			FGS fgs=SimpleModel.this.field(fieldName);
 			if(fgs!=null){			
 				Column column=fgs.getAnnotation(Column.class);				
-				return new Field<Object, SimpleModel.Criteria>(column.name(), this);
+				return new Field<Object, SimpleModel.Criteria>(column.name(), this,column.jdbcType());
 			}else{
 				throw new RuntimeException("Field not found: "+fieldName+", in model: "+SimpleModel.this.mm().tableName);
 			}

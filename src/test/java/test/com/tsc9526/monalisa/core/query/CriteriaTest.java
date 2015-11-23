@@ -245,5 +245,11 @@ public class CriteriaTest {
 		Assert.assertEquals(query.getSql(), sql_expect);
 	}
 	 
+	
+	public void testNull(){
+		TestSimpleModel.Example example=new TestSimpleModel.Example();
+		TestSimpleModel.Criteria criteria=example.createCriteria();
+		criteria.stringField1.eq(null);
+	}
 }
 
