@@ -246,10 +246,26 @@ public class CriteriaTest {
 	}
 	 
 	
+	public void testIn(){
+		TestSimpleModel.Example example=new TestSimpleModel.Example();
+		TestSimpleModel.Criteria criteria=example.createCriteria();
+		criteria.stringField1.ins("1, 2,null ,3");
+		 
+		String sql_expect="`string_field1` IN('1', '2', 'null', '3')";
+		Assert.assertEquals(QEH.getQuery(example).getExecutableSQL(), sql_expect);
+		
+		criteria.stringField2.in("abc","def","ggh");
+		sql_expect="`string_field1` IN('1', '2', 'null', '3') AND `string_field2` IN('abc', 'def', 'ggh')";
+		Assert.assertEquals(QEH.getQuery(example).getExecutableSQL(), sql_expect);
+	}
+	
 	public void testNull(){
 		TestSimpleModel.Example example=new TestSimpleModel.Example();
 		TestSimpleModel.Criteria criteria=example.createCriteria();
+		
 		criteria.stringField1.eq(null);
+		String sql_expect="`string_field1` = null";
+		Assert.assertEquals(QEH.getQuery(example).getExecutableSQL(), sql_expect);
 	}
 }
 
