@@ -17,14 +17,22 @@ import com.tsc9526.monalisa.core.tools.JavaWriter;
 public class DBGeneratorMain extends DBGenerator{
 	
 	public static void main(String[] args) throws Exception{
-		if(args.length<3){			
+		if(args.length<2){			
 			String usage="Usage: \r\n"
-					+"com.tsc9526.monalisa.core.generator.DBGeneratorMain <class_with_db_annotation> <output_java_path> <out_resource_path>";
+					+"com.tsc9526.monalisa.core.generator.DBGeneratorMain <class_with_db_annotation> <output_java_path> [out_resource_path = output_java_path]";
 			System.out.println(usage);
 		}else{
-			DBGeneratorMain g=new DBGeneratorMain(Class.forName(args[0]),args[1],args[2]);
-			g.generateFiles();
+			generate(Class.forName(args[0]),args[1],args.length>2?args[2]:args[1]);			 
 		}
+	}
+	
+	public static void generate(Class<?> clazzWithDBAnnotation,String outputJavaDir){
+		generate(clazzWithDBAnnotation,outputJavaDir,outputJavaDir);
+	}
+
+	public static void generate(Class<?> clazzWithDBAnnotation,String outputJavaDir,String outputResourceDir){
+		DBGeneratorMain g=new DBGeneratorMain(clazzWithDBAnnotation,outputJavaDir,outputResourceDir);
+		g.generateFiles();
 	}
 	
 	private String outputJavaDir;
