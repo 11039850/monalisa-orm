@@ -131,24 +131,24 @@ public class Field<X,Y extends Criteria>{
 	/**
 	 * SQL: <code>IN(...)</code>
 	 */
-	public Y in(X... values){
+	public Y in(X value,X... values){
 		if(q.isEmpty()==false){
 			q.add(" AND ");
 		}
 				 
-		q.add(getColumnName()).in(getValues(values));
+		q.add(getColumnName()).in(getValues(value,values));
 		return criteria;
 	}
 	
 	/**
 	 * SQL: <code>NOT IN (...)</code>
 	 */
-	public Y notin(X... values){
+	public Y notin(X value,X... values){
 		if(q.isEmpty()==false){
 			q.add(" AND ");
 		}
 	 		 
-		q.add(getColumnName()).notin(getValues(values));
+		q.add(getColumnName()).notin(getValues(value,values));
 		return criteria;
 	}
 	
@@ -196,12 +196,22 @@ public class Field<X,Y extends Criteria>{
 		return criteria;
 	}
 
-	private Y add(String op,X... values){
+	private Y add(String op,X value,X... values){
 		if(q.isEmpty()==false){
 			q.add(" AND ");
 		}
 				 		
-		q.add(getColumnName()).add(op, getValues(values));
+		q.add(getColumnName()).add(op, getValues(value,values));
+		
+		return criteria;
+	}	
+	
+	private Y add(String op){
+		if(q.isEmpty()==false){
+			q.add(" AND ");
+		}
+				 		
+		q.add(getColumnName()).add(op);
 		
 		return criteria;
 	}	
@@ -223,20 +233,38 @@ public class Field<X,Y extends Criteria>{
 		}
 	}
 	
-	private Object[] getValues(X[] values){
-		if(values!=null && values.length>0 && values[0].getClass().isEnum()){
-			Object[] vs=new Object[values.length];
-			for(int i=0;i<values.length;i++){
-				if("String".equals(type)){
-					vs[i]=EnumHelper.getStringValue((Enum<?>)values[i]);
-				}else{
-					vs[i]=EnumHelper.getIntValue((Enum<?>)values[i]);
-				}					
-			}
-			return vs;
+	private List<Object> getValues(X value,X... values){
+		List<Object> vs=new ArrayList<Object>();
+		if(value==null){
+			vs.add(null);
 		}else{
-			return values;
+			if(value.getClass().isEnum()){
+				if("String".equals(type)){
+					vs.add( EnumHelper.getStringValue((Enum<?>)value) );
+				}else{
+					vs.add( EnumHelper.getIntValue((Enum<?>)value) );
+				}	
+			}else{
+				vs.add(value);
+			}
 		}
+		
+		if(values!=null && values.length>0 ){
+			if(values[0].getClass().isEnum()){
+				for(int i=0;i<values.length;i++){ 
+					if("String".equals(type)){
+						vs.add( EnumHelper.getStringValue((Enum<?>)values[i]) );
+					}else{
+						vs.add( EnumHelper.getIntValue((Enum<?>)values[i]) );
+					}					
+				}
+			}else{
+				for(int i=0;i<values.length;i++){ 
+					vs.add(values[i]);
+				}
+			}			 
+		}
+		return vs;
 	}
 	
 	private String getColumnName(){
@@ -273,25 +301,23 @@ public class Field<X,Y extends Criteria>{
 		/**
 		 * @param values  整型字符串数字
 		 */
-		public Y in(String[] values){
-			Integer[] x=toIntegers(values);
-			return super.in(x);
+		public Y in(String[] values){		 
+			return super.in(toIntegers(values));
 		}
 		 
 		/**
 		 * @param values  整型字符串数字
 		 */
-		public Y notin(String[] values){
-			Integer[] x=toIntegers(values);
-			return super.notin(x);
+		public Y notin(String[] values){		 
+			return super.notin(toIntegers(values));
 		}
 		
-		private Integer[] toIntegers(String[] values){
-			Integer[] x=new Integer[values.length];
+		private List<Integer> toIntegers(String[] values){
+			List<Integer> xs=new ArrayList<Integer>();
 			for(int i=0;i<values.length;i++){
-				x[i]=Integer.parseInt(values[i].trim());
+				xs.add(Integer.parseInt(values[i].trim()));
 			}
-			return x;
+			return xs;
 		}
 	}
 	
@@ -318,26 +344,24 @@ public class Field<X,Y extends Criteria>{
 		/**
 		 * @param values  长整型字符串数字
 		 */
-		public Y in(String[] values){
-			Long[] x=toLongs(values);
-			return super.in(x);
+		public Y in(String[] values){			 
+			return super.in(toLongs(values));
 		}
 		
 		
 		/**
 		 * @param values  长整型字符串数字
 		 */
-		public Y notin(String[] values){
-			Long[] x=toLongs(values);
-			return super.notin(x);
+		public Y notin(String[] values){			 
+			return super.notin(toLongs(values));
 		}
 		
-		private Long[] toLongs(String[] values){
-			Long[] x=new Long[values.length];
+		private List<Long> toLongs(String[] values){
+			List<Long> xs=new ArrayList<Long>();
 			for(int i=0;i<values.length;i++){
-				x[i]=Long.parseLong(values[i].trim());
+				xs.add(Long.parseLong(values[i].trim()));
 			}
-			return x;
+			return xs;
 		}
 	}
 	
@@ -363,26 +387,24 @@ public class Field<X,Y extends Criteria>{
 		/**
 		 * @param values  短整型字符串数字
 		 */
-		public Y in(String[] values){
-			Short[] x=toShorts(values);
-			return super.in(x);
+		public Y in(String[] values){		 
+			return super.in(toShorts(values));
 		}
 		
 		
 		/**
 		 * @param values  短整型字符串数字
 		 */
-		public Y notin(String[] values){
-			Short[] x=toShorts(values);
-			return super.notin(x);
+		public Y notin(String[] values){			 
+			return super.notin(toShorts(values));
 		}
 		
-		private Short[] toShorts(String[] values){
-			Short[] x=new Short[values.length];
+		private List<Short> toShorts(String[] values){
+			List<Short> xs=new ArrayList<Short>();
 			for(int i=0;i<values.length;i++){
-				x[i]=Short.parseShort(values[i].trim());
+				xs.add(Short.parseShort(values[i].trim()));
 			}
-			return x;
+			return xs;
 		}
 	}
 	
@@ -394,15 +416,23 @@ public class Field<X,Y extends Criteria>{
 		/**
 		 * @param valueSplitByComma  逗号分隔的字符串列表
 		 */
-		public Y in(String valueSplitByComma){			 
-			return in(valueSplitByComma.split(","));
+		public Y ins(String valueSplitByComma){				 
+			return in(toStrings(valueSplitByComma));
 		}
 		
 		/**
 		 * @param valueSplitByComma  逗号分隔的字符串列表
 		 */
-		public Y notin(String valueSplitByComma){
-			return notin(valueSplitByComma.split(","));
+		public Y notins(String valueSplitByComma){
+			return notin(toStrings(valueSplitByComma));
 		}		 
+		
+		private List<String> toStrings(String valueSplitByComma){
+			List<String> xs=new ArrayList<String>();
+			for(String v:valueSplitByComma.split(",")){			 
+				xs.add(v==null?null:v.trim());
+			}
+			return xs;
+		}
 	}
 }
