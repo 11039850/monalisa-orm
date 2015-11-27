@@ -336,7 +336,7 @@ public class ${table.javaName} extends ${modelClass}<${table.javaName}> implemen
 		
 	}
 	
-	public static class Criteria extends com.tsc9526.monalisa.core.query.criteria.Criteria{
+	public static class Criteria extends com.tsc9526.monalisa.core.query.criteria.Criteria<Criteria>{
 		
 		private Example example;
 		

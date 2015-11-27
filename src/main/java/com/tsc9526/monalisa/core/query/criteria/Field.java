@@ -14,7 +14,7 @@ import com.tsc9526.monalisa.core.tools.TypeHelper;
  * @author zzg.zhou(11039850@qq.com)
  */
 @SuppressWarnings({"unchecked"})
-public class Field<X,Y extends Criteria>{
+public class Field<X,Y extends Criteria<?>>{
 	private DataSourceManager dsm=DataSourceManager.getInstance();
 	
 	private Y criteria;
@@ -132,10 +132,14 @@ public class Field<X,Y extends Criteria>{
 	 * SQL: <code>IN(...)</code>
 	 */
 	public Y in(X value,X... values){
+		if(isIngore(value)){
+			return criteria;
+		}
+
 		if(q.isEmpty()==false){
 			q.add(" AND ");
 		}
-				 
+ 		
 		q.add(getColumnName()).in(getValues(value,values));
 		return criteria;
 	}
@@ -144,6 +148,10 @@ public class Field<X,Y extends Criteria>{
 	 * SQL: <code>NOT IN (...)</code>
 	 */
 	public Y notin(X value,X... values){
+		if(isIngore(value)){
+			return criteria;
+		}
+		
 		if(q.isEmpty()==false){
 			q.add(" AND ");
 		}
@@ -155,7 +163,7 @@ public class Field<X,Y extends Criteria>{
 	/**
 	 * SQL: <code>IN(...)=</code>
 	 */
-	public Y in(List<X> values){
+	public Y in(List<X> values){		 
 		if(q.isEmpty()==false){
 			q.add(" AND ");
 		}
@@ -171,8 +179,7 @@ public class Field<X,Y extends Criteria>{
 		if(q.isEmpty()==false){
 			q.add(" AND ");
 		}
-		
-		 
+		  
 		q.add(getColumnName()).notin(getValues(values));
 		
 		return criteria;
@@ -197,6 +204,10 @@ public class Field<X,Y extends Criteria>{
 	}
 
 	private Y add(String op,X value,X... values){
+		if(isIngore(value)){
+			return criteria;
+		}
+		
 		if(q.isEmpty()==false){
 			q.add(" AND ");
 		}
@@ -266,6 +277,29 @@ public class Field<X,Y extends Criteria>{
 		}
 		return vs;
 	}
+  
+	
+	protected boolean isIngore(X value){
+		int ingore=criteria.getIgnore();
+		
+		if(ingore==Criteria.IGNORE_NULL && value==null){
+			return true;
+		}
+		
+		if(ingore==Criteria.IGNORE_EMPTY){
+			if(value==null){
+				return true;
+			}
+			
+			if(value instanceof String){
+				if( ((String)value).trim().length()<1 ){
+					return true;
+				}
+			}
+		}
+		
+		return false;
+	}
 	
 	private String getColumnName(){
 		if(columnName==null){
@@ -279,9 +313,75 @@ public class Field<X,Y extends Criteria>{
 		return name;
 	}
 	
-	public static class FieldInteger<Y extends Criteria> extends Field<Integer,Y>{
+	public static class FieldInteger<Y extends Criteria<?>> extends Field<Integer,Y>{
 		public FieldInteger(String name, Y criteria) {
 			super(name, criteria);		
+		}
+		
+		/**
+		 * SQL: <code>=</code>
+		 */	 
+		public Y eq(String value){
+			if(value==null || value.trim().length()==0){
+				return super.eq((Integer)null);
+			}else{
+				return super.eq(Integer.parseInt(value.trim())); 
+			}			 
+		}
+		
+		/**
+		 * SQL: <code>&lt;&gt;</code>
+		 */	
+		public Y ne(String value){
+			if(value==null || value.trim().length()==0){
+				return super.ne((Integer)null);
+			}else{
+				return super.ne(Integer.parseInt(value.trim())); 
+			}
+		}
+		
+		/**
+		 *  SQL: <code>&gt;</code>
+		 */
+		public Y gt(String value){
+			if(value==null || value.trim().length()==0){
+				return super.gt((Integer)null);
+			}else{
+				return super.gt(Integer.parseInt(value.trim())); 
+			}
+		}
+		
+		/**
+		 * SQL: <code>&gt;=</code>
+		 */
+		public Y ge(String value){
+			if(value==null || value.trim().length()==0){
+				return super.ge((Integer)null);
+			}else{
+				return super.ge(Integer.parseInt(value.trim())); 
+			}
+		}
+		
+		/**
+		 * SQL: <code>&lt;</code>
+		 */
+		public Y lt(String value){
+			if(value==null || value.trim().length()==0){
+				return super.lt((Integer)null);
+			}else{
+				return super.lt(Integer.parseInt(value.trim())); 
+			}
+		}
+		
+		/**
+		 * SQL: <code>&lt;=</code>
+		 */
+		public Y le(String value){
+			if(value==null || value.trim().length()==0){
+				return super.le((Integer)null);
+			}else{
+				return super.le(Integer.parseInt(value.trim())); 
+			}
 		}
 		
 		/**
@@ -322,9 +422,75 @@ public class Field<X,Y extends Criteria>{
 	}
 	
 	
-	public static class FieldLong<Y extends Criteria> extends Field<Long,Y>{
+	public static class FieldLong<Y extends Criteria<?>> extends Field<Long,Y>{
 		public FieldLong(String name, Y criteria) {
 			super(name, criteria);		
+		}
+		
+		/**
+		 * SQL: <code>=</code>
+		 */	 
+		public Y eq(String value){			 
+			if(value==null || value.trim().length()==0){
+				return super.eq((Long)null);
+			}else{
+				return super.eq(Long.parseLong(value.trim())); 
+			}			 
+		}
+		
+		/**
+		 * SQL: <code>&lt;&gt;</code>
+		 */	
+		public Y ne(String value){
+			if(value==null || value.trim().length()==0){
+				return super.ne((Long)null);
+			}else{
+				return super.ne(Long.parseLong(value.trim())); 
+			}
+		}
+		
+		/**
+		 *  SQL: <code>&gt;</code>
+		 */
+		public Y gt(String value){
+			if(value==null || value.trim().length()==0){
+				return super.gt((Long)null);
+			}else{
+				return super.gt(Long.parseLong(value.trim())); 
+			}
+		}
+		
+		/**
+		 * SQL: <code>&gt;=</code>
+		 */
+		public Y ge(String value){
+			if(value==null || value.trim().length()==0){
+				return super.ge((Long)null);
+			}else{
+				return super.ge(Long.parseLong(value.trim())); 
+			}
+		}
+		
+		/**
+		 * SQL: <code>&lt;</code>
+		 */
+		public Y lt(String value){
+			if(value==null || value.trim().length()==0){
+				return super.lt((Long)null);
+			}else{
+				return super.lt(Long.parseLong(value.trim())); 
+			}
+		}
+		
+		/**
+		 * SQL: <code>&lt;=</code>
+		 */
+		public Y le(String value){
+			if(value==null || value.trim().length()==0){
+				return super.le((Long)null);
+			}else{
+				return super.le(Long.parseLong(value.trim())); 
+			}
 		}
 		
 		/**
@@ -365,7 +531,7 @@ public class Field<X,Y extends Criteria>{
 		}
 	}
 	
-	public static class FieldShort<Y extends Criteria> extends Field<Short,Y>{
+	public static class FieldShort<Y extends Criteria<?>> extends Field<Short,Y>{
 		public FieldShort(String name, Y criteria) {
 			super(name, criteria);		
 		}
@@ -408,7 +574,7 @@ public class Field<X,Y extends Criteria>{
 		}
 	}
 	
-	public static class FieldString<Y extends Criteria> extends Field<String,Y>{
+	public static class FieldString<Y extends Criteria<?>> extends Field<String,Y>{
 		public FieldString(String name, Y criteria) {
 			super(name, criteria);		
 		}

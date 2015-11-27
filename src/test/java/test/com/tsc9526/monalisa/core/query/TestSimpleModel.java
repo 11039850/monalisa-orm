@@ -83,7 +83,7 @@ public class TestSimpleModel extends Model<TestSimpleModel> implements TestSimpl
 		}
 	}
 	
-	public static class Criteria extends com.tsc9526.monalisa.core.query.criteria.Criteria{
+	public static class Criteria extends com.tsc9526.monalisa.core.query.criteria.Criteria<Criteria>{
 		
 		private Example example;
 		

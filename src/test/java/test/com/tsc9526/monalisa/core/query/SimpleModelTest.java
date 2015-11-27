@@ -21,6 +21,10 @@ public class SimpleModelTest extends Model<SimpleModelTest>{
 	
 	
 	public static void main(String[] args) {
+		Object ix=0;
+		
+		System.out.println(ix instanceof Integer);
+		
 		DBConfig db=DBConfig.fromClass(SimpleModelTest.class);
 		SimpleModel tx=new SimpleModel("gift");
 		tx.use(db);

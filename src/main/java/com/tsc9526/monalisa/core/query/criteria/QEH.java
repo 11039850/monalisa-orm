@@ -12,16 +12,16 @@ import com.tsc9526.monalisa.core.query.Query;
  */
 public class QEH {
 
-	public static Query getQuery(Criteria criteria){	
+	public static Query getQuery(Criteria<?> criteria){	
 		return criteria.q;
 	}
 	
-	public static Query getQuery(Example<? extends Criteria,?> example){		
+	public static Query getQuery(Example<? extends Criteria<?>,?> example){		
 		Query  q=new Query();
 		
 		List<String> orderBy=new ArrayList<String>();
 	 	for(int i=0;i<example.cs.size();i++){
-	 		Criteria c=example.cs.get(i);
+	 		Criteria<?> c=example.cs.get(i);
 	 		
 	 		Query cq=c.q;
 	 		if(cq.isEmpty()==false){	 			

@@ -185,5 +185,52 @@ public class TypeHelper {
 		}
 		return java;
 	}
+	
+	public static boolean isString(int jdbcType){
+		String java = typeToJava.get(jdbcType);
+		if(java==null || java.equals(String.class.getName())){
+			return true;
+		}else{
+			return false;
+		}		
+	}
+	
+	public static boolean isBoolean(int jdbcType){
+		String java = typeToJava.get(jdbcType);
+		if(java!=null){
+			if(java.equals(Boolean.class.getName())){
+				return true;
+			}
+		}
+		
+		return false;
+	}
+	
+	public static boolean isNumber(int jdbcType){
+		String java = typeToJava.get(jdbcType);
+		if(java!=null){
+			if(java.equals(Integer.class.getName())){
+				return true;
+			}
+			if(java.equals(Long.class.getName())){
+				return true;
+			}
+			if(java.equals(Float.class.getName())){
+				return true;
+			}
+			if(java.equals(Byte.class.getName())){
+				return true;
+			}
+			if(java.equals(Double.class.getName())){
+				return true;
+			}
+			
+			if(java.equals(BigDecimal.class.getName())){
+				return true;
+			}
+		}
+		
+		return false;
+	}
 
 }
