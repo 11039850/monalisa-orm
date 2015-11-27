@@ -52,7 +52,7 @@ public class SimpleModel extends Model<SimpleModel>{
 		
 	}
 	
-	public class Criteria extends com.tsc9526.monalisa.core.query.criteria.Criteria{
+	public class Criteria extends com.tsc9526.monalisa.core.query.criteria.Criteria<Criteria>{
 		
 		private Example example;
 		

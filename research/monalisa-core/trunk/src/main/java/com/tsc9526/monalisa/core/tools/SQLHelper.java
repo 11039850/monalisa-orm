@@ -29,19 +29,9 @@ public class SQLHelper {
 					Object p=parameters.get(x);
 					if(p==null){
 						sb.append("null");
-					}else if(p instanceof Integer || p.getClass()==int.class){
+					}else if(p instanceof Number || p instanceof Boolean){
 						sb.append(p);
-					}else if(p instanceof Long || p.getClass()==long.class){
-						sb.append(p);
-					}else if(p instanceof Float || p.getClass()==float.class){
-						sb.append(p);
-					}else if(p instanceof Double || p.getClass()==double.class){
-						sb.append(p);
-					}else if(p instanceof Byte || p.getClass()==byte.class){
-						sb.append(p);
-					}else if(p instanceof Boolean || p.getClass()==boolean.class){
-						sb.append(p);
-					}else if(p instanceof Date){						
+					}else if(p instanceof Date){
 						sb.append("'").append(Helper.getTime((Date)p)).append("'");
 					}else{
 						sb.append(escapeSqlValue(p.toString()));
