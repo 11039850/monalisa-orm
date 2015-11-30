@@ -250,7 +250,7 @@ public abstract class Model<T extends Model> implements Serializable {
 			
 			if(updateTimeColumn!=null && updateTimeColumn.trim().length()>0){
 				FGS updateTime = field(updateTimeColumn.trim());
-				if (updateTime!= null) {
+				if (updateTime!= null && updateTime.getObject(this)==null) {
 					updateTime.setObject(this, now);
 				}
 			}
