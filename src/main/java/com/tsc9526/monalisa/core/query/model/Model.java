@@ -243,7 +243,7 @@ public abstract class Model<T extends Model> implements Serializable {
 			
 			if (event == ModelEvent.INSERT && createTimeColumn!=null && createTimeColumn.trim().length()>0) {
 				FGS createTime = field(createTimeColumn.trim());
-				if (createTime != null) {
+				if (createTime != null && createTime.getObject(this)==null) {
 					createTime.setObject(this, now);
 				}
 			}
