@@ -33,8 +33,9 @@ public abstract class Model<T extends Model> implements Serializable {
 
 	protected static DataSourceManager dsm = DataSourceManager.getInstance();
 
-	protected transient ModelMeta   modelMeta=new ModelMeta(this);		
+	protected transient ModelMeta   modelMeta;		
 	protected transient ModelHolder modelHolder;
+	protected transient DBConfig db;
 
 	protected String   TABLE_NAME;
 	protected String[] PRIMARY_KEYS;
@@ -47,15 +48,10 @@ public abstract class Model<T extends Model> implements Serializable {
 		this.PRIMARY_KEYS = primaryKeys;
 	}
 
-	protected synchronized ModelMeta mm() {
+	protected ModelMeta mm() {
 		if (modelMeta==null){
-			modelMeta=new ModelMeta(this);		 			 
-		}	
-		
-		if(!modelMeta.initialized){
-			modelMeta.init();
-		}
-		
+			modelMeta=ModelMeta.getModelMeta(this);		 			 
+		}		 		
 		return modelMeta;
 	}
 
@@ -73,12 +69,8 @@ public abstract class Model<T extends Model> implements Serializable {
 	 * @return
 	 */
 	public T use(DBConfig db) {
-		if (modelMeta==null){
-			modelMeta=new ModelMeta(this);		 			 
-		}
-		
-		modelMeta.db = db;
-
+		this.db=db;
+	 
 		return (T) this;
 	}
 	
@@ -431,7 +423,7 @@ public abstract class Model<T extends Model> implements Serializable {
 	 * @return 数据库连接信息
 	 */
 	public DBConfig db() {
-		return mm().db;
+		return db==null?mm().db:this.db;
 	}
  
 
@@ -507,11 +499,11 @@ public abstract class Model<T extends Model> implements Serializable {
 	 * 复制对象数据
 	 */
 	public T copy() {
-		return (T) mm().copyModel();
+		return (T) mm().copyModel(this);
 	}
 
 	protected void doValidate() {
-		mm().doValidate();
+		mm().doValidate(this);
 	}
 
 	/**
@@ -520,7 +512,7 @@ public abstract class Model<T extends Model> implements Serializable {
 	 * @return 不合法的字段列表{字段名: 错误信息}. 如果没有错误, 则为空列表.
 	 */
 	public List<String> validate() {
-		return mm().validate();
+		return mm().validate(this);
 	}
 
 	public List<ModelIndex> indexes() {

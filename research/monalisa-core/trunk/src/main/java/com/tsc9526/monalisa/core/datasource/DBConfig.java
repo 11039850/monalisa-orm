@@ -16,6 +16,8 @@ import javax.sql.DataSource;
 import com.tsc9526.monalisa.core.annotation.DB;
 import com.tsc9526.monalisa.core.annotation.Table;
 import com.tsc9526.monalisa.core.meta.MetaPartition;
+import com.tsc9526.monalisa.core.query.DataMap;
+import com.tsc9526.monalisa.core.query.Page;
 import com.tsc9526.monalisa.core.query.Query;
 import com.tsc9526.monalisa.core.query.model.Model;
 import com.tsc9526.monalisa.core.query.model.SimpleModel;
@@ -197,6 +199,27 @@ public class DBConfig implements Closeable{
 	public Query createQuery(Class<?> resultClass){
 		return new Query(this,resultClass);
 	}
+	
+	public DataMap selectOne(String sql,Object... args){
+		Query query=createQuery().add(sql,args);
+		return query.getResult();
+	}
+	
+	public List<DataMap> select(String sql,Object... args){
+		Query query=createQuery().add(sql,args);
+		return query.getList();
+	}
+	
+	public Page<DataMap> select(int limit, int offset,String sql,Object... args){
+		Query query=createQuery().add(sql,args);
+		return query.getPage(limit, offset);
+	}
+	
+	public int execute(String sql,Object... args){
+		Query query=createQuery().add(sql,args);
+		return query.execute();
+	}
+	
 	
 	public static DBConfig fromClass(Class<?> clazzWithDBAnnotation){
 		return DataSourceManager.getInstance().getDBConfig(clazzWithDBAnnotation);

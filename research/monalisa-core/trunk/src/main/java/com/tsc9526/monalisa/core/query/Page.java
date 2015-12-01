@@ -1,8 +1,9 @@
 package com.tsc9526.monalisa.core.query;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
+
+import com.tsc9526.monalisa.core.query.datatable.DataTable;
 
 
 /**
@@ -13,7 +14,7 @@ import java.util.List;
 public class Page<T> implements Serializable {
 	private static final long serialVersionUID = -33321L;
 	
-	private List<T> list=new ArrayList<T>();	
+	private DataTable<T> list=new DataTable<T>();	
 	 
 	private long pageNo   = 1;				 
 	private long pageSize = 10;				 
@@ -32,7 +33,15 @@ public class Page<T> implements Serializable {
 	 * @param offset  本记录起始位置（0 表示第一条）
 	 */
 	public Page(List<T> list,long total, long limit , long offset) {
-		this.list = list==null?new ArrayList<T>():list;
+		if(list!=null){
+			if(list instanceof DataTable){
+				this.list = (DataTable<T>)list;
+			}else{
+				this.list = new DataTable<T>(list);
+			}
+		}else {
+			this.list=null;
+		}
 		
 		this.totalRow   = total;
 		this.pageSize   = limit;
@@ -49,7 +58,7 @@ public class Page<T> implements Serializable {
 	 *  
 	 * @return 一个非null的数据集
 	 */
-	public List<T> getList() {
+	public DataTable<T> getList() {
 		return list;
 	}	
 	 

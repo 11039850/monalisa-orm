@@ -17,6 +17,7 @@ import com.tsc9526.monalisa.core.datasource.DataSourceManager;
 import com.tsc9526.monalisa.core.datasource.DbProp;
 import com.tsc9526.monalisa.core.generator.DBExchange;
 import com.tsc9526.monalisa.core.meta.Name;
+import com.tsc9526.monalisa.core.query.datatable.DataTable;
 import com.tsc9526.monalisa.core.query.dialect.Dialect;
 import com.tsc9526.monalisa.core.query.model.ModelEvent;
 import com.tsc9526.monalisa.core.query.model.Model;
@@ -318,7 +319,7 @@ public class Query {
 			long total=countQuery.setResultClass(Long.class).getResult();			
 			 
 			Query listQuery=getDialect().getLimitQuery(this, limit, offset);
-			List<T>  list=listQuery.getList();
+			DataTable<T>  list=listQuery.getList();
 			 
 			Page<T> page=new Page<T>(list,total,limit,offset);
 		
@@ -337,16 +338,16 @@ public class Query {
 	 *   Base 0, the first record is 0
 	 * @return List对象
 	 */
-	public <T> List<T> getList(int limit,int offset) {
+	public <T> DataTable<T> getList(int limit,int offset) {
 		if(!DBExchange.doExchange(this)){			
 			queryCheck();
 			   
 			Query listQuery=getDialect().getLimitQuery(this, limit, offset);
-			List<T>  list=listQuery.getList();
-			 
+			DataTable<T>  list=listQuery.getList();
+			
 			return list;
 		}else{
-			return new ArrayList<T>();		 
+			return new DataTable<T>();		 
 		}
 	}
 	
@@ -354,13 +355,13 @@ public class Query {
 	 * 如果没有调用setResultClass指定结果类, 则List存储的对象为{@link:com.tsc9526.monalisa.core.query.DataMap}
 	 * @return List对象
 	 */
-	public <T> List<T> getList() {
+	public <T> DataTable<T> getList() {
 		if(!DBExchange.doExchange(this)){			 
 			queryCheck();
 			
-			return doExecute(new Execute<List<T>>(){
-				public List<T> execute(PreparedStatement pst) throws SQLException {		
-					List<T> result=new ArrayList<T>();
+			return doExecute(new Execute<DataTable<T>>(){
+				public DataTable<T> execute(PreparedStatement pst) throws SQLException {		
+					DataTable<T> result=new DataTable<T>();
 					ResultSet rs=null;
 					try{
 						rs=pst.executeQuery();				 		
@@ -380,7 +381,7 @@ public class Query {
 				}	
 			}); 
 		}else{
-			return new ArrayList<T>();
+			return new DataTable<T>();
 		}
 	}	 
 	
