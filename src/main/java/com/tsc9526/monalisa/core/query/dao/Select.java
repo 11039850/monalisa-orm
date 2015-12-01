@@ -1,12 +1,11 @@
 package com.tsc9526.monalisa.core.query.dao;
 
-import java.util.List;
-
 import com.tsc9526.monalisa.core.datasource.DBConfig;
 import com.tsc9526.monalisa.core.query.Page;
 import com.tsc9526.monalisa.core.query.Query;
 import com.tsc9526.monalisa.core.query.criteria.Example;
 import com.tsc9526.monalisa.core.query.criteria.QEH;
+import com.tsc9526.monalisa.core.query.datatable.DataTable;
 import com.tsc9526.monalisa.core.query.model.Model;
 
 /**
@@ -160,7 +159,7 @@ public class Select<T extends Model,S extends Select> {
 	 * 
 	 * @see com.tsc9526.monalisa.core.resources.HelpDoc#helpQuery(String, Object...)
 	 */
-	public List<T> select(String whereStatement,Object ... args){
+	public DataTable<T> select(String whereStatement,Object ... args){
 		Query query=model.dialect().select(model,whereStatement, args);
 		query.use(db());
 		
@@ -174,13 +173,13 @@ public class Select<T extends Model,S extends Select> {
 	 * 
 	 * @see com.tsc9526.monalisa.core.resources.HelpDoc#helpQuery(int,int,Example,String, Object...)
 	 */
-	public List<T> selectByExample(Example example){
+	public DataTable<T> selectByExample(Example example){
 		Query w=QEH.getQuery(example);
 		
 		Query query=model.dialect().select(model,w.getSql(), w.getParameters());
 		query.use(db());
 		
-		List<T> r= query.getList();
+		DataTable<T> r= query.getList();
 		return r;
 	}
 	
@@ -194,11 +193,11 @@ public class Select<T extends Model,S extends Select> {
 	 * 
 	 * @see com.tsc9526.monalisa.core.resources.HelpDoc#helpQuery(int,int,Example,String, Object...)
 	 */
-	public List<T> select(int limit,int offset,String whereStatement,Object ... args){
+	public DataTable<T> select(int limit,int offset,String whereStatement,Object ... args){
 		Query query=model.dialect().select(model,whereStatement, args);
 		query.use(db());
 		
-		List<T> r=query.getList(limit, offset);
+		DataTable<T> r=query.getList(limit, offset);
 		return r;
 	}
 	
@@ -211,13 +210,13 @@ public class Select<T extends Model,S extends Select> {
 	 * 
 	 * @see com.tsc9526.monalisa.core.resources.HelpDoc#helpQuery(int,int,Example,String, Object...)
 	 */
-	public List<T> selectByExample(int limit,int offset,Example example){
+	public DataTable<T> selectByExample(int limit,int offset,Example example){
 		Query w=QEH.getQuery(example);
 		
 		Query query=model.dialect().select(model,w.getSql(), w.getParameters());
 		query.use(db());
 		
-		List<T> r=query.getList(limit, offset);
+		DataTable<T> r=query.getList(limit, offset);
 		return r;
 	}
 	
@@ -258,7 +257,7 @@ public class Select<T extends Model,S extends Select> {
 	}
   
 	
-	public List<T> selectAll(){
+	public DataTable<T> selectAll(){
 		return select(null);
 	}
 	
@@ -270,7 +269,7 @@ public class Select<T extends Model,S extends Select> {
 	 * 
 	 * @see com.tsc9526.monalisa.core.resources.HelpDoc#helpQuery(int,int,Example,String, Object...)
 	 */
-	public List<T> selectAll(int limit,int offset){
+	public DataTable<T> selectAll(int limit,int offset){
 		return select(limit, offset, null);
 	}	
 	
@@ -355,7 +354,7 @@ public class Select<T extends Model,S extends Select> {
 			return Select.this.selectOneByExample(example);
 		}	 	 
 		
-		public List<T> select(){
+		public DataTable<T> select(){
 			return Select.this.selectByExample(example);
 		}	 
 		
@@ -367,7 +366,7 @@ public class Select<T extends Model,S extends Select> {
 		 * 
 		 * @see com.tsc9526.monalisa.core.resources.HelpDoc#helpQuery(int,int,Example,String, Object...)
 		 */
-		public List<T> select(int limit,int offset){
+		public DataTable<T> select(int limit,int offset){
 			return Select.this.selectByExample(limit, offset, example);
 		}		 
 		

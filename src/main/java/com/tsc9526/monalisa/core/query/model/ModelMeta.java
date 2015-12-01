@@ -5,6 +5,7 @@ import java.lang.reflect.Field;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,8 +26,21 @@ import com.tsc9526.monalisa.core.tools.ClassHelper.FGS;
 import com.tsc9526.monalisa.core.tools.ClassHelper.MetaClass;
 import com.tsc9526.monalisa.core.tools.TableHelper;
 
-class ModelMeta{
-	protected Model<?>  model;
+class ModelMeta{	
+	private static Map<String, ModelMeta> hMetas=new HashMap<String, ModelMeta>();
+	
+	public synchronized static ModelMeta getModelMeta(Model<?> model){
+		String key=model.getClass().getName();
+		ModelMeta mm=hMetas.get(key);
+		if(mm==null){
+			mm=new ModelMeta();
+			mm.init(model);
+			
+			hMetas.put(key, mm);
+		}
+		return mm;
+	}
+	
 	protected DBConfig  db;
 	protected Dialect   dialect;
 	
@@ -43,35 +57,30 @@ class ModelMeta{
 	
 	protected Map<String,FGS> hFieldsByColumnName=new LinkedHashMap<String, ClassHelper.FGS>();
 	protected Map<String,FGS> hFieldsByJavaName  =new LinkedHashMap<String, ClassHelper.FGS>();
-	  
-	protected boolean initialized=false; 
-	
-	ModelMeta(Model<?> m){		 
-		this.model=m;
+	 
+	private ModelMeta(){		 		 
 	}
 	
-	public synchronized void init(){		
-		if(!initialized){
-			this.tableName  =model.TABLE_NAME;
-			this.primaryKeys=model.PRIMARY_KEYS;
-			
-			initDB();
-			
-			initTable();
-					
-			initFields();
-			
-			initIndexes();
-			
-			initListeners();
-			
-			initPartioners();	
-			
-			initialized=true;
-		}
+	void init(Model<?> model){		
+		this.tableName  =model.TABLE_NAME;
+		this.primaryKeys=model.PRIMARY_KEYS;
+		
+		initDB(model);
+		
+		initTable(model);
+				
+		initFields(model);
+		
+		initIndexes(model);
+		
+		initListeners(model);
+		
+		initPartioners(model); 							
 	}
 	
-	protected void initDB() {
+	protected void initDB(Model<?> model) {
+		db=model.db;
+		
 		if(db==null){
 			Class<?> clazz=ClassHelper.findClassWithAnnotation(model.getClass(),DB.class);
 			if(clazz==null){
@@ -83,7 +92,7 @@ class ModelMeta{
 		dialect=Model.dsm.getDialect(db);
 	}
 	
-	protected void initTable() {
+	protected void initTable(Model<?> model) {
 		table=model.getClass().getAnnotation(Table.class);			  
 		if(table==null){
 			if(tableName==null || tableName.trim().length()==0){
@@ -94,8 +103,8 @@ class ModelMeta{
 		}
 	}
 	
-	protected void initFields(){
-		List<FGS> fields=loadModelFields();		
+	protected void initFields(Model<?> model){
+		List<FGS> fields=loadModelFields(model);		
 		
 		List<String> pks=new ArrayList<String>();
 		for(Object o:fields){
@@ -119,7 +128,7 @@ class ModelMeta{
 		}				
 	}
 	
-	protected void initIndexes() {
+	protected void initIndexes(Model<?> model) {
 		Index[] tbIndexes=table.indexes();
 		if(tbIndexes!=null && tbIndexes.length>0){
 			for(Index index:tbIndexes){
@@ -143,7 +152,7 @@ class ModelMeta{
 		}
 	}
 	
-	protected void initListeners(){
+	protected void initListeners(Model<?> model){
 		String ls=DbProp.PROP_TABLE_MODEL_LISTENER.getValue(db,tableName);
 		
 		if(ls==null){
@@ -159,11 +168,11 @@ class ModelMeta{
 		}		
 	}
 	
-	protected void initPartioners(){
+	protected void initPartioners(Model<?> model){
 		mp=db.getCfg().getPartition(table.name());
 	}
 	
-	protected List<FGS> loadModelFields(){
+	protected List<FGS> loadModelFields(Model<?> model){
 		MetaClass metaClass=ClassHelper.getMetaClass(model.getClass());
 		List<FGS> fields=metaClass.getFieldsWithAnnotation(Column.class);						
 		if(fields.size()==0){
@@ -217,20 +226,15 @@ class ModelMeta{
 	/**
 	 * 复制对象数据
 	 */
-	public Model<?> copyModel(){
+	public Model<?> copyModel(Model<?> model){
 		try{
 			Model<?> x=model.getClass().newInstance();
-			x.modelMeta.tableName  = tableName;
-			x.modelMeta.primaryKeys= primaryKeys;
-			
+  
 			x.holder().updateKey  = model.holder().updateKey;			
 			x.holder().readonly   = model.holder().readonly;
 			x.holder().dirty      = true;
 			x.holder().entity     = false;
-			
-			x.modelMeta.model=x;
-			x.mm();
-			
+			 
 			x.holder().fieldFilterExcludeMode=model.holder().fieldFilterExcludeMode;
 			x.holder().fieldFilterSets.addAll(model.holder().fieldFilterSets);
 			 
@@ -247,11 +251,11 @@ class ModelMeta{
 		}
 	}
 	  
-	protected void doValidate() {
+	protected void doValidate(Model<?> model) {
 		String validate=DbProp.PROP_TABLE_VALIDATE.getValue(db,tableName);
 		
 		if(validate.equalsIgnoreCase("true") || validate.equals("1")){			
-			List<String> errors=validate();
+			List<String> errors=validate(model);
 			if(errors.size()>0){
 				throw new RuntimeException(errors.toString());
 			}
@@ -264,7 +268,7 @@ class ModelMeta{
 	 * 
 	 *  @return 不合法的字段列表{字段名: 错误信息}. 如果没有错误, 则为空列表.
 	 */
-	public List<String> validate(){
+	public List<String> validate(Model<?> model){
 		if(validator==null){
 			String clazz=DbProp.PROP_TABLE_VALIDATOR.getValue(db,tableName);
 			
