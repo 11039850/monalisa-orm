@@ -20,6 +20,8 @@ import com.tsc9526.monalisa.core.tools.ClassHelper.FGS;
 import com.tsc9526.monalisa.core.tools.JavaBeansHelper;
 import com.tsc9526.monalisa.core.tools.ModelHelper;
 
+import freemarker.log.Logger;
+
 /**
  * 数据库表模型
  * 
@@ -29,6 +31,8 @@ import com.tsc9526.monalisa.core.tools.ModelHelper;
  */
 @SuppressWarnings({ "rawtypes", "unchecked" })
 public abstract class Model<T extends Model> implements Serializable {
+	static Logger logger=Logger.getLogger(Model.class.getName());
+	
 	private static final long serialVersionUID = 703976566431364670L;
 
 	protected static DataSourceManager dsm = DataSourceManager.getInstance();
@@ -140,6 +144,7 @@ public abstract class Model<T extends Model> implements Serializable {
 	 */
 	public T load() {
 		Query query = dialect().load(this);
+		 
 		query.use(db());
 
 		Object r = query.getResult();
@@ -500,6 +505,20 @@ public abstract class Model<T extends Model> implements Serializable {
 	 */
 	public T copy() {
 		return (T) mm().copyModel(this);
+	}
+	
+	T create(){
+		try{
+			Model<T> x=getClass().newInstance();
+			 
+			x.TABLE_NAME  =this.TABLE_NAME;
+			x.PRIMARY_KEYS=this.PRIMARY_KEYS;
+			x.db          =this.db;
+			
+			return (T)x;
+		}catch(Exception e){
+			throw new RuntimeException(e);
+		}
 	}
 
 	protected void doValidate() {

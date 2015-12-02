@@ -1,30 +1,20 @@
 package com.tsc9526.monalisa.core.query;
 
-import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Date;
 import java.util.List;
 
 import com.tsc9526.monalisa.core.datasource.DBConfig;
 import com.tsc9526.monalisa.core.datasource.DataSourceManager;
 import com.tsc9526.monalisa.core.datasource.DbProp;
 import com.tsc9526.monalisa.core.generator.DBExchange;
-import com.tsc9526.monalisa.core.meta.Name;
 import com.tsc9526.monalisa.core.query.datatable.DataTable;
 import com.tsc9526.monalisa.core.query.dialect.Dialect;
-import com.tsc9526.monalisa.core.query.model.ModelEvent;
-import com.tsc9526.monalisa.core.query.model.Model;
-import com.tsc9526.monalisa.core.query.model.SimpleModel;
-import com.tsc9526.monalisa.core.tools.ClassHelper;
-import com.tsc9526.monalisa.core.tools.ClassHelper.FGS;
-import com.tsc9526.monalisa.core.tools.ClassHelper.MetaClass;
 import com.tsc9526.monalisa.core.tools.CloseQuietly;
 import com.tsc9526.monalisa.core.tools.SQLHelper;
 
@@ -44,7 +34,6 @@ import freemarker.log.Logger;
  * 
  * @author zzg.zhou(11039850@qq.com)
  */
-@SuppressWarnings("unchecked")
 public class Query {	
 	static Logger logger=Logger.getLogger(Query.class.getName());
 	
@@ -55,12 +44,12 @@ public class Query {
 	
 	protected DataSourceManager dsm=DataSourceManager.getInstance();
 	
-	protected StringBuffer sql=new StringBuffer();
-	protected List<Object> parameters=new ArrayList<Object>();
-	protected Class<?> resultClass;
-	protected Object resultObject;
-	protected MetaClass metaClass;
-	protected DBConfig db;
+	protected StringBuffer  sql=new StringBuffer();
+	protected List<Object>  parameters=new ArrayList<Object>();
+	
+	protected ResultCreator rc=new ResultCreator();
+ 
+	protected DBConfig      db;
  	
 	protected int cacheTime=0;
 	
@@ -77,11 +66,11 @@ public class Query {
 	
 	public Query(DBConfig db,Class<?> resultClass){
 		 this.db=db;
-		 setResultClass(resultClass);
+		 setResultCreator(resultClass);
 	}
 	
 	public Query(Class<?> resultClass){
-		 setResultClass(resultClass);
+		setResultCreator(resultClass);
 	}
 	 
 	public Query notin(Object... values){
@@ -284,7 +273,7 @@ public class Query {
 					try{
 						rs=pst.executeQuery();				
 						if(rs.next()){	
-							result=createRecord(rs,(T)resultObject); 											
+							result=rc.createResult(Query.this,rs); 											
 						}	
 						return result;
 					}finally{
@@ -316,7 +305,7 @@ public class Query {
 			queryCheck();
 			
 			Query countQuery=getDialect().getCountQuery(this);			
-			long total=countQuery.setResultClass(Long.class).getResult();			
+			long total=countQuery.setResultCreator(Long.class).getResult();			
 			 
 			Query listQuery=getDialect().getLimitQuery(this, limit, offset);
 			DataTable<T>  list=listQuery.getList();
@@ -366,7 +355,7 @@ public class Query {
 					try{
 						rs=pst.executeQuery();				 		
 						while(rs.next()){
-							T r=createRecord(rs,null); 
+							T r=rc.createResult(Query.this,rs); 
 							result.add(r);					
 						}
 						return result;
@@ -392,112 +381,7 @@ public class Query {
 		}
 	}
 	
-	
-	protected <T> T createRecord(ResultSet rs,T resultObject)throws SQLException{
-		T r=resultObject;
-		
-		if(resultClass==Long.class || resultClass==long.class){
-			r=(T)new Long(rs.getLong(1));			 
-		}else if(resultClass==Integer.class || resultClass==int.class){
-			r=(T)new Integer(rs.getInt(1));			 
-		}else if(resultClass==Float.class || resultClass==float.class){
-			r=(T)new Float(rs.getFloat(1));			 
-		}else if(resultClass==Short.class || resultClass==short.class){
-			r=(T)new Short(rs.getShort(1));			 
-		}else if(resultClass==Byte.class || resultClass==byte.class){
-			r=(T)new Byte(rs.getByte(1));			 
-		}else if(resultClass==Double.class || resultClass==double.class){
-			r=(T)new Double(rs.getDouble(1));			 
-		}else if(resultClass==String.class){
-			r=(T)rs.getString(1);
-		}else if(resultClass==BigDecimal.class){
-			r=(T)rs.getBigDecimal(1);
-		}else if(resultClass==Date.class){
-			r=(T)rs.getDate(1);
-		}else if(resultClass==byte[].class){
-			r=(T)rs.getBytes(1);
-		}else{
-			r=toResult(rs,r);				
-		}
-		
-		return r;
-	}	 
-   
-	protected <T> T toResult(ResultSet rs,T r) throws SQLException{
-		if(resultClass!=null || r!=null){
-			try{
-				if(r==null){
-					r=(T)resultClass.newInstance();						 
-				}
-			}catch(Exception e){
-				throw new RuntimeException(e);
-			}
-						 
-			load(rs,r);
-			
-		}else{ 		
-			//未指定结果类, 则采用HashMap
-			DataMap x=new DataMap();
-			
-			loadToDataMap(rs,x); 
-			
-			r=(T)x;
-		}	
-		
-		return r;
-	}
-	
-	protected <T> void loadToDataMap(ResultSet rs,DataMap r)throws SQLException{
-		ResultSetMetaData rsmd=rs.getMetaData();
-		 
-		for(int i=1;i<=rsmd.getColumnCount();i++){
-			String name =rsmd.getColumnLabel(i);
-			if(name==null || name.trim().length()<1){
-				name =rsmd.getColumnName(i);
-			}
-			
-			r.put(name, rs.getObject(i));
-		}
-	}
-	
-	protected <T> void load(ResultSet rs,T r)throws SQLException{
-		if(r instanceof Model<?>){
-			Model<?> model=(Model<?>)r;
-			 
-			if(model instanceof SimpleModel){
-				model.use(db);
-			}
-			model.before(ModelEvent.LOAD);
-		}
-		
-		ResultSetMetaData rsmd=rs.getMetaData();
-		
-		for(int i=1;i<=rsmd.getColumnCount();i++){
-			String name =rsmd.getColumnName(i);
-			
-			Name nColumn =new Name(false).setName(name);
-			 
-			FGS fgs=metaClass.getField(nColumn.getJavaName());
-			if(fgs==null){
-				String table=rsmd.getTableName(i);
-				if(table!=null && table.length()>0){
-					Name nTable  =new Name(true).setName(table);
-										
-					String jname=nTable.getJavaName()+"$"+nColumn.getJavaName();
-					fgs=metaClass.getField(jname);
-				}
-			}
-			if(fgs!=null){
-				Object v=rs.getObject(i);
-				fgs.setObject(r, v);
-			}						
-		}
-		
-		if(r instanceof Model<?>){		
-			((Model<?>)r).after(ModelEvent.LOAD,0);
-		}
-	}
-	
+	 
 	public int getCacheTime() {
 		return cacheTime;
 	}
@@ -512,13 +396,7 @@ public class Query {
 	}
 
 	public Query use(DBConfig db) {
-		if(db!=null){
-			if(db.getCfg().isCfgFileChanged()){
-				this.db=dsm.getDBConfig(db.getKey(),db.getDb());
-			}else{
-				this.db = db;
-			}
-		}
+		this.db = db;
 		return this;
 	}
 	
@@ -529,22 +407,25 @@ public class Query {
 		
 		return dsm.getDialect(db);
 	}
-  
-	public Query setResultObject(Object resultObject){
-		this.resultObject=resultObject;
-		this.resultClass = resultObject.getClass();
-		this.metaClass=ClassHelper.getMetaClass(resultClass);
+   
+	/**
+	 * 
+	 * @param rc : maybe (Object ResultConstructor) or  (Object resultObject) or (Class<?> resultClass) or (ResultCreator resultCreator)
+	 * @return
+	 */
+	public Query setResultCreator(Object rc){
+		if(rc instanceof ResultCreator){
+			this.rc=(ResultCreator)rc;
+		}else if(rc instanceof Class){
+			this.rc.setResultClass((Class<?>)rc);	
+		}else{
+			this.rc.setResultObject(rc);
+		}		
 		return this;
-	}
-
-	public Class<?> getResultClass(){
-		return this.resultClass;
 	}
 	
-	public Query setResultClass(Class<?> resultClass) {		
-		this.resultClass = resultClass;
-		this.metaClass=ClassHelper.getMetaClass(resultClass);
-		return this;
+	public ResultCreator getResultCreator(){
+		return this.rc;
 	}
 
 	public boolean isReadonly() {
@@ -563,5 +444,6 @@ public class Query {
 	public void setReadonly(Boolean readonly) {
 		this.readonly = readonly;
 	}
-  
+ 
+	
 }
