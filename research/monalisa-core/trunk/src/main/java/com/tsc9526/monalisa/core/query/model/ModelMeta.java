@@ -26,11 +26,16 @@ import com.tsc9526.monalisa.core.tools.ClassHelper.FGS;
 import com.tsc9526.monalisa.core.tools.ClassHelper.MetaClass;
 import com.tsc9526.monalisa.core.tools.TableHelper;
 
+import freemarker.log.Logger;
+
 class ModelMeta{	
+	static Logger logger=Logger.getLogger(ModelMeta.class.getName());
+	
 	private static Map<String, ModelMeta> hMetas=new HashMap<String, ModelMeta>();
 	
 	public synchronized static ModelMeta getModelMeta(Model<?> model){
-		String key=model.getClass().getName();
+		String key=getModelKey(model);
+		
 		ModelMeta mm=hMetas.get(key);
 		if(mm==null){
 			mm=new ModelMeta();
@@ -39,6 +44,38 @@ class ModelMeta{
 			hMetas.put(key, mm);
 		}
 		return mm;
+	}
+	
+	private static String getModelKey(Model<?> model){
+		String key=model.getClass().getName();
+		
+		Class<?> clazz=ClassHelper.findClassWithAnnotation(model.getClass(),DB.class);
+		if(clazz==null){
+			if(model.db==null){
+				throw new RuntimeException("Dynamic model can not found DB, call model.use(DB) first!");
+			}
+			
+			Table table=model.getClass().getAnnotation(Table.class);
+			if(table==null){
+				if(model.TABLE_NAME==null || model.TABLE_NAME.trim().length()<1){
+					throw new RuntimeException("Dynamic model can not found table: "+model.TABLE_NAME+", call model(TableName) first!");
+				}else{				
+					key="#"+model.db.getKey()+"$"+model.TABLE_NAME;
+				}
+			}
+		}else{
+			Table table=model.getClass().getAnnotation(Table.class);
+			if(table==null){
+				if(model.TABLE_NAME==null || model.TABLE_NAME.trim().length()<1){
+					throw new RuntimeException("Dynamic model can not found table: "+model.TABLE_NAME+", call model(TableName) first!");
+				}else{	
+					DBConfig db=Model.dsm.getDBConfig(clazz);
+					key=db.getKey()+"$"+model.TABLE_NAME;
+				}
+			}
+		}
+		
+		return key;
 	}
 	
 	protected DBConfig  db;
@@ -87,6 +124,10 @@ class ModelMeta{
 				throw new RuntimeException("Model: "+model.getClass()+" must implement interface annotated by: "+DB.class+", Or call use(db) first!");
 			}
 			db=Model.dsm.getDBConfig(clazz);
+			
+			logger.debug("Loaded db: "+db.getKey()+", model: "+model.getClass().getName());
+		}else{
+			logger.debug("Use model db: "+db.getKey()+", model: "+model.getClass().getName());
 		}
 		
 		dialect=Model.dsm.getDialect(db);
