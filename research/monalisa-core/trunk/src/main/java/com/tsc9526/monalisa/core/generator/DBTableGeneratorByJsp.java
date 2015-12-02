@@ -10,9 +10,6 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.logging.FileHandler;
-
-import org.apache.tomcat.util.http.fileupload.IOUtils;
 
 import com.tsc9526.monalisa.core.annotation.Column;
 import com.tsc9526.monalisa.core.annotation.DB;
@@ -21,12 +18,8 @@ import com.tsc9526.monalisa.core.annotation.Table;
 import com.tsc9526.monalisa.core.meta.MetaColumn;
 import com.tsc9526.monalisa.core.meta.MetaIndex;
 import com.tsc9526.monalisa.core.meta.MetaTable;
-import com.tsc9526.monalisa.core.resources.Freemarker;
 import com.tsc9526.monalisa.core.tools.ClassHelper;
 import com.tsc9526.monalisa.core.tools.FileHelper;
-
-import freemarker.template.Configuration;
-import freemarker.template.Template;
 
 /**
  * 
@@ -51,17 +44,15 @@ public class DBTableGeneratorByJsp {
 		try {
 			InputStream in=DBTableGeneratorByJsp.class.getResourceAsStream("/com/tsc9526/monalisa/core/resources/template/model.jsp");
 			StringBuilder sb=new StringBuilder(FileHelper.readToString(in, "utf-8"));
-			
-			
-			
+			 
 			Map<String, Object> data = new HashMap<String, Object>();
 			data.put("table", table);
 			data.put("modelClass", modelClass);
 			data.put("dbi", dbi);
 			
 			data.put("imports", getImports());
-
-			modelTpl.process(data, w);
+			
+			 
 			w.flush();
 			w.close();
 		} catch (Exception e) {
