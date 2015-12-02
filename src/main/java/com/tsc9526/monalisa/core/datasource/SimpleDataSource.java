@@ -22,13 +22,14 @@ import java.util.logging.Logger;
  *  
  * @author zzg.zhou(11039850@qq.com)
  */
-public class SimpleDataSource implements PooledDataSource {
+public class SimpleDataSource implements PooledDataSource {	 
+	private ConcurrentMap<Connection, Date> pool = new ConcurrentHashMap<Connection, Date>();
+	
 	private String url;
 	private String driver;
 	private String username;
 	private String password;
-
-	private static final ConcurrentMap<Connection, Date> pool = new ConcurrentHashMap<Connection, Date>();
+ 	
 	private int maxSize;
 	private int minSize;
 	private Semaphore semaphore;
@@ -97,7 +98,7 @@ public class SimpleDataSource implements PooledDataSource {
 		return getConnection(username, password);
 	}
 
-	public Connection getConnection(String username, String password) throws SQLException {
+	public Connection getConnection(String username, String password) throws SQLException {		 
 		try {
 			semaphore.acquire();
 		}catch (InterruptedException e) {			
@@ -143,7 +144,7 @@ public class SimpleDataSource implements PooledDataSource {
 	private Connection getRealConnection(String username, String password) throws SQLException {
 		try {
 			Class.forName(driver);
-
+			 
 			return DriverManager.getConnection(url, username, password);
 		} catch (ClassNotFoundException e) {
 			throw new RuntimeException(e);
