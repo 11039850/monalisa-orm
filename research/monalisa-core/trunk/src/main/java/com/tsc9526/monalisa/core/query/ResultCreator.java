@@ -54,7 +54,7 @@ public class ResultCreator{
 	protected <T> T fromResultSet(Query query,ResultSet rs) throws SQLException{
 		T r=newResult(query);
 		if(r!=null){
-			loadToResult(query,rs,r);			
+			load(query,rs,r);			
 		}else{ 		
 			//未指定结果类, 则采用HashMap
 			DataMap x=new DataMap();
@@ -94,20 +94,36 @@ public class ResultCreator{
 		}
 	}
 	
-	protected <T> void loadToResult(Query query,ResultSet rs,T r)throws SQLException{
+	protected <T> void load(Query query,ResultSet rs,T r)throws SQLException{
 		if(r instanceof Model<?>){
 			Model<?> model=(Model<?>)r;
 			model.use(query.getDb());
 			 
 			model.before(ModelEvent.LOAD);
-		}
-		
-		loadResult(query,rs, r);
-		
-		if(r instanceof Model<?>){		
+		 	
+			loadModel(query,rs,model);
+			
 			((Model<?>)r).after(ModelEvent.LOAD,0);
+		}else{		
+			loadResult(query,rs, r);
 		}
 	}
+	
+	protected <T> void loadModel(Query query,ResultSet rs,Model<?> r)throws SQLException{
+		ResultSetMetaData rsmd=rs.getMetaData();
+		
+		for(int i=1;i<=rsmd.getColumnCount();i++){
+			String name =rsmd.getColumnName(i);
+			
+			Name nColumn =new Name(false).setName(name);
+			 
+			FGS fgs=r.field(nColumn.getJavaName());			 
+			if(fgs!=null){
+				Object v=rs.getObject(i);
+				fgs.setObject(r, v);
+			}
+		}
+	}	
 	
 	protected <T> void loadResult(Query query,ResultSet rs,T r)throws SQLException{
 		MetaClass metaClass=ClassHelper.getMetaClass(r.getClass());

@@ -8,6 +8,7 @@ import com.tsc9526.monalisa.core.annotation.DB;
 import com.tsc9526.monalisa.core.datasource.DBConfig;
 import com.tsc9526.monalisa.core.query.model.Model;
 import com.tsc9526.monalisa.core.query.model.SimpleModel;
+import com.tsc9526.monalisa.core.tools.ClassHelper.FGS;
 
 @DB(url="jdbc:mysql://127.0.0.1:3306/jy_market", username="jy_market", password="jy_market")
 public class SimpleModelTest extends Model<SimpleModelTest>{ 
@@ -32,6 +33,17 @@ public class SimpleModelTest extends Model<SimpleModelTest>{
 		tx.set("gift_id", 1);
 		tx.load();
 		System.out.println("=="+tx);
+		
+		SimpleModel tx2=new SimpleModel("gift_code");
+		tx2.use(db);
+		for(FGS fgs:tx2.fields()){
+			System.out.println("=="+fgs.getFieldName());
+		}
+		if(tx2.field("package_name")!=null){
+			throw new RuntimeException("Error dynamic model!");
+		}
+		
+		
 		
 		Map<String, Object> hs=new LinkedHashMap<String, Object>();
 		hs.put("x",new SimpleModelTest());
