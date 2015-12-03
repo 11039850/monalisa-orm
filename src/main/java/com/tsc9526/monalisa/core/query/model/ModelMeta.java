@@ -238,9 +238,7 @@ class ModelMeta{
 					FGS fgs=createFGS(c,mfd);	
 					fs.add(fgs);								 
 				}		
-				
-				metaClass.replaceFields(fs);
-				
+				 
 				return fs;
 			}else{
 				throw new RuntimeException("Table not found: "+tableName+", DB: "+db.getKey());
