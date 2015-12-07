@@ -66,11 +66,11 @@ public class Query {
 	
 	public Query(DBConfig db,Class<?> resultClass){
 		 this.db=db;
-		 setResultCreator(resultClass);
+		 setQueryResult(resultClass);
 	}
 	
 	public Query(Class<?> resultClass){
-		setResultCreator(resultClass);
+		setQueryResult(resultClass);
 	}
 	 
 	public Query notin(Object... values){
@@ -305,7 +305,7 @@ public class Query {
 			queryCheck();
 			
 			Query countQuery=getDialect().getCountQuery(this);			
-			long total=countQuery.setResultCreator(Long.class).getResult();			
+			long total=countQuery.setQueryResult(Long.class).getResult();			
 			 
 			Query listQuery=getDialect().getLimitQuery(this, limit, offset);
 			DataTable<T>  list=listQuery.getList();
@@ -410,10 +410,10 @@ public class Query {
    
 	/**
 	 * 
-	 * @param rc : maybe (Object ResultConstructor) or  (Object resultObject) or (Class<?> resultClass) or (ResultCreator resultCreator)
+	 * @param rc : maybe (Object QueryResult) or  (Object resultObject) or (Class<?> resultClass) 
 	 * @return
 	 */
-	public Query setResultCreator(Object rc){
+	public Query setQueryResult(Object rc){
 		if(rc instanceof QueryResult){
 			this.rc=(QueryResult)rc;
 		}else if(rc instanceof Class){
@@ -424,7 +424,7 @@ public class Query {
 		return this;
 	}
 	
-	public QueryResult getResultCreator(){
+	public QueryResult getQueryResult(){
 		return this.rc;
 	}
 
