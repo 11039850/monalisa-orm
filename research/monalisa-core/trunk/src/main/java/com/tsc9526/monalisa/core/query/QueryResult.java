@@ -18,11 +18,11 @@ import com.tsc9526.monalisa.core.tools.ClassHelper.MetaClass;
  * @author zzg.zhou(11039850@qq.com)
  */
 @SuppressWarnings("unchecked")
-public class ResultCreator{
+public class QueryResult{
 	protected Object        resultObject;			
 	protected Class<?>      resultClass;	 
 	 
-	public ResultCreator(){		
+	public QueryResult(){		
 	} 	
 	
 	public <T> T createResult(Query query,ResultSet rs)throws SQLException{		 
@@ -152,13 +152,13 @@ public class ResultCreator{
 		}
 	}
 	
-	public ResultCreator setResultObject(Object resultObject) {
+	public QueryResult setResultObject(Object resultObject) {
 		this.resultObject=resultObject;
 		this.resultClass=resultObject.getClass();
 		return this;
 	}
 	
-	public ResultCreator setResultClass(Class<?> resultClass) {			
+	public QueryResult setResultClass(Class<?> resultClass) {			
 		this.resultClass=resultClass;
 		return this;
 	}	

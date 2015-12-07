@@ -6,6 +6,8 @@ import java.util.Map;
 
 import com.tsc9526.monalisa.core.annotation.DB;
 import com.tsc9526.monalisa.core.datasource.DBConfig;
+import com.tsc9526.monalisa.core.query.DataMap;
+import com.tsc9526.monalisa.core.query.datatable.DataTable;
 import com.tsc9526.monalisa.core.query.model.Model;
 import com.tsc9526.monalisa.core.query.model.SimpleModel;
 import com.tsc9526.monalisa.core.tools.ClassHelper.FGS;
@@ -22,11 +24,11 @@ public class SimpleModelTest extends Model<SimpleModelTest>{
 	
 	
 	public static void main(String[] args) {
-		Object ix=0;
-		
-		System.out.println(ix instanceof Integer);
-		
 		DBConfig db=DBConfig.fromClass(SimpleModelTest.class);
+		
+		DataTable<DataMap> r1=db.select("select count(*) from gift");
+		System.out.println(r1.get(0).getInteger(0));
+		
 		SimpleModel tx=new SimpleModel("gift");
 		tx.use(db);
 		

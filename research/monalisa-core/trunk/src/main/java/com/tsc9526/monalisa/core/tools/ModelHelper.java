@@ -2,9 +2,11 @@ package com.tsc9526.monalisa.core.tools;
 
 import java.io.ByteArrayInputStream;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -77,16 +79,48 @@ public class ModelHelper {
 				}
 			}
 			
+			 
+			String[] xms=splitMappings(mappings);
+			
 			if(parser!=null){				 
-				return parser.parse(model, data,mappings);
+				return parser.parse(model, data,xms);
 			}else{
-				return parseFromFields(model,data,mappings);
+				return parseFromFields(model,data,xms);
 			}
 		}
 				
 		return false;
 	}
 	
+	
+	private static String[] splitMappings(String... mappings){
+		if(mappings!=null && mappings.length==1){			
+			List<String> ms=new ArrayList<String>();
+			
+			String m=mappings[0];
+			StringBuffer sb=new StringBuffer();
+			for(int i=0;i<m.length();i++){
+				char c=m.charAt(i);
+				if(c==',' || c==';' || c=='|'){
+					String v=sb.toString().trim();
+					if(v.length()>0){
+						ms.add(v);
+					}
+					sb.delete(0,sb.length());
+				}else{
+					sb.append(c);
+				}
+			}
+			String v=sb.toString().trim();
+			if(v.length()>0){
+				ms.add(v);
+			}
+			
+			return ms.toArray(new String[0]);			
+		}else{
+			return mappings;
+		}
+	}
 	
 	private static boolean parseFromFields(Model<?> m,Object data,String... mappings){
 		MetaClass source=ClassHelper.getMetaClass(data);
