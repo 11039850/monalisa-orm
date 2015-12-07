@@ -19,6 +19,7 @@ import com.tsc9526.monalisa.core.meta.MetaPartition;
 import com.tsc9526.monalisa.core.query.DataMap;
 import com.tsc9526.monalisa.core.query.Page;
 import com.tsc9526.monalisa.core.query.Query;
+import com.tsc9526.monalisa.core.query.datatable.DataTable;
 import com.tsc9526.monalisa.core.query.model.Model;
 import com.tsc9526.monalisa.core.query.model.SimpleModel;
 import com.tsc9526.monalisa.core.tools.ClassHelper;
@@ -205,7 +206,7 @@ public class DBConfig implements Closeable{
 		return query.getResult();
 	}
 	
-	public List<DataMap> select(String sql,Object... args){
+	public DataTable<DataMap> select(String sql,Object... args){
 		Query query=createQuery().add(sql,args);
 		return query.getList();
 	}

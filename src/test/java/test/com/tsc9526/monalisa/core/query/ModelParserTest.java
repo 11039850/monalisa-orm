@@ -73,6 +73,26 @@ public class ModelParserTest {
 		Assert.assertEquals(model.getStringField2(),"123");
 	}
 	
+	public void testMapping1(){
+		TestSimpleModel model=new TestSimpleModel();
+		 
+		String json="{\"s1\":[\"a\",\"b\"], \"s2\":\"123\" }";		
+		model.parse(json,"s1=string_field1,s2=string_field2");
+		
+		Assert.assertEquals(model.getStringField1(),"[\"a\",\"b\"]");
+		Assert.assertEquals(model.getStringField2(),"123");
+	}
+	
+	public void testMapping2(){
+		TestSimpleModel model=new TestSimpleModel();
+		 
+		String json="{\"s1\":[\"a\",\"b\"], \"s2\":\"123\" }";		
+		model.parse(json,"s1=string_field1","s2=string_field2");
+		
+		Assert.assertEquals(model.getStringField1(),"[\"a\",\"b\"]");
+		Assert.assertEquals(model.getStringField2(),"123");
+	}
+	
 	public void testArray(){
 		TestSimpleModel model=new TestSimpleModel();
 		

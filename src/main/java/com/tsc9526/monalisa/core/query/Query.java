@@ -47,7 +47,7 @@ public class Query {
 	protected StringBuffer  sql=new StringBuffer();
 	protected List<Object>  parameters=new ArrayList<Object>();
 	
-	protected ResultCreator rc=new ResultCreator();
+	protected QueryResult rc=new QueryResult();
  
 	protected DBConfig      db;
  	
@@ -414,8 +414,8 @@ public class Query {
 	 * @return
 	 */
 	public Query setResultCreator(Object rc){
-		if(rc instanceof ResultCreator){
-			this.rc=(ResultCreator)rc;
+		if(rc instanceof QueryResult){
+			this.rc=(QueryResult)rc;
 		}else if(rc instanceof Class){
 			this.rc.setResultClass((Class<?>)rc);	
 		}else{
@@ -424,7 +424,7 @@ public class Query {
 		return this;
 	}
 	
-	public ResultCreator getResultCreator(){
+	public QueryResult getResultCreator(){
 		return this.rc;
 	}
 

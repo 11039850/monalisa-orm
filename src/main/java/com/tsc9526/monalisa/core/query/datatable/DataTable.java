@@ -8,7 +8,11 @@ import java.util.Map;
 import com.tsc9526.monalisa.core.tools.ClassHelper;
 import com.tsc9526.monalisa.core.tools.ClassHelper.FGS;
 import com.tsc9526.monalisa.core.tools.ClassHelper.MetaClass;
- 
+
+ /**
+  *  
+  * @author zzg.zhou(11039850@qq.com)
+  */
 public class DataTable<E> extends ArrayList<E> { 
 	private static final long serialVersionUID = 6839964505006290332L;
 	

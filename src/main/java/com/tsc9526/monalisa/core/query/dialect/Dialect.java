@@ -11,7 +11,7 @@ import com.tsc9526.monalisa.core.datasource.DBConfig;
 import com.tsc9526.monalisa.core.meta.MetaTable;
 import com.tsc9526.monalisa.core.meta.MetaTable.CreateTable;
 import com.tsc9526.monalisa.core.query.Query;
-import com.tsc9526.monalisa.core.query.ResultCreator;
+import com.tsc9526.monalisa.core.query.QueryResult;
 import com.tsc9526.monalisa.core.query.model.MMH;
 import com.tsc9526.monalisa.core.query.model.Model;
 import com.tsc9526.monalisa.core.query.model.ModelIndex;
@@ -190,7 +190,7 @@ public abstract class Dialect{
 	}
  	
 	public Query select(final Model model,String whereStatement,Object ... args){
-		Query query=new Query().setResultCreator(new ResultCreator(){
+		Query query=new Query().setResultCreator(new QueryResult(){
 			public <T> T newResult(Query query) {
 				return (T)MMH.createFrom(model);				 
 			}

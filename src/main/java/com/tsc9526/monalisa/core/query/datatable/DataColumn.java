@@ -1,5 +1,9 @@
 package com.tsc9526.monalisa.core.query.datatable;
 
+/**
+ *  
+ * @author zzg.zhou(11039850@qq.com)
+ */
 public class DataColumn {
 	private String name;
 	
