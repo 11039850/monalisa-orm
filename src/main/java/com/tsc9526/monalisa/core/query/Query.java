@@ -1,20 +1,30 @@
 package com.tsc9526.monalisa.core.query;
 
+import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import com.tsc9526.monalisa.core.datasource.DBConfig;
 import com.tsc9526.monalisa.core.datasource.DataSourceManager;
 import com.tsc9526.monalisa.core.datasource.DbProp;
 import com.tsc9526.monalisa.core.generator.DBExchange;
+import com.tsc9526.monalisa.core.meta.Name;
 import com.tsc9526.monalisa.core.query.datatable.DataTable;
 import com.tsc9526.monalisa.core.query.dialect.Dialect;
+import com.tsc9526.monalisa.core.query.model.Model;
+import com.tsc9526.monalisa.core.query.model.ModelEvent;
+import com.tsc9526.monalisa.core.tools.ClassHelper;
+import com.tsc9526.monalisa.core.tools.ClassHelper.FGS;
+import com.tsc9526.monalisa.core.tools.ClassHelper.MetaClass;
 import com.tsc9526.monalisa.core.tools.CloseQuietly;
 import com.tsc9526.monalisa.core.tools.SQLHelper;
 
@@ -24,16 +34,18 @@ import freemarker.log.Logger;
 /**
  * 数据库查询对象, 基本用法: <br>
  * <code>
- * Query q=new Query(Result.class); <br>
+ * Query q=new Query(); <br>
  * q.use(db); <br>
  * q.add("select * from xxx where id=?",1); <br>
- * List&lt;Result&gt; r=q.getList();   <br>
- * Page&lt;Result&gt; p=q.getPage(10,0);<br>
- * Result       x=q.getResult();<br>
+ * List&lt;Result&gt; r=q.getList(Result.class);   <br>
+ * Page&lt;Result&gt; p=q.getPage(Result.class,10,0);<br>
+ * Result       x=q.getResult(Result.class);<br>
  * </code>
  * 
  * @author zzg.zhou(11039850@qq.com)
  */
+
+@SuppressWarnings({"unchecked"})
 public class Query {	
 	static Logger logger=Logger.getLogger(Query.class.getName());
 	
@@ -46,9 +58,7 @@ public class Query {
 	
 	protected StringBuffer  sql=new StringBuffer();
 	protected List<Object>  parameters=new ArrayList<Object>();
-	
-	protected QueryResult rc=new QueryResult();
- 
+ 	 
 	protected DBConfig      db;
  	
 	protected int cacheTime=0;
@@ -62,16 +72,7 @@ public class Query {
 	
 	public Query(DBConfig db){
 		 this.db=db;
-	}
-	
-	public Query(DBConfig db,Class<?> resultClass){
-		 this.db=db;
-		 setQueryResult(resultClass);
-	}
-	
-	public Query(Class<?> resultClass){
-		setQueryResult(resultClass);
-	}
+	}	 
 	 
 	public Query notin(Object... values){
 		 return getDialect().notin(this, values);
@@ -257,12 +258,47 @@ public class Query {
 	
 	public int execute(Execute<Integer> execute){
 		 return doExecute(execute);
+	}	 
+	
+	public DataMap getResult(){
+		return getResult(DataMap.class);				
 	}
 	 
+	
+	public DataTable<DataMap> getList() {
+		return getList(DataMap.class);
+	}
+	
 	/**
-	 * @return 如果没有调用setResultClass指定结果类, 则对象为{@link:com.tsc9526.monalisa.core.query.DataMap}
+	 * @param limit 
+	 *   The max number of records for this query
+	 *    
+	 * @param offset  
+	 *   Base 0, the first record is 0
+	 * @return List对象
 	 */
-	public <T> T getResult(){
+	public DataTable<DataMap> getList(int limit,int offset) {		 
+		return getList(DataMap.class,limit,offset);		 
+	}
+	
+	public <T> DataTable<T> getList(Class<T> resultClass,int limit,int offset) {
+		Query listQuery=getDialect().getLimitQuery(this, limit, offset);
+		DataTable<T>  list=listQuery.getList(resultClass);
+			
+		return list;
+	}	 
+		
+	public Page<DataMap> getPage(int limit,int offset) {
+		return getPage(DataMap.class,limit, offset);
+	}
+	
+	/**
+	 * 将查询结果转换为指定的类
+	 *  
+	 * @param resultClass
+	 * @return
+	 */
+	public <T> T getResult(final Class<T> resultClass){
 		if(!DBExchange.doExchange(this)){			
 			queryCheck();
 			
@@ -273,14 +309,13 @@ public class Query {
 					try{
 						rs=pst.executeQuery();				
 						if(rs.next()){	
-							result=rc.createResult(Query.this,rs); 											
+							result=createResult(rs,resultClass); 											
 						}	
 						return result;
 					}finally{
 						CloseQuietly.close(rs);
 					}
 				}
-
 			 
 				public PreparedStatement preparedStatement(Connection conn,String sql)throws SQLException {				 
 					return conn.prepareStatement(sql);
@@ -292,7 +327,6 @@ public class Query {
 	}
 	
 	/**
-	 * 如果没有调用setResultClass指定结果类, 则PageList存储的对象为{@link:com.tsc9526.monalisa.core.query.DataMap}
 	 * @param limit 
 	 *   The max number of records for this query
 	 *    
@@ -300,15 +334,15 @@ public class Query {
 	 *   Base 0, the first record is 0
 	 * @return Page对象
 	 */
-	public <T> Page<T> getPage(int limit,int offset) {
+	public <T> Page<T> getPage(Class<T> resultClass,int limit,int offset) {
 		if(!DBExchange.doExchange(this)){			
 			queryCheck();
 			
 			Query countQuery=getDialect().getCountQuery(this);			
-			long total=countQuery.setQueryResult(Long.class).getResult();			
+			long total=countQuery.getResult(Long.class);			
 			 
 			Query listQuery=getDialect().getLimitQuery(this, limit, offset);
-			DataTable<T>  list=listQuery.getList();
+			DataTable<T>  list=listQuery.getList(resultClass);
 			 
 			Page<T> page=new Page<T>(list,total,limit,offset);
 		
@@ -319,32 +353,9 @@ public class Query {
 	}
 	
 	/**
-	 * 如果没有调用setResultClass指定结果类, 则List存储的对象为{@link:com.tsc9526.monalisa.core.query.DataMap}
-	 * @param limit 
-	 *   The max number of records for this query
-	 *    
-	 * @param offset  
-	 *   Base 0, the first record is 0
 	 * @return List对象
 	 */
-	public <T> DataTable<T> getList(int limit,int offset) {
-		if(!DBExchange.doExchange(this)){			
-			queryCheck();
-			   
-			Query listQuery=getDialect().getLimitQuery(this, limit, offset);
-			DataTable<T>  list=listQuery.getList();
-			
-			return list;
-		}else{
-			return new DataTable<T>();		 
-		}
-	}
-	
-	/**
-	 * 如果没有调用setResultClass指定结果类, 则List存储的对象为{@link:com.tsc9526.monalisa.core.query.DataMap}
-	 * @return List对象
-	 */
-	public <T> DataTable<T> getList() {
+	public <T> DataTable<T> getList(final Class<T> resultClass) {
 		if(!DBExchange.doExchange(this)){			 
 			queryCheck();
 			
@@ -355,7 +366,7 @@ public class Query {
 					try{
 						rs=pst.executeQuery();				 		
 						while(rs.next()){
-							T r=rc.createResult(Query.this,rs); 
+							T r=createResult(rs,resultClass); 
 							result.add(r);					
 						}
 						return result;
@@ -364,7 +375,6 @@ public class Query {
 					}
 				} 
 				
-
 				public PreparedStatement preparedStatement(Connection conn,String sql)throws SQLException {				 
 					return conn.prepareStatement(sql);
 				}	
@@ -372,8 +382,147 @@ public class Query {
 		}else{
 			return new DataTable<T>();
 		}
+	}
+	
+	public <T> T load(final T result){
+		if(!DBExchange.doExchange(this)){			 
+			queryCheck();
+			
+			return doExecute(new Execute<T>(){
+				public T execute(PreparedStatement pst) throws SQLException {		
+					ResultSet rs=null;
+					try{
+						rs=pst.executeQuery();				 		
+						if(rs.next()){
+							load(rs, result);							 				
+						}
+						return result;
+					}finally{
+						CloseQuietly.close(rs);
+					}
+				}
+				
+				public PreparedStatement preparedStatement(Connection conn,String sql)throws SQLException {				 
+					return conn.prepareStatement(sql);
+				}	
+			}); 
+		}else{
+			return result;
+		}
+	}
+	
+		 
+	protected <T> T createResult(ResultSet rs,Class<T> resultClass)throws SQLException{		 
+		if(resultClass==Long.class || resultClass==long.class){
+			return (T)new Long(rs.getLong(1));			 
+		}else if(resultClass==Integer.class || resultClass==int.class){
+			return (T)new Integer(rs.getInt(1));			 
+		}else if(resultClass==Float.class || resultClass==float.class){
+			return (T)new Float(rs.getFloat(1));			 
+		}else if(resultClass==Short.class || resultClass==short.class){
+			return (T)new Short(rs.getShort(1));			 
+		}else if(resultClass==Byte.class || resultClass==byte.class){
+			return (T)new Byte(rs.getByte(1));			 
+		}else if(resultClass==Double.class || resultClass==double.class){
+			return (T)new Double(rs.getDouble(1));			 
+		}else if(resultClass==String.class){
+			return (T)rs.getString(1);
+		}else if(resultClass==BigDecimal.class){
+			return (T)rs.getBigDecimal(1);
+		}else if(resultClass==Date.class){
+			return (T)rs.getDate(1);
+		}else if(resultClass==byte[].class){
+			return (T)rs.getBytes(1);
+		}else {
+			try{
+				if(Map.class.isAssignableFrom(resultClass)){				
+					return (T)loadToMap(rs, new DataMap());				 
+				}else{				 
+					return (T)load(rs,resultClass.newInstance());
+				}
+			}catch(IllegalAccessException e){
+				throw new RuntimeException(e);
+			}catch(InstantiationException e){
+				throw new RuntimeException(e);
+			}
+		}		 
 	}	 
 	
+	protected <T> T load(ResultSet rs,T result)throws SQLException{
+		if(result instanceof Model<?>){
+			Model<?> model=(Model<?>)result;
+			
+			model.use(getDb());
+			 
+			model.before(ModelEvent.LOAD);
+		 	
+			loadModel(rs,model);
+			
+			model.after(ModelEvent.LOAD,0);
+		}else{		
+			loadResult(rs, result);
+		}
+		return result;
+	}
+  
+	protected DataMap loadToMap(ResultSet rs, DataMap map)throws SQLException{
+		ResultSetMetaData rsmd=rs.getMetaData();
+		 
+		for(int i=1;i<=rsmd.getColumnCount();i++){
+			String name =rsmd.getColumnLabel(i);
+			if(name==null || name.trim().length()<1){
+				name =rsmd.getColumnName(i);
+			}
+			
+			map.put(name, rs.getObject(i));
+		}
+		
+		return map;
+	}		
+	
+	protected <T> void loadModel(ResultSet rs,Model<?> r)throws SQLException{
+		ResultSetMetaData rsmd=rs.getMetaData();
+		
+		for(int i=1;i<=rsmd.getColumnCount();i++){
+			String name =rsmd.getColumnName(i);
+			
+			Name nColumn =new Name(false).setName(name);
+			 
+			FGS fgs=r.field(nColumn.getJavaName());			 
+			if(fgs!=null){
+				Object v=rs.getObject(i);
+				fgs.setObject(r, v);
+			}
+		}
+	}	
+	
+	protected <T> T loadResult(ResultSet rs,T result)throws SQLException{
+		MetaClass metaClass=ClassHelper.getMetaClass(result.getClass());
+		
+		ResultSetMetaData rsmd=rs.getMetaData();
+		
+		for(int i=1;i<=rsmd.getColumnCount();i++){
+			String name =rsmd.getColumnName(i);
+			
+			Name nColumn =new Name(false).setName(name);
+			 
+			FGS fgs=metaClass.getField(nColumn.getJavaName());
+			if(fgs==null){
+				String table=rsmd.getTableName(i);
+				if(table!=null && table.length()>0){
+					Name nTable  =new Name(true).setName(table);
+										
+					String jname=nTable.getJavaName()+"$"+nColumn.getJavaName();
+					fgs=metaClass.getField(jname);
+				}
+			}
+			if(fgs!=null){
+				Object v=rs.getObject(i);
+				fgs.setObject(result, v);
+			}						
+		}
+		return result;
+	}
 	
 	protected void queryCheck(){
 		if(db==null){
@@ -408,26 +557,7 @@ public class Query {
 		return dsm.getDialect(db);
 	}
    
-	/**
-	 * 
-	 * @param rc : maybe (Object QueryResult) or  (Object resultObject) or (Class<?> resultClass) 
-	 * @return
-	 */
-	public Query setQueryResult(Object rc){
-		if(rc instanceof QueryResult){
-			this.rc=(QueryResult)rc;
-		}else if(rc instanceof Class){
-			this.rc.setResultClass((Class<?>)rc);	
-		}else{
-			this.rc.setResultObject(rc);
-		}		
-		return this;
-	}
-	
-	public QueryResult getQueryResult(){
-		return this.rc;
-	}
-
+	 
 	public boolean isReadonly() {
 		if(readonly!=null){
 			return readonly;

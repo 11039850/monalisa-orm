@@ -31,9 +31,12 @@ public class SimpleModelTest extends Model<SimpleModelTest>{
 		
 		SimpleModel tx=new SimpleModel("gift");
 		tx.use(db);
+		if(tx.entity()){throw new RuntimeException();};
 		
 		tx.set("gift_id", 1);
 		tx.load();
+		if(!tx.entity()){throw new RuntimeException();};
+		
 		System.out.println("=="+tx);
 		
 		SimpleModel tx2=new SimpleModel("gift_code");
@@ -71,7 +74,7 @@ public class SimpleModelTest extends Model<SimpleModelTest>{
 		SimpleModelTest t=new SimpleModelTest();
 		t.set("gift_id", m.get("gift_id"));
 		t.load();
-		System.out.println(t);
+		System.out.println("loaded: "+t);
 		
 		
 		System.out.println("NEW: "+new SimpleModelTest());
@@ -83,12 +86,13 @@ public class SimpleModelTest extends Model<SimpleModelTest>{
 			x.changedFields();
 		}
 		long l2=System.currentTimeMillis();
-		System.out.println("Use time: "+(l2-l1)+" ms");
+		System.out.println("Use time: "+(l2-l1)+" ms");		
 		
-		
-		SimpleModel sm=new SimpleModel("gift");
-		sm.use(db);
-		for(SimpleModel x:sm.WHERE().field("package_name").like("package_name").field("giftId").gt(10).forSelect().select()){
+		SimpleModel sm=new SimpleModel("gift").use(db);		
+		for(SimpleModel x:sm.WHERE()
+				.field("package_name").like("package_name")
+				.field("giftId").gt(10)
+				.forSelect().select()){
 			System.err.println(x.toString());
 		}
 	}

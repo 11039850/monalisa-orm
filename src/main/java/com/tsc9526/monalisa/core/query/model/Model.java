@@ -147,7 +147,7 @@ public abstract class Model<T extends Model> implements Serializable {
 		 
 		query.use(db());
 
-		Object r = query.getResult();
+		Object r = query.load(this);
 		return (T) r;
 	}
 

@@ -196,11 +196,7 @@ public class DBConfig implements Closeable{
 	public Query createQuery(){		
 		return new Query(this);
 	}
-	
-	public Query createQuery(Class<?> resultClass){
-		return new Query(this,resultClass);
-	}
-	
+	 
 	public DataMap selectOne(String sql,Object... args){
 		Query query=createQuery().add(sql,args);
 		return query.getResult();
