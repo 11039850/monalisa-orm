@@ -97,14 +97,14 @@ public class Select<T extends Model,S extends Select> {
 	public T selectOne(String whereStatement,Object ... args){
 		Query query=model.dialect().selectOne(model,whereStatement, args);
 		query.use(db());
-		T r=query.getResult();
+		T r=(T)query.getResult(model.getClass());
 		return r;
 	}
 	
 	public long countAll(){
 		Query query=model.dialect().count(model,null);		 
 		query.use(db());
-		return query.getResult();
+		return query.getResult(Long.class);
 	}	
 
 	/**
@@ -131,7 +131,7 @@ public class Select<T extends Model,S extends Select> {
 	public long count(String whereStatement,Object ... args){
 		Query query=model.dialect().count(model,whereStatement, args);		 
 		query.use(db());
-		return query.getResult();
+		return query.getResult(Long.class);
 	}
 	
 	/**
@@ -147,7 +147,7 @@ public class Select<T extends Model,S extends Select> {
 		Query query=model.dialect().selectOne(model,w.getSql(), w.getParameters());
 		query.use(db());
 		
-		T r= query.getResult();
+		T r= (T)query.getResult(model.getClass());
 		return r;
 	}
  	
@@ -163,7 +163,7 @@ public class Select<T extends Model,S extends Select> {
 		Query query=model.dialect().select(model,whereStatement, args);
 		query.use(db());
 		
-		return query.getList();
+		return (DataTable<T>)query.getList(model.getClass());
 	}
 	
 	/**
@@ -179,7 +179,7 @@ public class Select<T extends Model,S extends Select> {
 		Query query=model.dialect().select(model,w.getSql(), w.getParameters());
 		query.use(db());
 		
-		DataTable<T> r= query.getList();
+		DataTable<T> r= (DataTable<T>)query.getList(model.getClass());
 		return r;
 	}
 	
@@ -197,7 +197,7 @@ public class Select<T extends Model,S extends Select> {
 		Query query=model.dialect().select(model,whereStatement, args);
 		query.use(db());
 		
-		DataTable<T> r=query.getList(limit, offset);
+		DataTable<T> r=(DataTable<T>)query.getList(model.getClass(),limit, offset);
 		return r;
 	}
 	
@@ -216,7 +216,7 @@ public class Select<T extends Model,S extends Select> {
 		Query query=model.dialect().select(model,w.getSql(), w.getParameters());
 		query.use(db());
 		
-		DataTable<T> r=query.getList(limit, offset);
+		DataTable<T> r=(DataTable<T>)query.getList(model.getClass(),limit, offset);
 		return r;
 	}
 	
@@ -233,7 +233,7 @@ public class Select<T extends Model,S extends Select> {
 		Query query=model.dialect().select(model,whereStatement, args);
 		query.use(db());
 		
-		Page<T> r=query.getPage(limit, offset);
+		Page<T> r=(Page<T>)query.getPage(model.getClass(),limit, offset);
 		return r;
 	}
 	
@@ -252,7 +252,7 @@ public class Select<T extends Model,S extends Select> {
 		Query query=model.dialect().select(model,w.getSql(), w.getParameters());
 		query.use(db());
 		
-		Page<T> r=query.getPage(limit,offset);
+		Page<T> r=(Page<T>)query.getPage(model.getClass(),limit, offset);
 		return r;
 	}
   

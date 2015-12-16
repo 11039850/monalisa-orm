@@ -62,7 +62,7 @@ public class MysqlDialect extends Dialect{
 	}	 	 	 
 		 
 	public Query getLimitQuery(Query origin,int limit ,int offset){
-		Query query=new Query().setQueryResult(origin.getQueryResult());
+		Query query=new Query();
 		
 		query.use(origin.getDb());
 		query.add(origin.getSql());
