@@ -3,6 +3,7 @@ package com.tsc9526.monalisa.core.query.model;
 import java.util.Date;
 
 import com.tsc9526.monalisa.core.annotation.Column;
+import com.tsc9526.monalisa.core.annotation.Table;
 import com.tsc9526.monalisa.core.query.criteria.Field;
 import com.tsc9526.monalisa.core.query.criteria.QEH;
 import com.tsc9526.monalisa.core.query.dao.Delete;
@@ -94,7 +95,12 @@ public class SimpleModel extends Model<SimpleModel>{
 
 	 
 	
-	public SimpleModel(){			
+	public SimpleModel(){
+		if(this.getClass()!=SimpleModel.class){
+			if(this.getClass().getAnnotation(Table.class)==null){
+				this.TABLE_NAME=this.getClass().getSimpleName();
+			}
+		}
 	}
 	
 	public SimpleModel(String tableName,String... primaryKeys) {
