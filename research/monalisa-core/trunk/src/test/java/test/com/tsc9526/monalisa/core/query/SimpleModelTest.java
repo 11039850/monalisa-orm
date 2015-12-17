@@ -82,7 +82,7 @@ public class SimpleModelTest extends Model<SimpleModelTest>{
 		int times=10000;
 		long l1=System.currentTimeMillis();
 		for(int i=0;i<times;i++){
-			SimpleModelTest x=new SimpleModelTest();
+			SimpleModelTest x=new SimpleModelTest();			 
 			x.changedFields();
 		}
 		long l2=System.currentTimeMillis();

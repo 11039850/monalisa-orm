@@ -506,21 +506,7 @@ public abstract class Model<T extends Model> implements Serializable {
 	public T copy() {
 		return (T) mm().copyModel(this);
 	}
-	
-	T create(){
-		try{
-			Model<T> x=getClass().newInstance();
-			 
-			x.TABLE_NAME  =this.TABLE_NAME;
-			x.PRIMARY_KEYS=this.PRIMARY_KEYS;
-			x.db          =this.db;
-			
-			return (T)x;
-		}catch(Exception e){
-			throw new RuntimeException(e);
-		}
-	}
-
+ 
 	protected void doValidate() {
 		mm().doValidate(this);
 	}
