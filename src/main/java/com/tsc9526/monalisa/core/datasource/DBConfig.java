@@ -466,12 +466,16 @@ public class DBConfig implements Closeable{
 				if( cfgFile.lastModified < cfgFile.cfgFile.lastModified()){
 					return true;
 				}
+			}else if(cfgFile==null && new File(configFile).exists()){
+				return true;
 			}
 			
 			if(cfgFileLocal!=null && cfgFileLocal.lastModified>0){
 				if( cfgFileLocal.lastModified < cfgFileLocal.cfgFile.lastModified()){
 					return true;
 				}
+			}else if(cfgFileLocal==null && new File(configFile+".local").exists()){
+				return true;
 			}
 			
 			
