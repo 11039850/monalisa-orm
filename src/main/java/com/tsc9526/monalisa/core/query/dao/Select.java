@@ -101,7 +101,7 @@ public class Select<T extends Model,S extends Select> {
 		return r;
 	}
 	
-	public long countAll(){
+	public long count(){
 		Query query=model.dialect().count(model,null);		 
 		query.use(db());
 		return query.getResult(Long.class);
@@ -257,7 +257,7 @@ public class Select<T extends Model,S extends Select> {
 	}
   
 	
-	public DataTable<T> selectAll(){
+	public DataTable<T> select(){
 		return select(null);
 	}
 	
@@ -269,7 +269,7 @@ public class Select<T extends Model,S extends Select> {
 	 * 
 	 * @see com.tsc9526.monalisa.core.resources.HelpDoc#helpQuery(int,int,Example,String, Object...)
 	 */
-	public DataTable<T> selectAll(int limit,int offset){
+	public DataTable<T> select(int limit,int offset){
 		return select(limit, offset, null);
 	}	
 	
@@ -281,7 +281,7 @@ public class Select<T extends Model,S extends Select> {
 	 * 
 	 * @see com.tsc9526.monalisa.core.resources.HelpDoc#helpQuery(int,int,Example,String, Object...)
 	 */
-	public Page<T> selectAllPage(int limit,int offset){
+	public Page<T> selectPage(int limit,int offset){
 		return selectPage(limit, offset, null);
 	}	
 	
