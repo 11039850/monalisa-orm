@@ -54,6 +54,22 @@ public class Page<T> implements Serializable {
 		}
 	}
 	
+	 
+	public <X> Page<X> as(Class<X> toClass){
+		Page<X> page=new Page<X>();
+		
+		page.pageNo    = pageNo;
+		page.pageSize  = pageSize;
+		page.totalPage = totalPage;
+		page.totalRow  = totalRow;
+		
+		if(list!=null){
+			page.list=list.as(toClass);
+		}
+		
+		return page;
+	}
+	
 	/**
 	 *  
 	 * @return 一个非null的数据集

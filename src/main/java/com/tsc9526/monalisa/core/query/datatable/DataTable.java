@@ -25,6 +25,25 @@ public class DataTable<E> extends ArrayList<E> {
 		super(cs);
 	}
 	
+	@SuppressWarnings("unchecked")
+	public <T> DataTable<T> as(Class<T> toClass){
+		DataTable<T> r=new DataTable<T>();
+		r.headers=headers;
+		
+		for(int i=0;i<size();i++){
+			E from=this.get(i);
+			
+			if(from instanceof DataRow){
+				r.add(((DataRow)from).as(toClass));
+			}else{
+				T to=(T)ClassHelper.convert(from, toClass);
+				r.add(to);
+			}
+		}
+		
+		return r;
+	}
+	
 	public DataTable<DataRow> select(String columns,String where,String orderBy,String groupBy){
 		return null;
 	}	 
