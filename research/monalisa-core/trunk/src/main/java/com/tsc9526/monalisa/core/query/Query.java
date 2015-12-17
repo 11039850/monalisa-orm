@@ -281,9 +281,13 @@ public class Query {
 		return getList(DataMap.class,limit,offset);		 
 	}
 	
-	public <T> DataTable<T> getList(Class<T> resultClass,int limit,int offset) {
+	public <T> DataTable<T> getList(Class<T> resultClass,int limit,int offset) {		 
+		return getList(new ResultCreator<T>(this,resultClass),limit,offset);
+	}	
+	
+	public <T> DataTable<T> getList(ResultCreator<T> resultCreator,int limit,int offset) {
 		Query listQuery=getDialect().getLimitQuery(this, limit, offset);
-		DataTable<T>  list=listQuery.getList(resultClass);
+		DataTable<T>  list=listQuery.getList(resultCreator);
 			
 		return list;
 	}	 
@@ -299,6 +303,16 @@ public class Query {
 	 * @return
 	 */
 	public <T> T getResult(final Class<T> resultClass){
+		return getResult(new ResultCreator<T>(this,resultClass));
+	}
+	
+	/**
+	 * 将查询结果转换为指定的类
+	 *  
+	 * @param resultClass
+	 * @return
+	 */
+	public <T> T getResult(final ResultCreator<T> resultCreator){
 		if(!DBExchange.doExchange(this)){			
 			queryCheck();
 			
@@ -309,7 +323,7 @@ public class Query {
 					try{
 						rs=pst.executeQuery();				
 						if(rs.next()){	
-							result=createResult(rs,resultClass); 											
+							result=resultCreator.createResult(rs); 											
 						}	
 						return result;
 					}finally{
@@ -326,6 +340,10 @@ public class Query {
 		}
 	}
 	
+	public <T> Page<T> getPage(Class<T> resultClass,int limit,int offset) {
+		return getPage(new ResultCreator<T>(this,resultClass), limit, offset);
+	}
+	
 	/**
 	 * @param limit 
 	 *   The max number of records for this query
@@ -334,7 +352,7 @@ public class Query {
 	 *   Base 0, the first record is 0
 	 * @return Page对象
 	 */
-	public <T> Page<T> getPage(Class<T> resultClass,int limit,int offset) {
+	public <T> Page<T> getPage(ResultCreator<T> resultCreator,int limit,int offset) {
 		if(!DBExchange.doExchange(this)){			
 			queryCheck();
 			
@@ -342,7 +360,7 @@ public class Query {
 			long total=countQuery.getResult(Long.class);			
 			 
 			Query listQuery=getDialect().getLimitQuery(this, limit, offset);
-			DataTable<T>  list=listQuery.getList(resultClass);
+			DataTable<T>  list=listQuery.getList(resultCreator);
 			 
 			Page<T> page=new Page<T>(list,total,limit,offset);
 		
@@ -352,10 +370,12 @@ public class Query {
 		}
 	}
 	
-	/**
-	 * @return List对象
-	 */
+	 
 	public <T> DataTable<T> getList(final Class<T> resultClass) {
+		return getList(new ResultCreator<T>(this, resultClass));
+	}
+	
+	public <T> DataTable<T> getList(final ResultCreator<T> resultCreator) {
 		if(!DBExchange.doExchange(this)){			 
 			queryCheck();
 			
@@ -366,7 +386,7 @@ public class Query {
 					try{
 						rs=pst.executeQuery();				 		
 						while(rs.next()){
-							T r=createResult(rs,resultClass); 
+							T r=resultCreator.createResult(rs); 
 							result.add(r);					
 						}
 						return result;
@@ -394,7 +414,7 @@ public class Query {
 					try{
 						rs=pst.executeQuery();				 		
 						if(rs.next()){
-							load(rs, result);							 				
+							new ResultCreator<T>(Query.this,(Class<T>)result.getClass()).load(rs, result);							 				
 						}
 						return result;
 					}finally{
@@ -410,119 +430,7 @@ public class Query {
 			return result;
 		}
 	}
-	
-		 
-	protected <T> T createResult(ResultSet rs,Class<T> resultClass)throws SQLException{		 
-		if(resultClass==Long.class || resultClass==long.class){
-			return (T)new Long(rs.getLong(1));			 
-		}else if(resultClass==Integer.class || resultClass==int.class){
-			return (T)new Integer(rs.getInt(1));			 
-		}else if(resultClass==Float.class || resultClass==float.class){
-			return (T)new Float(rs.getFloat(1));			 
-		}else if(resultClass==Short.class || resultClass==short.class){
-			return (T)new Short(rs.getShort(1));			 
-		}else if(resultClass==Byte.class || resultClass==byte.class){
-			return (T)new Byte(rs.getByte(1));			 
-		}else if(resultClass==Double.class || resultClass==double.class){
-			return (T)new Double(rs.getDouble(1));			 
-		}else if(resultClass==String.class){
-			return (T)rs.getString(1);
-		}else if(resultClass==BigDecimal.class){
-			return (T)rs.getBigDecimal(1);
-		}else if(resultClass==Date.class){
-			return (T)rs.getDate(1);
-		}else if(resultClass==byte[].class){
-			return (T)rs.getBytes(1);
-		}else {
-			try{
-				if(Map.class.isAssignableFrom(resultClass)){				
-					return (T)loadToMap(rs, new DataMap());				 
-				}else{				 
-					return (T)load(rs,resultClass.newInstance());
-				}
-			}catch(IllegalAccessException e){
-				throw new RuntimeException(e);
-			}catch(InstantiationException e){
-				throw new RuntimeException(e);
-			}
-		}		 
-	}	 
-	
-	protected <T> T load(ResultSet rs,T result)throws SQLException{
-		if(result instanceof Model<?>){
-			Model<?> model=(Model<?>)result;
-			
-			model.use(getDb());
-			 
-			model.before(ModelEvent.LOAD);
-		 	
-			loadModel(rs,model);
-			
-			model.after(ModelEvent.LOAD,0);
-		}else{		
-			loadResult(rs, result);
-		}
-		return result;
-	}
-  
-	protected DataMap loadToMap(ResultSet rs, DataMap map)throws SQLException{
-		ResultSetMetaData rsmd=rs.getMetaData();
-		 
-		for(int i=1;i<=rsmd.getColumnCount();i++){
-			String name =rsmd.getColumnLabel(i);
-			if(name==null || name.trim().length()<1){
-				name =rsmd.getColumnName(i);
-			}
-			
-			map.put(name, rs.getObject(i));
-		}
-		
-		return map;
-	}		
-	
-	protected <T> void loadModel(ResultSet rs,Model<?> r)throws SQLException{
-		ResultSetMetaData rsmd=rs.getMetaData();
-		
-		for(int i=1;i<=rsmd.getColumnCount();i++){
-			String name =rsmd.getColumnName(i);
-			
-			Name nColumn =new Name(false).setName(name);
-			 
-			FGS fgs=r.field(nColumn.getJavaName());			 
-			if(fgs!=null){
-				Object v=rs.getObject(i);
-				fgs.setObject(r, v);
-			}
-		}
-	}	
-	
-	protected <T> T loadResult(ResultSet rs,T result)throws SQLException{
-		MetaClass metaClass=ClassHelper.getMetaClass(result.getClass());
-		
-		ResultSetMetaData rsmd=rs.getMetaData();
-		
-		for(int i=1;i<=rsmd.getColumnCount();i++){
-			String name =rsmd.getColumnName(i);
-			
-			Name nColumn =new Name(false).setName(name);
-			 
-			FGS fgs=metaClass.getField(nColumn.getJavaName());
-			if(fgs==null){
-				String table=rsmd.getTableName(i);
-				if(table!=null && table.length()>0){
-					Name nTable  =new Name(true).setName(table);
-										
-					String jname=nTable.getJavaName()+"$"+nColumn.getJavaName();
-					fgs=metaClass.getField(jname);
-				}
-			}
-			if(fgs!=null){
-				Object v=rs.getObject(i);
-				fgs.setObject(result, v);
-			}						
-		}
-		return result;
-	}
+	 
 	
 	protected void queryCheck(){
 		if(db==null){
@@ -575,5 +483,124 @@ public class Query {
 		this.readonly = readonly;
 	}
  
+	public static class ResultCreator<T>{
+		private Query query;
+		private Class<T> resultClass;
+		
+		public ResultCreator(Query query,Class<T> resultClass){
+			this.query=query;
+			this.resultClass=resultClass;
+		}
+		
+		public T createResult(ResultSet rs)throws SQLException{
+			if(resultClass==Long.class || resultClass==long.class){
+				return (T)new Long(rs.getLong(1));			 
+			}else if(resultClass==Integer.class || resultClass==int.class){
+				return (T)new Integer(rs.getInt(1));			 
+			}else if(resultClass==Float.class || resultClass==float.class){
+				return (T)new Float(rs.getFloat(1));			 
+			}else if(resultClass==Short.class || resultClass==short.class){
+				return (T)new Short(rs.getShort(1));			 
+			}else if(resultClass==Byte.class || resultClass==byte.class){
+				return (T)new Byte(rs.getByte(1));			 
+			}else if(resultClass==Double.class || resultClass==double.class){
+				return (T)new Double(rs.getDouble(1));			 
+			}else if(resultClass==String.class){
+				return (T)rs.getString(1);
+			}else if(resultClass==BigDecimal.class){
+				return (T)rs.getBigDecimal(1);
+			}else if(resultClass==Date.class){
+				return (T)rs.getDate(1);
+			}else if(resultClass==byte[].class){
+				return (T)rs.getBytes(1);
+			}else {
+				try{
+					if(Map.class.isAssignableFrom(resultClass)){				
+						return (T)loadToMap(rs, new DataMap());				 
+					}else{				 
+						return (T)load(rs,resultClass.newInstance());
+					}
+				}catch(IllegalAccessException e){
+					throw new RuntimeException(e);
+				}catch(InstantiationException e){
+					throw new RuntimeException(e);
+				}
+			}		 
+		}
+		
+
+		protected T load(ResultSet rs,T result)throws SQLException{
+			if(result instanceof Model<?>){
+				loadModel(rs,(Model<?>)result);
+			}else{		
+				loadResult(rs, result);
+			}
+			return result;
+		}
+	  
+		protected DataMap loadToMap(ResultSet rs, DataMap map)throws SQLException{
+			ResultSetMetaData rsmd=rs.getMetaData();
+			 
+			for(int i=1;i<=rsmd.getColumnCount();i++){
+				String name =rsmd.getColumnLabel(i);
+				if(name==null || name.trim().length()<1){
+					name =rsmd.getColumnName(i);
+				}
+				
+				map.put(name, rs.getObject(i));
+			}
+			
+			return map;
+		}		
+		
+		protected void loadModel(ResultSet rs,Model<?> model)throws SQLException{
+			model.use(query.getDb());
+			model.before(ModelEvent.LOAD);
+			
+			ResultSetMetaData rsmd=rs.getMetaData();
+			
+			for(int i=1;i<=rsmd.getColumnCount();i++){
+				String name =rsmd.getColumnName(i);
+				
+				Name nColumn =new Name(false).setName(name);
+				 
+				FGS fgs=model.field(nColumn.getJavaName());			 
+				if(fgs!=null){
+					Object v=rs.getObject(i);
+					fgs.setObject(model, v);
+				}
+			}
+			
+			model.after(ModelEvent.LOAD, 0);
+		}	
+		
+		protected T loadResult(ResultSet rs,T result)throws SQLException{
+			MetaClass metaClass=ClassHelper.getMetaClass(result.getClass());
+			
+			ResultSetMetaData rsmd=rs.getMetaData();
+			
+			for(int i=1;i<=rsmd.getColumnCount();i++){
+				String name =rsmd.getColumnName(i);
+				
+				Name nColumn =new Name(false).setName(name);
+				 
+				FGS fgs=metaClass.getField(nColumn.getJavaName());
+				if(fgs==null){
+					String table=rsmd.getTableName(i);
+					if(table!=null && table.length()>0){
+						Name nTable  =new Name(true).setName(table);
+											
+						String jname=nTable.getJavaName()+"$"+nColumn.getJavaName();
+						fgs=metaClass.getField(jname);
+					}
+				}
+				if(fgs!=null){
+					Object v=rs.getObject(i);
+					fgs.setObject(result, v);
+				}						
+			}
+			return result;
+		}
+	}	 
 	
 }

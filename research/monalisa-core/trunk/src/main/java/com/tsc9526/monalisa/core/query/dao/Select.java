@@ -1,11 +1,16 @@
 package com.tsc9526.monalisa.core.query.dao;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
 import com.tsc9526.monalisa.core.datasource.DBConfig;
 import com.tsc9526.monalisa.core.query.Page;
 import com.tsc9526.monalisa.core.query.Query;
+import com.tsc9526.monalisa.core.query.Query.ResultCreator;
 import com.tsc9526.monalisa.core.query.criteria.Example;
 import com.tsc9526.monalisa.core.query.criteria.QEH;
 import com.tsc9526.monalisa.core.query.datatable.DataTable;
+import com.tsc9526.monalisa.core.query.model.MMH;
 import com.tsc9526.monalisa.core.query.model.Model;
 
 /**
@@ -97,7 +102,7 @@ public class Select<T extends Model,S extends Select> {
 	public T selectOne(String whereStatement,Object ... args){
 		Query query=model.dialect().selectOne(model,whereStatement, args);
 		query.use(db());
-		T r=(T)query.getResult(model.getClass());
+		T r=(T)query.getResult(getResultCreator(query));
 		return r;
 	}
 	
@@ -147,7 +152,7 @@ public class Select<T extends Model,S extends Select> {
 		Query query=model.dialect().selectOne(model,w.getSql(), w.getParameters());
 		query.use(db());
 		
-		T r= (T)query.getResult(model.getClass());
+		T r= (T)query.getResult(getResultCreator(query));
 		return r;
 	}
  	
@@ -163,7 +168,7 @@ public class Select<T extends Model,S extends Select> {
 		Query query=model.dialect().select(model,whereStatement, args);
 		query.use(db());
 		
-		return (DataTable<T>)query.getList(model.getClass());
+		return (DataTable<T>)query.getList(getResultCreator(query));
 	}
 	
 	/**
@@ -179,7 +184,7 @@ public class Select<T extends Model,S extends Select> {
 		Query query=model.dialect().select(model,w.getSql(), w.getParameters());
 		query.use(db());
 		
-		DataTable<T> r= (DataTable<T>)query.getList(model.getClass());
+		DataTable<T> r= (DataTable<T>)query.getList(getResultCreator(query));
 		return r;
 	}
 	
@@ -196,8 +201,8 @@ public class Select<T extends Model,S extends Select> {
 	public DataTable<T> select(int limit,int offset,String whereStatement,Object ... args){
 		Query query=model.dialect().select(model,whereStatement, args);
 		query.use(db());
-		
-		DataTable<T> r=(DataTable<T>)query.getList(model.getClass(),limit, offset);
+		 
+		DataTable<T> r=(DataTable<T>)query.getList(getResultCreator(query),limit, offset);
 		return r;
 	}
 	
@@ -216,7 +221,7 @@ public class Select<T extends Model,S extends Select> {
 		Query query=model.dialect().select(model,w.getSql(), w.getParameters());
 		query.use(db());
 		
-		DataTable<T> r=(DataTable<T>)query.getList(model.getClass(),limit, offset);
+		DataTable<T> r=(DataTable<T>)query.getList(getResultCreator(query),limit, offset);
 		return r;
 	}
 	
@@ -233,7 +238,7 @@ public class Select<T extends Model,S extends Select> {
 		Query query=model.dialect().select(model,whereStatement, args);
 		query.use(db());
 		
-		Page<T> r=(Page<T>)query.getPage(model.getClass(),limit, offset);
+		Page<T> r=(Page<T>)query.getPage(getResultCreator(query),limit, offset);
 		return r;
 	}
 	
@@ -252,7 +257,7 @@ public class Select<T extends Model,S extends Select> {
 		Query query=model.dialect().select(model,w.getSql(), w.getParameters());
 		query.use(db());
 		
-		Page<T> r=(Page<T>)query.getPage(model.getClass(),limit, offset);
+		Page<T> r=(Page<T>)query.getPage(getResultCreator(query),limit, offset);
 		return r;
 	}
   
@@ -288,6 +293,18 @@ public class Select<T extends Model,S extends Select> {
 	public SelectForExample selectForExample(Example example){
 		return new SelectForExample(example);
 	} 
+	
+	
+	protected ResultCreator getResultCreator(Query query) {
+		return new ResultCreator(query,model.getClass()){
+			public  T createResult(ResultSet rs)throws SQLException{
+				Model result=MMH.createFrom(model);
+				loadModel(rs, result);				
+				return (T)result;
+			}
+		};
+		
+	}
 	
 	public class SelectForExample{
 		private Example example;
