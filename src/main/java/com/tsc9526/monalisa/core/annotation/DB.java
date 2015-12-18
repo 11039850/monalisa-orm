@@ -7,7 +7,7 @@ import java.lang.annotation.Target;
 
 /**
  * 
- * <b>第一步: 定义数据库连接信息, <font color=red>并保存!</font></b> <br>
+ * <b>第一步: 定义数据库连接信息</b> <br>
  * <code>
  * package example; <br>
  * <br>
