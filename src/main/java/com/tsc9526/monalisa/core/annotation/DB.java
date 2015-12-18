@@ -11,7 +11,7 @@ import java.lang.annotation.Target;
  * <code>
  * package example; <br>
  * <br>
- * import com.tsc9526.monalisa.annotation.DB; <br>
+ * import com.tsc9526.monalisa.core.annotation.DB; <br>
  * import com.tsc9526.monalisa.core.datasource.DBConfig; <br>
  *
  * <br>
