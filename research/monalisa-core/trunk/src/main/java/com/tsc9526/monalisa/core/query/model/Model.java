@@ -408,11 +408,12 @@ public abstract class Model<T extends Model> implements Serializable {
 	 * @return 返回表名等信息
 	 */
 	public Table table() {
+		Table table=mm().table;
 		if (mm().mp != null) {
-			return CreateTableCache.getTable(mm().mp, this, mm().table);
-		} else {
-			return mm().table;
-		}
+			table= CreateTableCache.getTable(mm().mp, this, mm().table);
+		} 
+		
+		return table;
 	}
 
 	/**
