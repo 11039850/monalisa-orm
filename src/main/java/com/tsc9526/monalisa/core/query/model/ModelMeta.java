@@ -74,7 +74,7 @@ class ModelMeta{
 				}
 			}
 		}
-		
+	 
 		return key;
 	}
 	
@@ -116,18 +116,15 @@ class ModelMeta{
 	}
 	
 	protected void initDB(Model<?> model) {
-		db=model.db;
+		Class<?> clazz=ClassHelper.findClassWithAnnotation(model.getClass(),DB.class);
+		if(clazz!=null){
+			db=Model.dsm.getDBConfig(clazz);
+		}else{
+			db=model.db;
+		}
 		
 		if(db==null){
-			Class<?> clazz=ClassHelper.findClassWithAnnotation(model.getClass(),DB.class);
-			if(clazz==null){
-				throw new RuntimeException("Model: "+model.getClass()+" must implement interface annotated by: "+DB.class+", Or call use(db) first!");
-			}
-			db=Model.dsm.getDBConfig(clazz);
-			
-			logger.debug("Loaded db: "+db.getKey()+", model: "+model.getClass().getName());
-		}else{
-			logger.debug("Use model db: "+db.getKey()+", model: "+model.getClass().getName());
+			throw new RuntimeException("Model: "+model.getClass()+" must implement interface annotated by: "+DB.class+", Or call use(db) first!");
 		}
 		
 		dialect=Model.dsm.getDialect(db);
