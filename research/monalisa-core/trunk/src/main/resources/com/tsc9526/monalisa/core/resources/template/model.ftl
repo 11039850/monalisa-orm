@@ -156,7 +156,11 @@ public class ${table.javaName} extends ${modelClass}<${table.javaName}> implemen
 		}
 		 
 		<#if table.keyColumns?size gt 0 >
-		public int deleteByPrimaryKey(<#list table.keyColumns as k>${k.javaType} ${k.javaName}<#if k_has_next=true>, </#if></#list>){			 			 
+		public int deleteByPrimaryKey(<#list table.keyColumns as k>${k.javaType} ${k.javaName}<#if k_has_next=true>, </#if></#list>){
+			<#list table.keyColumns as k>
+			if(${k.javaName} ==null ) return 0;			
+			</#list>
+						 			 
 			<#list table.keyColumns as k>
 			model.${k.javaName} = ${k.javaName};
 			</#list>
@@ -209,6 +213,10 @@ public class ${table.javaName} extends ${modelClass}<${table.javaName}> implemen
 		*/
 		<#if table.keyColumns?size gt 0 >
 		public ${table.javaName} selectByPrimaryKey(<#list table.keyColumns as k>${k.javaType} ${k.javaName}<#if k_has_next=true>, </#if></#list>){
+			<#list table.keyColumns as k>
+			if(${k.javaName} ==null ) return null;			
+			</#list>
+						
 			<#list table.keyColumns as k>
 			model.${k.javaName} = ${k.javaName};
 			</#list>
