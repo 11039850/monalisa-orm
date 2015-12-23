@@ -162,10 +162,10 @@ public class ${table.javaName} extends ${modelClass}<${table.javaName}> implemen
 			</#list>
 						 			 
 			<#list table.keyColumns as k>
-			model.${k.javaName} = ${k.javaName};
+			this.model.${k.javaName} = ${k.javaName};
 			</#list>
 				 			 
-			return model.delete();				
+			return this.model.delete();				
 		}				 
 		</#if>
 		
@@ -184,10 +184,10 @@ public class ${table.javaName} extends ${modelClass}<${table.javaName}> implemen
 		*/
 		public int deleteBy${m}(<#list index.columns as k>${k.javaType} ${k.javaName}<#if k_has_next=true>, </#if></#list>){			 
 			<#list index.columns as k>
-			model.${k.javaName}=${k.javaName};
+			this.model.${k.javaName}=${k.javaName};
 			</#list>			 
 			 
-			return model.delete();
+			return this.model.delete();
 		}			 
 		</#if>		
 		
@@ -218,12 +218,12 @@ public class ${table.javaName} extends ${modelClass}<${table.javaName}> implemen
 			</#list>
 						
 			<#list table.keyColumns as k>
-			model.${k.javaName} = ${k.javaName};
+			this.model.${k.javaName} = ${k.javaName};
 			</#list>
-			model.load();
+			this.model.load();
 				 			 	 
-			if(model.entity()){
-				return model;
+			if(this.model.entity()){
+				return this.model;
 			}else{
 				return null;
 			}
