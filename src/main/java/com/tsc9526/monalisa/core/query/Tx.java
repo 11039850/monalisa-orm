@@ -6,8 +6,30 @@ import java.sql.SQLException;
  * 
  * @author zzg.zhou(11039850@qq.com)
  */
-public class Tx {	
-	private static ThreadLocal<TxQuery> local=new ThreadLocal<TxQuery>();  
+public class Tx {
+	public final static String CONTEXT_CURRENT_USERID="CONTEXT_CURRENT_USERID";
+	
+	private static ThreadLocal<TxQuery> local =new ThreadLocal<TxQuery>();  
+	private static ThreadLocal<DataMap> context=new ThreadLocal<DataMap>();
+	
+	public static Object getContext(String key){
+		DataMap m=context.get();
+		if(m!=null){
+			return m.get(key);
+		}else{
+			return null;
+		}
+	}
+	
+	public static void putContext(String key,Object value){
+		DataMap m=context.get();
+		if(m==null){
+			m=new DataMap();
+			context.set(m);
+		}
+		
+		m.put(key, value);
+	}
 	
 	public static TxQuery getTxQuery(){
 		return local.get();
@@ -55,12 +77,23 @@ public class Tx {
 		}
 	}
 	
+	/**
+	 * 
+	 * @param x
+	 * 
+	 * Use execute() instead
+	 */
+	@Deprecated()
 	public static void run(Runnable x){
 		run(x,-1);
 	}
+	
 	/**
-	 * Execute the run() method in transaction	  
+	 * Execute the run() method in transaction	
+	 * 
+	 * Use execute() instead
 	 */
+	@Deprecated()
 	public static void run(Runnable x, int level){
 		TxQuery tq=begin();
 		try{
@@ -88,5 +121,46 @@ public class Tx {
 				close();
 			}
 		}
+	}
+	
+	
+	public static int execute(Executeable x){
+		return execute(x,-1);
+	}
+	
+	/**
+	 * Execute the run() method in transaction	  
+	 */
+	public static int execute(Executeable x, int level){
+		TxQuery tq=begin();
+		try{
+			if(tq!=null && level>-1){
+				tq.setTransactionIsolation(level);
+			}
+			
+			int r=x.execute();
+			
+			if(tq!=null){
+				commit();
+			}
+			return r;
+		}catch(Exception e){
+			if(tq!=null){
+				rollback();
+			}
+			
+			if(e instanceof RuntimeException){
+				throw (RuntimeException)e;
+			}else{
+				throw new RuntimeException(e);
+			}
+		}finally{
+			if(tq!=null){
+				close();
+			}
+		}
+	}
+	public static interface Executeable{
+		public int execute(); 
 	}
 }

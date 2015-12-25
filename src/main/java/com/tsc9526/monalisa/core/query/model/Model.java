@@ -4,18 +4,28 @@ import java.io.Serializable;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import com.tsc9526.monalisa.core.annotation.Column;
 import com.tsc9526.monalisa.core.annotation.Table;
 import com.tsc9526.monalisa.core.datasource.DBConfig;
 import com.tsc9526.monalisa.core.datasource.DataSourceManager;
 import com.tsc9526.monalisa.core.datasource.DbProp;
+import com.tsc9526.monalisa.core.generator.DBMetadata;
+import com.tsc9526.monalisa.core.meta.MetaPartition;
+import com.tsc9526.monalisa.core.meta.MetaTable;
+import com.tsc9526.monalisa.core.meta.MetaTable.CreateTable;
+import com.tsc9526.monalisa.core.meta.MetaTable.TableType;
 import com.tsc9526.monalisa.core.query.Query;
+import com.tsc9526.monalisa.core.query.Tx;
+import com.tsc9526.monalisa.core.query.Tx.Executeable;
+import com.tsc9526.monalisa.core.query.TxQuery;
 import com.tsc9526.monalisa.core.query.dao.Delete;
 import com.tsc9526.monalisa.core.query.dao.Insert;
 import com.tsc9526.monalisa.core.query.dao.Update;
 import com.tsc9526.monalisa.core.query.dialect.Dialect;
-import com.tsc9526.monalisa.core.query.partition.CreateTableCache;
+import com.tsc9526.monalisa.core.query.partition.Partition;
 import com.tsc9526.monalisa.core.tools.ClassHelper.FGS;
 import com.tsc9526.monalisa.core.tools.JavaBeansHelper;
 import com.tsc9526.monalisa.core.tools.ModelHelper;
@@ -31,41 +41,43 @@ import freemarker.log.Logger;
  */
 @SuppressWarnings({ "rawtypes", "unchecked" })
 public abstract class Model<T extends Model> implements Serializable {
-	static Logger logger=Logger.getLogger(Model.class.getName());
-	
+	static Logger logger = Logger.getLogger(Model.class.getName());
+
 	private static final long serialVersionUID = 703976566431364670L;
 
 	protected static DataSourceManager dsm = DataSourceManager.getInstance();
+	private static Map<String, Table>  hCachePartitionTables = new ConcurrentHashMap<String, Table>();
+	private static Map<String, String> hCacheHistoryTables   = new ConcurrentHashMap<String, String>();
 
-	protected transient ModelMeta   modelMeta;		
+	protected transient ModelMeta modelMeta;
 	protected transient ModelHolder modelHolder;
 	protected transient DBConfig db;
 
-	protected String   TABLE_NAME;
+	protected String TABLE_NAME;
 	protected String[] PRIMARY_KEYS;
-	
+
 	public Model() {
 	}
 
 	public Model(String tableName, String... primaryKeys) {
-		this.TABLE_NAME   = tableName;
+		this.TABLE_NAME = tableName;
 		this.PRIMARY_KEYS = primaryKeys;
 	}
 
 	protected ModelMeta mm() {
-		if (modelMeta==null){
-			modelMeta=ModelMeta.getModelMeta(this);		 			 
-		}		 		
+		if (modelMeta == null) {
+			modelMeta = ModelMeta.getModelMeta(this);
+		}
 		return modelMeta;
 	}
 
 	protected synchronized ModelHolder holder() {
-		if(modelHolder==null){
-			modelHolder=new ModelHolder(this);
+		if (modelHolder == null) {
+			modelHolder = new ModelHolder(this);
 		}
 		return modelHolder;
 	}
-	
+
 	/**
 	 * 设置访问数据库
 	 * 
@@ -73,11 +85,11 @@ public abstract class Model<T extends Model> implements Serializable {
 	 * @return
 	 */
 	public T use(DBConfig db) {
-		this.db=db;
-	 
+		this.db = db;
+
 		return (T) this;
 	}
-	
+
 	/**
 	 * Check if the model is dirty
 	 * 
@@ -123,7 +135,7 @@ public abstract class Model<T extends Model> implements Serializable {
 	 *      Object)
 	 * 
 	 * @param dataObject
-	 *            HttpServletRequest, Map, JsonObject, String(json format),
+	 *            HttpServletRequest, Map, JsonObject, String(json/xml),
 	 *            JavaBean
 	 * @param mappings
 	 *            [Options] Translate dataObject field to model field <br>
@@ -144,7 +156,7 @@ public abstract class Model<T extends Model> implements Serializable {
 	 */
 	public T load() {
 		Query query = dialect().load(this);
-		 
+
 		query.use(db());
 
 		Object r = query.load(this);
@@ -157,18 +169,26 @@ public abstract class Model<T extends Model> implements Serializable {
 	 * @return 成功变更的记录数
 	 */
 	public int save() {
-		int r = -1;
-		try {
-			before(ModelEvent.INSERT);
-
-			doValidate();
-
-			r = new Insert(this).insert(false);
-
-			return r;
-		} finally {
-			after(ModelEvent.INSERT, r);
+		if (history()) {
+			return Tx.execute(new Executeable() {
+				public int execute() {
+					int r=doSave();
+					saveHistory(ModelEvent.INSERT);
+					return r;
+				}
+			});
+		} else {
+			return doSave();
 		}
+	}
+
+	protected int doSave() {
+		int r = -1;
+		before(ModelEvent.INSERT);
+		doValidate();
+		r = new Insert(this).insert(false);
+		after(ModelEvent.INSERT, r);
+		return r;
 	}
 
 	/**
@@ -177,18 +197,26 @@ public abstract class Model<T extends Model> implements Serializable {
 	 * @return 成功变更的记录数
 	 */
 	public int saveOrUpdate() {
-		int r = -1;
-		try {
-			before(ModelEvent.INSERT_OR_UPDATE);
-
-			doValidate();
-
-			r = new Insert(this).insert(true);
-
-			return r;
-		} finally {
-			after(ModelEvent.INSERT_OR_UPDATE, r);
+		if (history()) {
+			return Tx.execute(new Executeable() {
+				public int execute() {
+					int r=doSaveOrUpdate();
+					saveHistory(ModelEvent.REPLACE);
+					return r;
+				}
+			});
+		} else {
+			return doSaveOrUpdate();
 		}
+	}
+
+	protected int doSaveOrUpdate() {
+		int r = -1;
+		before(ModelEvent.REPLACE);
+		doValidate();
+		r = new Insert(this).insert(true);
+		after(ModelEvent.REPLACE, r);
+		return r;
 	}
 
 	/**
@@ -197,18 +225,26 @@ public abstract class Model<T extends Model> implements Serializable {
 	 * @return 成功变更的记录数
 	 */
 	public int update() {
-		int r = -1;
-		try {
-			before(ModelEvent.UPDATE);
-
-			doValidate();
-
-			r = new Update(this).update();
-
-			return r;
-		} finally {
-			after(ModelEvent.UPDATE, r);
+		if (history()) {
+			return Tx.execute(new Executeable() {
+				public int execute() {
+					int r= doUpdate();
+					saveHistory(ModelEvent.UPDATE);
+					return r;
+				}
+			});
+		} else {
+			return doUpdate();
 		}
+	}
+
+	protected int doUpdate() {
+		int r = -1;
+		before(ModelEvent.UPDATE);
+		doValidate();
+		r = new Update(this).update();
+		after(ModelEvent.UPDATE, r);
+		return r;
 	}
 
 	/**
@@ -217,40 +253,119 @@ public abstract class Model<T extends Model> implements Serializable {
 	 * @return 成功变更的记录数
 	 */
 	public int delete() {
-		int r = -1;
-		try {
-			before(ModelEvent.DELETE);
-			r = new Delete(this).delete();
-			return r;
-		} finally {
-			after(ModelEvent.DELETE, r);
+		if (history()) {
+			return Tx.execute(new Executeable() {
+				public int execute() {
+					int r= doDelete();
+					saveHistory(ModelEvent.DELETE);
+					return r;
+				}
+			});
+		} else {
+			return doDelete();
 		}
+
+	}
+
+	protected int doDelete() {
+		int r = -1;
+		before(ModelEvent.DELETE);
+		r = new Delete(this).delete();
+		after(ModelEvent.DELETE, r);
+		return r;
+	}
+
+	protected void saveHistory(ModelEvent event) {
+		DBConfig db = mm().db;
+		String table = mm().tableName;
+
+		DBConfig historyDB = db;
+		String hdb = DbProp.PROP_DB_HISTORY_DB.getValue(db);
+		if (hdb != null && hdb.length() > 0) {
+			historyDB = dsm.getDBConfig(hdb, null);
+			if(historyDB==null){
+				historyDB = db.getByConfigName(hdb);
+			}							
+		}
+		if (historyDB == null) {
+			throw new RuntimeException("History db config: " + hdb + " not found! Current db: " + db.getKey() + ", table: " + table);
+		}
+
+		String historyTableName = DbProp.PROP_DB_HISTORY_PREFIX_TABLE.getValue(db) + table;
+		String key=historyDB.getKey()+":"+historyTableName;
+		if(!hCacheHistoryTables.containsKey(key)){
+			CreateTable createTable = dialect().getCreateTable(db, table);
+			CreateTable historyTable = createTable.createTable(TableType.HISTORY, historyTableName);
+			dialect().createTable(historyDB, historyTable);			
+			hCacheHistoryTables.put(key, key);
+		}
+		
+		TxQuery q = Tx.getTxQuery();
+		String prefix = DbProp.PROP_DB_HISTORY_PREFIX_COLUMN.getValue(db);
+		SimpleModel history = new SimpleModel(historyTableName);
+		history.use(historyDB);
+		
+		for(FGS fgs:changedFields()){
+			String name =fgs.getFieldName();
+			FGS x=history.field(name);			 			 			 
+			if(x!=null){
+				x.setObject(history, fgs.getObject(this));
+			}
+		}
+		
+		history.set(prefix + "time", new Date());
+		history.set(prefix + "type", event.name());
+		history.set(prefix + "txid", q == null ? "" : q.getTxid());
+		history.set(prefix + "user", Tx.getContext(Tx.CONTEXT_CURRENT_USERID));
+		
+		history.save();
+	}
+
+	protected boolean history() {
+		String h = DbProp.PROP_DB_HISTORY_TABLES.getValue(mm().db);
+		if (h != null && h.trim().length() > 0) {
+			String prefix = DbProp.PROP_DB_HISTORY_PREFIX_COLUMN.getValue(mm().db);			
+			String n = mm().tableName;
+			if(n.startsWith(prefix)){
+				return false;
+			}
+			
+			String[] xs = h.trim().split(",|;|\\)");
+			for (String x : xs) {
+				x = x.trim().replace("%", ".*");
+
+				if (n.matches(x)) {
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 
 	public void before(ModelEvent event) {
-		if (mm().listener != null) {
-			mm().listener.before(event, this);
-		}
-
 		if (event == ModelEvent.INSERT || event == ModelEvent.UPDATE) {
 			Date now = new Date();
-			
-			String createTimeColumn=DbProp.PROP_TABLE_AUTO_SET_CREATE_TIME.getValue(mm().db,mm().tableName);
-			String updateTimeColumn=DbProp.PROP_TABLE_AUTO_SET_UPDATE_TIME.getValue(mm().db,mm().tableName);
-			
-			if (event == ModelEvent.INSERT && createTimeColumn!=null && createTimeColumn.trim().length()>0) {
+
+			String createTimeColumn = DbProp.PROP_TABLE_AUTO_SET_CREATE_TIME.getValue(mm().db, mm().tableName);
+			String updateTimeColumn = DbProp.PROP_TABLE_AUTO_SET_UPDATE_TIME.getValue(mm().db, mm().tableName);
+
+			if (event == ModelEvent.INSERT && createTimeColumn != null && createTimeColumn.trim().length() > 0) {
 				FGS createTime = field(createTimeColumn.trim());
-				if (createTime != null && createTime.getObject(this)==null) {
+				if (createTime != null && createTime.getObject(this) == null) {
 					createTime.setObject(this, now);
 				}
 			}
-			
-			if(updateTimeColumn!=null && updateTimeColumn.trim().length()>0){
+
+			if (updateTimeColumn != null && updateTimeColumn.trim().length() > 0) {
 				FGS updateTime = field(updateTimeColumn.trim());
-				if (updateTime!= null && updateTime.getObject(this)==null) {
+				if (updateTime != null && updateTime.getObject(this) == null) {
 					updateTime.setObject(this, now);
 				}
 			}
+		}
+
+		if (mm().listener != null) {
+			mm().listener.before(event, this);
 		}
 	}
 
@@ -268,7 +383,7 @@ public abstract class Model<T extends Model> implements Serializable {
 			case UPDATE:
 				entity(true);
 				break;
-			case INSERT_OR_UPDATE:
+			case REPLACE:
 				entity(true);
 				break;
 			case LOAD:
@@ -308,12 +423,12 @@ public abstract class Model<T extends Model> implements Serializable {
 		for (FGS fgs : fields()) {
 			Column c = fgs.getAnnotation(Column.class);
 			String v = c.value();
-			if("NULL".equalsIgnoreCase(v)) {
-				if(c.notnull()){
-					Object x=JavaBeansHelper.getDefaultValue(c.jdbcType(),fgs.getType());
+			if ("NULL".equalsIgnoreCase(v)) {
+				if (c.notnull()) {
+					Object x = JavaBeansHelper.getDefaultValue(c.jdbcType(), fgs.getType());
 					fgs.setObject(this, x);
 				}
-			}else {
+			} else {
 				fgs.setObject(this, v);
 			}
 		}
@@ -385,13 +500,13 @@ public abstract class Model<T extends Model> implements Serializable {
 			if (fgs.getSetMethod() == null) {
 				holder().fieldChanged(fgs.getFieldName());
 			}
-		}else{
-			String throwException=DbProp.PROP_TABLE_EXCEPTION_IF_SET_FIELD_NOT_FOUND.getValue(mm().db,mm().tableName);
-			if("true".equalsIgnoreCase(throwException)){
-				throw new RuntimeException("Field not found: "+name);
+		} else {
+			String throwException = DbProp.PROP_TABLE_EXCEPTION_IF_SET_FIELD_NOT_FOUND.getValue(mm().db, mm().tableName);
+			if ("true".equalsIgnoreCase(throwException)) {
+				throw new RuntimeException("Field not found: " + name);
 			}
 		}
-		
+
 		return (T) this;
 	}
 
@@ -408,11 +523,37 @@ public abstract class Model<T extends Model> implements Serializable {
 	 * @return 返回表名等信息
 	 */
 	public Table table() {
-		Table table=mm().table;
+		Table table = mm().table;
 		if (mm().mp != null) {
-			table= CreateTableCache.getTable(mm().mp, this, mm().table);
-		} 
-		
+			table = createTable(mm().mp);
+		}
+
+		return table;
+	}
+
+	protected Table createTable(MetaPartition mp) {
+		DBConfig db = db();
+		Partition<Model<?>> partition = mp.getPartition();
+		String tableName = partition.getTableName(mp, this);
+		String tableKey = db.getKey() + ":" + tableName;
+
+		Table table = hCachePartitionTables.get(tableKey);
+		if (table == null) {
+			String tablePrefix = mp.getTablePrefix();
+			MetaTable metaTable = DBMetadata.getMetaTable(db.getKey(), tablePrefix);
+			if (metaTable == null || metaTable.getCreateTable() == null) {
+				throw new RuntimeException("Fail create table: " + tableName + ", db: " + db.getKey() + ", MetaTable not found: " + tablePrefix);
+			}
+
+			try {
+				CreateTable createTable = metaTable.getCreateTable().createTable(TableType.PARTITION, tableName);
+				db.getDialect().createTable(db, createTable);
+				table = ModelMeta.createTable(tableName, mm().table);
+				hCachePartitionTables.put(tableKey, table);
+			} catch (Exception e) {
+				throw new RuntimeException("Fail create table: " + tableName + ", db: " + db.getKey(), e);
+			}
+		}
 		return table;
 	}
 
@@ -429,9 +570,8 @@ public abstract class Model<T extends Model> implements Serializable {
 	 * @return 数据库连接信息
 	 */
 	public DBConfig db() {
-		return db==null?mm().db:this.db;
+		return db == null ? mm().db : this.db;
 	}
- 
 
 	public boolean readonly() {
 		return holder().readonly;
@@ -507,7 +647,7 @@ public abstract class Model<T extends Model> implements Serializable {
 	public T copy() {
 		return (T) mm().copyModel(this);
 	}
- 
+
 	protected void doValidate() {
 		mm().doValidate(this);
 	}
@@ -533,14 +673,12 @@ public abstract class Model<T extends Model> implements Serializable {
 		return mm().listener;
 	}
 
-	
-	
 	public String toString() {
 		return ModelHelper.toString(this);
 	}
 
-	public String toJson() {		 		 
-		return ModelHelper.toJson(this);		 
+	public String toJson() {
+		return ModelHelper.toJson(this);
 	}
 
 	public String toXml() {
@@ -548,6 +686,6 @@ public abstract class Model<T extends Model> implements Serializable {
 	}
 
 	public String toXml(boolean withXmlHeader, boolean ignoreNullFields) {
-		return ModelHelper.toXml(this,withXmlHeader, ignoreNullFields);
+		return ModelHelper.toXml(this, withXmlHeader, ignoreNullFields);
 	}
 }

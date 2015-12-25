@@ -24,6 +24,7 @@ import com.tsc9526.monalisa.core.datasource.DataSourceManager;
 import com.tsc9526.monalisa.core.meta.MetaPartition;
 import com.tsc9526.monalisa.core.meta.MetaTable;
 import com.tsc9526.monalisa.core.meta.MetaTable.CreateTable;
+import com.tsc9526.monalisa.core.meta.MetaTable.TableType;
 import com.tsc9526.monalisa.core.tools.CloseQuietly;
 import com.tsc9526.monalisa.core.tools.FileHelper;
 import com.tsc9526.monalisa.core.tools.TableHelper;
@@ -97,7 +98,7 @@ public class DBMetadata {
 				int p=line.indexOf("::");
 				
 				String       tableName=line.substring(p+2,line.length()-key_end.length()).trim();
-				String       tableNameWithoutPartition=line.substring(key_begin.length(),p).trim();
+				String       tablePrefix=line.substring(key_begin.length(),p).trim();
 				StringBuffer createSQL=new StringBuffer();
 				
 				line=reader.readLine();
@@ -111,8 +112,8 @@ public class DBMetadata {
 				}
 				
 				MetaTable table=new MetaTable(tableName);					
-				table.setCreateTable(new CreateTable(tableName,createSQL.toString()));
-				hRuntimeTables.put(tableNameWithoutPartition, table);				 
+				table.setCreateTable(new CreateTable(tableName,createSQL.toString(),TableType.NORMAL));
+				hRuntimeTables.put(tablePrefix, table);				 
 			}else{
 				line=reader.readLine();
 			}
@@ -168,7 +169,7 @@ public class DBMetadata {
 		   		    
 		    for(MetaTable table:tables){
 		    	if(table.getPartition()!=null){
-		    		CreateTable createTable=dsm.getDialect(dbcfg).showTable(dbcfg, table.getName());
+		    		CreateTable createTable=dbcfg.getDialect().getCreateTable(dbcfg, table.getName());
 		    		table.setCreateTable(createTable);
 		    	}
 		    }

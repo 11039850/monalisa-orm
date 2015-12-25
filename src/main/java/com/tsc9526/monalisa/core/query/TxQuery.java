@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 import com.tsc9526.monalisa.core.datasource.DBConfig;
 
@@ -17,6 +18,12 @@ public class TxQuery {
 	TxQuery(){}
 	
 	private int level=-1;
+	
+	private String txid=UUID.randomUUID().toString().replace("-","").toLowerCase();
+	
+	public String getTxid(){
+		return txid;
+	}
 	
 	public Connection getConnection(DBConfig db) throws SQLException{		 
 		String key=db.getKey();

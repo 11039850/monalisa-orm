@@ -24,6 +24,13 @@ public class SimpleModelTest extends Model<SimpleModelTest>{
 	
 	
 	public static void main(String[] args) {
+		String h="1234,";
+		String[] xs=h.trim().split(",|;|\\|");
+		for(String x:xs){
+			System.out.println(x);
+		}
+		
+		
 		DBConfig db=DBConfig.fromClass(SimpleModelTest.class);
 		
 		DataTable<DataMap> r1=db.select("select count(*) from gift");

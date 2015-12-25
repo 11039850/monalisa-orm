@@ -94,32 +94,19 @@ public class ModelHelper {
 	
 	
 	private static String[] splitMappings(String... mappings){
-		if(mappings!=null && mappings.length==1){			
-			List<String> ms=new ArrayList<String>();
-			
-			String m=mappings[0];
-			StringBuffer sb=new StringBuffer();
-			for(int i=0;i<m.length();i++){
-				char c=m.charAt(i);
-				if(c==',' || c==';' || c=='|'){
-					String v=sb.toString().trim();
-					if(v.length()>0){
-						ms.add(v);
+		List<String> ms=new ArrayList<String>();
+				
+		if(mappings!=null && mappings.length>0){
+			for(String m:mappings){			
+				String[] xs=m.trim().split(",|;|\\|");
+				if(xs.length>0){
+					for(String x:xs){
+						ms.add(x.trim());
 					}
-					sb.delete(0,sb.length());
-				}else{
-					sb.append(c);
-				}
+				}				 
 			}
-			String v=sb.toString().trim();
-			if(v.length()>0){
-				ms.add(v);
-			}
-			
-			return ms.toArray(new String[0]);			
-		}else{
-			return mappings;
-		}
+		} 		
+		return ms.toArray(new String[0]);	
 	}
 	
 	private static boolean parseFromFields(Model<?> m,Object data,String... mappings){
@@ -137,7 +124,7 @@ public class ModelHelper {
 		 
 		for(FGS fgs:m.fields()){
 			String name =fgs.getFieldName();
-			
+						 
 			if(hNameMapping.containsKey(name)){
 				name=hNameMapping.get(name);
 			}
