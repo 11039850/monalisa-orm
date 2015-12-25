@@ -20,6 +20,7 @@ import com.tsc9526.monalisa.core.query.DataMap;
 import com.tsc9526.monalisa.core.query.Page;
 import com.tsc9526.monalisa.core.query.Query;
 import com.tsc9526.monalisa.core.query.datatable.DataTable;
+import com.tsc9526.monalisa.core.query.dialect.Dialect;
 import com.tsc9526.monalisa.core.query.model.Model;
 import com.tsc9526.monalisa.core.query.model.SimpleModel;
 import com.tsc9526.monalisa.core.tools.ClassHelper;
@@ -37,7 +38,7 @@ public class DBConfig implements Closeable{
 	 */
 	public static String DEFAULT_PATH=".";
 	
-	public static String[] prefixs=new String[]{"DB.cfg"};
+	private String[] prefixs=new String[]{"DB.cfg"};
 	
 	private CFG _cfg=new CFG();
 	 
@@ -61,6 +62,27 @@ public class DBConfig implements Closeable{
 		}
 		return _cfg;
 	}
+	
+	public synchronized DBConfig getByConfigName(String configName){
+		DataSourceManager dsm=DataSourceManager.getInstance();
+		
+		String dbKey=this._cfg.key+"#"+configName;		 
+		DBConfig r=dsm.getDBConfig(dbKey, null);
+		if(r==null){
+			String cfgDBUrl=getCfg().p.getProperty("DB."+configName+".url");
+			if(cfgDBUrl!=null){
+				r=new DBConfig(dbKey, getCfg().db);
+				r._cfg.configName=configName;
+				r.init();
+				
+				dsm.putDBConfig(dbKey, r);
+			}else{
+				throw new RuntimeException("Config not found: "+configName+", DB: "+this.getKey());
+			}
+		}
+		
+		return r;
+	}
 	 
 	synchronized void init(){
 		if(!initialized){
@@ -74,7 +96,10 @@ public class DBConfig implements Closeable{
 		_cfg.init();		 
 		initialized=true;
 	}
-		
+	
+	public Dialect getDialect(){
+		return DataSourceManager.getInstance().getDialect(this);
+	}
 	
 	public DBConfig getOwner(){
 		getCfg();
@@ -182,10 +207,16 @@ public class DBConfig implements Closeable{
 			}finally{			
 				ds=null;
 			}
+			
+			for(Host host: getCfg().getDbHosts()){
+				host.getConfig().close();
+			}
 		}
 	}	 
 	
-	
+	public String toString(){
+		return "KEY: "+this._cfg.key;
+	}
 	 
 	public SimpleModel createModel(String tableName,String ... primaryKeys){		
 		SimpleModel m=new SimpleModel(tableName,primaryKeys);
@@ -264,9 +295,7 @@ public class DBConfig implements Closeable{
 			dbcfg=new DBConfig();
 			
 			ClassHelper.copy(DBConfig.this._cfg, dbcfg._cfg);
-			
-			
-			
+			 
 			dbcfg.owner=DBConfig.this;
 			dbcfg._cfg.url=URL;			
 			
@@ -281,7 +310,9 @@ public class DBConfig implements Closeable{
 			}
 			dbcfg._cfg.key="#"+x;		
 			
-			dbcfg.initialized=true;
+			dbcfg.initialized=true;		
+			
+			DataSourceManager.getInstance().putDBConfig(dbcfg._cfg.key, dbcfg);
 		}
 		
 		public DBConfig getConfig(){
@@ -321,13 +352,13 @@ public class DBConfig implements Closeable{
 		synchronized void init(){
 			loadCfgFromFile();	
 			
-			this.configName      = db.configName();
-			
+			if(configName==null){
+				configName=db.configName();
+			}
 			
 			if(configName!=null && configName.trim().length()>0){
 				prefixs=new String[]{"DB."+configName.trim(), "DB.cfg"};
-			}
-			
+			}		
 		
 			this.url             = getValue(p,DbProp.PROP_DB_URL.getKey(),               db.url(),            prefixs);
 			this.driver          = getValue(p,DbProp.PROP_DB_DRIVER.getKey(),            db.driver(),         prefixs);
@@ -345,6 +376,8 @@ public class DBConfig implements Closeable{
 			 	
 			processUrlHosts();						 
 		}
+		
+		
 		
 		protected void processUrlHosts() {
 			int x1=url.indexOf("[");

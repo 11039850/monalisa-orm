@@ -344,9 +344,9 @@ class ModelMeta{
 				}else{
 					if(bean instanceof Model<?>){
 						Model<?> m=(Model<?>)bean;
-						m.holder().set(c.getName(), v);						 
+						m.holder().set(c.getName(), v);							
 					} 					
-				}
+				}				
 			}
 			
 			public Object getObject(Object bean){
@@ -426,7 +426,35 @@ class ModelMeta{
 		};
 	}
 	
-	protected static Table createTable(final String tableName,final String ...primaryKeys){
+	public static Table createTable(final String tableName,final Table modelTable){
+		return new Table(){  
+			public String name() {					 
+				return tableName;
+			}
+			
+			public String value() {					 
+				return tableName;
+			}
+	 			
+			public String remarks() {
+				return modelTable.remarks();
+			}
+			
+			public String[] primaryKeys(){
+				return modelTable.primaryKeys();
+			}
+			
+			public Index[] indexes(){
+				return modelTable.indexes();
+			}
+			
+			public Class<? extends Annotation> annotationType() {
+				return Table.class;
+			}
+		};
+	}
+	
+	public static Table createTable(final String tableName,final String ...primaryKeys){
 		Table tb=new Table(){ 
 			public Class<? extends Annotation> annotationType() {
 				return Table.class;

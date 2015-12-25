@@ -1,6 +1,8 @@
 package com.tsc9526.monalisa.core.query.dialect;
 
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -8,7 +10,6 @@ import com.google.gson.JsonPrimitive;
 import com.tsc9526.monalisa.core.annotation.Column;
 import com.tsc9526.monalisa.core.annotation.Table;
 import com.tsc9526.monalisa.core.datasource.DBConfig;
-import com.tsc9526.monalisa.core.meta.MetaTable;
 import com.tsc9526.monalisa.core.meta.MetaTable.CreateTable;
 import com.tsc9526.monalisa.core.query.Query;
 import com.tsc9526.monalisa.core.query.model.Model;
@@ -28,6 +29,8 @@ import freemarker.log.Logger;
 @SuppressWarnings({"rawtypes"})
 public abstract class Dialect{
 	static Logger logger=Logger.getLogger(Dialect.class.getName());
+		
+	protected static Map<String, CreateTable> hTables=new ConcurrentHashMap<String, CreateTable>();
 	
 	public abstract String getUrlPrefix();
 	
@@ -41,10 +44,18 @@ public abstract class Dialect{
  	
 	public abstract Query getLimitQuery(Query origin,int limit ,int offset);
 	 
-	public abstract CreateTable showTable(DBConfig db,String tableName);
+	public abstract CreateTable getCreateTable(DBConfig db,String tableName);
 	
-	public abstract boolean 	createTable(DBConfig db,MetaTable table,String theTableName); 
-	
+	public synchronized void createTable(DBConfig db,CreateTable table){
+		String key=db.getKey()+":"+table.getTableName();
+		if(!hTables.containsKey(key)){
+			db.execute(table.getCreateSQL());
+		
+			hTables.put(key, table);
+		}
+	}
+	 
+ 	
 	protected String getTableName(Table table) {
 		String tableName=table.value();
 		if(tableName==null || tableName.trim().length()==0){
@@ -462,6 +473,8 @@ public abstract class Dialect{
 		
 		return query;
 	} 
+	
+	
 	
 	protected String getCountSql(String sql){
     	String cql=sql;

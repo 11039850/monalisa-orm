@@ -43,7 +43,8 @@ public class ModelHolder implements Serializable {
 	}
 	
 	protected void set(String name,Object value){
-		getModelValues().put(name, value);
+		getModelValues().put(name, value);		
+		fieldChanged(name);
 	}
 	
 	protected Object get(String name){

@@ -142,38 +142,66 @@ public class MetaTable extends Name implements Cloneable{
 		return (MetaTable)super.clone();
 	}
 	 	
+	public static enum TableType{		
+		NORMAL,
+		
+		PARTITION,
+		
+		HISTORY,		
+	}
+	
 	
 	public static class CreateTable implements Serializable{		 
 		private static final long serialVersionUID = 4435179643490161535L;
 		
 		public final static String TABLE_VAR="#{table}";
 		
-		private String tableName;
-		private String createSQL;
+		private String    tableName;
+		private String    createSQL;
+		private TableType tableType;
+		
+		private CreateTable refTable;
 		
 		public CreateTable (String tableName,String createSQL){
+			this(tableName, createSQL, TableType.NORMAL);
+		}
+		
+		public CreateTable (String tableName,String createSQL,TableType tableType){
 			this.tableName=tableName;
 			this.createSQL=createSQL;
+			this.tableType=tableType;
+		}
+		
+		public CreateTable getRefTable(){
+			return this.refTable;
 		}
 		
 		public String getTableName() {
-			return tableName;
-		}
-		public void setTableName(String tableName) {
-			this.tableName = tableName;
+			return this.tableName;
+		}	
+		
+		public TableType getTableType(){
+			return this.tableType;
 		}
 	 	
-		public String getCreateSQL(String theNewTableName) {
+		public String getCreateSQL() {			 
 			int p=createSQL.indexOf(TABLE_VAR);
-			return createSQL.substring(0,p)+theNewTableName+createSQL.substring(p+TABLE_VAR.length());
+			if(p>0){
+				return createSQL.substring(0,p)+tableName+createSQL.substring(p+TABLE_VAR.length());
+			}else{
+				return createSQL;
+			}
 		}
 		
-		public String getCreateSQL() {
-			return createSQL;
+		public CreateTable setCreateSQL(String createSQL){
+			this.createSQL=createSQL;
+			return this;
 		}
-		
-		public void setCreateSQL(String createSQL) {
-			this.createSQL = createSQL;
+		  
+		public CreateTable createTable(TableType theTableType,String theTableName){
+			CreateTable table=new CreateTable(theTableName,createSQL,theTableType);
+			table.refTable=this;
+			return table;
 		}
 	}
 }

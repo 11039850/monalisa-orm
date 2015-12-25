@@ -73,10 +73,14 @@ public class DataSourceManager {
 		
 		if(cfg==null && db!=null){
 			cfg=new DBConfig(dbKey,db);
-			dss.put(dbKey, cfg);
+			putDBConfig(dbKey, cfg);
 		}
 		
 		return cfg;
+	}
+	
+	void putDBConfig(String dbKey,DBConfig cfg){
+		dss.put(dbKey, cfg);
 	}
 	
 	public DataSource getDataSource(DBConfig db){
