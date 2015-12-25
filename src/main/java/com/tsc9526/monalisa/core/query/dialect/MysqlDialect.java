@@ -114,6 +114,7 @@ public class MysqlDialect extends Dialect {
 		sql = sql.replaceFirst("\\s+AUTO_INCREMENT\\s*=\\s*\\d+", "");
 		sql = sql.replaceFirst("\\s+AUTO_INCREMENT\\s*", " ");
 
+		String pkIndex=null;
 		String prefix = DbProp.PROP_DB_HISTORY_PREFIX_COLUMN.getValue(db);
 		StringBuffer sb = new StringBuffer();
 		for (String x : sql.split("\\n")) {
@@ -126,11 +127,20 @@ public class MysqlDialect extends Dialect {
 				sb.append("`" + prefix + "type` varchar(32)  NOT NULL COMMENT '变更类型: INSERT/UPDATE/DELETE/REPLACE',\r\n");
 				sb.append("`" + prefix + "txid` varchar(64)  NOT NULL COMMENT '变更批次',\r\n");
 				sb.append("`" + prefix + "user` varchar(128)          COMMENT '操作用户',\r\n");
+			}else if (x.startsWith("PRIMARY")) {
+				int p1=x.indexOf("(");
+				int p2=x.indexOf(")");
+				if(p2>p1 && p1>0){
+					pkIndex="KEY `ix_" + tableName + "_pk` "+ x.substring(p1,p2+1) +" USING BTREE,\r\n";
+				}
 			} else if (x.startsWith("`")) {
 				sb.append(x).append("\r\n");
 			} else if (x.startsWith(")")) {
 				sb.append("PRIMARY KEY (`" + prefix + "id`),\r\n");
-				sb.append(" KEY `ix_" + tableName + "_time` (" + "`" + prefix + "time`) USING BTREE\r\n");
+				if(pkIndex!=null){
+					sb.append(pkIndex);
+				}
+				sb.append("KEY `ix_" + tableName + "_time` (" + "`" + prefix + "time`) USING BTREE\r\n");
 				sb.append(x).append("\r\n");
 			}
 		}
