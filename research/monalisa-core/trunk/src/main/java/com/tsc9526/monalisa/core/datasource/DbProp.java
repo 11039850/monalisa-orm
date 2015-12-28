@@ -28,9 +28,11 @@ public class DbProp {
 	public final static DbProp PROP_TABLE_VALIDATE 		=new DbProp("validate",false);
 	public final static DbProp PROP_TABLE_VALIDATOR		=new DbProp("validator");	
 	 
-	public final static DbProp PROP_TABLE_AUTO_SET_CREATE_TIME=new DbProp("autoCreateTime","create_time");
-	public final static DbProp PROP_TABLE_AUTO_SET_UPDATE_TIME=new DbProp("autoCreateTime","update_time");
-	 
+	public final static DbProp PROP_TABLE_AUTO_SET_CREATE_TIME=new DbProp("auto.create_time","create_time");
+	public final static DbProp PROP_TABLE_AUTO_SET_UPDATE_TIME=new DbProp("auto.update_time","update_time");
+	public final static DbProp PROP_TABLE_AUTO_SET_CREATE_BY  =new DbProp("auto.create_by","create_by");
+	public final static DbProp PROP_TABLE_AUTO_SET_UPDATE_BY  =new DbProp("auto.update_by","update_by");
+	
 	public final static DbProp PROP_TABLE_EXCEPTION_IF_SET_FIELD_NOT_FOUND=new DbProp("exception_if_set_field_not_found",false);
 	
 	

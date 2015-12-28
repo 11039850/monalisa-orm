@@ -102,7 +102,7 @@ public class MysqlDialect extends Dialect {
 	protected void setupPartitionTable(DBConfig db, CreateTable table) {
 		//分区表: 去掉自动增长初始值设置
 		String sql = table.getCreateSQL();
-		sql = sql.replaceFirst("\\s+AUTO_INCREMENT\\s*=\\s*\\d+", "");
+		sql = sql.replaceFirst("(?i)\\s+AUTO_INCREMENT\\s*=\\s*\\d+", "");
 		table.setCreateSQL(sql);		
 	}
 	
@@ -111,8 +111,8 @@ public class MysqlDialect extends Dialect {
 		String sql = table.getCreateSQL();
 
 		// 去掉字段自增属性
-		sql = sql.replaceFirst("\\s+AUTO_INCREMENT\\s*=\\s*\\d+", "");
-		sql = sql.replaceFirst("\\s+AUTO_INCREMENT\\s*", " ");
+		sql = sql.replaceFirst("(?i)\\s+AUTO_INCREMENT\\s*=\\s*\\d+", "");
+		sql = sql.replaceFirst("(?i)\\s+AUTO_INCREMENT\\s*", " ");
 
 		String pkIndex=null;
 		String prefix = DbProp.PROP_DB_HISTORY_PREFIX_COLUMN.getValue(db);
