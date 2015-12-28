@@ -330,7 +330,7 @@ public abstract class Model<T extends Model> implements Serializable {
 				return false;
 			}
 			
-			String[] xs = h.trim().split(",|;|\\)");
+			String[] xs = h.trim().split(",|;|\\|");
 			for (String x : xs) {
 				x = x.trim().replace("%", ".*");
 
