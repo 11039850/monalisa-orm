@@ -86,17 +86,15 @@ public class MysqlDialect extends Dialect {
 
 	public synchronized void createTable(DBConfig db, CreateTable table) {
 		String key=db.getKey()+":"+table.getTableName();
-		if(hTables.containsKey(key)){
-			return;
+		if(!hTables.containsKey(key)){
+			if (table.getTableType() == TableType.HISTORY) {			 
+				setupHistoryTable(db, table);
+			}else if (table.getTableType() == TableType.PARTITION) {
+				setupPartitionTable(db,table);
+			}
+			
+			super.createTable(db, table);
 		}
-		
-		if (table.getTableType() == TableType.HISTORY) {			 
-			setupHistoryTable(db, table);
-		}else if (table.getTableType() == TableType.PARTITION) {
-			setupPartitionTable(db,table);
-		}
-		
-		super.createTable(db, table);
 	}
 
 	protected void setupPartitionTable(DBConfig db, CreateTable table) {
