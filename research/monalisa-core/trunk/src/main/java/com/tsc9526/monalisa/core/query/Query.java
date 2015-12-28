@@ -13,6 +13,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import com.tsc9526.monalisa.core.annotation.DB;
 import com.tsc9526.monalisa.core.datasource.DBConfig;
 import com.tsc9526.monalisa.core.datasource.DataSourceManager;
 import com.tsc9526.monalisa.core.datasource.DbProp;
@@ -554,7 +555,11 @@ public class Query {
 		}		
 		
 		protected void loadModel(ResultSet rs,Model<?> model)throws SQLException{
-			model.use(query.getDb());
+			Class<?> clazz=ClassHelper.findClassWithAnnotation(model.getClass(),DB.class);
+			if(clazz==null && model.use()==null){ 
+				model.use(query.getDb());
+			}
+			
 			model.before(ModelEvent.LOAD);
 			
 			ResultSetMetaData rsmd=rs.getMetaData();

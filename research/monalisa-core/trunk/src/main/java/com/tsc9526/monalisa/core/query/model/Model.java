@@ -89,6 +89,14 @@ public abstract class Model<T extends Model> implements Serializable {
 
 		return (T) this;
 	}
+	
+	/**
+	 * @return  The Used DBConfig
+	 */
+	public DBConfig use(){
+		return this.db;
+	}
+	
 
 	/**
 	 * Check if the model is dirty
