@@ -343,23 +343,50 @@ public abstract class Model<T extends Model> implements Serializable {
 	}
 
 	public void before(ModelEvent event) {
-		if (event == ModelEvent.INSERT || event == ModelEvent.UPDATE) {
+		if (event == ModelEvent.INSERT || event == ModelEvent.UPDATE || event==ModelEvent.REPLACE) {
 			Date now = new Date();
 
 			String createTimeColumn = DbProp.PROP_TABLE_AUTO_SET_CREATE_TIME.getValue(mm().db, mm().tableName);
 			String updateTimeColumn = DbProp.PROP_TABLE_AUTO_SET_UPDATE_TIME.getValue(mm().db, mm().tableName);
 
-			if (event == ModelEvent.INSERT && createTimeColumn != null && createTimeColumn.trim().length() > 0) {
-				FGS createTime = field(createTimeColumn.trim());
-				if (createTime != null && createTime.getObject(this) == null) {
-					createTime.setObject(this, now);
+			String createByColumn = DbProp.PROP_TABLE_AUTO_SET_CREATE_BY.getValue(mm().db, mm().tableName);
+			String updateByColumn = DbProp.PROP_TABLE_AUTO_SET_UPDATE_BY.getValue(mm().db, mm().tableName);
+			
+			if (event == ModelEvent.INSERT || event==ModelEvent.REPLACE){ 
+				if(createTimeColumn != null && createTimeColumn.trim().length() > 0) {
+					FGS createTime = field(createTimeColumn.trim());
+					if (createTime != null && createTime.getObject(this) == null) {
+						createTime.setObject(this, now);
+					}
+				}
+				
+				if(createByColumn != null && createByColumn.trim().length() > 0) {
+					FGS createBy = field(createByColumn.trim());					
+					if (createBy != null && createBy.getObject(this) == null) {
+						Object user=Tx.getContext(Tx.CONTEXT_CURRENT_USERID);
+						if(user!=null){
+							createBy.setObject(this, user);
+						}
+					}
 				}
 			}
 
-			if (updateTimeColumn != null && updateTimeColumn.trim().length() > 0) {
-				FGS updateTime = field(updateTimeColumn.trim());
-				if (updateTime != null && updateTime.getObject(this) == null) {
-					updateTime.setObject(this, now);
+			if (event == ModelEvent.UPDATE || event==ModelEvent.REPLACE){
+				if(updateTimeColumn != null && updateTimeColumn.trim().length() > 0) {			
+					FGS updateTime = field(updateTimeColumn.trim());
+					if (updateTime != null && updateTime.getObject(this) == null) {
+						updateTime.setObject(this, now);
+					}
+				}
+				
+				if(updateByColumn != null && updateByColumn.trim().length() > 0) {
+					FGS updateBy = field(updateByColumn.trim());					
+					if (updateBy != null && updateBy.getObject(this) == null) {
+						Object user=Tx.getContext(Tx.CONTEXT_CURRENT_USERID);
+						if(user!=null){
+							updateBy.setObject(this, user);
+						}
+					}
 				}
 			}
 		}

@@ -30,6 +30,12 @@ public class Tx {
 		
 		m.put(key, value);
 	}
+	 
+	public static void clearContext(){
+		if(context.get()!=null){
+			context.remove();
+		}
+	}
 	
 	public static TxQuery getTxQuery(){
 		return local.get();
