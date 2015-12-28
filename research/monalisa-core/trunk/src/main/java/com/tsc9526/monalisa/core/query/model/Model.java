@@ -324,7 +324,7 @@ public abstract class Model<T extends Model> implements Serializable {
 	protected boolean history() {
 		String h = DbProp.PROP_DB_HISTORY_TABLES.getValue(mm().db);
 		if (h != null && h.trim().length() > 0) {
-			String prefix = DbProp.PROP_DB_HISTORY_PREFIX_COLUMN.getValue(mm().db);			
+			String prefix = DbProp.PROP_DB_HISTORY_PREFIX_TABLE.getValue(mm().db);			
 			String n = mm().tableName;
 			if(n.startsWith(prefix)){
 				return false;
