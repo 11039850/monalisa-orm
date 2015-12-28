@@ -259,6 +259,19 @@ class ModelMeta{
 		return hFieldsByColumnName.values();
 	}
 		 
+	public List<FGS> getPkFields(){
+		List<FGS> pks=new ArrayList<FGS>();
+		 
+		for(Object o:fields()){
+			FGS fgs=(FGS)o;
+			Column c=fgs.getAnnotation(Column.class);
+			if(c.key()){
+				pks.add(fgs);
+			}
+		}
+		return pks;
+	}
+	
 	/**
 	 * 复制对象数据
 	 */
