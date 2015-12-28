@@ -15,7 +15,7 @@
 		<svnURL>svn://120.26.51.207/data/svn/research</svnURL>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<repositoryURL>${setting.repositoryURL}</repositoryURL>
-		<snapshotRepositoryURL>${setting.snapshotRepositoryURL}</snapshotRepositoryURL>		
+		<snapshotRepositoryURL>http://192.168.1.200:8888/nexus/content/repositories/development-snapshot</snapshotRepositoryURL>		
 		<maven.javadoc.skip>false</maven.javadoc.skip> 		
 	</properties>
 
