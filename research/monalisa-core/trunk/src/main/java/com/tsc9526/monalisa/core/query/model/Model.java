@@ -276,9 +276,14 @@ public abstract class Model<T extends Model> implements Serializable {
 	}
 
 	protected void saveHistory(ModelEvent event) {
+		List<FGS> pks=mm().getPkFields();
+		if(pks.size()<1){
+			return;
+		}
+		
 		DBConfig db = mm().db;
 		String table = mm().tableName;
-
+		
 		DBConfig historyDB = db;
 		String hdb = DbProp.PROP_DB_HISTORY_DB.getValue(db);
 		if (hdb != null && hdb.length() > 0) {
@@ -304,6 +309,17 @@ public abstract class Model<T extends Model> implements Serializable {
 		String prefix = DbProp.PROP_DB_HISTORY_PREFIX_COLUMN.getValue(db);
 		SimpleModel history = new SimpleModel(historyTableName);
 		history.use(historyDB);
+		
+		
+		Model m=MMH.createFrom(this);
+		for(FGS fgs:pks){			 
+			Column c=fgs.getAnnotation(Column.class);
+			if(c.key()){
+				m.set(c.name(), fgs.getObject(this)); 
+			}
+		}
+		m.load();				
+		history.parse(m);
 		
 		for(FGS fgs:changedFields()){
 			String name =fgs.getFieldName();
