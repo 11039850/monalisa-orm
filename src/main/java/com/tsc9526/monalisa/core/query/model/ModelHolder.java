@@ -12,6 +12,7 @@ import org.apache.commons.collections.map.CaseInsensitiveMap;
 
 import com.tsc9526.monalisa.core.annotation.Column;
 import com.tsc9526.monalisa.core.tools.ClassHelper.FGS;
+import com.tsc9526.monalisa.core.tools.Helper;
 
 public class ModelHolder implements Serializable {
 	private static final long serialVersionUID = 703976566431364671L;
@@ -137,11 +138,13 @@ public class ModelHolder implements Serializable {
 		if(fields==null || fields.length==0){
 			fieldFilterSets.clear();
 		}else{
-			for(String f:fields){
+			for(String f:Helper.fieldsToArrays(fields)){				 
 				fieldFilterSets.add(model.dialect().getColumnName(f.toLowerCase()));
 			}
 		}		 
 	}
+	
+	 
 		
 	/**
 	 * 排除大字段（字段长度 大于等于 #Short.MAX_VALUE)
@@ -179,7 +182,7 @@ public class ModelHolder implements Serializable {
 		if(fields==null || fields.length==0){
 			fieldFilterSets.clear();
 		}else{
-			for(String f:fields){
+			for(String f:Helper.fieldsToArrays(fields)){
 				fieldFilterSets.add(model.dialect().getColumnName(f.toLowerCase()));
 			}
 		}
