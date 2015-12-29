@@ -47,6 +47,19 @@ public class Helper {
 		}
 	}
 	
+	public static String[] fieldsToArrays(String... fields){
+		List<String> xs=new ArrayList<String>();
+		for(String s:fields){
+			for(String x:s.split(",|;|\\|")){
+				if(x!=null && x.trim().length()>0){
+					xs.add(x.trim());
+				}
+			}
+		}
+		
+		return xs.toArray(new String[0]);
+	}
+	
 	public static String escapeStringValue(String v){
 		if(v==null){
 			return null;
