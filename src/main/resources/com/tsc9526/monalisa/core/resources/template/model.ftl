@@ -359,7 +359,7 @@ public class ${table.javaName} extends ${modelClass}<${table.javaName}> implemen
 		 */
 		@Deprecated		 
 		public Select.SelectForExample forSelect(){
-			return SELECT().selectForExample(this.example);
+			return SELECT();
 		}
 		
 		/**
@@ -370,9 +370,8 @@ public class ${table.javaName} extends ${modelClass}<${table.javaName}> implemen
 		 * Use UPDATE(model) instead
 		 */
 		@Deprecated		 
-		public Update.UpdateForExample forUpdate(${table.javaName} m){			 
-			Update update=new Update(m);
-			return update.updateForExample(this.example);
+		public Update.UpdateForExample forUpdate(${table.javaName} m){			 			 
+			return UPDATE(m);
 		}
 		
 		/**
@@ -382,7 +381,7 @@ public class ${table.javaName} extends ${modelClass}<${table.javaName}> implemen
 		 */
 		@Deprecated		 
 		public Delete.DeleteForExample forDelete(){
-			return DELETE().deleteForExample(this.example);
+			return DELETE();
 		}
 		
 		
@@ -390,7 +389,7 @@ public class ${table.javaName} extends ${modelClass}<${table.javaName}> implemen
 		 * Create Select for example
 		 */
 		public Select.SelectForExample SELECT(){
-			return SELECT().selectForExample(this.example);
+			return ${table.javaName}.SELECT().selectForExample(this.example);
 		}
 		
 		/**
@@ -407,7 +406,7 @@ public class ${table.javaName} extends ${modelClass}<${table.javaName}> implemen
 		 * Create Delete for example
 		 */
 		public Delete.DeleteForExample DELETE(){
-			return DELETE().deleteForExample(this.example);
+			return ${table.javaName}.DELETE().deleteForExample(this.example);
 		}
 		
 		<#list table.columns as f>
