@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.tsc9526</groupId>
 	<artifactId>monalisa-core</artifactId>
-	<version>0.7.3-SNAPSHOT</version>
+	<version>0.7.2-SNAPSHOT</version>
 	
 	<parent>
 		<groupId>com.jy</groupId>
@@ -15,7 +15,7 @@
 		<svnURL>svn://120.26.51.207/data/svn/research</svnURL>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<repositoryURL>${setting.repositoryURL}</repositoryURL>
-		<snapshotRepositoryURL>http://192.168.1.200:8888/nexus/content/repositories/development-snapshot</snapshotRepositoryURL>		
+		<snapshotRepositoryURL>${setting.snapshotRepositoryURL}</snapshotRepositoryURL>		
 		<maven.javadoc.skip>false</maven.javadoc.skip> 		
 	</properties>
 
