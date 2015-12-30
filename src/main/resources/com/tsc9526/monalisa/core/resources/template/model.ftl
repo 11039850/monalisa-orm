@@ -354,7 +354,10 @@ public class ${table.javaName} extends ${modelClass}<${table.javaName}> implemen
 		
 		/**
 		 * Create Select for example
+		 * 
+		 * Use SELECT() instead
 		 */
+		@Deprecated		 
 		public Select.SelectForExample forSelect(){
 			return SELECT().selectForExample(this.example);
 		}
@@ -363,7 +366,10 @@ public class ${table.javaName} extends ${modelClass}<${table.javaName}> implemen
 		 * Create Update for example, Ignore update the primary key;
 		 *
 		 * @see #forUpdate(${table.javaName},boolean)
+		 *
+		 * Use UPDATE(model) instead
 		 */
+		@Deprecated		 
 		public Update.UpdateForExample forUpdate(${table.javaName} m){			 
 			Update update=new Update(m);
 			return update.updateForExample(this.example);
@@ -371,8 +377,36 @@ public class ${table.javaName} extends ${modelClass}<${table.javaName}> implemen
 		
 		/**
 		 * Create Delete for example
+		 *
+		 * Use DELETE() instead
 		 */
+		@Deprecated		 
 		public Delete.DeleteForExample forDelete(){
+			return DELETE().deleteForExample(this.example);
+		}
+		
+		
+		/**
+		 * Create Select for example
+		 */
+		public Select.SelectForExample SELECT(){
+			return SELECT().selectForExample(this.example);
+		}
+		
+		/**
+		 * Create Update for example, Ignore update the primary key;
+		 *
+		 * @see #forUpdate(${table.javaName},boolean)
+		 */
+		public Update.UpdateForExample UPDATE(${table.javaName} m){			 
+			Update update=new Update(m);
+			return update.updateForExample(this.example);
+		}
+		
+		/**
+		 * Create Delete for example
+		 */
+		public Delete.DeleteForExample DELETE(){
 			return DELETE().deleteForExample(this.example);
 		}
 		
