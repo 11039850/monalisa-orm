@@ -351,38 +351,8 @@ public class ${table.javaName} extends ${modelClass}<${table.javaName}> implemen
 		private Criteria(Example example){
 			this.example=example;
 		}
-		
-		/**
-		 * Create Select for example<br>
-		 * 
-		 * Use SELECT() instead
-		 */
-		@Deprecated		 
-		public Select.SelectForExample forSelect(){
-			return SELECT();
-		}
-		
-		/**
-		 * Create Update for example, Ignore update the primary key<br>
-		 *
-		 * Use UPDATE(model) instead
-		 */
-		@Deprecated		 
-		public Update.UpdateForExample forUpdate(${table.javaName} m){			 			 
-			return UPDATE(m);
-		}
-		
-		/**
-		 * Create Delete for example <br>
-		 *
-		 * Use DELETE() instead
-		 */
-		@Deprecated		 
-		public Delete.DeleteForExample forDelete(){
-			return DELETE();
-		}
-		
-		
+		  
+		 
 		/**
 		 * Create Select for example
 		 */
@@ -391,19 +361,18 @@ public class ${table.javaName} extends ${modelClass}<${table.javaName}> implemen
 		}
 		
 		/**
-		 * Create Update for example, Ignore update the primary key;
-		 *
+		 * Update the model filter by this example, Ignore update the primary key;		 
 		 */
-		public Update.UpdateForExample UPDATE(${table.javaName} m){			 
+		public int update(${table.javaName} m){			 
 			Update update=new Update(m);
-			return update.updateForExample(this.example);
+			return update.updateForExample(this.example).update();
 		}
 		
 		/**
-		 * Create Delete for example
+		 * Delete the model filter by this example
 		 */
-		public Delete.DeleteForExample DELETE(){
-			return ${table.javaName}.DELETE().deleteForExample(this.example);
+		public int delete(){
+			return DELETE().deleteForExample(this.example).delete();
 		}
 		
 		<#list table.columns as f>
