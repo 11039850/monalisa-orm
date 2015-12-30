@@ -353,7 +353,7 @@ public class ${table.javaName} extends ${modelClass}<${table.javaName}> implemen
 		}
 		
 		/**
-		 * Create Select for example
+		 * Create Select for example<br>
 		 * 
 		 * Use SELECT() instead
 		 */
@@ -363,9 +363,7 @@ public class ${table.javaName} extends ${modelClass}<${table.javaName}> implemen
 		}
 		
 		/**
-		 * Create Update for example, Ignore update the primary key;
-		 *
-		 * @see #forUpdate(${table.javaName},boolean)
+		 * Create Update for example, Ignore update the primary key<br>
 		 *
 		 * Use UPDATE(model) instead
 		 */
@@ -375,7 +373,7 @@ public class ${table.javaName} extends ${modelClass}<${table.javaName}> implemen
 		}
 		
 		/**
-		 * Create Delete for example
+		 * Create Delete for example <br>
 		 *
 		 * Use DELETE() instead
 		 */
@@ -395,7 +393,6 @@ public class ${table.javaName} extends ${modelClass}<${table.javaName}> implemen
 		/**
 		 * Create Update for example, Ignore update the primary key;
 		 *
-		 * @see #forUpdate(${table.javaName},boolean)
 		 */
 		public Update.UpdateForExample UPDATE(${table.javaName} m){			 
 			Update update=new Update(m);
