@@ -351,28 +351,28 @@ public class ${table.javaName} extends ${modelClass}<${table.javaName}> implemen
 		private Criteria(Example example){
 			this.example=example;
 		}
-		  
-		 
+		
 		/**
 		 * Create Select for example
 		 */
-		public Select.SelectForExample SELECT(){
-			return ${table.javaName}.SELECT().selectForExample(this.example);
+		public Select.SelectForExample forSelect(){
+			return SELECT().selectForExample(this.example);
 		}
 		
 		/**
-		 * Update the model filter by this example, Ignore update the primary key;		 
+		 * Create Update for example, Ignore update the primary key;
+		 *	 
 		 */
-		public int update(${table.javaName} m){			 
+		public Update.UpdateForExample forUpdate(${table.javaName} m){			 
 			Update update=new Update(m);
-			return update.updateForExample(this.example).update();
+			return update.updateForExample(this.example);
 		}
 		
 		/**
-		 * Delete the model filter by this example
+		 * Create Delete for example
 		 */
-		public int delete(){
-			return DELETE().deleteForExample(this.example).delete();
+		public Delete.DeleteForExample forDelete(){
+			return DELETE().deleteForExample(this.example);
 		}
 		
 		<#list table.columns as f>
