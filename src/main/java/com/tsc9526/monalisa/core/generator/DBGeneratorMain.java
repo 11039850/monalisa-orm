@@ -26,6 +26,19 @@ public class DBGeneratorMain extends DBGenerator{
 		}
 	}
 	
+	public static void generate(Class<?> clazzWithDBAnnotation){		 
+		if(new File("./src/main/java").exists()){
+			generate(clazzWithDBAnnotation,"./src/main/java","./src/main/resources");
+		}else{ 
+			File src=new File("./src");
+			if(!src.exists()){
+				src.mkdir();
+			} 
+			
+			generate(clazzWithDBAnnotation,"./src","./src");
+		}
+	}
+	
 	public static void generate(Class<?> clazzWithDBAnnotation,String outputJavaDir){
 		generate(clazzWithDBAnnotation,outputJavaDir,outputJavaDir);
 	}
@@ -45,6 +58,8 @@ public class DBGeneratorMain extends DBGenerator{
 	public DBGeneratorMain(Class<?> clazzWithDBAnnotation,String outputJavaDir,String outputResourceDir) {
 		super();
 	  	
+		System.out.println("Generate files, DB-CLASS: "+clazzWithDBAnnotation.getName()+", SOURCE-DIR: "+outputJavaDir+", RESOURCE-DIR: "+outputResourceDir);
+		
 		String projectPath=".";
 		 		
 		String name=clazzWithDBAnnotation.getName();
