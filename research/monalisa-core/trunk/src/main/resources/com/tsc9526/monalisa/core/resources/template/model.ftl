@@ -42,7 +42,7 @@ public class ${table.javaName} extends ${modelClass}<${table.javaName}> implemen
 	/**
 	* Simple query with example <br>
 	* 
-	* Replaced with WHERE()
+	* use WHERE() instead
 	*/
 	@Deprecated
 	public static Criteria criteria(){
@@ -353,27 +353,57 @@ public class ${table.javaName} extends ${modelClass}<${table.javaName}> implemen
 		}
 		
 		/**
-		 * Create Select for example
+		 * Create Select for example <br>
+		 *
+		 * use SELECT() instead
 		 */
+		@Deprecated
 		public Select.SelectForExample forSelect(){
-			return SELECT().selectForExample(this.example);
+			return SELECT();
 		}
 		
 		/**
-		 * Create Update for example, Ignore update the primary key;
-		 *	 
+		 * Create Update for example, Ignore update the primary key <br>
+		 *
+		 * use update(model) instead
 		 */
+		@Deprecated
 		public Update.UpdateForExample forUpdate(${table.javaName} m){			 
 			Update update=new Update(m);
 			return update.updateForExample(this.example);
 		}
 		
 		/**
-		 * Create Delete for example
+		 * Create Delete for example <br>
+		 *
+		 * use delete() instead
 		 */
+		@Deprecated
 		public Delete.DeleteForExample forDelete(){
 			return DELETE().deleteForExample(this.example);
 		}
+		
+		/**
+		 * Create Select for example
+		 */
+		public Select.SelectForExample SELECT(){
+			return ${table.javaName}.SELECT().selectForExample(this.example);
+		}
+		
+		/**
+		* Update records with this example
+		*/
+		public int update(${table.javaName} m){			 
+			return UPDATE(m).updateByExample(this.example);
+		}
+				
+		/**
+		* Delete records with this example
+		*/		
+		public int delete(){
+			return DELETE().deleteByExample(this.example);
+		}
+		
 		
 		<#list table.columns as f>
 		<@comments table=table c=f align="		"/>

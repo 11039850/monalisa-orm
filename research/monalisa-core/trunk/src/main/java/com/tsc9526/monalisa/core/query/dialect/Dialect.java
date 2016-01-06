@@ -145,6 +145,10 @@ public abstract class Dialect{
 	}	
 	 
 	public Query update(Model model,String whereStatement,Object ... args){		
+		if(whereStatement==null || whereStatement.trim().length()==0){
+			throw new RuntimeException("Model: "+model.getClass()+" update fail, no where cause.");
+		}
+		
 		Query query=new Query();
 		
 		query.add("UPDATE "+getTableName(model.table())+" SET ");
@@ -163,16 +167,14 @@ public abstract class Dialect{
 		}		
 		query.add(" ");
 		
-		if(whereStatement!=null && whereStatement.trim().length()>0){
-			List<String> kws=SQLHelper.splitKeyWords(whereStatement);
-			String w=kws.get(0);
-			if(w.equalsIgnoreCase("WHERE")){
-				query.add(whereStatement, args);
-			}else{ 
-				query.add("WHERE ").add(whereStatement,  args);
-			} 	
-		}
-		 
+		List<String> kws=SQLHelper.splitKeyWords(whereStatement);
+		String w=kws.get(0);
+		if(w.equalsIgnoreCase("WHERE")){
+			query.add(whereStatement, args);
+		}else{ 
+			query.add("WHERE ").add(whereStatement,  args);
+		} 	
+		
 		return query;		 				 
 	}
 	 
