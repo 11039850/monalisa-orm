@@ -9,7 +9,7 @@ import java.sql.SQLException;
 public class Tx {
 	public final static String CONTEXT_CURRENT_USERID="CONTEXT_CURRENT_USERID";
 	
-	private static ThreadLocal<TxQuery> local =new ThreadLocal<TxQuery>();  
+	private static ThreadLocal<TxQuery> txQuery =new ThreadLocal<TxQuery>();  
 	private static ThreadLocal<DataMap> context=new ThreadLocal<DataMap>();
 	
 	public static Object getContext(String key){
@@ -38,7 +38,7 @@ public class Tx {
 	}
 	
 	public static TxQuery getTxQuery(){
-		return local.get();
+		return txQuery.get();
 	}
 	
 	/**
@@ -46,10 +46,10 @@ public class Tx {
 	 * @return null if the transaction started by other method. 
 	 */
 	public static TxQuery begin(){
-		TxQuery x=local.get();
+		TxQuery x=txQuery.get();
 		if(x==null){
 			x=new TxQuery();
-			local.set(x);
+			txQuery.set(x);
 			
 			return x;
 		}else{
@@ -58,7 +58,7 @@ public class Tx {
 	}
 	
 	public static void commit() throws SQLException{
-		TxQuery x=local.get();
+		TxQuery x=txQuery.get();
 		if(x!=null){			 
 			x.commit();
 		}else{
@@ -67,7 +67,7 @@ public class Tx {
 	}
 	
 	public static void rollback(){
-		TxQuery x=local.get();
+		TxQuery x=txQuery.get();
 		if(x!=null){			 
 			x.rollback();
 		}else{
@@ -76,9 +76,9 @@ public class Tx {
 	}
 	
 	public static void close(){
-		TxQuery x=local.get();
+		TxQuery x=txQuery.get();
 		if(x!=null){
-			local.remove();
+			txQuery.remove();
 			x.close();
 		}
 	}
