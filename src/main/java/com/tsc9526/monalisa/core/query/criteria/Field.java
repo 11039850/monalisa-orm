@@ -17,13 +17,13 @@ import com.tsc9526.monalisa.core.tools.TypeHelper;
 public class Field<X,Y extends Criteria<?>>{
 	private DataSourceManager dsm=DataSourceManager.getInstance();
 	
-	private Y criteria;
-	private String name;
-	private String columnName;
+	protected Y criteria;
+	protected String name;
+	protected String columnName;
 	
-	private Query q;
+	protected Query q;
 	 
-	private String type;
+	protected String type;
 	
 	public Field(String name,Y criteria){
 		this(name, criteria, Types.INTEGER);
@@ -90,6 +90,7 @@ public class Field<X,Y extends Criteria<?>>{
 	public Y like(X value){
 		return add(" like ?", value); 
 	}		 
+	 
 	
 	/**
 	 * SQL: <code>IS NULL</code>
@@ -592,6 +593,30 @@ public class Field<X,Y extends Criteria<?>>{
 		public Y notins(String valueSplitByComma){
 			return notin(toStrings(valueSplitByComma));
 		}		 
+		
+		public Y starts(String value){
+			if(isIngore(value)){
+				return this.criteria;
+			}else{
+				return like(value+"%");
+			}
+		}
+		
+		public Y ends(String value){
+			if(isIngore(value)){
+				return this.criteria;
+			}else{
+				return like("%"+value);
+			}
+		}
+		
+		public Y contains(String value){
+			if(isIngore(value)){
+				return this.criteria;
+			}else{
+				return like("%"+value+"%");
+			}
+		}
 		
 		private List<String> toStrings(String valueSplitByComma){
 			List<String> xs=new ArrayList<String>();
