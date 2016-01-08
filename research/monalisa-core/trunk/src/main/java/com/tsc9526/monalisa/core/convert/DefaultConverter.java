@@ -135,25 +135,23 @@ public class DefaultConverter implements Converter{
 			value=convertToEnum(v,type);
 		}else if(type==JsonObject.class){
 			value=convertToJsonObject(v,type);
-		}else{
-			if(v.getClass().isArray() && type == String.class){
-				value=convertArrayToString((Object[])v);						
-			}else if(Map.class.isAssignableFrom(v.getClass()) && type == String.class){
-				value=convertMapToString((Map<?,?>)v);						
-			}else if(v.getClass().isArray()==false && type.isArray()){
-				value=convertJsonToArray(v,type);
-			}else if(type.isArray()==false 
-					&& type.isPrimitive()==false 
-					&& type.getName().startsWith("java.")==false
-					&& (v.getClass() == String.class || v instanceof JsonElement)){
-				value=convertStringToBean(v,type);
-			}else{		
-				if(v instanceof JsonPrimitive){
-					v=JsonHelper.getGson().fromJson((JsonElement)v, String.class);
-				}
-				value=convertOthers(v, type);
+		}else if(v.getClass().isArray() && type == String.class){
+			value=convertArrayToString((Object[])v);						
+		}else if(Map.class.isAssignableFrom(v.getClass()) && type == String.class){
+			value=convertMapToString((Map<?,?>)v);						
+		}else if(v.getClass().isArray()==false && type.isArray()){
+			value=convertJsonToArray(v,type);
+		}else if(type.isArray()==false 
+				&& type.isPrimitive()==false 
+				&& type.getName().startsWith("java.")==false
+				&& (v.getClass() == String.class || v instanceof JsonElement)){
+			value=convertStringToBean(v,type);
+		}else{		
+			if(v instanceof JsonPrimitive){
+				v=JsonHelper.getGson().fromJson((JsonElement)v, String.class);
 			}
-		}
+			value=convertOthers(v, type);
+		}		
 		
 		return (T)value;
 	}	
