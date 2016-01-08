@@ -2,8 +2,6 @@ package com.tsc9526.monalisa.core.logger;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 import javax.annotation.processing.Messager;
 import javax.tools.Diagnostic.Kind;

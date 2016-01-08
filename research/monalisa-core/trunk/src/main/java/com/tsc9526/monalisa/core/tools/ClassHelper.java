@@ -5,7 +5,6 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
 import java.util.LinkedHashMap;
@@ -15,30 +14,18 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
-import org.apache.commons.beanutils.ConvertUtils;
 import org.apache.commons.beanutils.converters.DateTimeConverter;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonNull;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-import com.google.gson.JsonPrimitive;
+import com.tsc9526.monalisa.core.convert.Converter;
+import com.tsc9526.monalisa.core.convert.DefaultConverter;
  
 /**
  * 
  * @author zzg.zhou(11039850@qq.com)
  */
 public class ClassHelper {
-	static{
-		DateValue dc = new DateValue(null);
-		dc.setUseLocaleFormat(true);
-		String[] datePattern = {"yyyy-MM-dd HH:mm:ss","yyyy-MM-dd","yyyy-MM-dd HH:mm:ss.SSS"};    
-		dc.setPatterns(datePattern);    
-		ConvertUtils.register(dc, java.util.Date.class);
-	}
-	
+	public static Converter converter=new DefaultConverter();	
+	 
 	private static ConcurrentHashMap<String, MetaClass> hBeanClasses = new ConcurrentHashMap<String, MetaClass>();
 	  
 	public static MetaClass getMetaClass(Class<?> clazz) {
@@ -116,106 +103,10 @@ public class ClassHelper {
 		return to;
 	}
 	 
-	public static Object convert(Object v,Class<?> type){
-		if(type==null){
-			return v;
-		}
-		
-		if(v instanceof JsonNull){
-			return null;
-		}
-		
-		Object value=null;
-		if(v!=null){
-			if(type.isEnum()){
-				value=EnumHelper.getEnum(type, v);
-			}else if(type==JsonObject.class){
-				if(v.getClass()==JsonObject.class){
-					value=v;
-				}else{
-					value=new JsonParser().parse(v.toString());
-				}	
-			}else{
-				if(v.getClass().isArray() && type == String.class){
-					value=Arrays.toString((Object[])v);						
-				}else if(Map.class.isAssignableFrom(v.getClass()) && type == String.class){
-					value=mapToString((Map<?,?>)v);						
-				}else if(v.getClass().isArray()==false && type.isArray()){
-					JsonElement je=new JsonParser().parse(v.toString());
-					if(je==null || je.isJsonNull()){
-						value=null;
-					}else{
-						JsonArray array=je.getAsJsonArray();						
-						if(type==int[].class){
-							int[] iv=new int[array.size()];
-							for(int i=0;i<array.size();i++){
-								JsonElement e=array.get(i);
-								iv[i]=e.getAsInt();
-							}
-							value=iv;
-						}if(type==float[].class){
-							float[] iv=new float[array.size()];
-							for(int i=0;i<array.size();i++){
-								JsonElement e=array.get(i);
-								iv[i]=e.getAsFloat();
-							}
-							value=iv;
-						}else if(type==long[].class){
-							long[] iv=new long[array.size()];
-							for(int i=0;i<array.size();i++){
-								JsonElement e=array.get(i);
-								iv[i]=e.getAsLong();
-							}
-							value=iv;
-						}else if(type==double[].class){
-							double[] iv=new double[array.size()];
-							for(int i=0;i<array.size();i++){
-								JsonElement e=array.get(i);
-								iv[i]=e.getAsDouble();
-							}
-							value=iv;
-						}else{//String[]
-							String[] iv=new String[array.size()];
-							for(int i=0;i<array.size();i++){
-								JsonElement e=array.get(i);
-								if(e.isJsonPrimitive()){
-									iv[i]=e.getAsString();
-								}else{
-									iv[i]=e.toString();
-								}
-							}
-							value=iv;
-						}	
-					}
-				}else if(type.isArray()==false 
-						&& type.isPrimitive()==false 
-						&& type.getName().startsWith("java.")==false
-						&& (v.getClass() == String.class || v instanceof JsonElement)){
-					//Json String to Java Object
-					if(v.getClass()==String.class){
-						value=JsonHelper.getGson().fromJson(v.toString(), type);
-					}else{
-						value=JsonHelper.getGson().fromJson((JsonElement)v, type);
-					}
-				}else{
-					if(v instanceof JsonPrimitive){
-						v=JsonHelper.getGson().fromJson((JsonElement)v, String.class);
-					}
-					
-					value=ConvertUtils.convert(v, type);
-				}
-			}
-		}
-		
-		return value;
+	public static Object convert(Object source,Class<?> target){
+		return converter.convert(source, target);
 	}
-	
-	private static String mapToString(Map<?,?> m){		
-		Gson gson=JsonHelper.getGson();
-		return gson.toJson(m);		
-	}
-	 	 
-	
+ 
 	private synchronized static MetaClass loadMetaClass(Class<?> clazz) {
 		String name = clazz.getName();
 		if (hBeanClasses.containsKey(name)) {
