@@ -15,6 +15,7 @@ import javax.sql.DataSource;
 
 import com.tsc9526.monalisa.core.annotation.DB;
 import com.tsc9526.monalisa.core.annotation.Table;
+import com.tsc9526.monalisa.core.logger.Logger;
 import com.tsc9526.monalisa.core.meta.MetaPartition;
 import com.tsc9526.monalisa.core.query.DataMap;
 import com.tsc9526.monalisa.core.query.Page;
@@ -31,6 +32,8 @@ import com.tsc9526.monalisa.core.tools.CloseQuietly;
  * @author zzg.zhou(11039850@qq.com)
  */
 public class DBConfig implements Closeable{ 	
+	static Logger logger=Logger.getLogger(DBConfig.class);
+	
 	/**
 	 * <code>DEFAULT_PATH= ".";</code> <br>
 	 * The file path for DB.configFile() is :<br>
@@ -447,7 +450,7 @@ public class DBConfig implements Closeable{
 		
 		protected boolean loadCfg(CfgFile cf,Properties prop){
 			if(cf.cfgFile.exists()){
-				System.out.println("Load DB("+key+") config from: "+cf.cfgFile.getAbsolutePath());				
+				logger.info("Load DB("+key+") config from: "+cf.cfgFile.getAbsolutePath());				
 				try{
 					cf.lastModified=cf.cfgFile.lastModified();
 					 

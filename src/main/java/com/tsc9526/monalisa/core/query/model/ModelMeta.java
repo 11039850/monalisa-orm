@@ -16,6 +16,7 @@ import com.tsc9526.monalisa.core.annotation.Index;
 import com.tsc9526.monalisa.core.annotation.Table;
 import com.tsc9526.monalisa.core.datasource.DBConfig;
 import com.tsc9526.monalisa.core.datasource.DbProp;
+import com.tsc9526.monalisa.core.logger.Logger;
 import com.tsc9526.monalisa.core.meta.MetaColumn;
 import com.tsc9526.monalisa.core.meta.MetaPartition;
 import com.tsc9526.monalisa.core.meta.MetaTable;
@@ -25,9 +26,7 @@ import com.tsc9526.monalisa.core.tools.ClassHelper;
 import com.tsc9526.monalisa.core.tools.ClassHelper.FGS;
 import com.tsc9526.monalisa.core.tools.ClassHelper.MetaClass;
 import com.tsc9526.monalisa.core.tools.TableHelper;
-
-import freemarker.log.Logger;
-
+ 
 class ModelMeta{	
 	static Logger logger=Logger.getLogger(ModelMeta.class.getName());
 	

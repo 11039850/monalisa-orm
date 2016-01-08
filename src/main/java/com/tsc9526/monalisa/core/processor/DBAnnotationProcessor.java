@@ -15,6 +15,7 @@ import javax.tools.Diagnostic.Kind;
 
 import com.tsc9526.monalisa.core.annotation.DB;
 import com.tsc9526.monalisa.core.generator.DBGeneratorProcessing;
+import com.tsc9526.monalisa.core.logger.Logger;
 
 /**
  * 
@@ -23,7 +24,8 @@ import com.tsc9526.monalisa.core.generator.DBGeneratorProcessing;
 @SupportedAnnotationTypes("com.tsc9526.monalisa.core.annotation.DB")
 @SupportedSourceVersion(SourceVersion.RELEASE_6)
 public class DBAnnotationProcessor extends AbstractProcessor {
-	 
+	static Logger logger=Logger.getLogger(DBAnnotationProcessor.class);
+	
 	@Override
 	public synchronized void init(ProcessingEnvironment processingEnv) {
 		super.init(processingEnv);	
@@ -42,12 +44,12 @@ public class DBAnnotationProcessor extends AbstractProcessor {
 						dbai.generateFiles();
 						
 					}catch(Throwable e){
-						e.printStackTrace(System.out);
+						logger.error(""+e,e);
 						
 						processingEnv.getMessager().printMessage(Kind.ERROR,e.getClass().getName()+":\r\n"+e.getMessage(), element);
 					}
 				}else{
-					System.out.print("[WARN] @DB should used for interface!");					
+					logger.warn("@DB should used for interface!");					
 					processingEnv.getMessager().printMessage(Kind.WARNING,"@DB should used for interface!", element);
 				}
 			}
