@@ -5,7 +5,16 @@ import java.io.StringWriter;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import javax.annotation.processing.Messager;
+import javax.tools.Diagnostic.Kind;
+
 public class ConsoleLoggerFactory implements LoggerFactory {
+	private static Messager messager=null;
+	
+	public static void setMessagerLogger(Messager messager){
+		ConsoleLoggerFactory.messager=messager;		 
+	}		
+	
 	ConsoleLoggerFactory() {
 	}
 
@@ -67,14 +76,13 @@ public class ConsoleLoggerFactory implements LoggerFactory {
 		}
 		
 		private void println(String level,String message){
-			println(message,null);
+			println(level,message,null);
 		}
 		
 		private void println(String level,String message, Throwable t){
 			StringBuffer sb=new StringBuffer();
 			
-			SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-			sb.append(sdf.format(new Date())).append(" [").append(level).append("] ").append(message);
+			sb.append("[").append(level).append("] ").append(message);
 			
 			if(t!=null){
 				StringWriter writer=new StringWriter(4*1024);
@@ -82,10 +90,18 @@ public class ConsoleLoggerFactory implements LoggerFactory {
 				sb.append("\r\n").append(writer.getBuffer().toString());
 			}
 			
-			if(level.equals("ERROR")){
-				System.err.println(sb.toString());
+			if(messager!=null){
+				if(level.equals("ERROR")){
+					messager.printMessage(Kind.ERROR, sb.toString());
+				}else{
+					messager.printMessage(Kind.NOTE, sb.toString());
+				}
 			}else{
-				System.out.println(sb.toString());
+				if(level.equals("ERROR")){
+					System.err.println(sb.toString());
+				}else{
+					System.out.println(sb.toString());
+				}
 			}
 		}
 	};

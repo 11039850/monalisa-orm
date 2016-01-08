@@ -15,6 +15,8 @@ import com.tsc9526.monalisa.core.logger.Logger;
  * @author zzg.zhou(11039850@qq.com)
  */
 public class DBProject {
+	public final static String EclipseDBProjectClass="com.tsc9526.monalisa.plugin.eclipse.generator.EclipseDBProject";
+	
 	static Logger logger=Logger.getLogger(DBProject.class);
 	
 	@SuppressWarnings("unchecked")
@@ -26,7 +28,7 @@ public class DBProject {
 		}
 		
 		try{
-			Class<DBProject> clazz=(Class<DBProject>)Class.forName("com.tsc9526.monalisa.plugin.eclipse.generator.EclipseDBProject");
+			Class<DBProject> clazz=(Class<DBProject>)Class.forName(EclipseDBProjectClass);
 			Constructor<DBProject> c=clazz.getConstructor(ProcessingEnvironment.class,TypeElement.class);
 			DBProject project= c.newInstance(processingEnv,typeElement);
 			

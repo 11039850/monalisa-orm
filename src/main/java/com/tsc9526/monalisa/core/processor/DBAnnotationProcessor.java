@@ -15,7 +15,9 @@ import javax.tools.Diagnostic.Kind;
 
 import com.tsc9526.monalisa.core.annotation.DB;
 import com.tsc9526.monalisa.core.generator.DBGeneratorProcessing;
+import com.tsc9526.monalisa.core.logger.ConsoleLoggerFactory;
 import com.tsc9526.monalisa.core.logger.Logger;
+import com.tsc9526.monalisa.core.tools.Helper;
 
 /**
  * 
@@ -23,17 +25,28 @@ import com.tsc9526.monalisa.core.logger.Logger;
  */
 @SupportedAnnotationTypes("com.tsc9526.monalisa.core.annotation.DB")
 @SupportedSourceVersion(SourceVersion.RELEASE_6)
-public class DBAnnotationProcessor extends AbstractProcessor {
-	static Logger logger=Logger.getLogger(DBAnnotationProcessor.class);
-	
-	@Override
+public class DBAnnotationProcessor extends AbstractProcessor {	 
+	 
 	public synchronized void init(ProcessingEnvironment processingEnv) {
 		super.init(processingEnv);	
-		    
+		 
+		try{
+			Logger.selectLoggerLibrary(Logger.INDEX_CONSOLE);			 
+		}catch(Exception e){
+			throw new RuntimeException(e);
+		}
+		 
+		if(Helper.inEclipseProcessing()){
+			//Eclipse环境,设置日志输出
+			ConsoleLoggerFactory.setMessagerLogger(processingEnv.getMessager());
+		} 		
 	}
-
-	@Override
+	
+	
+	 
 	public boolean process(Set<? extends TypeElement> annotations,RoundEnvironment roundEnv) {
+		Logger logger=Logger.getLogger(DBAnnotationProcessor.class);
+		
 		if (!roundEnv.processingOver()) {	
 			Set<? extends Element> els = roundEnv.getElementsAnnotatedWith(DB.class);
 			for (Element element : els) {				
@@ -44,13 +57,19 @@ public class DBAnnotationProcessor extends AbstractProcessor {
 						dbai.generateFiles();
 						
 					}catch(Throwable e){
-						logger.error(""+e,e);
+						if(Helper.inEclipseProcessing()){
+							processingEnv.getMessager().printMessage(Kind.ERROR,e.getClass().getName()+":\r\n"+e.getMessage(), element);
+						}else{
+							logger.error(""+e,e);
+						}
 						
-						processingEnv.getMessager().printMessage(Kind.ERROR,e.getClass().getName()+":\r\n"+e.getMessage(), element);
 					}
 				}else{
-					logger.warn("@DB should used for interface!");					
-					processingEnv.getMessager().printMessage(Kind.WARNING,"@DB should used for interface!", element);
+					if(Helper.inEclipseProcessing()){
+						processingEnv.getMessager().printMessage(Kind.WARNING,"@DB should used for interface!", element);
+					}else{
+						logger.warn("@DB should used for interface!");
+					}					
 				}
 			}
 		} 
