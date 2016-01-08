@@ -3,8 +3,6 @@ package com.tsc9526.monalisa.core.logger;
 import java.util.HashMap;
 import java.util.Map;
 
-import freemarker.template.utility.ClassUtil;
-
 /**
  * 
  * @author zzg.zhou(11039850@qq.com)
@@ -120,8 +118,9 @@ public abstract class Logger {
 		String loggerClassName = LIBRARY[index][0];
 		String factoryType     = LIBRARY[index][1];
 
-		try {
-			ClassUtil.forName(loggerClassName);
+		try {			 
+			Class.forName(loggerClassName);
+			
 			return (LoggerFactory) Class.forName("com.tsc9526.monalisa.core.logger." + factoryType + "LoggerFactory").newInstance();
 		} catch (IllegalAccessException e) {			 
 			throw new IllegalAccessError(e.getMessage());
