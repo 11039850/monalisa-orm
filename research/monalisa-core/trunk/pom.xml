@@ -76,7 +76,7 @@
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
 			<version>1.7.9</version>
-			<scope>compile</scope>
+			<scope>provided</scope>
 		</dependency>
 		
 	</dependencies>

@@ -10,7 +10,6 @@ import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.MirroredTypeException;
 import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.Types;
-import javax.tools.Diagnostic.Kind;
 import javax.tools.FileObject;
 import javax.tools.JavaFileObject;
 import javax.tools.StandardLocation;
@@ -31,6 +30,7 @@ public class DBGeneratorProcessing extends DBGenerator{
 	 
 	public DBGeneratorProcessing(ProcessingEnvironment processingEnv,TypeElement typeElement) {
 		super();
+		 
 		this.processingEnv = processingEnv;		 
 		this.typeElement = typeElement;
 		
@@ -117,9 +117,4 @@ public class DBGeneratorProcessing extends DBGenerator{
 		
 		return modelClass;
 	}
-	
-	protected void error(String message){
-		processingEnv.getMessager().printMessage(Kind.ERROR,"Partition error: "+message, typeElement);
-	}
-  
 }

@@ -35,16 +35,18 @@ public abstract class Logger {
 	public abstract boolean isFatalEnabled();
 	
 	
-	public static final int  INDEX_AUTO = -1;
-  	 
+	public static final int  INDEX_AUTO      = -1;
+	public static final int  INDEX_CONSOLE   =  0;
+	
 	private static final String[][] LIBRARY = {
 		{ "com.tsc9526.monalisa.core.logger.Logger", "Console"},
 		{ "java.util.logging.Logger",                "JDK14"},
 		{ "org.apache.log4j.Logger",                 "Log4J"}, 
 		{ "org.apache.commons.logging.Log",          "Commons"},
-		{ "org.slf4j.Logger",                        "SLF4J"}
+		{ "org.slf4j.Logger",                        "SLF4J"}		
 	};
 
+	
 	private static int loggerIndex;
 	private static LoggerFactory factory;
 	private static String categoryPrefix = "";
@@ -118,9 +120,9 @@ public abstract class Logger {
 		String loggerClassName = LIBRARY[index][0];
 		String factoryType     = LIBRARY[index][1];
 
-		try {			 
+		try {
 			Class.forName(loggerClassName);
-			
+			 
 			return (LoggerFactory) Class.forName("com.tsc9526.monalisa.core.logger." + factoryType + "LoggerFactory").newInstance();
 		} catch (IllegalAccessException e) {			 
 			throw new IllegalAccessError(e.getMessage());
