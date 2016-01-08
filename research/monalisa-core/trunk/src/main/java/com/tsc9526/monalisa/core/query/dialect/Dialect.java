@@ -10,6 +10,7 @@ import com.google.gson.JsonPrimitive;
 import com.tsc9526.monalisa.core.annotation.Column;
 import com.tsc9526.monalisa.core.annotation.Table;
 import com.tsc9526.monalisa.core.datasource.DBConfig;
+import com.tsc9526.monalisa.core.logger.Logger;
 import com.tsc9526.monalisa.core.meta.MetaTable.CreateTable;
 import com.tsc9526.monalisa.core.query.Query;
 import com.tsc9526.monalisa.core.query.model.Model;
@@ -18,9 +19,7 @@ import com.tsc9526.monalisa.core.tools.ClassHelper.FGS;
 import com.tsc9526.monalisa.core.tools.EnumHelper;
 import com.tsc9526.monalisa.core.tools.JsonHelper;
 import com.tsc9526.monalisa.core.tools.SQLHelper;
-import com.tsc9526.monalisa.core.tools.TypeHelper;
-
-import freemarker.log.Logger;
+import com.tsc9526.monalisa.core.tools.TypeHelper; 
  
 /**
  * 
@@ -49,6 +48,9 @@ public abstract class Dialect{
 	public synchronized void createTable(DBConfig db,CreateTable table){
 		String key=db.getKey()+":"+table.getTableName();
 		if(!hTables.containsKey(key)){
+			String sql=table.getCreateSQL();
+			logger.info(sql);
+			
 			db.execute(table.getCreateSQL());
 		
 			hTables.put(key, table);

@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.tsc9526.monalisa.core.datasource.DBConfig;
 import com.tsc9526.monalisa.core.datasource.DbProp;
+import com.tsc9526.monalisa.core.logger.Logger;
 import com.tsc9526.monalisa.core.meta.MetaPartition;
 import com.tsc9526.monalisa.core.meta.MetaTable;
 import com.tsc9526.monalisa.core.query.model.Model;
@@ -14,6 +15,8 @@ import com.tsc9526.monalisa.core.query.partition.Partition;
  */
 @SuppressWarnings("rawtypes")
 public abstract class DBGenerator {
+	static Logger logger=Logger.getLogger(DBGenerator.class);
+	
 	public static String PROJECT_TMP_PATH="/target/monalisa";
 		 
 	protected DBConfig dbcfg;
@@ -41,7 +44,7 @@ public abstract class DBGenerator {
 				Partition p=mp.getPartition();				 
 				String error=p.verify(mp,table);
 				if(error!=null){
-					error(error);
+					logger.error(error);
 				}						 				
 			}catch(Exception e) {
 				if(e instanceof RuntimeException){
@@ -50,18 +53,13 @@ public abstract class DBGenerator {
 						//Ingore this exception
 						return;
 					} 
-				}
-				e.printStackTrace(System.out);
-				
-				error(e.getClass().getName()+":\r\n"+e.getMessage());
+				}				 
+				logger.error(e.getClass().getName()+":\r\n"+e.getMessage(),e);
 			}
 		}
 	}
 	 
-	protected void error(String message){
-		System.out.println(message);
-	}
-	
+ 
 	
 	protected String getModelClassValue(MetaTable table){
 		String modelClass=dbcfg.getCfg().getProperty(DbProp.PROP_TABLE_MODEL_CLASS.getKey()+"."+table.getName(), dbcfg.getCfg().getModelClass()); 

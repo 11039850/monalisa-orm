@@ -184,6 +184,10 @@ public class MetaTable extends Name implements Cloneable{
 			return this.tableType;
 		}
 	 	
+		public String getOriginSQL() {			 
+			return createSQL;			
+		}
+		
 		public String getCreateSQL() {			 
 			int p=createSQL.indexOf(TABLE_VAR);
 			if(p>0){

@@ -13,6 +13,7 @@ import com.tsc9526.monalisa.core.datasource.DBConfig;
 import com.tsc9526.monalisa.core.datasource.DataSourceManager;
 import com.tsc9526.monalisa.core.datasource.DbProp;
 import com.tsc9526.monalisa.core.generator.DBMetadata;
+import com.tsc9526.monalisa.core.logger.Logger;
 import com.tsc9526.monalisa.core.meta.MetaPartition;
 import com.tsc9526.monalisa.core.meta.MetaTable;
 import com.tsc9526.monalisa.core.meta.MetaTable.CreateTable;
@@ -30,7 +31,7 @@ import com.tsc9526.monalisa.core.tools.ClassHelper.FGS;
 import com.tsc9526.monalisa.core.tools.JavaBeansHelper;
 import com.tsc9526.monalisa.core.tools.ModelHelper;
 
-import freemarker.log.Logger;
+
 
 /**
  * 数据库表模型

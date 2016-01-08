@@ -8,12 +8,14 @@ import javax.lang.model.element.TypeElement;
 
 import com.tsc9526.monalisa.core.annotation.DB;
 import com.tsc9526.monalisa.core.datasource.DBConfig;
+import com.tsc9526.monalisa.core.logger.Logger;
 
 /**
  * 
  * @author zzg.zhou(11039850@qq.com)
  */
 public class DBProject {
+	static Logger logger=Logger.getLogger(DBProject.class);
 	
 	@SuppressWarnings("unchecked")
 	public static DBProject getProject(ProcessingEnvironment processingEnv,TypeElement typeElement) {
@@ -28,10 +30,10 @@ public class DBProject {
 			Constructor<DBProject> c=clazz.getConstructor(ProcessingEnvironment.class,TypeElement.class);
 			DBProject project= c.newInstance(processingEnv,typeElement);
 			
-			System.out.println("Building "+dbKey+": "+project.getProjectPath()+" within eclipse environment ...");			
+			logger.info("Building "+dbKey+": "+project.getProjectPath()+" within eclipse environment ...");			
 			return project;
 		}catch(Exception e){		
-			System.out.println("Building "+dbKey+": "+new File(".").getAbsolutePath()+" without eclipse environment ...");
+			logger.info("Building "+dbKey+": "+new File(".").getAbsolutePath()+" without eclipse environment ...");
 			
 			return new DBProject(processingEnv,typeElement);		
 		}

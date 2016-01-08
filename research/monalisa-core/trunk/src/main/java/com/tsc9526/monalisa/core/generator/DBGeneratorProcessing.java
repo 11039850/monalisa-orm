@@ -68,7 +68,7 @@ public class DBGeneratorProcessing extends DBGenerator{
 			for(MetaTable table:tables){
 				if(table.getCreateTable()!=null){
 					w.write("/***CREATE TABLE: "+table.getNamePrefix()+" :: "+table.getName()+"***/\r\n");
-					w.write(table.getCreateTable().getCreateSQL()); 
+					w.write(table.getCreateTable().getOriginSQL());
 					w.write("\r\n\r\n\r\n");
 				}
 			}
