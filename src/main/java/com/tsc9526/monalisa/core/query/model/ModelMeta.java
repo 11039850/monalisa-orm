@@ -29,7 +29,7 @@ import com.tsc9526.monalisa.core.tools.ClassHelper.FGS;
 import com.tsc9526.monalisa.core.tools.ClassHelper.MetaClass;
 import com.tsc9526.monalisa.core.tools.TableHelper;
  
-class ModelMeta{	
+public class ModelMeta{	
 	static Log logger=LogFactory.getLog(ModelMeta.class.getName());
 	
 	private static Map<String, ModelMeta> hMetas=new HashMap<String, ModelMeta>();
