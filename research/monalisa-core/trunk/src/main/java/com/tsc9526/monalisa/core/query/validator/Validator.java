@@ -3,10 +3,9 @@ package com.tsc9526.monalisa.core.query.validator;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.beanutils.ConvertUtils;
-
 import com.tsc9526.monalisa.core.annotation.Column;
 import com.tsc9526.monalisa.core.query.model.Model;
+import com.tsc9526.monalisa.core.tools.ClassHelper;
 import com.tsc9526.monalisa.core.tools.ClassHelper.FGS;
 
 /**
@@ -43,7 +42,7 @@ public class Validator {
 					
 					Max max=fgs.getAnnotation(Max.class);
 					if(max!=null){
-						Long x=(Long)ConvertUtils.convert(v,Long.class);
+						Long x=(Long)ClassHelper.convert(v,Long.class);
 						if(x > max.value()){
 							String msg=max.message();
 							if(msg==null || msg.length()==0){
@@ -55,7 +54,7 @@ public class Validator {
 					
 					Min min=fgs.getAnnotation(Min.class);
 					if(min!=null){
-						Long x=(Long)ConvertUtils.convert(v,Long.class);
+						Long x=(Long)ClassHelper.convert(v,Long.class);
 						if(x < min.value()){
 							String msg=min.message();
 							if(msg==null || msg.length()==0){

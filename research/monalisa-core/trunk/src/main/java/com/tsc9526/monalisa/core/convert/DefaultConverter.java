@@ -1,9 +1,13 @@
 package com.tsc9526.monalisa.core.convert;
 
 import java.util.Arrays;
+import java.util.Date;
 import java.util.Map;
 
 import org.apache.commons.beanutils.ConvertUtils;
+import org.apache.commons.beanutils.converters.DateTimeConverter;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
@@ -12,17 +16,18 @@ import com.google.gson.JsonNull;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonPrimitive;
-import com.tsc9526.monalisa.core.tools.ClassHelper.DateValue;
 import com.tsc9526.monalisa.core.tools.EnumHelper;
 import com.tsc9526.monalisa.core.tools.JsonHelper;
 
 @SuppressWarnings("unchecked")
 public class DefaultConverter implements Converter{
+	static Log logger=LogFactory.getLog(DefaultConverter.class);
+	
 	static{
 		DateValue dc = new DateValue(null);
 		dc.setUseLocaleFormat(true);
 		String[] datePattern = {"yyyy-MM-dd HH:mm:ss","yyyy-MM-dd","yyyy-MM-dd HH:mm:ss.SSS"};    
-		dc.setPatterns(datePattern);    
+		dc.setPatterns(datePattern);
 		ConvertUtils.register(dc, java.util.Date.class);
 	}
 	
@@ -36,7 +41,11 @@ public class DefaultConverter implements Converter{
 		}
 				 
 		if(v!=null){
-			return doConvert(v, type);
+			if(type.isInstance(v)){
+				return (T)v;
+			}else{
+				return doConvert(v, type);
+			}
 		}else{
 			return null;
 		}		 
@@ -61,6 +70,10 @@ public class DefaultConverter implements Converter{
 	
 	protected String convertArrayToString(Object[] v){		
 		return Arrays.toString(v);			
+	}
+	
+	protected String convertToString(Object v){		
+		return v.toString();			
 	}
 	
 	protected Object convertJsonToArray(Object v,  Class<?> type){
@@ -124,7 +137,7 @@ public class DefaultConverter implements Converter{
 		}
 	}
 	
-	protected <T> T convertOthers(Object v, Class<T> type){
+	protected <T> T convertOtherTypes(Object v, Class<T> type){		
 		return (T)ConvertUtils.convert(v, type);
 	}
 	
@@ -135,10 +148,6 @@ public class DefaultConverter implements Converter{
 			value=convertToEnum(v,type);
 		}else if(type==JsonObject.class){
 			value=convertToJsonObject(v,type);
-		}else if(v.getClass().isArray() && type == String.class){
-			value=convertArrayToString((Object[])v);						
-		}else if(Map.class.isAssignableFrom(v.getClass()) && type == String.class){
-			value=convertMapToString((Map<?,?>)v);						
 		}else if(v.getClass().isArray()==false && type.isArray()){
 			value=convertJsonToArray(v,type);
 		}else if(type.isArray()==false 
@@ -148,11 +157,40 @@ public class DefaultConverter implements Converter{
 			value=convertStringToBean(v,type);
 		}else{		
 			if(v instanceof JsonPrimitive){
-				v=JsonHelper.getGson().fromJson((JsonElement)v, String.class);
+				JsonPrimitive p=((JsonPrimitive)v);
+				v=p.getAsString();
+				 
 			}
-			value=convertOthers(v, type);
+			value=convertOtherTypes(v, type);
 		}		
+		
 		
 		return (T)value;
 	}	
+	
+	
+	public static class DateValue extends DateTimeConverter {
+
+		public DateValue() {
+	        super();        
+	    }
+  
+	    public DateValue(Object defaultValue) {
+	        super(defaultValue);
+	    }
+ 
+	    protected Class<?> getDefaultType() {
+	        return Date.class;
+	    }
+	    
+	    public <T> T convert(Class<T> type, Object value) {
+	    	try{
+	    		long v=Long.parseLong(value.toString());
+	    		return super.convert(type, v);
+	    	}catch(NumberFormatException e){
+	    		return super.convert(type, value);
+	    	}
+	    }
+
+	}
 }

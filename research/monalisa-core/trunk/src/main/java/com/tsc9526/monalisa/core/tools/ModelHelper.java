@@ -14,9 +14,6 @@ import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamReader;
 
-import org.apache.commons.collections.map.AbstractHashedMap;
-import org.apache.commons.collections.map.CaseInsensitiveMap;
-
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -136,7 +133,7 @@ public class ModelHelper {
 		return true;
 	}
 	
-	public static class StringMap extends AbstractHashedMap implements Serializable, Cloneable {
+	public static class StringMap extends HashMap implements Serializable, Cloneable {
 	    private static final long serialVersionUID = -1074655917369299456L;
  
 	    private boolean caseSensitive = false;
@@ -144,7 +141,7 @@ public class ModelHelper {
 	    private Map<String, String> hNameMapping=new CaseInsensitiveMap();
 	    
 	    public StringMap(Map data, String... mappings){
-	    	super(DEFAULT_CAPACITY, DEFAULT_LOAD_FACTOR, DEFAULT_THRESHOLD);
+	    	super();
 	        	  
 	    	initCheck(data,mappings);
 	    	inputData(data,mappings);
@@ -202,6 +199,17 @@ public class ModelHelper {
 	        }
 	    }
 	    
+	    public Object put(Object key,Object value){
+	    	return super.put(convertKey(key),value);
+	    }
+	    
+	    public Object get(Object key){
+	    	return super.get(convertKey(key));
+	    }
+	    
+	    public boolean containsKey(Object key){
+	    	return super.containsKey(convertKey(key));
+	    }
 	    
 	    protected Object convertKey(Object key) {
 	        if (key != null) {
@@ -211,9 +219,9 @@ public class ModelHelper {
 		    		return key.toString().toLowerCase();
 	        	}	
 	        } else {
-	            return AbstractHashedMap.NULL;
+	            return null;
 	        }
-	    }   	     
+	    } 
 	}
 		 
 	public static class ServletRequestModelParser implements ModelParser<javax.servlet.ServletRequest>{
@@ -308,6 +316,12 @@ public class ModelHelper {
 	public static class JsonObjectModelParser implements ModelParser<JsonObject>{			 
 		public boolean parse(Model<?> m, JsonObject json, String... mappings) {
 			Map<String, Object> data = new HashMap<String, Object>();
+			
+			if(mappings.length>0 && mappings[0].startsWith("@")){
+				String name=mappings[0].substring(1);
+				json=json.get(name).getAsJsonObject();
+			}
+			
 			Iterator<Map.Entry<String, JsonElement>> es=json.entrySet().iterator();
 			while(es.hasNext()){
 				Entry<String, JsonElement> e=es.next();

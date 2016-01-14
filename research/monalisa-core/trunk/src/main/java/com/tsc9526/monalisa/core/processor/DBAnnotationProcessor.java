@@ -13,10 +13,12 @@ import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.TypeElement;
 import javax.tools.Diagnostic.Kind;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import com.tsc9526.monalisa.core.annotation.DB;
 import com.tsc9526.monalisa.core.generator.DBGeneratorProcessing;
-import com.tsc9526.monalisa.core.logger.ConsoleLoggerFactory;
-import com.tsc9526.monalisa.core.logger.Logger;
+import com.tsc9526.monalisa.core.logger.MessagerLogger;
 import com.tsc9526.monalisa.core.tools.Helper;
 
 /**
@@ -28,24 +30,18 @@ import com.tsc9526.monalisa.core.tools.Helper;
 public class DBAnnotationProcessor extends AbstractProcessor {	 
 	 
 	public synchronized void init(ProcessingEnvironment processingEnv) {
-		super.init(processingEnv);	
-		 
-		try{
-			Logger.selectLoggerLibrary(Logger.INDEX_CONSOLE);			 
-		}catch(Exception e){
-			throw new RuntimeException(e);
-		}
+		super.init(processingEnv);			 		 
 		 
 		if(Helper.inEclipseProcessing()){
 			//Eclipse环境,设置日志输出
-			ConsoleLoggerFactory.setMessagerLogger(processingEnv.getMessager());
+			MessagerLogger.setMessagerLogger(processingEnv.getMessager());
 		} 		
 	}
 	
 	
 	 
 	public boolean process(Set<? extends TypeElement> annotations,RoundEnvironment roundEnv) {
-		Logger logger=Logger.getLogger(DBAnnotationProcessor.class);
+		Log logger=LogFactory.getLog(DBAnnotationProcessor.class);
 		
 		if (!roundEnv.processingOver()) {	
 			Set<? extends Element> els = roundEnv.getElementsAnnotatedWith(DB.class);

@@ -103,12 +103,10 @@ public class FileHelper {
 	    	}
 	    		    	
 	    	return new String(bos.toByteArray(),charset);
-    	}catch(IOException e){
-    		e.printStackTrace();
-    		
+    	}catch(IOException e){    		
+    		throw new RuntimeException(e);
+    	}finally{
     		CloseQuietly.close(in);
-    		
-    		return null;
     	}
     }
 }

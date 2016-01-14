@@ -8,9 +8,8 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.apache.commons.collections.map.CaseInsensitiveMap;
-
 import com.tsc9526.monalisa.core.annotation.Column;
+import com.tsc9526.monalisa.core.tools.CaseInsensitiveMap;
 import com.tsc9526.monalisa.core.tools.ClassHelper.FGS;
 import com.tsc9526.monalisa.core.tools.Helper;
 
@@ -25,7 +24,7 @@ public class ModelHolder implements Serializable {
 	protected boolean     dirty     = true;
 	protected boolean     entity    = false;
 	
-	protected CaseInsensitiveMap hModelValues=null;
+	protected CaseInsensitiveMap<Object> hModelValues=null;
 	
 	//javaName
 	protected Set<String> 		 changedFields=new LinkedHashSet<String>();
@@ -36,9 +35,9 @@ public class ModelHolder implements Serializable {
 		this.model=model;
 	}	
 	
-	protected CaseInsensitiveMap getModelValues() {
+	protected CaseInsensitiveMap<Object> getModelValues() {
 		if(hModelValues==null){
-			hModelValues=new CaseInsensitiveMap();
+			hModelValues=new CaseInsensitiveMap<Object>();
 		}
 		return hModelValues;
 	}
