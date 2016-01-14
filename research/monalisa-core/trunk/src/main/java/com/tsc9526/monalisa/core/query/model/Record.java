@@ -18,30 +18,30 @@ import com.tsc9526.monalisa.core.tools.ClassHelper.FGS;
  *  
  * @author zzg.zhou(11039850@qq.com)
  */
-public class SimpleModel extends Model<SimpleModel>{ 
+public class Record extends Model<Record>{ 
 	private static final long serialVersionUID = -5264525130494733202L;
 	 
-	public Insert<SimpleModel> INSERT(){
-		return new Insert<SimpleModel>(this);
+	public Insert<Record> INSERT(){
+		return new Insert<Record>(this);
 	}
 	
-	public Delete<SimpleModel> DELETE(){
-		return new Delete<SimpleModel>(this);
+	public Delete<Record> DELETE(){
+		return new Delete<Record>(this);
 	}
 	
-	public Update<SimpleModel> UPDATE(SimpleModel model){
-		return new Update<SimpleModel>(model);
+	public Update<Record> UPDATE(Record model){
+		return new Update<Record>(model);
 	}
 	 
-	public Select<SimpleModel,Select<SimpleModel,?>> SELECT(){
-		return new Select<SimpleModel,Select<SimpleModel,?>>(this);
+	public Select<Record,Select<Record,?>> SELECT(){
+		return new Select<Record,Select<Record,?>>(this);
 	}
 	 
 	public Criteria WHERE(){
 		return new Example().createCriteria();
 	}
 	  
-	public class Example extends com.tsc9526.monalisa.core.query.criteria.Example<Criteria, Model<SimpleModel>>{
+	public class Example extends com.tsc9526.monalisa.core.query.criteria.Example<Criteria, Model<Record>>{
  
 		protected Criteria createInternal() {
 			Criteria x= new Criteria(this);
@@ -64,46 +64,46 @@ public class SimpleModel extends Model<SimpleModel>{
 		/**
 		 * Create Select for example
 		 */
-		public Select<SimpleModel,Select<SimpleModel, ?>>.SelectForExample forSelect(){
+		public Select<Record,Select<Record, ?>>.SelectForExample forSelect(){
 			return SELECT().selectForExample(example);
 		}
 		
 		/**
 		 * Create Update for example
 		 */
-		public Update<SimpleModel>.UpdateForExample forUpdate(SimpleModel model){			 			 
+		public Update<Record>.UpdateForExample forUpdate(Record model){			 			 
 			return UPDATE(model).updateForExample(this.example);
 		}
 		
 		/**
 		 * Create Delete for example
 		 */
-		public Delete<SimpleModel>.DeleteForExample forDelete(){
+		public Delete<Record>.DeleteForExample forDelete(){
 			return DELETE().deleteForExample(this.example);
 		}
 		
 		public Field<Object,Criteria> field(String fieldName){
-			FGS fgs=SimpleModel.this.field(fieldName);
+			FGS fgs=Record.this.field(fieldName);
 			if(fgs!=null){			
 				Column column=fgs.getAnnotation(Column.class);				
-				return new Field<Object, SimpleModel.Criteria>(column.name(), this,column.jdbcType());
+				return new Field<Object, Record.Criteria>(column.name(), this,column.jdbcType());
 			}else{
-				throw new RuntimeException("Field not found: "+fieldName+", in model: "+SimpleModel.this.mm().tableName);
+				throw new RuntimeException("Field not found: "+fieldName+", in model: "+Record.this.mm().tableName);
 			}
 		}
 	}
 
 	 
 	
-	public SimpleModel(){
-		if(this.getClass()!=SimpleModel.class){
+	public Record(){
+		if(this.getClass()!=Record.class){
 			if(this.getClass().getAnnotation(Table.class)==null){
 				this.TABLE_NAME=this.getClass().getSimpleName();
 			}
 		}
 	}
 	
-	public SimpleModel(String tableName,String... primaryKeys) {
+	public Record(String tableName,String... primaryKeys) {
 		super(tableName,primaryKeys);
 	}
 

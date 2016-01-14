@@ -318,7 +318,7 @@ public abstract class Model<T extends Model> implements Serializable {
 		
 		TxQuery q = Tx.getTxQuery();
 		String prefix = DbProp.PROP_DB_HISTORY_PREFIX_COLUMN.getValue(db);
-		SimpleModel history = new SimpleModel(historyTableName);
+		Record history = new Record(historyTableName);
 		history.use(historyDB);
 		
 		
