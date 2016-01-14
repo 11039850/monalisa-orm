@@ -1,10 +1,8 @@
 package com.tsc9526.monalisa.core.query.partition;
 
-import java.lang.annotation.Annotation;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import com.tsc9526.monalisa.core.annotation.Index;
 import com.tsc9526.monalisa.core.annotation.Table;
 import com.tsc9526.monalisa.core.datasource.DBConfig;
 import com.tsc9526.monalisa.core.generator.DBMetadata;
@@ -13,6 +11,7 @@ import com.tsc9526.monalisa.core.meta.MetaTable;
 import com.tsc9526.monalisa.core.meta.MetaTable.CreateTable;
 import com.tsc9526.monalisa.core.meta.MetaTable.TableType;
 import com.tsc9526.monalisa.core.query.model.Model;
+import com.tsc9526.monalisa.core.query.model.ModelMeta;
 
 /**
  * 
@@ -44,7 +43,7 @@ public class CreateTableCache{
 						
 						db.getDialect().createTable(db, createTable);
 										 
-						table=createTable(tableName,modelTable);
+						table=ModelMeta.createTable(tableName,modelTable);
 						hTables.put(tableKey,table);
 					}catch(Exception e){
 						throw new RuntimeException("Fail create table: "+tableName+", db: "+db.getKey(),e);
@@ -57,31 +56,4 @@ public class CreateTableCache{
 		return table;		 
 	}	
 	
-	public static Table createTable(final String tableName,final Table modelTable){
-		return new Table(){  
-			public String name() {					 
-				return tableName;
-			}
-			
-			public String value() {					 
-				return tableName;
-			}
-	 			
-			public String remarks() {
-				return modelTable.remarks();
-			}
-			
-			public String[] primaryKeys(){
-				return modelTable.primaryKeys();
-			}
-			
-			public Index[] indexes(){
-				return modelTable.indexes();
-			}
-			
-			public Class<? extends Annotation> annotationType() {
-				return Table.class;
-			}
-		};
-	}
 }
