@@ -6,15 +6,12 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
-
-import org.apache.commons.beanutils.converters.DateTimeConverter;
 
 import com.tsc9526.monalisa.core.convert.Converter;
 import com.tsc9526.monalisa.core.convert.DefaultConverter;
@@ -395,30 +392,5 @@ public class ClassHelper {
 		public Method getGetMethod(){
 			return getMethod;
 		}
-	}
-	
-	public static class DateValue extends DateTimeConverter {
-
-		public DateValue() {
-	        super();        
-	    }
-  
-	    public DateValue(Object defaultValue) {
-	        super(defaultValue);
-	    }
- 
-	    protected Class<?> getDefaultType() {
-	        return Date.class;
-	    }
-	    
-	    public <T> T convert(Class<T> type, Object value) {
-	    	try{
-	    		long v=Long.parseLong(value.toString());
-	    		return super.convert(type, v);
-	    	}catch(NumberFormatException e){
-	    		return super.convert(type, value);
-	    	}
-	    }
-
-	}
+	}	 
 }

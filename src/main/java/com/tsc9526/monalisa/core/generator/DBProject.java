@@ -6,9 +6,11 @@ import java.lang.reflect.Constructor;
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.TypeElement;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import com.tsc9526.monalisa.core.annotation.DB;
 import com.tsc9526.monalisa.core.datasource.DBConfig;
-import com.tsc9526.monalisa.core.logger.Logger;
 
 /**
  * 
@@ -17,7 +19,7 @@ import com.tsc9526.monalisa.core.logger.Logger;
 public class DBProject {
 	public final static String EclipseDBProjectClass="com.tsc9526.monalisa.plugin.eclipse.generator.EclipseDBProject";
 	
-	static Logger logger=Logger.getLogger(DBProject.class);
+	static Log logger=LogFactory.getLog(DBProject.class);
 	
 	@SuppressWarnings("unchecked")
 	public static DBProject getProject(ProcessingEnvironment processingEnv,TypeElement typeElement) {

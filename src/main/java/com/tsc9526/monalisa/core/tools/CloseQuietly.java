@@ -9,14 +9,6 @@ import java.lang.reflect.Method;
  */
 public class CloseQuietly {
 
-	public static void close(Closeable c){
-		try{
-			if(c!=null){
-				c.close();
-			}
-		}catch(Exception e){}
-	}
-	
 	public static void close(Object x){
 		if(x instanceof Closeable){
 			close((Closeable)x);
@@ -33,14 +25,21 @@ public class CloseQuietly {
 			}
 		}
 	}
+		
+	public static void close(Closeable c){
+		try{
+			if(c!=null){
+				c.close();
+			}
+		}catch(Exception e){}
+	}	
 
 	public static void close(AutoCloseable c) {
 		try{
 			if(c!=null){
 				c.close();
 			}
-		}catch(Exception e){}
-		
+		}catch(Exception e){}		
 	}
 }
 

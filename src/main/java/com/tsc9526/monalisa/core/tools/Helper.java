@@ -8,8 +8,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.collections.map.CaseInsensitiveMap;
-
 import com.tsc9526.monalisa.core.generator.DBProject;
 
 /**
@@ -205,10 +203,9 @@ public class Helper {
 			throw new RuntimeException(e);
 		}
 	}
-
-	@SuppressWarnings("unchecked")
+	
 	public static Map<String, String> parseRemarks(String remark) {
-		Map<String, String> map = new CaseInsensitiveMap();
+		CaseInsensitiveMap<String> map = new CaseInsensitiveMap<String>();
 
 		int len = remark.length();
 		for (int i = 0; i < len; i++) {
