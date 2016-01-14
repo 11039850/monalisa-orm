@@ -25,7 +25,7 @@ import com.tsc9526.monalisa.core.query.Query;
 import com.tsc9526.monalisa.core.query.datatable.DataTable;
 import com.tsc9526.monalisa.core.query.dialect.Dialect;
 import com.tsc9526.monalisa.core.query.model.Model;
-import com.tsc9526.monalisa.core.query.model.SimpleModel;
+import com.tsc9526.monalisa.core.query.model.Record;
 import com.tsc9526.monalisa.core.tools.ClassHelper;
 import com.tsc9526.monalisa.core.tools.CloseQuietly;
 
@@ -223,8 +223,8 @@ public class DBConfig implements Closeable{
 		return "KEY: "+this._cfg.key;
 	}
 	 
-	public SimpleModel createModel(String tableName,String ... primaryKeys){		
-		SimpleModel m=new SimpleModel(tableName,primaryKeys);
+	public Record createRecord(String tableName,String ... primaryKeys){		
+		Record m=new Record(tableName,primaryKeys);
 		m.use(this);
 		return m;
 	}

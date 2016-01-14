@@ -9,16 +9,16 @@ import com.tsc9526.monalisa.core.datasource.DBConfig;
 import com.tsc9526.monalisa.core.query.DataMap;
 import com.tsc9526.monalisa.core.query.datatable.DataTable;
 import com.tsc9526.monalisa.core.query.model.Model;
-import com.tsc9526.monalisa.core.query.model.SimpleModel;
+import com.tsc9526.monalisa.core.query.model.Record;
 import com.tsc9526.monalisa.core.tools.ClassHelper.FGS;
 
 @DB(url="jdbc:mysql://127.0.0.1:3306/jy_market", username="jy_market", password="jy_market")
-public class SimpleModelTest extends Model<SimpleModelTest>{ 
+public class RecordTest extends Model<RecordTest>{ 
 	private static final long serialVersionUID = -1974865252589672370L;
 
 	String title;
 	
-	public SimpleModelTest() {
+	public RecordTest() {
 		 super("gift");
 	}
 	
@@ -31,12 +31,12 @@ public class SimpleModelTest extends Model<SimpleModelTest>{
 		}
 		
 		
-		DBConfig db=DBConfig.fromClass(SimpleModelTest.class);
+		DBConfig db=DBConfig.fromClass(RecordTest.class);
 		
 		DataTable<DataMap> r1=db.select("select count(*) from gift");
 		System.out.println(r1.get(0).getInteger(0));
 		
-		SimpleModel tx=new SimpleModel("gift");
+		Record tx=new Record("gift");
 		tx.use(db);
 		if(tx.entity()){throw new RuntimeException();};
 		
@@ -46,7 +46,7 @@ public class SimpleModelTest extends Model<SimpleModelTest>{
 		
 		System.out.println("=="+tx);
 		
-		SimpleModel tx2=new SimpleModel("gift_code");
+		Record tx2=new Record("gift_code");
 		tx2.use(db);
 		for(FGS fgs:tx2.fields()){
 			System.out.println("=="+fgs.getFieldName());
@@ -58,14 +58,14 @@ public class SimpleModelTest extends Model<SimpleModelTest>{
 		
 		
 		Map<String, Object> hs=new LinkedHashMap<String, Object>();
-		hs.put("x",new SimpleModelTest());
-		hs.put("y",new SimpleModelTest());
+		hs.put("x",new RecordTest());
+		hs.put("y",new RecordTest());
 		Object c=hs.values();
 		System.out.println(c);
 		Object c2=hs.values();
 		System.out.println(c2);
 	 	
-		SimpleModelTest m=new SimpleModelTest();
+		RecordTest m=new RecordTest();
 		m.set("package_name", "package_name");
 		
 		m.title="xxx";
@@ -78,25 +78,25 @@ public class SimpleModelTest extends Model<SimpleModelTest>{
 		
 		System.out.println("Create gift: "+m.get("gift_id"));
 		
-		SimpleModelTest t=new SimpleModelTest();
+		RecordTest t=new RecordTest();
 		t.set("gift_id", m.get("gift_id"));
 		t.load();
 		System.out.println("loaded: "+t);
 		
 		
-		System.out.println("NEW: "+new SimpleModelTest());
+		System.out.println("NEW: "+new RecordTest());
 		
 		int times=10000;
 		long l1=System.currentTimeMillis();
 		for(int i=0;i<times;i++){
-			SimpleModelTest x=new SimpleModelTest();			 
+			RecordTest x=new RecordTest();			 
 			x.changedFields();
 		}
 		long l2=System.currentTimeMillis();
 		System.out.println("Use time: "+(l2-l1)+" ms");		
 		
-		SimpleModel sm=new SimpleModel("gift").use(db);		
-		for(SimpleModel x:sm.WHERE()
+		Record sm=new Record("gift").use(db);		
+		for(Record x:sm.WHERE()
 				.field("package_name").like("package_name")
 				.field("giftId").gt(10)
 				.forSelect().select()){
