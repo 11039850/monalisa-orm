@@ -6,9 +6,6 @@ package ${table.javaPackage};
 import ${i};
 </#list>
 
-/**
- * Created by monalisa at ${.now}
- */ 
 @Table(
 	name="${table.name}",
 	primaryKeys={<#list table.keyColumns as k>"${k.name}"<#if k_has_next=true>, </#if></#list>},
