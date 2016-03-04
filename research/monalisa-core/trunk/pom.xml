@@ -16,7 +16,10 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<repositoryURL>${setting.repositoryURL}</repositoryURL>
 		<snapshotRepositoryURL>${setting.snapshotRepositoryURL}</snapshotRepositoryURL>		
-		<maven.javadoc.skip>false</maven.javadoc.skip> 		
+		<maven.javadoc.skip>false</maven.javadoc.skip> 	
+		
+		 
+        <argLine>-Dfile.encoding=UTF-8</argLine>	
 	</properties>
 
 	<scm>
@@ -28,9 +31,22 @@
 		<dependency>
 			<groupId>org.testng</groupId>
 			<artifactId>testng</artifactId>
-			<version>5.0.2</version>
+			<version>5.14.10</version>
 			<scope>test</scope>
-			<classifier>jdk15</classifier>
+		</dependency>
+		
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+			<version>1.2.16</version>	
+			<scope>test</scope>		
+		</dependency>
+		
+		<dependency>
+		    <groupId>org.jmockit</groupId>
+		    <artifactId>jmockit</artifactId>
+		    <version>1.22</version>
+		    <scope>test</scope>		
 		</dependency>
 
 		<dependency>

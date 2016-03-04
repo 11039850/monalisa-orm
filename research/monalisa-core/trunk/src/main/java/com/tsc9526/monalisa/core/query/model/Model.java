@@ -32,6 +32,7 @@ import com.tsc9526.monalisa.core.query.partition.Partition;
 import com.tsc9526.monalisa.core.tools.ClassHelper.FGS;
 import com.tsc9526.monalisa.core.tools.JavaBeansHelper;
 import com.tsc9526.monalisa.core.tools.ModelHelper;
+import com.tsc9526.monalisa.core.tools.TypeHelper;
 
 
 
@@ -476,14 +477,20 @@ public abstract class Model<T extends Model> implements Serializable {
 	public T defaults() {
 		for (FGS fgs : fields()) {
 			Column c = fgs.getAnnotation(Column.class);
-			String v = c.value();
-			if ("NULL".equalsIgnoreCase(v)) {
-				if (c.notnull()) {
-					Object x = JavaBeansHelper.getDefaultValue(c.jdbcType(), fgs.getType());
-					fgs.setObject(this, x);
+			if(!c.auto()){
+				String v = c.value();
+				if ("NULL".equalsIgnoreCase(v)) {
+					if (c.notnull()) {
+						Object x = JavaBeansHelper.getDefaultValue(c.jdbcType(), fgs.getType());
+						fgs.setObject(this, x);
+					}
+				} else {
+					if(TypeHelper.isNumber(c.jdbcType())){
+						fgs.setObject(this, Double.parseDouble(v));
+					}else{
+						fgs.setObject(this, v);
+					}
 				}
-			} else {
-				fgs.setObject(this, v);
 			}
 		}
 
