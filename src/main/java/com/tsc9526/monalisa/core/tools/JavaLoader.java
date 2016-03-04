@@ -1,6 +1,8 @@
 package com.tsc9526.monalisa.core.tools;
 
-import java.io.ObjectStreamClass;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import javax.tools.JavaCompiler;
 import javax.tools.ToolProvider;
@@ -12,17 +14,17 @@ import javax.tools.ToolProvider;
 public class JavaLoader {
 
 	public static void main(String[] args) {
-		JavaLoader loader=JavaLoader.load(JavaLoader.class);
+		JavaLoader.load();
 	}
-	public static <T> T load(Class<T> clazz){
-		long version=0;		
-		ObjectStreamClass osc=ObjectStreamClass.lookup(clazz);
-		if(osc!=null){
-			version=osc.getSerialVersionUID();
-		}
-		
+	
+	public static void load(){
 		JavaCompiler javac=ToolProvider.getSystemJavaCompiler();
-		javac.run(System.in, System.out,System.err, "-d",".","temp.java");
-		return null;
+		
+		String dir="src/test/java/test/com/tsc9526/monalisa/core/mysql/mysqldb";
+		
+		int r=javac.run(System.in, System.out,System.err,
+				"-encoding", "utf-8",
+				"-classpath","target/classes;target/test-classes", "-d","target/testing",dir+"/TestTable1.java");
+		
 	}
 }

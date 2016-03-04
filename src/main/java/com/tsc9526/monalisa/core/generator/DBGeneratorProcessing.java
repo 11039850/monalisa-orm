@@ -3,7 +3,6 @@ package com.tsc9526.monalisa.core.generator;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
-import java.util.List;
 
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.TypeElement;
@@ -17,6 +16,7 @@ import javax.tools.StandardLocation;
 import com.tsc9526.monalisa.core.annotation.DB;
 import com.tsc9526.monalisa.core.datasource.DataSourceManager;
 import com.tsc9526.monalisa.core.meta.MetaTable;
+import com.tsc9526.monalisa.core.meta.MetaTable.CreateTable;
 import com.tsc9526.monalisa.core.query.model.Model;
 import com.tsc9526.monalisa.core.tools.JavaWriter;
 
@@ -59,40 +59,24 @@ public class DBGeneratorProcessing extends DBGenerator{
 		this.dbmetadata=new DBMetadata(projectPath,javaPackage,dbcfg);		
 	}	 
 	  
-	protected void generateResources(List<MetaTable> tables){		
+	protected Writer getResourceWriter(){		
 		try{			 					
-			FileObject res = processingEnv.getFiler().createResource(StandardLocation.SOURCE_OUTPUT, resourcePackage, "create_table.sql", typeElement);
+			FileObject res = processingEnv.getFiler().createResource(StandardLocation.SOURCE_OUTPUT, resourcePackage, CreateTable.FILE_NAME, typeElement);
 			OutputStream out=res.openOutputStream();
 			
 			Writer w = new OutputStreamWriter(out,"UTF-8");
-			for(MetaTable table:tables){
-				if(table.getCreateTable()!=null){
-					w.write("/***CREATE TABLE: "+table.getNamePrefix()+" :: "+table.getName()+"***/\r\n");
-					w.write(table.getCreateTable().getOriginSQL());
-					w.write("\r\n\r\n\r\n");
-				}
-			}
-			w.close();
+			return w;
 		}catch(Exception e){
 			throw new RuntimeException(e);
 		}
 	}
 	
-	protected void generateJavaFile(MetaTable table){		
+	protected Writer getJavaWriter(MetaTable table){		
 		try{			 
-			MetaTable clone=table.clone();
-			clone.setJavaName(null).setName(clone.getNamePrefix());
-			
-			String className=clone.getJavaName();
-			String modelClass=getModelClassValue(clone);
-			
+			String className=table.getJavaName();
 			JavaFileObject java = processingEnv.getFiler().createSourceFile(javaPackage+"."+className, typeElement);
 			Writer os = java.openWriter();			
-			JavaWriter writer=new JavaWriter(os);
-			DBTableGenerator g2=new DBTableGenerator(clone, modelClass, dbi);
-			g2.generate(writer);
-			
-			verifyPartition(table);
+			return new JavaWriter(os);
 		}catch(Exception e){
 			throw new RuntimeException(e);
 		}

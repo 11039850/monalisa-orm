@@ -155,6 +155,7 @@ public class MetaTable extends Name implements Cloneable{
 		private static final long serialVersionUID = 4435179643490161535L;
 		
 		public final static String TABLE_VAR="#{table}";
+		public final static String FILE_NAME="create_table.sql";
 		
 		private String    tableName;
 		private String    createSQL;

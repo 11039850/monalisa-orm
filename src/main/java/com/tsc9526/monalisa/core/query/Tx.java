@@ -12,12 +12,28 @@ public class Tx {
 	private static ThreadLocal<TxQuery> txQuery =new ThreadLocal<TxQuery>();  
 	private static ThreadLocal<DataMap> context=new ThreadLocal<DataMap>();
 	
+	public static void putUserContext(Object user){
+		putContext(CONTEXT_CURRENT_USERID,user);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public static <T> T getUserContext(){
+		return (T)getContext(CONTEXT_CURRENT_USERID);
+	}
+	
 	public static Object getContext(String key){
 		DataMap m=context.get();
 		if(m!=null){
 			return m.get(key);
 		}else{
 			return null;
+		}
+	}
+	
+	public static void removeContext(String key){
+		DataMap m=context.get();
+		if(m!=null){
+			m.remove(key);
 		}
 	}
 	

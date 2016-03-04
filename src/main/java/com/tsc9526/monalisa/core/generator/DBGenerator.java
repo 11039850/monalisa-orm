@@ -1,5 +1,6 @@
 package com.tsc9526.monalisa.core.generator;
 
+import java.io.Writer;
 import java.util.List;
 
 import org.apache.commons.logging.Log;
@@ -20,7 +21,7 @@ public abstract class DBGenerator {
 	static Log logger=LogFactory.getLog(DBGenerator.class);
 	
 	public static String PROJECT_TMP_PATH="/target/monalisa";
-		 
+	
 	protected DBConfig dbcfg;
 	protected DBMetadata dbmetadata; 
 	
@@ -31,10 +32,8 @@ public abstract class DBGenerator {
 	
 	public void generateFiles(){					
 		List<MetaTable> tables=dbmetadata.getTables();
-		for(MetaTable table:tables){
-			generateJavaFile(table);		 
-		}	
 		
+		generateJavaFiles(tables);		 
 		generateResources(tables);
 	}
 	
@@ -74,7 +73,46 @@ public abstract class DBGenerator {
 	}
 	 
 	
-	protected abstract void generateJavaFile(MetaTable table);
-
-	protected abstract void generateResources(List<MetaTable> tables);
+	protected void generateResources(List<MetaTable> tables){		
+		try{			 			
+			Writer w = getResourceWriter();
+			for(MetaTable table:tables){
+				if(table.getCreateTable()!=null){
+					logger.info("Create resource for table: "+table.getName());
+					
+					w.write("/***CREATE TABLE: "+table.getNamePrefix()+" :: "+table.getName()+"***/\r\n");
+					w.write(table.getCreateTable().getOriginSQL()); 
+					w.write("\r\n\r\n\r\n");
+				}
+			}
+			w.close();
+		}catch(Exception e){
+			throw new RuntimeException(e);
+		}
+	}
+	
+	protected void generateJavaFiles(List<MetaTable> tables){		
+		try{			
+			for(MetaTable table:tables){
+				logger.info("Create java for table: "+table.getName()+"["+table.getJavaName()+"]");
+				
+				MetaTable clone=table.clone();
+				clone.setJavaName(null).setName(clone.getNamePrefix());
+				
+				Writer writer=getJavaWriter(clone);
+				 
+				DBTableGenerator g2=new DBTableGenerator(clone, getModelClassValue(clone), dbi);
+				g2.generate(writer);
+				
+				verifyPartition(table);
+			}
+		}catch(Exception e){
+			throw new RuntimeException(e);
+		}
+	}
+	
+	
+	protected abstract Writer getJavaWriter(MetaTable table);
+	
+	protected abstract Writer getResourceWriter();
 }

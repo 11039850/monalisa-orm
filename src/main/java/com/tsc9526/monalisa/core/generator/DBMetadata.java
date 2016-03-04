@@ -76,7 +76,7 @@ public class DBMetadata {
 			
 			return hRuntimeTables.get(theTableName);			 		
 		}catch(Exception e){
-			throw new RuntimeException(e);
+			throw new RuntimeException("MetaTable not found: "+theTableName+", dbKey: "+dbKey,e);
 		}
 	}
 	
