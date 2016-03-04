@@ -9,9 +9,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.LinkedHashMap;
 
-/**
- * Created by monalisa at 2016-3-4 16:43:58
- */ 
 @Table(
 	name="test_logyyyymm_",
 	primaryKeys={"id"},
@@ -20,7 +17,7 @@ import java.util.LinkedHashMap;
 	}
 )
 public class TestLogyyyymm extends com.tsc9526.monalisa.core.query.model.Model<TestLogyyyymm> implements test.com.tsc9526.monalisa.core.mysql.MysqlDB{
-	private static final long serialVersionUID = 1125551488482L;
+	private static final long serialVersionUID = 1126094018291L;
 		 
 	public static final Insert INSERT(){
 	 	return new Insert(new TestLogyyyymm());
