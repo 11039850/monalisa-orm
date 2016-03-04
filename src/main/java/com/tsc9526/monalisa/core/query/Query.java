@@ -26,6 +26,7 @@ import com.tsc9526.monalisa.core.query.datatable.DataTable;
 import com.tsc9526.monalisa.core.query.dialect.Dialect;
 import com.tsc9526.monalisa.core.query.model.Model;
 import com.tsc9526.monalisa.core.query.model.ModelEvent;
+import com.tsc9526.monalisa.core.query.sqlfile.SqlFile;
 import com.tsc9526.monalisa.core.tools.ClassHelper;
 import com.tsc9526.monalisa.core.tools.ClassHelper.FGS;
 import com.tsc9526.monalisa.core.tools.ClassHelper.MetaClass;
@@ -124,7 +125,15 @@ public class Query {
 	 * @return 原始的SQL语句, 中间可能会有参数
 	 */
 	public String getSql() {
-		return sql.toString();
+		String r=sql.toString();
+		if(r.matches("[a-zA-Z_][a-zA-Z0-9_]+")){
+			//load sql by id
+			queryCheck();
+			
+			return SqlFile.getSql(db, r);
+		}else{
+			return r;
+		}
 	}
 	
 	/**
@@ -132,7 +141,7 @@ public class Query {
 	 * @return 处理过参数后的SQL语句
 	 */
 	public String getExecutableSQL() {
-		 return SQLHelper.getExecutableSQL(sql.toString(), parameters);
+		 return SQLHelper.getExecutableSQL(getSql(), parameters);
 	}
 
 	public Query clear(){		 
@@ -177,7 +186,7 @@ public class Query {
 		try{
 			conn= tx==null?getConnectionFromDB(false):getConnectionFromTx(tx);
 			
-			pst=conn.prepareStatement(sql.toString());
+			pst=conn.prepareStatement(getSql());
 			for(List<Object> p:batchParameters){
 				SQLHelper.setPreparedParameters(pst, p);
 				pst.addBatch();
@@ -222,7 +231,7 @@ public class Query {
 		try{
 			conn= tx==null?getConnectionFromDB(true):getConnectionFromTx(tx);
 			
-			pst=x.preparedStatement(conn,sql.toString());
+			pst=x.preparedStatement(conn,getSql());
 			 
 			SQLHelper.setPreparedParameters(pst, parameters);
 			
@@ -472,7 +481,7 @@ public class Query {
 		if(readonly!=null){
 			return readonly;
 		}else{
-			String x=sql.toString().toLowerCase().trim();
+			String x=getSql().toLowerCase().trim();
 			if(x.startsWith("select")){
 				return true;
 			}else{
@@ -480,7 +489,7 @@ public class Query {
 			}
 		}		
 	}
-
+	  
 	public void setReadonly(Boolean readonly) {
 		this.readonly = readonly;
 	}
