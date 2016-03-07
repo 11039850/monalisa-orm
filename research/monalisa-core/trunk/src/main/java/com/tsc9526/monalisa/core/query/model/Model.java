@@ -154,7 +154,7 @@ public abstract class Model<T extends Model> implements Serializable {
 	 *            For example: <br>
 	 *            "user_id=id", ... // Parse dataObject.user_id to Model.id<br>
 	 *            Another example:<br>
-	 *            "~XXX." //Only parse dataObject's fields with prefix: XXX.
+	 *            "~XXX." //Only parse dataObject's fields with prefix: "XXX."
 	 * 
 	 */
 	public T parse(Object dataObject, String... mappings) {
