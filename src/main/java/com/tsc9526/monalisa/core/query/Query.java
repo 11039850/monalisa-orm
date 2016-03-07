@@ -115,6 +115,28 @@ public class Query {
 		}
 		return this;
 	}	
+  
+	/**
+	 * 如果参数非空，则添加该SQL片段，否则忽略
+	 * 
+	 * @param segment  SQL片段
+	 * @param args  参数
+	 * @return 查询本身
+	 */
+	public Query addIgnoreEmpty(String segment,Object ... args){
+		if(args!=null && args.length==1){
+			if(args[0]==null){
+				return this;
+			}else if(args[0] instanceof String){
+				String s=(String)args[0];
+				if(s.trim().length()<1){
+					return this;
+				}
+			}
+		}
+		
+		return add(segment, args);
+	}
 	
 	public boolean isEmpty(){
 		return sql.length()==0;
