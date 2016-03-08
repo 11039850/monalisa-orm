@@ -12,6 +12,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Stack;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -22,11 +23,11 @@ import com.tsc9526.monalisa.core.datasource.DataSourceManager;
 import com.tsc9526.monalisa.core.datasource.DbProp;
 import com.tsc9526.monalisa.core.generator.DBExchange;
 import com.tsc9526.monalisa.core.meta.Name;
+import com.tsc9526.monalisa.core.parser.DynamicSQLParser;
 import com.tsc9526.monalisa.core.query.datatable.DataTable;
 import com.tsc9526.monalisa.core.query.dialect.Dialect;
 import com.tsc9526.monalisa.core.query.model.Model;
 import com.tsc9526.monalisa.core.query.model.ModelEvent;
-import com.tsc9526.monalisa.core.query.sqlfile.SqlFile;
 import com.tsc9526.monalisa.core.tools.ClassHelper;
 import com.tsc9526.monalisa.core.tools.ClassHelper.FGS;
 import com.tsc9526.monalisa.core.tools.ClassHelper.MetaClass;
@@ -57,6 +58,23 @@ public class Query {
 	 */
 	public static boolean SQL_DEBUG=false;
 	
+	/**
+	 * 从外部文件资源创建一个Query
+	 * @param queryId   查询语句的ID(包名+"."+ID)
+	 * @param args      执行该资源ID对应的SQL语句所需要的参数
+	 * @return
+	 */
+	public static Query create(String sql,Object ...args ) {
+		Query q=new Query();
+		
+		for(int i=0;i<args.length;i++){
+			q.dynamic.push(args[args.length-1-i]);
+		}
+		
+		q.add(sql, args);
+		return q;
+	}
+	
 	protected DataSourceManager dsm=DataSourceManager.getInstance();
 	
 	protected StringBuffer  sql=new StringBuffer();
@@ -70,12 +88,60 @@ public class Query {
  	
 	protected List<List<Object>> batchParameters=new ArrayList<List<Object>>();
 	
+	protected Object tag;
+	
 	public Query(){		 
 	}
 	
 	public Query(DBConfig db){
 		 this.db=db;
 	}	 
+	
+	protected Stack<Object> dynamic=new Stack<Object>();
+	 
+	/**
+	 * 获取所有的动态参数
+	 * 
+	 * @return
+	 */
+	public Object[] dynamicAll(){
+		return dynamic.toArray();
+	}
+	
+	/**
+	 * 弹出一个动态参数
+	 * 
+	 * @return
+	 */
+	public <T> T dynamic(){
+		return (T)dynamic.pop();
+	}
+	
+	/**
+	 * 弹出一个动态参数， 如果为动态参数不存在或null 则返回默认值
+	 * 
+	 * @param defaultValue 默认值
+	 * @return
+	 */
+	public <T> T dynamic(T defaultValue){
+		if(dynamic.isEmpty()){
+			return defaultValue;
+		}else{
+			T r=(T)dynamic.pop();
+			if(r==null){
+				r=defaultValue;
+			}
+			return r;
+		}
+	}
+	
+	public <T> T getTag(){
+		return (T)tag;
+	}
+	
+	public void setTag(Object tag){
+		this.tag=tag;
+	}
 	 
 	public Query notin(Object... values){
 		 return getDialect().notin(this, values);
@@ -148,11 +214,9 @@ public class Query {
 	 */
 	public String getSql() {
 		String r=sql.toString();
-		if(r.matches("[a-zA-Z_][a-zA-Z0-9_]+")){
+		if(r.matches("[a-zA-Z_][a-zA-Z0-9_\\.]+")){
 			//load sql by id
-			queryCheck();
-			
-			return SqlFile.getSql(db, r);
+			return DynamicSQLParser.getSql(r);
 		}else{
 			return r;
 		}
@@ -175,20 +239,52 @@ public class Query {
 		return this;
 	}
 
+	public int parameterCount(){
+		return parameters.size();
+	}
+ 
 	public List<Object> getParameters() {
 		return parameters;
 	}
 	
-	public int parameterCount(){
-		return parameters.size();
+	/**
+	 * 
+	 * @param index first is 0.
+	 * @return
+	 */
+	public <T> T getParameter(int index) {
+		return (T)parameters.get(index);
 	}
-
+	
+	/**
+	 * 
+	 * @param index first is 0.
+	 * @param defaultValue
+	 * @return
+	 */
+	public <T> T getParameter(int index,T defaultValue) {
+		T r=null;
+		if(index>=parameters.size()){
+			r=defaultValue;
+		}else{
+			r=(T)parameters.get(index);
+			if(r==null){
+				r=defaultValue;
+			}
+		}
+		return r;
+	}
+	
+	public Query clearParameters(){
+		this.parameters.clear();
+		return this;
+	}
+	
 	public Query setParameters(List<Object> parameters) {
 		this.parameters = parameters;
 		
 		return this;
 	}
-
 	
 	public Query addBatch(Object... parameters) {
 		if(this.parameters!=null && this.parameters.size()>0){
@@ -470,7 +566,6 @@ public class Query {
 			throw new RuntimeException("Query must use db!");
 		}
 	}
-	
 	 
 	public int getCacheTime() {
 		return cacheTime;
