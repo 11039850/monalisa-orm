@@ -1,5 +1,6 @@
 package com.tsc9526.monalisa.core.parser.jsp;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -14,19 +15,23 @@ public class Jsp{
 	private String body;
 	private List<JspElement> elements=new ArrayList<JspElement>();
 	 
-	public Jsp(String filePath)throws IOException {
-		this.filePath=filePath;
+	public Jsp(File jspFile)throws IOException {
+		this.filePath=jspFile.getAbsolutePath();
 		
-		body=FileHelper.readToString(new FileInputStream(filePath), DEFAULT_PAGE_ENCODING);
+		String body=FileHelper.readToString(new FileInputStream(filePath), DEFAULT_PAGE_ENCODING);
 		
-		parseBody();
+		parseBody(body);
 		
 		String encoding=getPageEncoding();
-		if(DEFAULT_PAGE_ENCODING.equalsIgnoreCase(encoding)){
+		if(!DEFAULT_PAGE_ENCODING.equalsIgnoreCase(encoding)){
 			elements.clear();
 			body=FileHelper.readToString(new FileInputStream(filePath), encoding);			
-			parseBody();
+			parseBody(body);
 		}
+	}
+	
+	public Jsp(String body){
+		parseBody(body);
 	}
 	
 	public String getPageEncoding(){
@@ -42,7 +47,9 @@ public class Jsp{
 		return DEFAULT_PAGE_ENCODING;
 	}
 	
-	private void parseBody(){
+	protected void parseBody(String body){
+		this.body=body;
+		
 		int len=body.length();
 		for(int i=0;i<len;i++){
 			char c=body.charAt(i);
@@ -50,23 +57,25 @@ public class Jsp{
 				int k=body.indexOf("%>",i);
 				 
 				if(i<len-2 && body.charAt(i+2)=='@'){
-					//page element	 
 					String page=body.substring(i+3,k).trim();
 					if(page.startsWith("page")){
 						page=page.substring(4).trim();
-						elements.add(new JspPage(this,i,k+2-i).parseCode(page));
+						add(new JspPage(this,i,k+2-i).parseCode(page));
 					}
 				}else if(i<len-2 && body.charAt(i+2)=='!'){
-					elements.add(new JspFunction(this,i,k+2-i).parseCode(body.substring(i+3,k)));
+					add(new JspFunction(this,i,k+2-i).parseCode(body.substring(i+3,k)));
+				}else if(i<len-2 && body.charAt(i+2)=='='){
+					add(new JspEval(this,i,k+2-i).parseCode(body.substring(i+3,k)));
 				}else{
-					elements.add(new JspCode(this,i,k+2-i).parseCode(body.substring(i+2,k))); 
+					add(new JspCode(this,i,k+2-i).parseCode(body.substring(i+2,k))); 
 				}
 				
-				i=k+1;
+				i=k+1; 
 			}else{
 				int pos=i;
+				
 				int k=body.indexOf("<%",i);
-			
+				 
 				String text="";
 				if(k<0){
 					text=body;
@@ -77,11 +86,17 @@ public class Jsp{
 					i=k-1;
 				} 	
 			 
-				elements.add(new JspText(this,pos,k-pos).parseCode(text));
+				add(new JspText(this,pos,k-pos).parseCode(text));
 			}
 		}
 	}
 	
+	
+	private JspElement add(JspElement e){
+		e.setIndex(elements.size());
+		elements.add(e);
+		return e;
+	}
 	
 	public String getFilePath(){
 		return this.filePath;
@@ -91,6 +106,10 @@ public class Jsp{
 		return body;
 	}
 
+	public JspElement getElement(int index){
+		return elements.get(index);
+	}
+	
 	public List<JspElement> getElements() {
 		return elements;
 	}

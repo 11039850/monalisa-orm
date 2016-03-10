@@ -1,7 +1,7 @@
 package com.tsc9526.monalisa.core.tools;
 
-import java.io.ByteArrayInputStream;
 import java.io.Serializable;
+import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -284,7 +284,7 @@ public class ModelHelper {
 	public static class XmlModelParser implements ModelParser<String>{			 
 		public boolean parse(Model<?> m, String xml, String... mappings) {
 			try {
-	            XMLStreamReader reader = XMLInputFactory.newInstance().createXMLStreamReader(new ByteArrayInputStream(xml.getBytes("utf-8")),"utf-8");
+	            XMLStreamReader reader = XMLInputFactory.newInstance().createXMLStreamReader(new StringReader(xml));
 	            String attr = null;
 	            String chars = null;
 	            Map<String, Object> data = new HashMap<String, Object>();

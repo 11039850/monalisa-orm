@@ -1,30 +1,40 @@
 package test.com.tsc9526.monalisa.core.jsp;
 
-import java.util.List;
+import java.io.File;
+import java.io.StringWriter;
+import java.io.Writer;
+
+import javax.tools.JavaCompiler;
+import javax.tools.ToolProvider;
 
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import com.tsc9526.monalisa.core.parser.jsp.Jsp;
-import com.tsc9526.monalisa.core.parser.jsp.JspElement;
 import com.tsc9526.monalisa.core.parser.jsp.JspPage;
-import com.tsc9526.monalisa.core.parser.jsp.JspText;
+import com.tsc9526.monalisa.core.parser.query.QueryPackage;
+import com.tsc9526.monalisa.core.tools.JavaWriter;
 
 @Test
 public class JspParserTest {
 
 	public void testParseJspTest1()throws Exception{
-		Jsp jsp=new Jsp("sql/mysqldb/test1.jsp");
+		Jsp jsp=new Jsp(new File("sql/mysqldb/test1.jsp"));
 		
-		List<JspElement> es=jsp.getElements();
-		for(int i=0;i<es.size();i++){
-			JspElement e=es.get(i);
-			 
-			String code=e.getCode();
-			if(e instanceof JspText && code.indexOf("<query")>=0){
-				
-			}
-		}
+		Writer code=new StringWriter();
+		JavaWriter writer=new JavaWriter(code);
+		QueryPackage pkg=new QueryPackage(jsp);
+		pkg.write(writer);
+		
+		System.out.println(code.toString());
+		
+
+		JavaCompiler javac=ToolProvider.getSystemJavaCompiler();
+		String dir="target/run";
+		
+		int r=javac.run(System.in, System.out,System.err,
+				"-encoding", "utf-8",
+				"-classpath","target/classes;target/test-classes", "-d","target/testing",dir+"/TestTable1.java");
 	}
 	
 	

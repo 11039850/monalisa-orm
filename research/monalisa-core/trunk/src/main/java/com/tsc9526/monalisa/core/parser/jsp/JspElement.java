@@ -6,6 +6,8 @@ public abstract class JspElement{
 	
 	protected Jsp jsp;
 	
+	protected int index;
+	
 	protected String code;
 	
 	public JspElement(Jsp jsp,int pos,int length) {
@@ -25,5 +27,13 @@ public abstract class JspElement{
 	public JspElement parseCode(String code){
 		this.code=code;
 		return this;
+	}
+
+	public int getIndex() {
+		return index;
+	}
+
+	public void setIndex(int index) {
+		this.index = index;
 	}
 }
