@@ -11,6 +11,8 @@ import java.util.regex.Pattern;
 public class JspPage extends JspElement{
 	private Map<String, String> attributes=new HashMap<String, String>();
 	 
+	private Pattern pattern = Pattern.compile("[a-zA-Z]+\\s*=\\s*\\\"[^\\\"]*\\\"");
+	
 	public JspPage(Jsp jsp, int pos, int length) {
 		super(jsp, pos, length);
 	}
@@ -19,8 +21,7 @@ public class JspPage extends JspElement{
 		attributes.clear();
 		
 		this.code=code;
-		
-		Pattern pattern = Pattern.compile("[a-zA-Z]+\\s*=\\s*\\\"[^\\\"]*\\\"");
+		 
 		Matcher matcher=pattern.matcher(code);
 		while (matcher.find()) { 
 			String g=matcher.group();

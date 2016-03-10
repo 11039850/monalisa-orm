@@ -56,7 +56,7 @@ public class Query {
 	/**
 	 * 是否显示执行的SQL语句, 默认为: false
 	 */
-	public static boolean SQL_DEBUG=false;
+	private Boolean debugSql=null;
 	
 	/**
 	 * 从外部文件资源创建一个Query
@@ -67,9 +67,7 @@ public class Query {
 	public static Query create(String sql,Object ...args ) {
 		Query q=new Query();
 		
-		for(int i=0;i<args.length;i++){
-			q.dynamic.push(args[args.length-1-i]);
-		}
+		Args a=new Args(args);
 		
 		q.add(sql, args);
 		return q;
@@ -96,43 +94,14 @@ public class Query {
 	public Query(DBConfig db){
 		 this.db=db;
 	}	 
-	
-	protected Stack<Object> dynamic=new Stack<Object>();
-	 
-	/**
-	 * 获取所有的动态参数
-	 * 
-	 * @return
-	 */
-	public Object[] dynamicAll(){
-		return dynamic.toArray();
+	  
+	public Query setDebugSql(boolean debugSql){
+		this.debugSql=debugSql;
+		return this;
 	}
 	
-	/**
-	 * 弹出一个动态参数
-	 * 
-	 * @return
-	 */
-	public <T> T dynamic(){
-		return (T)dynamic.pop();
-	}
-	
-	/**
-	 * 弹出一个动态参数， 如果为动态参数不存在或null 则返回默认值
-	 * 
-	 * @param defaultValue 默认值
-	 * @return
-	 */
-	public <T> T dynamic(T defaultValue){
-		if(dynamic.isEmpty()){
-			return defaultValue;
-		}else{
-			T r=(T)dynamic.pop();
-			if(r==null){
-				r=defaultValue;
-			}
-			return r;
-		}
+	public boolean isDebugSql(){
+		return debugSql==null?false:debugSql;
 	}
 	
 	public <T> T getTag(){
@@ -246,35 +215,7 @@ public class Query {
 	public List<Object> getParameters() {
 		return parameters;
 	}
-	
-	/**
-	 * 
-	 * @param index first is 0.
-	 * @return
-	 */
-	public <T> T getParameter(int index) {
-		return (T)parameters.get(index);
-	}
-	
-	/**
-	 * 
-	 * @param index first is 0.
-	 * @param defaultValue
-	 * @return
-	 */
-	public <T> T getParameter(int index,T defaultValue) {
-		T r=null;
-		if(index>=parameters.size()){
-			r=defaultValue;
-		}else{
-			r=(T)parameters.get(index);
-			if(r==null){
-				r=defaultValue;
-			}
-		}
-		return r;
-	}
-	
+	 
 	public Query clearParameters(){
 		this.parameters.clear();
 		return this;
@@ -368,7 +309,14 @@ public class Query {
 	}
 	
 	protected void logSql(){
-		if( SQL_DEBUG || "true".equalsIgnoreCase( DbProp.PROP_DB_SQL_DEBUG.getValue(db) ) ){
+		boolean debug=false;
+		if(debugSql==null){
+			debug=  "true".equalsIgnoreCase( DbProp.PROP_DB_SQL_DEBUG.getValue(db));
+		}else{
+			debug=debugSql.booleanValue();
+		}
+		
+		if(debug){
 			logger.info(getExecutableSQL());
 		}
 	}
