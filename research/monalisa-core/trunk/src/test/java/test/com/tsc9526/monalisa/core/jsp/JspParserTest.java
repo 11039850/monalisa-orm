@@ -5,7 +5,7 @@ import java.io.File;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import com.tsc9526.monalisa.core.parser.executor.SQLCreator;
+import com.tsc9526.monalisa.core.parser.executor.SQLResourceManager;
 import com.tsc9526.monalisa.core.parser.jsp.JspPage;
 import com.tsc9526.monalisa.core.query.DataMap;
 import com.tsc9526.monalisa.core.query.Query;
@@ -18,7 +18,7 @@ public class JspParserTest {
 		File sqlFile=new File("sql/mysqldb/test1.jsp");
 		long fileTime=0;
 		
-		SQLCreator.getInstance().loadSqlFiles(sqlFile, ".jsp", true);
+		SQLResourceManager.getInstance().loadSqlFiles(sqlFile, ".jsp", true);
 		
 		while(true){
 			if(fileTime!=sqlFile.lastModified()){

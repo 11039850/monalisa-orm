@@ -22,7 +22,7 @@ import com.tsc9526.monalisa.core.datasource.DataSourceManager;
 import com.tsc9526.monalisa.core.datasource.DbProp;
 import com.tsc9526.monalisa.core.generator.DBExchange;
 import com.tsc9526.monalisa.core.meta.Name;
-import com.tsc9526.monalisa.core.parser.executor.SQLCreator;
+import com.tsc9526.monalisa.core.parser.executor.SQLResourceManager;
 import com.tsc9526.monalisa.core.query.datatable.DataTable;
 import com.tsc9526.monalisa.core.query.dialect.Dialect;
 import com.tsc9526.monalisa.core.query.model.Model;
@@ -64,7 +64,7 @@ public class Query {
 	 * @return
 	 */
 	public static Query create(String queryId,Object ...args ) {
-		return SQLCreator.getInstance().createQuery(queryId, new Args(args));
+		return SQLResourceManager.getInstance().createQuery(queryId, new Args(args));
 	}
 	
 	protected DataSourceManager dsm=DataSourceManager.getInstance();

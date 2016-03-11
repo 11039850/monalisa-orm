@@ -5,6 +5,7 @@ import java.io.File;
 import java.lang.reflect.Method;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.util.Collection;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -17,6 +18,7 @@ import org.apache.tomcat.util.http.fileupload.ByteArrayOutputStream;
 
 import com.tsc9526.monalisa.core.parser.jsp.Jsp;
 import com.tsc9526.monalisa.core.parser.query.QueryPackage;
+import com.tsc9526.monalisa.core.parser.query.QueryStatement;
 import com.tsc9526.monalisa.core.query.Args;
 import com.tsc9526.monalisa.core.query.Query;
 import com.tsc9526.monalisa.core.tools.CloseQuietly;
@@ -35,17 +37,18 @@ public class SQLClass implements Closeable{
 	private String packageName;
 	
 	private Object runObject;
-	private Map<String, Method> hQueryMethods=new ConcurrentHashMap<String, Method>();
+	 
+	private Map<String, QueryStatement> hQueryStatements=new ConcurrentHashMap<String, QueryStatement>();
 	
 	private File sqlFile;
 	private long lastModified;
 	
-	public Query createQuery(String queryId,Args args){
+	public Query createQuery(String id,Args args){
 		checkAndCompile();
 		
-		Method m=hQueryMethods.get(queryId);
+		Method m=hQueryStatements.get(id).getMethod();
 		if(m==null){
-			throw new RuntimeException("Query id: "+queryId+" not found: "+hQueryMethods.keySet());
+			throw new RuntimeException("Query id: "+id+" not found: "+hQueryStatements.keySet());
 		}
 		
 		try{
@@ -55,6 +58,10 @@ public class SQLClass implements Closeable{
 		}catch(Exception e){
 			throw new RuntimeException(e);
 		}
+	}
+	
+	public Collection<QueryStatement> getStatements(){
+		return hQueryStatements.values();
 	}
 
 	public SQLClass(File sqlFile){
@@ -76,13 +83,14 @@ public class SQLClass implements Closeable{
 		
 		Jsp jsp=new Jsp(sqlFile);
 	 
+		
 		QueryPackage pkg=new QueryPackage(jsp);
 		packageName=pkg.getPackageName();
 		if(packageName==null){
 			packageName=DEFAULT_PACKAGE_NAME;
 			pkg.setPackageName(DEFAULT_PACKAGE_NAME);
 		}
-		
+		 
 		String dirSrc    =WORK_DIR+"/"+packageName+"/src/"+packageName.replace(".","/");
 		String dirClasses=WORK_DIR+"/"+packageName+"/classes";
 		
@@ -107,19 +115,23 @@ public class SQLClass implements Closeable{
 			 
 			close();
 			
+			for(QueryStatement qs:pkg.getStatements()){	
+				hQueryStatements.put(qs.getId(), qs);
+			}
+			
 			loader=new URLClassLoader(new URL[]{classes.toURI().toURL()}, Thread.currentThread().getContextClassLoader());
 			Class<?> qClazz=loader.loadClass(packageName+"."+SQL_CLASS_NAME);
-			
+			  
 			for(Method m:qClazz.getMethods()){
 				Class<?>[] pTypes= m.getParameterTypes();
 				if(pTypes.length==2 && pTypes[0]==Query.class && pTypes[1]==Args.class){
-					hQueryMethods.put(m.getName(),m);
+					hQueryStatements.get(m.getName()).setMethod(m);
 				}
 			}
 			
 			runObject=qClazz.newInstance();
 		
-			logger.info("Loaded query package:"+packageName+", id: "+hQueryMethods.keySet());
+			logger.info("Loaded query package:"+packageName+", id: "+hQueryStatements.keySet());
 		}else{
 			throw new RuntimeException("Compile fail: "+dirSrc+"/"+SQL_CLASS_NAME+".java\r\n"+new String(debug.toByteArray()));
 		}
@@ -132,7 +144,7 @@ public class SQLClass implements Closeable{
 		}
 		
 		runObject=null;
-		hQueryMethods.clear();
+		hQueryStatements.clear();
 	}
 
 	public String getPackageName() {

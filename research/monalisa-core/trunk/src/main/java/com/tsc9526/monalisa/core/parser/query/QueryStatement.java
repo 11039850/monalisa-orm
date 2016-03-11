@@ -1,5 +1,6 @@
 package com.tsc9526.monalisa.core.parser.query;
 
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -17,13 +18,16 @@ public class QueryStatement {
 	private String comments;
 	private String id;
 	private String db;
-	
-	
+	 
 	private List<JspElement> elements=new ArrayList<JspElement>();
 	 
 	private final static String REGX_VAR="\\$[a-zA-Z_]+[a-zA-Z_0-9]*";
+	private final static String REGX_ARG="[_a-z_A-Z]+[_a-z_A-Z0-9]*\\s+[_a-z_A-Z]+[_a-z_A-Z0-9]*\\s*=\\s*args.pop\\s*\\(.*;";
 	
-	private Pattern pattern = Pattern.compile(REGX_VAR);
+	private Pattern patternVar = Pattern.compile(REGX_VAR);
+	private Pattern patternArg = Pattern.compile(REGX_ARG);
+	
+	private Method method;
 	
 	public void write(JavaWriter writer){
 		writer.append("public void ").append(id).append("(Query q,Args args){\r\n");
@@ -34,6 +38,28 @@ public class QueryStatement {
 	
 	public void add(JspElement e){
 		elements.add(e);
+	}
+	
+	public List<JspElement> getElements(){
+		return elements;
+	}
+	
+	public List<String> getArgs(){
+		List<String> args=new ArrayList<String>();
+		
+		for(JspElement e:elements){
+			if(e instanceof JspCode){
+				String code=e.getCode(); 
+	
+				Matcher m=patternArg.matcher(code);
+				while(m.find()){
+					String var=m.group();
+					args.add(var);
+				}
+			}
+		}
+		
+		return args;
 	}
 	
 	protected void writeElements(JavaWriter writer){
@@ -57,7 +83,7 @@ public class QueryStatement {
 					
 					append=true;
 					List<String> vars=new ArrayList<String>();
-					Matcher m=pattern.matcher(line);
+					Matcher m=patternVar.matcher(line);
 					while(m.find()){
 						String var=m.group();
 						vars.add(var.substring(1));
@@ -144,6 +170,14 @@ public class QueryStatement {
 		if(db!=null)db=db.trim();
 		
 		this.db = db;
+	}
+
+	public Method getMethod() {
+		return method;
+	}
+
+	public void setMethod(Method method) {
+		this.method = method;
 	}
 	 
 }
