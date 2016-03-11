@@ -59,7 +59,7 @@ public class QueryPackage {
 	
 	private void processStatements(){
 		String queryXml=translateQueryXml();
-		System.err.println(queryXml);
+		
 		processQueryXml(queryXml);
 		
 		for(JspElement e:jsp.getElements()){
@@ -163,7 +163,7 @@ public class QueryPackage {
 			int p1=txt.indexOf("%{",p2);
 			if(p1>0){
 				String v=txt.substring(p2,p1);
-				System.err.println(">>>"+v);
+				 
 				qs.add(new JspText(jsp, 0, 0).parseCode(v));
 				
 				p2=txt.indexOf("}%",p1);

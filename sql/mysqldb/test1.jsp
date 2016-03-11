@@ -1,3 +1,5 @@
+ 
+<%@page import="java.util.Date"%>
 <%@page import="com.tsc9526.monalisa.core.query.Args"%>
 <%@ page import="com.tsc9526.monalisa.core.meta.MetaTable"%>
 <%@ page import="test.com.tsc9526.monalisa.core.mysql.MysqlDB,com.tsc9526.monalisa.core.query.Query"%>
@@ -8,15 +10,16 @@
 	<!-- 测试查询A --> 
 	<q id="testFindAll_A"> 
 		<%{	
-			MetaTable table =args.pop();
+			String name     =args.pop();
 			String title    =args.pop("");
 			String create_by=args.pop("");
 		
-			String name=trim(table.getName());
+			Date fromTime=new Date();
+			Date endTime=new Date();
+			title="x";
 		%>
 		SELECT * FROM test_table_1 
-		WHERE 2 > 1 AND name AND
-		create_time > $fromTime AND create_time < $endTime
+		WHERE 2 > 1 AND name AND create_time > $fromTime AND create_time < $endTime
 		<%if(name != null && name.trim().length()>0)%>AND name = $name
 		<%if(title!=null)%>AND title like $title
 		<%if(create_by!=null){%>AND create_by = $create_by <%}%>
