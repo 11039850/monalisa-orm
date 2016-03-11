@@ -9,6 +9,7 @@
 	<!-- 测试查询A --> 
 	<q id="testFindAll_A"> 
 		<%{	
+			/*名称*/
 			String name     =args.pop();
 			String title    =args.pop("");
 			String create_by=args.pop("");
