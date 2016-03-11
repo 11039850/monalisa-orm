@@ -15,7 +15,9 @@ import com.tsc9526.monalisa.core.parser.jsp.Jsp;
 import com.tsc9526.monalisa.core.parser.jsp.JspPage;
 import com.tsc9526.monalisa.core.parser.query.QueryPackage;
 import com.tsc9526.monalisa.core.query.Args;
+import com.tsc9526.monalisa.core.query.DataMap;
 import com.tsc9526.monalisa.core.query.Query;
+import com.tsc9526.monalisa.core.query.datatable.DataTable;
 import com.tsc9526.monalisa.core.tools.FileHelper;
 import com.tsc9526.monalisa.core.tools.JavaWriter;
 
@@ -77,8 +79,13 @@ public class JspParserTest {
 			Args  args=new Args("name","title","zzg");
 			m.invoke(qRun, query,args);
 			
-			System.out.println( query.getExecutableSQL() );
-			
+			System.out.println(query.getExecutableSQL());
+			DataTable<DataMap> rs=query.getList();
+			System.out.println("Total results: "+rs.size());
+			for(DataMap x:rs){
+				System.out.println(x.toString());
+			}
+			 
 			loader.close();
 		}
 	}

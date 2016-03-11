@@ -43,6 +43,17 @@ public class FileHelper {
 		return sb.toString(); 
 	}
 	
+	public static File mkdirs(String dir){
+		return mkdirs(new File(dir));
+	}
+	
+	public static File mkdirs(File dir){
+		if(!dir.exists()){
+			dir.mkdirs();
+		}
+		return dir;
+	}
+	
   	public static void delete(File f,boolean delete){
 		if(f.isFile()){
 			f.delete();

@@ -45,7 +45,7 @@ public class JavaWriter extends PrintWriter {
 		}else{
 			return null;
 		}
-	}
+	} 
 	
 	private static Writer toWriter(OutputStream out,String charset){
 		try{

@@ -12,7 +12,6 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.Stack;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -23,7 +22,7 @@ import com.tsc9526.monalisa.core.datasource.DataSourceManager;
 import com.tsc9526.monalisa.core.datasource.DbProp;
 import com.tsc9526.monalisa.core.generator.DBExchange;
 import com.tsc9526.monalisa.core.meta.Name;
-import com.tsc9526.monalisa.core.parser.DynamicSQLParser;
+import com.tsc9526.monalisa.core.parser.executor.SQLCreator;
 import com.tsc9526.monalisa.core.query.datatable.DataTable;
 import com.tsc9526.monalisa.core.query.dialect.Dialect;
 import com.tsc9526.monalisa.core.query.model.Model;
@@ -64,13 +63,8 @@ public class Query {
 	 * @param args      执行该资源ID对应的SQL语句所需要的参数
 	 * @return
 	 */
-	public static Query create(String sql,Object ...args ) {
-		Query q=new Query();
-		
-		Args a=new Args(args);
-		
-		q.add(sql, args);
-		return q;
+	public static Query create(String queryId,Object ...args ) {
+		return SQLCreator.getInstance().createQuery(queryId, new Args(args));
 	}
 	
 	protected DataSourceManager dsm=DataSourceManager.getInstance();
@@ -183,12 +177,7 @@ public class Query {
 	 */
 	public String getSql() {
 		String r=sql.toString();
-		if(r.matches("[a-zA-Z_][a-zA-Z0-9_\\.]+")){
-			//load sql by id
-			return DynamicSQLParser.getSql(r);
-		}else{
-			return r;
-		}
+		return r;
 	}
 	
 	/**
