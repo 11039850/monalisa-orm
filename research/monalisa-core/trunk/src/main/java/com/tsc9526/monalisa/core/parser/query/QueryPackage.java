@@ -6,6 +6,8 @@ import java.util.List;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
@@ -22,8 +24,16 @@ import com.tsc9526.monalisa.core.parser.jsp.JspText;
 import com.tsc9526.monalisa.core.tools.JavaWriter;
 
 public class QueryPackage {
+	static Log logger=LogFactory.getLog(QueryPackage.class.getName());
+	
+	public static String DEFAULT_PACKAGE_NAME="mqs";
+	public static String DEFAULT_CLASS_NAME  ="SQL";
+	  
 	private String comments;
-	private String packageName;
+ 	
+	private String packageName=DEFAULT_PACKAGE_NAME;
+	private String className=DEFAULT_CLASS_NAME;
+	
 	private String db;
 	
 	private List<JspPage> imports=new ArrayList<JspPage>();
@@ -38,8 +48,8 @@ public class QueryPackage {
 	}
 	
 	public void write(JavaWriter writer){
-		writer.write("package "+packageName+";\r\n\r\n");
-		
+		writer.write("package "+SQLClass.PACKAGE_PREFIX+"."+packageName+";\r\n\r\n");
+	 	
 		writer.write("import "+DBConfig.class.getName()+";\r\n");
 		for(JspPage page:imports){
 			for(String i:page.getImports()){
@@ -47,7 +57,7 @@ public class QueryPackage {
 			}
 		}
 		
-		writer.write("\r\npublic class "+SQLClass.SQL_CLASS_NAME+"{\r\n");
+		writer.write("\r\npublic class "+className+"{\r\n");
 		for(QueryStatement q:statements){
 			q.write(writer);
 		}
@@ -94,7 +104,8 @@ public class QueryPackage {
 				throw new RuntimeException("The <query> node not found!");
 			}
 			
-			parseCommentsNode(commentNodes);
+			comments=parseCommentsNode(commentNodes);
+			
 			parseQueryNode(query);
 			 
 		}catch(Exception e){
@@ -102,16 +113,20 @@ public class QueryPackage {
 		}
 	}
 	
-	private void parseCommentsNode(List<Node> commentNodes){
+	private String parseCommentsNode(List<Node> commentNodes){
 		if(commentNodes!=null && commentNodes.size()>0){
 			StringBuffer sb=new StringBuffer();
 			for(Node n:commentNodes){
 				sb.append(n.getTextContent()+"\r\n");
 			}
 		
-			this.comments=sb.toString();
+			return sb.toString();
+		}else{
+			return null;
 		}
 	}
+	
+	 
 	
 	private void parseQueryNode(Node query){
 		parseQueryNodeAttrs(query);
@@ -124,13 +139,13 @@ public class QueryPackage {
 			 
 			if(node.getNodeType()==Node.COMMENT_NODE){
 				commentNodes.add(node);
-			}else {
-				if(node.getNodeType()==Node.ELEMENT_NODE && node.getNodeName().equals("q")){
+			}else if(node.getNodeType()==Node.ELEMENT_NODE){
+				if(node.getNodeName().equals("q")){
 					NamedNodeMap attrs=node.getAttributes();
 							
 					QueryStatement qs=new QueryStatement();
 					qs.setQueryPackage(this);
-					qs.setComments(comments);
+					qs.setComments(parseCommentsNode(commentNodes));
 				 
 					Node id=attrs.getNamedItem("id");
 					if(id==null){
@@ -148,9 +163,9 @@ public class QueryPackage {
 					
 					
 					statements.add(qs);
+					
+					commentNodes.clear();
 				}
-				
-				commentNodes.clear();
 			}
 		}
 	}
@@ -186,9 +201,23 @@ public class QueryPackage {
 	
 	private void parseQueryNodeAttrs(Node node){
 		NamedNodeMap attrs=node.getAttributes();
-		Node pkg=attrs.getNamedItem("package");
+		Node pkg=attrs.getNamedItem("namespace");
+		
+		if(pkg==null){
+			pkg=attrs.getNamedItem("package");
+		}
+		
 		if(pkg!=null){
-			setPackageName(getNodeText(pkg));
+			String namespace=getNodeText(pkg).trim();
+			if(namespace.length()>0){
+				int x=namespace.lastIndexOf(".");
+				if(x>0){
+					packageName=namespace.substring(0,x);
+					className=namespace.substring(x+1);
+				}else{
+					className=namespace;
+				}
+			}
 		}
 
 		Node db=attrs.getNamedItem("db");
@@ -273,7 +302,6 @@ public class QueryPackage {
 		this.comments = comments;
 	}
 
-
 	public String getPackageName() {
 		return packageName;
 	}
@@ -282,7 +310,6 @@ public class QueryPackage {
 	public void setPackageName(String packageName) {
 		this.packageName = packageName;
 	}
-
 
 	public String getDb() {
 		return db;
@@ -322,4 +349,13 @@ public class QueryPackage {
 	public void setStatements(List<QueryStatement> statements) {
 		this.statements = statements;
 	}
+
+	public String getClassName() {
+		return className;
+	}
+
+	public void setClassName(String className) {
+		this.className = className;
+	}
+
 }

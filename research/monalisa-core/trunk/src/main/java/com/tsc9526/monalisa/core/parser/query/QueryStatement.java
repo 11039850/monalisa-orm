@@ -6,13 +6,19 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import com.tsc9526.monalisa.core.parser.jsp.JspCode;
 import com.tsc9526.monalisa.core.parser.jsp.JspElement;
 import com.tsc9526.monalisa.core.parser.jsp.JspEval;
 import com.tsc9526.monalisa.core.parser.jsp.JspText;
 import com.tsc9526.monalisa.core.tools.JavaWriter;
 
-public class QueryStatement {
+public class QueryStatement { 
+	static Log logger=LogFactory.getLog(QueryStatement.class.getName());
+	
+	
 	private QueryPackage queryPackage;
 	
 	private String comments;
