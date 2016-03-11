@@ -5,60 +5,116 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import org.omg.CORBA.PUBLIC_MEMBER;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
+import com.tsc9526.monalisa.core.parser.query.QueryPackage;
 import com.tsc9526.monalisa.core.parser.query.QueryStatement;
 import com.tsc9526.monalisa.core.query.Args;
 import com.tsc9526.monalisa.core.query.Query;
+import com.tsc9526.monalisa.core.tools.FileHelper;
 import com.tsc9526.monalisa.core.tools.JavaWriter;
 
 
 public class SQLResourceManager {
-	private static SQLResourceManager instance=new SQLResourceManager();
+	static Log logger=LogFactory.getLog(SQLResourceManager.class.getName());
 	
-	public static SQLResourceManager getInstance(){
+	private static SQLResourceManager instance;
+	
+	private static File defaultSQLFiles=new File("sql");
+	
+	public static synchronized SQLResourceManager getInstance(){
+		if(instance==null){
+			instance=new SQLResourceManager();
+			instance.loadSqlFiles(defaultSQLFiles , ".jsp", true);
+		}
 		return instance;
 	}
 	
 	private Map<String, SQLClass> sqlClasses=new ConcurrentHashMap<String, SQLClass>();
+	 
 	
 	private SQLResourceManager(){
+		
 	}
 	 
 	public Query createQuery(String queryId,Args args){
-		String packageName=SQLClass.DEFAULT_PACKAGE_NAME;
+		String namespace=QueryPackage.DEFAULT_PACKAGE_NAME+"."+QueryPackage.DEFAULT_CLASS_NAME;
 		String id=queryId;
 		
 		int x=queryId.lastIndexOf(".");
 		if(x>0){
-			packageName=queryId.substring(0,x).trim();
+			namespace=queryId.substring(0,x).trim();
 			id=queryId.substring(x+1).trim();
 		}
 		
-		SQLClass clazz=sqlClasses.get(packageName);
+		SQLClass clazz=sqlClasses.get(namespace);
 		if(clazz!=null){
 			return clazz.createQuery(id, args);
 		}else{
-			throw new RuntimeException("Query package not found: "+packageName+", Exists query packages: "+sqlClasses.keySet());
+			throw new RuntimeException("Query namespace not found: "+namespace+", Exist namespace: "+sqlClasses.keySet());
 		}
 	}
 	
-	public void writeQueryIdToClass(String path){
+	public void writeQueryClass(String srcDir){
 		try{
-			JavaWriter writer=new JavaWriter(new File(path));
-			writer.write("package resouces;\r\n");
 			
-			writer.write("public interface Resource{\r\n");
 			for(SQLClass cs:sqlClasses.values()){
+				File dir=new File(srcDir,cs.getPackageName().replace(".","/"));
+				FileHelper.mkdirs(dir);
+				
+				File java=new File(dir,cs.getClassName()+".java");
+				logger.info("Parse "+cs.getSqlFile().getAbsolutePath()+" to "+java.getAbsolutePath());
+				JavaWriter writer=new JavaWriter(java);
+				
+				writer.write("package "+cs.getPackageName()+";\r\n\r\n");
+				writer.write("import "+Query.class.getName()+";\r\n\r\n");
+				writer.write("public class "+cs.getClassName()+"{\r\n");
 				for(QueryStatement qs:cs.getStatements()){
-					String idName =cs.getPackageName()+"$"+qs.getId();
-					String idValue=cs.getPackageName()+"."+qs.getId();
+					String xs1="", xs2="";
 					List<String> args =qs.getArgs();
+					for(String s:args){
+						int x=s.indexOf("=");
+						String v1=s.substring(0,x).trim();
+						String v2=v1.split("\\s+")[1];
+						
+						if(xs1.length()>0){
+							xs1+=", ";
+						}
+						xs1+=v1;
+						
+						xs2+=","+v2;
+					}
+					
+					
+					String queryId=cs.getPackageName()+"."+cs.getClassName()+"."+qs.getId();
+					
+					String comments=qs.getComments();
+					if(comments!=null){
+						comments=comments.replace("*/", "==");
+					}
+					if(comments!=null){
+						writer.write("\t/**\r\n");
+						writer.write(comments);
+						writer.write("\t*/\r\n");
+					}
+					writer.write("\tpublic final static String "+qs.getId()+"=\""+queryId+"\";\r\n");
+					
+					if(comments!=null){
+						writer.write("\t/**\r\n");
+						writer.write(comments);
+						writer.write("\t*/\r\n");
+					}
+					writer.write("\tpublic static Query "+qs.getId()+"("+xs1+"){\r\n");
+					writer.write("\t\t return Query.create("+qs.getId()+xs2+"); \r\n");
+					
+					writer.write("\t}\r\n\r\n");
 				}
+				writer.write("}");
+				 
+				writer.close();
 			}
-			writer.write("}");
-			 
-			writer.close();
+		
 		}catch(Exception e){
 			throw new RuntimeException(e);
 		}
@@ -80,14 +136,22 @@ public class SQLResourceManager {
 	}
 	
 	private void addSqlFile(File sqlFile){
+		SQLClass sqlClass=new SQLClass(sqlFile);
 		try{
-			SQLClass sqlClass=new SQLClass(sqlFile);
 			sqlClass.compile();
-			
-			
-			sqlClasses.put(sqlClass.getPackageName(),sqlClass);
 		}catch(Exception e){
+			sqlClass.close();
+			
 			throw new RuntimeException("Compile sql file fail: "+sqlFile+"\r\n"+e.getMessage(),e);
+		}
+		
+		String namepace=sqlClass.getPackageName()+"."+sqlClass.getClassName();
+		if(!sqlClasses.containsKey(namepace)){
+			sqlClasses.put(namepace,sqlClass);
+		}else{
+			sqlClass.close();
+			
+			throw new RuntimeException("Namespace: "+namepace+" exists: "+sqlFile.getAbsolutePath()+", "+sqlClass.getSqlFile().getAbsolutePath());
 		}
 	}
 	

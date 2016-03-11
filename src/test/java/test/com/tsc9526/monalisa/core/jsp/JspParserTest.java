@@ -5,6 +5,8 @@ import java.io.File;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import test.com.tsc9526.monalisa.core.sql.Q0001;
+
 import com.tsc9526.monalisa.core.parser.executor.SQLResourceManager;
 import com.tsc9526.monalisa.core.parser.jsp.JspPage;
 import com.tsc9526.monalisa.core.query.DataMap;
@@ -14,12 +16,22 @@ import com.tsc9526.monalisa.core.query.datatable.DataTable;
 @Test
 public class JspParserTest {
 
+	public static void main(String[] args) {
+		Query query=Q0001.testFindAll_A("", "", "");
+		System.out.println(query.getExecutableSQL());
+		DataTable<DataMap> rs=query.getList();
+		System.out.println("Total results: "+rs.size());
+		for(DataMap x:rs){
+			System.out.println(x.toString());
+		}
+		
+		SQLResourceManager.getInstance().writeQueryClass("src/test/java");
+	}
+	
 	public void testParseJspTest1()throws Exception{
 		File sqlFile=new File("sql/mysqldb/test1.jsp");
 		long fileTime=0;
-		
-		SQLResourceManager.getInstance().loadSqlFiles(sqlFile, ".jsp", true);
-		
+	 	
 		while(true){
 			if(fileTime!=sqlFile.lastModified()){
 				if(fileTime>0){
@@ -27,7 +39,7 @@ public class JspParserTest {
 				}
 				fileTime=sqlFile.lastModified();
 				
-				Query query=Query.create("example.testFindAll_A","name");
+				Query query=Query.create("example.QA.testFindAll_A","name");
 				System.out.println(query.getExecutableSQL());
 				DataTable<DataMap> rs=query.getList();
 				System.out.println("Total results: "+rs.size());

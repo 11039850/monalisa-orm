@@ -6,8 +6,8 @@ import java.lang.reflect.Method;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.Collection;
+import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 import javax.tools.JavaCompiler;
 import javax.tools.ToolProvider;
@@ -29,16 +29,15 @@ public class SQLClass implements Closeable{
 	static Log logger=LogFactory.getLog(SQLClass.class.getName());
 	
 	public static String WORK_DIR  ="work";
+	public static String PACKAGE_PREFIX="_sql";
 	
-	public final static String DEFAULT_PACKAGE_NAME="DEFAULT";
-	public final static String SQL_CLASS_NAME="__SQL__";
-	 
 	private URLClassLoader loader;
 	private String packageName;
+	private String className;
 	
 	private Object runObject;
 	 
-	private Map<String, QueryStatement> hQueryStatements=new ConcurrentHashMap<String, QueryStatement>();
+	private Map<String, QueryStatement> hQueryStatements=new LinkedHashMap<String, QueryStatement>();
 	
 	private File sqlFile;
 	private long lastModified;
@@ -86,13 +85,10 @@ public class SQLClass implements Closeable{
 		
 		QueryPackage pkg=new QueryPackage(jsp);
 		packageName=pkg.getPackageName();
-		if(packageName==null){
-			packageName=DEFAULT_PACKAGE_NAME;
-			pkg.setPackageName(DEFAULT_PACKAGE_NAME);
-		}
+		className=pkg.getClassName();
 		 
-		String dirSrc    =WORK_DIR+"/"+packageName+"/src/"+packageName.replace(".","/");
-		String dirClasses=WORK_DIR+"/"+packageName+"/classes";
+		String dirSrc    =WORK_DIR+"/"+packageName+"."+className+"/src/"+PACKAGE_PREFIX+"/"+packageName.replace(".","/");
+		String dirClasses=WORK_DIR+"/"+packageName+"."+className+"/classes";
 		
 		FileHelper.mkdirs(dirSrc);
 		File classes=FileHelper.mkdirs(dirClasses);
@@ -100,7 +96,7 @@ public class SQLClass implements Closeable{
 		JavaWriter writer=JavaWriter.getBufferedWriter(1);
 		pkg.write(writer);
 		 
-		FileHelper.write(new File(dirSrc,SQL_CLASS_NAME+".java"),writer.getContent().getBytes("utf-8"));
+		FileHelper.write(new File(dirSrc,className+".java"),writer.getContent().getBytes("utf-8"));
 
 		ByteArrayOutputStream debug=new ByteArrayOutputStream();
 		JavaCompiler javac=ToolProvider.getSystemJavaCompiler();
@@ -108,10 +104,10 @@ public class SQLClass implements Closeable{
 		int r=javac.run(System.in, debug,debug, "-encoding", "utf-8","-nowarn"
 				,"-classpath",classpath
 				,"-d",dirClasses
-				,dirSrc+"/"+SQL_CLASS_NAME+".java");
+				,dirSrc+"/"+className+".java");
 		
 		if(r==0){
-			logger.info("Compile OK: "+dirSrc+"/"+SQL_CLASS_NAME+".java");
+			logger.info("Compile OK: "+dirSrc+"/"+className+".java");
 			 
 			close();
 			
@@ -120,7 +116,7 @@ public class SQLClass implements Closeable{
 			}
 			
 			loader=new URLClassLoader(new URL[]{classes.toURI().toURL()}, Thread.currentThread().getContextClassLoader());
-			Class<?> qClazz=loader.loadClass(packageName+"."+SQL_CLASS_NAME);
+			Class<?> qClazz=loader.loadClass(PACKAGE_PREFIX+"."+packageName+"."+className);
 			  
 			for(Method m:qClazz.getMethods()){
 				Class<?>[] pTypes= m.getParameterTypes();
@@ -131,9 +127,9 @@ public class SQLClass implements Closeable{
 			
 			runObject=qClazz.newInstance();
 		
-			logger.info("Loaded query package:"+packageName+", id: "+hQueryStatements.keySet());
+			logger.info("Loaded namespace: "+packageName+"."+className+", id: "+hQueryStatements.keySet());
 		}else{
-			throw new RuntimeException("Compile fail: "+dirSrc+"/"+SQL_CLASS_NAME+".java\r\n"+new String(debug.toByteArray()));
+			throw new RuntimeException("Compile fail: "+dirSrc+"/"+className+".java\r\n"+new String(debug.toByteArray()));
 		}
 	}
 	
@@ -155,7 +151,15 @@ public class SQLClass implements Closeable{
 		this.packageName = packageName;
 	}
 
+	public String getClassName(){
+		return this.className;
+	}
+	
 	public long getLastModified() {
 		return lastModified;
+	}
+	
+	public File getSqlFile(){
+		return sqlFile;
 	}
 }

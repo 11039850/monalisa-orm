@@ -5,7 +5,7 @@
 <%@ page language="java" pageEncoding="utf-8"%>
 <%Query q=new Query(); Args args=new Args();%> 
 <!-- hello -->
-<query package="example" db="<%=MysqlDB.class%>"> 
+<query namespace="test.com.tsc9526.monalisa.core.sql.Q0001" db="<%=MysqlDB.class%>"> 
 	<!-- 测试查询A --> 
 	<q id="testFindAll_A"> 
 		<%{	
@@ -26,7 +26,9 @@
 	<!-- 测试查询<B> -->
 	<q id="testFindAll_B" >
 	<%{
-		String name=args.pop(""),title=args.pop(""),create_by=args.pop("");
+		String name=args.pop("");
+		String title=args.pop("");
+		String create_by=args.pop("");
 		
 		q.add("SELECT * FROM test_table_1");
 	%>
