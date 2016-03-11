@@ -5,7 +5,7 @@
 <%@ page language="java" pageEncoding="utf-8"%>
 <%Query q=new Query(); Args args=new Args();%> 
 <!-- hello -->
-<query package="monalisa.query" db="<%=MysqlDB.class%>"> 
+<query package="example" db="<%=MysqlDB.class%>"> 
 	<!-- 测试查询A --> 
 	<q id="testFindAll_A"> 
 		<%{	
@@ -17,7 +17,7 @@
 			Date endTime =new Date();
 			title="x";
 			
-			name="N%10";
+			name="N%";
 		%>
 		SELECT * FROM test_table_1 a where name like $name
 		<%}%>

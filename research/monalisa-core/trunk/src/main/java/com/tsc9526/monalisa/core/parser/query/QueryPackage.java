@@ -13,6 +13,7 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 
 import com.tsc9526.monalisa.core.datasource.DBConfig;
+import com.tsc9526.monalisa.core.parser.executor.SQLClass;
 import com.tsc9526.monalisa.core.parser.jsp.Jsp;
 import com.tsc9526.monalisa.core.parser.jsp.JspElement;
 import com.tsc9526.monalisa.core.parser.jsp.JspFunction;
@@ -46,7 +47,7 @@ public class QueryPackage {
 			}
 		}
 		
-		writer.write("\r\npublic class Q{\r\n");
+		writer.write("\r\npublic class "+SQLClass.SQL_CLASS_NAME+"{\r\n");
 		for(QueryStatement q:statements){
 			q.write(writer);
 		}
