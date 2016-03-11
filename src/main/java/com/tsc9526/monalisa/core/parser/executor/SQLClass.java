@@ -142,4 +142,8 @@ public class SQLClass implements Closeable{
 	public void setPackageName(String packageName) {
 		this.packageName = packageName;
 	}
+
+	public long getLastModified() {
+		return lastModified;
+	}
 }
