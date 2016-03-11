@@ -26,10 +26,10 @@ public class QueryStatement {
 	private Pattern pattern = Pattern.compile(REGX_VAR);
 	
 	public void write(JavaWriter writer){
-		writer.append("public Query ").append(id).append("(Query q){\r\n");
+		writer.append("public void ").append(id).append("(Query q,Args args){\r\n");
 		writeUseDb(writer);
 		writeElements(writer);
-		writer.append("}");
+		writer.append("}\r\n\r\n");
 	}
 	
 	public void add(JspElement e){
@@ -42,14 +42,17 @@ public class QueryStatement {
 		for(JspElement e:elements){
 			if(e instanceof JspText){
 				String code=e.getCode();
-				System.err.println("!!!"+code);
-				
+			 	
 				String[] lines=code.split("\n");
+				boolean lastLineEmpty=lines[lines.length-1].trim().length()==0;
+				
 				for(int i=0;i<lines.length;i++){
 					String line=lines[i];
 					
-					if(line.trim().length()==0 && !append){
-						continue;
+					if(line.trim().length()==0){
+						if(!append || i==lines.length-1){
+							continue;
+						}
 					}
 					
 					append=true;
@@ -67,7 +70,12 @@ public class QueryStatement {
 							writer.append(","+v);
 						}
 					}
-					writer.append(");\r\n");
+					
+					if(lastLineEmpty){
+						writer.append(").add(\"\\r\\n\");\r\n");
+					}else{
+						writer.append(");");
+					}
 				}
 			}else if(e instanceof JspEval){
 				String s=e.getCode();

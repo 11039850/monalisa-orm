@@ -21,12 +21,13 @@ public class JspParserTest {
 	public void testParseJspTest1()throws Exception{
 		Jsp jsp=new Jsp(new File("sql/mysqldb/test1.jsp"));
 		
-		Writer code=new StringWriter();
-		JavaWriter writer=new JavaWriter(code);
+		 
+		JavaWriter writer=JavaWriter.getBufferedWriter(1);
 		QueryPackage pkg=new QueryPackage(jsp);
 		pkg.write(writer);
 		
-		System.out.println(code.toString());
+		
+		System.out.println(writer.getContent());
 		
 
 		JavaCompiler javac=ToolProvider.getSystemJavaCompiler();

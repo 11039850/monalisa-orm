@@ -12,6 +12,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 
+import com.tsc9526.monalisa.core.datasource.DBConfig;
 import com.tsc9526.monalisa.core.parser.jsp.Jsp;
 import com.tsc9526.monalisa.core.parser.jsp.JspElement;
 import com.tsc9526.monalisa.core.parser.jsp.JspFunction;
@@ -38,13 +39,14 @@ public class QueryPackage {
 	public void write(JavaWriter writer){
 		writer.write("package "+packageName+";\r\n\r\n");
 		
+		writer.write("import "+DBConfig.class.getName()+";\r\n");
 		for(JspPage page:imports){
 			for(String i:page.getImports()){
 				writer.write("import "+i+";\r\n");
 			}
 		}
 		
-		writer.write("public class Q{\r\n");
+		writer.write("\r\npublic class Q{\r\n");
 		for(QueryStatement q:statements){
 			q.write(writer);
 		}
