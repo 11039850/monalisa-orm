@@ -1,7 +1,5 @@
 package test.com.tsc9526.monalisa.core.jsp;
 
-import java.io.File;
-
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -15,8 +13,22 @@ import com.tsc9526.monalisa.core.query.datatable.DataTable;
 
 @Test
 public class JspParserTest {
-
-	public static void main(String[] args) {
+	
+	public void testGenerate(){
+		DBGeneratorMain.generate(null,"src/test/java");
+	}
+	
+	public void testQueryByQueryId()throws Exception{
+		Query query=Query.create("test.com.tsc9526.monalisa.core.sql.Q0001.testFindAll_A","name","","");
+		System.out.println(query.getExecutableSQL());
+		DataTable<DataMap> rs=query.getList();
+		System.out.println("Total results: "+rs.size());
+		for(DataMap x:rs){
+			System.out.println(x.toString());
+		}	 
+	}
+	
+	public void testQueryByInterface(){
 		Query query=Q0001.testFindAll_A("", "", "");
 		System.out.println(query.getExecutableSQL());
 		DataTable<DataMap> rs=query.getList();
@@ -24,35 +36,9 @@ public class JspParserTest {
 		for(DataMap x:rs){
 			System.out.println(x.toString());
 		}
-		
-		DBGeneratorMain.generate(null,"src/test/java");
 	}
 	
-	public void testParseJspTest1()throws Exception{
-		File sqlFile=new File("sql/mysqldb/test1.jsp");
-		long fileTime=0;
-	 	
-		while(true){
-			if(fileTime!=sqlFile.lastModified()){
-				if(fileTime>0){
-					System.out.println("Reload file: "+sqlFile.getAbsolutePath());
-				}
-				fileTime=sqlFile.lastModified();
-				
-				Query query=Query.create("test.com.tsc9526.monalisa.core.sql.Q0001.testFindAll_A","name","","");
-				System.out.println(query.getExecutableSQL());
-				DataTable<DataMap> rs=query.getList();
-				System.out.println("Total results: "+rs.size());
-				for(DataMap x:rs){
-					System.out.println(x.toString());
-				}
-			}else{
-				Thread.sleep(1000);
-			}
-		}
-	}
-	
-	
+	 
 	public void testJspPageAttribute(){
 		JspPage page=new JspPage(null, 0, 0);
 		
