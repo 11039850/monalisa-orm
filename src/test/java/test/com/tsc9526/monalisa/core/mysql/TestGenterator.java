@@ -26,7 +26,6 @@ import com.tsc9526.monalisa.core.query.Tx;
 import com.tsc9526.monalisa.core.tools.FileHelper;
  
 @Test
-
 public class TestGenterator {
 	static Logger logger=Logger.getLogger(TestGenterator.class.getSimpleName());
 	   

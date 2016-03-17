@@ -51,7 +51,9 @@ public class Helper {
 		try{
 			Class.forName(DBProject.EclipseDBProjectClass);
 			return true;
-		}catch(Exception e){
+		}catch(NoClassDefFoundError e){
+			return false;
+		} catch (ClassNotFoundException e) {
 			return false;
 		}
 	}

@@ -1,17 +1,25 @@
-package test.com.tsc9526.monalisa.core.jsp;
+package test.com.tsc9526.monalisa.core;
 
 import java.io.File;
 
+import test.com.tsc9526.monalisa.core.mysql.MysqlDB;
+
+import com.tsc9526.monalisa.core.generator.DBGeneratorLocal;
 import com.tsc9526.monalisa.core.query.DataMap;
 import com.tsc9526.monalisa.core.query.Query;
 import com.tsc9526.monalisa.core.query.datatable.DataTable;
 
 
-public class JspSqlRunTest {
+public class GeneratorRun {
 	public static void main(String[] args)throws Exception {
 		File sqlFile=new File("sql/mysqldb/test1.jsp");
 		long fileTime=0;
 	 	
+		String outputJavaDir="src/test/java";
+		String outputResourceDir="src/test/resources";
+		DBGeneratorLocal g=new DBGeneratorLocal(MysqlDB.class, outputJavaDir,outputResourceDir);
+		g.generateFiles();
+		
 		while(true){
 			if(fileTime!=sqlFile.lastModified()){
 				if(fileTime>0){
