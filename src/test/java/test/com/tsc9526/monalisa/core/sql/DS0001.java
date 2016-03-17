@@ -3,7 +3,7 @@ import test.com.tsc9526.monalisa.core.mysql.mysqldb.TestTable1;
 import test.com.tsc9526.monalisa.core.mysql.mysqldb.TestTable2;
 import com.tsc9526.monalisa.core.annotation.Column;
 /**
- * Created by monalisa at 2016-3-17 11:34:15
+ * Created by monalisa at 2016-3-17 11:41:19
  * 
  * @see 
  */

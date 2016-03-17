@@ -107,7 +107,7 @@ public class SQLClass implements Closeable{
 				,dirSrc+"/"+className+".java");
 		
 		if(r==0){
-			logger.info("Compile OK: "+dirSrc+"/"+className+".java");
+			logger.info("Load OK: "+dirSrc+"/"+className+".java");
 			 
 			close();
 			

@@ -72,6 +72,8 @@ public class SQLResourceManager {
 	}
 	
 	private void addSqlFile(File sqlFile){
+		logger.info("Load sql file: "+sqlFile.getAbsolutePath());
+		
 		SQLClass sqlClass=new SQLClass(sqlFile);
 		try{
 			sqlClass.compile();
