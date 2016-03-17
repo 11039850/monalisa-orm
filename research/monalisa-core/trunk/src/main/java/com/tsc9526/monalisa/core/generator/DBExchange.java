@@ -13,8 +13,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 
-import bsh.This;
-
 import com.tsc9526.monalisa.core.datasource.DataSourceManager;
 import com.tsc9526.monalisa.core.meta.MetaColumn;
 import com.tsc9526.monalisa.core.meta.MetaTable;
