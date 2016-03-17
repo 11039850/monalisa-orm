@@ -10,29 +10,29 @@ import java.util.Map;
 import java.util.LinkedHashMap;
 
 @Table(
-	name="test_table_1",
+	name="test_table_2",
 	primaryKeys={"id"},
 	remarks="",
 	indexes={		
 	}
 )
-public class TestTable1 extends com.tsc9526.monalisa.core.query.model.Model<TestTable1> implements test.com.tsc9526.monalisa.core.mysql.MysqlDB{
-	private static final long serialVersionUID = 1139553543918L;
+public class TestTable2 extends com.tsc9526.monalisa.core.query.model.Model<TestTable2> implements test.com.tsc9526.monalisa.core.mysql.MysqlDB{
+	private static final long serialVersionUID = 1139494572092L;
 		 
 	public static final Insert INSERT(){
-	 	return new Insert(new TestTable1());
+	 	return new Insert(new TestTable2());
 	}
 	
 	public static final Delete DELETE(){
-	 	return new Delete(new TestTable1());
+	 	return new Delete(new TestTable2());
 	}
 	
-	public static final Update UPDATE(TestTable1 model){
+	public static final Update UPDATE(TestTable2 model){
 		return new Update(model);
 	}		
 	
 	public static final Select SELECT(){
-	 	return new Select(new TestTable1());
+	 	return new Select(new TestTable2());
 	}	 	 
 	
 	/**
@@ -54,8 +54,8 @@ public class TestTable1 extends com.tsc9526.monalisa.core.query.model.Model<Test
 		return new Example().createCriteria();
 	} 
 	 
-	public TestTable1(){
-		super("test_table_1", "id");		
+	public TestTable2(){
+		super("test_table_2", "id");		
 	}		 
 	
 	/**
@@ -63,8 +63,8 @@ public class TestTable1 extends com.tsc9526.monalisa.core.query.model.Model<Test
 	 *
 	 * @param id 唯一主键
 	 */
-	public TestTable1(Integer id){
-		super("test_table_1", "id");
+	public TestTable2(Integer id){
+		super("test_table_2", "id");
 	
 		this.id = id;
 		fieldChanged("id");
@@ -72,7 +72,7 @@ public class TestTable1 extends com.tsc9526.monalisa.core.query.model.Model<Test
 	
 	/**
 	* @Column 
-	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_1&nbsp;<B>name:</B> id [<font color=red>KEY</font>|<font color=red>AUTO</font>|<font color=red>NOTNULL</font>] <br>   
+	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_2&nbsp;<B>name:</B> id [<font color=red>KEY</font>|<font color=red>AUTO</font>|<font color=red>NOTNULL</font>] <br>   
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 10					
 	* <li><B>remarks:</B> 唯一主键			 
 	*/
@@ -81,7 +81,7 @@ public class TestTable1 extends com.tsc9526.monalisa.core.query.model.Model<Test
 	
 	/**
 	* @Column 
-	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_1&nbsp;<B>name:</B> name [<font color=red>NOTNULL</font>] <br>   
+	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_2&nbsp;<B>name:</B> name [<font color=red>NOTNULL</font>] <br>   
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 128		 	&nbsp;<B>value:</B> N0001 <br> 			
 	* <li><B>remarks:</B> 名称			 
 	*/
@@ -90,7 +90,7 @@ public class TestTable1 extends com.tsc9526.monalisa.core.query.model.Model<Test
 	
 	/**
 	* @Column 
-	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_1&nbsp;<B>name:</B> title <br>   
+	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_2&nbsp;<B>name:</B> title <br>   
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 128					
 	* <li><B>remarks:</B> 标题			 
 	*/
@@ -99,7 +99,7 @@ public class TestTable1 extends com.tsc9526.monalisa.core.query.model.Model<Test
 	
 	/**
 	* @Column 
-	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_1&nbsp;<B>name:</B> enum_int_a [<font color=red>NOTNULL</font>] <br>   
+	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_2&nbsp;<B>name:</B> enum_int_a [<font color=red>NOTNULL</font>] <br>   
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 10		 	&nbsp;<B>value:</B> 0 <br> 			
 	* <li><B>remarks:</B> 枚举字段A  #enum{{V0,V1}}			 
 	*/
@@ -108,7 +108,7 @@ public class TestTable1 extends com.tsc9526.monalisa.core.query.model.Model<Test
 	
 	/**
 	* @Column 
-	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_1&nbsp;<B>name:</B> enum_string_a [<font color=red>NOTNULL</font>] <br>   
+	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_2&nbsp;<B>name:</B> enum_string_a [<font color=red>NOTNULL</font>] <br>   
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 64		 	&nbsp;<B>value:</B> TRUE <br> 			
 	* <li><B>remarks:</B> #enum{{ TRUE, FALSE}}			 
 	*/
@@ -117,7 +117,7 @@ public class TestTable1 extends com.tsc9526.monalisa.core.query.model.Model<Test
 	
 	/**
 	* @Column 
-	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_1&nbsp;<B>name:</B> ts_a [<font color=red>NOTNULL</font>] <br>   
+	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_2&nbsp;<B>name:</B> ts_a [<font color=red>NOTNULL</font>] <br>   
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 19					
 	* <li><B>remarks:</B> 			 
 	*/
@@ -126,7 +126,7 @@ public class TestTable1 extends com.tsc9526.monalisa.core.query.model.Model<Test
 	
 	/**
 	* @Column 
-	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_1&nbsp;<B>name:</B> create_time [<font color=red>NOTNULL</font>] <br>   
+	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_2&nbsp;<B>name:</B> create_time [<font color=red>NOTNULL</font>] <br>   
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 19					
 	* <li><B>remarks:</B> 			 
 	*/
@@ -135,7 +135,7 @@ public class TestTable1 extends com.tsc9526.monalisa.core.query.model.Model<Test
 	
 	/**
 	* @Column 
-	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_1&nbsp;<B>name:</B> create_by <br>   
+	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_2&nbsp;<B>name:</B> create_by <br>   
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 64					
 	* <li><B>remarks:</B> 			 
 	*/
@@ -144,7 +144,7 @@ public class TestTable1 extends com.tsc9526.monalisa.core.query.model.Model<Test
 	
 	/**
 	* @Column 
-	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_1&nbsp;<B>name:</B> update_time <br>   
+	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_2&nbsp;<B>name:</B> update_time <br>   
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 19					
 	* <li><B>remarks:</B> 			 
 	*/
@@ -153,7 +153,7 @@ public class TestTable1 extends com.tsc9526.monalisa.core.query.model.Model<Test
 	
 	/**
 	* @Column 
-	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_1&nbsp;<B>name:</B> update_by <br>   
+	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_2&nbsp;<B>name:</B> update_by <br>   
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 64					
 	* <li><B>remarks:</B> 			 
 	*/
@@ -164,12 +164,12 @@ public class TestTable1 extends com.tsc9526.monalisa.core.query.model.Model<Test
 	
 	/**
 	* @Column 
-	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_1&nbsp;<B>name:</B> id [<font color=red>KEY</font>|<font color=red>AUTO</font>|<font color=red>NOTNULL</font>] <br>   
+	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_2&nbsp;<B>name:</B> id [<font color=red>KEY</font>|<font color=red>AUTO</font>|<font color=red>NOTNULL</font>] <br>   
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 10					
 	* <li><B>remarks:</B> 唯一主键			 
 	*/
 	@Column(table=M.TABLE, jdbcType=4,  name=M.id$name ,   key=M.id$key ,   auto=M.id$auto ,   notnull=M.id$notnull ,   length=M.id$length ,   value=M.id$value ,   remarks=M.id$remarks    )
-	public TestTable1 setId(Integer id){
+	public TestTable2 setId(Integer id){
 		this.id = id;		
 		
 		fieldChanged("id");
@@ -180,12 +180,12 @@ public class TestTable1 extends com.tsc9526.monalisa.core.query.model.Model<Test
 	
 	/**
 	* @Column 
-	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_1&nbsp;<B>name:</B> name [<font color=red>NOTNULL</font>] <br>   
+	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_2&nbsp;<B>name:</B> name [<font color=red>NOTNULL</font>] <br>   
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 128		 	&nbsp;<B>value:</B> N0001 <br> 			
 	* <li><B>remarks:</B> 名称			 
 	*/
 	@Column(table=M.TABLE, jdbcType=12,  name=M.name$name ,   key=M.name$key ,   auto=M.name$auto ,   notnull=M.name$notnull ,   length=M.name$length ,   value=M.name$value ,   remarks=M.name$remarks    )
-	public TestTable1 setName(String name){
+	public TestTable2 setName(String name){
 		this.name = name;		
 		
 		fieldChanged("name");
@@ -196,12 +196,12 @@ public class TestTable1 extends com.tsc9526.monalisa.core.query.model.Model<Test
 	
 	/**
 	* @Column 
-	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_1&nbsp;<B>name:</B> title <br>   
+	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_2&nbsp;<B>name:</B> title <br>   
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 128					
 	* <li><B>remarks:</B> 标题			 
 	*/
 	@Column(table=M.TABLE, jdbcType=12,  name=M.title$name ,   key=M.title$key ,   auto=M.title$auto ,   notnull=M.title$notnull ,   length=M.title$length ,   value=M.title$value ,   remarks=M.title$remarks    )
-	public TestTable1 setTitle(String title){
+	public TestTable2 setTitle(String title){
 		this.title = title;		
 		
 		fieldChanged("title");
@@ -212,12 +212,12 @@ public class TestTable1 extends com.tsc9526.monalisa.core.query.model.Model<Test
 	
 	/**
 	* @Column 
-	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_1&nbsp;<B>name:</B> enum_int_a [<font color=red>NOTNULL</font>] <br>   
+	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_2&nbsp;<B>name:</B> enum_int_a [<font color=red>NOTNULL</font>] <br>   
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 10		 	&nbsp;<B>value:</B> 0 <br> 			
 	* <li><B>remarks:</B> 枚举字段A  #enum{{V0,V1}}			 
 	*/
 	@Column(table=M.TABLE, jdbcType=4,  name=M.enumIntA$name ,   key=M.enumIntA$key ,   auto=M.enumIntA$auto ,   notnull=M.enumIntA$notnull ,   length=M.enumIntA$length ,   value=M.enumIntA$value ,   remarks=M.enumIntA$remarks    )
-	public TestTable1 setEnumIntA(EnumIntA enumIntA){
+	public TestTable2 setEnumIntA(EnumIntA enumIntA){
 		this.enumIntA = enumIntA;		
 		
 		fieldChanged("enumIntA");
@@ -228,12 +228,12 @@ public class TestTable1 extends com.tsc9526.monalisa.core.query.model.Model<Test
 	
 	/**
 	* @Column 
-	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_1&nbsp;<B>name:</B> enum_string_a [<font color=red>NOTNULL</font>] <br>   
+	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_2&nbsp;<B>name:</B> enum_string_a [<font color=red>NOTNULL</font>] <br>   
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 64		 	&nbsp;<B>value:</B> TRUE <br> 			
 	* <li><B>remarks:</B> #enum{{ TRUE, FALSE}}			 
 	*/
 	@Column(table=M.TABLE, jdbcType=12,  name=M.enumStringA$name ,   key=M.enumStringA$key ,   auto=M.enumStringA$auto ,   notnull=M.enumStringA$notnull ,   length=M.enumStringA$length ,   value=M.enumStringA$value ,   remarks=M.enumStringA$remarks    )
-	public TestTable1 setEnumStringA(EnumStringA enumStringA){
+	public TestTable2 setEnumStringA(EnumStringA enumStringA){
 		this.enumStringA = enumStringA;		
 		
 		fieldChanged("enumStringA");
@@ -244,12 +244,12 @@ public class TestTable1 extends com.tsc9526.monalisa.core.query.model.Model<Test
 	
 	/**
 	* @Column 
-	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_1&nbsp;<B>name:</B> ts_a [<font color=red>NOTNULL</font>] <br>   
+	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_2&nbsp;<B>name:</B> ts_a [<font color=red>NOTNULL</font>] <br>   
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 19					
 	* <li><B>remarks:</B> 			 
 	*/
 	@Column(table=M.TABLE, jdbcType=93,  name=M.tsA$name ,   key=M.tsA$key ,   auto=M.tsA$auto ,   notnull=M.tsA$notnull ,   length=M.tsA$length ,   value=M.tsA$value ,   remarks=M.tsA$remarks    )
-	public TestTable1 setTsA(java.util.Date tsA){
+	public TestTable2 setTsA(java.util.Date tsA){
 		this.tsA = tsA;		
 		
 		fieldChanged("tsA");
@@ -260,12 +260,12 @@ public class TestTable1 extends com.tsc9526.monalisa.core.query.model.Model<Test
 	
 	/**
 	* @Column 
-	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_1&nbsp;<B>name:</B> create_time [<font color=red>NOTNULL</font>] <br>   
+	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_2&nbsp;<B>name:</B> create_time [<font color=red>NOTNULL</font>] <br>   
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 19					
 	* <li><B>remarks:</B> 			 
 	*/
 	@Column(table=M.TABLE, jdbcType=93,  name=M.createTime$name ,   key=M.createTime$key ,   auto=M.createTime$auto ,   notnull=M.createTime$notnull ,   length=M.createTime$length ,   value=M.createTime$value ,   remarks=M.createTime$remarks    )
-	public TestTable1 setCreateTime(java.util.Date createTime){
+	public TestTable2 setCreateTime(java.util.Date createTime){
 		this.createTime = createTime;		
 		
 		fieldChanged("createTime");
@@ -276,12 +276,12 @@ public class TestTable1 extends com.tsc9526.monalisa.core.query.model.Model<Test
 	
 	/**
 	* @Column 
-	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_1&nbsp;<B>name:</B> create_by <br>   
+	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_2&nbsp;<B>name:</B> create_by <br>   
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 64					
 	* <li><B>remarks:</B> 			 
 	*/
 	@Column(table=M.TABLE, jdbcType=12,  name=M.createBy$name ,   key=M.createBy$key ,   auto=M.createBy$auto ,   notnull=M.createBy$notnull ,   length=M.createBy$length ,   value=M.createBy$value ,   remarks=M.createBy$remarks    )
-	public TestTable1 setCreateBy(String createBy){
+	public TestTable2 setCreateBy(String createBy){
 		this.createBy = createBy;		
 		
 		fieldChanged("createBy");
@@ -292,12 +292,12 @@ public class TestTable1 extends com.tsc9526.monalisa.core.query.model.Model<Test
 	
 	/**
 	* @Column 
-	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_1&nbsp;<B>name:</B> update_time <br>   
+	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_2&nbsp;<B>name:</B> update_time <br>   
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 19					
 	* <li><B>remarks:</B> 			 
 	*/
 	@Column(table=M.TABLE, jdbcType=93,  name=M.updateTime$name ,   key=M.updateTime$key ,   auto=M.updateTime$auto ,   notnull=M.updateTime$notnull ,   length=M.updateTime$length ,   value=M.updateTime$value ,   remarks=M.updateTime$remarks    )
-	public TestTable1 setUpdateTime(java.util.Date updateTime){
+	public TestTable2 setUpdateTime(java.util.Date updateTime){
 		this.updateTime = updateTime;		
 		
 		fieldChanged("updateTime");
@@ -308,12 +308,12 @@ public class TestTable1 extends com.tsc9526.monalisa.core.query.model.Model<Test
 	
 	/**
 	* @Column 
-	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_1&nbsp;<B>name:</B> update_by <br>   
+	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_2&nbsp;<B>name:</B> update_by <br>   
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 64					
 	* <li><B>remarks:</B> 			 
 	*/
 	@Column(table=M.TABLE, jdbcType=12,  name=M.updateBy$name ,   key=M.updateBy$key ,   auto=M.updateBy$auto ,   notnull=M.updateBy$notnull ,   length=M.updateBy$length ,   value=M.updateBy$value ,   remarks=M.updateBy$remarks    )
-	public TestTable1 setUpdateBy(String updateBy){
+	public TestTable2 setUpdateBy(String updateBy){
 		this.updateBy = updateBy;		
 		
 		fieldChanged("updateBy");
@@ -326,7 +326,7 @@ public class TestTable1 extends com.tsc9526.monalisa.core.query.model.Model<Test
 	
 	/**
 	* @Column 
-	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_1&nbsp;<B>name:</B> id [<font color=red>KEY</font>|<font color=red>AUTO</font>|<font color=red>NOTNULL</font>] <br>   
+	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_2&nbsp;<B>name:</B> id [<font color=red>KEY</font>|<font color=red>AUTO</font>|<font color=red>NOTNULL</font>] <br>   
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 10					
 	* <li><B>remarks:</B> 唯一主键			 
 	*/
@@ -337,7 +337,7 @@ public class TestTable1 extends com.tsc9526.monalisa.core.query.model.Model<Test
 		
 	/**
 	* @Column 
-	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_1&nbsp;<B>name:</B> name [<font color=red>NOTNULL</font>] <br>   
+	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_2&nbsp;<B>name:</B> name [<font color=red>NOTNULL</font>] <br>   
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 128		 	&nbsp;<B>value:</B> N0001 <br> 			
 	* <li><B>remarks:</B> 名称			 
 	*/
@@ -348,7 +348,7 @@ public class TestTable1 extends com.tsc9526.monalisa.core.query.model.Model<Test
 		
 	/**
 	* @Column 
-	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_1&nbsp;<B>name:</B> title <br>   
+	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_2&nbsp;<B>name:</B> title <br>   
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 128					
 	* <li><B>remarks:</B> 标题			 
 	*/
@@ -359,7 +359,7 @@ public class TestTable1 extends com.tsc9526.monalisa.core.query.model.Model<Test
 		
 	/**
 	* @Column 
-	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_1&nbsp;<B>name:</B> enum_int_a [<font color=red>NOTNULL</font>] <br>   
+	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_2&nbsp;<B>name:</B> enum_int_a [<font color=red>NOTNULL</font>] <br>   
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 10		 	&nbsp;<B>value:</B> 0 <br> 			
 	* <li><B>remarks:</B> 枚举字段A  #enum{{V0,V1}}			 
 	*/
@@ -370,7 +370,7 @@ public class TestTable1 extends com.tsc9526.monalisa.core.query.model.Model<Test
 		
 	/**
 	* @Column 
-	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_1&nbsp;<B>name:</B> enum_string_a [<font color=red>NOTNULL</font>] <br>   
+	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_2&nbsp;<B>name:</B> enum_string_a [<font color=red>NOTNULL</font>] <br>   
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 64		 	&nbsp;<B>value:</B> TRUE <br> 			
 	* <li><B>remarks:</B> #enum{{ TRUE, FALSE}}			 
 	*/
@@ -381,7 +381,7 @@ public class TestTable1 extends com.tsc9526.monalisa.core.query.model.Model<Test
 		
 	/**
 	* @Column 
-	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_1&nbsp;<B>name:</B> ts_a [<font color=red>NOTNULL</font>] <br>   
+	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_2&nbsp;<B>name:</B> ts_a [<font color=red>NOTNULL</font>] <br>   
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 19					
 	* <li><B>remarks:</B> 			 
 	*/
@@ -392,7 +392,7 @@ public class TestTable1 extends com.tsc9526.monalisa.core.query.model.Model<Test
 		
 	/**
 	* @Column 
-	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_1&nbsp;<B>name:</B> create_time [<font color=red>NOTNULL</font>] <br>   
+	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_2&nbsp;<B>name:</B> create_time [<font color=red>NOTNULL</font>] <br>   
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 19					
 	* <li><B>remarks:</B> 			 
 	*/
@@ -403,7 +403,7 @@ public class TestTable1 extends com.tsc9526.monalisa.core.query.model.Model<Test
 		
 	/**
 	* @Column 
-	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_1&nbsp;<B>name:</B> create_by <br>   
+	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_2&nbsp;<B>name:</B> create_by <br>   
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 64					
 	* <li><B>remarks:</B> 			 
 	*/
@@ -414,7 +414,7 @@ public class TestTable1 extends com.tsc9526.monalisa.core.query.model.Model<Test
 		
 	/**
 	* @Column 
-	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_1&nbsp;<B>name:</B> update_time <br>   
+	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_2&nbsp;<B>name:</B> update_time <br>   
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 19					
 	* <li><B>remarks:</B> 			 
 	*/
@@ -425,7 +425,7 @@ public class TestTable1 extends com.tsc9526.monalisa.core.query.model.Model<Test
 		
 	/**
 	* @Column 
-	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_1&nbsp;<B>name:</B> update_by <br>   
+	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_2&nbsp;<B>name:</B> update_by <br>   
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 64					
 	* <li><B>remarks:</B> 			 
 	*/
@@ -435,14 +435,14 @@ public class TestTable1 extends com.tsc9526.monalisa.core.query.model.Model<Test
 	}
 		
 	
-	public static class Insert extends com.tsc9526.monalisa.core.query.dao.Insert<TestTable1>{
-		Insert(TestTable1 model){
+	public static class Insert extends com.tsc9526.monalisa.core.query.dao.Insert<TestTable2>{
+		Insert(TestTable2 model){
 			super(model);
 		}	 
 	}	
 	
-	public static class Delete extends com.tsc9526.monalisa.core.query.dao.Delete<TestTable1>{
-		Delete(TestTable1 model){
+	public static class Delete extends com.tsc9526.monalisa.core.query.dao.Delete<TestTable2>{
+		Delete(TestTable2 model){
 			super(model);
 		}
 		 
@@ -457,14 +457,14 @@ public class TestTable1 extends com.tsc9526.monalisa.core.query.model.Model<Test
 		
 	}
 	
-	public static class Update extends com.tsc9526.monalisa.core.query.dao.Update<TestTable1>{
-		Update(TestTable1 model){
+	public static class Update extends com.tsc9526.monalisa.core.query.dao.Update<TestTable2>{
+		Update(TestTable2 model){
 			super(model);
 		}		 			 			 		
 	}
 	
-	public static class Select extends com.tsc9526.monalisa.core.query.dao.Select<TestTable1,Select>{		
-		Select(TestTable1 x){
+	public static class Select extends com.tsc9526.monalisa.core.query.dao.Select<TestTable2,Select>{		
+		Select(TestTable2 x){
 			super(x);
 		}					 
 		
@@ -473,7 +473,7 @@ public class TestTable1 extends com.tsc9526.monalisa.core.query.model.Model<Test
 		*
 		* @return the model associated with the primary keys,  null if not found.
 		*/
-		public TestTable1 selectByPrimaryKey(Integer id){
+		public TestTable2 selectByPrimaryKey(Integer id){
 			if(id ==null ) return null;			
 						
 			this.model.id = id;
@@ -490,11 +490,11 @@ public class TestTable1 extends com.tsc9526.monalisa.core.query.model.Model<Test
 		/**
 		* List result to Map, The map key is primary-key: id 
 		*/
-		public Map<Integer,TestTable1> selectToMap(String whereStatement,Object ... args){
-			List<TestTable1> list=super.select(whereStatement,args);
+		public Map<Integer,TestTable2> selectToMap(String whereStatement,Object ... args){
+			List<TestTable2> list=super.select(whereStatement,args);
 			
-			Map<Integer,TestTable1> m=new LinkedHashMap<Integer,TestTable1>();
-			for(TestTable1 x:list){
+			Map<Integer,TestTable2> m=new LinkedHashMap<Integer,TestTable2>();
+			for(TestTable2 x:list){
 				m.put(x.getId(),x);
 			}
 			return m;
@@ -503,11 +503,11 @@ public class TestTable1 extends com.tsc9526.monalisa.core.query.model.Model<Test
 		/**
 		* List result to Map, The map key is primary-key: id 
 		*/
-		public Map<Integer,TestTable1> selectByExampleToMap(Example example){
-			List<TestTable1> list=super.selectByExample(example);
+		public Map<Integer,TestTable2> selectByExampleToMap(Example example){
+			List<TestTable2> list=super.selectByExample(example);
 			
-			Map<Integer,TestTable1> m=new LinkedHashMap<Integer,TestTable1>();
-			for(TestTable1 x:list){
+			Map<Integer,TestTable2> m=new LinkedHashMap<Integer,TestTable2>();
+			for(TestTable2 x:list){
 				m.put(x.getId(),x);
 			}
 			return m;
@@ -515,13 +515,13 @@ public class TestTable1 extends com.tsc9526.monalisa.core.query.model.Model<Test
 	}
 	 
 		
-	public static class Example extends com.tsc9526.monalisa.core.query.criteria.Example<Criteria,TestTable1>{
+	public static class Example extends com.tsc9526.monalisa.core.query.criteria.Example<Criteria,TestTable2>{
 		public Example(){}
 		 
 		protected Criteria createInternal(){
 			Criteria x= new Criteria(this);
 			
-			Class<?> clazz=ClassHelper.findClassWithAnnotation(TestTable1.class,DB.class);			  			
+			Class<?> clazz=ClassHelper.findClassWithAnnotation(TestTable2.class,DB.class);			  			
 			com.tsc9526.monalisa.core.query.criteria.QEH.getQuery(x).use(dsm.getDBConfig(clazz));
 			
 			return x;
@@ -530,11 +530,11 @@ public class TestTable1 extends com.tsc9526.monalisa.core.query.model.Model<Test
 		/**
 		* List result to Map, The map key is primary-key: id 
 		*/
-		public Map<Integer,TestTable1> selectToMap(){			
-			List<TestTable1> list=SELECT().selectByExample(this);
+		public Map<Integer,TestTable2> selectToMap(){			
+			List<TestTable2> list=SELECT().selectByExample(this);
 			
-			Map<Integer,TestTable1> m=new LinkedHashMap<Integer,TestTable1>();
-			for(TestTable1 x:list){
+			Map<Integer,TestTable2> m=new LinkedHashMap<Integer,TestTable2>();
+			for(TestTable2 x:list){
 				m.put(x.getId(),x);
 			}
 			return m;
@@ -566,7 +566,7 @@ public class TestTable1 extends com.tsc9526.monalisa.core.query.model.Model<Test
 		 * use update(model) instead
 		 */
 		@Deprecated
-		public Update.UpdateForExample forUpdate(TestTable1 m){			 
+		public Update.UpdateForExample forUpdate(TestTable2 m){			 
 			Update update=new Update(m);
 			return update.updateForExample(this.example);
 		}
@@ -585,13 +585,13 @@ public class TestTable1 extends com.tsc9526.monalisa.core.query.model.Model<Test
 		 * Create Select for example
 		 */
 		public Select.SelectForExample SELECT(){
-			return TestTable1.SELECT().selectForExample(this.example);
+			return TestTable2.SELECT().selectForExample(this.example);
 		}
 		
 		/**
 		* Update records with this example
 		*/
-		public int update(TestTable1 m){			 
+		public int update(TestTable2 m){			 
 			return UPDATE(m).updateByExample(this.example);
 		}
 				
@@ -605,7 +605,7 @@ public class TestTable1 extends com.tsc9526.monalisa.core.query.model.Model<Test
 		
 		/**
 		* @Column 
-		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_1&nbsp;<B>name:</B> id [<font color=red>KEY</font>|<font color=red>AUTO</font>|<font color=red>NOTNULL</font>] <br>   
+		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_2&nbsp;<B>name:</B> id [<font color=red>KEY</font>|<font color=red>AUTO</font>|<font color=red>NOTNULL</font>] <br>   
 		* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 10					
 		* <li><B>remarks:</B> 唯一主键			 
 		*/
@@ -614,7 +614,7 @@ public class TestTable1 extends com.tsc9526.monalisa.core.query.model.Model<Test
 		
 		/**
 		* @Column 
-		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_1&nbsp;<B>name:</B> name [<font color=red>NOTNULL</font>] <br>   
+		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_2&nbsp;<B>name:</B> name [<font color=red>NOTNULL</font>] <br>   
 		* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 128		 	&nbsp;<B>value:</B> N0001 <br> 			
 		* <li><B>remarks:</B> 名称			 
 		*/
@@ -623,7 +623,7 @@ public class TestTable1 extends com.tsc9526.monalisa.core.query.model.Model<Test
 		
 		/**
 		* @Column 
-		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_1&nbsp;<B>name:</B> title <br>   
+		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_2&nbsp;<B>name:</B> title <br>   
 		* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 128					
 		* <li><B>remarks:</B> 标题			 
 		*/
@@ -632,7 +632,7 @@ public class TestTable1 extends com.tsc9526.monalisa.core.query.model.Model<Test
 		
 		/**
 		* @Column 
-		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_1&nbsp;<B>name:</B> enum_int_a [<font color=red>NOTNULL</font>] <br>   
+		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_2&nbsp;<B>name:</B> enum_int_a [<font color=red>NOTNULL</font>] <br>   
 		* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 10		 	&nbsp;<B>value:</B> 0 <br> 			
 		* <li><B>remarks:</B> 枚举字段A  #enum{{V0,V1}}			 
 		*/
@@ -641,7 +641,7 @@ public class TestTable1 extends com.tsc9526.monalisa.core.query.model.Model<Test
 		
 		/**
 		* @Column 
-		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_1&nbsp;<B>name:</B> enum_string_a [<font color=red>NOTNULL</font>] <br>   
+		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_2&nbsp;<B>name:</B> enum_string_a [<font color=red>NOTNULL</font>] <br>   
 		* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 64		 	&nbsp;<B>value:</B> TRUE <br> 			
 		* <li><B>remarks:</B> #enum{{ TRUE, FALSE}}			 
 		*/
@@ -650,7 +650,7 @@ public class TestTable1 extends com.tsc9526.monalisa.core.query.model.Model<Test
 		
 		/**
 		* @Column 
-		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_1&nbsp;<B>name:</B> ts_a [<font color=red>NOTNULL</font>] <br>   
+		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_2&nbsp;<B>name:</B> ts_a [<font color=red>NOTNULL</font>] <br>   
 		* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 19					
 		* <li><B>remarks:</B> 			 
 		*/
@@ -659,7 +659,7 @@ public class TestTable1 extends com.tsc9526.monalisa.core.query.model.Model<Test
 		
 		/**
 		* @Column 
-		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_1&nbsp;<B>name:</B> create_time [<font color=red>NOTNULL</font>] <br>   
+		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_2&nbsp;<B>name:</B> create_time [<font color=red>NOTNULL</font>] <br>   
 		* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 19					
 		* <li><B>remarks:</B> 			 
 		*/
@@ -668,7 +668,7 @@ public class TestTable1 extends com.tsc9526.monalisa.core.query.model.Model<Test
 		
 		/**
 		* @Column 
-		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_1&nbsp;<B>name:</B> create_by <br>   
+		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_2&nbsp;<B>name:</B> create_by <br>   
 		* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 64					
 		* <li><B>remarks:</B> 			 
 		*/
@@ -677,7 +677,7 @@ public class TestTable1 extends com.tsc9526.monalisa.core.query.model.Model<Test
 		
 		/**
 		* @Column 
-		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_1&nbsp;<B>name:</B> update_time <br>   
+		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_2&nbsp;<B>name:</B> update_time <br>   
 		* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 19					
 		* <li><B>remarks:</B> 			 
 		*/
@@ -686,7 +686,7 @@ public class TestTable1 extends com.tsc9526.monalisa.core.query.model.Model<Test
 		
 		/**
 		* @Column 
-		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_1&nbsp;<B>name:</B> update_by <br>   
+		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_2&nbsp;<B>name:</B> update_by <br>   
 		* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 64					
 		* <li><B>remarks:</B> 			 
 		*/
@@ -699,11 +699,11 @@ public class TestTable1 extends com.tsc9526.monalisa.core.query.model.Model<Test
 public static enum EnumIntA{V0,V1}
 public static enum EnumStringA{ TRUE, FALSE}	 
 	public static class M{
-		public final static String TABLE ="test_table_1" ;
+		public final static String TABLE ="test_table_2" ;
 		
 		/**
 		* @Column 
-		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_1&nbsp;<B>name:</B> id [<font color=red>KEY</font>|<font color=red>AUTO</font>|<font color=red>NOTNULL</font>] <br>   
+		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_2&nbsp;<B>name:</B> id [<font color=red>KEY</font>|<font color=red>AUTO</font>|<font color=red>NOTNULL</font>] <br>   
 		* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 10					
 		* <li><B>remarks:</B> 唯一主键			 
 		*/
@@ -720,7 +720,7 @@ public static enum EnumStringA{ TRUE, FALSE}
 		
 		/**
 		* @Column 
-		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_1&nbsp;<B>name:</B> name [<font color=red>NOTNULL</font>] <br>   
+		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_2&nbsp;<B>name:</B> name [<font color=red>NOTNULL</font>] <br>   
 		* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 128		 	&nbsp;<B>value:</B> N0001 <br> 			
 		* <li><B>remarks:</B> 名称			 
 		*/
@@ -737,7 +737,7 @@ public static enum EnumStringA{ TRUE, FALSE}
 		
 		/**
 		* @Column 
-		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_1&nbsp;<B>name:</B> title <br>   
+		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_2&nbsp;<B>name:</B> title <br>   
 		* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 128					
 		* <li><B>remarks:</B> 标题			 
 		*/
@@ -754,7 +754,7 @@ public static enum EnumStringA{ TRUE, FALSE}
 		
 		/**
 		* @Column 
-		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_1&nbsp;<B>name:</B> enum_int_a [<font color=red>NOTNULL</font>] <br>   
+		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_2&nbsp;<B>name:</B> enum_int_a [<font color=red>NOTNULL</font>] <br>   
 		* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 10		 	&nbsp;<B>value:</B> 0 <br> 			
 		* <li><B>remarks:</B> 枚举字段A  #enum{{V0,V1}}			 
 		*/
@@ -771,7 +771,7 @@ public static enum EnumStringA{ TRUE, FALSE}
 		
 		/**
 		* @Column 
-		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_1&nbsp;<B>name:</B> enum_string_a [<font color=red>NOTNULL</font>] <br>   
+		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_2&nbsp;<B>name:</B> enum_string_a [<font color=red>NOTNULL</font>] <br>   
 		* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 64		 	&nbsp;<B>value:</B> TRUE <br> 			
 		* <li><B>remarks:</B> #enum{{ TRUE, FALSE}}			 
 		*/
@@ -788,7 +788,7 @@ public static enum EnumStringA{ TRUE, FALSE}
 		
 		/**
 		* @Column 
-		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_1&nbsp;<B>name:</B> ts_a [<font color=red>NOTNULL</font>] <br>   
+		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_2&nbsp;<B>name:</B> ts_a [<font color=red>NOTNULL</font>] <br>   
 		* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 19					
 		* <li><B>remarks:</B> 			 
 		*/
@@ -805,7 +805,7 @@ public static enum EnumStringA{ TRUE, FALSE}
 		
 		/**
 		* @Column 
-		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_1&nbsp;<B>name:</B> create_time [<font color=red>NOTNULL</font>] <br>   
+		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_2&nbsp;<B>name:</B> create_time [<font color=red>NOTNULL</font>] <br>   
 		* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 19					
 		* <li><B>remarks:</B> 			 
 		*/
@@ -822,7 +822,7 @@ public static enum EnumStringA{ TRUE, FALSE}
 		
 		/**
 		* @Column 
-		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_1&nbsp;<B>name:</B> create_by <br>   
+		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_2&nbsp;<B>name:</B> create_by <br>   
 		* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 64					
 		* <li><B>remarks:</B> 			 
 		*/
@@ -839,7 +839,7 @@ public static enum EnumStringA{ TRUE, FALSE}
 		
 		/**
 		* @Column 
-		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_1&nbsp;<B>name:</B> update_time <br>   
+		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_2&nbsp;<B>name:</B> update_time <br>   
 		* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 19					
 		* <li><B>remarks:</B> 			 
 		*/
@@ -856,7 +856,7 @@ public static enum EnumStringA{ TRUE, FALSE}
 		
 		/**
 		* @Column 
-		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_1&nbsp;<B>name:</B> update_by <br>   
+		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_2&nbsp;<B>name:</B> update_by <br>   
 		* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 64					
 		* <li><B>remarks:</B> 			 
 		*/

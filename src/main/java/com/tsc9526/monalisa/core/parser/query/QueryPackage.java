@@ -151,8 +151,19 @@ public class QueryPackage {
 					if(id==null){
 						throw new RuntimeException("Missing attribute \"id\"");
 					}
-					
 					qs.setId(id.getTextContent());
+										
+					Node resultClassNode=attrs.getNamedItem("resultClass");
+					if(resultClassNode!=null){
+						String rc=getNodeText(resultClassNode);
+						if(rc.trim().length()>0){
+							rc=rc.trim();
+							if(rc.indexOf(".")<0){
+								rc=this.getPackageName()+"."+rc;
+							}
+							qs.setResultClass(rc);
+						}
+					}
 					
 					Node db=attrs.getNamedItem("db");
 					if(db!=null){

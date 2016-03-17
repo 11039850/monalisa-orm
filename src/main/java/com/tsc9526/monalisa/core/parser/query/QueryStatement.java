@@ -24,7 +24,8 @@ public class QueryStatement {
 	private String comments;
 	private String id;
 	private String db;
-	 
+	private String resultClass;
+	
 	private List<JspElement> elements=new ArrayList<JspElement>();
 	 
 	private final static String REGX_VAR="\\$[a-zA-Z_]+[a-zA-Z_0-9]*";
@@ -37,10 +38,11 @@ public class QueryStatement {
 	
 	public void write(JavaWriter writer){
 		writer.append("public void ").append(id).append("(Query q,Args args){\r\n");
-		writeUseDb(writer);
+		writeUseDb(writer); 
 		writeElements(writer);
 		writer.append("}\r\n\r\n");
 	}
+	 
 	
 	public void add(JspElement e){
 		elements.add(e);
@@ -60,6 +62,7 @@ public class QueryStatement {
 				Matcher m=patternArg.matcher(code);
 				while(m.find()){
 					String var=m.group();
+					 
 					args.add(var);
 				}
 			}
@@ -184,6 +187,17 @@ public class QueryStatement {
 
 	public void setMethod(Method method) {
 		this.method = method;
+	}
+
+	public String getResultClass() {
+		return resultClass;
+	}
+
+	public void setResultClass(String resultClass) {
+		if(resultClass!=null && resultClass.endsWith(".class")){
+			resultClass=resultClass.substring(0,resultClass.length()-6);
+		}
+		this.resultClass = resultClass;
 	}
 	 
 }
