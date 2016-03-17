@@ -612,7 +612,13 @@ public class Query {
 					name =rsmd.getColumnName(i);
 				}
 				
-				map.put(name, rs.getObject(i));
+				int x=1;
+				String n=name; 
+				while(map.containsKey(n)){
+					n=name + (x++);
+				}
+				
+				map.put(n, rs.getObject(i));
 			}
 			
 			return map;
