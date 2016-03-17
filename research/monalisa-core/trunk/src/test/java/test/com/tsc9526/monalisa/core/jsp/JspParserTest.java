@@ -7,7 +7,7 @@ import org.testng.annotations.Test;
 
 import test.com.tsc9526.monalisa.core.sql.Q0001;
 
-import com.tsc9526.monalisa.core.parser.executor.SQLResourceManager;
+import com.tsc9526.monalisa.core.generator.DBGeneratorMain;
 import com.tsc9526.monalisa.core.parser.jsp.JspPage;
 import com.tsc9526.monalisa.core.query.DataMap;
 import com.tsc9526.monalisa.core.query.Query;
@@ -25,7 +25,7 @@ public class JspParserTest {
 			System.out.println(x.toString());
 		}
 		
-		SQLResourceManager.getInstance().writeQueryClass("src/test/java");
+		DBGeneratorMain.generate(null,"src/test/java");
 	}
 	
 	public void testParseJspTest1()throws Exception{
@@ -39,7 +39,7 @@ public class JspParserTest {
 				}
 				fileTime=sqlFile.lastModified();
 				
-				Query query=Query.create("example.QA.testFindAll_A","name");
+				Query query=Query.create("test.com.tsc9526.monalisa.core.sql.Q0001.testFindAll_A","name","","");
 				System.out.println(query.getExecutableSQL());
 				DataTable<DataMap> rs=query.getList();
 				System.out.println("Total results: "+rs.size());

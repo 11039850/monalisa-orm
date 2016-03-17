@@ -7,7 +7,7 @@
 <!-- hello -->
 <query namespace="test.com.tsc9526.monalisa.core.sql.Q0001" db="<%=MysqlDB.class%>"> 
 	<!-- 测试查询A --> 
-	<q id="testFindAll_A"> 
+	<q id="testFindAll_A" resultClass="DS0001"> 
 		<%{	
 			/*名称*/
 			String name     =args.pop();
@@ -20,15 +20,18 @@
 			
 			name="N%";
 		%>
-		SELECT * FROM test_table_1 a where name like $name
+		SELECT * FROM test_table_1 a, test_table_2 b where a.id=b.id and a.name like $name 
 		<%}%>
 	</q>
 	
 	<!-- 测试查询<B> -->
 	<q id="testFindAll_B" >
 	<%{
+		/*变量名称*/
 		String name=args.pop("");
+		/*变量标题*/
 		String title=args.pop("");
+		/*变量日期*/
 		String create_by=args.pop("");
 		
 		q.add("SELECT * FROM test_table_1");

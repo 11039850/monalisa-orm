@@ -330,5 +330,14 @@ public class MetaColumn extends Name{
 	public void setCode(Map<String, String> code) {
 		this.code = code;
 	}
+	
+	public boolean isEnum(){
+		String enumClass=getCode("enum");
+		if(enumClass!=null){
+			return true;
+		}
+		
+		return false;
+	}
  
 }

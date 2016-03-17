@@ -2,14 +2,17 @@ package com.tsc9526.monalisa.core.generator;
 
 import java.io.File;
 
-import com.tsc9526.monalisa.core.logger.Logger;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import com.tsc9526.monalisa.core.parser.executor.SQLGenerator;
 
 /**
  * 
  * @author zzg.zhou(11039850@qq.com)
  */
 public class DBGeneratorMain {
-	static Logger logger=Logger.getLogger(DBGeneratorMain.class);
+	static Log logger=LogFactory.getLog(DBGeneratorMain.class.getName());
 	
 	public static void main(String[] args) throws Exception{
 		if(args.length<2){			
@@ -39,8 +42,15 @@ public class DBGeneratorMain {
 	}
 
 	public static void generate(Class<?> clazzWithDBAnnotation,String outputJavaDir,String outputResourceDir){
-		DBGeneratorLocal g=new DBGeneratorLocal(clazzWithDBAnnotation,outputJavaDir,outputResourceDir);
-		g.generateFiles();
+		if(clazzWithDBAnnotation!=null){
+			DBGeneratorLocal dbGen=new DBGeneratorLocal(clazzWithDBAnnotation,outputJavaDir,outputResourceDir);
+			dbGen.generateFiles();
+		}else{
+			logger.info("Ignore generate class with annotation, because the parameter: clazzWithDBAnnotation is null!");
+		}
+		
+		SQLGenerator sqlGen=new SQLGenerator(outputJavaDir, outputResourceDir);
+		sqlGen.generateFiles();
 	}
   
 }
