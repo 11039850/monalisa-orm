@@ -16,6 +16,7 @@ import javax.tools.ToolProvider;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import com.tsc9526.monalisa.core.generator.DBGenerator;
 import com.tsc9526.monalisa.core.parser.jsp.Jsp;
 import com.tsc9526.monalisa.core.parser.query.QueryPackage;
 import com.tsc9526.monalisa.core.parser.query.QueryStatement;
@@ -28,7 +29,7 @@ import com.tsc9526.monalisa.core.tools.JavaWriter;
 public class SQLClass implements Closeable{
 	static Log logger=LogFactory.getLog(SQLClass.class.getName());
 	
-	public static String WORK_DIR  ="target/monalisa/sqlfile";
+	public static String WORK_DIR  =DBGenerator.PROJECT_TMP_PATH+"/sqlfile";
 	public static String PACKAGE_PREFIX="_sql";
 	
 	private URLClassLoader loader;
