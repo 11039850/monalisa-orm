@@ -37,8 +37,6 @@ public class DBAnnotationProcessor extends AbstractProcessor {
 			MessagerLogger.setMessagerLogger(processingEnv.getMessager());
 		} 		
 	}
-	
-	
 	 
 	public boolean process(Set<? extends TypeElement> annotations,RoundEnvironment roundEnv) {
 		Log logger=LogFactory.getLog(DBAnnotationProcessor.class);
@@ -48,10 +46,7 @@ public class DBAnnotationProcessor extends AbstractProcessor {
 			for (Element element : els) {				
 				if (element.getKind() == ElementKind.INTERFACE) { 				 										
 					try{						 
-						DBGeneratorProcessing dbai=new DBGeneratorProcessing(processingEnv,(TypeElement)element);
-						
-						dbai.generateFiles();
-						
+						doGenerateFiles((TypeElement)element);
 					}catch(Throwable e){
 						logger.error(""+e,e);
 						
@@ -69,6 +64,19 @@ public class DBAnnotationProcessor extends AbstractProcessor {
 			}
 		} 
 		return true;
+	}
+	
+	private void doGenerateFiles(TypeElement element)throws Exception{
+		if(Helper.inEclipseIDE()){
+			ProcessorInEclipse pie=new ProcessorInEclipse(processingEnv,element);
+			if(!pie.generateFiles()){
+				DBGeneratorProcessing dbai=new DBGeneratorProcessing(processingEnv,element);
+				dbai.generateFiles();
+			}
+		}else{
+			DBGeneratorProcessing dbai=new DBGeneratorProcessing(processingEnv,element);
+			dbai.generateFiles();
+		}
 	}
   
 }

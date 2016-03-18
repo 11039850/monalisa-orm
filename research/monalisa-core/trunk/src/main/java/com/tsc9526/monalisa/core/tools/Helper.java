@@ -3,6 +3,8 @@ package com.tsc9526.monalisa.core.tools;
 import java.io.File;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -50,7 +52,7 @@ public class Helper {
 	
 	public static boolean inEclipseIDE() {
 		try {
-			Class.forName("org.eclipse.jdt.internal.apt.pluggable.core.dispatch.IdeBuildProcessingEnvImpl");
+			Class.forName("org.eclipse.jdt.internal.apt.pluggable.core.dispatch.IdeProcessingEnvImpl");
 			return true;
 		} catch (ClassNotFoundException e) {
 			return false;
@@ -273,7 +275,6 @@ public class Helper {
 	}
 
 	
-	
 	public static Class<?> forName(String className) throws ClassNotFoundException {
 		try {
 			return Class.forName(className, true, Thread.currentThread().getContextClassLoader());
@@ -282,5 +283,21 @@ public class Helper {
 		}
 		 
 		return Class.forName(className);
+	}
+	
+	public static URL[] toURLs(String[] classPath){
+		List<URL> urls = new ArrayList<URL>();
+		try{ 
+			for (String x : classPath) {
+				File file = new File(x);
+				if(file.exists()){
+					urls.add(file.toURI().toURL());
+				}
+			}
+			
+			return urls.toArray(new URL[0]);
+		}catch(MalformedURLException e){
+			throw new RuntimeException(e);
+		}
 	}
 }

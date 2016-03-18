@@ -114,14 +114,21 @@ public class DBGeneratorProcessing extends DBGenerator{
 			DeclaredType classTypeMirror = (DeclaredType) x.getTypeMirror();
 			TypeElement classTypeElement = (TypeElement) classTypeMirror.asElement();
 			
-			String name=classTypeElement.getQualifiedName().toString();
+			String className=classTypeElement.getQualifiedName().toString();
 			try{
-				clazz=(Class<? extends ConfigClass>)Class.forName(name);
-			}catch(Exception e){
-				throw new RuntimeException(e);
+				clazz=(Class<? extends ConfigClass>)Class.forName(className);
+			}catch(ClassNotFoundException e){
+				logger.info("Class not found try load class: "+className+" from project path.");
+				
+				return loadClassFromProject(className);
+				
 			}
 		}
 		
 		return clazz;
+	}
+	
+	private static Class<? extends ConfigClass> loadClassFromProject(String className){
+		throw new RuntimeException("Class not found: "+className);
 	}
 }
