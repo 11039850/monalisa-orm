@@ -32,36 +32,22 @@ public class SQLClass implements Closeable{
 	public static String WORK_DIR  =DBGenerator.PROJECT_TMP_PATH+"/sqlfile";
 	public static String PACKAGE_PREFIX="_sql";
 	
-	private URLClassLoader loader;
 	private String packageName;
 	private String className;
 	
-	private Object runObject;
+	private transient QueryLoader queryLoader;
 	 
-	private Map<String, QueryStatement> hQueryStatements=new LinkedHashMap<String, QueryStatement>();
-	
 	private File sqlFile;
 	private long lastModified;
 	
 	public Query createQuery(String id,Args args){
 		checkAndCompile();
 		
-		Method m=hQueryStatements.get(id).getMethod();
-		if(m==null){
-			throw new RuntimeException("Query id: "+id+" not found: "+hQueryStatements.keySet());
-		}
-		
-		try{
-			Query query=new Query();
-			m.invoke(runObject, query,args);
-			return query;
-		}catch(Exception e){
-			throw new RuntimeException(e);
-		}
+		return queryLoader.createQuery(id, args);
 	}
 	
 	public Collection<QueryStatement> getStatements(){
-		return hQueryStatements.values();
+		return queryLoader.hQueryStatements.values();
 	}
 
 	public SQLClass(File sqlFile){
@@ -109,14 +95,13 @@ public class SQLClass implements Closeable{
 		
 		if(r==0){
 			logger.info("Load OK: "+dirSrc+"/"+className+".java");
-			 
-			close();
-			
+			  
+			Map<String, QueryStatement> hQueryStatements=new LinkedHashMap<String, QueryStatement>();
 			for(QueryStatement qs:pkg.getStatements()){	
 				hQueryStatements.put(qs.getId(), qs);
 			}
 			
-			loader=new URLClassLoader(new URL[]{classes.toURI().toURL()}, Thread.currentThread().getContextClassLoader());
+			URLClassLoader loader=new URLClassLoader(new URL[]{classes.toURI().toURL()}, Thread.currentThread().getContextClassLoader());
 			Class<?> qClazz=loader.loadClass(PACKAGE_PREFIX+"."+packageName+"."+className);
 			  
 			for(Method m:qClazz.getMethods()){
@@ -126,8 +111,14 @@ public class SQLClass implements Closeable{
 				}
 			}
 			
-			runObject=qClazz.newInstance();
+			Object runObject=qClazz.newInstance();
 		
+			if(this.queryLoader!=null){
+				CloseQuietly.delayClose(this.queryLoader, 15);
+			}
+			
+			this.queryLoader=new QueryLoader(runObject, loader, hQueryStatements);
+			
 			logger.info("Loaded namespace: "+packageName+"."+className+", id: "+hQueryStatements.keySet());
 		}else{
 			throw new RuntimeException("Compile fail: "+dirSrc+"/"+className+".java\r\n"+new String(debug.toByteArray()));
@@ -135,13 +126,8 @@ public class SQLClass implements Closeable{
 	}
 	
 	public void close(){
-		if(loader!=null){
-			CloseQuietly.close(loader);
-			loader=null;
-		}
-		
-		runObject=null;
-		hQueryStatements.clear();
+		CloseQuietly.close(this.queryLoader);
+		this.queryLoader=null;
 	}
 
 	public String getPackageName() {
@@ -162,5 +148,40 @@ public class SQLClass implements Closeable{
 	
 	public File getSqlFile(){
 		return sqlFile;
+	}
+	
+	public class QueryLoader implements Closeable{
+		private Object runObject;
+		private URLClassLoader loader;
+		private Map<String, QueryStatement> hQueryStatements;
+		
+		QueryLoader(Object runObject,URLClassLoader loader,Map<String, QueryStatement> hQueryStatements){
+			this.runObject=runObject;
+			this.loader=loader;
+			this.hQueryStatements=hQueryStatements;
+		}
+		
+		Query createQuery(String id,Args args){
+			Method m=hQueryStatements.get(id).getMethod();
+			if(m==null){
+				throw new RuntimeException("Query id: "+id+" not found: "+queryLoader.hQueryStatements.keySet());
+			}
+			
+			try{
+				Query query=new Query();
+				m.invoke(queryLoader.runObject, query,args);
+				return query;
+			}catch(Exception e){
+				throw new RuntimeException(e);
+			}
+		}
+		
+		public void close(){
+			hQueryStatements.clear();
+			CloseQuietly.close(loader);
+		
+			loader=null;
+			runObject=null;
+		}
 	}
 }

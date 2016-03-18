@@ -22,7 +22,7 @@ public class SQLResourceManager {
 	public static synchronized SQLResourceManager getInstance(){
 		if(instance==null){
 			instance=new SQLResourceManager();
-			instance.loadSqlFiles(defaultSQLFiles , ".jsp", true);
+			instance.loadSqlFiles(defaultSQLFiles ,".jsp|.mql", true);
 		}
 		return instance;
 	}
@@ -53,16 +53,23 @@ public class SQLResourceManager {
 	}
 	
 	
-	public synchronized void loadSqlFiles(File sqlFile,String ext,boolean recursive){
-		if(ext!=null && ext.startsWith(".")){
-			ext=ext.substring(1);
+	public synchronized void loadSqlFiles(File sqlFile,String exts,boolean recursive){
+		String name=sqlFile.getName();
+		
+		boolean matched=false;
+		for(String s:exts.split("\\|")){
+			s=s.trim();
+			if(name.endsWith(s)){
+				matched=true;
+				break;
+			}
 		}
 		
-		if(sqlFile.isFile() && (ext==null || sqlFile.getName().endsWith("."+ext)) ){
+		if(sqlFile.isFile() && matched ){
 			addSqlFile(sqlFile);
 		}else if(sqlFile.isDirectory() && recursive){
 			for(File f:sqlFile.listFiles()){
-				loadSqlFiles(f,ext,recursive);
+				loadSqlFiles(f,exts,recursive);
 			}
 		}
 	}

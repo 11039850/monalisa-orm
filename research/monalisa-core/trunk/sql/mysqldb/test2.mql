@@ -5,7 +5,7 @@
 <%@ page language="java" pageEncoding="utf-8"%>
 <%Query q=new Query(); Args args=new Args();%> 
 <!-- hello -->
-<query namespace="test.com.tsc9526.monalisa.core.sql.Q0001" db="<%=MysqlDB.class%>"> 
+<query namespace="test.com.tsc9526.monalisa.core.sql.Q0002" db="<%=MysqlDB.class%>"> 
 	<!-- 测试查询A --> 
 	<q id="testFindAll_A" resultClass="DS0001"> 
 		<%{	
@@ -18,7 +18,7 @@
 			Date endTime =new Date();
 			title="x";
 			
-			name="N1%";
+			name="N%";
 		%>
 		SELECT * FROM test_table_1 a left join test_table_2 b on a.id=b.id where a.name like $name 
 		<%}%>
