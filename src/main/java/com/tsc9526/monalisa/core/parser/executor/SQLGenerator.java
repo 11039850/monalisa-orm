@@ -16,12 +16,12 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.tsc9526.monalisa.core.annotation.Column;
-import com.tsc9526.monalisa.core.generator.DBExchange;
 import com.tsc9526.monalisa.core.generator.DBMetadata;
 import com.tsc9526.monalisa.core.meta.MetaColumn;
 import com.tsc9526.monalisa.core.meta.MetaTable;
 import com.tsc9526.monalisa.core.parser.query.QueryStatement;
 import com.tsc9526.monalisa.core.query.Args;
+import com.tsc9526.monalisa.core.query.QExchange;
 import com.tsc9526.monalisa.core.query.Query;
 import com.tsc9526.monalisa.core.resources.Freemarker;
 import com.tsc9526.monalisa.core.tools.FileHelper;
@@ -133,25 +133,19 @@ public class SQLGenerator {
 						args.push(null);
 					}
 					
-					Query q=sqlResourceManager.createQuery(queryId, args);
-					
-					DBExchange exchange=new DBExchange();
-					DBExchange.setExchange(exchange);
+					Query q=sqlResourceManager.createQuery(queryId, args); 
+					QExchange.setExchange(new QExchange());
 					q.getResult();
-					
-					exchange.getSql();
-					
-					exchange=DBExchange.getExchange();
+					 
+					QExchange exchange=QExchange.getExchange(true);
 					createResultJavaCode(srcDir,exchange,resultClass);
-					
-					DBExchange.setExchange(null);
 				}
 			}
 		}
 	}
 	
 	
-	private void createResultJavaCode(String srcDir,DBExchange exchange,String resultClass)throws IOException{	
+	private void createResultJavaCode(String srcDir,QExchange exchange,String resultClass)throws IOException{	
 		int x=resultClass.lastIndexOf(".");
 		String packageName=resultClass.substring(0,x);
 		String javaName=resultClass.substring(x+1);

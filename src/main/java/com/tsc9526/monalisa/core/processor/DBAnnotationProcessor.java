@@ -53,18 +53,17 @@ public class DBAnnotationProcessor extends AbstractProcessor {
 						dbai.generateFiles();
 						
 					}catch(Throwable e){
-						if(Helper.inEclipseProcessing()){
-							processingEnv.getMessager().printMessage(Kind.ERROR,e.getClass().getName()+":\r\n"+e.getMessage(), element);
-						}else{
-							logger.error(""+e,e);
-						}
+						logger.error(""+e,e);
 						
+						if(Helper.inEclipseProcessing()){
+							processingEnv.getMessager().printMessage(Kind.ERROR,e.getClass().getName()+":\r\n"+Helper.toString(e), element);
+						}
 					}
 				}else{
+					logger.warn("@DB should used for interface!");
+					
 					if(Helper.inEclipseProcessing()){
 						processingEnv.getMessager().printMessage(Kind.WARNING,"@DB should used for interface!", element);
-					}else{
-						logger.warn("@DB should used for interface!");
 					}					
 				}
 			}

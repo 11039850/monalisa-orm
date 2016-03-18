@@ -4,7 +4,8 @@ import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target; 
-import java.util.Properties;
+
+import com.tsc9526.monalisa.core.datasource.ConfigClass;
 
 /**
  * 
@@ -166,16 +167,5 @@ public @interface DB{
 	 * 配置属性由该class提供， 配置项定义和configFile相同, 优先级高于 configFile()
 	 * @return
 	 */
-	Class<? extends ConfigClass> configClass() default ConfigClass.class;
-	
-	public abstract static class ConfigClass {
-		/**
-		 * 配置项定义和configFile相同
-		 */
-		public abstract Properties getConfigProperties();
-		
-		public boolean isCfgChanged(){
-			return false;
-		}
-	} 
+	Class<? extends ConfigClass> configClass() default ConfigClass.class; 
 } 

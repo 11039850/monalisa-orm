@@ -1,6 +1,8 @@
 package com.tsc9526.monalisa.core.tools;
 
 import java.io.File;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -38,6 +40,14 @@ public class Helper {
 		return cause;
 	}
 
+	public static String toString(Throwable t){
+		StringWriter w=new StringWriter();
+				
+		t.printStackTrace(new PrintWriter(w));
+		
+		return w.toString();
+	}
+	
 	public static boolean inEclipseIDE() {
 		try {
 			Class.forName("org.eclipse.jdt.internal.apt.pluggable.core.dispatch.IdeBuildProcessingEnvImpl");

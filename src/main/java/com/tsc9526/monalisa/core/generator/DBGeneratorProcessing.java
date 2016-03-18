@@ -6,6 +6,7 @@ import java.io.Writer;
 
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.TypeElement;
+import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.MirroredTypeException;
 import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.Types;
@@ -14,6 +15,7 @@ import javax.tools.JavaFileObject;
 import javax.tools.StandardLocation;
 
 import com.tsc9526.monalisa.core.annotation.DB;
+import com.tsc9526.monalisa.core.datasource.ConfigClass;
 import com.tsc9526.monalisa.core.datasource.DataSourceManager;
 import com.tsc9526.monalisa.core.meta.MetaTable;
 import com.tsc9526.monalisa.core.meta.MetaTable.CreateTable;
@@ -100,5 +102,26 @@ public class DBGeneratorProcessing extends DBGenerator{
 		}
 		
 		return modelClass;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public static Class<? extends ConfigClass> getDBConfigClass(DB db){
+		Class<? extends ConfigClass> clazz=null;
+		try{
+			clazz=db.configClass();
+		}catch(MirroredTypeException mte){
+			MirroredTypeException x=(MirroredTypeException)mte;
+			DeclaredType classTypeMirror = (DeclaredType) x.getTypeMirror();
+			TypeElement classTypeElement = (TypeElement) classTypeMirror.asElement();
+			
+			String name=classTypeElement.getQualifiedName().toString();
+			try{
+				clazz=(Class<? extends ConfigClass>)Class.forName(name);
+			}catch(Exception e){
+				throw new RuntimeException(e);
+			}
+		}
+		
+		return clazz;
 	}
 }
