@@ -2,6 +2,8 @@ package com.tsc9526.monalisa.core.tools;
 
 import java.io.Closeable;
 import java.lang.reflect.Method;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * 
@@ -9,6 +11,17 @@ import java.lang.reflect.Method;
  */
 public class CloseQuietly {
 
+	public static void delayClose(final Object x, int delay){
+		final Timer timer=new Timer(true);
+		
+		timer.schedule(new TimerTask() {
+			public void run() {
+				close(x);
+				timer.cancel();
+			}
+		}, delay*1000);
+	}
+	
 	public static void close(Object x){
 		if(x instanceof Closeable){
 			close((Closeable)x);

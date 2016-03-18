@@ -8,8 +8,6 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import javax.sql.DataSource;
 
@@ -126,11 +124,7 @@ public class DBConfig implements Closeable{
 	protected synchronized void delayClose(final DataSource ds){
 		int delay=DbProp.PROP_DB_DATASOURCE_DELAY_CLOSE.getIntValue(this, 30);
 		
-		new Timer(true).schedule(new TimerTask() {
-			public void run() {
-				CloseQuietly.close(ds);
-			}
-		}, delay*1000);
+		CloseQuietly.delayClose(ds,delay);
 	}
 	 		
 	public synchronized DataSource getDataSource(){
