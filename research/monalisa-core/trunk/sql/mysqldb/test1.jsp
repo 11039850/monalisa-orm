@@ -20,7 +20,7 @@
 			
 			name="N%";
 		%>
-		SELECT * FROM test_table_1 a, test_table_2 b where a.id=b.id and a.name like $name 
+		SELECT * FROM test_table_1 a left join test_table_2 b on a.id=b.id where a.name like $name 
 		<%}%>
 	</q>
 	

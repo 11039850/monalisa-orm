@@ -61,6 +61,14 @@ public class DbProp {
 		return key;
 	}
 	
+	public String getFullKey(){
+		return DBConfig.PREFIX_DB+"."+DBConfig.CFG_DEFAULT_NAME+"."+key;
+	}
+	
+	public String getFullKey(String configName){
+		return DBConfig.PREFIX_DB+"."+configName+"."+key;
+	}
+	
 	public String getValue(DBConfig db){
 		return db.getCfg().getProperty(key, value);
 	}
