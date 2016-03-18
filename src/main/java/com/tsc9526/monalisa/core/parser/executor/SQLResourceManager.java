@@ -17,7 +17,7 @@ public class SQLResourceManager {
 	
 	private static SQLResourceManager instance;
 	
-	private static File defaultSQLFiles=new File("sql");
+	private static File defaultSQLFiles=new File(System.getProperty("monalisa.resource.sql.path","sql"));
 	
 	public static synchronized SQLResourceManager getInstance(){
 		if(instance==null){

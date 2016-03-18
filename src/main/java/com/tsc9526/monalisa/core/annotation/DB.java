@@ -4,6 +4,7 @@ import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target; 
+import java.util.Properties;
 
 /**
  * 
@@ -51,10 +52,10 @@ import java.lang.annotation.Target;
 public @interface DB{
 	/**
 	 * @return JDBC-URL链接. 例如mysql: <br>
-	 * <code>jdbc:mysql://127.0.0.1:3306/world </code><br>
+	 * <code>jdbc:mysql://127.0.0.1:3306/world</code><br>
 	 * <br>
 	 * 多个数据库例子: <br>
-	 * <code>jdbc:mysql://[127.0.0.1:3306,127.0.0.1:3307]/world </code><br>
+	 * <code>jdbc:mysql://[127.0.0.1:3306,127.0.0.1:3307]/world</code><br>
 	 * <br>
 	 * Host格式: <code>[name1@host1:port1,name2@host2:port2 ...]</code>
 	 */
@@ -151,7 +152,7 @@ public @interface DB{
 	String configName()       default "";
 	
 	/**
-	 * 属性存在于该配置文件中, 配置项前缀为: DB.  <br>
+	 * 属性存在于该配置文件中, 配置项前缀为: DB. 优先级低于 configClass() <br>
 	 * 下列属性除外:<br>
 	 * <b>configFile,  configName, key</b> <br><br>
 	 * 例如: url属性的配置项为: DB.url  <br>
@@ -160,4 +161,21 @@ public @interface DB{
 	 * @return
 	 */
 	String configFile()       default "";
+	
+	/**
+	 * 配置属性由该class提供， 配置项定义和configFile相同, 优先级高于 configFile()
+	 * @return
+	 */
+	Class<? extends ConfigClass> configClass() default ConfigClass.class;
+	
+	public abstract static class ConfigClass {
+		/**
+		 * 配置项定义和configFile相同
+		 */
+		public abstract Properties getConfigProperties();
+		
+		public boolean isCfgChanged(){
+			return false;
+		}
+	} 
 } 

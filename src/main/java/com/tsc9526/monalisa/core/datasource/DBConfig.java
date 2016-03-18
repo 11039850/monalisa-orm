@@ -43,7 +43,10 @@ public class DBConfig implements Closeable{
 	 */
 	public static String DEFAULT_PATH=".";
 	
-	private String[] prefixs=new String[]{"DB.cfg"};
+	public final static String PREFIX_DB       ="DB";
+	public final static String CFG_DEFAULT_NAME="cfg";
+	
+	private String[] prefixs=new String[]{PREFIX_DB+"."+CFG_DEFAULT_NAME};
 	
 	private CFG _cfg=new CFG();
 	 
@@ -74,7 +77,7 @@ public class DBConfig implements Closeable{
 		String dbKey=this._cfg.key+"#"+configName;		 
 		DBConfig r=dsm.getDBConfig(dbKey, null);
 		if(r==null){
-			String cfgDBUrl=getCfg().p.getProperty("DB."+configName+".url");
+			String cfgDBUrl=getCfg().p.getProperty(PREFIX_DB+"."+configName+".url");
 			if(cfgDBUrl!=null){
 				r=new DBConfig(dbKey, getCfg().db);
 				r._cfg.configName=configName;
@@ -363,15 +366,21 @@ public class DBConfig implements Closeable{
 		 
 		private List<MetaPartition> metaPartitions;
 		
+		private DB.ConfigClass configClass;
+		
 		synchronized void init(){
-			loadCfgFromFile();	
+			loadProperties();
 			
 			if(configName==null){
 				configName=db.configName();
 			}
 			
 			if(configName!=null && configName.trim().length()>0){
-				prefixs=new String[]{"DB."+configName.trim(), "DB.cfg"};
+				if(configName.equals(CFG_DEFAULT_NAME)){
+					throw new RuntimeException("Invalid property configName: cfg! \"cfg\" is the common config for all databases. ");
+				}
+				
+				prefixs=new String[]{PREFIX_DB+"."+configName.trim(), PREFIX_DB+"."+CFG_DEFAULT_NAME};
 			}		
 		
 			this.url             = getValue(p,DbProp.PROP_DB_URL.getKey(),               db.url(),            prefixs);
@@ -391,6 +400,19 @@ public class DBConfig implements Closeable{
 			processUrlHosts();						 
 		}
 		
+		private void loadProperties(){
+			Class<? extends DB.ConfigClass> clazz=db.configClass();
+			if(clazz!=null && clazz != DB.ConfigClass.class){
+				try{
+					configClass=clazz.newInstance();
+					this.p=configClass.getConfigProperties();
+				}catch(Exception e){
+					throw new RuntimeException("Load config exception, class: "+clazz.getName()+", "+e, e);
+				}
+			}else{
+				loadCfgFromFile();
+			}
+		}
 		
 		
 		protected void processUrlHosts() {
@@ -509,22 +531,25 @@ public class DBConfig implements Closeable{
 		}
 		
 		public boolean isCfgFileChanged(){
-			if(cfgFile!=null && cfgFile.lastModified>0){
-				if( cfgFile.lastModified < cfgFile.cfgFile.lastModified()){
+			if(configClass!=null){
+				return configClass.isCfgChanged();
+			}else{
+				if(cfgFile!=null && cfgFile.lastModified>0){
+					if( cfgFile.lastModified < cfgFile.cfgFile.lastModified()){
+						return true;
+					}
+				}else if(cfgFile==null && new File(configFile).exists()){
 					return true;
 				}
-			}else if(cfgFile==null && new File(configFile).exists()){
-				return true;
-			}
-			
-			if(cfgFileLocal!=null && cfgFileLocal.lastModified>0){
-				if( cfgFileLocal.lastModified < cfgFileLocal.cfgFile.lastModified()){
+				
+				if(cfgFileLocal!=null && cfgFileLocal.lastModified>0){
+					if( cfgFileLocal.lastModified < cfgFileLocal.cfgFile.lastModified()){
+						return true;
+					}
+				}else if(cfgFileLocal==null && new File(configFile+".local").exists()){
 					return true;
 				}
-			}else if(cfgFileLocal==null && new File(configFile+".local").exists()){
-				return true;
 			}
-			
 			
 			return false;
 		}
