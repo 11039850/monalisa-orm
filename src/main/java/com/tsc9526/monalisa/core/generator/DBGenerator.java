@@ -37,7 +37,6 @@ public abstract class DBGenerator {
 		generateResources(tables);
 	}
 	
-	
 	protected void verifyPartition(MetaTable table){
 		MetaPartition mp=table.getPartition();
 		if(mp!=null){			 
