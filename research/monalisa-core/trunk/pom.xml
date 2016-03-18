@@ -88,42 +88,7 @@
 		    <version>1.9.2</version>
 		</dependency>
       
-      	<dependency>  
-		    <groupId>org.eclipse</groupId>  
-		    <artifactId>core.resources</artifactId>  
-		    <version>3.9.1</version>  
-		    <scope>system</scope>  
-		    <systemPath>${project.basedir}/libs/org.eclipse.core.resources_3.9.1.v20140825-1431.jar</systemPath>  
-		</dependency>  
-		<dependency>  
-		    <groupId>org.eclipse</groupId>  
-		    <artifactId>jdt.apt.pluggable.core</artifactId>  
-		    <version>1.0.400</version>  
-		    <scope>system</scope>  
-		    <systemPath>${project.basedir}/libs/org.eclipse.jdt.apt.pluggable.core_1.0.400.v20131113-0353.jar</systemPath>  
-		</dependency>
-		<dependency>  
-		    <groupId>org.eclipse</groupId>  
-		    <artifactId>jdt.core</artifactId>  
-		    <version>3.10.2</version>  
-		    <scope>system</scope>  
-		    <systemPath>${project.basedir}/libs/org.eclipse.jdt.core_3.10.2.v20150120-1634.jar</systemPath>  
-		</dependency>
-		<dependency>   
-		    <groupId>org.eclipse</groupId>  
-		    <artifactId>jdt.launching</artifactId>  
-		    <version>3.7.102</version>  
-		    <scope>system</scope>  
-		    <systemPath>${project.basedir}/libs/org.eclipse.jdt.launching_3.7.102.v20141111-0953.jar</systemPath>  
-		</dependency>
-		<dependency>  
-		    <groupId>org.eclipse</groupId>  
-		    <artifactId>equinox.common</artifactId>  
-		    <version>3.6.200</version>  
-		    <scope>system</scope>  
-		    <systemPath>${project.basedir}/libs/org.eclipse.equinox.common_3.6.200.v20130402-1505.jar</systemPath>  
-		</dependency>
-		
+       
 	</dependencies>
 
 	<build>
@@ -150,6 +115,9 @@
 					<target>1.6</target>
 					<!-- Disable annotation processing for ourselves. -->
 					<compilerArgument>-proc:none</compilerArgument>
+					<compilerArguments>
+                   		<extdirs>lib</extdirs>
+                 	</compilerArguments>
 				</configuration>
 			</plugin>
 			<plugin>

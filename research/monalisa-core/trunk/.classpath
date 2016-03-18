@@ -39,5 +39,10 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="lib" path="libs/org.eclipse.core.resources_3.9.1.v20140825-1431.jar"/>
+	<classpathentry kind="lib" path="libs/org.eclipse.equinox.common_3.6.200.v20130402-1505.jar"/>
+	<classpathentry kind="lib" path="libs/org.eclipse.jdt.apt.pluggable.core_1.0.400.v20131113-0353.jar"/>
+	<classpathentry kind="lib" path="libs/org.eclipse.jdt.core_3.10.2.v20150120-1634.jar"/>
+	<classpathentry kind="lib" path="libs/org.eclipse.jdt.launching_3.7.102.v20141111-0953.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
