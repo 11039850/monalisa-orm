@@ -1,9 +1,5 @@
 package com.tsc9526.monalisa.core.tools;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 import javax.tools.JavaCompiler;
 import javax.tools.ToolProvider;
 
@@ -22,7 +18,7 @@ public class JavaLoader {
 		
 		String dir="src/test/java/test/com/tsc9526/monalisa/core/mysql/mysqldb";
 		
-		int r=javac.run(System.in, System.out,System.err,
+		javac.run(System.in, System.out,System.err,
 				"-encoding", "utf-8",
 				"-classpath","target/classes;target/test-classes", "-d","target/testing",dir+"/TestTable1.java");
 		

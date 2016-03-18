@@ -3,12 +3,12 @@ import test.com.tsc9526.monalisa.core.mysql.mysqldb.TestTable1;
 import test.com.tsc9526.monalisa.core.mysql.mysqldb.TestTable2;
 import com.tsc9526.monalisa.core.annotation.Column;
 /**
- * Created by monalisa at 2016-3-17 19:13:05
+ * Created by monalisa at 2016-3-18 15:27:31
  * 
  * @see 
  */
 public class DS0001 implements java.io.Serializable{
-	private static final long serialVersionUID = 2048901119452L;	
+	private static final long serialVersionUID = 2049343452399L;	
 	final static String  FINGERPRINT = "";
 	
 	 

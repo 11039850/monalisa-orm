@@ -1,5 +1,7 @@
 package com.tsc9526.monalisa.core.query;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -20,7 +22,8 @@ import com.tsc9526.monalisa.core.annotation.DB;
 import com.tsc9526.monalisa.core.datasource.DBConfig;
 import com.tsc9526.monalisa.core.datasource.DataSourceManager;
 import com.tsc9526.monalisa.core.datasource.DbProp;
-import com.tsc9526.monalisa.core.generator.DBExchange;
+import com.tsc9526.monalisa.core.meta.MetaColumn;
+import com.tsc9526.monalisa.core.meta.MetaTable;
 import com.tsc9526.monalisa.core.meta.Name;
 import com.tsc9526.monalisa.core.parser.executor.SQLResourceManager;
 import com.tsc9526.monalisa.core.query.datatable.DataTable;
@@ -31,7 +34,9 @@ import com.tsc9526.monalisa.core.tools.ClassHelper;
 import com.tsc9526.monalisa.core.tools.ClassHelper.FGS;
 import com.tsc9526.monalisa.core.tools.ClassHelper.MetaClass;
 import com.tsc9526.monalisa.core.tools.CloseQuietly;
+import com.tsc9526.monalisa.core.tools.JavaBeansHelper;
 import com.tsc9526.monalisa.core.tools.SQLHelper;
+import com.tsc9526.monalisa.core.tools.TypeHelper;
  
 
 /**
@@ -379,7 +384,7 @@ public class Query {
 	 * @return
 	 */
 	public <T> T getResult(final ResultCreator<T> resultCreator){
-		if(!DBExchange.doExchange(this)){			
+		if(!doExchange()){			
 			queryCheck();
 			
 			return doExecute(new Execute<T>(){ 
@@ -402,7 +407,7 @@ public class Query {
 				}	 
 			});			 
 		}else{
-			return null;		
+			return null;
 		}
 	}
 	
@@ -419,7 +424,7 @@ public class Query {
 	 * @return Page对象
 	 */
 	public <T> Page<T> getPage(ResultCreator<T> resultCreator,int limit,int offset) {
-		if(!DBExchange.doExchange(this)){			
+		if(!doExchange()){			
 			queryCheck();
 			
 			Query countQuery=getDialect().getCountQuery(this);			
@@ -442,7 +447,7 @@ public class Query {
 	}
 	
 	public <T> DataTable<T> getList(final ResultCreator<T> resultCreator) {
-		if(!DBExchange.doExchange(this)){			 
+		if(!doExchange()){		 
 			queryCheck();
 			
 			return doExecute(new Execute<DataTable<T>>(){
@@ -471,7 +476,7 @@ public class Query {
 	}
 	
 	public <T> T load(final T result){
-		if(!DBExchange.doExchange(this)){			 
+		if(!doExchange()){			 
 			queryCheck();
 			
 			return doExecute(new Execute<T>(){
@@ -497,6 +502,62 @@ public class Query {
 		}
 	}
 	 
+	protected boolean doExchange(){
+		QExchange exchange=QExchange.getExchange(false);
+		if(exchange!=null){
+			String psql=getExecutableSQL();
+			exchange.setSql(psql);
+			
+			Connection conn=null;
+			try{
+				exchange.setDbKey(getDb().getCfg().getKey());				
+				
+				conn=dsm.getDataSource(getDb()).getConnection();
+				PreparedStatement pst=conn.prepareStatement(getSql());
+				SQLHelper.setPreparedParameters(pst, getParameters());
+			 				
+				ResultSet rs=pst.executeQuery();
+				ResultSetMetaData rsmd=rs.getMetaData();
+				MetaTable table=new MetaTable();
+				int cc=rsmd.getColumnCount();
+				for(int i=1;i<=cc;i++){
+					String type=TypeHelper.getJavaType(rsmd.getColumnType(i));
+					String name =rsmd.getColumnName(i);
+					String label=rsmd.getColumnLabel(i);
+					
+					MetaColumn column=new MetaColumn();
+					String tableName=rsmd.getTableName(i);	
+					column.setTable(new MetaTable(tableName));
+					 
+					column.setName(name);
+					
+					if(label!=null && label.trim().length()>0){
+						column.setJavaName(JavaBeansHelper.getJavaName(label, false));
+					}
+					
+					column.setJavaType(type);					
+					table.addColumn(column); 					
+				}
+					
+				exchange.setTable(table);
+				exchange.setErrorString(null);
+				 
+				rs.close();
+				pst.close();											
+			}catch(Exception e){				 
+				StringWriter s=new StringWriter();
+				e.printStackTrace(new PrintWriter(s));				
+				exchange.setErrorString(s.toString());				 
+			}finally{
+				CloseQuietly.close(conn);
+			}
+			return true;
+		}else{
+			return false;
+		}
+	}
+	
+	
 	
 	protected void queryCheck(){
 		if(db==null){

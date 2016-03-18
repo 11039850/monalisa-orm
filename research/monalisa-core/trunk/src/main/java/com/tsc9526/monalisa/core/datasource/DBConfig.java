@@ -16,6 +16,7 @@ import org.apache.commons.logging.LogFactory;
 
 import com.tsc9526.monalisa.core.annotation.DB;
 import com.tsc9526.monalisa.core.annotation.Table;
+import com.tsc9526.monalisa.core.generator.DBGeneratorProcessing;
 import com.tsc9526.monalisa.core.meta.MetaPartition;
 import com.tsc9526.monalisa.core.query.DataMap;
 import com.tsc9526.monalisa.core.query.Page;
@@ -360,7 +361,7 @@ public class DBConfig implements Closeable{
 		 
 		private List<MetaPartition> metaPartitions;
 		
-		private DB.ConfigClass configClass;
+		private ConfigClass configClass;
 		
 		synchronized void init(){
 			loadProperties();
@@ -395,8 +396,9 @@ public class DBConfig implements Closeable{
 		}
 		
 		private void loadProperties(){
-			Class<? extends DB.ConfigClass> clazz=db.configClass();
-			if(clazz!=null && clazz != DB.ConfigClass.class){
+			Class<? extends ConfigClass> clazz=DBGeneratorProcessing.getDBConfigClass(db); 
+			
+			if(clazz!=null && clazz != ConfigClass.class){
 				try{
 					configClass=clazz.newInstance();
 					this.p=configClass.getConfigProperties();
