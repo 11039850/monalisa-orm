@@ -32,7 +32,7 @@ public class DBAnnotationProcessor extends AbstractProcessor {
 	public synchronized void init(ProcessingEnvironment processingEnv) {
 		super.init(processingEnv);			 		 
 		 
-		if(Helper.inEclipseProcessing()){
+		if(Helper.inEclipseIDE()){
 			//Eclipse环境,设置日志输出
 			MessagerLogger.setMessagerLogger(processingEnv.getMessager());
 		} 		
@@ -50,14 +50,14 @@ public class DBAnnotationProcessor extends AbstractProcessor {
 					}catch(Throwable e){
 						logger.error(""+e,e);
 						
-						if(Helper.inEclipseProcessing()){
+						if(Helper.inEclipseIDE()){
 							processingEnv.getMessager().printMessage(Kind.ERROR,e.getClass().getName()+":\r\n"+Helper.toString(e), element);
 						}
 					}
 				}else{
 					logger.warn("@DB should used for interface!");
 					
-					if(Helper.inEclipseProcessing()){
+					if(Helper.inEclipseIDE()){
 						processingEnv.getMessager().printMessage(Kind.WARNING,"@DB should used for interface!", element);
 					}					
 				}

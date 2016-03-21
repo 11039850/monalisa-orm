@@ -31,8 +31,8 @@ class ProcessorInEclipse {
 			IJavaProject project=processingEnv.getJavaProject();
 			
 			String[] classPath=JavaRuntime.computeDefaultRuntimeClassPath(project);
-			
-			URLClassLoader loader=new URLClassLoader(Helper.toURLs(classPath),processingEnv.getClass().getClassLoader());
+			 
+		 	URLClassLoader loader=new URLClassLoader(Helper.toURLs(classPath),processingEnv.getClass().getClassLoader());
 			try{
 				String className=DBGeneratorProcessing.class.getName();
 				Class<?> clazz=Class.forName(className,true,loader);
