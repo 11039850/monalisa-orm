@@ -12,6 +12,10 @@ import com.tsc9526.monalisa.core.query.Args;
 import com.tsc9526.monalisa.core.query.Query;
 
 
+/**
+ * 
+ * @author zzg.zhou(11039850@qq.com)
+ */
 public class SQLResourceManager {
 	static Log logger=LogFactory.getLog(SQLResourceManager.class.getName());
 	

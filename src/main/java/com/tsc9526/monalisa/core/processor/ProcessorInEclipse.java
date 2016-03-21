@@ -14,6 +14,10 @@ import org.eclipse.jdt.launching.JavaRuntime;
 import com.tsc9526.monalisa.core.generator.DBGeneratorProcessing;
 import com.tsc9526.monalisa.core.tools.Helper;
 
+/**
+ * 
+ * @author zzg.zhou(11039850@qq.com)
+ */
 class ProcessorInEclipse {
 	private IdeProcessingEnvImpl processingEnv;
 	private TypeElement element;

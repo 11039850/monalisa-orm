@@ -23,6 +23,10 @@ import com.tsc9526.monalisa.core.parser.jsp.JspPage;
 import com.tsc9526.monalisa.core.parser.jsp.JspText;
 import com.tsc9526.monalisa.core.tools.JavaWriter;
 
+/**
+ * 
+ * @author zzg.zhou(11039850@qq.com)
+ */
 public class QueryPackage {
 	static Log logger=LogFactory.getLog(QueryPackage.class.getName());
 	

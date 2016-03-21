@@ -2,8 +2,8 @@ package com.tsc9526.monalisa.core.generator;
 
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
 import java.io.Writer;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -17,11 +17,8 @@ import com.tsc9526.monalisa.core.annotation.Table;
 import com.tsc9526.monalisa.core.meta.MetaColumn;
 import com.tsc9526.monalisa.core.meta.MetaIndex;
 import com.tsc9526.monalisa.core.meta.MetaTable;
-import com.tsc9526.monalisa.core.resources.Freemarker;
+import com.tsc9526.monalisa.core.parser.jsp.JspContext;
 import com.tsc9526.monalisa.core.tools.ClassHelper;
-
-import freemarker.template.Configuration;
-import freemarker.template.Template;
 
 /**
  * 
@@ -44,17 +41,16 @@ public class DBTableGenerator {
 
 	public void generate(Writer w) {
 		try {
-			Configuration cfg = Freemarker.getFreemarkConfiguration();
-			Template modelTpl = cfg.getTemplate("model.ftl");
-
-			Map<String, Object> data = new HashMap<String, Object>();
-			data.put("table", table);
-			data.put("modelClass", modelClass);
-			data.put("dbi", dbi);
+			JspContext request = new JspContext();
+			request.setAttribute("table", table);
+			request.setAttribute("modelClass", modelClass);
+			request.setAttribute("dbi", dbi);
 			
-			data.put("imports", getImports());
-
-			modelTpl.process(data, w);
+			request.setAttribute("imports", getImports());
+			
+			DBWriterModel dbw=new DBWriterModel();
+			dbw.service(request,new PrintWriter(w));
+			 
 			w.flush();
 			w.close();
 		} catch (Exception e) {

@@ -26,6 +26,10 @@ import com.tsc9526.monalisa.core.tools.CloseQuietly;
 import com.tsc9526.monalisa.core.tools.FileHelper;
 import com.tsc9526.monalisa.core.tools.JavaWriter;
 
+/**
+ * 
+ * @author zzg.zhou(11039850@qq.com)
+ */
 public class SQLClass implements Closeable{
 	static Log logger=LogFactory.getLog(SQLClass.class.getName());
 	

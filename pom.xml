@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.tsc9526</groupId>
 	<artifactId>monalisa-core</artifactId>
-	<version>0.7.2-SNAPSHOT</version>
+	<version>0.7.6-SNAPSHOT</version>
 	
 	<parent>
 		<groupId>com.jy</groupId>
@@ -48,14 +48,7 @@
 		    <version>1.22</version>
 		    <scope>test</scope>		
 		</dependency>
-
-		<dependency>
-			<groupId>org.freemarker</groupId>
-			<artifactId>freemarker</artifactId>
-			<version>2.3.20</version>
-			<scope>compile</scope>
-		</dependency>
-
+  
 		<dependency>
 			<groupId>c3p0</groupId>
 			<artifactId>c3p0</artifactId>

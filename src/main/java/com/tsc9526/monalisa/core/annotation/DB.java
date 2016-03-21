@@ -8,40 +8,12 @@ import java.lang.annotation.Target;
 import com.tsc9526.monalisa.core.datasource.ConfigClass;
 
 /**
- * 
- * <b>第一步: 定义数据库连接信息</b> <br>
  * <code>
- * package example; <br>
- * <br>
- * import com.tsc9526.monalisa.core.annotation.DB; <br>
- * import com.tsc9526.monalisa.core.datasource.DBConfig; <br>
- *
- * <br>
  * <p>@DB(url="jdbc:mysql://127.0.0.1:3306/world", username="root", password="root") <br>
  * public interface DBWorld { <br>
- *   //方便后面的查询使用: Query q=new Query().use(DBWorld.DB); ... <br>
- * 	 public final static DBConfig DB=DBConfig.fromClass(DBWorld.class)
+ * 	 &nbsp;&nbsp;&nbsp;&nbsp;public final static DBConfig DB=DBConfig.fromClass(DBWorld.class)<br>
  * }	 
  * </p>
- * </code>
- * 
- * <b>第二步: 访问数据库</b> <br>
- * <code>
- * package example; <br>
- * <br>
- * import example.dbworld.*; <br>
- * <br>
- * public class Example{  <br>
- * &nbsp;&nbsp; public void TestTableX(){ <br>
- * &nbsp;&nbsp;&nbsp;&nbsp; TableX x1=new TableX(); <br>
- * &nbsp;&nbsp;&nbsp;&nbsp; x1.setXXX(...); <br>
- * &nbsp;&nbsp;&nbsp;&nbsp; //... <br>
- * &nbsp;&nbsp;&nbsp;&nbsp; db.save(); <br>
- * <br>
- * &nbsp;&nbsp;&nbsp;&nbsp; TableX x2=TableX.SELECT().selectByPrimary(100); <br>
- * &nbsp;&nbsp;&nbsp;&nbsp; System.out.println(x2); <br>
- * &nbsp;&nbsp;	} <br>
- * }<br>
  * </code>
  * 
  * 

@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
@@ -17,19 +18,21 @@ import org.apache.commons.logging.LogFactory;
 
 import com.tsc9526.monalisa.core.annotation.Column;
 import com.tsc9526.monalisa.core.generator.DBMetadata;
+import com.tsc9526.monalisa.core.generator.DBWriterSelect;
 import com.tsc9526.monalisa.core.meta.MetaColumn;
 import com.tsc9526.monalisa.core.meta.MetaTable;
+import com.tsc9526.monalisa.core.parser.jsp.JspContext;
 import com.tsc9526.monalisa.core.parser.query.QueryStatement;
 import com.tsc9526.monalisa.core.query.Args;
 import com.tsc9526.monalisa.core.query.QExchange;
 import com.tsc9526.monalisa.core.query.Query;
-import com.tsc9526.monalisa.core.resources.Freemarker;
 import com.tsc9526.monalisa.core.tools.FileHelper;
 import com.tsc9526.monalisa.core.tools.JavaWriter;
 
-import freemarker.template.Configuration;
-import freemarker.template.Template;
-
+/**
+ * 
+ * @author zzg.zhou(11039850@qq.com)
+ */
 public class SQLGenerator {
 	static Log logger=LogFactory.getLog(SQLGenerator.class.getName());
 	
@@ -219,26 +222,24 @@ public class SQLGenerator {
 		}
 		
 		try{
-			 Configuration cfg = Freemarker.getFreemarkConfiguration();
-	         Template modelTpl = cfg.getTemplate("select.ftl"); 
-	         
-	         Map<String,Object>  data=new HashMap<String, Object>();
-	         data.put("table", table);
-	         data.put("imports", imps);
-	         data.put("see", "");
-	         data.put("fingerprint", "");
-	         
-	         ByteArrayOutputStream bos=new ByteArrayOutputStream();
-	         modelTpl.process(data, new OutputStreamWriter(bos,"utf-8"));
-	         bos.flush();	         
+			JspContext request = new JspContext();
+			 
+			request.setAttribute("table", table);
+	        request.setAttribute("imports", imps);
+	        request.setAttribute("see", "");
+	        request.setAttribute("fingerprint", "");
 	          
-	         File dir=new File(srcDir,packageName.replace(".","/"));
-			 FileHelper.mkdirs(dir);
+	        ByteArrayOutputStream bos=new ByteArrayOutputStream();
+	        
+	        DBWriterSelect dbs=new DBWriterSelect();
+	        dbs.service(request,new PrintWriter(new OutputStreamWriter(bos,"utf-8")));
+		      
+	        File dir=new File(srcDir,packageName.replace(".","/"));
+			FileHelper.mkdirs(dir);
 				
-			 File java=new File(dir,javaName+".java");
-			 logger.info("Write result class: "+resultClass+" to "+java.getAbsolutePath());
-			 FileHelper.write(java, bos.toByteArray());
-	         
+			File java=new File(dir,javaName+".java");
+			logger.info("Write result class: "+resultClass+" to "+java.getAbsolutePath());
+			FileHelper.write(java, bos.toByteArray()); 
         }catch(Exception e){
        	 	throw new RuntimeException(e);
         }

@@ -1,5 +1,9 @@
 package com.tsc9526.monalisa.core.parser.jsp;
 
+/**
+ * 
+ * @author zzg.zhou(11039850@qq.com)
+ */
 public abstract class JspElement{
 	protected int pos;
 	protected int length;

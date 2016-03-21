@@ -7,7 +7,10 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-
+/**
+ * 
+ * @author zzg.zhou(11039850@qq.com)
+ */
 public class JspPage extends JspElement{
 	private Map<String, String> attributes=new HashMap<String, String>();
 	 
