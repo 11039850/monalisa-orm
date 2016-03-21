@@ -15,6 +15,10 @@ import com.tsc9526.monalisa.core.parser.jsp.JspEval;
 import com.tsc9526.monalisa.core.parser.jsp.JspText;
 import com.tsc9526.monalisa.core.tools.JavaWriter;
 
+/**
+ * 
+ * @author zzg.zhou(11039850@qq.com)
+ */
 public class QueryStatement { 
 	static Log logger=LogFactory.getLog(QueryStatement.class.getName());
 	

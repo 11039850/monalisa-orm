@@ -24,8 +24,6 @@ import com.tsc9526.monalisa.core.query.model.ModelParser;
 import com.tsc9526.monalisa.core.tools.ClassHelper.FGS;
 import com.tsc9526.monalisa.core.tools.ClassHelper.MetaClass;
 
-import freemarker.template.utility.StringUtil;
-
 /**
  * 
  * @author zzg.zhou(11039850@qq.com)
@@ -405,7 +403,8 @@ public class ModelHelper {
 					sb.append("  ").append(indent);
 				}
 				sb.append('<').append(name).append('>');
-				sb.append(StringUtil.XMLEnc(value));
+				 
+				sb.append(value.replaceAll("<", "&lt;").replaceAll(">","&gt;"));
 
 				sb.append("</").append(name).append('>');
 				if (pretty) {

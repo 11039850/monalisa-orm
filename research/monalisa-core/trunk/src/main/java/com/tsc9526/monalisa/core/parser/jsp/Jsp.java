@@ -3,11 +3,16 @@ package com.tsc9526.monalisa.core.parser.jsp;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.tsc9526.monalisa.core.tools.FileHelper;
 
+/**
+ * 
+ * @author zzg.zhou(11039850@qq.com)
+ */
 public class Jsp{
 	public static String DEFAULT_PAGE_ENCODING="utf-8";
 	
@@ -78,7 +83,7 @@ public class Jsp{
 				 
 				String text="";
 				if(k<0){
-					text=body;
+					text=body.substring(i);
 					i=body.length()-1;
 				}else{
 					text=body.substring(i,k);
@@ -91,6 +96,70 @@ public class Jsp{
 		}
 	}
 	
+	
+	public void writeToJava(PrintWriter w,String packageName,String javaName,String comments)throws IOException{
+		w.println("package "+packageName+";\r\n\r\n");
+		
+		w.println("import "+PrintWriter.class.getName()+";");
+		w.println("import "+JspContext.class.getName()+";");
+		for(JspElement e:elements){
+			if(e instanceof JspPage){
+				JspPage page=(JspPage)e;
+				
+				for(String s:page.getImports()){
+					w.println("import "+s+";");
+				}
+			}
+		}
+		
+		if(comments!=null){
+			w.println("/**"+comments+" */");
+		}
+		
+		w.println("public class "+javaName+"{");
+		
+		for(JspElement e:elements){
+			if(e instanceof JspFunction){
+				w.write(e.getCode());
+			}
+		}
+		
+		w.write("\tpublic void service(JspContext request,PrintWriter out){\r\n");
+		for(JspElement e:elements){
+			if(e instanceof JspText){
+				String code=e.getCode();
+				
+				StringBuffer sb=new StringBuffer();
+				for(int i=0;i<code.length();i++){
+					char c=code.charAt(i);
+					
+					
+					if(c=='\n'){
+						if(sb.length()>0 && sb.charAt(sb.length()-1)=='\r'){
+							sb.delete(sb.length()-1,sb.length());
+						}
+						w.println("\t\tout.println(\""+sb.toString().replace("\"", "\\\"")+"\");");
+						sb.delete(0, sb.length());
+					}else{
+						sb.append(c);
+					}
+				}
+				if(sb.length()>0){
+					w.println("\t\tout.print(\""+sb.toString().replace("\"", "\\\"")+"\");");
+				}
+			}else if(e instanceof JspEval){
+				w.println("\t\tout.print("+e.getCode()+");");
+			}else if(e instanceof JspCode){
+				w.print("\t\t"+e.getCode());
+			}
+		}
+		w.println("\tout.flush();\r\n");
+		w.println("\t}");
+		
+		w.print("}");
+		
+		w.close();
+	}
 	
 	private JspElement add(JspElement e){
 		e.setIndex(elements.size());
