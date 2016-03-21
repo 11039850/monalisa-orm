@@ -12,8 +12,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import com.tsc9526.monalisa.core.generator.DBProject;
-
 /**
  * 
  * @author zzg.zhou(11039850@qq.com)
@@ -58,18 +56,7 @@ public class Helper {
 			return false;
 		}
 	}
-
-	public static boolean inEclipseProcessing(){
-		try{
-			Class.forName(DBProject.EclipseDBProjectClass);
-			return true;
-		}catch(NoClassDefFoundError e){
-			return false;
-		} catch (ClassNotFoundException e) {
-			return false;
-		}
-	}
-	
+ 
 	public static String[] fieldsToArrays(String... fields) {
 		List<String> xs = new ArrayList<String>();
 		for (String s : fields) {
