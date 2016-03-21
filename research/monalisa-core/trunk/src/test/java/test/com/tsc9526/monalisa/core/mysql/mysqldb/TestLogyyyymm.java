@@ -31,7 +31,7 @@ import java.util.LinkedHashMap;
 	}
 )
 public class TestLogyyyymm extends com.tsc9526.monalisa.core.query.model.Model<TestLogyyyymm> implements test.com.tsc9526.monalisa.core.mysql.MysqlDB{
-	private static final long serialVersionUID = 1126244700587L;
+	private static final long serialVersionUID = 1126247017896L;
 		 
 	public static final Insert INSERT(){
 	 	return new Insert(new TestLogyyyymm());
@@ -85,7 +85,7 @@ public class TestLogyyyymm extends com.tsc9526.monalisa.core.query.model.Model<T
 	
 	/**
 * @Column
-* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201603&nbsp;<B>name:</B> id &nbsp;[<font color=red>KEY</font>|<font color=red>AUTO</font>|<font color=red>NOTNULL</font>]
+* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201602&nbsp;<B>name:</B> id &nbsp;[<font color=red>KEY</font>|<font color=red>AUTO</font>|<font color=red>NOTNULL</font>]
 * <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 10<br>
 * <li><B>remarks:</B> 唯一主键
 */
@@ -95,7 +95,7 @@ public class TestLogyyyymm extends com.tsc9526.monalisa.core.query.model.Model<T
 	
 	/**
 * @Column
-* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201603&nbsp;<B>name:</B> log_time &nbsp;[<font color=red>NOTNULL</font>]
+* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201602&nbsp;<B>name:</B> log_time &nbsp;[<font color=red>NOTNULL</font>]
 * <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 19<br>
 * <li><B>remarks:</B> 
 */
@@ -105,7 +105,7 @@ public class TestLogyyyymm extends com.tsc9526.monalisa.core.query.model.Model<T
 	
 	/**
 * @Column
-* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201603&nbsp;<B>name:</B> name
+* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201602&nbsp;<B>name:</B> name
 * <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 128<br>
 * <li><B>remarks:</B> 名称
 */
@@ -115,7 +115,7 @@ public class TestLogyyyymm extends com.tsc9526.monalisa.core.query.model.Model<T
 	
 	/**
 * @Column
-* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201603&nbsp;<B>name:</B> enum_int_a &nbsp;[<font color=red>ENUM</font>]
+* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201602&nbsp;<B>name:</B> enum_int_a &nbsp;[<font color=red>ENUM</font>]
 * <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 10<br>
 * <li><B>remarks:</B> 枚举字段A  #enum{{V0,V1}}
 */
@@ -125,7 +125,7 @@ public class TestLogyyyymm extends com.tsc9526.monalisa.core.query.model.Model<T
 	
 	/**
 * @Column
-* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201603&nbsp;<B>name:</B> enum_string_a &nbsp;[<font color=red>ENUM</font>]
+* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201602&nbsp;<B>name:</B> enum_string_a &nbsp;[<font color=red>ENUM</font>]
 * <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 64<br>
 * <li><B>remarks:</B> #enum{{ TRUE, FALSE}}
 */
@@ -135,7 +135,7 @@ public class TestLogyyyymm extends com.tsc9526.monalisa.core.query.model.Model<T
 	
 	/**
 * @Column
-* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201603&nbsp;<B>name:</B> create_time
+* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201602&nbsp;<B>name:</B> create_time
 * <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 19<br>
 * <li><B>remarks:</B> 
 */
@@ -145,7 +145,7 @@ public class TestLogyyyymm extends com.tsc9526.monalisa.core.query.model.Model<T
 	
 	/**
 * @Column
-* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201603&nbsp;<B>name:</B> create_by
+* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201602&nbsp;<B>name:</B> create_by
 * <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 64<br>
 * <li><B>remarks:</B> 
 */
@@ -155,7 +155,7 @@ public class TestLogyyyymm extends com.tsc9526.monalisa.core.query.model.Model<T
 	
 	/**
 * @Column
-* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201603&nbsp;<B>name:</B> update_time
+* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201602&nbsp;<B>name:</B> update_time
 * <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 19<br>
 * <li><B>remarks:</B> 
 */
@@ -165,7 +165,7 @@ public class TestLogyyyymm extends com.tsc9526.monalisa.core.query.model.Model<T
 	
 	/**
 * @Column
-* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201603&nbsp;<B>name:</B> update_by
+* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201602&nbsp;<B>name:</B> update_by
 * <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 64<br>
 * <li><B>remarks:</B> 
 */
@@ -178,7 +178,7 @@ public class TestLogyyyymm extends com.tsc9526.monalisa.core.query.model.Model<T
 	
 	/**
 * @Column
-* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201603&nbsp;<B>name:</B> id &nbsp;[<font color=red>KEY</font>|<font color=red>AUTO</font>|<font color=red>NOTNULL</font>]
+* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201602&nbsp;<B>name:</B> id &nbsp;[<font color=red>KEY</font>|<font color=red>AUTO</font>|<font color=red>NOTNULL</font>]
 * <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 10<br>
 * <li><B>remarks:</B> 唯一主键
 */
@@ -196,7 +196,7 @@ public class TestLogyyyymm extends com.tsc9526.monalisa.core.query.model.Model<T
 	
 	/**
 * @Column
-* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201603&nbsp;<B>name:</B> log_time &nbsp;[<font color=red>NOTNULL</font>]
+* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201602&nbsp;<B>name:</B> log_time &nbsp;[<font color=red>NOTNULL</font>]
 * <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 19<br>
 * <li><B>remarks:</B> 
 */
@@ -214,7 +214,7 @@ public class TestLogyyyymm extends com.tsc9526.monalisa.core.query.model.Model<T
 	
 	/**
 * @Column
-* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201603&nbsp;<B>name:</B> name
+* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201602&nbsp;<B>name:</B> name
 * <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 128<br>
 * <li><B>remarks:</B> 名称
 */
@@ -232,7 +232,7 @@ public class TestLogyyyymm extends com.tsc9526.monalisa.core.query.model.Model<T
 	
 	/**
 * @Column
-* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201603&nbsp;<B>name:</B> enum_int_a &nbsp;[<font color=red>ENUM</font>]
+* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201602&nbsp;<B>name:</B> enum_int_a &nbsp;[<font color=red>ENUM</font>]
 * <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 10<br>
 * <li><B>remarks:</B> 枚举字段A  #enum{{V0,V1}}
 */
@@ -250,7 +250,7 @@ public class TestLogyyyymm extends com.tsc9526.monalisa.core.query.model.Model<T
 	
 	/**
 * @Column
-* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201603&nbsp;<B>name:</B> enum_string_a &nbsp;[<font color=red>ENUM</font>]
+* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201602&nbsp;<B>name:</B> enum_string_a &nbsp;[<font color=red>ENUM</font>]
 * <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 64<br>
 * <li><B>remarks:</B> #enum{{ TRUE, FALSE}}
 */
@@ -268,7 +268,7 @@ public class TestLogyyyymm extends com.tsc9526.monalisa.core.query.model.Model<T
 	
 	/**
 * @Column
-* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201603&nbsp;<B>name:</B> create_time
+* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201602&nbsp;<B>name:</B> create_time
 * <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 19<br>
 * <li><B>remarks:</B> 
 */
@@ -286,7 +286,7 @@ public class TestLogyyyymm extends com.tsc9526.monalisa.core.query.model.Model<T
 	
 	/**
 * @Column
-* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201603&nbsp;<B>name:</B> create_by
+* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201602&nbsp;<B>name:</B> create_by
 * <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 64<br>
 * <li><B>remarks:</B> 
 */
@@ -304,7 +304,7 @@ public class TestLogyyyymm extends com.tsc9526.monalisa.core.query.model.Model<T
 	
 	/**
 * @Column
-* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201603&nbsp;<B>name:</B> update_time
+* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201602&nbsp;<B>name:</B> update_time
 * <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 19<br>
 * <li><B>remarks:</B> 
 */
@@ -322,7 +322,7 @@ public class TestLogyyyymm extends com.tsc9526.monalisa.core.query.model.Model<T
 	
 	/**
 * @Column
-* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201603&nbsp;<B>name:</B> update_by
+* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201602&nbsp;<B>name:</B> update_by
 * <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 64<br>
 * <li><B>remarks:</B> 
 */
@@ -343,7 +343,7 @@ public class TestLogyyyymm extends com.tsc9526.monalisa.core.query.model.Model<T
 	
 	/**
 * @Column
-* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201603&nbsp;<B>name:</B> id &nbsp;[<font color=red>KEY</font>|<font color=red>AUTO</font>|<font color=red>NOTNULL</font>]
+* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201602&nbsp;<B>name:</B> id &nbsp;[<font color=red>KEY</font>|<font color=red>AUTO</font>|<font color=red>NOTNULL</font>]
 * <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 10<br>
 * <li><B>remarks:</B> 唯一主键
 */
@@ -356,7 +356,7 @@ public class TestLogyyyymm extends com.tsc9526.monalisa.core.query.model.Model<T
 	
 	/**
 * @Column
-* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201603&nbsp;<B>name:</B> log_time &nbsp;[<font color=red>NOTNULL</font>]
+* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201602&nbsp;<B>name:</B> log_time &nbsp;[<font color=red>NOTNULL</font>]
 * <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 19<br>
 * <li><B>remarks:</B> 
 */
@@ -369,7 +369,7 @@ public class TestLogyyyymm extends com.tsc9526.monalisa.core.query.model.Model<T
 	
 	/**
 * @Column
-* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201603&nbsp;<B>name:</B> name
+* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201602&nbsp;<B>name:</B> name
 * <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 128<br>
 * <li><B>remarks:</B> 名称
 */
@@ -382,7 +382,7 @@ public class TestLogyyyymm extends com.tsc9526.monalisa.core.query.model.Model<T
 	
 	/**
 * @Column
-* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201603&nbsp;<B>name:</B> enum_int_a &nbsp;[<font color=red>ENUM</font>]
+* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201602&nbsp;<B>name:</B> enum_int_a &nbsp;[<font color=red>ENUM</font>]
 * <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 10<br>
 * <li><B>remarks:</B> 枚举字段A  #enum{{V0,V1}}
 */
@@ -395,7 +395,7 @@ public class TestLogyyyymm extends com.tsc9526.monalisa.core.query.model.Model<T
 	
 	/**
 * @Column
-* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201603&nbsp;<B>name:</B> enum_string_a &nbsp;[<font color=red>ENUM</font>]
+* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201602&nbsp;<B>name:</B> enum_string_a &nbsp;[<font color=red>ENUM</font>]
 * <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 64<br>
 * <li><B>remarks:</B> #enum{{ TRUE, FALSE}}
 */
@@ -408,7 +408,7 @@ public class TestLogyyyymm extends com.tsc9526.monalisa.core.query.model.Model<T
 	
 	/**
 * @Column
-* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201603&nbsp;<B>name:</B> create_time
+* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201602&nbsp;<B>name:</B> create_time
 * <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 19<br>
 * <li><B>remarks:</B> 
 */
@@ -421,7 +421,7 @@ public class TestLogyyyymm extends com.tsc9526.monalisa.core.query.model.Model<T
 	
 	/**
 * @Column
-* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201603&nbsp;<B>name:</B> create_by
+* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201602&nbsp;<B>name:</B> create_by
 * <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 64<br>
 * <li><B>remarks:</B> 
 */
@@ -434,7 +434,7 @@ public class TestLogyyyymm extends com.tsc9526.monalisa.core.query.model.Model<T
 	
 	/**
 * @Column
-* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201603&nbsp;<B>name:</B> update_time
+* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201602&nbsp;<B>name:</B> update_time
 * <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 19<br>
 * <li><B>remarks:</B> 
 */
@@ -447,7 +447,7 @@ public class TestLogyyyymm extends com.tsc9526.monalisa.core.query.model.Model<T
 	
 	/**
 * @Column
-* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201603&nbsp;<B>name:</B> update_by
+* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201602&nbsp;<B>name:</B> update_by
 * <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 64<br>
 * <li><B>remarks:</B> 
 */
@@ -618,7 +618,7 @@ public class TestLogyyyymm extends com.tsc9526.monalisa.core.query.model.Model<T
 		
 		/**
 * @Column
-* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201603&nbsp;<B>name:</B> id &nbsp;[<font color=red>KEY</font>|<font color=red>AUTO</font>|<font color=red>NOTNULL</font>]
+* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201602&nbsp;<B>name:</B> id &nbsp;[<font color=red>KEY</font>|<font color=red>AUTO</font>|<font color=red>NOTNULL</font>]
 * <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 10<br>
 * <li><B>remarks:</B> 唯一主键
 */
@@ -629,7 +629,7 @@ public class TestLogyyyymm extends com.tsc9526.monalisa.core.query.model.Model<T
 		
 		/**
 * @Column
-* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201603&nbsp;<B>name:</B> log_time &nbsp;[<font color=red>NOTNULL</font>]
+* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201602&nbsp;<B>name:</B> log_time &nbsp;[<font color=red>NOTNULL</font>]
 * <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 19<br>
 * <li><B>remarks:</B> 
 */
@@ -640,7 +640,7 @@ public class TestLogyyyymm extends com.tsc9526.monalisa.core.query.model.Model<T
 		
 		/**
 * @Column
-* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201603&nbsp;<B>name:</B> name
+* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201602&nbsp;<B>name:</B> name
 * <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 128<br>
 * <li><B>remarks:</B> 名称
 */
@@ -651,7 +651,7 @@ public class TestLogyyyymm extends com.tsc9526.monalisa.core.query.model.Model<T
 		
 		/**
 * @Column
-* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201603&nbsp;<B>name:</B> enum_int_a &nbsp;[<font color=red>ENUM</font>]
+* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201602&nbsp;<B>name:</B> enum_int_a &nbsp;[<font color=red>ENUM</font>]
 * <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 10<br>
 * <li><B>remarks:</B> 枚举字段A  #enum{{V0,V1}}
 */
@@ -662,7 +662,7 @@ public class TestLogyyyymm extends com.tsc9526.monalisa.core.query.model.Model<T
 		
 		/**
 * @Column
-* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201603&nbsp;<B>name:</B> enum_string_a &nbsp;[<font color=red>ENUM</font>]
+* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201602&nbsp;<B>name:</B> enum_string_a &nbsp;[<font color=red>ENUM</font>]
 * <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 64<br>
 * <li><B>remarks:</B> #enum{{ TRUE, FALSE}}
 */
@@ -673,7 +673,7 @@ public class TestLogyyyymm extends com.tsc9526.monalisa.core.query.model.Model<T
 		
 		/**
 * @Column
-* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201603&nbsp;<B>name:</B> create_time
+* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201602&nbsp;<B>name:</B> create_time
 * <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 19<br>
 * <li><B>remarks:</B> 
 */
@@ -684,7 +684,7 @@ public class TestLogyyyymm extends com.tsc9526.monalisa.core.query.model.Model<T
 		
 		/**
 * @Column
-* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201603&nbsp;<B>name:</B> create_by
+* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201602&nbsp;<B>name:</B> create_by
 * <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 64<br>
 * <li><B>remarks:</B> 
 */
@@ -695,7 +695,7 @@ public class TestLogyyyymm extends com.tsc9526.monalisa.core.query.model.Model<T
 		
 		/**
 * @Column
-* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201603&nbsp;<B>name:</B> update_time
+* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201602&nbsp;<B>name:</B> update_time
 * <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 19<br>
 * <li><B>remarks:</B> 
 */
@@ -706,7 +706,7 @@ public class TestLogyyyymm extends com.tsc9526.monalisa.core.query.model.Model<T
 		
 		/**
 * @Column
-* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201603&nbsp;<B>name:</B> update_by
+* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201602&nbsp;<B>name:</B> update_by
 * <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 64<br>
 * <li><B>remarks:</B> 
 */
@@ -747,7 +747,7 @@ public class TestLogyyyymm extends com.tsc9526.monalisa.core.query.model.Model<T
 		
 		/**
 * @Column
-* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201603&nbsp;<B>name:</B> id &nbsp;[<font color=red>KEY</font>|<font color=red>AUTO</font>|<font color=red>NOTNULL</font>]
+* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201602&nbsp;<B>name:</B> id &nbsp;[<font color=red>KEY</font>|<font color=red>AUTO</font>|<font color=red>NOTNULL</font>]
 * <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 10<br>
 * <li><B>remarks:</B> 唯一主键
 */
@@ -765,7 +765,7 @@ public class TestLogyyyymm extends com.tsc9526.monalisa.core.query.model.Model<T
 		
 		/**
 * @Column
-* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201603&nbsp;<B>name:</B> log_time &nbsp;[<font color=red>NOTNULL</font>]
+* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201602&nbsp;<B>name:</B> log_time &nbsp;[<font color=red>NOTNULL</font>]
 * <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 19<br>
 * <li><B>remarks:</B> 
 */
@@ -783,7 +783,7 @@ public class TestLogyyyymm extends com.tsc9526.monalisa.core.query.model.Model<T
 		
 		/**
 * @Column
-* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201603&nbsp;<B>name:</B> name
+* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201602&nbsp;<B>name:</B> name
 * <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 128<br>
 * <li><B>remarks:</B> 名称
 */
@@ -801,7 +801,7 @@ public class TestLogyyyymm extends com.tsc9526.monalisa.core.query.model.Model<T
 		
 		/**
 * @Column
-* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201603&nbsp;<B>name:</B> enum_int_a &nbsp;[<font color=red>ENUM</font>]
+* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201602&nbsp;<B>name:</B> enum_int_a &nbsp;[<font color=red>ENUM</font>]
 * <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 10<br>
 * <li><B>remarks:</B> 枚举字段A  #enum{{V0,V1}}
 */
@@ -819,7 +819,7 @@ public class TestLogyyyymm extends com.tsc9526.monalisa.core.query.model.Model<T
 		
 		/**
 * @Column
-* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201603&nbsp;<B>name:</B> enum_string_a &nbsp;[<font color=red>ENUM</font>]
+* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201602&nbsp;<B>name:</B> enum_string_a &nbsp;[<font color=red>ENUM</font>]
 * <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 64<br>
 * <li><B>remarks:</B> #enum{{ TRUE, FALSE}}
 */
@@ -837,7 +837,7 @@ public class TestLogyyyymm extends com.tsc9526.monalisa.core.query.model.Model<T
 		
 		/**
 * @Column
-* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201603&nbsp;<B>name:</B> create_time
+* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201602&nbsp;<B>name:</B> create_time
 * <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 19<br>
 * <li><B>remarks:</B> 
 */
@@ -855,7 +855,7 @@ public class TestLogyyyymm extends com.tsc9526.monalisa.core.query.model.Model<T
 		
 		/**
 * @Column
-* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201603&nbsp;<B>name:</B> create_by
+* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201602&nbsp;<B>name:</B> create_by
 * <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 64<br>
 * <li><B>remarks:</B> 
 */
@@ -873,7 +873,7 @@ public class TestLogyyyymm extends com.tsc9526.monalisa.core.query.model.Model<T
 		
 		/**
 * @Column
-* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201603&nbsp;<B>name:</B> update_time
+* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201602&nbsp;<B>name:</B> update_time
 * <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 19<br>
 * <li><B>remarks:</B> 
 */
@@ -891,7 +891,7 @@ public class TestLogyyyymm extends com.tsc9526.monalisa.core.query.model.Model<T
 		
 		/**
 * @Column
-* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201603&nbsp;<B>name:</B> update_by
+* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201602&nbsp;<B>name:</B> update_by
 * <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 64<br>
 * <li><B>remarks:</B> 
 */

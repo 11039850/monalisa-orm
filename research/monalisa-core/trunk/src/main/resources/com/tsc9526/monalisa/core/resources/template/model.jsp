@@ -17,7 +17,7 @@ import <%=i%>;
 
 @Table(
 	name="<%=table.getName() %>",
-	primaryKeys={<%for(MetaColumn k:table.getKeyColumns()){%>"<%=k==table.getKeyColumns().get(0)?"":", "%><%=k.getName()%>"<%}%>},
+	primaryKeys={<%for(MetaColumn k:table.getKeyColumns()){%><%=k==table.getKeyColumns().get(0)?"":", "%>"<%=k.getName()%>"<%}%>},
 	remarks="<%=toJavaString(table.getRemarks())%>",
 	indexes={		
 		<%for(MetaIndex index:table.getIndexes()){ %>
