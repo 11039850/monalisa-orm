@@ -1,0 +1,149 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.tsc9526</groupId>
+	<artifactId>monalisa-core</artifactId>
+	<version>0.7.2-SNAPSHOT</version>
+	
+	<parent>
+		<groupId>com.jy</groupId>
+		<artifactId>jy-parent-pom</artifactId>
+		<version>1.0.0</version>		 
+	</parent>
+	 
+	<properties>
+		<svnURL>svn://120.26.51.207/data/svn/research</svnURL>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<repositoryURL>${setting.repositoryURL}</repositoryURL>
+		<snapshotRepositoryURL>${setting.snapshotRepositoryURL}</snapshotRepositoryURL>		
+		<maven.javadoc.skip>false</maven.javadoc.skip> 	
+		
+		 
+        <argLine>-Dfile.encoding=UTF-8</argLine>	
+	</properties>
+
+	<scm>
+		<connection>scm:svn:${svnURL}/${project.artifactId}/trunk/</connection>
+		<developerConnection>scm:svn:${svnURL}/${project.artifactId}/trunk/</developerConnection>
+	</scm>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.testng</groupId>
+			<artifactId>testng</artifactId>
+			<version>5.14.10</version>
+			<scope>test</scope>
+		</dependency>
+		
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+			<version>1.2.16</version>	
+			<scope>test</scope>		
+		</dependency>
+		
+		<dependency>
+		    <groupId>org.jmockit</groupId>
+		    <artifactId>jmockit</artifactId>
+		    <version>1.22</version>
+		    <scope>test</scope>		
+		</dependency>
+
+		<dependency>
+			<groupId>org.freemarker</groupId>
+			<artifactId>freemarker</artifactId>
+			<version>2.3.20</version>
+			<scope>compile</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>c3p0</groupId>
+			<artifactId>c3p0</artifactId>
+			<version>0.9.1.2</version>
+		</dependency>
+ 	
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<version>5.1.24</version>
+		</dependency>
+
+		<dependency>
+		  <groupId>com.google.code.gson</groupId>
+		  <artifactId>gson</artifactId>
+		  <version>2.3.1</version>
+		</dependency>
+
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>javax.servlet-api</artifactId>
+			<version>3.1-b02</version>
+			<type>jar</type>
+			<scope>provided</scope>
+		</dependency>
+	 
+		<dependency>
+		    <groupId>commons-beanutils</groupId>
+		    <artifactId>commons-beanutils</artifactId>
+		    <version>1.9.2</version>
+		</dependency>
+      
+       
+	</dependencies>
+
+	<build>
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+			</resource>
+			<resource>
+				<directory>META-INF</directory>
+				<targetPath>META-INF</targetPath>
+			</resource>
+		</resources>
+		<plugins>
+			<plugin>
+	            <groupId>org.apache.maven.plugins</groupId>
+	            <artifactId>maven-javadoc-plugin</artifactId>
+	            <version>2.9</version>
+        	</plugin>
+			<plugin>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>2.3.2</version>
+				<configuration>
+					<source>1.6</source>
+					<target>1.6</target>
+					<!-- Disable annotation processing for ourselves. -->
+					<compilerArgument>-proc:none</compilerArgument>
+					<compilerArguments>
+                   		<extdirs>lib</extdirs>
+                 	</compilerArguments>
+				</configuration>
+			</plugin>
+			<plugin>
+				<artifactId>maven-source-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>attach-sources</id>
+						<phase>deploy</phase>
+						<goals>
+							<goal>jar-no-fork</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<artifactId>maven-deploy-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>deploy</id>
+						<phase>deploy</phase>
+						<goals>
+							<goal>deploy</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+</project>
