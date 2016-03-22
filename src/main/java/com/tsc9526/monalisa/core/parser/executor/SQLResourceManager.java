@@ -22,7 +22,7 @@ public class SQLResourceManager {
 	/**
 	 * SQL资源文件缺省放置目录： sql
 	 */
-	public static String SQL_FILES_ROOT="sql";
+	public static String SQL_FILES_ROOT=System.getProperty("monalisa.sqlfiles.root","sql");
 	
 	private static SQLResourceManager instance;
  
