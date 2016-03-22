@@ -127,6 +127,16 @@ public class <%=table.getJavaName()%> extends <%=modelClass%><<%=table.getJavaNa
 		%> 
 	}
 	
+	<%=getComments(table,f,"@param defaultValue  Return the default value if "+f.getJavaName()+" is null.")%> 
+	public <%=f.getJavaType()%> <%=f.getJavaNameGet()%>(<%=f.getJavaType()%> defaultValue){
+		<%=f.getJavaType()%> r=this.<%=f.getJavaNameGet()%>();
+		if(r==null){
+			r=defaultValue;
+		}
+		
+		return r;
+	}
+	
 	<%} %>
 	
 	public static class Insert extends com.tsc9526.monalisa.core.query.dao.Insert<<%=table.getJavaName()%>>{
@@ -433,7 +443,7 @@ public class <%=table.getJavaName()%> extends <%=modelClass%><<%=table.getJavaNa
 	}
 
 	
-	String getComments(MetaTable table,MetaColumn c,String align){
+	String getComments(MetaTable table,MetaColumn c,String params){
 		String cname=c.getName();
 		
 		if(cname!=null && cname.length()>0 && c.getTable()!=null){	
@@ -480,6 +490,14 @@ public class <%=table.getJavaName()%> extends <%=modelClass%><<%=table.getJavaNa
 				r+="* <li><B>remarks:</B> "+toComments(c.getRemarks())+"\r\n";
 			}
 			 
+			if(params==null){
+				params="";
+			}
+			params=params.trim();
+			if(params.length()>0){
+				r+="* "+params;
+			}
+			
 		 	r+="*/\r\n";	
 		 
 		 	String f=c.getTable().getJavaName()+".M.";
