@@ -62,6 +62,8 @@ public class QueryPackage {
 		}
 		
 		writer.write("\r\npublic class "+className+"{\r\n");
+		writer.write("\t public final static long TS="+jsp.getLastModified()+"L;\r\n\r\n");
+		
 		for(QueryStatement q:statements){
 			q.write(writer);
 		}

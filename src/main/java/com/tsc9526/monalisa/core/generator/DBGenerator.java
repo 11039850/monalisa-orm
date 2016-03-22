@@ -20,7 +20,7 @@ import com.tsc9526.monalisa.core.query.partition.Partition;
 public abstract class DBGenerator {
 	static Log logger=LogFactory.getLog(DBGenerator.class);
 	
-	public static String PROJECT_TMP_PATH="/target/monalisa";
+	public static String PROJECT_TMP_PATH="target/monalisa";
 	
 	protected DBConfig dbcfg;
 	protected DBMetadata dbmetadata; 

@@ -18,7 +18,7 @@ import org.apache.commons.logging.LogFactory;
 
 import com.tsc9526.monalisa.core.annotation.DB;
 import com.tsc9526.monalisa.core.generator.DBGeneratorProcessing;
-import com.tsc9526.monalisa.core.logger.MessagerLogger;
+import com.tsc9526.monalisa.core.logger.Logger;
 import com.tsc9526.monalisa.core.tools.Helper;
 
 /**
@@ -34,7 +34,7 @@ public class DBAnnotationProcessor extends AbstractProcessor {
 		 
 		if(Helper.inEclipseIDE()){
 			//Eclipse环境,设置日志输出
-			MessagerLogger.setMessagerLogger(processingEnv.getMessager());
+			Logger.setMessager(processingEnv.getMessager());
 		} 		
 	}
 	 
