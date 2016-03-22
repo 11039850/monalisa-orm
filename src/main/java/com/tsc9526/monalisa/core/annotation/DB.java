@@ -16,6 +16,7 @@ import com.tsc9526.monalisa.core.datasource.ConfigClass;
  * </p>
  * </code>
  * 
+ * @see com.tsc9526.monalisa.core.generator.DBGeneratorMain
  * 
  * @author zzg.zhou(11039850@qq.com)
  *
