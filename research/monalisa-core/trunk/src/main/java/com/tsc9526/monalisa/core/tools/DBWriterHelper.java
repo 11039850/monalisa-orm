@@ -6,9 +6,9 @@ import java.io.FileOutputStream;
 import com.tsc9526.monalisa.core.parser.jsp.Jsp;
 
  
-public class JspWriterClass {
+public class DBWriterHelper {
 	public static void main(String[] args)throws Exception{
-		JspWriterClass jwc=new JspWriterClass();
+		DBWriterHelper jwc=new DBWriterHelper();
 		jwc.createDBModelWriter();
 		jwc.createDBSelectWriter();
 		
