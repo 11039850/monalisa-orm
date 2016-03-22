@@ -13,8 +13,8 @@ import com.tsc9526.monalisa.core.parser.executor.SQLGenerator;
  * 	 &nbsp;&nbsp;&nbsp;&nbsp;&lt;annotationProcessor&gt;<br>
  * 		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;com.tsc9526.monalisa.core.processor.DBAnnotationProcessor<br>
  *   &nbsp;&nbsp;&nbsp;&nbsp;&lt;/annotationProcessor&gt; </li>
- * <li>2. 使用Eclipse插件：<br> </li>
- * <li>3. 手工调用本类的静态方法生成数据库访问的接口代码</li>
+ * <li>2. 使用Eclipse插件<br> </li>
+ * <li>3. 手工调用本类提供的静态方法</li>
  * <br>
  * @author zzg.zhou(11039850@qq.com)
  */
