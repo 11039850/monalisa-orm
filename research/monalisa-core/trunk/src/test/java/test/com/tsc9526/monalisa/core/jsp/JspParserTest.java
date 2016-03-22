@@ -15,7 +15,7 @@ import com.tsc9526.monalisa.core.query.datatable.DataTable;
 public class JspParserTest {
 	
 	public void testGenerate(){
-		DBGeneratorMain.generate(null,"src/test/java");
+		DBGeneratorMain.generateSqlQueryClass("src/test/java");
 	}
 	
 	public void testQueryByQueryId()throws Exception{
