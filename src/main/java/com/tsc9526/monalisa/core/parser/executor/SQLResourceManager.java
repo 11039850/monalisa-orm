@@ -21,12 +21,12 @@ public class SQLResourceManager {
 	
 	private static SQLResourceManager instance;
 	
-	public static String SQL_FIlE_PATH="sql";
+	public static String SQL_FILE_PATH="sql";
 	
 	public static synchronized SQLResourceManager getInstance(){
 		if(instance==null){
 			instance=new SQLResourceManager();
-			instance.loadSqlFiles(new File(SQL_FIlE_PATH) ,".jsp|.mql", true);
+			instance.loadSqlFiles(new File(SQL_FILE_PATH) ,".jsp|.mql", true);
 		}
 		return instance;
 	}
