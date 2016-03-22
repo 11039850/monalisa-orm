@@ -3,11 +3,9 @@ package com.tsc9526.monalisa.core.generator;
 import java.io.Writer;
 import java.util.List;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 import com.tsc9526.monalisa.core.datasource.DBConfig;
 import com.tsc9526.monalisa.core.datasource.DbProp;
+import com.tsc9526.monalisa.core.logger.Logger;
 import com.tsc9526.monalisa.core.meta.MetaPartition;
 import com.tsc9526.monalisa.core.meta.MetaTable;
 import com.tsc9526.monalisa.core.query.model.Model;
@@ -18,7 +16,7 @@ import com.tsc9526.monalisa.core.query.partition.Partition;
  */
 @SuppressWarnings("rawtypes")
 public abstract class DBGenerator {
-	static Log logger=LogFactory.getLog(DBGenerator.class);
+	static Logger logger=Logger.getLogger(DBGenerator.class);
 	
 	public static String PROJECT_TMP_PATH="target/monalisa";
 	

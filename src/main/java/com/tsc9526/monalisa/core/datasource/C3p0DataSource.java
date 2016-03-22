@@ -10,7 +10,6 @@ import java.sql.SQLFeatureNotSupportedException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
-import java.util.logging.Logger;
 
 import com.tsc9526.monalisa.core.tools.ClassHelper;
 
@@ -84,7 +83,7 @@ public class C3p0DataSource implements PooledDataSource {
 	}
 
 	
-	public Logger getParentLogger() throws SQLFeatureNotSupportedException {		 
+	public java.util.logging.Logger getParentLogger() throws SQLFeatureNotSupportedException {		 
 		throw new SQLFeatureNotSupportedException("getParentLogger");
 	}
 

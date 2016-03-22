@@ -11,12 +11,10 @@ import java.util.Properties;
 
 import javax.sql.DataSource;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 import com.tsc9526.monalisa.core.annotation.DB;
 import com.tsc9526.monalisa.core.annotation.Table;
 import com.tsc9526.monalisa.core.generator.DBGeneratorProcessing;
+import com.tsc9526.monalisa.core.logger.Logger;
 import com.tsc9526.monalisa.core.meta.MetaPartition;
 import com.tsc9526.monalisa.core.query.DataMap;
 import com.tsc9526.monalisa.core.query.Page;
@@ -33,7 +31,7 @@ import com.tsc9526.monalisa.core.tools.CloseQuietly;
  * @author zzg.zhou(11039850@qq.com)
  */
 public class DBConfig implements Closeable{ 	
-	static Log logger=LogFactory.getLog(DBConfig.class);
+	static Logger logger=Logger.getLogger(DBConfig.class);
 	
 	/**
 	 * <code>DEFAULT_PATH= ".";</code> <br>

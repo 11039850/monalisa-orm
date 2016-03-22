@@ -6,8 +6,6 @@ import java.util.List;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
@@ -15,6 +13,7 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 
 import com.tsc9526.monalisa.core.datasource.DBConfig;
+import com.tsc9526.monalisa.core.logger.Logger;
 import com.tsc9526.monalisa.core.parser.executor.SQLClass;
 import com.tsc9526.monalisa.core.parser.jsp.Jsp;
 import com.tsc9526.monalisa.core.parser.jsp.JspElement;
@@ -28,7 +27,7 @@ import com.tsc9526.monalisa.core.tools.JavaWriter;
  * @author zzg.zhou(11039850@qq.com)
  */
 public class QueryPackage {
-	static Log logger=LogFactory.getLog(QueryPackage.class.getName());
+	static Logger logger=Logger.getLogger(QueryPackage.class.getName());
 	
 	public static String DEFAULT_PACKAGE_NAME="mqs";
 	public static String DEFAULT_CLASS_NAME  ="SQL";

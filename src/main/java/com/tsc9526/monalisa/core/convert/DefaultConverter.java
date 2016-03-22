@@ -6,8 +6,6 @@ import java.util.Map;
 
 import org.apache.commons.beanutils.ConvertUtils;
 import org.apache.commons.beanutils.converters.DateTimeConverter;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
@@ -16,12 +14,13 @@ import com.google.gson.JsonNull;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonPrimitive;
+import com.tsc9526.monalisa.core.logger.Logger;
 import com.tsc9526.monalisa.core.tools.EnumHelper;
 import com.tsc9526.monalisa.core.tools.JsonHelper;
 
 @SuppressWarnings("unchecked")
 public class DefaultConverter implements Converter{
-	static Log logger=LogFactory.getLog(DefaultConverter.class);
+	static Logger logger=Logger.getLogger(DefaultConverter.class);
 	
 	static{
 		DateValue dc = new DateValue(null);

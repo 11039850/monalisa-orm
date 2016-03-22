@@ -16,13 +16,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 import com.tsc9526.monalisa.core.annotation.DB;
 import com.tsc9526.monalisa.core.datasource.DBConfig;
 import com.tsc9526.monalisa.core.datasource.DataSourceManager;
 import com.tsc9526.monalisa.core.datasource.DbProp;
+import com.tsc9526.monalisa.core.logger.Logger;
 import com.tsc9526.monalisa.core.meta.MetaColumn;
 import com.tsc9526.monalisa.core.meta.MetaTable;
 import com.tsc9526.monalisa.core.meta.Name;
@@ -56,7 +54,7 @@ import com.tsc9526.monalisa.core.tools.TypeHelper;
 
 @SuppressWarnings({"unchecked"})
 public class Query {	
-	static Log logger=LogFactory.getLog(Query.class.getName());
+	static Logger logger=Logger.getLogger(Query.class.getName());
 	
 	/**
 	 * 是否显示执行的SQL语句, 默认为: false

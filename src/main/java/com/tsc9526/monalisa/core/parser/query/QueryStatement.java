@@ -6,9 +6,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
+import com.tsc9526.monalisa.core.logger.Logger;
 import com.tsc9526.monalisa.core.parser.jsp.JspCode;
 import com.tsc9526.monalisa.core.parser.jsp.JspElement;
 import com.tsc9526.monalisa.core.parser.jsp.JspEval;
@@ -20,7 +18,7 @@ import com.tsc9526.monalisa.core.tools.JavaWriter;
  * @author zzg.zhou(11039850@qq.com)
  */
 public class QueryStatement { 
-	static Log logger=LogFactory.getLog(QueryStatement.class.getName());
+	static Logger logger=Logger.getLogger(QueryStatement.class.getName());
 	
 	
 	private QueryPackage queryPackage;
