@@ -31,7 +31,7 @@ import java.util.LinkedHashMap;
 	}
 )
 public class TestTable2 extends com.tsc9526.monalisa.core.query.model.Model<TestTable2> implements test.com.tsc9526.monalisa.core.mysql.MysqlDB{
-	private static final long serialVersionUID = 1139869274077L;
+	private static final long serialVersionUID = 1139511969626L;
 		 
 	public static final Insert INSERT(){
 	 	return new Insert(new TestTable2());

@@ -21,12 +21,12 @@ public class SQLResourceManager {
 	
 	private static SQLResourceManager instance;
 	
-	private static File defaultSQLFiles=new File(System.getProperty("monalisa.resource.sql.path","sql"));
+	public static String SQL_FIlE_PATH="sql";
 	
 	public static synchronized SQLResourceManager getInstance(){
 		if(instance==null){
 			instance=new SQLResourceManager();
-			instance.loadSqlFiles(defaultSQLFiles ,".jsp|.mql", true);
+			instance.loadSqlFiles(new File(SQL_FIlE_PATH) ,".jsp|.mql", true);
 		}
 		return instance;
 	}
