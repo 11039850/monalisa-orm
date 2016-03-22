@@ -3,7 +3,9 @@ package com.tsc9526.monalisa.core.datasource;
 
 public class DbProp {
 	public final static DbProp PROP_DB_SQL_DEBUG 		= new DbProp("sql.debug",false);
-	 
+	public final static DbProp PROP_DB_SQL_PATH 		= new DbProp("sql.path","sql");
+	
+	
 	public final static DbProp PROP_DB_URL	   			= new DbProp("url");
 	public final static DbProp PROP_DB_DRIVER  			= new DbProp("driver");
 	public final static DbProp PROP_DB_CATALOG  		= new DbProp("catalog");
@@ -22,6 +24,7 @@ public class DbProp {
 	public final static DbProp PROP_DB_HISTORY_PREFIX_COLUMN  = new DbProp("history.prefix.column","history_");
 	public final static DbProp PROP_DB_HISTORY_TABLES         = new DbProp("history.tables");
   
+	
 	public final static DbProp PROP_TABLE_MODEL_CLASS   =new DbProp("modelClass");
 	public final static DbProp PROP_TABLE_MODEL_LISTENER=new DbProp("modelListener");
 	

@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -667,19 +668,34 @@ public class Query {
 		protected DataMap loadToMap(ResultSet rs, DataMap map)throws SQLException{
 			ResultSetMetaData rsmd=rs.getMetaData();
 			 
+			Map<String,Integer> xs=new HashMap<String,Integer>();
+			for(int i=1;i<=rsmd.getColumnCount();i++){
+				String name =rsmd.getColumnLabel(i);
+				if(name==null || name.trim().length()<1){
+					name =rsmd.getColumnName(i);
+				}
+				name=name.toLowerCase();
+				
+				if(xs.containsKey(name)){
+					xs.put(name,2);
+				}else{
+					xs.put(name,1);
+				}
+			}
+			
 			for(int i=1;i<=rsmd.getColumnCount();i++){
 				String name =rsmd.getColumnLabel(i);
 				if(name==null || name.trim().length()<1){
 					name =rsmd.getColumnName(i);
 				}
 				
-				int x=1;
-				String n=name; 
-				while(map.containsKey(n)){
-					n=name + (x++);
+				Integer rn=xs.get(name.toLowerCase());
+				if(rn!=null && rn>1){
+					String tableName=rsmd.getTableName(i);
+					map.put(tableName+"$"+name, rs.getObject(i));
+				}else{
+					map.put(name, rs.getObject(i));
 				}
-				
-				map.put(n, rs.getObject(i));
 			}
 			
 			return map;
@@ -696,7 +712,10 @@ public class Query {
 			ResultSetMetaData rsmd=rs.getMetaData();
 			
 			for(int i=1;i<=rsmd.getColumnCount();i++){
-				String name =rsmd.getColumnName(i);
+				String name =rsmd.getColumnLabel(i);
+				if(name==null || name.trim().length()<1){
+					name =rsmd.getColumnName(i);
+				}
 				
 				Name nColumn =new Name(false).setName(name);
 				 
@@ -716,7 +735,10 @@ public class Query {
 			ResultSetMetaData rsmd=rs.getMetaData();
 			
 			for(int i=1;i<=rsmd.getColumnCount();i++){
-				String name =rsmd.getColumnName(i);
+				String name =rsmd.getColumnLabel(i);
+				if(name==null || name.trim().length()<1){
+					name =rsmd.getColumnName(i);
+				}
 				
 				Name nColumn =new Name(false).setName(name);
 				 

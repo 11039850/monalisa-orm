@@ -18,9 +18,9 @@
 			Date endTime =new Date();
 			title="x";
 			
-			name="N1%";
+			name="N%";
 		%>
-		SELECT * FROM test_table_1 a left join test_table_2 b on a.id=b.id where a.name like $name 
+		SELECT a.name,b.name as cname FROM test_table_1 a left join test_table_2 b on a.id=b.id where a.name like $name 
 		<%}%>
 	</q>
 	

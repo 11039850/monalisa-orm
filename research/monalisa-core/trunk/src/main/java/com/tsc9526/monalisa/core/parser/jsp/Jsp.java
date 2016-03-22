@@ -19,9 +19,12 @@ public class Jsp{
 	private String filePath;
 	private String body;
 	private List<JspElement> elements=new ArrayList<JspElement>();
-	 
+	
+	private long lastModified;
+	
 	public Jsp(File jspFile)throws IOException {
 		this.filePath=jspFile.getAbsolutePath();
+		this.lastModified=jspFile.lastModified();
 		
 		String body=FileHelper.readToString(new FileInputStream(filePath), DEFAULT_PAGE_ENCODING);
 		
@@ -181,5 +184,13 @@ public class Jsp{
 	
 	public List<JspElement> getElements() {
 		return elements;
+	}
+
+	public long getLastModified() {
+		return lastModified;
+	}
+
+	public void setLastModified(long lastModified) {
+		this.lastModified = lastModified;
 	}
 }

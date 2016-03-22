@@ -1,4 +1,4 @@
-/***CREATE TABLE: test_logyyyymm_ :: test_logyyyymm_201602***/
+/***CREATE TABLE: test_logyyyymm_ :: test_logyyyymm_201603***/
 CREATE TABLE IF NOT EXISTS `#{table}`(
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '唯一主键',
   `log_time` datetime NOT NULL,
