@@ -1,10 +1,9 @@
-package test.com.tsc9526.monalisa.core.jsp;
+package com.tsc9526.monalisa.core.tools;
 
 import java.io.File;
 import java.io.FileOutputStream;
 
 import com.tsc9526.monalisa.core.parser.jsp.Jsp;
-import com.tsc9526.monalisa.core.tools.JavaWriter;
 
  
 public class JspWriterClass {
