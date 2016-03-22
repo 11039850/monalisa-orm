@@ -4,9 +4,7 @@ import java.io.File;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
+import com.tsc9526.monalisa.core.logger.Logger;
 import com.tsc9526.monalisa.core.parser.query.QueryPackage;
 import com.tsc9526.monalisa.core.query.Args;
 import com.tsc9526.monalisa.core.query.Query;
@@ -17,7 +15,7 @@ import com.tsc9526.monalisa.core.query.Query;
  * @author zzg.zhou(11039850@qq.com)
  */
 public class SQLResourceManager {
-	static Log logger=LogFactory.getLog(SQLResourceManager.class.getName());
+	static Logger logger=Logger.getLogger(SQLResourceManager.class.getName());
 	
 	/**
 	 * SQL资源文件缺省放置目录： sql

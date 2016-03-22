@@ -5,13 +5,12 @@ import java.io.File;
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.TypeElement;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.internal.apt.pluggable.core.dispatch.IdeBuildProcessingEnvImpl;
 
 import com.tsc9526.monalisa.core.annotation.DB;
 import com.tsc9526.monalisa.core.datasource.DBConfig;
+import com.tsc9526.monalisa.core.logger.Logger;
 import com.tsc9526.monalisa.core.tools.Helper;
 
 /**
@@ -19,7 +18,7 @@ import com.tsc9526.monalisa.core.tools.Helper;
  * @author zzg.zhou(11039850@qq.com)
  */
 public class DBProject {
-	static Log logger=LogFactory.getLog(DBProject.class);
+	static Logger logger=Logger.getLogger(DBProject.class);
 	 
 	public static DBProject getProject(ProcessingEnvironment processingEnv,TypeElement typeElement) {
 		 return new DBProject(processingEnv,typeElement);

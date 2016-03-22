@@ -16,7 +16,6 @@ import java.util.Properties;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.Semaphore;
-import java.util.logging.Logger;
 
 /**
  *  
@@ -170,7 +169,7 @@ public class SimpleDataSource implements PooledDataSource {
 		return 0;
 	}
 
-	public Logger getParentLogger() throws SQLFeatureNotSupportedException {
+	public java.util.logging.Logger getParentLogger() throws SQLFeatureNotSupportedException {
 		return null;
 	}
 

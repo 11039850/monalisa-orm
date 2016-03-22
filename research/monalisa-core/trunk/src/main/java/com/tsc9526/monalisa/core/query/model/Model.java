@@ -7,15 +7,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 import com.tsc9526.monalisa.core.annotation.Column;
 import com.tsc9526.monalisa.core.annotation.Table;
 import com.tsc9526.monalisa.core.datasource.DBConfig;
 import com.tsc9526.monalisa.core.datasource.DataSourceManager;
 import com.tsc9526.monalisa.core.datasource.DbProp;
 import com.tsc9526.monalisa.core.generator.DBMetadata;
+import com.tsc9526.monalisa.core.logger.Logger;
 import com.tsc9526.monalisa.core.meta.MetaPartition;
 import com.tsc9526.monalisa.core.meta.MetaTable;
 import com.tsc9526.monalisa.core.meta.MetaTable.CreateTable;
@@ -45,7 +43,7 @@ import com.tsc9526.monalisa.core.tools.TypeHelper;
  */
 @SuppressWarnings({ "rawtypes", "unchecked" })
 public abstract class Model<T extends Model> implements Serializable {
-	static Log logger=LogFactory.getLog(Model.class);
+	static Logger logger=Logger.getLogger(Model.class);
 
 	private static final long serialVersionUID = 703976566431364670L;
 

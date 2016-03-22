@@ -13,9 +13,6 @@ import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.TypeElement;
 import javax.tools.Diagnostic.Kind;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 import com.tsc9526.monalisa.core.annotation.DB;
 import com.tsc9526.monalisa.core.generator.DBGeneratorProcessing;
 import com.tsc9526.monalisa.core.logger.Logger;
@@ -39,7 +36,7 @@ public class DBAnnotationProcessor extends AbstractProcessor {
 	}
 	 
 	public boolean process(Set<? extends TypeElement> annotations,RoundEnvironment roundEnv) {
-		Log logger=LogFactory.getLog(DBAnnotationProcessor.class);
+		Logger logger=Logger.getLogger(DBAnnotationProcessor.class);
 		
 		if (!roundEnv.processingOver()) {	
 			Set<? extends Element> els = roundEnv.getElementsAnnotatedWith(DB.class);

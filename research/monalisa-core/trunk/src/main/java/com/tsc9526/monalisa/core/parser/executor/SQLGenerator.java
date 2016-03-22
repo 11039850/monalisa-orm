@@ -13,12 +13,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 import com.tsc9526.monalisa.core.annotation.Column;
 import com.tsc9526.monalisa.core.generator.DBMetadata;
 import com.tsc9526.monalisa.core.generator.DBWriterSelect;
+import com.tsc9526.monalisa.core.logger.Logger;
 import com.tsc9526.monalisa.core.meta.MetaColumn;
 import com.tsc9526.monalisa.core.meta.MetaTable;
 import com.tsc9526.monalisa.core.parser.jsp.JspContext;
@@ -34,7 +32,7 @@ import com.tsc9526.monalisa.core.tools.JavaWriter;
  * @author zzg.zhou(11039850@qq.com)
  */
 public class SQLGenerator {
-	static Log logger=LogFactory.getLog(SQLGenerator.class.getName());
+	static Logger logger=Logger.getLogger(SQLGenerator.class.getName());
 	
 	private SQLResourceManager sqlResourceManager=SQLResourceManager.getInstance();
 	

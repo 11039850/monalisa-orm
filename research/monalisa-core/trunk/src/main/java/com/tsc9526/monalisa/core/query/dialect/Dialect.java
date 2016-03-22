@@ -4,15 +4,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 import com.tsc9526.monalisa.core.annotation.Column;
 import com.tsc9526.monalisa.core.annotation.Table;
 import com.tsc9526.monalisa.core.datasource.DBConfig;
+import com.tsc9526.monalisa.core.logger.Logger;
 import com.tsc9526.monalisa.core.meta.MetaTable.CreateTable;
 import com.tsc9526.monalisa.core.query.Query;
 import com.tsc9526.monalisa.core.query.model.Model;
@@ -29,7 +27,7 @@ import com.tsc9526.monalisa.core.tools.TypeHelper;
  */
 @SuppressWarnings({"rawtypes"})
 public abstract class Dialect{
-	static Log logger=LogFactory.getLog(Dialect.class.getName());
+	static Logger logger=Logger.getLogger(Dialect.class.getName());
 		
 	protected static Map<String, CreateTable> hTables=new ConcurrentHashMap<String, CreateTable>();
 	

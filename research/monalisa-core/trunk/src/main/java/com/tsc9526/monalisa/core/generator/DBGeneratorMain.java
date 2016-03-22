@@ -2,9 +2,7 @@ package com.tsc9526.monalisa.core.generator;
 
 import java.io.File;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
+import com.tsc9526.monalisa.core.logger.Logger;
 import com.tsc9526.monalisa.core.parser.executor.SQLGenerator;
 
 /**
@@ -19,7 +17,7 @@ import com.tsc9526.monalisa.core.parser.executor.SQLGenerator;
  * @author zzg.zhou(11039850@qq.com)
  */
 public class DBGeneratorMain {
-	static Log logger=LogFactory.getLog(DBGeneratorMain.class.getName());
+	static Logger logger=Logger.getLogger(DBGeneratorMain.class.getName());
 	
 	public static void main(String[] args) throws Exception{
 		if(args.length<2){			
