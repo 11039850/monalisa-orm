@@ -19,14 +19,17 @@ import com.tsc9526.monalisa.core.query.Query;
 public class SQLResourceManager {
 	static Log logger=LogFactory.getLog(SQLResourceManager.class.getName());
 	
+	/**
+	 * SQL资源文件缺省放置目录： sql
+	 */
+	public static String SQL_FILES_ROOT="sql";
+	
 	private static SQLResourceManager instance;
-	
-	public static String SQL_FILE_PATH="sql";
-	
+ 
 	public static synchronized SQLResourceManager getInstance(){
 		if(instance==null){
 			instance=new SQLResourceManager();
-			instance.loadSqlFiles(new File(SQL_FILE_PATH) ,".jsp|.mql", true);
+			instance.loadSqlFiles(new File(SQL_FILES_ROOT) ,".jsp|.mql", true);
 		}
 		return instance;
 	}
