@@ -536,14 +536,12 @@ public abstract class Model<T extends Model> implements Serializable {
 	}
 
 	/**
-	 * How to update the model's primary key:<br>
+	 * How to update the model's primary key:<br><br>
 	 * <code>
-	 *   Model model=new Model(oldId).load(); <br>
+	 *   Update update=new Update(model); <br>
 	 *   model.updateKey(true); //Set enable update primary key! <br>
 	 *   model.setId(newId);    //Set new primary key <br>
 	 *   model.setXxx ...       //Set other fields ...<br>
-	 *   <br>
-	 *   Update update=new Update(model); <br>
 	 *   update.update("id=?",oldId);<br>
 	 * </code>
 	 * 
