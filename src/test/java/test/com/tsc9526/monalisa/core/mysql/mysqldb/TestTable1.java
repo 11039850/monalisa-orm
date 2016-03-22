@@ -381,6 +381,22 @@ public class TestTable1 extends com.tsc9526.monalisa.core.query.model.Model<Test
  
 	}
 	
+	/**
+* @Column
+* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_1&nbsp;<B>name:</B> id &nbsp;[<font color=red>KEY</font>|<font color=red>AUTO</font>|<font color=red>NOTNULL</font>]
+* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 10<br>
+* <li><B>remarks:</B> 唯一主键
+* @param defaultValue  Return the default value if id is null.*/
+@Column(table=M.TABLE, jdbcType=4, name=M.id$name, key=M.id$key, auto=M.id$auto, notnull=M.id$notnull, length=M.id$length, value=M.id$value, remarks=M.id$remarks) 
+	public Integer getId(Integer defaultValue){
+		Integer r=this.getId();
+		if(r==null){
+			r=defaultValue;
+		}
+		
+		return r;
+	}
+	
 	
 	/**
 * @Column
@@ -392,6 +408,22 @@ public class TestTable1 extends com.tsc9526.monalisa.core.query.model.Model<Test
 	public String getName(){
 		return this.name;
  
+	}
+	
+	/**
+* @Column
+* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_1&nbsp;<B>name:</B> name &nbsp;[<font color=red>NOTNULL</font>]
+* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 128 &nbsp;<B>value:</B> N0001<br>
+* <li><B>remarks:</B> 名称
+* @param defaultValue  Return the default value if name is null.*/
+@Column(table=M.TABLE, jdbcType=12, name=M.name$name, key=M.name$key, auto=M.name$auto, notnull=M.name$notnull, length=M.name$length, value=M.name$value, remarks=M.name$remarks) 
+	public String getName(String defaultValue){
+		String r=this.getName();
+		if(r==null){
+			r=defaultValue;
+		}
+		
+		return r;
 	}
 	
 	
@@ -407,6 +439,22 @@ public class TestTable1 extends com.tsc9526.monalisa.core.query.model.Model<Test
  
 	}
 	
+	/**
+* @Column
+* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_1&nbsp;<B>name:</B> title
+* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 128<br>
+* <li><B>remarks:</B> 标题
+* @param defaultValue  Return the default value if title is null.*/
+@Column(table=M.TABLE, jdbcType=12, name=M.title$name, key=M.title$key, auto=M.title$auto, notnull=M.title$notnull, length=M.title$length, value=M.title$value, remarks=M.title$remarks) 
+	public String getTitle(String defaultValue){
+		String r=this.getTitle();
+		if(r==null){
+			r=defaultValue;
+		}
+		
+		return r;
+	}
+	
 	
 	/**
 * @Column
@@ -418,6 +466,22 @@ public class TestTable1 extends com.tsc9526.monalisa.core.query.model.Model<Test
 	public EnumIntA getEnumIntA(){
 		return this.enumIntA;
  
+	}
+	
+	/**
+* @Column
+* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_1&nbsp;<B>name:</B> enum_int_a &nbsp;[<font color=red>NOTNULL</font>|<font color=red>ENUM</font>]
+* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 10 &nbsp;<B>value:</B> 0<br>
+* <li><B>remarks:</B> 枚举字段A  #enum{{V0,V1}}
+* @param defaultValue  Return the default value if enumIntA is null.*/
+@Column(table=M.TABLE, jdbcType=4, name=M.enumIntA$name, key=M.enumIntA$key, auto=M.enumIntA$auto, notnull=M.enumIntA$notnull, length=M.enumIntA$length, value=M.enumIntA$value, remarks=M.enumIntA$remarks) 
+	public EnumIntA getEnumIntA(EnumIntA defaultValue){
+		EnumIntA r=this.getEnumIntA();
+		if(r==null){
+			r=defaultValue;
+		}
+		
+		return r;
 	}
 	
 	
@@ -433,6 +497,22 @@ public class TestTable1 extends com.tsc9526.monalisa.core.query.model.Model<Test
  
 	}
 	
+	/**
+* @Column
+* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_1&nbsp;<B>name:</B> enum_string_a &nbsp;[<font color=red>NOTNULL</font>|<font color=red>ENUM</font>]
+* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 64 &nbsp;<B>value:</B> TRUE<br>
+* <li><B>remarks:</B> #enum{{ TRUE, FALSE}}
+* @param defaultValue  Return the default value if enumStringA is null.*/
+@Column(table=M.TABLE, jdbcType=12, name=M.enumStringA$name, key=M.enumStringA$key, auto=M.enumStringA$auto, notnull=M.enumStringA$notnull, length=M.enumStringA$length, value=M.enumStringA$value, remarks=M.enumStringA$remarks) 
+	public EnumStringA getEnumStringA(EnumStringA defaultValue){
+		EnumStringA r=this.getEnumStringA();
+		if(r==null){
+			r=defaultValue;
+		}
+		
+		return r;
+	}
+	
 	
 	/**
 * @Column
@@ -444,6 +524,22 @@ public class TestTable1 extends com.tsc9526.monalisa.core.query.model.Model<Test
 	public java.util.Date getTsA(){
 		return this.tsA;
  
+	}
+	
+	/**
+* @Column
+* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_1&nbsp;<B>name:</B> ts_a &nbsp;[<font color=red>NOTNULL</font>]
+* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 19<br>
+* <li><B>remarks:</B> 
+* @param defaultValue  Return the default value if tsA is null.*/
+@Column(table=M.TABLE, jdbcType=93, name=M.tsA$name, key=M.tsA$key, auto=M.tsA$auto, notnull=M.tsA$notnull, length=M.tsA$length, value=M.tsA$value, remarks=M.tsA$remarks) 
+	public java.util.Date getTsA(java.util.Date defaultValue){
+		java.util.Date r=this.getTsA();
+		if(r==null){
+			r=defaultValue;
+		}
+		
+		return r;
 	}
 	
 	
@@ -459,6 +555,22 @@ public class TestTable1 extends com.tsc9526.monalisa.core.query.model.Model<Test
  
 	}
 	
+	/**
+* @Column
+* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_1&nbsp;<B>name:</B> create_time &nbsp;[<font color=red>NOTNULL</font>]
+* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 19<br>
+* <li><B>remarks:</B> 
+* @param defaultValue  Return the default value if createTime is null.*/
+@Column(table=M.TABLE, jdbcType=93, name=M.createTime$name, key=M.createTime$key, auto=M.createTime$auto, notnull=M.createTime$notnull, length=M.createTime$length, value=M.createTime$value, remarks=M.createTime$remarks) 
+	public java.util.Date getCreateTime(java.util.Date defaultValue){
+		java.util.Date r=this.getCreateTime();
+		if(r==null){
+			r=defaultValue;
+		}
+		
+		return r;
+	}
+	
 	
 	/**
 * @Column
@@ -470,6 +582,22 @@ public class TestTable1 extends com.tsc9526.monalisa.core.query.model.Model<Test
 	public String getCreateBy(){
 		return this.createBy;
  
+	}
+	
+	/**
+* @Column
+* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_1&nbsp;<B>name:</B> create_by
+* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 64<br>
+* <li><B>remarks:</B> 
+* @param defaultValue  Return the default value if createBy is null.*/
+@Column(table=M.TABLE, jdbcType=12, name=M.createBy$name, key=M.createBy$key, auto=M.createBy$auto, notnull=M.createBy$notnull, length=M.createBy$length, value=M.createBy$value, remarks=M.createBy$remarks) 
+	public String getCreateBy(String defaultValue){
+		String r=this.getCreateBy();
+		if(r==null){
+			r=defaultValue;
+		}
+		
+		return r;
 	}
 	
 	
@@ -485,6 +613,22 @@ public class TestTable1 extends com.tsc9526.monalisa.core.query.model.Model<Test
  
 	}
 	
+	/**
+* @Column
+* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_1&nbsp;<B>name:</B> update_time
+* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 19<br>
+* <li><B>remarks:</B> 
+* @param defaultValue  Return the default value if updateTime is null.*/
+@Column(table=M.TABLE, jdbcType=93, name=M.updateTime$name, key=M.updateTime$key, auto=M.updateTime$auto, notnull=M.updateTime$notnull, length=M.updateTime$length, value=M.updateTime$value, remarks=M.updateTime$remarks) 
+	public java.util.Date getUpdateTime(java.util.Date defaultValue){
+		java.util.Date r=this.getUpdateTime();
+		if(r==null){
+			r=defaultValue;
+		}
+		
+		return r;
+	}
+	
 	
 	/**
 * @Column
@@ -496,6 +640,22 @@ public class TestTable1 extends com.tsc9526.monalisa.core.query.model.Model<Test
 	public String getUpdateBy(){
 		return this.updateBy;
  
+	}
+	
+	/**
+* @Column
+* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_1&nbsp;<B>name:</B> update_by
+* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 64<br>
+* <li><B>remarks:</B> 
+* @param defaultValue  Return the default value if updateBy is null.*/
+@Column(table=M.TABLE, jdbcType=12, name=M.updateBy$name, key=M.updateBy$key, auto=M.updateBy$auto, notnull=M.updateBy$notnull, length=M.updateBy$length, value=M.updateBy$value, remarks=M.updateBy$remarks) 
+	public String getUpdateBy(String defaultValue){
+		String r=this.getUpdateBy();
+		if(r==null){
+			r=defaultValue;
+		}
+		
+		return r;
 	}
 	
 	

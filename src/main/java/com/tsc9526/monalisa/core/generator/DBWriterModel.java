@@ -21,7 +21,7 @@ public class DBWriterModel{
 	}
 
 	
-	String getComments(MetaTable table,MetaColumn c,String align){
+	String getComments(MetaTable table,MetaColumn c,String params){
 		String cname=c.getName();
 		
 		if(cname!=null && cname.length()>0 && c.getTable()!=null){	
@@ -68,6 +68,14 @@ public class DBWriterModel{
 				r+="* <li><B>remarks:</B> "+toComments(c.getRemarks())+"\r\n";
 			}
 			 
+			if(params==null){
+				params="";
+			}
+			params=params.trim();
+			if(params.length()>0){
+				r+="* "+params;
+			}
+			
 		 	r+="*/\r\n";	
 		 
 		 	String f=c.getTable().getJavaName()+".M.";
@@ -354,6 +362,28 @@ String   dbi       =(String)request.getAttribute("dbi");
 			out.println("return this."+f.getJavaName()+";");
 		}
 				out.println(" ");
+			out.println("	}");
+			out.println("	");
+			out.print("	");
+			out.print(getComments(table,f,"@param defaultValue  Return the default value if "+f.getJavaName()+" is null."));
+			out.println(" ");
+			out.print("	public ");
+			out.print(f.getJavaType());
+			out.print(" ");
+			out.print(f.getJavaNameGet());
+			out.print("(");
+			out.print(f.getJavaType());
+			out.println(" defaultValue){");
+			out.print("		");
+			out.print(f.getJavaType());
+			out.print(" r=this.");
+			out.print(f.getJavaNameGet());
+			out.println("();");
+			out.println("		if(r==null){");
+			out.println("			r=defaultValue;");
+			out.println("		}");
+			out.println("		");
+			out.println("		return r;");
 			out.println("	}");
 			out.println("	");
 			out.print("	");

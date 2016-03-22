@@ -45,6 +45,16 @@ public class <%=table.getJavaName()%> implements java.io.Serializable{
 		return this.<%=f.getJavaName()%>;		
 	}
 	
+	<%=getComments(table, f, "@param defaultValue  Return the default value if "+f.getJavaName()+" is null.") %>
+	public <%=f.getJavaType()%> <%=f.getJavaNameGet()%>(<%=f.getJavaType()%> defaultValue){
+		<%=f.getJavaType()%> r=this.<%=f.getJavaNameGet()%>();
+		if(r==null){
+			r=defaultValue;
+		}		
+		
+		return r;
+	}
+	
 	<%}%>
 		 
 }
@@ -61,7 +71,7 @@ public class <%=table.getJavaName()%> implements java.io.Serializable{
 	}
 
 	
-	String getComments(MetaTable table,MetaColumn c,String align){
+	String getComments(MetaTable table,MetaColumn c,String params){
 		String cname=c.getName();
 		
 		if(cname!=null && cname.length()>0 && c.getTable()!=null){	
@@ -108,6 +118,14 @@ public class <%=table.getJavaName()%> implements java.io.Serializable{
 				r+="* <li><B>remarks:</B> "+toComments(c.getRemarks())+"\r\n";
 			}
 			 
+			if(params==null){
+				params="";
+			}
+			params=params.trim();
+			if(params.length()>0){
+				r+="* "+params;
+			}
+			
 		 	r+="*/\r\n";	
 		 
 		 	String f=c.getTable().getJavaName()+".M.";
