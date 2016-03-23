@@ -25,6 +25,9 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.concurrent.ConcurrentHashMap;
 
 import com.tsc9526.monalisa.core.annotation.Column;
 import com.tsc9526.monalisa.core.annotation.DB;
@@ -46,19 +49,46 @@ import com.tsc9526.monalisa.core.tools.TableHelper;
 public class ModelMeta{	
 	static Logger logger=Logger.getLogger(ModelMeta.class.getName());
 	
+	public static long ModelChangedMonitorPeriod = 10*1000;
+	
+	private static Map<String, ModelMeta> hMonitorMetas=new ConcurrentHashMap<String, ModelMeta>();
 	private static Map<String, ModelMeta> hMetas=new HashMap<String, ModelMeta>();
 	
 	public synchronized static ModelMeta getModelMeta(Model<?> model){
 		String key=getModelKey(model);
 		
 		ModelMeta mm=hMetas.get(key);
-		if(mm==null){
-			mm=new ModelMeta();
+		
+		checkModelMetaChanged();
+		
+		if(mm==null || mm.iChanged()){
+			mm=new ModelMeta(key);
 			mm.init(model);
+			
+			if(mm.record){
+				hMonitorMetas.put(key, mm);
+			}
 			
 			hMetas.put(key, mm);
 		}
 		return mm;
+	}
+	
+	private static Timer monitorTimer=null;
+	private static void checkModelMetaChanged(){
+		if(monitorTimer==null){
+			long period=ModelChangedMonitorPeriod;
+			
+			monitorTimer=new Timer("Thread-ModelChangedMonitor",true);
+			
+			monitorTimer.schedule(new TimerTask() {
+				public void run() {
+					for(ModelMeta mm:hMonitorMetas.values()){
+						 mm.checkChanged();
+					}
+				}
+			}, period, period);
+		}
 	}
 	
 	private static String getModelKey(Model<?> model){
@@ -111,7 +141,11 @@ public class ModelMeta{
 	protected Map<String,FGS> hFieldsByJavaName  =new LinkedHashMap<String, ClassHelper.FGS>();
 	
 	protected boolean record=false;
-	private ModelMeta(){		 		 
+	protected boolean changed=false;
+	
+	protected String key;
+	private ModelMeta(String key){		
+		this.key=key;
 	}
 	
 	void init(Model<?> model){		
@@ -128,7 +162,7 @@ public class ModelMeta{
 		
 		initListeners(model);
 		
-		initPartioners(model); 							
+		initPartioners(model); 
 	}
 	
 	protected void initDB(Model<?> model) {
@@ -231,15 +265,70 @@ public class ModelMeta{
 		List<FGS> fields=metaClass.getFieldsWithAnnotation(Column.class);						
 		if(fields.size()==0){
 			record=true;
-			fields=loadFieldsFromDB(metaClass);			 
+			fields=loadFieldsFromDB(metaClass);	
+			
+			StringBuilder sb=new StringBuilder();
+			for(FGS f:fields){
+				if(sb.length()>0){
+					sb.append(", ");
+				}
+				sb.append(f.getFieldName());
+			}
+			logger.info("Load table: "+tableName+"{"+sb.toString()+"}");
 		}
 		
 		return fields;		
 	}
 	
+	protected void checkChanged(){
+		if(mTable!=null){
+			try{
+				MetaTable t2=TableHelper.getMetaTable(db, tableName);
+				if(isTableFieldChanged(this.mTable,t2)){
+					logger.info("Table struct changed: "+tableName);
+					this.changed=true;
+				}
+			}catch(Exception e){
+				logger.error("Check table: "+tableName+" exception: "+e,e);
+			}
+		}
+	}
+	
+	private boolean isTableFieldChanged(MetaTable t1,MetaTable t2){
+		if(t1==null || t2==null){
+			return false;
+		}
+		
+		for(MetaColumn x:t1.getColumns()){
+			MetaColumn y=t2.getColumn(x.getName());
+			if(y!=null){
+				if(x.getJdbcType()!=y.getJdbcType() || x.getLength() !=y.getLength()){
+					return true;
+				}
+			}else{
+				return true;
+			}
+		}
+		
+		for(MetaColumn x:t2.getColumns()){
+			MetaColumn y=t1.getColumn(x.getName());
+			if(y!=null){
+				if(x.getJdbcType()!=y.getJdbcType() || x.getLength() !=y.getLength()){
+					return true;
+				}
+			}else{
+				return true;
+			}
+		}
+		
+		return false;
+	}
+	
+	
+	private MetaTable mTable;
 	protected List<FGS> loadFieldsFromDB(MetaClass metaClass) {
 		try{
-			MetaTable mTable=TableHelper.getMetaTable(db, tableName);
+			mTable=TableHelper.getMetaTable(db, tableName);
 			if(mTable!=null){				 
 				List<FGS> fs=new ArrayList<FGS>();
 				 
@@ -363,6 +452,10 @@ public class ModelMeta{
 		return unique;
 	}
 	
+	
+	boolean iChanged(){
+		return changed;
+	}
 	 
 
 	protected static FGS createFGS(final MetaColumn c,final FGS mfd){		 

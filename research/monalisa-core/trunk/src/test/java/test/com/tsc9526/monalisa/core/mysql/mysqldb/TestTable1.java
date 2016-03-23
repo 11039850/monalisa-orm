@@ -1,19 +1,3 @@
-/*******************************************************************************************
- *	Copyright (c) 2016, zzg.zhou(11039850@qq.com)
- * 
- *  Monalisa is free software: you can redistribute it and/or modify
- *	it under the terms of the GNU Lesser General Public License as published by
- *	the Free Software Foundation, either version 3 of the License, or
- *	(at your option) any later version.
-
- *	This program is distributed in the hope that it will be useful,
- *	but WITHOUT ANY WARRANTY; without even the implied warranty of
- *	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *	GNU Lesser General Public License for more details.
-
- *	You should have received a copy of the GNU Lesser General Public License
- *	along with this program.  If not, see <http://www.gnu.org/licenses/>.
- *******************************************************************************************/
 
 
 
@@ -47,7 +31,7 @@ import java.util.LinkedHashMap;
 	}
 )
 public class TestTable1 extends com.tsc9526.monalisa.core.query.model.Model<TestTable1> implements test.com.tsc9526.monalisa.core.mysql.MysqlDB{
-	private static final long serialVersionUID = 1138223827804L;
+	private static final long serialVersionUID = 1203411757078L;
 		 
 	public static final Insert INSERT(){
 	 	return new Insert(new TestTable1());
@@ -198,6 +182,16 @@ public class TestTable1 extends com.tsc9526.monalisa.core.query.model.Model<Test
 @Column(table=M.TABLE, jdbcType=12, name=M.updateBy$name, key=M.updateBy$key, auto=M.updateBy$auto, notnull=M.updateBy$notnull, length=M.updateBy$length, value=M.updateBy$value, remarks=M.updateBy$remarks) 
 	
 	private String updateBy;	
+	
+	/**
+* @Column
+* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_1&nbsp;<B>name:</B> extra_1
+* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 16<br>
+* <li><B>remarks:</B> 
+*/
+@Column(table=M.TABLE, jdbcType=12, name=M.extra1$name, key=M.extra1$key, auto=M.extra1$auto, notnull=M.extra1$notnull, length=M.extra1$length, value=M.extra1$value, remarks=M.extra1$remarks) 
+	
+	private String extra1;	
 	
 	
 	
@@ -377,6 +371,24 @@ public class TestTable1 extends com.tsc9526.monalisa.core.query.model.Model<Test
 		  
 		
 		fieldChanged("updateBy");
+		
+		return this;
+	}
+	
+	
+	/**
+* @Column
+* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_1&nbsp;<B>name:</B> extra_1
+* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 16<br>
+* <li><B>remarks:</B> 
+*/
+@Column(table=M.TABLE, jdbcType=12, name=M.extra1$name, key=M.extra1$key, auto=M.extra1$auto, notnull=M.extra1$notnull, length=M.extra1$length, value=M.extra1$value, remarks=M.extra1$remarks) 
+	public TestTable1 setExtra1(String extra1){
+		
+		this.extra1 = extra1;
+		  
+		
+		fieldChanged("extra1");
 		
 		return this;
 	}
@@ -675,6 +687,35 @@ public class TestTable1 extends com.tsc9526.monalisa.core.query.model.Model<Test
 	}
 	
 	
+	/**
+* @Column
+* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_1&nbsp;<B>name:</B> extra_1
+* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 16<br>
+* <li><B>remarks:</B> 
+*/
+@Column(table=M.TABLE, jdbcType=12, name=M.extra1$name, key=M.extra1$key, auto=M.extra1$auto, notnull=M.extra1$notnull, length=M.extra1$length, value=M.extra1$value, remarks=M.extra1$remarks) 
+	public String getExtra1(){
+		return this.extra1;
+ 
+	}
+	
+	/**
+* @Column
+* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_1&nbsp;<B>name:</B> extra_1
+* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 16<br>
+* <li><B>remarks:</B> 
+* @param defaultValue  Return the default value if extra1 is null.*/
+@Column(table=M.TABLE, jdbcType=12, name=M.extra1$name, key=M.extra1$key, auto=M.extra1$auto, notnull=M.extra1$notnull, length=M.extra1$length, value=M.extra1$value, remarks=M.extra1$remarks) 
+	public String getExtra1(String defaultValue){
+		String r=this.getExtra1();
+		if(r==null){
+			r=defaultValue;
+		}
+		
+		return r;
+	}
+	
+	
 	
 	public static class Insert extends com.tsc9526.monalisa.core.query.dao.Insert<TestTable1>{
 		Insert(TestTable1 model){
@@ -950,6 +991,17 @@ public class TestTable1 extends com.tsc9526.monalisa.core.query.model.Model<Test
 		public com.tsc9526.monalisa.core.query.criteria.Field.FieldString<Criteria> updateBy = new com.tsc9526.monalisa.core.query.criteria.Field.FieldString<Criteria>("update_by", this);
 				
 		
+		/**
+* @Column
+* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_1&nbsp;<B>name:</B> extra_1
+* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 16<br>
+* <li><B>remarks:</B> 
+*/
+@Column(table=M.TABLE, jdbcType=12, name=M.extra1$name, key=M.extra1$key, auto=M.extra1$auto, notnull=M.extra1$notnull, length=M.extra1$length, value=M.extra1$value, remarks=M.extra1$remarks)
+		
+		public com.tsc9526.monalisa.core.query.criteria.Field.FieldString<Criteria> extra1 = new com.tsc9526.monalisa.core.query.criteria.Field.FieldString<Criteria>("extra_1", this);
+				
+		
 	}
 	 
 	
@@ -965,6 +1017,8 @@ public class TestTable1 extends com.tsc9526.monalisa.core.query.model.Model<Test
 	
 			
 			public static enum EnumStringA{ TRUE, FALSE}
+		 
+	
 		 
 	
 		 
@@ -1160,6 +1214,24 @@ public class TestTable1 extends com.tsc9526.monalisa.core.query.model.Model<Test
 		public final static String  updateBy$remarks = "" ;
 		public final static boolean updateBy$auto    = false ;
 		public final static boolean updateBy$notnull = false;
+		
+		
+		/**
+* @Column
+* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_1&nbsp;<B>name:</B> extra_1
+* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 16<br>
+* <li><B>remarks:</B> 
+*/
+@Column(table=M.TABLE, jdbcType=12, name=M.extra1$name, key=M.extra1$key, auto=M.extra1$auto, notnull=M.extra1$notnull, length=M.extra1$length, value=M.extra1$value, remarks=M.extra1$remarks)
+		public final static String  extra1         = "extra_1" ;
+		
+		public final static String  extra1$name    = "extra_1" ;
+		public final static boolean extra1$key     = false;
+		public final static int     extra1$length  = 16;
+		public final static String  extra1$value   = "NULL" ;
+		public final static String  extra1$remarks = "" ;
+		public final static boolean extra1$auto    = false ;
+		public final static boolean extra1$notnull = false;
 		
 				 
 	}
