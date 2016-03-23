@@ -18,10 +18,24 @@
 		<snapshotRepositoryURL>${setting.snapshotRepositoryURL}</snapshotRepositoryURL>		
 		<maven.javadoc.skip>false</maven.javadoc.skip> 	
 		
-		 
         <argLine>-Dfile.encoding=UTF-8</argLine>	
 	</properties>
 
+	<developers>
+		<developer>
+			<name>zzg.zhou</name>
+			<id>11039850@qq.com</id>
+			<email>11039850@qq.com</email>
+		</developer>
+	</developers>
+
+	<licenses>
+		<license>
+			<name>GNU Lesser General Public License, Version 3.0</name>
+			<url>http://www.gnu.org/licenses/lgpl.html</url>
+		</license>
+	</licenses>
+	
 	<scm>
 		<connection>scm:svn:${svnURL}/${project.artifactId}/trunk/</connection>
 		<developerConnection>scm:svn:${svnURL}/${project.artifactId}/trunk/</developerConnection>
