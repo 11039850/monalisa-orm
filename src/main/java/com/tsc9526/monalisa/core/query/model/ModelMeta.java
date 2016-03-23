@@ -93,7 +93,8 @@ public class ModelMeta{
 	
 	protected Map<String,FGS> hFieldsByColumnName=new LinkedHashMap<String, ClassHelper.FGS>();
 	protected Map<String,FGS> hFieldsByJavaName  =new LinkedHashMap<String, ClassHelper.FGS>();
-	 
+	
+	protected boolean record=false;
 	private ModelMeta(){		 		 
 	}
 	
@@ -213,6 +214,7 @@ public class ModelMeta{
 		MetaClass metaClass=ClassHelper.getMetaClass(model.getClass());
 		List<FGS> fields=metaClass.getFieldsWithAnnotation(Column.class);						
 		if(fields.size()==0){
+			record=true;
 			fields=loadFieldsFromDB(metaClass);			 
 		}
 		

@@ -41,6 +41,7 @@ public class QueryStatement {
 	public void write(JavaWriter writer){
 		writer.append("public void ").append(id).append("(Query q,Args args){\r\n");
 		writeUseDb(writer); 
+		writer.append("JspPageOut out=new JspPageOut(q.getPrintWriter());\r\n");
 		writeElements(writer);
 		writer.append("}\r\n\r\n");
 	}
@@ -74,25 +75,16 @@ public class QueryStatement {
 	}
 	
 	protected void writeElements(JavaWriter writer){
-		boolean append=false;
-		
 		for(JspElement e:elements){
 			if(e instanceof JspText){
 				String code=e.getCode();
 			 	
 				String[] lines=code.split("\n");
-				boolean lastLineEmpty=lines[lines.length-1].trim().length()==0;
+				boolean lastLN=code.endsWith("\n");
 				
 				for(int i=0;i<lines.length;i++){
 					String line=lines[i];
-					
-					if(line.trim().length()==0){
-						if(!append || i==lines.length-1){
-							continue;
-						}
-					}
-					
-					append=true;
+					 
 					List<String> vars=new ArrayList<String>();
 					Matcher m=patternVar.matcher(line);
 					while(m.find()){
@@ -108,15 +100,15 @@ public class QueryStatement {
 						}
 					}
 					
-					if(lastLineEmpty){
+					if(lastLN || i< lines.length-1){
 						writer.append(").add(\"\\r\\n\");\r\n");
 					}else{
-						writer.append(");");
+						writer.append(");\r\n");
 					}
 				}
 			}else if(e instanceof JspEval){
 				String code=e.getCode();
-				writer.append("q.add(\"?\",").append(code).append(");\r\n");
+				writer.append("q.add(").append(code).append(");\r\n");
 			}else if(e instanceof JspCode){
 				writer.append(e.getCode());
 			}

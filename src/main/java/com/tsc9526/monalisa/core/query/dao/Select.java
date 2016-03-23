@@ -6,7 +6,7 @@ import java.sql.SQLException;
 import com.tsc9526.monalisa.core.datasource.DBConfig;
 import com.tsc9526.monalisa.core.query.Page;
 import com.tsc9526.monalisa.core.query.Query;
-import com.tsc9526.monalisa.core.query.Query.ResultCreator;
+import com.tsc9526.monalisa.core.query.Query.ResultHandler;
 import com.tsc9526.monalisa.core.query.criteria.Example;
 import com.tsc9526.monalisa.core.query.criteria.QEH;
 import com.tsc9526.monalisa.core.query.datatable.DataTable;
@@ -295,8 +295,8 @@ public class Select<T extends Model,S extends Select> {
 	} 
 	
 	
-	protected ResultCreator getResultCreator(Query query) {
-		return new ResultCreator(query,model.getClass()){
+	protected ResultHandler getResultCreator(Query query) {
+		return new ResultHandler(query,model.getClass()){
 			public  T createResult(ResultSet rs)throws SQLException{
 				Model result=MMH.createFrom(model);
 				loadModel(rs, result);				

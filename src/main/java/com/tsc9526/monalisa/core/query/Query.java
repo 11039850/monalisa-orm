@@ -1,7 +1,9 @@
 package com.tsc9526.monalisa.core.query;
 
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.io.Writer;
 import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -352,12 +354,12 @@ public class Query {
 	}
 	
 	public <T> DataTable<T> getList(Class<T> resultClass,int limit,int offset) {		 
-		return getList(new ResultCreator<T>(this,resultClass),limit,offset);
+		return getList(new ResultHandler<T>(this,resultClass),limit,offset);
 	}	
 	
-	public <T> DataTable<T> getList(ResultCreator<T> resultCreator,int limit,int offset) {
+	public <T> DataTable<T> getList(ResultHandler<T> resultHandler,int limit,int offset) {
 		Query listQuery=getDialect().getLimitQuery(this, limit, offset);
-		DataTable<T>  list=listQuery.getList(resultCreator);
+		DataTable<T>  list=listQuery.getList(resultHandler);
 			
 		return list;
 	}	 
@@ -373,16 +375,16 @@ public class Query {
 	 * @return
 	 */
 	public <T> T getResult(final Class<T> resultClass){
-		return getResult(new ResultCreator<T>(this,resultClass));
+		return getResult(new ResultHandler<T>(this,resultClass));
 	}
 	
 	/**
 	 * 将查询结果转换为指定的类
 	 *  
-	 * @param resultClass
+	 * @param resultHandler
 	 * @return
 	 */
-	public <T> T getResult(final ResultCreator<T> resultCreator){
+	public <T> T getResult(final ResultHandler<T> resultHandler){
 		if(!doExchange()){			
 			queryCheck();
 			
@@ -393,7 +395,7 @@ public class Query {
 					try{
 						rs=pst.executeQuery();				
 						if(rs.next()){	
-							result=resultCreator.createResult(rs); 											
+							result=resultHandler.createResult(rs); 											
 						}	
 						return result;
 					}finally{
@@ -411,7 +413,7 @@ public class Query {
 	}
 	
 	public <T> Page<T> getPage(Class<T> resultClass,int limit,int offset) {
-		return getPage(new ResultCreator<T>(this,resultClass), limit, offset);
+		return getPage(new ResultHandler<T>(this,resultClass), limit, offset);
 	}
 	
 	/**
@@ -422,7 +424,7 @@ public class Query {
 	 *   Base 0, the first record is 0
 	 * @return Page对象
 	 */
-	public <T> Page<T> getPage(ResultCreator<T> resultCreator,int limit,int offset) {
+	public <T> Page<T> getPage(ResultHandler<T> resultHandler,int limit,int offset) {
 		if(!doExchange()){			
 			queryCheck();
 			
@@ -430,7 +432,7 @@ public class Query {
 			long total=countQuery.getResult(Long.class);			
 			 
 			Query listQuery=getDialect().getLimitQuery(this, limit, offset);
-			DataTable<T>  list=listQuery.getList(resultCreator);
+			DataTable<T>  list=listQuery.getList(resultHandler);
 			 
 			Page<T> page=new Page<T>(list,total,limit,offset);
 		
@@ -442,10 +444,10 @@ public class Query {
 	
 	 
 	public <T> DataTable<T> getList(final Class<T> resultClass) {
-		return getList(new ResultCreator<T>(this, resultClass));
+		return getList(new ResultHandler<T>(this, resultClass));
 	}
 	
-	public <T> DataTable<T> getList(final ResultCreator<T> resultCreator) {
+	public <T> DataTable<T> getList(final ResultHandler<T> resultCreator) {
 		if(!doExchange()){		 
 			queryCheck();
 			
@@ -484,7 +486,7 @@ public class Query {
 					try{
 						rs=pst.executeQuery();				 		
 						if(rs.next()){
-							new ResultCreator<T>(Query.this,(Class<T>)result.getClass()).load(rs, result);							 				
+							new ResultHandler<T>(Query.this,(Class<T>)result.getClass()).load(rs, result);							 				
 						}
 						return result;
 					}finally{
@@ -556,7 +558,23 @@ public class Query {
 		}
 	}
 	
+	private PrintWriter writer=null;
+	public PrintWriter getPrintWriter(){
+		if(writer==null){
+			writer= new PrintWriter(new Writer(){
+				public void write(char[] cbuf, int off, int len) throws IOException {
+					 add(new String(cbuf,off,len));
+				}
 	
+				public void flush() throws IOException {
+				}
+	
+				public void close() throws IOException {				 
+				}
+			});
+		}
+		return writer;
+	}
 	
 	protected void queryCheck(){
 		if(db==null){
@@ -608,42 +626,42 @@ public class Query {
 		this.readonly = readonly;
 	}
  
-	public static class ResultCreator<T>{
+	public static class ResultHandler<T>{
 		private Query query;
-		private Class<T> resultClass;
+		private Class<T> resultHandler;
 		
-		public ResultCreator(Query query,Class<T> resultClass){
+		public ResultHandler(Query query,Class<T> resultHandler){
 			this.query=query;
-			this.resultClass=resultClass;
+			this.resultHandler=resultHandler;
 		}
 		
 		public T createResult(ResultSet rs)throws SQLException{
-			if(resultClass==Long.class || resultClass==long.class){
+			if(resultHandler==Long.class || resultHandler==long.class){
 				return (T)new Long(rs.getLong(1));			 
-			}else if(resultClass==Integer.class || resultClass==int.class){
+			}else if(resultHandler==Integer.class || resultHandler==int.class){
 				return (T)new Integer(rs.getInt(1));			 
-			}else if(resultClass==Float.class || resultClass==float.class){
+			}else if(resultHandler==Float.class || resultHandler==float.class){
 				return (T)new Float(rs.getFloat(1));			 
-			}else if(resultClass==Short.class || resultClass==short.class){
+			}else if(resultHandler==Short.class || resultHandler==short.class){
 				return (T)new Short(rs.getShort(1));			 
-			}else if(resultClass==Byte.class || resultClass==byte.class){
+			}else if(resultHandler==Byte.class || resultHandler==byte.class){
 				return (T)new Byte(rs.getByte(1));			 
-			}else if(resultClass==Double.class || resultClass==double.class){
+			}else if(resultHandler==Double.class || resultHandler==double.class){
 				return (T)new Double(rs.getDouble(1));			 
-			}else if(resultClass==String.class){
+			}else if(resultHandler==String.class){
 				return (T)rs.getString(1);
-			}else if(resultClass==BigDecimal.class){
+			}else if(resultHandler==BigDecimal.class){
 				return (T)rs.getBigDecimal(1);
-			}else if(resultClass==Date.class){
+			}else if(resultHandler==Date.class){
 				return (T)rs.getDate(1);
-			}else if(resultClass==byte[].class){
+			}else if(resultHandler==byte[].class){
 				return (T)rs.getBytes(1);
 			}else {
 				try{
-					if(Map.class.isAssignableFrom(resultClass)){				
+					if(Map.class.isAssignableFrom(resultHandler)){				
 						return (T)loadToMap(rs, new DataMap());				 
 					}else{				 
-						return (T)load(rs,resultClass.newInstance());
+						return (T)load(rs,resultHandler.newInstance());
 					}
 				}catch(IllegalAccessException e){
 					throw new RuntimeException(e);
