@@ -76,7 +76,7 @@ public class ModelMeta{
 	
 	private static Timer monitorTimer=null;
 	private static void checkModelMetaChanged(){
-		if(monitorTimer==null){
+		if(monitorTimer==null && ModelChangedMonitorPeriod > 0){
 			long period=ModelChangedMonitorPeriod;
 			
 			monitorTimer=new Timer("Thread-ModelChangedMonitor",true);
