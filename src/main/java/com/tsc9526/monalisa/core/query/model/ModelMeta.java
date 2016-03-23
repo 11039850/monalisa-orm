@@ -281,7 +281,7 @@ public class ModelMeta{
 	}
 	
 	protected void checkChanged(){
-		if(mTable!=null){
+		if(mTable!=null && changed==false){
 			try{
 				MetaTable t2=TableHelper.getMetaTable(db, tableName);
 				if(isTableFieldChanged(this.mTable,t2)){
