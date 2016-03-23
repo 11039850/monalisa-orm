@@ -385,6 +385,13 @@ public class <%=table.getJavaName()%> extends <%=modelClass%><<%=table.getJavaNa
 			return DELETE().deleteByExample(this.example);
 		}
 		
+		/**
+		* Append "OR" Criteria  
+		*/	
+		public Criteria OR(){
+			return this.example.or();
+		}
+		
 		<%for(MetaColumn f:table.getColumns()){ %>
 		<%=getComments(table, f, "		")%>
 		<%if(f.getJavaType().equals("Integer")){ %>

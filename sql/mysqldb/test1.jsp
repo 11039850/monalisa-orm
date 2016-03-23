@@ -11,16 +11,20 @@
 		<%{	
 			/*名称*/
 			String name     =args.pop();
-			String title    =args.pop("");
+			String title    =args.pop();
 			String create_by=args.pop("");
 		
 			Date fromTime=new Date();
 			Date endTime =new Date();
-			title="x";
-			
+			 
 			name="N%";
 		%>
-		SELECT a.name,b.name as cname FROM test_table_1 a left join test_table_2 b on a.id=b.id where a.name like $name 
+		SELECT a.name,b.name as cname3 
+		FROM test_table_1 a left join test_table_2 b on a.id=b.id 
+		where 1=1
+		<%if(name.length()>0){%>AND a.name = <%=name%><%}%>
+		<%if(title!=null && title.length()>0){%>AND a.title like $title<%}%>
+		<%if(create_by!=null){%>AND a.create_by =$create_by<%}%>
 		<%}%>
 	</q>
 	

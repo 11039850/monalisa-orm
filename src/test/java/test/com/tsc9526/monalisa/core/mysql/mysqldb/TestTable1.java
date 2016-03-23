@@ -816,6 +816,13 @@ public class TestTable1 extends com.tsc9526.monalisa.core.query.model.Model<Test
 			return DELETE().deleteByExample(this.example);
 		}
 		
+		/**
+		* Append "OR" Criteria  
+		*/	
+		public Criteria OR(){
+			return this.example.or();
+		}
+		
 		
 		/**
 * @Column
