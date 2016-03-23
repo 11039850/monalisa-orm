@@ -79,7 +79,7 @@ public class ModelMeta{
 		if(monitorTimer==null && ModelChangedMonitorPeriod > 0){
 			long period=ModelChangedMonitorPeriod;
 			
-			monitorTimer=new Timer("Thread-ModelChangedMonitor",true);
+			monitorTimer=new Timer("ModelChangedMonitor",true);
 			
 			monitorTimer.schedule(new TimerTask() {
 				public void run() {
