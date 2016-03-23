@@ -115,12 +115,8 @@ public class QueryStatement {
 					}
 				}
 			}else if(e instanceof JspEval){
-				String s=e.getCode();
-				if(s.startsWith("\"")){
-					writer.append("q.add("+s+");\r\n");
-				}else{
-					writer.append("q.add(\"?\",").append(s).append(");\r\n");
-				}
+				String code=e.getCode();
+				writer.append("q.add(\"?\",").append(code).append(");\r\n");
 			}else if(e instanceof JspCode){
 				writer.append(e.getCode());
 			}
