@@ -21,6 +21,11 @@
         <argLine>-Dfile.encoding=UTF-8</argLine>	
 	</properties>
 
+	<scm>
+		<connection>scm:svn:${svnURL}/${project.artifactId}/trunk/</connection>
+		<developerConnection>scm:svn:${svnURL}/${project.artifactId}/trunk/</developerConnection>
+	</scm>
+	
 	<developers>
 		<developer>
 			<name>zzg.zhou</name>
@@ -35,11 +40,6 @@
 			<url>http://www.gnu.org/licenses/lgpl.html</url>
 		</license>
 	</licenses>
-	
-	<scm>
-		<connection>scm:svn:${svnURL}/${project.artifactId}/trunk/</connection>
-		<developerConnection>scm:svn:${svnURL}/${project.artifactId}/trunk/</developerConnection>
-	</scm>
 
 	<dependencies>
 		<dependency>
