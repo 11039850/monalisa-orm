@@ -19,6 +19,7 @@ import com.tsc9526.monalisa.core.parser.jsp.Jsp;
 import com.tsc9526.monalisa.core.parser.jsp.JspElement;
 import com.tsc9526.monalisa.core.parser.jsp.JspFunction;
 import com.tsc9526.monalisa.core.parser.jsp.JspPage;
+import com.tsc9526.monalisa.core.parser.jsp.JspPageOut;
 import com.tsc9526.monalisa.core.parser.jsp.JspText;
 import com.tsc9526.monalisa.core.tools.JavaWriter;
 
@@ -54,6 +55,8 @@ public class QueryPackage {
 		writer.write("package "+SQLClass.PACKAGE_PREFIX+"."+packageName+";\r\n\r\n");
 	 	
 		writer.write("import "+DBConfig.class.getName()+";\r\n");
+		writer.write("import "+JspPageOut.class.getName()+";\r\n");
+		
 		for(JspPage page:imports){
 			for(String i:page.getImports()){
 				writer.write("import "+i+";\r\n");

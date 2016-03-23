@@ -16,15 +16,16 @@
 		
 			Date fromTime=new Date();
 			Date endTime =new Date();
-			 
-			name="N%";
+			  
+			name="N0%";
 		%>
-		SELECT a.name,b.name as cname3 
-		FROM test_table_1 a left join test_table_2 b on a.id=b.id 
-		where 1=1
-		<%if(name.length()>0){%>AND a.name = <%=name%><%}%>
-		<%if(title!=null && title.length()>0){%>AND a.title like $title<%}%>
+		SELECT a.name,b.name as cname3 <%=name.length()>2?", a.id":", b.id"%> 
+		FROM test_table_1 a left join test_table_2 b <%out.print("on a.id=b.id");%> 
+		where <%="1=1"%>    
+		<%if(name.length()>0)%>AND a.name = $name
+		<%if(title!=null && title.length()>0)%>AND a.title like $title
 		<%if(create_by!=null){%>AND a.create_by =$create_by<%}%>
+		
 		<%}%>
 	</q>
 	
@@ -42,7 +43,7 @@
 	%>
 		WHERE 2=1
 		
-		<%if(name.length()>0)%>AND name = <%=name%>
+		<%if(name.length()>0)%>AND name = $name
 		<%if(title!=null)%>AND title like $title
 		<%if(create_by!=null){%>AND create_by =$create_by<%}%>
 	
