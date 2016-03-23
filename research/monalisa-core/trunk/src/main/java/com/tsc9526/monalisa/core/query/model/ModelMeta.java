@@ -280,7 +280,7 @@ public class ModelMeta{
 		return fields;		
 	}
 	
-	protected void checkChanged(){
+	public void checkChanged(){
 		if(mTable!=null && changed==false){
 			try{
 				MetaTable t2=TableHelper.getMetaTable(db, tableName);
