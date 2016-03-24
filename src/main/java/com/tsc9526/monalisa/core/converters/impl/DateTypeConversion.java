@@ -26,7 +26,7 @@ import com.tsc9526.monalisa.core.converters.Conversion;
  * @author zzg.zhou(11039850@qq.com)
  */
 public class DateTypeConversion implements Conversion<Date> {
-	public static String[] datePattern = {"yyyy-MM-dd HH:mm:ss","yyyy-MM-dd","yyyy-MM-dd HH:mm:ss.SSS"};  
+	public static String[] datePattern = {DEFAULT_DATETIME_FORMAT,"yyyy-MM-dd","yyyy-MM-dd HH:mm:ss.SSS"};  
 	
 	public Object[] getTypeKeys() {
 		return new Object[] {

@@ -14,6 +14,10 @@ import com.tsc9526.monalisa.core.annotation.Column;
 
 import com.tsc9526.monalisa.core.tools.ClassHelper;
 
+import com.google.gson.JsonObject;
+
+import test.com.tsc9526.monalisa.core.data.ColumnData;
+
 import java.util.List;
 
 import java.util.Map;
@@ -31,7 +35,7 @@ import java.util.LinkedHashMap;
 	}
 )
 public class TestTable2 extends com.tsc9526.monalisa.core.query.model.Model<TestTable2> implements test.com.tsc9526.monalisa.core.mysql.MysqlDB{
-	private static final long serialVersionUID = 1139177264689L;
+	private static final long serialVersionUID = 1436151569737L;
 		 
 	public static final Insert INSERT(){
 	 	return new Insert(new TestTable2());
@@ -132,6 +136,46 @@ public class TestTable2 extends com.tsc9526.monalisa.core.query.model.Model<Test
 @Column(table=M.TABLE, jdbcType=12, name=M.enumStringA$name, key=M.enumStringA$key, auto=M.enumStringA$auto, notnull=M.enumStringA$notnull, length=M.enumStringA$length, value=M.enumStringA$value, remarks=M.enumStringA$remarks) 
 	
 	private EnumStringA enumStringA;	
+	
+	/**
+* @Column
+* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_2&nbsp;<B>name:</B> array_int
+* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 256<br>
+* <li><B>remarks:</B> 整形数组 #array{int}
+*/
+@Column(table=M.TABLE, jdbcType=12, name=M.arrayInt$name, key=M.arrayInt$key, auto=M.arrayInt$auto, notnull=M.arrayInt$notnull, length=M.arrayInt$length, value=M.arrayInt$value, remarks=M.arrayInt$remarks) 
+	
+	private int[] arrayInt;	
+	
+	/**
+* @Column
+* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_2&nbsp;<B>name:</B> array_string
+* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 256<br>
+* <li><B>remarks:</B> 字符串数组 #array{}
+*/
+@Column(table=M.TABLE, jdbcType=12, name=M.arrayString$name, key=M.arrayString$key, auto=M.arrayString$auto, notnull=M.arrayString$notnull, length=M.arrayString$length, value=M.arrayString$value, remarks=M.arrayString$remarks) 
+	
+	private String[] arrayString;	
+	
+	/**
+* @Column
+* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_2&nbsp;<B>name:</B> json
+* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 1024<br>
+* <li><B>remarks:</B> Json #json{}
+*/
+@Column(table=M.TABLE, jdbcType=12, name=M.json$name, key=M.json$key, auto=M.json$auto, notnull=M.json$notnull, length=M.json$length, value=M.json$value, remarks=M.json$remarks) 
+	
+	private JsonObject json;	
+	
+	/**
+* @Column
+* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_2&nbsp;<B>name:</B> obj
+* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 1024<br>
+* <li><B>remarks:</B> Object #json{test.com.tsc9526.monalisa.core.data.ColumnData}
+*/
+@Column(table=M.TABLE, jdbcType=12, name=M.obj$name, key=M.obj$key, auto=M.obj$auto, notnull=M.obj$notnull, length=M.obj$length, value=M.obj$value, remarks=M.obj$remarks) 
+	
+	private ColumnData obj;	
 	
 	/**
 * @Column
@@ -271,6 +315,78 @@ public class TestTable2 extends com.tsc9526.monalisa.core.query.model.Model<Test
 		  
 		
 		fieldChanged("enumStringA");
+		
+		return this;
+	}
+	
+	
+	/**
+* @Column
+* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_2&nbsp;<B>name:</B> array_int
+* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 256<br>
+* <li><B>remarks:</B> 整形数组 #array{int}
+*/
+@Column(table=M.TABLE, jdbcType=12, name=M.arrayInt$name, key=M.arrayInt$key, auto=M.arrayInt$auto, notnull=M.arrayInt$notnull, length=M.arrayInt$length, value=M.arrayInt$value, remarks=M.arrayInt$remarks) 
+	public TestTable2 setArrayInt(int[] arrayInt){
+		
+		this.arrayInt = arrayInt;
+		  
+		
+		fieldChanged("arrayInt");
+		
+		return this;
+	}
+	
+	
+	/**
+* @Column
+* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_2&nbsp;<B>name:</B> array_string
+* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 256<br>
+* <li><B>remarks:</B> 字符串数组 #array{}
+*/
+@Column(table=M.TABLE, jdbcType=12, name=M.arrayString$name, key=M.arrayString$key, auto=M.arrayString$auto, notnull=M.arrayString$notnull, length=M.arrayString$length, value=M.arrayString$value, remarks=M.arrayString$remarks) 
+	public TestTable2 setArrayString(String[] arrayString){
+		
+		this.arrayString = arrayString;
+		  
+		
+		fieldChanged("arrayString");
+		
+		return this;
+	}
+	
+	
+	/**
+* @Column
+* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_2&nbsp;<B>name:</B> json
+* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 1024<br>
+* <li><B>remarks:</B> Json #json{}
+*/
+@Column(table=M.TABLE, jdbcType=12, name=M.json$name, key=M.json$key, auto=M.json$auto, notnull=M.json$notnull, length=M.json$length, value=M.json$value, remarks=M.json$remarks) 
+	public TestTable2 setJson(JsonObject json){
+		
+		this.json = json;
+		  
+		
+		fieldChanged("json");
+		
+		return this;
+	}
+	
+	
+	/**
+* @Column
+* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_2&nbsp;<B>name:</B> obj
+* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 1024<br>
+* <li><B>remarks:</B> Object #json{test.com.tsc9526.monalisa.core.data.ColumnData}
+*/
+@Column(table=M.TABLE, jdbcType=12, name=M.obj$name, key=M.obj$key, auto=M.obj$auto, notnull=M.obj$notnull, length=M.obj$length, value=M.obj$value, remarks=M.obj$remarks) 
+	public TestTable2 setObj(ColumnData obj){
+		
+		this.obj = obj;
+		  
+		
+		fieldChanged("obj");
 		
 		return this;
 	}
@@ -506,6 +622,122 @@ public class TestTable2 extends com.tsc9526.monalisa.core.query.model.Model<Test
 @Column(table=M.TABLE, jdbcType=12, name=M.enumStringA$name, key=M.enumStringA$key, auto=M.enumStringA$auto, notnull=M.enumStringA$notnull, length=M.enumStringA$length, value=M.enumStringA$value, remarks=M.enumStringA$remarks) 
 	public EnumStringA getEnumStringA(EnumStringA defaultValue){
 		EnumStringA r=this.getEnumStringA();
+		if(r==null){
+			r=defaultValue;
+		}
+		
+		return r;
+	}
+	
+	
+	/**
+* @Column
+* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_2&nbsp;<B>name:</B> array_int
+* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 256<br>
+* <li><B>remarks:</B> 整形数组 #array{int}
+*/
+@Column(table=M.TABLE, jdbcType=12, name=M.arrayInt$name, key=M.arrayInt$key, auto=M.arrayInt$auto, notnull=M.arrayInt$notnull, length=M.arrayInt$length, value=M.arrayInt$value, remarks=M.arrayInt$remarks) 
+	public int[] getArrayInt(){
+		return this.arrayInt;
+ 
+	}
+	
+	/**
+* @Column
+* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_2&nbsp;<B>name:</B> array_int
+* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 256<br>
+* <li><B>remarks:</B> 整形数组 #array{int}
+* @param defaultValue  Return the default value if arrayInt is null.*/
+@Column(table=M.TABLE, jdbcType=12, name=M.arrayInt$name, key=M.arrayInt$key, auto=M.arrayInt$auto, notnull=M.arrayInt$notnull, length=M.arrayInt$length, value=M.arrayInt$value, remarks=M.arrayInt$remarks) 
+	public int[] getArrayInt(int[] defaultValue){
+		int[] r=this.getArrayInt();
+		if(r==null){
+			r=defaultValue;
+		}
+		
+		return r;
+	}
+	
+	
+	/**
+* @Column
+* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_2&nbsp;<B>name:</B> array_string
+* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 256<br>
+* <li><B>remarks:</B> 字符串数组 #array{}
+*/
+@Column(table=M.TABLE, jdbcType=12, name=M.arrayString$name, key=M.arrayString$key, auto=M.arrayString$auto, notnull=M.arrayString$notnull, length=M.arrayString$length, value=M.arrayString$value, remarks=M.arrayString$remarks) 
+	public String[] getArrayString(){
+		return this.arrayString;
+ 
+	}
+	
+	/**
+* @Column
+* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_2&nbsp;<B>name:</B> array_string
+* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 256<br>
+* <li><B>remarks:</B> 字符串数组 #array{}
+* @param defaultValue  Return the default value if arrayString is null.*/
+@Column(table=M.TABLE, jdbcType=12, name=M.arrayString$name, key=M.arrayString$key, auto=M.arrayString$auto, notnull=M.arrayString$notnull, length=M.arrayString$length, value=M.arrayString$value, remarks=M.arrayString$remarks) 
+	public String[] getArrayString(String[] defaultValue){
+		String[] r=this.getArrayString();
+		if(r==null){
+			r=defaultValue;
+		}
+		
+		return r;
+	}
+	
+	
+	/**
+* @Column
+* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_2&nbsp;<B>name:</B> json
+* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 1024<br>
+* <li><B>remarks:</B> Json #json{}
+*/
+@Column(table=M.TABLE, jdbcType=12, name=M.json$name, key=M.json$key, auto=M.json$auto, notnull=M.json$notnull, length=M.json$length, value=M.json$value, remarks=M.json$remarks) 
+	public JsonObject getJson(){
+		return this.json;
+ 
+	}
+	
+	/**
+* @Column
+* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_2&nbsp;<B>name:</B> json
+* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 1024<br>
+* <li><B>remarks:</B> Json #json{}
+* @param defaultValue  Return the default value if json is null.*/
+@Column(table=M.TABLE, jdbcType=12, name=M.json$name, key=M.json$key, auto=M.json$auto, notnull=M.json$notnull, length=M.json$length, value=M.json$value, remarks=M.json$remarks) 
+	public JsonObject getJson(JsonObject defaultValue){
+		JsonObject r=this.getJson();
+		if(r==null){
+			r=defaultValue;
+		}
+		
+		return r;
+	}
+	
+	
+	/**
+* @Column
+* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_2&nbsp;<B>name:</B> obj
+* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 1024<br>
+* <li><B>remarks:</B> Object #json{test.com.tsc9526.monalisa.core.data.ColumnData}
+*/
+@Column(table=M.TABLE, jdbcType=12, name=M.obj$name, key=M.obj$key, auto=M.obj$auto, notnull=M.obj$notnull, length=M.obj$length, value=M.obj$value, remarks=M.obj$remarks) 
+	public ColumnData getObj(){
+		return this.obj;
+ 
+	}
+	
+	/**
+* @Column
+* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_2&nbsp;<B>name:</B> obj
+* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 1024<br>
+* <li><B>remarks:</B> Object #json{test.com.tsc9526.monalisa.core.data.ColumnData}
+* @param defaultValue  Return the default value if obj is null.*/
+@Column(table=M.TABLE, jdbcType=12, name=M.obj$name, key=M.obj$key, auto=M.obj$auto, notnull=M.obj$notnull, length=M.obj$length, value=M.obj$value, remarks=M.obj$remarks) 
+	public ColumnData getObj(ColumnData defaultValue){
+		ColumnData r=this.getObj();
 		if(r==null){
 			r=defaultValue;
 		}
@@ -881,6 +1113,50 @@ public class TestTable2 extends com.tsc9526.monalisa.core.query.model.Model<Test
 		
 		/**
 * @Column
+* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_2&nbsp;<B>name:</B> array_int
+* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 256<br>
+* <li><B>remarks:</B> 整形数组 #array{int}
+*/
+@Column(table=M.TABLE, jdbcType=12, name=M.arrayInt$name, key=M.arrayInt$key, auto=M.arrayInt$auto, notnull=M.arrayInt$notnull, length=M.arrayInt$length, value=M.arrayInt$value, remarks=M.arrayInt$remarks)
+		
+		public com.tsc9526.monalisa.core.query.criteria.Field<int[],Criteria> arrayInt = new com.tsc9526.monalisa.core.query.criteria.Field<int[],Criteria>("array_int", this, 12);		 
+				
+		
+		/**
+* @Column
+* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_2&nbsp;<B>name:</B> array_string
+* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 256<br>
+* <li><B>remarks:</B> 字符串数组 #array{}
+*/
+@Column(table=M.TABLE, jdbcType=12, name=M.arrayString$name, key=M.arrayString$key, auto=M.arrayString$auto, notnull=M.arrayString$notnull, length=M.arrayString$length, value=M.arrayString$value, remarks=M.arrayString$remarks)
+		
+		public com.tsc9526.monalisa.core.query.criteria.Field<String[],Criteria> arrayString = new com.tsc9526.monalisa.core.query.criteria.Field<String[],Criteria>("array_string", this, 12);		 
+				
+		
+		/**
+* @Column
+* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_2&nbsp;<B>name:</B> json
+* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 1024<br>
+* <li><B>remarks:</B> Json #json{}
+*/
+@Column(table=M.TABLE, jdbcType=12, name=M.json$name, key=M.json$key, auto=M.json$auto, notnull=M.json$notnull, length=M.json$length, value=M.json$value, remarks=M.json$remarks)
+		
+		public com.tsc9526.monalisa.core.query.criteria.Field<JsonObject,Criteria> json = new com.tsc9526.monalisa.core.query.criteria.Field<JsonObject,Criteria>("json", this, 12);		 
+				
+		
+		/**
+* @Column
+* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_2&nbsp;<B>name:</B> obj
+* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 1024<br>
+* <li><B>remarks:</B> Object #json{test.com.tsc9526.monalisa.core.data.ColumnData}
+*/
+@Column(table=M.TABLE, jdbcType=12, name=M.obj$name, key=M.obj$key, auto=M.obj$auto, notnull=M.obj$notnull, length=M.obj$length, value=M.obj$value, remarks=M.obj$remarks)
+		
+		public com.tsc9526.monalisa.core.query.criteria.Field<ColumnData,Criteria> obj = new com.tsc9526.monalisa.core.query.criteria.Field<ColumnData,Criteria>("obj", this, 12);		 
+				
+		
+		/**
+* @Column
 * <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_2&nbsp;<B>name:</B> ts_a &nbsp;[<font color=red>NOTNULL</font>]
 * <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 19<br>
 * <li><B>remarks:</B> 
@@ -949,6 +1225,14 @@ public class TestTable2 extends com.tsc9526.monalisa.core.query.model.Model<Test
 	
 			
 			public static enum EnumStringA{ TRUE, FALSE}
+		 
+	
+		 
+	
+		 
+	
+		 
+	
 		 
 	
 		 
@@ -1054,6 +1338,78 @@ public class TestTable2 extends com.tsc9526.monalisa.core.query.model.Model<Test
 		public final static String  enumStringA$remarks = "#enum{{ TRUE, FALSE}}" ;
 		public final static boolean enumStringA$auto    = false ;
 		public final static boolean enumStringA$notnull = true;
+		
+		
+		/**
+* @Column
+* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_2&nbsp;<B>name:</B> array_int
+* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 256<br>
+* <li><B>remarks:</B> 整形数组 #array{int}
+*/
+@Column(table=M.TABLE, jdbcType=12, name=M.arrayInt$name, key=M.arrayInt$key, auto=M.arrayInt$auto, notnull=M.arrayInt$notnull, length=M.arrayInt$length, value=M.arrayInt$value, remarks=M.arrayInt$remarks)
+		public final static String  arrayInt         = "array_int" ;
+		
+		public final static String  arrayInt$name    = "array_int" ;
+		public final static boolean arrayInt$key     = false;
+		public final static int     arrayInt$length  = 256;
+		public final static String  arrayInt$value   = "NULL" ;
+		public final static String  arrayInt$remarks = "整形数组 #array{int}" ;
+		public final static boolean arrayInt$auto    = false ;
+		public final static boolean arrayInt$notnull = false;
+		
+		
+		/**
+* @Column
+* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_2&nbsp;<B>name:</B> array_string
+* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 256<br>
+* <li><B>remarks:</B> 字符串数组 #array{}
+*/
+@Column(table=M.TABLE, jdbcType=12, name=M.arrayString$name, key=M.arrayString$key, auto=M.arrayString$auto, notnull=M.arrayString$notnull, length=M.arrayString$length, value=M.arrayString$value, remarks=M.arrayString$remarks)
+		public final static String  arrayString         = "array_string" ;
+		
+		public final static String  arrayString$name    = "array_string" ;
+		public final static boolean arrayString$key     = false;
+		public final static int     arrayString$length  = 256;
+		public final static String  arrayString$value   = "NULL" ;
+		public final static String  arrayString$remarks = "字符串数组 #array{}" ;
+		public final static boolean arrayString$auto    = false ;
+		public final static boolean arrayString$notnull = false;
+		
+		
+		/**
+* @Column
+* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_2&nbsp;<B>name:</B> json
+* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 1024<br>
+* <li><B>remarks:</B> Json #json{}
+*/
+@Column(table=M.TABLE, jdbcType=12, name=M.json$name, key=M.json$key, auto=M.json$auto, notnull=M.json$notnull, length=M.json$length, value=M.json$value, remarks=M.json$remarks)
+		public final static String  json         = "json" ;
+		
+		public final static String  json$name    = "json" ;
+		public final static boolean json$key     = false;
+		public final static int     json$length  = 1024;
+		public final static String  json$value   = "NULL" ;
+		public final static String  json$remarks = "Json #json{}" ;
+		public final static boolean json$auto    = false ;
+		public final static boolean json$notnull = false;
+		
+		
+		/**
+* @Column
+* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_2&nbsp;<B>name:</B> obj
+* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 1024<br>
+* <li><B>remarks:</B> Object #json{test.com.tsc9526.monalisa.core.data.ColumnData}
+*/
+@Column(table=M.TABLE, jdbcType=12, name=M.obj$name, key=M.obj$key, auto=M.obj$auto, notnull=M.obj$notnull, length=M.obj$length, value=M.obj$value, remarks=M.obj$remarks)
+		public final static String  obj         = "obj" ;
+		
+		public final static String  obj$name    = "obj" ;
+		public final static boolean obj$key     = false;
+		public final static int     obj$length  = 1024;
+		public final static String  obj$value   = "NULL" ;
+		public final static String  obj$remarks = "Object #json{test.com.tsc9526.monalisa.core.data.ColumnData}" ;
+		public final static boolean obj$auto    = false ;
+		public final static boolean obj$notnull = false;
 		
 		
 		/**
