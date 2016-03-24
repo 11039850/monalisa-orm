@@ -14,21 +14,12 @@
  *	You should have received a copy of the GNU Lesser General Public License
  *	along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************************/
-package com.tsc9526.monalisa.core.datasource;
-
-import java.util.Properties;
+package com.tsc9526.monalisa.core.converters.impl;
 
 /**
  * 
  * @author zzg.zhou(11039850@qq.com)
  */
-public abstract class ConfigClass {
-	/**
-	 * 配置项定义和configFile相同
-	 */
-	public abstract Properties getConfigProperties();
-	
-	public boolean isCfgChanged(){
-		return false;
-	}
+public class F {
+
 }

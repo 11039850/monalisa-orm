@@ -583,12 +583,20 @@ public abstract class Model<T extends Model> implements Serializable {
 		return (T) this;
 	}
 
-	public Object get(String name) {
+	public <P> P  get(String name){
 		FGS fgs = field(name);
 		if (fgs != null) {
-			return fgs.getObject(this);
+			return (P)fgs.getObject(this);
 		}
 		return null;
+	}
+	
+	public <P> P get(String name,P defaultValue) {
+		P p=get(name);
+		if(p==null){
+			p=defaultValue;
+		}
+		return p;
 	}
 
 	/**

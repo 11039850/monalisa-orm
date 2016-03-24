@@ -46,6 +46,10 @@ import com.tsc9526.monalisa.core.tools.ClassHelper.FGS;
 import com.tsc9526.monalisa.core.tools.ClassHelper.MetaClass;
 import com.tsc9526.monalisa.core.tools.TableHelper;
  
+/**
+ * 
+ * @author zzg.zhou(11039850@qq.com)
+ */
 public class ModelMeta{	
 	static Logger logger=Logger.getLogger(ModelMeta.class.getName());
 	

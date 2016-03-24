@@ -29,6 +29,10 @@ import com.tsc9526.monalisa.core.tools.CaseInsensitiveMap;
 import com.tsc9526.monalisa.core.tools.ClassHelper.FGS;
 import com.tsc9526.monalisa.core.tools.Helper;
 
+/**
+ * 
+ * @author zzg.zhou(11039850@qq.com)
+ */
 public class ModelHolder implements Serializable {
 	private static final long serialVersionUID = 703976566431364671L;
 	

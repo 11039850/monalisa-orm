@@ -14,21 +14,29 @@
  *	You should have received a copy of the GNU Lesser General Public License
  *	along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************************/
-package com.tsc9526.monalisa.core.datasource;
+package com.tsc9526.monalisa.core.converters.impl;
 
-import java.util.Properties;
+import com.tsc9526.monalisa.core.converters.Converter;
 
 /**
  * 
  * @author zzg.zhou(11039850@qq.com)
  */
-public abstract class ConfigClass {
-	/**
-	 * 配置项定义和configFile相同
-	 */
-	public abstract Properties getConfigProperties();
-	
-	public boolean isCfgChanged(){
-		return false;
+public class IntegerConverter implements Converter{
+ 
+	public <T> T convert(Object source, Class<T> target) {
+		 
+		return null;
 	}
+
+	
+	protected Integer stringToInteger(String src){
+		return Integer.parseInt(src);
+	}
+	
+	protected Integer stringToIntegerArray(String src){
+		return Integer.parseInt(src);
+	}
+	
+	 
 }

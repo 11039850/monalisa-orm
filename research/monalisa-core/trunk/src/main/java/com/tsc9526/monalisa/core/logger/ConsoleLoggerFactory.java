@@ -22,6 +22,10 @@ import java.io.StringWriter;
 import javax.annotation.processing.Messager;
 import javax.tools.Diagnostic.Kind;
 
+/**
+ * 
+ * @author zzg.zhou(11039850@qq.com)
+ */
 public class ConsoleLoggerFactory implements LoggerFactory {
 	static Messager messager=null;
 	 

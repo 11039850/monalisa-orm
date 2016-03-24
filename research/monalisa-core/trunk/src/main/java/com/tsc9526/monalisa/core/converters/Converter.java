@@ -14,9 +14,12 @@
  *	You should have received a copy of the GNU Lesser General Public License
  *	along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************************/
-package com.tsc9526.monalisa.core.convert;
+package com.tsc9526.monalisa.core.converters;
 
-
+/**
+ * 
+ * @author zzg.zhou(11039850@qq.com)
+ */
 public interface Converter {
 	public static String JSON_CLASS="";
 	

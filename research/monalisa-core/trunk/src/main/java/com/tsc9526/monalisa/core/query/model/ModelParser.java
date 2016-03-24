@@ -16,6 +16,10 @@
  *******************************************************************************************/
 package com.tsc9526.monalisa.core.query.model;
 
+/**
+ * 
+ * @author zzg.zhou(11039850@qq.com)
+ */
 public interface ModelParser<T> { 
 	public boolean parse(Model<?> m,T data,String... mappings);
 }

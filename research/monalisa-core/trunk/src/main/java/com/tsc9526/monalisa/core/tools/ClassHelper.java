@@ -29,8 +29,8 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
-import com.tsc9526.monalisa.core.convert.Converter;
-import com.tsc9526.monalisa.core.convert.DefaultConverter;
+import com.tsc9526.monalisa.core.converters.Converter;
+import com.tsc9526.monalisa.core.converters.DefaultConverter;
  
 /**
  * 

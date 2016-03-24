@@ -41,6 +41,10 @@ import mockit.MockUp;
 import com.tsc9526.monalisa.core.annotation.DB;
 import com.tsc9526.monalisa.core.datasource.DBConfig;
 
+/**
+ * 
+ * @author zzg.zhou(11039850@qq.com)
+ */
 public class MockProcessingEnvironment {
 	private DB db;
 	private String dbClassName;

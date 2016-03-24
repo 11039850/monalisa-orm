@@ -28,6 +28,10 @@ import com.tsc9526.monalisa.core.meta.MetaColumn;
 import com.tsc9526.monalisa.core.meta.MetaIndex;
 import com.tsc9526.monalisa.core.meta.MetaTable;
 
+/**
+ * 
+ * @author zzg.zhou(11039850@qq.com)
+ */
 public class TableHelper {
 	public static MetaTable getMetaTable(DBConfig db,String tableName)throws SQLException{
 		MTable mTable=new MTable(db,tableName);

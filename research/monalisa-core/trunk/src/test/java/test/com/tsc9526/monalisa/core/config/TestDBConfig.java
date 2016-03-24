@@ -26,6 +26,10 @@ import com.tsc9526.monalisa.core.datasource.DBConfig;
 import com.tsc9526.monalisa.core.datasource.DbProp;
 import com.tsc9526.monalisa.core.query.model.Record;
 
+/**
+ * 
+ * @author zzg.zhou(11039850@qq.com)
+ */
 @Test
 public class TestDBConfig {
 

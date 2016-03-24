@@ -21,7 +21,10 @@ import java.io.FileOutputStream;
 
 import com.tsc9526.monalisa.core.parser.jsp.Jsp;
 
- 
+/**
+ * 
+ * @author zzg.zhou(11039850@qq.com)
+ */ 
 public class DBWriterHelper {
 	public static void main(String[] args)throws Exception{
 		DBWriterHelper jwc=new DBWriterHelper();

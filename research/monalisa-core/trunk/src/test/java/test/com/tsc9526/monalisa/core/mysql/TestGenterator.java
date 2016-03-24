@@ -41,6 +41,10 @@ import com.tsc9526.monalisa.core.meta.MetaTable.CreateTable;
 import com.tsc9526.monalisa.core.query.Tx;
 import com.tsc9526.monalisa.core.tools.FileHelper;
  
+/**
+ * 
+ * @author zzg.zhou(11039850@qq.com)
+ */
 @Test
 public class TestGenterator {
 	static Logger logger=Logger.getLogger(TestGenterator.class.getSimpleName());

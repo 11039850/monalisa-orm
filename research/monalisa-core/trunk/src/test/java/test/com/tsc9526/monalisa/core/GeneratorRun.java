@@ -30,7 +30,10 @@ import com.tsc9526.monalisa.core.query.Query;
 import com.tsc9526.monalisa.core.query.datatable.DataTable;
 import com.tsc9526.monalisa.core.query.model.Record;
 
-
+/**
+ * 
+ * @author zzg.zhou(11039850@qq.com)
+ */
 public class GeneratorRun {
 	public static void main(String[] args)throws Exception {
 		File sqlFile=new File("sql/mysqldb/test1.jsp");
