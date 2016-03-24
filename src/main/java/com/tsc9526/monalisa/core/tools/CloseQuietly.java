@@ -38,19 +38,21 @@ public class CloseQuietly {
 		}, delay*1000);
 	}
 	
-	public static void close(Object x){
-		if(x instanceof Closeable){
-			close((Closeable)x);
-		}else if(x instanceof AutoCloseable){
-			close((AutoCloseable)x);
-		}else{		
-			try{
-				Method m=x.getClass().getMethod("close");
-				m.invoke(x);
-			}catch(NoSuchMethodException e){
-				//do nothing
-			}catch(Exception e){
-				throw new RuntimeException(e);
+	public static void close(Object ... xs){
+		for(Object x:xs){
+			if(x instanceof Closeable){
+				close((Closeable)x);
+			}else if(x instanceof AutoCloseable){
+				close((AutoCloseable)x);
+			}else{		
+				try{
+					Method m=x.getClass().getMethod("close");
+					m.invoke(x);
+				}catch(NoSuchMethodException e){
+					//do nothing
+				}catch(Exception e){
+					throw new RuntimeException(e);
+				}
 			}
 		}
 	}

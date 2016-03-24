@@ -16,27 +16,39 @@
  *******************************************************************************************/
 package com.tsc9526.monalisa.core.converters.impl;
 
-import com.tsc9526.monalisa.core.converters.Converter;
+import java.util.Date;
+
+import com.tsc9526.monalisa.core.converters.Conversion;
 
 /**
  * 
  * @author zzg.zhou(11039850@qq.com)
  */
-public class IntegerConverter implements Converter{
- 
-	public <T> T convert(Object source, Class<T> target) {
-		 
-		return null;
-	}
+public class LongTypeConversion implements Conversion<Long> {
 
-	
-	protected Integer stringToInteger(String src){
-		return Integer.parseInt(src);
+	@Override
+	public Object[] getTypeKeys() {
+		return new Object[] {
+			Long.class,
+			Long.TYPE,
+			Long.class.getName(),
+			TYPE_LONG
+		};
 	}
-	
-	protected Integer stringToIntegerArray(String src){
-		return Integer.parseInt(src);
+ 
+	public Long convert(Object value) {
+		if (!(value instanceof Long)) {
+			if(value instanceof Date){
+				return ((Date)value).getTime();
+			}
+			
+			String v=value.toString();
+			if (v.trim().length()==0) {
+				value=null;
+			}else {
+				value=Long.parseLong(v);
+			}
+		}
+		return (Long)value;
 	}
-	
-	 
 }

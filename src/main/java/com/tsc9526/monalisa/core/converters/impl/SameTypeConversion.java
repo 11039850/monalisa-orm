@@ -16,10 +16,19 @@
  *******************************************************************************************/
 package com.tsc9526.monalisa.core.converters.impl;
 
+import com.tsc9526.monalisa.core.converters.Conversion;
+
 /**
  * 
  * @author zzg.zhou(11039850@qq.com)
  */
-public class F {
+public class SameTypeConversion implements Conversion<Object> {
+	 
+	public Object[] getTypeKeys() {
+		return new Object[] {};
+	}
 
+	public Object convert(Object value) {
+		return value;
+	}
 }

@@ -17,11 +17,9 @@
 package com.tsc9526.monalisa.core.converters;
 
 import java.util.Arrays;
-import java.util.Date;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
-
-import org.apache.commons.beanutils.ConvertUtils;
-import org.apache.commons.beanutils.converters.DateTimeConverter;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
@@ -30,6 +28,19 @@ import com.google.gson.JsonNull;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonPrimitive;
+import com.tsc9526.monalisa.core.converters.impl.BigDecimalTypeConversion;
+import com.tsc9526.monalisa.core.converters.impl.BooleanTypeConversion;
+import com.tsc9526.monalisa.core.converters.impl.ByteTypeConversion;
+import com.tsc9526.monalisa.core.converters.impl.CharacterTypeConversion;
+import com.tsc9526.monalisa.core.converters.impl.DateTypeConversion;
+import com.tsc9526.monalisa.core.converters.impl.DoubleTypeConversion;
+import com.tsc9526.monalisa.core.converters.impl.FloatTypeConversion;
+import com.tsc9526.monalisa.core.converters.impl.IntegerTypeConversion;
+import com.tsc9526.monalisa.core.converters.impl.LongTypeConversion;
+import com.tsc9526.monalisa.core.converters.impl.ObjectTypeConversion;
+import com.tsc9526.monalisa.core.converters.impl.SameTypeConversion;
+import com.tsc9526.monalisa.core.converters.impl.ShortTypeConversion;
+import com.tsc9526.monalisa.core.converters.impl.StringTypeConversion;
 import com.tsc9526.monalisa.core.logger.Logger;
 import com.tsc9526.monalisa.core.tools.EnumHelper;
 import com.tsc9526.monalisa.core.tools.JsonHelper;
@@ -38,21 +49,12 @@ import com.tsc9526.monalisa.core.tools.JsonHelper;
  * 
  * @author zzg.zhou(11039850@qq.com)
  */
-@SuppressWarnings("unchecked")
-public class DefaultConverter implements Converter{
-	static Logger logger=Logger.getLogger(DefaultConverter.class);
-	
-	static{
-		DateValue dc = new DateValue(null);
-		dc.setUseLocaleFormat(true);
-		String[] datePattern = {"yyyy-MM-dd HH:mm:ss","yyyy-MM-dd","yyyy-MM-dd HH:mm:ss.SSS"};    
-		dc.setPatterns(datePattern);
-		ConvertUtils.register(dc, java.util.Date.class);
-	}
-	
-	public <T> T convert(Object v, Class<T> type) {
+public class TypeConverter {
+	static Logger logger=Logger.getLogger(TypeConverter.class);
+	 
+	public Object convert(Object v, Class<?> type) {
 		if(type==null){
-			return (T)v;
+			return v;
 		}
 		
 		if(v instanceof JsonNull){
@@ -61,7 +63,7 @@ public class DefaultConverter implements Converter{
 				 
 		if(v!=null){
 			if(type.isInstance(v)){
-				return (T)v;
+				return v;
 			}else{
 				return doConvert(v, type);
 			}
@@ -70,6 +72,7 @@ public class DefaultConverter implements Converter{
 		}		 
 	}
 	
+	@SuppressWarnings("unchecked")
 	protected <T> T convertToEnum(Object v, Class<T> type) {
 		return (T)EnumHelper.getEnum(type, v);
 	}
@@ -155,11 +158,8 @@ public class DefaultConverter implements Converter{
 			return JsonHelper.getGson().fromJson((JsonElement)v, type);
 		}
 	}
-	
-	protected <T> T convertOtherTypes(Object v, Class<T> type){		
-		return (T)ConvertUtils.convert(v, type);
-	}
-	
+	 
+	@SuppressWarnings("unchecked")
 	protected <T> T doConvert(Object v, Class<T> type){
 		Object value=null;
 		
@@ -178,38 +178,84 @@ public class DefaultConverter implements Converter{
 			if(v instanceof JsonPrimitive){
 				JsonPrimitive p=((JsonPrimitive)v);
 				v=p.getAsString();
-				 
+				  
 			}
-			value=convertOtherTypes(v, type);
+			value=tryConvert(type, v);
 		}		
-		
-		
+	
 		return (T)value;
 	}	
 	
-	
-	public static class DateValue extends DateTimeConverter {
 
-		public DateValue() {
-	        super();        
-	    }
-  
-	    public DateValue(Object defaultValue) {
-	        super(defaultValue);
-	    }
+	public static void registerTypeConversion(Conversion<?> conversion) {
+		Object[] keys = conversion.getTypeKeys();
+		if (keys == null) {
+			return;
+		}
+
+		for (int i = 0; i < keys.length; i++) {
+			typeConversions.put(keys[i], conversion);
+		}
+	}
  
-	    protected Class<?> getDefaultType() {
-	        return Date.class;
-	    }
-	    
-	    public <T> T convert(Class<T> type, Object value) {
-	    	try{
-	    		long v=Long.parseLong(value.toString());
-	    		return super.convert(type, v);
-	    	}catch(NumberFormatException e){
-	    		return super.convert(type, value);
-	    	}
-	    }
+	public static void unregisterTypeConversion(Conversion<?> conversion) {
+		if (conversion != null) {
+			Object[] keys = conversion.getTypeKeys();
+			 		
+			if (keys != null) {
+				for (int i = 0; i < keys.length; i++) {
+					typeConversions.remove(keys[i]);
+				}
+			}
+		}
+	}
+   
+	protected Object tryConvert(Class<?> type, Object value) {
+		if (value == null){
+			return null;
+		}
 
+		if (type == null) {
+			return value;
+		}
+
+		Conversion<?> conversion = getTypeConversion(type, value);
+
+		if (conversion != null) {
+			Object result = conversion.convert(value);
+			return result;
+		} else {
+			return null;
+		}
+	}
+
+	 
+	protected  Conversion<?> getTypeConversion(Object typeKey, Object value) {
+		// Check if the provided value is already of the target type
+		if (typeKey instanceof Class && ((Class<?>) typeKey) != Object.class && ((Class<?>) typeKey).isInstance(value)) {
+			return IDENTITY_CONVERSION;
+		}
+
+		return typeConversions.get(typeKey);
+	}
+
+	  
+	private static final Map<Object, Conversion<?>> typeConversions = Collections.synchronizedMap(new HashMap<Object, Conversion<?>>());
+
+	private static final Conversion<?> IDENTITY_CONVERSION = new SameTypeConversion();
+
+	static {
+		registerTypeConversion(new BigDecimalTypeConversion());
+		registerTypeConversion(new BooleanTypeConversion());
+		registerTypeConversion(new ByteTypeConversion());
+		registerTypeConversion(new CharacterTypeConversion());
+		registerTypeConversion(new DoubleTypeConversion());
+		registerTypeConversion(new FloatTypeConversion());
+		registerTypeConversion(new IntegerTypeConversion());
+		registerTypeConversion(new LongTypeConversion());
+		registerTypeConversion(new ObjectTypeConversion());
+		registerTypeConversion(new ShortTypeConversion());
+		registerTypeConversion(new DateTypeConversion());
+		registerTypeConversion(new StringTypeConversion());
 	}
 }

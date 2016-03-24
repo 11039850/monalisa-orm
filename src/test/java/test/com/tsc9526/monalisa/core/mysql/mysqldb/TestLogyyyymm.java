@@ -31,7 +31,7 @@ import java.util.LinkedHashMap;
 	}
 )
 public class TestLogyyyymm extends com.tsc9526.monalisa.core.query.model.Model<TestLogyyyymm> implements test.com.tsc9526.monalisa.core.mysql.MysqlDB{
-	private static final long serialVersionUID = 1126948580081L;
+	private static final long serialVersionUID = 1126656109177L;
 		 
 	public static final Insert INSERT(){
 	 	return new Insert(new TestLogyyyymm());
