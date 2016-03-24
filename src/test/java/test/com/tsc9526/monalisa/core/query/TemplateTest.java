@@ -25,6 +25,10 @@ import com.tsc9526.monalisa.core.generator.DBTableGenerator;
 import com.tsc9526.monalisa.core.meta.MetaTable;
 import com.tsc9526.monalisa.core.query.model.Model;
 
+/**
+ * 
+ * @author zzg.zhou(11039850@qq.com)
+ */
 @Test
 public class TemplateTest {
 

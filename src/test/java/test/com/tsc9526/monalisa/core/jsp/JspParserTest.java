@@ -27,6 +27,10 @@ import com.tsc9526.monalisa.core.query.DataMap;
 import com.tsc9526.monalisa.core.query.Query;
 import com.tsc9526.monalisa.core.query.datatable.DataTable;
 
+/**
+ * 
+ * @author zzg.zhou(11039850@qq.com)
+ */
 @Test
 public class JspParserTest {
 	

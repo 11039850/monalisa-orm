@@ -18,6 +18,10 @@ package com.tsc9526.monalisa.core.query;
 
 import java.util.Stack;
 
+/**
+ * 
+ * @author zzg.zhou(11039850@qq.com)
+ */
 @SuppressWarnings("unchecked")
 public class Args {
 	protected Stack<Object> dynamic=new Stack<Object>();

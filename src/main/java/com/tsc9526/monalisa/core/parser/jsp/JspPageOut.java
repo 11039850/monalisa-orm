@@ -18,6 +18,10 @@ package com.tsc9526.monalisa.core.parser.jsp;
 
 import java.io.PrintWriter;
 
+/**
+ * 
+ * @author zzg.zhou(11039850@qq.com)
+ */
 public class JspPageOut extends PrintWriter{
  	
 	public JspPageOut(PrintWriter pw){

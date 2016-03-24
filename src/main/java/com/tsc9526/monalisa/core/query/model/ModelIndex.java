@@ -20,6 +20,10 @@ import java.util.List;
 
 import com.tsc9526.monalisa.core.tools.ClassHelper.FGS;
 
+/**
+ * 
+ * @author zzg.zhou(11039850@qq.com)
+ */
 public class ModelIndex{
 	/**
 	 * 索引名

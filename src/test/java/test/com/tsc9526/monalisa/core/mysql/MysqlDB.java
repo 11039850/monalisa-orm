@@ -19,6 +19,10 @@ package test.com.tsc9526.monalisa.core.mysql;
 import com.tsc9526.monalisa.core.annotation.DB;
 import com.tsc9526.monalisa.core.datasource.DBConfig;
 
+/**
+ * 
+ * @author zzg.zhou(11039850@qq.com)
+ */
 @DB(
 		url="jdbc:mysql://127.0.0.1:3306/test_monalisa", 
 		username="monalisa", 

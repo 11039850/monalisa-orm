@@ -14,7 +14,7 @@
  *	You should have received a copy of the GNU Lesser General Public License
  *	along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************************/
-package com.tsc9526.monalisa.core.convert;
+package com.tsc9526.monalisa.core.converters;
 
 import java.util.Arrays;
 import java.util.Date;
@@ -34,6 +34,10 @@ import com.tsc9526.monalisa.core.logger.Logger;
 import com.tsc9526.monalisa.core.tools.EnumHelper;
 import com.tsc9526.monalisa.core.tools.JsonHelper;
 
+/**
+ * 
+ * @author zzg.zhou(11039850@qq.com)
+ */
 @SuppressWarnings("unchecked")
 public class DefaultConverter implements Converter{
 	static Logger logger=Logger.getLogger(DefaultConverter.class);

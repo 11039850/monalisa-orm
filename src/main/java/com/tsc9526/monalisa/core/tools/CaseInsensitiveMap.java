@@ -18,6 +18,10 @@ package com.tsc9526.monalisa.core.tools;
 
 import java.util.HashMap;
 
+/**
+ * 
+ * @author zzg.zhou(11039850@qq.com)
+ */
 public class CaseInsensitiveMap<T> extends HashMap<String, T> {
 
 	private static final long serialVersionUID = -5859767087732654080L;

@@ -28,6 +28,10 @@ import com.tsc9526.monalisa.core.query.model.Model;
 import com.tsc9526.monalisa.core.query.model.Record;
 import com.tsc9526.monalisa.core.tools.ClassHelper.FGS;
 
+/**
+ * 
+ * @author zzg.zhou(11039850@qq.com)
+ */
 @DB(url="jdbc:mysql://127.0.0.1:3306/jy_market", username="jy_market", password="jy_market")
 public class RecordTest extends Model<RecordTest>{ 
 	private static final long serialVersionUID = -1974865252589672370L;
