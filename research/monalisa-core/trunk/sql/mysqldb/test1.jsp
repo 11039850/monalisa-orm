@@ -17,14 +17,14 @@
 			Date fromTime=new Date();
 			Date endTime =new Date();
 			  
-			name="N0%";
+			name="N%";
 		%>
-		SELECT a.name,b.name as cname3 <%=name.length()>2?", a.id":", b.id"%> 
+		SELECT a.*,b.name  <%=name.length()>2?", a.id":", b.id"%> 
 		FROM test_table_1 a left join test_table_2 b <%out.print("on a.id=b.id");%> 
 		where <%="1=1"%>    
-		<%if(name.length()>0)%>AND a.name = $name
+		<%if(name.length()>0)%>AND a.name like $name
 		<%if(title!=null && title.length()>0)%>AND a.title like $title
-		<%if(create_by!=null){%>AND a.create_by =$create_by<%}%>
+		<%if(create_by!=null){%>OR a.create_by =$create_by<%}%>
 		
 		<%}%>
 	</q>

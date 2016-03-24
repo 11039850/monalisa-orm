@@ -75,6 +75,7 @@ public class SQLGenerator {
 			
 			File java=new File(dir,cs.getClassName()+".java");
 			logger.info("Parse "+cs.getSqlFile().getAbsolutePath()+" to "+java.getAbsolutePath());
+			
 			JavaWriter writer=new JavaWriter(java);
 			
 			writer.write("package "+cs.getPackageName()+";\r\n\r\n");
@@ -127,17 +128,25 @@ public class SQLGenerator {
 	}
 	
 	private void writeQueryResultClass()throws Exception{
+		Map<String,String> hrs=new HashMap<String, String>();
+		
 		//从SQL查询语句生成Java结果类
 		for(SQLClass cs:sqlResourceManager.getSqlClasses().values()){
 			for(QueryStatement qs:cs.getStatements()){
 				String resultClass=qs.getResultClass();
 				if(resultClass!=null && resultClass.length()>0){
-					
 					File target=new File(srcDir,resultClass.replace(".","/")+".java");
+					
+					String sqlSource=hrs.get(target.getAbsolutePath());
+					if(sqlSource!=null){
+						logger.warn("Ignore result class: "+cs.getSqlFile().getAbsolutePath()+"::"+qs.getId()+" {Exist: "+sqlSource+"}");
+						continue;
+					}
+					
 					if(target.exists()){
 						String source=FileHelper.readToString(new FileInputStream(target), "utf-8");
 						if(source.indexOf("FINGERPRINT")<0){
-							logger.info("Ignore generate result class: "+resultClass+", FINGERPRINT not found in the file: "+target.getAbsolutePath());
+							logger.info("Ignore result class: "+resultClass+"{"+cs.getSqlFile().getAbsolutePath()+"::"+qs.getId()+"}, FINGERPRINT not found in the file: "+target.getAbsolutePath());
 							continue;
 						}
 					}
@@ -156,6 +165,9 @@ public class SQLGenerator {
 					 
 					QExchange exchange=QExchange.getExchange(true);
 					createResultJavaCode(srcDir,exchange,resultClass);
+					
+					hrs.put(target.getAbsolutePath(),cs.getSqlFile().getAbsolutePath()+"::"+qs.getId());
+					
 				}
 			}
 		}

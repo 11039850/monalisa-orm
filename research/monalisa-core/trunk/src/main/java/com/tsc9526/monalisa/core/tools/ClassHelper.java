@@ -29,15 +29,14 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
-import com.tsc9526.monalisa.core.converters.Converter;
-import com.tsc9526.monalisa.core.converters.DefaultConverter;
+import com.tsc9526.monalisa.core.converters.TypeConverter;
  
 /**
  * 
  * @author zzg.zhou(11039850@qq.com)
  */
 public class ClassHelper {
-	public static Converter converter=new DefaultConverter();	
+	public static TypeConverter converter=new TypeConverter();	
 	 
 	private static ConcurrentHashMap<String, MetaClass> hBeanClasses = new ConcurrentHashMap<String, MetaClass>();
 	  

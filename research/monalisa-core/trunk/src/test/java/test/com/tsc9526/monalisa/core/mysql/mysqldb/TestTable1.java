@@ -31,7 +31,7 @@ import java.util.LinkedHashMap;
 	}
 )
 public class TestTable1 extends com.tsc9526.monalisa.core.query.model.Model<TestTable1> implements test.com.tsc9526.monalisa.core.mysql.MysqlDB{
-	private static final long serialVersionUID = 1203411757078L;
+	private static final long serialVersionUID = 1138223827804L;
 		 
 	public static final Insert INSERT(){
 	 	return new Insert(new TestTable1());
@@ -182,16 +182,6 @@ public class TestTable1 extends com.tsc9526.monalisa.core.query.model.Model<Test
 @Column(table=M.TABLE, jdbcType=12, name=M.updateBy$name, key=M.updateBy$key, auto=M.updateBy$auto, notnull=M.updateBy$notnull, length=M.updateBy$length, value=M.updateBy$value, remarks=M.updateBy$remarks) 
 	
 	private String updateBy;	
-	
-	/**
-* @Column
-* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_1&nbsp;<B>name:</B> extra_1
-* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 16<br>
-* <li><B>remarks:</B> 
-*/
-@Column(table=M.TABLE, jdbcType=12, name=M.extra1$name, key=M.extra1$key, auto=M.extra1$auto, notnull=M.extra1$notnull, length=M.extra1$length, value=M.extra1$value, remarks=M.extra1$remarks) 
-	
-	private String extra1;	
 	
 	
 	
@@ -371,24 +361,6 @@ public class TestTable1 extends com.tsc9526.monalisa.core.query.model.Model<Test
 		  
 		
 		fieldChanged("updateBy");
-		
-		return this;
-	}
-	
-	
-	/**
-* @Column
-* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_1&nbsp;<B>name:</B> extra_1
-* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 16<br>
-* <li><B>remarks:</B> 
-*/
-@Column(table=M.TABLE, jdbcType=12, name=M.extra1$name, key=M.extra1$key, auto=M.extra1$auto, notnull=M.extra1$notnull, length=M.extra1$length, value=M.extra1$value, remarks=M.extra1$remarks) 
-	public TestTable1 setExtra1(String extra1){
-		
-		this.extra1 = extra1;
-		  
-		
-		fieldChanged("extra1");
 		
 		return this;
 	}
@@ -687,35 +659,6 @@ public class TestTable1 extends com.tsc9526.monalisa.core.query.model.Model<Test
 	}
 	
 	
-	/**
-* @Column
-* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_1&nbsp;<B>name:</B> extra_1
-* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 16<br>
-* <li><B>remarks:</B> 
-*/
-@Column(table=M.TABLE, jdbcType=12, name=M.extra1$name, key=M.extra1$key, auto=M.extra1$auto, notnull=M.extra1$notnull, length=M.extra1$length, value=M.extra1$value, remarks=M.extra1$remarks) 
-	public String getExtra1(){
-		return this.extra1;
- 
-	}
-	
-	/**
-* @Column
-* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_1&nbsp;<B>name:</B> extra_1
-* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 16<br>
-* <li><B>remarks:</B> 
-* @param defaultValue  Return the default value if extra1 is null.*/
-@Column(table=M.TABLE, jdbcType=12, name=M.extra1$name, key=M.extra1$key, auto=M.extra1$auto, notnull=M.extra1$notnull, length=M.extra1$length, value=M.extra1$value, remarks=M.extra1$remarks) 
-	public String getExtra1(String defaultValue){
-		String r=this.getExtra1();
-		if(r==null){
-			r=defaultValue;
-		}
-		
-		return r;
-	}
-	
-	
 	
 	public static class Insert extends com.tsc9526.monalisa.core.query.dao.Insert<TestTable1>{
 		Insert(TestTable1 model){
@@ -991,17 +934,6 @@ public class TestTable1 extends com.tsc9526.monalisa.core.query.model.Model<Test
 		public com.tsc9526.monalisa.core.query.criteria.Field.FieldString<Criteria> updateBy = new com.tsc9526.monalisa.core.query.criteria.Field.FieldString<Criteria>("update_by", this);
 				
 		
-		/**
-* @Column
-* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_1&nbsp;<B>name:</B> extra_1
-* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 16<br>
-* <li><B>remarks:</B> 
-*/
-@Column(table=M.TABLE, jdbcType=12, name=M.extra1$name, key=M.extra1$key, auto=M.extra1$auto, notnull=M.extra1$notnull, length=M.extra1$length, value=M.extra1$value, remarks=M.extra1$remarks)
-		
-		public com.tsc9526.monalisa.core.query.criteria.Field.FieldString<Criteria> extra1 = new com.tsc9526.monalisa.core.query.criteria.Field.FieldString<Criteria>("extra_1", this);
-				
-		
 	}
 	 
 	
@@ -1017,8 +949,6 @@ public class TestTable1 extends com.tsc9526.monalisa.core.query.model.Model<Test
 	
 			
 			public static enum EnumStringA{ TRUE, FALSE}
-		 
-	
 		 
 	
 		 
@@ -1214,24 +1144,6 @@ public class TestTable1 extends com.tsc9526.monalisa.core.query.model.Model<Test
 		public final static String  updateBy$remarks = "" ;
 		public final static boolean updateBy$auto    = false ;
 		public final static boolean updateBy$notnull = false;
-		
-		
-		/**
-* @Column
-* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_1&nbsp;<B>name:</B> extra_1
-* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 16<br>
-* <li><B>remarks:</B> 
-*/
-@Column(table=M.TABLE, jdbcType=12, name=M.extra1$name, key=M.extra1$key, auto=M.extra1$auto, notnull=M.extra1$notnull, length=M.extra1$length, value=M.extra1$value, remarks=M.extra1$remarks)
-		public final static String  extra1         = "extra_1" ;
-		
-		public final static String  extra1$name    = "extra_1" ;
-		public final static boolean extra1$key     = false;
-		public final static int     extra1$length  = 16;
-		public final static String  extra1$value   = "NULL" ;
-		public final static String  extra1$remarks = "" ;
-		public final static boolean extra1$auto    = false ;
-		public final static boolean extra1$notnull = false;
 		
 				 
 	}

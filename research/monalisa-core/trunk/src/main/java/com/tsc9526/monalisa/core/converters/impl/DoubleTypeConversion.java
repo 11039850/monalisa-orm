@@ -14,15 +14,36 @@
  *	You should have received a copy of the GNU Lesser General Public License
  *	along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************************/
-package com.tsc9526.monalisa.core.converters;
+package com.tsc9526.monalisa.core.converters.impl;
+
+import com.tsc9526.monalisa.core.converters.Conversion;
 
 /**
  * 
  * @author zzg.zhou(11039850@qq.com)
- */
-public interface Converter {
-	public static String JSON_CLASS="";
-	
-	public <T> T convert(Object source, Class<T> target);
+ */ 
+public class DoubleTypeConversion implements Conversion<Double> {
 
+	public Object[] getTypeKeys() {
+		return new Object[] {
+			Double.class,
+			Double.TYPE,
+			Double.class.getName(),
+			TYPE_DOUBLE
+		};
+	}
+
+	 
+	public Double convert(Object value) {
+		if (!(value instanceof Double)) {
+			String v=value.toString();
+			if (v.trim().length()==0) {
+				value=null;
+			}
+			else {
+				value=Double.parseDouble(v);
+			}
+		}
+		return (Double)value;
+	}
 }
