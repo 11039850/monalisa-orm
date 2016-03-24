@@ -18,13 +18,14 @@ package com.tsc9526.monalisa.core.tools;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.tsc9526.monalisa.core.converters.Conversion;
 
 /**
  * 
  * @author zzg.zhou(11039850@qq.com)
  */
 public class JsonHelper {
-	private static GsonBuilder gb=new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss");
+	private static GsonBuilder gb=new GsonBuilder().setDateFormat(Conversion.DEFAULT_DATETIME_FORMAT);
 	
 	public static Gson getGson(){		
 		return gb.create();   

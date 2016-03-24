@@ -14,42 +14,41 @@
  *	You should have received a copy of the GNU Lesser General Public License
  *	along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************************/
-package com.tsc9526.monalisa.core.converters.impl;
+package test.com.tsc9526.monalisa.core.data;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import com.tsc9526.monalisa.core.converters.Conversion;
+import com.tsc9526.monalisa.core.tools.JsonHelper;
 
 /**
  * 
  * @author zzg.zhou(11039850@qq.com)
  */
-public class StringTypeConversion implements Conversion<String> {
- 
-	public Object[] getTypeKeys() {
-		return new Object[] {
-			String.class,
-			String.class.getName(),
-			TYPE_STRING
-		};
+public class ColumnData {
+	private int id=0;
+	private String name="def";
+	private Date ts=new Date();
+	
+	public String toString(){
+		return JsonHelper.getGson().toJson(this);
 	}
-
-	public String convert(Object value) {
-		if (value.getClass().isArray()) {
-			if (value.getClass().getComponentType()==Byte.TYPE) {
-				value=new String((byte[])value);
-			}else if (value.getClass().getComponentType()==Character.TYPE) {
-				value=new String((char[])value);
-			}
-		}else if (!(value instanceof String)) {
-			if(value instanceof Date){
-				SimpleDateFormat sdf=new SimpleDateFormat(DEFAULT_DATETIME_FORMAT);
-				value=sdf.format((Date)value);
-			}
-			
-			value=value.toString();
-		}
-		return (String)value;
+	
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public Date getTs() {
+		return ts;
+	}
+	public void setTs(Date ts) {
+		this.ts = ts;
 	}
 }

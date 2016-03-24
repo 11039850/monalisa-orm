@@ -21,6 +21,8 @@ package com.tsc9526.monalisa.core.converters;
  * @author zzg.zhou(11039850@qq.com)
  */
 public interface Conversion<T> {
+	public static String DEFAULT_DATETIME_FORMAT="yyyy-MM-dd HH:mm:ss";
+	
 	public static final String TYPE_OBJECT  = "object"; 
 	public static final String TYPE_STRING  = "string"; 
 	public static final String TYPE_INT     = "int"; 

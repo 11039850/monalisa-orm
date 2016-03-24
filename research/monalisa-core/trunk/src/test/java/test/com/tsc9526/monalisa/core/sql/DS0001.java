@@ -9,6 +9,10 @@ import test.com.tsc9526.monalisa.core.mysql.mysqldb.TestTable1;
 
 import test.com.tsc9526.monalisa.core.mysql.mysqldb.TestTable2;
 
+import com.google.gson.JsonObject;
+
+import test.com.tsc9526.monalisa.core.data.ColumnData;
+
 import com.tsc9526.monalisa.core.annotation.Column;
 
  
@@ -17,7 +21,7 @@ import com.tsc9526.monalisa.core.annotation.Column;
  * @see 
  */
 public class DS0001 implements java.io.Serializable{
-	private static final long serialVersionUID = 2050596516159L;	
+	private static final long serialVersionUID = 2345137921418L;	
 	final static String  FINGERPRINT = "";
 	  
 	 
@@ -170,6 +174,46 @@ public class DS0001 implements java.io.Serializable{
 */
 @Column(table=TestTable2.M.TABLE, jdbcType=12, name=TestTable2.M.enumStringA$name, key=TestTable2.M.enumStringA$key, auto=TestTable2.M.enumStringA$auto, notnull=TestTable2.M.enumStringA$notnull, length=TestTable2.M.enumStringA$length, value=TestTable2.M.enumStringA$value, remarks=TestTable2.M.enumStringA$remarks)
 	private TestTable2.EnumStringA TestTable2$enumStringA;	
+	
+	
+	/**
+* @Column
+* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_2&nbsp;<B>name:</B> array_int
+* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 256<br>
+* <li><B>remarks:</B> 整形数组 #array{int}
+*/
+@Column(table=TestTable2.M.TABLE, jdbcType=12, name=TestTable2.M.arrayInt$name, key=TestTable2.M.arrayInt$key, auto=TestTable2.M.arrayInt$auto, notnull=TestTable2.M.arrayInt$notnull, length=TestTable2.M.arrayInt$length, value=TestTable2.M.arrayInt$value, remarks=TestTable2.M.arrayInt$remarks)
+	private int[] arrayInt;	
+	
+	
+	/**
+* @Column
+* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_2&nbsp;<B>name:</B> array_string
+* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 256<br>
+* <li><B>remarks:</B> 字符串数组 #array{}
+*/
+@Column(table=TestTable2.M.TABLE, jdbcType=12, name=TestTable2.M.arrayString$name, key=TestTable2.M.arrayString$key, auto=TestTable2.M.arrayString$auto, notnull=TestTable2.M.arrayString$notnull, length=TestTable2.M.arrayString$length, value=TestTable2.M.arrayString$value, remarks=TestTable2.M.arrayString$remarks)
+	private String[] arrayString;	
+	
+	
+	/**
+* @Column
+* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_2&nbsp;<B>name:</B> json
+* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 1024<br>
+* <li><B>remarks:</B> Json #json{}
+*/
+@Column(table=TestTable2.M.TABLE, jdbcType=12, name=TestTable2.M.json$name, key=TestTable2.M.json$key, auto=TestTable2.M.json$auto, notnull=TestTable2.M.json$notnull, length=TestTable2.M.json$length, value=TestTable2.M.json$value, remarks=TestTable2.M.json$remarks)
+	private JsonObject json;	
+	
+	
+	/**
+* @Column
+* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_2&nbsp;<B>name:</B> obj
+* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 1024<br>
+* <li><B>remarks:</B> Object #json{test.com.tsc9526.monalisa.core.data.ColumnData}
+*/
+@Column(table=TestTable2.M.TABLE, jdbcType=12, name=TestTable2.M.obj$name, key=TestTable2.M.obj$key, auto=TestTable2.M.obj$auto, notnull=TestTable2.M.obj$notnull, length=TestTable2.M.obj$length, value=TestTable2.M.obj$value, remarks=TestTable2.M.obj$remarks)
+	private ColumnData obj;	
 	
 	
 	/**
@@ -416,6 +460,58 @@ public class DS0001 implements java.io.Serializable{
 @Column(table=TestTable2.M.TABLE, jdbcType=12, name=TestTable2.M.enumStringA$name, key=TestTable2.M.enumStringA$key, auto=TestTable2.M.enumStringA$auto, notnull=TestTable2.M.enumStringA$notnull, length=TestTable2.M.enumStringA$length, value=TestTable2.M.enumStringA$value, remarks=TestTable2.M.enumStringA$remarks)
 	public DS0001 setTestTable2$enumStringA(TestTable2.EnumStringA TestTable2$enumStringA){
 		this.TestTable2$enumStringA = TestTable2$enumStringA;
+		return this;
+	}
+	
+	
+	/**
+* @Column
+* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_2&nbsp;<B>name:</B> array_int
+* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 256<br>
+* <li><B>remarks:</B> 整形数组 #array{int}
+*/
+@Column(table=TestTable2.M.TABLE, jdbcType=12, name=TestTable2.M.arrayInt$name, key=TestTable2.M.arrayInt$key, auto=TestTable2.M.arrayInt$auto, notnull=TestTable2.M.arrayInt$notnull, length=TestTable2.M.arrayInt$length, value=TestTable2.M.arrayInt$value, remarks=TestTable2.M.arrayInt$remarks)
+	public DS0001 setArrayInt(int[] arrayInt){
+		this.arrayInt = arrayInt;
+		return this;
+	}
+	
+	
+	/**
+* @Column
+* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_2&nbsp;<B>name:</B> array_string
+* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 256<br>
+* <li><B>remarks:</B> 字符串数组 #array{}
+*/
+@Column(table=TestTable2.M.TABLE, jdbcType=12, name=TestTable2.M.arrayString$name, key=TestTable2.M.arrayString$key, auto=TestTable2.M.arrayString$auto, notnull=TestTable2.M.arrayString$notnull, length=TestTable2.M.arrayString$length, value=TestTable2.M.arrayString$value, remarks=TestTable2.M.arrayString$remarks)
+	public DS0001 setArrayString(String[] arrayString){
+		this.arrayString = arrayString;
+		return this;
+	}
+	
+	
+	/**
+* @Column
+* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_2&nbsp;<B>name:</B> json
+* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 1024<br>
+* <li><B>remarks:</B> Json #json{}
+*/
+@Column(table=TestTable2.M.TABLE, jdbcType=12, name=TestTable2.M.json$name, key=TestTable2.M.json$key, auto=TestTable2.M.json$auto, notnull=TestTable2.M.json$notnull, length=TestTable2.M.json$length, value=TestTable2.M.json$value, remarks=TestTable2.M.json$remarks)
+	public DS0001 setJson(JsonObject json){
+		this.json = json;
+		return this;
+	}
+	
+	
+	/**
+* @Column
+* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_2&nbsp;<B>name:</B> obj
+* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 1024<br>
+* <li><B>remarks:</B> Object #json{test.com.tsc9526.monalisa.core.data.ColumnData}
+*/
+@Column(table=TestTable2.M.TABLE, jdbcType=12, name=TestTable2.M.obj$name, key=TestTable2.M.obj$key, auto=TestTable2.M.obj$auto, notnull=TestTable2.M.obj$notnull, length=TestTable2.M.obj$length, value=TestTable2.M.obj$value, remarks=TestTable2.M.obj$remarks)
+	public DS0001 setObj(ColumnData obj){
+		this.obj = obj;
 		return this;
 	}
 	
@@ -900,6 +996,118 @@ public class DS0001 implements java.io.Serializable{
 @Column(table=TestTable2.M.TABLE, jdbcType=12, name=TestTable2.M.enumStringA$name, key=TestTable2.M.enumStringA$key, auto=TestTable2.M.enumStringA$auto, notnull=TestTable2.M.enumStringA$notnull, length=TestTable2.M.enumStringA$length, value=TestTable2.M.enumStringA$value, remarks=TestTable2.M.enumStringA$remarks)
 	public TestTable2.EnumStringA getTestTable2$enumStringA(TestTable2.EnumStringA defaultValue){
 		TestTable2.EnumStringA r=this.getTestTable2$enumStringA();
+		if(r==null){
+			r=defaultValue;
+		}		
+		
+		return r;
+	}
+	
+	
+	/**
+* @Column
+* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_2&nbsp;<B>name:</B> array_int
+* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 256<br>
+* <li><B>remarks:</B> 整形数组 #array{int}
+*/
+@Column(table=TestTable2.M.TABLE, jdbcType=12, name=TestTable2.M.arrayInt$name, key=TestTable2.M.arrayInt$key, auto=TestTable2.M.arrayInt$auto, notnull=TestTable2.M.arrayInt$notnull, length=TestTable2.M.arrayInt$length, value=TestTable2.M.arrayInt$value, remarks=TestTable2.M.arrayInt$remarks)
+	public int[] getArrayInt(){
+		return this.arrayInt;		
+	}
+	
+	/**
+* @Column
+* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_2&nbsp;<B>name:</B> array_int
+* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 256<br>
+* <li><B>remarks:</B> 整形数组 #array{int}
+* @param defaultValue  Return the default value if arrayInt is null.*/
+@Column(table=TestTable2.M.TABLE, jdbcType=12, name=TestTable2.M.arrayInt$name, key=TestTable2.M.arrayInt$key, auto=TestTable2.M.arrayInt$auto, notnull=TestTable2.M.arrayInt$notnull, length=TestTable2.M.arrayInt$length, value=TestTable2.M.arrayInt$value, remarks=TestTable2.M.arrayInt$remarks)
+	public int[] getArrayInt(int[] defaultValue){
+		int[] r=this.getArrayInt();
+		if(r==null){
+			r=defaultValue;
+		}		
+		
+		return r;
+	}
+	
+	
+	/**
+* @Column
+* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_2&nbsp;<B>name:</B> array_string
+* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 256<br>
+* <li><B>remarks:</B> 字符串数组 #array{}
+*/
+@Column(table=TestTable2.M.TABLE, jdbcType=12, name=TestTable2.M.arrayString$name, key=TestTable2.M.arrayString$key, auto=TestTable2.M.arrayString$auto, notnull=TestTable2.M.arrayString$notnull, length=TestTable2.M.arrayString$length, value=TestTable2.M.arrayString$value, remarks=TestTable2.M.arrayString$remarks)
+	public String[] getArrayString(){
+		return this.arrayString;		
+	}
+	
+	/**
+* @Column
+* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_2&nbsp;<B>name:</B> array_string
+* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 256<br>
+* <li><B>remarks:</B> 字符串数组 #array{}
+* @param defaultValue  Return the default value if arrayString is null.*/
+@Column(table=TestTable2.M.TABLE, jdbcType=12, name=TestTable2.M.arrayString$name, key=TestTable2.M.arrayString$key, auto=TestTable2.M.arrayString$auto, notnull=TestTable2.M.arrayString$notnull, length=TestTable2.M.arrayString$length, value=TestTable2.M.arrayString$value, remarks=TestTable2.M.arrayString$remarks)
+	public String[] getArrayString(String[] defaultValue){
+		String[] r=this.getArrayString();
+		if(r==null){
+			r=defaultValue;
+		}		
+		
+		return r;
+	}
+	
+	
+	/**
+* @Column
+* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_2&nbsp;<B>name:</B> json
+* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 1024<br>
+* <li><B>remarks:</B> Json #json{}
+*/
+@Column(table=TestTable2.M.TABLE, jdbcType=12, name=TestTable2.M.json$name, key=TestTable2.M.json$key, auto=TestTable2.M.json$auto, notnull=TestTable2.M.json$notnull, length=TestTable2.M.json$length, value=TestTable2.M.json$value, remarks=TestTable2.M.json$remarks)
+	public JsonObject getJson(){
+		return this.json;		
+	}
+	
+	/**
+* @Column
+* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_2&nbsp;<B>name:</B> json
+* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 1024<br>
+* <li><B>remarks:</B> Json #json{}
+* @param defaultValue  Return the default value if json is null.*/
+@Column(table=TestTable2.M.TABLE, jdbcType=12, name=TestTable2.M.json$name, key=TestTable2.M.json$key, auto=TestTable2.M.json$auto, notnull=TestTable2.M.json$notnull, length=TestTable2.M.json$length, value=TestTable2.M.json$value, remarks=TestTable2.M.json$remarks)
+	public JsonObject getJson(JsonObject defaultValue){
+		JsonObject r=this.getJson();
+		if(r==null){
+			r=defaultValue;
+		}		
+		
+		return r;
+	}
+	
+	
+	/**
+* @Column
+* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_2&nbsp;<B>name:</B> obj
+* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 1024<br>
+* <li><B>remarks:</B> Object #json{test.com.tsc9526.monalisa.core.data.ColumnData}
+*/
+@Column(table=TestTable2.M.TABLE, jdbcType=12, name=TestTable2.M.obj$name, key=TestTable2.M.obj$key, auto=TestTable2.M.obj$auto, notnull=TestTable2.M.obj$notnull, length=TestTable2.M.obj$length, value=TestTable2.M.obj$value, remarks=TestTable2.M.obj$remarks)
+	public ColumnData getObj(){
+		return this.obj;		
+	}
+	
+	/**
+* @Column
+* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_2&nbsp;<B>name:</B> obj
+* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 1024<br>
+* <li><B>remarks:</B> Object #json{test.com.tsc9526.monalisa.core.data.ColumnData}
+* @param defaultValue  Return the default value if obj is null.*/
+@Column(table=TestTable2.M.TABLE, jdbcType=12, name=TestTable2.M.obj$name, key=TestTable2.M.obj$key, auto=TestTable2.M.obj$auto, notnull=TestTable2.M.obj$notnull, length=TestTable2.M.obj$length, value=TestTable2.M.obj$value, remarks=TestTable2.M.obj$remarks)
+	public ColumnData getObj(ColumnData defaultValue){
+		ColumnData r=this.getObj();
 		if(r==null){
 			r=defaultValue;
 		}		
