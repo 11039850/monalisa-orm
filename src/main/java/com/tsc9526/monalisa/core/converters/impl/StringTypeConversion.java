@@ -16,6 +16,9 @@
  *******************************************************************************************/
 package com.tsc9526.monalisa.core.converters.impl;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import com.tsc9526.monalisa.core.converters.Conversion;
 
 /**
@@ -40,6 +43,11 @@ public class StringTypeConversion implements Conversion<String> {
 				value=new String((char[])value);
 			}
 		}else if (!(value instanceof String)) {
+			if(value instanceof Date){
+				SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+				value=sdf.format((Date)value);
+			}
+			
 			value=value.toString();
 		}
 		return (String)value;
