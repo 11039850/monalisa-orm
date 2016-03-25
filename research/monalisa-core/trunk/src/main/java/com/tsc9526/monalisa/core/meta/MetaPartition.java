@@ -28,6 +28,7 @@ import com.google.gson.JsonParser;
 import com.tsc9526.monalisa.core.query.model.Model;
 import com.tsc9526.monalisa.core.query.partition.DatePartitionTable;
 import com.tsc9526.monalisa.core.query.partition.Partition;
+import com.tsc9526.monalisa.core.tools.ClassHelper;
 
 /**
  * 
@@ -144,7 +145,7 @@ public class MetaPartition implements java.io.Serializable {
 	public Partition<Model<?>> getPartition(){
 		try{
 			if(partition==null){
-				partition=(Partition<Model<?>>)Class.forName(getClazz()).newInstance();
+				partition=(Partition<Model<?>>)ClassHelper.forClassName(getClazz()).newInstance();
 			}
 			return partition;
 		}catch(Exception e){

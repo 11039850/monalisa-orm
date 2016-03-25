@@ -24,6 +24,7 @@ import javax.sql.DataSource;
 import com.tsc9526.monalisa.core.annotation.DB;
 import com.tsc9526.monalisa.core.query.dialect.Dialect;
 import com.tsc9526.monalisa.core.query.dialect.MysqlDialect;
+import com.tsc9526.monalisa.core.tools.ClassHelper;
 
 /**
  * 
@@ -47,7 +48,7 @@ public class DataSourceManager {
 	
 	@SuppressWarnings("unchecked")
 	public void registerDialect(String dialectClass)throws Exception{
-		Class<Dialect> cd=(Class<Dialect>)Class.forName(dialectClass);
+		Class<Dialect> cd=(Class<Dialect>)ClassHelper.forClassName(dialectClass);
 		registerDialect(cd.newInstance());
 	}
 	

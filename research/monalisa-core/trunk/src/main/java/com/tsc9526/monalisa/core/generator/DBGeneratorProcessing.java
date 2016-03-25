@@ -36,6 +36,7 @@ import com.tsc9526.monalisa.core.datasource.DataSourceManager;
 import com.tsc9526.monalisa.core.meta.MetaTable;
 import com.tsc9526.monalisa.core.meta.MetaTable.CreateTable;
 import com.tsc9526.monalisa.core.query.model.Model;
+import com.tsc9526.monalisa.core.tools.ClassHelper;
 import com.tsc9526.monalisa.core.tools.JavaWriter;
 
 /**
@@ -132,7 +133,7 @@ public class DBGeneratorProcessing extends DBGenerator{
 			
 			String className=classTypeElement.getQualifiedName().toString();
 			try{
-				clazz=(Class<? extends ConfigClass>)Class.forName(className);
+				clazz=(Class<? extends ConfigClass>)ClassHelper.forClassName(className);
 			}catch(ClassNotFoundException e){
 				logger.info("Class not found try load class: "+className+" from project path.");
 				

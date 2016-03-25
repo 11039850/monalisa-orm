@@ -54,6 +54,8 @@ class ProcessorInEclipse {
 			 
 		 	URLClassLoader loader=new URLClassLoader(Helper.toURLs(classPath),processingEnv.getClass().getClassLoader());
 			try{
+				Thread.currentThread().setContextClassLoader(loader);
+				
 				String className=DBGeneratorProcessing.class.getName();
 				Class<?> clazz=Class.forName(className,true,loader);
 				Constructor<?> cs=clazz.getConstructor(ProcessingEnvironment.class,TypeElement.class);
