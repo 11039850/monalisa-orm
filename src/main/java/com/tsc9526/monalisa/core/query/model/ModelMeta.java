@@ -253,7 +253,7 @@ public class ModelMeta{
 		
 		if(ls!=null && ls.trim().length()>0){
 			try{
-				listener=(ModelListener)Class.forName(ls.trim()).newInstance();
+				listener=(ModelListener)ClassHelper.forClassName(ls.trim()).newInstance();
 			}catch(Exception e){
 				throw new RuntimeException("Invalid model listener class: "+ls.trim()+", "+e,e);
 			}
@@ -435,7 +435,7 @@ public class ModelMeta{
 				validator=new Validator();
 			}else{
 				try{
-					validator=(Validator)Class.forName(clazz.trim()).newInstance();
+					validator=(Validator)ClassHelper.forClassName(clazz.trim()).newInstance();
 				}catch(Exception e){
 					throw new RuntimeException(e);
 				}

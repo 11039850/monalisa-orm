@@ -169,8 +169,8 @@ public class DBConfig implements Closeable{
 		
 		String cc=cfg.getDatasourceClass();
 		if(cc!=null && cc.trim().length()>0){			
-			try{				
-				Object obj=Class.forName(cc.trim()).newInstance();	
+			try{	
+				Object obj=ClassHelper.forClassName(cc.trim()).newInstance();	
 				if(obj instanceof PooledDataSource){
 					PooledDataSource pds=(PooledDataSource)obj;
 					

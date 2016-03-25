@@ -33,6 +33,8 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.Semaphore;
 
+import com.tsc9526.monalisa.core.tools.ClassHelper;
+
 /**
  *  
  * @author zzg.zhou(11039850@qq.com)
@@ -158,7 +160,7 @@ public class SimpleDataSource implements PooledDataSource {
 
 	private Connection getRealConnection(String username, String password) throws SQLException {
 		try {
-			Class.forName(driver);
+			ClassHelper.forClassName(driver);
 			 
 			return DriverManager.getConnection(url, username, password);
 		} catch (ClassNotFoundException e) {

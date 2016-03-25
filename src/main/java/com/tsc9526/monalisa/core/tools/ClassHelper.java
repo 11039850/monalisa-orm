@@ -57,6 +57,15 @@ public class ClassHelper {
 		return getMetaClass(bean.getClass());
 	}
 	 
+	
+	public static Class<?> forClassName(String className)throws ClassNotFoundException{
+		try{
+			return Class.forName(className);
+		}catch(ClassNotFoundException cnf){
+			return Class.forName(className,true,Thread.currentThread().getContextClassLoader());
+		}
+	}
+	
 	public static <T extends Annotation> T findAnnotation(Class<?> clazz, Class<T> annotationClass) {
 		T a=null;
 				 
