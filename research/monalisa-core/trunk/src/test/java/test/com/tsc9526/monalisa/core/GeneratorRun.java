@@ -25,6 +25,7 @@ import test.com.tsc9526.monalisa.core.mysql.MysqlDB;
 import test.com.tsc9526.monalisa.core.mysql.mysqldb.TestTable1;
 
 import com.tsc9526.monalisa.core.generator.DBGeneratorLocal;
+import com.tsc9526.monalisa.core.logger.Logger;
 import com.tsc9526.monalisa.core.parser.executor.SQLGenerator;
 import com.tsc9526.monalisa.core.query.DataMap;
 import com.tsc9526.monalisa.core.query.Query;
@@ -36,6 +37,8 @@ import com.tsc9526.monalisa.core.query.model.Record;
  * @author zzg.zhou(11039850@qq.com)
  */
 public class GeneratorRun {
+	static Logger logger=Logger.getLogger(GeneratorRun.class);
+	
 	public static void main(String[] args)throws Exception {
 		File sqlFile=new File("sql/mysqldb/test1.jsp");
 		long fileTime=0;
@@ -73,4 +76,6 @@ public class GeneratorRun {
 			}
 		}
 	}
+	
+	 
 }

@@ -22,7 +22,6 @@ import java.util.List;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import com.google.gson.JsonElement;
 import com.google.gson.JsonPrimitive;
 import com.tsc9526.monalisa.core.converters.TypeConverter;
 
