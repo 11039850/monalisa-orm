@@ -28,6 +28,7 @@ import com.google.gson.JsonNull;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonPrimitive;
+import com.tsc9526.monalisa.core.converters.impl.ArrayTypeConversion;
 import com.tsc9526.monalisa.core.converters.impl.BigDecimalTypeConversion;
 import com.tsc9526.monalisa.core.converters.impl.BooleanTypeConversion;
 import com.tsc9526.monalisa.core.converters.impl.ByteTypeConversion;
@@ -49,12 +50,13 @@ import com.tsc9526.monalisa.core.tools.JsonHelper;
  * 
  * @author zzg.zhou(11039850@qq.com)
  */
+@SuppressWarnings("unchecked")
 public class TypeConverter {
 	static Logger logger=Logger.getLogger(TypeConverter.class);
 	 
-	public Object convert(Object v, Class<?> type) {
+	public <T> T convert(Object v, Class<T> type) {
 		if(type==null){
-			return v;
+			return (T)v;
 		}
 		
 		if(v instanceof JsonNull){
@@ -63,7 +65,7 @@ public class TypeConverter {
 				 
 		if(v!=null){
 			if(type.isInstance(v)){
-				return v;
+				return (T)v;
 			}else{
 				return doConvert(v, type);
 			}
@@ -71,8 +73,7 @@ public class TypeConverter {
 			return null;
 		}		 
 	}
-	
-	@SuppressWarnings("unchecked")
+	 
 	protected <T> T convertToEnum(Object v, Class<T> type) {
 		return (T)EnumHelper.getEnum(type, v);
 	}
@@ -113,7 +114,7 @@ public class TypeConverter {
 					iv[i]=e.getAsInt();
 				}
 				value=iv;
-			}if(type==float[].class){
+			}else if(type==float[].class){
 				float[] iv=new float[array.size()];
 				for(int i=0;i<array.size();i++){
 					JsonElement e=array.get(i);
@@ -158,8 +159,7 @@ public class TypeConverter {
 			return JsonHelper.getGson().fromJson((JsonElement)v, type);
 		}
 	}
-	 
-	@SuppressWarnings("unchecked")
+	   
 	protected <T> T doConvert(Object v, Class<T> type){
 		Object value=null;
 		
@@ -257,5 +257,7 @@ public class TypeConverter {
 		registerTypeConversion(new ShortTypeConversion());
 		registerTypeConversion(new DateTypeConversion());
 		registerTypeConversion(new StringTypeConversion());
+		
+		registerTypeConversion(new ArrayTypeConversion());
 	}
 }

@@ -30,9 +30,11 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
+import test.com.tsc9526.monalisa.core.data.ColumnData;
 import test.com.tsc9526.monalisa.core.mysql.mock.MockProcessingEnvironment;
 import test.com.tsc9526.monalisa.core.mysql.mysqldb.TestLogyyyymm;
 import test.com.tsc9526.monalisa.core.mysql.mysqldb.TestTable1;
+import test.com.tsc9526.monalisa.core.mysql.mysqldb.TestTable2;
 
 import com.tsc9526.monalisa.core.generator.DBGeneratorLocal;
 import com.tsc9526.monalisa.core.generator.DBGeneratorProcessing;
@@ -155,5 +157,27 @@ public class TestGenterator {
 		t1=new TestTable1(maxId+2).load();
 		Assert.assertTrue(!t1.entity());
 		
+	}
+	
+	
+	public void testInsertArrays()throws Exception{
+		int[] i1=new int[]{3,2,1};
+		String[] s1=new String[]{"3","2"};
+		
+		TestTable2 t2=new TestTable2();
+		t2.defaults();
+		t2.setObj(new ColumnData());
+		t2.setArrayInt(i1);
+		t2.setArrayString(s1);
+		t2.save();
+		
+		TestTable2 t2x=TestTable2.SELECT().selectByPrimaryKey(t2.getId());
+		for(int i=0;i<i1.length;i++){
+			Assert.assertEquals(t2x.getArrayInt()[i], i1[i]);
+		}
+		
+		for(int i=0;i<s1.length;i++){
+			Assert.assertEquals(t2x.getArrayString()[i], s1[i]);
+		}
 	}
 }

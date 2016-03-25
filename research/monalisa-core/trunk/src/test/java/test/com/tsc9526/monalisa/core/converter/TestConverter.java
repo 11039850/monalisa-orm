@@ -14,40 +14,40 @@
  *	You should have received a copy of the GNU Lesser General Public License
  *	along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************************/
-package com.tsc9526.monalisa.core.converters.impl;
+package test.com.tsc9526.monalisa.core.converter;
 
-import java.util.Date;
+import org.testng.Assert;
+import org.testng.annotations.Test;
 
-import com.tsc9526.monalisa.core.converters.Conversion;
+import com.tsc9526.monalisa.core.converters.TypeConverter;
 
 /**
  * 
  * @author zzg.zhou(11039850@qq.com)
  */
-public class LongTypeConversion implements Conversion<Long> {
-
-	public Object[] getTypeKeys() {
-		return new Object[] {
-			Long.class,
-			Long.TYPE,
-			Long.class.getName(),
-			TYPE_LONG
-		};
-	}
- 
-	public Long convert(Object value) {
-		if (!(value instanceof Long)) {
-			if(value instanceof Date){
-				return ((Date)value).getTime();
-			}
-			
-			String v=value.toString();
-			if (v.trim().length()==0) {
-				value=null;
-			}else {
-				value=Long.parseLong(v);
-			}
+@Test
+public class TestConverter {
+	private TypeConverter converter=new TypeConverter();
+	
+	public void testArray001(){
+		int[] a1=new int[]{1,2,3};
+		
+		Object[] v1=converter.convert(a1, Object[].class);
+		
+		for(int i=0;i<a1.length;i++){
+			Assert.assertEquals(v1[i],a1[i]);
 		}
-		return (Long)value;
+		
+	}
+	
+	public void testArray002(){
+		boolean[] a1=new boolean[]{true,false,Boolean.TRUE};
+		
+		Object[] v1=converter.convert(a1, Object[].class);
+		
+		for(int i=0;i<a1.length;i++){
+			Assert.assertEquals(v1[i],a1[i]);
+		}
+		
 	}
 }

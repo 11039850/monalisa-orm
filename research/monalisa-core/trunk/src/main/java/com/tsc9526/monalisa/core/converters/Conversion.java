@@ -38,6 +38,8 @@ public interface Conversion<T> {
 	public static final String TYPE_BIG_DECIMAL = "bigdecimal";
 	public static final String TYPE_DATETIME    = "datetime";
 	
+	public static final String TYPE_ARRAYS      = "arrays"; 
+	
 	public Object[] getTypeKeys();
  
 	public T convert(Object value);
