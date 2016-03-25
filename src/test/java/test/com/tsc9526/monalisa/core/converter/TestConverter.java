@@ -121,4 +121,19 @@ public class TestConverter {
 		boolean v4=converter.convert(new JsonPrimitive(true), boolean.class);
 		Assert.assertEquals(v4,true);
 	}
+	
+	public void test008(){
+		 String[] str = {"7","2","9","3.5","34545345","98765432","0.4567"};
+		  
+		 String[] strArr = converter.convert(str, String[].class);
+		 Assert.assertTrue(strArr.length==str.length);	   
+		 for(int i=0;i<str.length;i++){
+			 Assert.assertEquals(str[i], strArr[i]);
+		 }
+		    
+		 double[] dbArr = converter.convert(str, double[].class);
+		 for(int i=0;i<str.length;i++){
+			 Assert.assertEquals(Double.parseDouble(str[i]), dbArr[i]);
+		 }
+	}
 }
