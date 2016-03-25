@@ -39,8 +39,10 @@ public interface Conversion<T> {
 	public static final String TYPE_DATETIME    = "datetime";
 	
 	public static final String TYPE_ARRAYS      = "arrays"; 
+	public static final String TYPE_JSON        = "json"; 
+	public static final String TYPE_ENUM        = "enum"; 
 	
 	public Object[] getTypeKeys();
  
-	public T convert(Object value);
+	public T convert(Object value, Class<?> type);
 }

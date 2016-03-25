@@ -35,7 +35,11 @@ public class ShortTypeConversion implements Conversion<Short> {
 	}
 
 	 
-	public Short convert(Object value) {
+	public Short convert(Object value, Class<?> type) {
+		if (value == null){
+			return null;
+		}
+
 		if (!(value instanceof Short)) {
 			String v=value.toString();
 			if (v.trim().length()==0) {

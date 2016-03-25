@@ -21,12 +21,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.testng.Assert;
-
-import test.com.tsc9526.monalisa.core.data.ColumnData;
 import test.com.tsc9526.monalisa.core.mysql.MysqlDB;
 import test.com.tsc9526.monalisa.core.mysql.mysqldb.TestTable1;
-import test.com.tsc9526.monalisa.core.mysql.mysqldb.TestTable2;
 
 import com.tsc9526.monalisa.core.generator.DBGeneratorLocal;
 import com.tsc9526.monalisa.core.parser.executor.SQLGenerator;

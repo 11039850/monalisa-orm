@@ -17,15 +17,18 @@
 package com.tsc9526.monalisa.core.converters.impl;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.tsc9526.monalisa.core.converters.Conversion;
 
 /**
  * 
  * @author zzg.zhou(11039850@qq.com)
  */
-public class ArrayTypeConversion implements Conversion<Object[]>{
+public class ArrayTypeConversion implements Conversion<Object>{
 
 	public Object[] getTypeKeys() {
 		return new Object[] {
@@ -43,7 +46,79 @@ public class ArrayTypeConversion implements Conversion<Object[]>{
 		};
 	}
 	
-	public Object[] convert(Object value) {
+	public Object convert(Object value, Class<?> type) {
+		if (value == null){
+			return null;
+		}
+		  
+		if(value instanceof JsonArray){
+			JsonArray array=(JsonArray)value;
+			return convertJsonToArray(array,type);
+		}else{
+			Object[] vs=toObjectArray(value,type);
+			
+			if(type.isArray() && type.getComponentType().isPrimitive()){
+				return toPrimitiveArray(vs, type);
+			}else{
+				return vs;
+			}
+		}
+	}
+	
+	protected Object toPrimitiveArray(Object[] value,Class<?> type){
+		Class<?> t=type.getComponentType();
+		
+		if(t==byte.class){
+			byte[] r=new byte[value.length];
+			for(int i=0;i<value.length;i++){
+				r[i]=Byte.parseByte(value[i].toString());
+			}
+			return r;
+		}else if(t==char.class){
+			char[] r=new char[value.length];
+			for(int i=0;i<value.length;i++){
+				Object v=value[i];
+				r[i]= v.toString().charAt(0);
+			}
+			return r;
+		}else if(t==short.class){
+			short[] r=new short[value.length];
+			for(int i=0;i<value.length;i++){
+				r[i]=Short.parseShort(value[i].toString());
+			}
+			return r;
+		}else if(t==int.class){
+			int[] r=new int[value.length];
+			for(int i=0;i<value.length;i++){
+				r[i]=Integer.parseInt(value[i].toString());
+			}
+			return r;
+		}else if(t==long.class){
+			long[] r=new long[value.length];
+			for(int i=0;i<value.length;i++){
+				r[i]=Long.parseLong(value[i].toString());
+			}
+			return r;
+		}else if(t==double.class){
+			double[] r=new double[value.length];
+			for(int i=0;i<value.length;i++){
+				r[i]=Double.parseDouble(value[i].toString());
+			}
+			return r;
+		}else if(t==boolean.class){
+			boolean[] r=new boolean[value.length];
+			for(int i=0;i<value.length;i++){
+				r[i]=Boolean.valueOf(value[i].toString());
+			}
+			return r;
+		}
+		
+		return null;
+	}
+	
+	 
+	
+	protected Object[] toObjectArray(Object value,Class<?> type){
 		if (!(value instanceof Object[])) {
 			List<Object> vs = new ArrayList<Object>();
 
@@ -79,6 +154,8 @@ public class ArrayTypeConversion implements Conversion<Object[]>{
 				for (boolean i:(boolean[]) value) {
 					vs.add(new Boolean(i));
 				}
+			}else if(value instanceof Collection){
+				vs.addAll((Collection<?>)value);	
 			}else{
 				vs.add(value);
 			}
@@ -87,5 +164,51 @@ public class ArrayTypeConversion implements Conversion<Object[]>{
 		} else {
 			return (Object[]) value;
 		}
+	}
+	
+	protected Object convertJsonToArray(JsonArray array,  Class<?> type){
+		Object value=null;
+		if(type==int[].class){
+			int[] iv=new int[array.size()];
+			for(int i=0;i<array.size();i++){
+				JsonElement e=array.get(i);
+				iv[i]=e.getAsInt();
+			}
+			value=iv;
+		}else if(type==float[].class){
+			float[] iv=new float[array.size()];
+			for(int i=0;i<array.size();i++){
+				JsonElement e=array.get(i);
+				iv[i]=e.getAsFloat();
+			}
+			value=iv;
+		}else if(type==long[].class){
+			long[] iv=new long[array.size()];
+			for(int i=0;i<array.size();i++){
+				JsonElement e=array.get(i);
+				iv[i]=e.getAsLong();
+			}
+			value=iv;
+		}else if(type==double[].class){
+			double[] iv=new double[array.size()];
+			for(int i=0;i<array.size();i++){
+				JsonElement e=array.get(i);
+				iv[i]=e.getAsDouble();
+			}
+			value=iv;
+		}else{//String[]
+			String[] iv=new String[array.size()];
+			for(int i=0;i<array.size();i++){
+				JsonElement e=array.get(i);
+				if(e.isJsonPrimitive()){
+					iv[i]=e.getAsString();
+				}else{
+					iv[i]=e.toString();
+				}
+			}
+			value=iv;
+		}		
+	 
+		return value;
 	}
 }

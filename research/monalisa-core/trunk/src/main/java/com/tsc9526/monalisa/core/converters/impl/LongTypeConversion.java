@@ -35,12 +35,20 @@ public class LongTypeConversion implements Conversion<Long> {
 		};
 	}
  
-	public Long convert(Object value) {
+	public Long convert(Object value, Class<?> type) {
+		if (value == null){
+			return null;
+		}
+
+		if(value instanceof Date){
+			return ((Date)value).getTime();
+		}
+		
+		if(value.getClass()==boolean.class || value.getClass()==Boolean.class){
+			return ((Boolean)value)?1L:0L;
+		}
+		
 		if (!(value instanceof Long)) {
-			if(value instanceof Date){
-				return ((Date)value).getTime();
-			}
-			
 			String v=value.toString();
 			if (v.trim().length()==0) {
 				value=null;

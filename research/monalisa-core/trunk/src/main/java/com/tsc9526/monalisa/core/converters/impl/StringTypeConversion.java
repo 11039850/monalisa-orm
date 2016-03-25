@@ -18,8 +18,12 @@ package com.tsc9526.monalisa.core.converters.impl;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Map;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonPrimitive;
 import com.tsc9526.monalisa.core.converters.Conversion;
+import com.tsc9526.monalisa.core.tools.JsonHelper;
 
 /**
  * 
@@ -35,7 +39,11 @@ public class StringTypeConversion implements Conversion<String> {
 		};
 	}
 
-	public String convert(Object value) {
+	public String convert(Object value, Class<?> type) {
+		if (value == null){
+			return null;
+		}
+
 		if (value.getClass().isArray()) {
 			if (value.getClass().getComponentType()==Byte.TYPE) {
 				value=new String((byte[])value);
@@ -48,9 +56,14 @@ public class StringTypeConversion implements Conversion<String> {
 			if(value instanceof Date){
 				SimpleDateFormat sdf=new SimpleDateFormat(DEFAULT_DATETIME_FORMAT);
 				value=sdf.format((Date)value);
+			}else if(value instanceof Map){
+				Gson gson=JsonHelper.getGson();
+				value=gson.toJson(value);	
+			}else if(value instanceof JsonPrimitive){
+				value=((JsonPrimitive)value).getAsString();	
+			}else{
+				value=value.toString();
 			}
-			
-			value=value.toString();
 		}
 		return (String)value;
 	}

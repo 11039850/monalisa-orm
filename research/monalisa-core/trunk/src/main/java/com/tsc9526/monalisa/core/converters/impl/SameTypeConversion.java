@@ -28,7 +28,7 @@ public class SameTypeConversion implements Conversion<Object> {
 		return new Object[] {};
 	}
 
-	public Object convert(Object value) {
+	public Object convert(Object value, Class<?> type) {
 		return value;
 	}
 }
