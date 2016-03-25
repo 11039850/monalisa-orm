@@ -28,6 +28,7 @@ import com.tsc9526.monalisa.core.converters.impl.ByteTypeConversion;
 import com.tsc9526.monalisa.core.converters.impl.CharacterTypeConversion;
 import com.tsc9526.monalisa.core.converters.impl.DateTypeConversion;
 import com.tsc9526.monalisa.core.converters.impl.DoubleTypeConversion;
+import com.tsc9526.monalisa.core.converters.impl.EnumTypeConversion;
 import com.tsc9526.monalisa.core.converters.impl.FloatTypeConversion;
 import com.tsc9526.monalisa.core.converters.impl.IntegerTypeConversion;
 import com.tsc9526.monalisa.core.converters.impl.JsonObjectTypeConversion;
@@ -138,6 +139,7 @@ public class TypeConverter {
 		registerTypeConversion(new StringTypeConversion());
 		
 		registerTypeConversion(new ArrayTypeConversion());
+		registerTypeConversion(new EnumTypeConversion());
 		registerTypeConversion(new JsonObjectTypeConversion());
 	}
 }

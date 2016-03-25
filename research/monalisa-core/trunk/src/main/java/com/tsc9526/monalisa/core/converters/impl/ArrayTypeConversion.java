@@ -22,6 +22,7 @@ import java.util.List;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
+import com.google.gson.JsonParser;
 import com.tsc9526.monalisa.core.converters.Conversion;
 
 /**
@@ -55,6 +56,13 @@ public class ArrayTypeConversion implements Conversion<Object>{
 			JsonArray array=(JsonArray)value;
 			return convertJsonToArray(array,type);
 		}else{
+			if(value instanceof String && ((String)value).startsWith("[")){
+				JsonElement json=new JsonParser().parse(value.toString());
+				if(json.isJsonArray()){
+					return convertJsonToArray(json.getAsJsonArray(),type);
+				}
+			}
+			
 			Object[] vs=toObjectArray(value,type);
 			
 			if(type.isArray() && type.getComponentType().isPrimitive()){
