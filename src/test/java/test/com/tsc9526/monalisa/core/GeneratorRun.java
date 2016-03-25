@@ -21,6 +21,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.testng.Assert;
+
 import test.com.tsc9526.monalisa.core.data.ColumnData;
 import test.com.tsc9526.monalisa.core.mysql.MysqlDB;
 import test.com.tsc9526.monalisa.core.mysql.mysqldb.TestTable1;
@@ -39,14 +41,6 @@ import com.tsc9526.monalisa.core.query.model.Record;
  */
 public class GeneratorRun {
 	public static void main(String[] args)throws Exception {
-		TestTable2 t2=new TestTable2();
-		t2.defaults();
-		t2.setObj(new ColumnData());
-		t2.save();
-		
-		TestTable2 t2x=TestTable2.SELECT().selectByPrimaryKey(t2.getId());
-		System.out.println(t2x);
-		
 		File sqlFile=new File("sql/mysqldb/test1.jsp");
 		long fileTime=0;
 	 	

@@ -41,6 +41,8 @@ public class StringTypeConversion implements Conversion<String> {
 				value=new String((byte[])value);
 			}else if (value.getClass().getComponentType()==Character.TYPE) {
 				value=new String((char[])value);
+			}else{
+				value=""+value;
 			}
 		}else if (!(value instanceof String)) {
 			if(value instanceof Date){

@@ -25,6 +25,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 import com.tsc9526.monalisa.core.annotation.Column;
 import com.tsc9526.monalisa.core.annotation.Table;
+import com.tsc9526.monalisa.core.converters.impl.ArrayTypeConversion;
 import com.tsc9526.monalisa.core.datasource.DBConfig;
 import com.tsc9526.monalisa.core.logger.Logger;
 import com.tsc9526.monalisa.core.meta.MetaTable.CreateTable;
@@ -420,7 +421,8 @@ public abstract class Dialect{
 					return v;
 				}else{
 					JsonArray array=new JsonArray();
-					Object[] os=(Object[])v;
+					
+					Object[] os=new ArrayTypeConversion().convert(v);
 					for(Object o:os){						 
 						if(o!=null){					 
 							array.add(toJsonPrimitive(o));
