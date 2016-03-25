@@ -19,6 +19,7 @@ package com.tsc9526.monalisa.core.converters.impl;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import com.google.gson.JsonPrimitive;
 import com.tsc9526.monalisa.core.converters.Conversion;
 
 /**
@@ -36,9 +37,16 @@ public class DateTypeConversion implements Conversion<Date> {
 		};
 	}
 
-	public Date convert(Object value) {
+	public Date convert(Object value, Class<?> type) {
+		if (value == null){
+			return null;
+		}
+
 		if (!(value instanceof java.util.Date)) {
 			String v=(""+value).trim();
+			if(value instanceof JsonPrimitive){
+				v=((JsonPrimitive)value).getAsString();	
+			}
 			 
 			if (v.length()==0) {
 				value=null;

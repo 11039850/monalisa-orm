@@ -16,18 +16,11 @@
  *******************************************************************************************/
 package com.tsc9526.monalisa.core.converters;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
 import com.google.gson.JsonNull;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-import com.google.gson.JsonPrimitive;
 import com.tsc9526.monalisa.core.converters.impl.ArrayTypeConversion;
 import com.tsc9526.monalisa.core.converters.impl.BigDecimalTypeConversion;
 import com.tsc9526.monalisa.core.converters.impl.BooleanTypeConversion;
@@ -37,14 +30,13 @@ import com.tsc9526.monalisa.core.converters.impl.DateTypeConversion;
 import com.tsc9526.monalisa.core.converters.impl.DoubleTypeConversion;
 import com.tsc9526.monalisa.core.converters.impl.FloatTypeConversion;
 import com.tsc9526.monalisa.core.converters.impl.IntegerTypeConversion;
+import com.tsc9526.monalisa.core.converters.impl.JsonObjectTypeConversion;
 import com.tsc9526.monalisa.core.converters.impl.LongTypeConversion;
 import com.tsc9526.monalisa.core.converters.impl.ObjectTypeConversion;
 import com.tsc9526.monalisa.core.converters.impl.SameTypeConversion;
 import com.tsc9526.monalisa.core.converters.impl.ShortTypeConversion;
 import com.tsc9526.monalisa.core.converters.impl.StringTypeConversion;
 import com.tsc9526.monalisa.core.logger.Logger;
-import com.tsc9526.monalisa.core.tools.EnumHelper;
-import com.tsc9526.monalisa.core.tools.JsonHelper;
 
 /**
  * 
@@ -59,134 +51,32 @@ public class TypeConverter {
 			return (T)v;
 		}
 		
-		if(v instanceof JsonNull){
+		if(v==null || v instanceof JsonNull){
 			return null;
 		}
 				 
-		if(v!=null){
-			if(type.isInstance(v)){
-				return (T)v;
-			}else{
-				return doConvert(v, type);
-			}
+		if(type.isInstance(v)){
+			return (T)v;
 		}else{
-			return null;
+			return doConvert(v, type);
 		}		 
 	}
-	 
-	protected <T> T convertToEnum(Object v, Class<T> type) {
-		return (T)EnumHelper.getEnum(type, v);
-	}
-	
-	protected JsonObject convertToJsonObject(Object v,  Class<?> type) {
-		if(v.getClass()==JsonObject.class){
-			return (JsonObject)v;
-		}else{
-			return new JsonParser().parse(v.toString()).getAsJsonObject();
-		}	
-	}	 
-	
-	protected String convertMapToString(Map<?,?> m){		
-		Gson gson=JsonHelper.getGson();
-		return gson.toJson(m);		
-	}
-	
-	protected String convertArrayToString(Object[] v){		
-		return Arrays.toString(v);			
-	}
-	
-	protected String convertToString(Object v){		
-		return v.toString();			
-	}
-	
-	protected Object convertJsonToArray(Object v,  Class<?> type){
-		Object value=null;
-		
-		JsonElement je=new JsonParser().parse(v.toString());
-		if(je==null || je.isJsonNull()){
-			value=null;
-		}else{
-			JsonArray array=je.getAsJsonArray();						
-			if(type==int[].class){
-				int[] iv=new int[array.size()];
-				for(int i=0;i<array.size();i++){
-					JsonElement e=array.get(i);
-					iv[i]=e.getAsInt();
-				}
-				value=iv;
-			}else if(type==float[].class){
-				float[] iv=new float[array.size()];
-				for(int i=0;i<array.size();i++){
-					JsonElement e=array.get(i);
-					iv[i]=e.getAsFloat();
-				}
-				value=iv;
-			}else if(type==long[].class){
-				long[] iv=new long[array.size()];
-				for(int i=0;i<array.size();i++){
-					JsonElement e=array.get(i);
-					iv[i]=e.getAsLong();
-				}
-				value=iv;
-			}else if(type==double[].class){
-				double[] iv=new double[array.size()];
-				for(int i=0;i<array.size();i++){
-					JsonElement e=array.get(i);
-					iv[i]=e.getAsDouble();
-				}
-				value=iv;
-			}else{//String[]
-				String[] iv=new String[array.size()];
-				for(int i=0;i<array.size();i++){
-					JsonElement e=array.get(i);
-					if(e.isJsonPrimitive()){
-						iv[i]=e.getAsString();
-					}else{
-						iv[i]=e.toString();
-					}
-				}
-				value=iv;
-			}	
-		}
-		return value;
-	}
-	
-	protected Object convertStringToBean(Object v, Class<?> type){
-		//Json String to Java Object
-		if(v.getClass()==String.class){
-			return JsonHelper.getGson().fromJson(v.toString(), type);
-		}else{
-			return JsonHelper.getGson().fromJson((JsonElement)v, type);
-		}
-	}
-	   
-	protected <T> T doConvert(Object v, Class<T> type){
-		Object value=null;
-		
+	  
+	protected <T> T doConvert(Object value, Class<T> type){
+		Conversion<?> conversion=null;
 		if(type.isEnum()){
-			value=convertToEnum(v,type);
-		}else if(type==JsonObject.class){
-			value=convertToJsonObject(v,type);
-		}else if(v.getClass().isArray()==false && type.isArray()){
-			value=convertJsonToArray(v,type);
-		}else if(type.isArray()==false 
-				&& type.isPrimitive()==false 
-				&& type.getName().startsWith("java.")==false
-				&& (v.getClass() == String.class || v instanceof JsonElement)){
-			value=convertStringToBean(v,type);
-		}else{		
-			if(v instanceof JsonPrimitive){
-				JsonPrimitive p=((JsonPrimitive)v);
-				v=p.getAsString();
-				  
-			}
-			value=tryConvert(type, v);
-		}		
-	
-		return (T)value;
+			conversion = getTypeConversion(Conversion.TYPE_ENUM, value);
+		}else{	
+			conversion = getTypeConversion(type, value); 
+		}	
+		
+		if(conversion!=null){
+			return (T)conversion.convert(value, type);
+		}else{
+			return null;
+		}
 	}	
-	
-
+	 
 	public static void registerTypeConversion(Conversion<?> conversion) {
 		Object[] keys = conversion.getTypeKeys();
 		if (keys == null) {
@@ -209,40 +99,29 @@ public class TypeConverter {
 			}
 		}
 	}
-   
-	protected Object tryConvert(Class<?> type, Object value) {
-		if (value == null){
-			return null;
-		}
-
-		if (type == null) {
-			return value;
-		}
-
-		Conversion<?> conversion = getTypeConversion(type, value);
-
-		if (conversion != null) {
-			Object result = conversion.convert(value);
-			return result;
-		} else {
-			return null;
-		}
-	}
-
-	 
+     	 
 	protected  Conversion<?> getTypeConversion(Object typeKey, Object value) {
 		// Check if the provided value is already of the target type
 		if (typeKey instanceof Class && ((Class<?>) typeKey) != Object.class && ((Class<?>) typeKey).isInstance(value)) {
-			return IDENTITY_CONVERSION;
+			return SAME_CONVERSION;
 		}
 
-		return typeConversions.get(typeKey);
+		Conversion<?> conversion=typeConversions.get(typeKey);
+		if(conversion==null && typeKey instanceof Class){
+			if(((Class<?>)typeKey).isArray()){
+				conversion=typeConversions.get(Conversion.TYPE_ARRAYS);
+			}else{
+				conversion=typeConversions.get(Conversion.TYPE_OBJECT);
+			}
+		}
+		
+		return conversion;
 	}
 
 	  
 	private static final Map<Object, Conversion<?>> typeConversions = Collections.synchronizedMap(new HashMap<Object, Conversion<?>>());
 
-	private static final Conversion<?> IDENTITY_CONVERSION = new SameTypeConversion();
+	private static final Conversion<?> SAME_CONVERSION = new SameTypeConversion();
 
 	static {
 		registerTypeConversion(new BigDecimalTypeConversion());
@@ -259,5 +138,6 @@ public class TypeConverter {
 		registerTypeConversion(new StringTypeConversion());
 		
 		registerTypeConversion(new ArrayTypeConversion());
+		registerTypeConversion(new JsonObjectTypeConversion());
 	}
 }

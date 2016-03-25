@@ -37,17 +37,24 @@ public class IntegerTypeConversion implements Conversion<Integer> {
 		};
 	}
  
-	public Integer convert(Object value) {
+	public Integer convert(Object value, Class<?> type) {
+		if (value == null){
+			return null;
+		}
+
 		if(value instanceof Date){
 			return (int)( ((Date)value).getTime()/1000);
+		}
+		
+		if(value.getClass()==boolean.class || value.getClass()==Boolean.class){
+			return ((Boolean)value)?1:0;
 		}
 		
 		if (!(value instanceof Integer)) {
 			String v=value.toString();
 			if (v.trim().length()==0) {
 				value=null;
-			}
-			else {
+			}else {
 				value=Integer.parseInt(v);
 			}
 		}

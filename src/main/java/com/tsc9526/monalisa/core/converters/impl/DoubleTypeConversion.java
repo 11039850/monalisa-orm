@@ -34,7 +34,15 @@ public class DoubleTypeConversion implements Conversion<Double> {
 	}
 
 	 
-	public Double convert(Object value) {
+	public Double convert(Object value, Class<?> type) {
+		if (value == null){
+			return null;
+		}
+
+		if(value.getClass()==boolean.class || value.getClass()==Boolean.class){
+			return ((Boolean)value)?1D:0D;
+		}
+		
 		if (!(value instanceof Double)) {
 			String v=value.toString();
 			if (v.trim().length()==0) {

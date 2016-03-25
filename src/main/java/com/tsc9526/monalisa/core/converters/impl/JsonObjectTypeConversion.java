@@ -16,42 +16,37 @@
  *******************************************************************************************/
 package com.tsc9526.monalisa.core.converters.impl;
 
-import java.math.BigDecimal;
-
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.tsc9526.monalisa.core.converters.Conversion;
+import com.tsc9526.monalisa.core.tools.JsonHelper;
 
 /**
  * 
  * @author zzg.zhou(11039850@qq.com)
  */
-public class BigDecimalTypeConversion implements Conversion<BigDecimal> {
- 	 
+public class JsonObjectTypeConversion implements Conversion<JsonObject> {
+ 
 	public Object[] getTypeKeys() {
 		return new Object[] {
-			BigDecimal.class,
-			BigDecimal.class.getName(),
-			TYPE_BIG_DECIMAL
+			JsonObject.class,
+			JsonObject.class.getName(),
+			TYPE_JSON
 		};
 	}
 
-	public BigDecimal convert(Object value, Class<?> type) {
+	public JsonObject convert(Object value, Class<?> type) {
 		if (value == null){
 			return null;
 		}
-		
-		if(value.getClass()==boolean.class || value.getClass()==Boolean.class){
-			return ((Boolean)value)?new BigDecimal(1):new BigDecimal(0);
-		}
-		
-		if (!(value instanceof BigDecimal)) {
-			String v=value.toString();
-			if (v.trim().length()==0) {
-				value=null;
-			}
-			else {
-				value=new BigDecimal(v);
+  
+		if (!(value instanceof JsonObject)) {
+			if(value instanceof String){
+				new JsonParser().parse(value.toString()).getAsJsonObject();
+			}else{
+				value=JsonHelper.getGson().toJsonTree(value);
 			}
 		}
-		return (BigDecimal)value;
+		return (JsonObject)value;
 	}
 }

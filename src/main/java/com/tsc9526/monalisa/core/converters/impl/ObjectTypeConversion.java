@@ -19,8 +19,11 @@ package com.tsc9526.monalisa.core.converters.impl;
 import java.io.ByteArrayInputStream;
 import java.io.ObjectInputStream;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
 import com.tsc9526.monalisa.core.converters.Conversion;
 import com.tsc9526.monalisa.core.tools.CloseQuietly;
+import com.tsc9526.monalisa.core.tools.JsonHelper;
 /**
  * 
  * @author zzg.zhou(11039850@qq.com)
@@ -35,24 +38,43 @@ public class ObjectTypeConversion implements Conversion<Object> {
 		};
 	}
  
-	public Object convert(Object value) {
-		if (value.getClass().isArray()) {
-			if (value.getClass().getComponentType()==Byte.TYPE) {
-				ByteArrayInputStream bis= new ByteArrayInputStream((byte[])value);
-				ObjectInputStream ois=null;
-				try {
-					ois=new ObjectInputStream(bis);
-					value=ois.readObject();
-				}catch (Exception e) {
-					throw new IllegalArgumentException("Could not deserialize object",e);
-				}finally {
-					 CloseQuietly.close(bis,ois); 
-				}
-			}else {
-				; // value is OK as is
+	public Object convert(Object value, Class<?> type) {
+		if (value == null){
+			return null;
+		}
+		
+		if(type.isInstance(value)){
+			return value;
+		}
+		
+		Object r=null;
+		if (value.getClass().isArray() && value.getClass().getComponentType()==Byte.TYPE) {
+			ByteArrayInputStream bis= new ByteArrayInputStream((byte[])value);
+			ObjectInputStream ois=null;
+			try {
+				ois=new ObjectInputStream(bis);
+				r= ois.readObject();
+			}catch (Exception e) {
+				throw new IllegalArgumentException("Could not deserialize object",e);
+			}finally {
+				 CloseQuietly.close(bis,ois); 
+			}
+		}else{
+			Gson gson=JsonHelper.getGson();
+			if(value instanceof JsonElement){
+				r= gson.fromJson((JsonElement)value, type);
+			}else if(value instanceof String){
+				r= gson.fromJson(value.toString(), type);
+			}else{
+				JsonElement json=gson.toJsonTree(value);
+				r= gson.fromJson(json, type);
 			}
 		}
-
-		return value;
+		
+		if(type.isInstance(r)){
+			return r;
+		}else{
+			return null;
+		}
 	}
 }

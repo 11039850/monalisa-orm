@@ -33,7 +33,11 @@ public class BooleanTypeConversion implements Conversion<Boolean> {
 		};
 	}
 
-	public Boolean convert(Object value) {
+	public Boolean convert(Object value, Class<?> type) {
+		if (value == null){
+			return null;
+		}
+	
 		if (!(value instanceof Boolean)) {
 			String v=value.toString();
 			if (v.trim().length()==0) {

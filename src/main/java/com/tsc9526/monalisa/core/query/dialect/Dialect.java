@@ -422,7 +422,7 @@ public abstract class Dialect{
 				}else{
 					JsonArray array=new JsonArray();
 					
-					Object[] os=new ArrayTypeConversion().convert(v);
+					Object[] os=(Object[])new ArrayTypeConversion().convert(v, Object[].class);
 					for(Object o:os){						 
 						if(o!=null){					 
 							array.add(toJsonPrimitive(o));

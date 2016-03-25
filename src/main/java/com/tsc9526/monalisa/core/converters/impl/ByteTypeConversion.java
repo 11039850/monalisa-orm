@@ -34,7 +34,15 @@ public class ByteTypeConversion implements Conversion<Byte> {
 	}
 
 	 
-	public Byte convert(Object value) {
+	public Byte convert(Object value, Class<?> type) {
+		if (value == null){
+			return null;
+		}
+
+		if(value.getClass()==boolean.class || value.getClass()==Boolean.class){
+			return ((Boolean)value)?(byte)1:(byte)0;
+		}
+		
 		if (!(value instanceof Byte)) {
 			String v=value.toString();
 			if (v.trim().length()==0) {

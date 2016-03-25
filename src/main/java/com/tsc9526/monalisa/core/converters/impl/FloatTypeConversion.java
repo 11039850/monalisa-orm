@@ -33,7 +33,15 @@ public class FloatTypeConversion implements Conversion<Float> {
 		};
 	}
 
-	public Float convert(Object value) {
+	public Float convert(Object value, Class<?> type) {
+		if (value == null){
+			return null;
+		}
+
+		if(value.getClass()==boolean.class || value.getClass()==Boolean.class){
+			return ((Boolean)value)?1F:0F;
+		}
+		
 		if (!(value instanceof Float)) {
 			String v=value.toString();
 			if (v.trim().length()==0) {

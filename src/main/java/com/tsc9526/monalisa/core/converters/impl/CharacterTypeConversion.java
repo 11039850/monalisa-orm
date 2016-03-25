@@ -35,13 +35,16 @@ public class CharacterTypeConversion implements Conversion<Character> {
 	}
 
  
-	public Character convert(Object value) {
+	public Character convert(Object value, Class<?> type) {
+		if (value == null){
+			return null;
+		}
+
 		if (!(value instanceof Character)) {
 			String v=value.toString();
 			if (v.trim().length()==0) {
 				value=null;
-			}
-			else {
+			}else {
 				value=new Character(v.charAt(0));
 			}
 		}
