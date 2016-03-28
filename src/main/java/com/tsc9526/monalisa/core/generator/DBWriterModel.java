@@ -1,19 +1,3 @@
-/*******************************************************************************************
- *	Copyright (c) 2016, zzg.zhou(11039850@qq.com)
- * 
- *  Monalisa is free software: you can redistribute it and/or modify
- *	it under the terms of the GNU Lesser General Public License as published by
- *	the Free Software Foundation, either version 3 of the License, or
- *	(at your option) any later version.
-
- *	This program is distributed in the hope that it will be useful,
- *	but WITHOUT ANY WARRANTY; without even the implied warranty of
- *	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *	GNU Lesser General Public License for more details.
-
- *	You should have received a copy of the GNU Lesser General Public License
- *	along with this program.  If not, see <http://www.gnu.org/licenses/>.
- *******************************************************************************************/
 package com.tsc9526.monalisa.core.generator;
 
 
@@ -131,7 +115,23 @@ public class DBWriterModel{
 		}
 	}
 	public void service(JspContext request,PrintWriter out){
-		out.println("");
+		out.println("/*******************************************************************************************");
+			out.println(" *	Copyright (c) 2016, zzg.zhou(11039850@qq.com)");
+			out.println(" * ");
+			out.println(" *  Monalisa is free software: you can redistribute it and/or modify");
+			out.println(" *	it under the terms of the GNU Lesser General Public License as published by");
+			out.println(" *	the Free Software Foundation, either version 3 of the License, or");
+			out.println(" *	(at your option) any later version.");
+			out.println("");
+			out.println(" *	This program is distributed in the hope that it will be useful,");
+			out.println(" *	but WITHOUT ANY WARRANTY; without even the implied warranty of");
+			out.println(" *	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the");
+			out.println(" *	GNU Lesser General Public License for more details.");
+			out.println("");
+			out.println(" *	You should have received a copy of the GNU Lesser General Public License");
+			out.println(" *	along with this program.  If not, see <http://www.gnu.org/licenses/>.");
+			out.println(" *******************************************************************************************/");
+			out.println("");
 			out.println("");
 			out.println("");
 			out.println("");
