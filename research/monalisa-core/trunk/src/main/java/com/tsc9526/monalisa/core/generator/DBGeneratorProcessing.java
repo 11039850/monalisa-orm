@@ -81,6 +81,7 @@ public class DBGeneratorProcessing extends DBGenerator{
 			logger.info("Building "+dbKey+"("+ (db.configFile().length()>0?db.configFile():db.url() )+"): "+new File(DBConfig.DEFAULT_PATH).getAbsolutePath()+" ...");
 		}
 		System.setProperty("DB@"+dbKey,projectPath);				 
+		System.setProperty("DB_PROJECT_PATH", projectPath);
 		
 		this.dbcfg=DataSourceManager.getInstance().getDBConfig(dbKey,db,true);
 				
