@@ -1,19 +1,3 @@
-/*******************************************************************************************
- *	Copyright (c) 2016, zzg.zhou(11039850@qq.com)
- * 
- *  Monalisa is free software: you can redistribute it and/or modify
- *	it under the terms of the GNU Lesser General Public License as published by
- *	the Free Software Foundation, either version 3 of the License, or
- *	(at your option) any later version.
-
- *	This program is distributed in the hope that it will be useful,
- *	but WITHOUT ANY WARRANTY; without even the implied warranty of
- *	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *	GNU Lesser General Public License for more details.
-
- *	You should have received a copy of the GNU Lesser General Public License
- *	along with this program.  If not, see <http://www.gnu.org/licenses/>.
- *******************************************************************************************/
 <%@page import="com.tsc9526.monalisa.core.meta.MetaIndex"%>
 <%@page import="com.tsc9526.monalisa.core.meta.MetaColumn"%>
 <%@page import="java.util.Set"%>
@@ -198,7 +182,7 @@ public class <%=table.getJavaName()%> extends <%=modelClass%><<%=table.getJavaNa
 		* @param <%=c.getJavaName()%> <%=toComments(c.getRemarks()) %>
 		<%} %>	
 		*/
-		public int deleteBy<%=m%>(<%for(MetaColumn k:index.getColumns()){%><%=k==index.getColumns().get(0)?"":", "%><%=k.getJavaType() %> <%=k.getJavaName()%><%}%>)){			 
+		public int deleteBy<%=m%>(<%for(MetaColumn k:index.getColumns()){%><%=k==index.getColumns().get(0)?"":", "%><%=k.getJavaType() %> <%=k.getJavaName()%><%}%>){			 
 			<%for(MetaColumn k:index.getColumns()){ %>
 			this.model.<%=k.getJavaName()%>=<%=k.getJavaName()%>;
 			<%} %>			 
@@ -263,8 +247,8 @@ public class <%=table.getJavaName()%> extends <%=modelClass%><<%=table.getJavaNa
 		* @param <%=c.getJavaName()%> <%=toComments(c.getRemarks()) %>
 		<%} %>	
 		*/
-		public <%=table.getJavaName()%> selectBy<%=m%>(<%for(MetaColumn k:index.getColumns()){%><%=k==index.getColumns().get(0)?"":", "%><%=k.getJavaType() %> <%=k.getJavaName()%><%}%>)){	
-			Criteria c=criteria();
+		public <%=table.getJavaName()%> selectBy<%=m%>(<%for(MetaColumn k:index.getColumns()){%><%=k==index.getColumns().get(0)?"":", "%><%=k.getJavaType() %> <%=k.getJavaName()%><%}%>){	
+			Criteria c=WHERE();
 			<%for(MetaColumn k:index.getColumns()){ %>
 			c.<%=k.getJavaName()%>.eq(<%=k.getJavaName()%>);
 			<%} %>			 
