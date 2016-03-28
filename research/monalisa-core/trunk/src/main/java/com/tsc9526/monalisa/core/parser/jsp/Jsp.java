@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.tsc9526.monalisa.core.generator.DBGenerator;
 import com.tsc9526.monalisa.core.tools.FileHelper;
 
 /**
@@ -29,33 +30,46 @@ import com.tsc9526.monalisa.core.tools.FileHelper;
  * @author zzg.zhou(11039850@qq.com)
  */
 public class Jsp{
-	public static String DEFAULT_PAGE_ENCODING="utf-8";
-	
+	public static String DEFAULT_PAGE_ENCODING ="utf-8";
+	public static String DEFAULT_WORK_DIR      = DBGenerator.PROJECT_TMP_PATH+"/_jsp";
 	private String filePath;
 	private String body;
 	private List<JspElement> elements=new ArrayList<JspElement>();
 	
 	private long lastModified;
 	
-	public Jsp(File jspFile)throws IOException {
-		this.filePath=jspFile.getAbsolutePath();
-		this.lastModified=jspFile.lastModified();
-		
-		String body=FileHelper.readToString(new FileInputStream(filePath), DEFAULT_PAGE_ENCODING);
-		
-		parseBody(body);
-		
-		String encoding=getPageEncoding();
-		if(!DEFAULT_PAGE_ENCODING.equalsIgnoreCase(encoding)){
-			elements.clear();
-			body=FileHelper.readToString(new FileInputStream(filePath), encoding);			
+	public Jsp(File jspFile) {
+		parseFile(jspFile);
+	}
+	
+	public Jsp(String body){
+		if(body.indexOf("\n")<0 && new File(body).exists()){
+			parseFile(new File(body));
+		}else{
 			parseBody(body);
 		}
 	}
 	
-	public Jsp(String body){
-		parseBody(body);
+	protected void parseFile(File jspFile){
+		try{
+			this.filePath=jspFile.getAbsolutePath();
+			this.lastModified=jspFile.lastModified();
+			
+			String body=FileHelper.readToString(new FileInputStream(filePath), DEFAULT_PAGE_ENCODING);
+			
+			parseBody(body);
+			
+			String encoding=getPageEncoding();
+			if(!DEFAULT_PAGE_ENCODING.equalsIgnoreCase(encoding)){
+				elements.clear();
+				body=FileHelper.readToString(new FileInputStream(filePath), encoding);			
+				parseBody(body);
+			}
+		}catch(IOException e){
+			throw new RuntimeException(e);
+		}
 	}
+	
 	
 	public String getPageEncoding(){
 		String pageEncoding=null;
@@ -69,6 +83,15 @@ public class Jsp{
 		}
 		return DEFAULT_PAGE_ENCODING;
 	}
+	
+	
+	public void process(JspContext context,JspPageOut out){
+		 String className=context.getParameter("$$CLASS_NAME$$");
+		 if(className==null){
+			 
+		 }
+	}
+	
 	
 	protected void parseBody(String body){
 		this.body=body;
