@@ -60,14 +60,7 @@ public abstract class DBGenerator {
 				if(error!=null){
 					logger.error(error);
 				}						 				
-			}catch(Exception e) {
-				if(e instanceof RuntimeException){
-					RuntimeException re=(RuntimeException)e;
-					if(re.getCause()!=null && re.getCause() instanceof ClassNotFoundException){
-						//Ingore this exception
-						return;
-					} 
-				}				 
+			}catch(Exception e) {				 
 				logger.error(e.getClass().getName()+":\r\n"+e.getMessage(),e);
 			}
 		}

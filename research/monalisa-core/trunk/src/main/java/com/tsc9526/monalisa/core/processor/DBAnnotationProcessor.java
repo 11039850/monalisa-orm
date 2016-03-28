@@ -72,10 +72,10 @@ public class DBAnnotationProcessor extends AbstractProcessor {
 						}
 					}
 				}else{
-					logger.warn("@DB should used for interface!");
+					logger.warn("@DB should used for interface: "+element.getSimpleName());
 					
 					if(Helper.inEclipseIDE()){
-						processingEnv.getMessager().printMessage(Kind.WARNING,"@DB should used for interface!", element);
+						processingEnv.getMessager().printMessage(Kind.WARNING,"@DB should used for interface: "+element.getSimpleName(), element);
 					}					
 				}
 			}
