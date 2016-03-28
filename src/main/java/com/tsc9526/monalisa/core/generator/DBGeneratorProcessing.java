@@ -46,7 +46,10 @@ import com.tsc9526.monalisa.core.tools.JavaWriter;
 public class DBGeneratorProcessing extends DBGenerator{	 
 	private ProcessingEnvironment processingEnv;	 
 	private TypeElement typeElement;
-	 
+	
+	DBGeneratorProcessing(){
+	}
+	
 	public DBGeneratorProcessing(ProcessingEnvironment processingEnv,TypeElement typeElement) {
 		super();
 		 

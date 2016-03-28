@@ -32,6 +32,7 @@ import javax.tools.Diagnostic.Kind;
 import com.tsc9526.monalisa.core.annotation.DB;
 import com.tsc9526.monalisa.core.datasource.DbProp;
 import com.tsc9526.monalisa.core.generator.DBGeneratorProcessing;
+import com.tsc9526.monalisa.core.generator.DBGeneratorProcessingInEclipse;
 import com.tsc9526.monalisa.core.logger.Logger;
 import com.tsc9526.monalisa.core.tools.Helper;
 
@@ -49,9 +50,7 @@ public class DBAnnotationProcessor extends AbstractProcessor {
 		if(Helper.inEclipseIDE()){
 			//Eclipse环境,设置日志输出
 			Logger.setMessager(processingEnv.getMessager());
-		} 		
-		
-		
+		}
 	}
 	 
 	public boolean process(Set<? extends TypeElement> annotations,RoundEnvironment roundEnv) {
@@ -63,7 +62,7 @@ public class DBAnnotationProcessor extends AbstractProcessor {
 			Set<? extends Element> els = roundEnv.getElementsAnnotatedWith(DB.class);
 			for (Element element : els) {				
 				if (element.getKind() == ElementKind.INTERFACE) { 				 										
-					try{						 
+					try{	
 						doGenerateFiles((TypeElement)element);
 					}catch(Throwable e){
 						logger.error(""+e,e);
@@ -87,14 +86,11 @@ public class DBAnnotationProcessor extends AbstractProcessor {
 	
 	private void doGenerateFiles(TypeElement element)throws Exception{
 		if(Helper.inEclipseIDE()){
-			ProcessorInEclipse pie=new ProcessorInEclipse(processingEnv,element);
-			if(!pie.generateFiles()){
-				DBGeneratorProcessing dbai=new DBGeneratorProcessing(processingEnv,element);
-				dbai.generateFiles();
-			}
+			DBGeneratorProcessingInEclipse g=new DBGeneratorProcessingInEclipse(processingEnv,element);
+			g.generateFiles();
 		}else{
-			DBGeneratorProcessing dbai=new DBGeneratorProcessing(processingEnv,element);
-			dbai.generateFiles();
+			DBGeneratorProcessing g=new DBGeneratorProcessing(processingEnv,element);
+			g.generateFiles();
 		}
 	}
   
