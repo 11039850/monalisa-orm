@@ -60,6 +60,8 @@ public class DataSourceManager {
 		    if(mth!=null) {
 		        mth.invoke(null);
 		    }
+		}catch(ClassNotFoundException e){
+			//Do nothing
 		}catch (Throwable t) {
 			logger.error(""+t,t);
 		}
