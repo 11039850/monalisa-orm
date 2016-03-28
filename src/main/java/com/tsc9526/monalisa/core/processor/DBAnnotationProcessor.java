@@ -31,6 +31,7 @@ import javax.tools.Diagnostic.Kind;
 
 import com.tsc9526.monalisa.core.annotation.DB;
 import com.tsc9526.monalisa.core.datasource.DbProp;
+import com.tsc9526.monalisa.core.generator.DBGenerator;
 import com.tsc9526.monalisa.core.generator.DBGeneratorProcessing;
 import com.tsc9526.monalisa.core.generator.DBGeneratorProcessingInEclipse;
 import com.tsc9526.monalisa.core.logger.Logger;
@@ -43,7 +44,7 @@ import com.tsc9526.monalisa.core.tools.Helper;
 @SupportedAnnotationTypes("com.tsc9526.monalisa.core.annotation.DB")
 @SupportedSourceVersion(SourceVersion.RELEASE_6)
 public class DBAnnotationProcessor extends AbstractProcessor {	 
-	static Logger logger=Logger.getLogger(DBAnnotationProcessor.class);
+	static Logger logger=DBGenerator.logger;
 	
 	public synchronized void init(ProcessingEnvironment processingEnv) {
 		super.init(processingEnv);			 		 
