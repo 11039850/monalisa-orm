@@ -78,7 +78,7 @@ Step 3: Use the generated model classes
 	    	new User().setName("zzg.zhou").setStatus(1).save();
 	
     		//select
-    		User user=User.WHERE().name.like("zzg%").status.in(1,2,3).SELECT().selectOne(); //select, selectPage ...
+    		User user=User.WHERE().name.like("zzg%").status.in(1,2,3).SELECT().selectOne(); //selectPage ...
 	
     		//update
     		user.setStatus(3).update();
