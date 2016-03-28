@@ -21,8 +21,6 @@ import java.util.Map;
 
 import javax.annotation.processing.Messager;
 
-import com.tsc9526.monalisa.core.tools.ClassHelper;
-
 /**
  * 
  * @author zzg.zhou(11039850@qq.com)
@@ -144,9 +142,9 @@ public abstract class Logger {
 		String factoryType     = LIBRARY[index][1];
 
 		try {
-			ClassHelper.forClassName(loggerClassName);
+			Class.forName(loggerClassName);
 			 
-			return (LoggerFactory) ClassHelper.forClassName("com.tsc9526.monalisa.core.logger." + factoryType + "LoggerFactory").newInstance();
+			return (LoggerFactory) Class.forName("com.tsc9526.monalisa.core.logger." + factoryType + "LoggerFactory").newInstance();
 		} catch (IllegalAccessException e) {			 
 			throw new IllegalAccessError(e.getMessage());
 		} catch (InstantiationException e) {			 
