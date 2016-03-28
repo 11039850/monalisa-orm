@@ -43,7 +43,8 @@ import com.tsc9526.monalisa.core.tools.Helper;
 @SupportedAnnotationTypes("com.tsc9526.monalisa.core.annotation.DB")
 @SupportedSourceVersion(SourceVersion.RELEASE_6)
 public class DBAnnotationProcessor extends AbstractProcessor {	 
-	 
+	static Logger logger=Logger.getLogger(DBAnnotationProcessor.class);
+	
 	public synchronized void init(ProcessingEnvironment processingEnv) {
 		super.init(processingEnv);			 		 
 		 
@@ -54,16 +55,20 @@ public class DBAnnotationProcessor extends AbstractProcessor {
 	}
 	 
 	public boolean process(Set<? extends TypeElement> annotations,RoundEnvironment roundEnv) {
-		Logger logger=Logger.getLogger(DBAnnotationProcessor.class);
-		
 		DbProp.ProcessingEnvironment=true;
 		 
 		if (!roundEnv.processingOver()) {	
 			Set<? extends Element> els = roundEnv.getElementsAnnotatedWith(DB.class);
-			for (Element element : els) {				
-				if (element.getKind() == ElementKind.INTERFACE) { 				 										
+			for (Element es : els) {	
+				if(es instanceof TypeElement ==false){
+					continue;
+				}
+				
+				TypeElement element=(TypeElement)es;
+				
+				if (es.getKind() == ElementKind.INTERFACE) { 
 					try{	
-						doGenerateFiles((TypeElement)element);
+						doGenerateFiles(element);
 					}catch(Throwable e){
 						logger.error(""+e,e);
 						
@@ -72,10 +77,10 @@ public class DBAnnotationProcessor extends AbstractProcessor {
 						}
 					}
 				}else{
-					logger.warn("@DB should used for interface: "+element.getSimpleName());
+					logger.warn("@DB should used for interface: "+element.getQualifiedName().toString());
 					
 					if(Helper.inEclipseIDE()){
-						processingEnv.getMessager().printMessage(Kind.WARNING,"@DB should used for interface: "+element.getSimpleName(), element);
+						processingEnv.getMessager().printMessage(Kind.WARNING,"@DB should used for interface: "+element.getQualifiedName().toString(), element);
 					}					
 				}
 			}
