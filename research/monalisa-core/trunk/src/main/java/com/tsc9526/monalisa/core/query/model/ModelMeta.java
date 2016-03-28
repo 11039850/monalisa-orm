@@ -78,7 +78,7 @@ public class ModelMeta{
 		return mm;
 	}
 	
-	private static Timer monitorTimer=null;
+	static Timer monitorTimer=null;
 	private static void checkModelMetaChanged(){
 		if(monitorTimer==null && ModelChangedMonitorPeriod > 0){
 			long period=ModelChangedMonitorPeriod;
@@ -94,6 +94,8 @@ public class ModelMeta{
 			}, period, period);
 		}
 	}
+	
+	
 	
 	private static String getModelKey(Model<?> model){
 		String key=model.getClass().getName();

@@ -30,6 +30,7 @@ import javax.lang.model.element.TypeElement;
 import javax.tools.Diagnostic.Kind;
 
 import com.tsc9526.monalisa.core.annotation.DB;
+import com.tsc9526.monalisa.core.datasource.DbProp;
 import com.tsc9526.monalisa.core.generator.DBGeneratorProcessing;
 import com.tsc9526.monalisa.core.logger.Logger;
 import com.tsc9526.monalisa.core.tools.Helper;
@@ -49,11 +50,15 @@ public class DBAnnotationProcessor extends AbstractProcessor {
 			//Eclipse环境,设置日志输出
 			Logger.setMessager(processingEnv.getMessager());
 		} 		
+		
+		
 	}
 	 
 	public boolean process(Set<? extends TypeElement> annotations,RoundEnvironment roundEnv) {
 		Logger logger=Logger.getLogger(DBAnnotationProcessor.class);
 		
+		DbProp.ProcessingEnvironment=true;
+		 
 		if (!roundEnv.processingOver()) {	
 			Set<? extends Element> els = roundEnv.getElementsAnnotatedWith(DB.class);
 			for (Element element : els) {				
@@ -76,6 +81,7 @@ public class DBAnnotationProcessor extends AbstractProcessor {
 				}
 			}
 		} 
+	
 		return true;
 	}
 	

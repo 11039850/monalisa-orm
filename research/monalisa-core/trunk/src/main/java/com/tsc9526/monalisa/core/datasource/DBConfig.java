@@ -48,7 +48,6 @@ import com.tsc9526.monalisa.core.tools.CloseQuietly;
  */
 public class DBConfig implements Closeable{ 	
 	static Logger logger=Logger.getLogger(DBConfig.class);
-	
 	/**
 	 * <code>DEFAULT_PATH= ".";</code> <br>
 	 * The file path for DB.configFile() is :<br>
@@ -136,9 +135,7 @@ public class DBConfig implements Closeable{
 		return getCfg().getDb();
 	}
 	
-	protected synchronized void delayClose(final DataSource ds){
-		int delay=DbProp.PROP_DB_DATASOURCE_DELAY_CLOSE.getIntValue(this, 30);
-		
+	protected synchronized void delayClose(final DataSource ds,int delay){
 		CloseQuietly.delayClose(ds,delay);
 	}
 	 		
@@ -149,17 +146,20 @@ public class DBConfig implements Closeable{
 			init(cfg.db);
 			
 			if(ds!=null){
-				delayClose(ds);
+				int delay=DbProp.PROP_DB_DATASOURCE_DELAY_CLOSE.getIntValue(this, 30);
+				delayClose(ds,delay);
 				ds=null;
 			}
 		}
  	
 		if(ds==null){
-			ds=getDataSourceFromConfigClass();
+			if(!DbProp.ProcessingEnvironment){
+				ds=getDataSourceFromConfigClass();
+			}
 			
 			if(ds==null){			
 				ds=new SimpleDataSource(this);
-			}						 
+			}		
 		}		
 		return ds;
 	}

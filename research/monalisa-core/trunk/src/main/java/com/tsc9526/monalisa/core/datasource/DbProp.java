@@ -21,6 +21,8 @@ package com.tsc9526.monalisa.core.datasource;
  * @author zzg.zhou(11039850@qq.com)
  */
 public class DbProp {
+	public static boolean ProcessingEnvironment=false;
+	
 	public final static DbProp PROP_DB_SQL_DEBUG 		= new DbProp("sql.debug",false);
 	public final static DbProp PROP_DB_SQL_PATH 		= new DbProp("sql.path","sql");
 	
