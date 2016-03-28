@@ -32,7 +32,7 @@ import com.tsc9526.monalisa.core.query.partition.Partition;
  */
 @SuppressWarnings("rawtypes")
 public abstract class DBGenerator {
-	static Logger logger=Logger.getLogger(DBGenerator.class);
+	public static Logger logger=Logger.getLogger(DBGenerator.class);
 	
 	public static String PROJECT_TMP_PATH="target/monalisa";
 	
@@ -43,7 +43,7 @@ public abstract class DBGenerator {
 	protected String resourcePackage;
 
 	protected String dbi;
-	
+	 
 	public void generateFiles(){					
 		List<MetaTable> tables=dbmetadata.getTables();
 		

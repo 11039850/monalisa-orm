@@ -77,8 +77,18 @@ public class DBGeneratorProcessingInEclipse extends DBGeneratorProcessing{
 	}
  
 	private void beginProcessing(URLClassLoader loader)throws Exception{
-		Class<?> clazz=loader.loadClass(DbProp.class.getName());
-		clazz.getField("ProcessingEnvironment").set(null, true);
+		Class<?> dbPropClass=loader.loadClass(DbProp.class.getName());
+		dbPropClass.getField("ProcessingEnvironment").set(null, true);
+		
+		try{
+			Class<?> mmcClass=Class.forName("com.tsc9526.monalisa.plugin.eclipse.console.MMC");
+			
+			Class<?> dbGeneratorClass=loader.loadClass(DBGenerator.class.getName());
+			Object dbLogger=dbGeneratorClass.getDeclaredField("logger").get(null);
+			
+			Object mmcLogger=mmcClass.getMethod("createLogger").invoke(dbLogger);
+			dbGeneratorClass.getField("logger").set(null,mmcLogger);
+		}catch(ClassNotFoundException e){}
 	}
 	
 	private void endProcessing(URLClassLoader loader)throws Exception{

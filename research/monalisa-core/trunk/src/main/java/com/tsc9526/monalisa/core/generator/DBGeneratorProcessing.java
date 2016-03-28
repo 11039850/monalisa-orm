@@ -16,6 +16,7 @@
  *******************************************************************************************/
 package com.tsc9526.monalisa.core.generator;
 
+import java.io.File;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
@@ -30,13 +31,18 @@ import javax.tools.FileObject;
 import javax.tools.JavaFileObject;
 import javax.tools.StandardLocation;
 
+import org.eclipse.jdt.core.IJavaProject;
+import org.eclipse.jdt.internal.apt.pluggable.core.dispatch.IdeBuildProcessingEnvImpl;
+
 import com.tsc9526.monalisa.core.annotation.DB;
 import com.tsc9526.monalisa.core.datasource.ConfigClass;
+import com.tsc9526.monalisa.core.datasource.DBConfig;
 import com.tsc9526.monalisa.core.datasource.DataSourceManager;
 import com.tsc9526.monalisa.core.meta.MetaTable;
 import com.tsc9526.monalisa.core.meta.MetaTable.CreateTable;
 import com.tsc9526.monalisa.core.query.model.Model;
 import com.tsc9526.monalisa.core.tools.ClassHelper;
+import com.tsc9526.monalisa.core.tools.Helper;
 import com.tsc9526.monalisa.core.tools.JavaWriter;
 
 /**
@@ -64,7 +70,16 @@ public class DBGeneratorProcessing extends DBGenerator{
 		if(dbKey==null || dbKey.length()<1){
 			dbKey=typeElement.toString();
 		}
-		String projectPath=DBProject.getProject(processingEnv, typeElement).getProjectPath();
+		
+		String projectPath=DBConfig.DEFAULT_PATH;
+		if(Helper.inEclipseIDE() && processingEnv instanceof IdeBuildProcessingEnvImpl) {			
+			IJavaProject project = ((IdeBuildProcessingEnvImpl) processingEnv).getJavaProject();
+			projectPath=project.getProject().getLocation().toString();
+				 
+			logger.info("Building "+dbKey+"("+ (db.configFile().length()>0?db.configFile():db.url() )+"): "+projectPath+" in eclipse ...");			
+		}else{
+			logger.info("Building "+dbKey+"("+ (db.configFile().length()>0?db.configFile():db.url() )+"): "+new File(DBConfig.DEFAULT_PATH).getAbsolutePath()+" ...");
+		}
 		System.setProperty("DB@"+dbKey,projectPath);				 
 		
 		this.dbcfg=DataSourceManager.getInstance().getDBConfig(dbKey,db,true);
@@ -75,6 +90,7 @@ public class DBGeneratorProcessing extends DBGenerator{
 		if(p>0){
 			pkg=name.substring(0,p)+name.substring(p).toLowerCase();
 		}		
+		
 		this.javaPackage=pkg;		
 		this.resourcePackage="resources."+pkg;
 		this.dbi=typeElement.getQualifiedName().toString();
