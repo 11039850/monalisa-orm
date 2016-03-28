@@ -44,8 +44,6 @@ import com.tsc9526.monalisa.core.tools.Helper;
 @SupportedAnnotationTypes("com.tsc9526.monalisa.core.annotation.DB")
 @SupportedSourceVersion(SourceVersion.RELEASE_6)
 public class DBAnnotationProcessor extends AbstractProcessor {	 
-	static Logger logger=DBGenerator.logger;
-	
 	public synchronized void init(ProcessingEnvironment processingEnv) {
 		super.init(processingEnv);			 		 
 		 
@@ -71,14 +69,14 @@ public class DBAnnotationProcessor extends AbstractProcessor {
 					try{	
 						doGenerateFiles(element);
 					}catch(Throwable e){
-						logger.error(""+e,e);
+						DBGenerator.logger.error(""+e,e);
 						
 						if(Helper.inEclipseIDE()){
 							processingEnv.getMessager().printMessage(Kind.ERROR,e.getClass().getName()+":\r\n"+Helper.toString(e), element);
 						}
 					}
 				}else{
-					logger.warn("@DB should used for interface: "+element.getQualifiedName().toString());
+					DBGenerator.logger.warn("@DB should used for interface: "+element.getQualifiedName().toString());
 					
 					if(Helper.inEclipseIDE()){
 						processingEnv.getMessager().printMessage(Kind.WARNING,"@DB should used for interface: "+element.getQualifiedName().toString(), element);
