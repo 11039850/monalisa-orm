@@ -122,6 +122,9 @@ public class JavaBeansHelper {
                 } else {
                     sb.append(Character.toLowerCase(c));
                 } 
+            }else if ((c >= 0x4e00)&&(c <= 0x9fbb)){ 
+            	//中文字
+            	sb.append(c);
             }else{
             	if (sb.length() > 0) {
                     nextUpperCase = true;
