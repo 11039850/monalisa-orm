@@ -17,7 +17,7 @@ Here is a full example:
     import com.tsc9526.monalisa.core.query.model.Record;
 
     @DB(url="jdbc:mysql://127.0.0.1:3306/test" ,username="root", password="root") //Define database
-    public class User extends Record{ //Dynamic table model
+    public class User extends Record{ //Dynamic table model, name is "user"
 	    public static void main(String[] args) {
 		    User user=new User();
 		    user.setName("zzg"); 
