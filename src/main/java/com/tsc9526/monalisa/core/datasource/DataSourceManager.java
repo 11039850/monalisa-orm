@@ -16,12 +16,14 @@
  *******************************************************************************************/
 package com.tsc9526.monalisa.core.datasource;
 
+import java.lang.reflect.Method;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import javax.sql.DataSource;
 
 import com.tsc9526.monalisa.core.annotation.DB;
+import com.tsc9526.monalisa.core.logger.Logger;
 import com.tsc9526.monalisa.core.query.dialect.Dialect;
 import com.tsc9526.monalisa.core.query.dialect.MysqlDialect;
 import com.tsc9526.monalisa.core.tools.ClassHelper;
@@ -31,11 +33,37 @@ import com.tsc9526.monalisa.core.tools.ClassHelper;
  * @author zzg.zhou(11039850@qq.com)
  */
 public class DataSourceManager {
+	static Logger logger=Logger.getLogger(DataSourceManager.class);
+	
 	private static DataSourceManager dm=new DataSourceManager();
 	
 	public static DataSourceManager getInstance(){
 		return dm;
 	}	
+	
+	public static void shutdown(){
+		try{
+			for(DBConfig cfg:dm.dss.values()){
+				cfg.close();
+			}
+			
+			shutdownMysqlThreads();
+		}finally{
+			dm.dss.clear();
+		}
+	}
+	
+	private static void shutdownMysqlThreads(){
+		try {
+		    Class<?> cls=ClassHelper.forClassName("com.mysql.jdbc.AbandonedConnectionCleanupThread");
+		    Method   mth=(cls==null ? null : cls.getMethod("shutdown"));
+		    if(mth!=null) {
+		        mth.invoke(null);
+		    }
+		}catch (Throwable t) {
+			logger.error(""+t,t);
+		}
+	}
 	
 	private Map<String, DBConfig> dss=new ConcurrentHashMap<String,DBConfig>();
 	
@@ -121,16 +149,6 @@ public class DataSourceManager {
 			}
 		}		
 		throw new RuntimeException("JDBC-URL: "+jdbcUrl+", dialect not found in: "+dialects.keySet()+", use registerDialect() first!");
-	}
-	
-	public void shutdown(){
-		try{
-			for(DBConfig cfg:dss.values()){
-				cfg.close();
-			}
-		}finally{
-			dss.clear();
-		}
 	}
 	
 }

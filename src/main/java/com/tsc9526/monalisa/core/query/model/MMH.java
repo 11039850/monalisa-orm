@@ -16,6 +16,7 @@
  *******************************************************************************************/
 package com.tsc9526.monalisa.core.query.model;
 
+
 /**
  * 
  * Do not use this class
@@ -37,7 +38,13 @@ public class MMH {
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
-
+	}
+	
+	public static void close(){
+		if(ModelMeta.monitorTimer!=null){
+			ModelMeta.monitorTimer.cancel();
+			ModelMeta.monitorTimer=null;
+		}
 	}
 
 }
