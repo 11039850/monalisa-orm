@@ -70,7 +70,8 @@ Step 2: Run code generator(If you use the Eclipse plug-in, you can omit this ste
 
    public class ModelGenerator {
     	public static void main(String[] args) {
-	    	DBGeneratorMain.generateModelClass(Test.class, "src"); //Generate Model classes to directory: src
+    		//Generate Model classes to directory: src/main/java OR src
+	    	DBGeneratorMain.generateModelClass(Test.class); 
     	}
     }
 ```
