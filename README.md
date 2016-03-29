@@ -1,4 +1,4 @@
-# monalisa-core: Very simple database ORM tool
+# monalisa-core: Very simple database ORM
 
       "And God said, Let there be light: and there was light."
       
