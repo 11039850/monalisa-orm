@@ -163,9 +163,13 @@ public class SQLGenerator {
 					q.getResult();
 					 
 					QExchange exchange=QExchange.getExchange(true);
-					createResultJavaCode(srcDir,exchange,resultClass);
-					
-					hrs.put(target.getAbsolutePath(),cs.getSqlFile().getAbsolutePath()+"::"+qs.getId());
+					if(exchange.getErrorString()==null){
+						createResultJavaCode(srcDir,exchange,resultClass);
+						
+						hrs.put(target.getAbsolutePath(),cs.getSqlFile().getAbsolutePath()+"::"+qs.getId());
+					}else{
+						throw new RuntimeException(exchange.getErrorString());
+					}
 					
 				}
 			}
