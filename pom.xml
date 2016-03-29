@@ -3,14 +3,8 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.tsc9526</groupId>
 	<artifactId>monalisa-core</artifactId>
-	<version>0.7.6-SNAPSHOT</version>
-	
-	<parent>
-		<groupId>com.jy</groupId>
-		<artifactId>jy-parent-pom</artifactId>
-		<version>1.0.0</version>		 
-	</parent>
-	 
+	<version>0.7.6</version>
+	  
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<repositoryURL>${setting.repositoryURL}</repositoryURL>
