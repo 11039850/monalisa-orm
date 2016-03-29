@@ -26,6 +26,13 @@
 
 # Example
 ## Example 1
+
+Add following code for a class/interface:
+```java  
+	
+	@DB(url="jdbc:mysql://127.0.0.1:3306/test" ,username="root", password="root") 
+```
+
 Here is a full java code:
 ```java
     
