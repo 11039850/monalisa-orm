@@ -37,6 +37,15 @@ Here is a full example:
     	}
     }
 ```
+``` sql 
+		CREATE TABLE `user` (
+		  `id` int(11) NOT NULL AUTO_INCREMENT,
+		  `name` varchar(64) NOT NULL,
+		  `passwd` varchar(64) DEFAULT NULL,
+		  `status` int(11) DEFAULT NULL,
+		  PRIMARY KEY (`id`)
+		) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+```
 
 ## Example 2
 Here is another formal's example:
