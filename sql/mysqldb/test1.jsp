@@ -19,13 +19,14 @@
 			  
 			name="N%";
 		%>
-		SELECT a.*,b.name  <%=name.length()>2?", a.id":", b.id"%> 
+		SELECT *  <%=name.length()>2?", a.id":", b.id"%> 
 		FROM test_table_1 a left join test_table_2 b <%out.print("on a.id=b.id");%> 
 		where <%="1=1"%>    
 		<%if(name.length()>0)%>AND a.name like $name
 		<%if(title!=null && title.length()>0)%>AND a.title like $title
 		<%if(create_by!=null){%>OR a.create_by =$create_by<%}%>
 		
+		limit 3
 		<%}%>
 	</q>
 	

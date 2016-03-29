@@ -22,7 +22,6 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -179,29 +178,8 @@ public class SQLGenerator {
 		String packageName=resultClass.substring(0,x);
 		String javaName=resultClass.substring(x+1);
 		 
-		
 		MetaTable table=exchange.getTable();
 		table.setJavaPackage(packageName);
-		 
-		Map<String,List<MetaColumn>> duplicateNames=new HashMap<String,List<MetaColumn>>();
-		for(MetaColumn c:table.getColumns()){
-			String fieldName=c.getJavaName();
-			List<MetaColumn> mcs=duplicateNames.get(fieldName);
-			if(mcs==null){
-				mcs=new ArrayList<MetaColumn>();		
-				duplicateNames.put(fieldName, mcs);
-			}
-			mcs.add(c);
-		}
-		for(List<MetaColumn> mcs:duplicateNames.values()){
-			if(mcs.size()>1){
-				for(MetaColumn c:mcs){
-					String cname=c.getTable().getJavaName()+"$"+c.getJavaName();				
-					c.setJavaName(cname);
-				}
-			}
-		}
-		 
 		
 		Set<String> imps=new LinkedHashSet<String>();
 		boolean importColumn=false;

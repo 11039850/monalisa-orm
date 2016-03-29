@@ -555,7 +555,9 @@ public class Query {
 					column.setJavaType(type);					
 					table.addColumn(column); 					
 				}
-					
+				
+				renameDuplicatedColumns(table);
+				
 				exchange.setTable(table);
 				exchange.setErrorString(null);
 				 
@@ -571,6 +573,22 @@ public class Query {
 			return true;
 		}else{
 			return false;
+		}
+	}
+	
+	private void renameDuplicatedColumns(MetaTable table){
+		Map<String,Integer> names=new HashMap<String,Integer>();
+		for(MetaColumn c:table.getColumns()){
+			String name=c.getJavaName();
+			
+			Integer n=names.get(name);
+			if(n!=null){
+				c.setJavaName(name+n);
+				
+				names.put(name,n+1);
+			}else{
+				names.put(name, 1);
+			}
 		}
 	}
 	
@@ -708,26 +726,16 @@ public class Query {
 				}
 				name=name.toLowerCase();
 				
-				if(xs.containsKey(name)){
-					xs.put(name,2);
+				Integer n=xs.get(name);
+				if(n!=null){
+					map.put(name+n, rs.getObject(i));
+					
+					xs.put(name,n+1);
 				}else{
 					xs.put(name,1);
-				}
-			}
-			
-			for(int i=1;i<=rsmd.getColumnCount();i++){
-				String name =rsmd.getColumnLabel(i);
-				if(name==null || name.trim().length()<1){
-					name =rsmd.getColumnName(i);
-				}
-				
-				Integer rn=xs.get(name.toLowerCase());
-				if(rn!=null && rn>1){
-					String tableName=rsmd.getTableName(i);
-					map.put(tableName+"$"+name, rs.getObject(i));
-				}else{
+					
 					map.put(name, rs.getObject(i));
-				}
+				}	
 			}
 			
 			return map;
@@ -766,24 +774,25 @@ public class Query {
 			
 			ResultSetMetaData rsmd=rs.getMetaData();
 			
+			Map<String,Integer> xs=new HashMap<String,Integer>();
 			for(int i=1;i<=rsmd.getColumnCount();i++){
 				String name =rsmd.getColumnLabel(i);
 				if(name==null || name.trim().length()<1){
 					name =rsmd.getColumnName(i);
 				}
 				
+				Integer n=xs.get(name);
+				if(n!=null){
+					name=name+n;
+					
+					xs.put(name,n+1);
+				}else{
+					xs.put(name,1);
+				}	
+				
 				Name nColumn =new Name(false).setName(name);
 				 
 				FGS fgs=metaClass.getField(nColumn.getJavaName());
-				if(fgs==null){
-					String table=rsmd.getTableName(i);
-					if(table!=null && table.length()>0){
-						Name nTable  =new Name(true).setName(table);
-											
-						String jname=nTable.getJavaName()+"$"+nColumn.getJavaName();
-						fgs=metaClass.getField(jname);
-					}
-				}
 				if(fgs!=null){
 					Object v=rs.getObject(i);
 					fgs.setObject(result, v);
