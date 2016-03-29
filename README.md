@@ -80,6 +80,7 @@ Step 3: Use the generated model classes
 ```java
     package example.monalisa.db;
 
+	import example.monalisa.db.Test;
     import example.monalisa.db.test.User;
 
     public class Example {
@@ -96,7 +97,10 @@ Step 3: Use the generated model classes
     		//delete
     		user.delete();
     		User.WHERE().name.like("zzg%").delete();
-	
+    		
+    		//general query
+			Test.DB.select("SELECT * FOMR user WHERE name like ?","zzg%");
+			Test.DB.createQuery().add("SELECT * FOMR user WHERE name like ?","zzg%").getList(User.class);
     	}
     }
 ```
