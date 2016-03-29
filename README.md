@@ -27,7 +27,7 @@
 # Example
 ## Example 1
 
-Add following code for a class/interface:
+Annotation for a class/interface, add the following code:
 ```java  
 	
 	@DB(url="jdbc:mysql://127.0.0.1:3306/test" ,username="root", password="root") 
