@@ -175,7 +175,9 @@ Call DBGeneratorMain in your java project.
 					<source>1.6</source>
 					<target>1.6</target>
 					<annotationProcessors>
-						<annotationProcessor>com.tsc9526.monalisa.core.processor.DBAnnotationProcessor</annotationProcessor>
+						<annotationProcessor>
+							com.tsc9526.monalisa.core.processor.DBAnnotationProcessor
+						</annotationProcessor>
 					</annotationProcessors>
 				</configuration>
 			</plugin>
