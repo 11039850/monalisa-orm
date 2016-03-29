@@ -116,7 +116,7 @@ Step 3: Use the generated model classes
 			//select
 			User.SELECT().selectOne("name=?", "zzg.zhou");
 			User.SELECT().selectByPrimaryKey(1);
-			User user=User.WHERE().name.like("zzg%").status.in(1,2,3).SELECT().selectOne(); //select, selectPage ...
+			User user=User.WHERE().name.like("zzg%").status.in(1,2,3).SELECT().selectOne(); //selectPage ...
 			
 			
 			//general query
