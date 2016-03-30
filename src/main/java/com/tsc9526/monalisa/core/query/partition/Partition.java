@@ -30,9 +30,9 @@ public interface Partition<T extends Model> {
 	/**
 	 * 根据分区定义获取Model对应的表名
 	 *  
-	 * @param mp
-	 * @param model
-	 * @return
+	 * @param mp  MetaPartition 
+	 * @param model model
+	 * @return table name
 	 */
 	public String getTableName(MetaPartition mp,T model);
 	

@@ -58,7 +58,7 @@ public class Delete<T extends Model> {
 	/**
 	 * Delete by primary key
 	 * 
-	 * @return Number of delete records 
+	 * @return number of rows affected
 	 */
 	public int delete(){
 		Query query=model.dialect().delete(model);
@@ -70,7 +70,7 @@ public class Delete<T extends Model> {
 	 * Delete all data use DML-SQL(Can rollback): delete from xxxTable<br>
 	 * 
 	 * 
-	 * @return Number of delete records 
+	 * @return number of rows affected
 	 */
 	public int deleteAll(){
 		Query query=model.dialect().deleteAll(model);
@@ -81,7 +81,7 @@ public class Delete<T extends Model> {
 	/**
 	 * Delete all data use DDL-SQL(Cannot rollback): truncate table xxx;<br>
 	 *  
-	 * @return Number of delete records 
+	 * @return number of rows affected
 	 */
 	public int truncate(){
 		Query query=model.dialect().deleteAll(model);
@@ -91,10 +91,12 @@ public class Delete<T extends Model> {
 	
 	/**
 	 * Delete records filter by whereStatement  
-	 * @param whereStatement 
-	 * @param args  
+	 * @param whereStatement where cause
+	 * @param args  args
+	 * 
+	 * @return number of rows affected
+	 * 
 	 * @see com.tsc9526.monalisa.core.resources.HelpDoc#helpQuery(int,int,Example,String, Object...)
-	 * @return The rows has been deleted
 	 */
 	public int delete(String whereStatement,Object ... args){
 		Query query=model.dialect().delete(model,whereStatement,args);
@@ -104,8 +106,8 @@ public class Delete<T extends Model> {
 	
 	/**
 	 * 
-	 * @param example
-	 * @return The rows has been deleted
+	 * @param example Example
+	 * @return number of rows affected
 	 * 
 	 * @see com.tsc9526.monalisa.core.resources.HelpDoc#helpQuery(int,int,Example,String, Object...)
 	 */
@@ -135,7 +137,7 @@ public class Delete<T extends Model> {
 		}	
 		
 		/**
-		 * @return  
+		 * @return  number of rows affected
 		 * 
 		 * @see Delete#deleteByExample(Example)
 		 */

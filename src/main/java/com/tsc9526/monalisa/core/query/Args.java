@@ -40,16 +40,18 @@ public class Args {
 	/**
 	 * 获取所有的动态参数
 	 * 
-	 * @return
+	 * @return Object[]
 	 */
 	public Object[] popAll(){
 		return dynamic.toArray();
 	}
 	
 	/**
+	 * 
 	 * 弹出一个动态参数
 	 * 
-	 * @return
+	 * @param <T> result type
+	 * @return object
 	 */
 	public <T> T pop(){
 		return (T)dynamic.pop();
@@ -59,7 +61,8 @@ public class Args {
 	 * 弹出一个动态参数， 如果为动态参数不存在或null 则返回默认值
 	 * 
 	 * @param defaultValue 默认值
-	 * @return
+	 * @param <T> result type
+	 * @return object
 	 */
 	public <T> T pop(T defaultValue){
 		if(dynamic.isEmpty()){

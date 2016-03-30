@@ -148,14 +148,14 @@ public class MetaColumn extends Name{
 	}
 	
 	/**
-	 * 是否主键
+	 * @return 是否主键
 	 */
 	public boolean isKey() {
 		return key;
 	}
 
 	/**
-	 * 是否主键
+	 * @param key 是否主键
 	 */
 	public void setKey(boolean key) {
 		this.key = key;

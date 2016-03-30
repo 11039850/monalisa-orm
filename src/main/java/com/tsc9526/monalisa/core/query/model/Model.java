@@ -36,7 +36,7 @@ import com.tsc9526.monalisa.core.meta.MetaTable.CreateTable;
 import com.tsc9526.monalisa.core.meta.MetaTable.TableType;
 import com.tsc9526.monalisa.core.query.Query;
 import com.tsc9526.monalisa.core.query.Tx;
-import com.tsc9526.monalisa.core.query.Tx.Executeable;
+import com.tsc9526.monalisa.core.query.Tx.Executable;
 import com.tsc9526.monalisa.core.query.TxQuery;
 import com.tsc9526.monalisa.core.query.dao.Delete;
 import com.tsc9526.monalisa.core.query.dao.Insert;
@@ -99,8 +99,8 @@ public abstract class Model<T extends Model> implements Serializable {
 	/**
 	 * 设置访问数据库
 	 * 
-	 * @param db
-	 * @return
+	 * @param db database
+	 * @return this 
 	 */
 	public T use(DBConfig db) {
 		this.db = db;
@@ -119,7 +119,7 @@ public abstract class Model<T extends Model> implements Serializable {
 	/**
 	 * Check if the model is dirty
 	 * 
-	 * @return
+	 * @return true if dirty otherwise false
 	 */
 	public boolean dirty() {
 		return holder().dirty;
@@ -128,8 +128,8 @@ public abstract class Model<T extends Model> implements Serializable {
 	/**
 	 * Set the model dirty
 	 * 
-	 * @param dirty
-	 * @return
+	 * @param dirty dirty
+	 * @return this
 	 */
 	public T dirty(boolean dirty) {
 		holder().dirty = dirty;
@@ -139,7 +139,7 @@ public abstract class Model<T extends Model> implements Serializable {
 	/**
 	 * Check if the model is db entity
 	 * 
-	 * @return
+	 * @return true if is db entity otherwise false
 	 */
 	public boolean entity() {
 		return holder().entity;
@@ -148,8 +148,8 @@ public abstract class Model<T extends Model> implements Serializable {
 	/**
 	 * Set the model db entity
 	 * 
-	 * @param entity
-	 * @return
+	 * @param entity entity
+	 * @return this
 	 */
 	public T entity(boolean entity) {
 		holder().entity = entity;
@@ -157,9 +157,6 @@ public abstract class Model<T extends Model> implements Serializable {
 	}
 
 	/**
-	 * @see com.tsc9526.monalisa.core.tools.ModelHelper#parseModel(Model,
-	 *      Object)
-	 * 
 	 * @param dataObject
 	 *            HttpServletRequest, Map, JsonObject, String(json/xml),
 	 *            JavaBean
@@ -169,7 +166,10 @@ public abstract class Model<T extends Model> implements Serializable {
 	 *            "user_id=id", ... // Parse dataObject.user_id to Model.id<br>
 	 *            Another example:<br>
 	 *            "~XXX." //Only parse dataObject's fields with prefix: "XXX."
+	 *            
+	 * @return this
 	 * 
+	 * @see com.tsc9526.monalisa.core.tools.ModelHelper#parse(Model,Object,String ...)
 	 */
 	public T parse(Object dataObject, String... mappings) {
 		ModelHelper.parse(this, dataObject, mappings);
@@ -179,6 +179,8 @@ public abstract class Model<T extends Model> implements Serializable {
 
 	/**
 	 * Load by primary keys
+	 * 
+	 * @return this;
 	 */
 	public T load() {
 		Query query = dialect().load(this);
@@ -196,7 +198,7 @@ public abstract class Model<T extends Model> implements Serializable {
 	 */
 	public int save() {
 		if (history()) {
-			return Tx.execute(new Executeable() {
+			return Tx.execute(new Executable() {
 				public int execute() {
 					int r=doSave();
 					saveHistory(ModelEvent.INSERT);
@@ -224,7 +226,7 @@ public abstract class Model<T extends Model> implements Serializable {
 	 */
 	public int saveOrUpdate() {
 		if (history()) {
-			return Tx.execute(new Executeable() {
+			return Tx.execute(new Executable() {
 				public int execute() {
 					int r=doSaveOrUpdate();
 					saveHistory(ModelEvent.REPLACE);
@@ -252,7 +254,7 @@ public abstract class Model<T extends Model> implements Serializable {
 	 */
 	public int update() {
 		if (history()) {
-			return Tx.execute(new Executeable() {
+			return Tx.execute(new Executable() {
 				public int execute() {
 					int r= doUpdate();
 					saveHistory(ModelEvent.UPDATE);
@@ -280,7 +282,7 @@ public abstract class Model<T extends Model> implements Serializable {
 	 */
 	public int delete() {
 		if (history()) {
-			return Tx.execute(new Executeable() {
+			return Tx.execute(new Executable() {
 				public int execute() {
 					int r= doDelete();
 					saveHistory(ModelEvent.DELETE);
@@ -559,6 +561,8 @@ public abstract class Model<T extends Model> implements Serializable {
 	 *   update.update("id=?",oldId);<br>
 	 * </code>
 	 * 
+	 * @param updateKey updateKey
+	 * 
 	 * @return Enable update the model's primary key, default is: false
 	 */
 	public T updateKey(boolean updateKey) {
@@ -673,8 +677,7 @@ public abstract class Model<T extends Model> implements Serializable {
 	/**
 	 * 排除表的某些字段。 用于在查询表时， 过滤掉某些不必要的字段
 	 * 
-	 * @param fields
-	 *            要排除的字段名
+	 * @param fields    要排除的字段名
 	 * 
 	 * @return 模型本身
 	 */
@@ -698,8 +701,7 @@ public abstract class Model<T extends Model> implements Serializable {
 	/**
 	 * 排除超过指定长度的字段
 	 * 
-	 * @param maxLength
-	 *            字段长度
+	 * @param maxLength   字段长度
 	 * 
 	 * @return 模型本身
 	 */
@@ -712,8 +714,7 @@ public abstract class Model<T extends Model> implements Serializable {
 	/**
 	 * 只提取某些字段
 	 * 
-	 * @param fields
-	 *            需要的字段名称
+	 * @param fields  需要的字段名称
 	 * @return 模型本身
 	 */
 	public T include(String... fields) {
@@ -724,6 +725,8 @@ public abstract class Model<T extends Model> implements Serializable {
 
 	/**
 	 * 复制对象数据
+	 * 
+	 * @return copy of this model
 	 */
 	public T copy() {
 		return (T) mm().copyModel(this);

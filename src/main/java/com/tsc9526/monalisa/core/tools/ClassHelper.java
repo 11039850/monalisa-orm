@@ -103,8 +103,9 @@ public class ClassHelper {
 	/**
 	 * Copy object 
 	 * 
-	 * @param from
-	 * @param to
+	 * @param from source object
+	 * @param to dest object
+	 * @param <T> dest type
 	 * 
 	 * @return The to Object
 	 */
@@ -268,7 +269,7 @@ public class ClassHelper {
 		/**
 		 * Remove fields which field annotation with the annotationClass
 		 * 
-		 * @param annotationClass
+		 * @param annotationClass annotationClass
 		 * @return Removed fields in the class
 		 */
 		public List<FGS> removeFieldsWithAnnotation(Class<? extends Annotation> annotationClass){
@@ -279,7 +280,7 @@ public class ClassHelper {
 		/**
 		 * Get fields which field annotation with the annotationClass
 		 * 
-		 * @param annotationClass
+		 * @param annotationClass annotationClass
 		 * 
 		 * @return fields annotation with the annotationClass
 		 */

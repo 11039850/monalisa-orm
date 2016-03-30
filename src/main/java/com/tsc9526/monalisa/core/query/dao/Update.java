@@ -63,9 +63,9 @@ public class Update<T extends Model>{
 	
 	/**
 	 * 
-	 * @param whereStatement
-	 * @param args
-	 * @return
+	 * @param whereStatement where cause
+	 * @param args args
+	 * @return number of rows affected
 	 * 
 	 * @see com.tsc9526.monalisa.core.resources.HelpDoc#helpQuery(int,int,Example,String, Object...)
 	 */
@@ -77,8 +77,8 @@ public class Update<T extends Model>{
 	
 	/**
 	 * 
-	 * @param example
-	 * @return
+	 * @param example Example
+	 * @return number of rows affected
 	 * 
 	 * @see com.tsc9526.monalisa.core.resources.HelpDoc#helpQuery(int,int,Example,String, Object...)
 	 */
@@ -109,7 +109,7 @@ public class Update<T extends Model>{
 		
 		/**
 		 * 
-		 * @return
+		 * @return number of rows affected
 		 * 
 		 * @see Update#updateByExample(Example)
 		 */

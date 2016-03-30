@@ -31,9 +31,6 @@ import javax.tools.FileObject;
 import javax.tools.JavaFileObject;
 import javax.tools.StandardLocation;
 
-import org.eclipse.jdt.core.IJavaProject;
-import org.eclipse.jdt.internal.apt.pluggable.core.dispatch.IdeBuildProcessingEnvImpl;
-
 import com.tsc9526.monalisa.core.annotation.DB;
 import com.tsc9526.monalisa.core.datasource.ConfigClass;
 import com.tsc9526.monalisa.core.datasource.DBConfig;
@@ -71,13 +68,18 @@ public class DBGeneratorProcessing extends DBGenerator{
 			dbKey=typeElement.toString();
 		}
 		
+		boolean inEclipseIDE=false;
 		String projectPath=DBConfig.DEFAULT_PATH;
-		if(Helper.inEclipseIDE() && processingEnv instanceof IdeBuildProcessingEnvImpl) {			
-			IJavaProject project = ((IdeBuildProcessingEnvImpl) processingEnv).getJavaProject();
-			projectPath=project.getProject().getLocation().toString();
+		if(Helper.inEclipseIDE()){
+			if(processingEnv instanceof org.eclipse.jdt.internal.apt.pluggable.core.dispatch.IdeBuildProcessingEnvImpl) {			
+				org.eclipse.jdt.core.IJavaProject project = ((org.eclipse.jdt.internal.apt.pluggable.core.dispatch.IdeBuildProcessingEnvImpl) processingEnv).getJavaProject();
+				projectPath=project.getProject().getLocation().toString();
 				 
-			logger.info("Building "+dbKey+"("+ (db.configFile().length()>0?db.configFile():db.url() )+"): "+projectPath+" in eclipse ...");			
-		}else{
+				inEclipseIDE=true;
+				logger.info("Building "+dbKey+"("+ (db.configFile().length()>0?db.configFile():db.url() )+"): "+projectPath+" in eclipse ...");		
+			}
+		}
+		if(!inEclipseIDE){
 			logger.info("Building "+dbKey+"("+ (db.configFile().length()>0?db.configFile():db.url() )+"): "+new File(DBConfig.DEFAULT_PATH).getAbsolutePath()+" ...");
 		}
 		System.setProperty("DB@"+dbKey,projectPath);				 

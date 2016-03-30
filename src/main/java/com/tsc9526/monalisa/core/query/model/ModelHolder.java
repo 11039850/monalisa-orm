@@ -149,7 +149,6 @@ public class ModelHolder implements Serializable {
 	 * 
 	 * @param fields 要排除的字段名
 	 * 
-	 * @return  模型本身
 	 */
 	public void exclude(String ... fields){		 
 		fieldFilterExcludeMode=true;

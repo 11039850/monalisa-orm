@@ -73,10 +73,10 @@ public class ModelHelper {
 	}
 	
 	/**
-	 * @param model
+	 * @param model model
 	 * @param data  (ServletRequest|Map|JsonString|...) 
-	 * @param mappings
-	 * @return
+	 * @param mappings mappings
+	 * @return true if parse ok otherwise false
 	 */
 	public static boolean parse(Model<?> model,Object data,String... mappings) {
 		if(data!=null){

@@ -105,7 +105,7 @@ public class DataRow extends LinkedHashMap<String,Object>{
 	/**
 	 * 
 	 * @param index  The first key is 0.
-	 * @return
+	 * @return string value
 	 */
 	public String getString(int index){		 
 		Object v=get(index);
@@ -354,24 +354,24 @@ public class DataRow extends LinkedHashMap<String,Object>{
 	}
 	
 	/**
-	 * Auto detect the date format:
-	 * <li>yyyy-MM-dd</li>
-	 * <li>yyyy-MM-dd HH</li>
-	 * <li>yyyy-MM-dd HH:mm</li>
-	 * <li>yyyy-MM-dd HH:mm:ss</li>
+	 * Auto detect the date format:<br>
+	 * yyyy-MM-dd<br>
+	 * yyyy-MM-dd HH<br>
+	 * yyyy-MM-dd HH:mm<br>
+	 * yyyy-MM-dd HH:mm:ss<br>
 	 *   
-	 * @param key
+	 * @param key label of the column
 	 * 
-	 * @return
+	 * @return date value
 	 */
 	public Date getDate(String key){
 		return getDate(key,null,null);
 	}
 	
 	/**
-	 * @param key
-	 * @param defaultValue
-	 * @return
+	 * @param key label of the column
+	 * @param defaultValue return this value if null 
+	 * @return date value
 	 * 
 	 * @see #getDate(String)
 	 */
@@ -381,10 +381,10 @@ public class DataRow extends LinkedHashMap<String,Object>{
 	
 	/**
 	 * 
-	 * @param key
+	 * @param key label of the column
 	 * @param format  new SimpleDateFormat(format): auto detect date format if null or ''
-	 * @param defaultValue
-	 * @return
+	 * @param defaultValue return this value if null
+	 * @return date value
 	 * 
 	 * @see #getDate(String)
 	 */

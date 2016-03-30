@@ -386,6 +386,8 @@ public class ModelMeta{
 	
 	/**
 	 * 复制对象数据
+	 * @param model model to copy
+	 * @return copy of the model
 	 */
 	public Model<?> copyModel(Model<?> model){
 		try{
@@ -427,7 +429,8 @@ public class ModelMeta{
 	/**
 	 * 校验字段数据的是否合法.
 	 * 
-	 *  @return 不合法的字段列表{字段名: 错误信息}. 如果没有错误, 则为空列表.
+	 * @param model model for validate
+	 * @return 不合法的字段列表{字段名: 错误信息}. 如果没有错误, 则为空列表.
 	 */
 	public List<String> validate(Model<?> model){
 		if(validator==null){

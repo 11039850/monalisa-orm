@@ -24,7 +24,7 @@ import java.util.Properties;
  */
 public abstract class ConfigClass {
 	/**
-	 * 配置项定义和configFile相同
+	 * @return 配置项定义和configFile相同
 	 */
 	public abstract Properties getConfigProperties();
 	

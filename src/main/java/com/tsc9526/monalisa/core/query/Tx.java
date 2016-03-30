@@ -20,6 +20,8 @@ import java.sql.SQLException;
 
 /**
  * 
+ * Transaction execute 
+ * 
  * @author zzg.zhou(11039850@qq.com)
  */
 public class Tx {
@@ -116,60 +118,23 @@ public class Tx {
 	}
 	
 	/**
+	 * Execute the run() method in transaction
 	 * 
-	 * @param x
-	 * 
-	 * Use execute() instead
+	 * @param x Executable
+	 * @return Number of rows affected 
 	 */
-	@Deprecated()
-	public static void run(Runnable x){
-		run(x,-1);
-	}
-	
-	/**
-	 * Execute the run() method in transaction	
-	 * 
-	 * Use execute() instead
-	 */
-	@Deprecated()
-	public static void run(Runnable x, int level){
-		TxQuery tq=begin();
-		try{
-			if(tq!=null && level>-1){
-				tq.setTransactionIsolation(level);
-			}
-			
-			x.run();
-			
-			if(tq!=null){
-				commit();
-			}
-		}catch(Exception e){
-			if(tq!=null){
-				rollback();
-			}
-			
-			if(e instanceof RuntimeException){
-				throw (RuntimeException)e;
-			}else{
-				throw new RuntimeException(e);
-			}
-		}finally{
-			if(tq!=null){
-				close();
-			}
-		}
-	}
-	
-	
-	public static int execute(Executeable x){
+	public static int execute(Executable x){
 		return execute(x,-1);
 	}
 	
 	/**
-	 * Execute the run() method in transaction	  
+	 * Execute the run() method in transaction
+	 * 	   
+	 * @param x Executable
+	 * @param level setTransactionIsolation
+	 * @return Number of rows affected 
 	 */
-	public static int execute(Executeable x, int level){
+	public static int execute(Executable x, int level){
 		TxQuery tq=begin();
 		try{
 			if(tq!=null && level>-1){
@@ -198,7 +163,7 @@ public class Tx {
 			}
 		}
 	}
-	public static interface Executeable{
+	public static interface Executable{
 		public int execute(); 
 	}
 }

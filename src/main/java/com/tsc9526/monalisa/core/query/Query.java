@@ -83,7 +83,7 @@ public class Query {
 	 * 从外部文件资源创建一个Query
 	 * @param queryId   查询语句的ID(包名+"."+ID)
 	 * @param args      执行该资源ID对应的SQL语句所需要的参数
-	 * @return
+	 * @return Query
 	 */
 	public static Query create(String queryId,Object ...args ) {
 		return SQLResourceManager.getInstance().createQuery(queryId, new Args(args));
@@ -387,8 +387,9 @@ public class Query {
 	/**
 	 * 将查询结果转换为指定的类
 	 *  
-	 * @param resultClass
-	 * @return
+	 * @param resultClass translate DataMap to the result class
+	 * @param <T> result type
+	 * @return the result object
 	 */
 	public <T> T getResult(final Class<T> resultClass){
 		return getResult(new ResultHandler<T>(this,resultClass));
@@ -397,8 +398,9 @@ public class Query {
 	/**
 	 * 将查询结果转换为指定的类
 	 *  
-	 * @param resultHandler
-	 * @return
+	 * @param resultHandler handle result set
+	 * @param <T> result type
+	 * @return the result object
 	 */
 	public <T> T getResult(final ResultHandler<T> resultHandler){
 		if(!doExchange()){			
@@ -433,11 +435,10 @@ public class Query {
 	}
 	
 	/**
-	 * @param limit 
-	 *   The max number of records for this query
-	 *    
-	 * @param offset  
-	 *   Base 0, the first record is 0
+	 * @param resultHandler handle result set
+	 * @param limit The max number of records for this query
+	 * @param offset   Base 0, the first record is 0
+	 * @param <T> result type
 	 * @return Page对象
 	 */
 	public <T> Page<T> getPage(ResultHandler<T> resultHandler,int limit,int offset) {

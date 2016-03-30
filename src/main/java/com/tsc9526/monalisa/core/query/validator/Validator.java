@@ -32,7 +32,8 @@ public class Validator {
 	/**
 	 * 校验字段数据的是否合法.
 	 * 
-	 *  @return 不合法的字段列表{字段名: 错误信息}. 如果没有错误, 则为空列表.
+	 * @param m model to validate
+	 * @return 不合法的字段列表{字段名: 错误信息}. 如果没有错误, 则为空列表.
 	 */
 	public List<String> validate(Model<?> m){
 		List<String> result=new ArrayList<String>();

@@ -30,7 +30,7 @@ import java.lang.annotation.Target;
 public @interface Regex {
 	 
 	/**
-	 * 匹配的正则表达式
+	 * @return 匹配的正则表达式
 	 */
 	String value();
 	

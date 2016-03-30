@@ -79,6 +79,7 @@ public class Record extends Model<Record>{
 		
 		/**
 		 * Create Select for example
+		 * @return Select for example
 		 */
 		public Select<Record,Select<Record, ?>>.SelectForExample forSelect(){
 			return SELECT().selectForExample(example);
@@ -86,6 +87,8 @@ public class Record extends Model<Record>{
 		
 		/**
 		 * Create Update for example
+		 * @param model update data to this model
+		 * @return Update for example
 		 */
 		public Update<Record>.UpdateForExample forUpdate(Record model){			 			 
 			return UPDATE(model).updateForExample(this.example);
@@ -93,6 +96,7 @@ public class Record extends Model<Record>{
 		
 		/**
 		 * Create Delete for example
+		 * @return Delete for example
 		 */
 		public Delete<Record>.DeleteForExample forDelete(){
 			return DELETE().deleteForExample(this.example);
@@ -238,24 +242,24 @@ public class Record extends Model<Record>{
 	}
 	
 	/**
-	 * Auto detect the date format:
-	 * <li>yyyy-MM-dd</li>
-	 * <li>yyyy-MM-dd HH</li>
-	 * <li>yyyy-MM-dd HH:mm</li>
-	 * <li>yyyy-MM-dd HH:mm:ss</li>
+	 * Auto detect the date format:<br>
+	 * yyyy-MM-dd<br>
+	 * yyyy-MM-dd HH<br>
+	 * yyyy-MM-dd HH:mm<br>
+	 * yyyy-MM-dd HH:mm:ss<br>
 	 *   
-	 * @param key
+	 * @param key name of the column
 	 * 
-	 * @return
+	 * @return date
 	 */
 	public Date getDate(String key){
 		return getDate(key,null,null);
 	}
 	
 	/**
-	 * @param key
-	 * @param defaultValue
-	 * @return
+	 * @param key name of the column
+	 * @param defaultValue default value
+	 * @return date
 	 * 
 	 * @see #getDate(String)
 	 */
@@ -265,10 +269,10 @@ public class Record extends Model<Record>{
 	
 	/**
 	 * 
-	 * @param key
+	 * @param key name of the column
 	 * @param format  new SimpleDateFormat(format): auto detect date format if null or ''
-	 * @param defaultValue
-	 * @return
+	 * @param defaultValue default value
+	 * @return date
 	 * 
 	 * @see #getDate(String)
 	 */

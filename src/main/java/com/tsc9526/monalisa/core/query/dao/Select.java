@@ -56,7 +56,7 @@ public class Select<T extends Model,S extends Select> {
 	 * 只提取某些字段
 	 * 
 	 * @param fields  需要的字段名称
-	 * @return Select本身
+	 * @return this
 	 */
 	public S include(String... fields){
 		model.include(fields);
@@ -68,7 +68,7 @@ public class Select<T extends Model,S extends Select> {
 	 * 
 	 * @param fields 要排除的字段名
 	 * 
-	 * @return  Select本身
+	 * @return  this
 	 */
 	public S exclue(String... fields){
 		model.exclude(fields);
@@ -78,7 +78,7 @@ public class Select<T extends Model,S extends Select> {
 	/**
 	 * 排除大字段（字段长度 大于等于 #Short.MAX_VALUE)
 	 * 
-	 * @return Select本身
+	 * @return this
 	 */
 	public S excludeBlobs(){
 		model.excludeBlobs();
@@ -90,7 +90,7 @@ public class Select<T extends Model,S extends Select> {
 	 * 
 	 * @param maxLength  字段长度
 	 * 
-	 * @return Select本身
+	 * @return this
 	 */
 	public S excludeBlobs(int maxLength ){
 		model.excludeBlobs(maxLength);
@@ -108,12 +108,12 @@ public class Select<T extends Model,S extends Select> {
 	 
 	/**
 	 * 
-	 * @param whereStatement
-	 * @param args
+	 * @param whereStatement where cause
+	 * @param args args
 	 * 
-	 * @return The model object
+	 * @return the first record
 	 * 
-	 * @see com.tsc9526.monalisa.core.resources.HelpDoc#helpQuery(String, Object...)
+	 * @see com.tsc9526.monalisa.core.resources.HelpDoc#helpQuery(int,int,Example,String,Object...)
 	 */
 	public T selectOne(String whereStatement,Object ... args){
 		Query query=model.dialect().selectOne(model,whereStatement, args);
@@ -130,8 +130,8 @@ public class Select<T extends Model,S extends Select> {
 
 	/**
 	 * 
-	 * @param example
-	 * @return
+	 * @param example Example
+	 * @return count of records
 	 * 
 	 * @see com.tsc9526.monalisa.core.resources.HelpDoc#helpQuery(int,int,Example,String, Object...)
 	 */
@@ -143,11 +143,11 @@ public class Select<T extends Model,S extends Select> {
 	
 	/**
 	 * 
-	 * @param whereStatement
-	 * @param args
-	 * @return
+	 * @param whereStatement where cause
+	 * @param args args
+	 * @return count of records
 	 * 
-	 * @see com.tsc9526.monalisa.core.resources.HelpDoc#helpQuery(String, Object...)
+	 * @see com.tsc9526.monalisa.core.resources.HelpDoc#helpQuery(int,int,Example,String, Object...)
 	 */
 	public long count(String whereStatement,Object ... args){
 		Query query=model.dialect().count(model,whereStatement, args);		 
@@ -157,8 +157,8 @@ public class Select<T extends Model,S extends Select> {
 	
 	/**
 	 * 
-	 * @param example
-	 * @return
+	 * @param example Example
+	 * @return the first record
 	 * 
 	 * @see com.tsc9526.monalisa.core.resources.HelpDoc#helpQuery(int,int,Example,String, Object...)
 	 */
@@ -174,11 +174,11 @@ public class Select<T extends Model,S extends Select> {
  	
 	/**
 	 * 
-	 * @param whereStatement
-	 * @param args
-	 * @return
+	 * @param whereStatement where cause
+	 * @param args args
+	 * @return DataTable
 	 * 
-	 * @see com.tsc9526.monalisa.core.resources.HelpDoc#helpQuery(String, Object...)
+	 * @see com.tsc9526.monalisa.core.resources.HelpDoc#helpQuery(int,int,Example,String, Object...)
 	 */
 	public DataTable<T> select(String whereStatement,Object ... args){
 		Query query=model.dialect().select(model,whereStatement, args);
@@ -189,8 +189,8 @@ public class Select<T extends Model,S extends Select> {
 	
 	/**
 	 * 
-	 * @param example
-	 * @return
+	 * @param example Example
+	 * @return DataTable
 	 * 
 	 * @see com.tsc9526.monalisa.core.resources.HelpDoc#helpQuery(int,int,Example,String, Object...)
 	 */
@@ -206,11 +206,11 @@ public class Select<T extends Model,S extends Select> {
 	
 	/**
 	 * 
-	 * @param limit
-	 * @param offset
-	 * @param whereStatement
-	 * @param args
-	 * @return
+	 * @param limit limit
+	 * @param offset offset 
+	 * @param whereStatement where cause
+	 * @param args args 
+	 * @return DataTable
 	 * 
 	 * @see com.tsc9526.monalisa.core.resources.HelpDoc#helpQuery(int,int,Example,String, Object...)
 	 */
@@ -224,10 +224,10 @@ public class Select<T extends Model,S extends Select> {
 	
 	/**
 	 * 
-	 * @param limit
-	 * @param offset
-	 * @param example
-	 * @return
+	 * @param limit limit 
+	 * @param offset offset
+	 * @param example Example
+	 * @return DataTable
 	 * 
 	 * @see com.tsc9526.monalisa.core.resources.HelpDoc#helpQuery(int,int,Example,String, Object...)
 	 */
@@ -242,11 +242,11 @@ public class Select<T extends Model,S extends Select> {
 	}
 	
 	/**
-	 * @param limit
-	 * @param offset
-	 * @param whereStatement
-	 * @param args
-	 * @return
+	 * @param limit limit
+	 * @param offset offset
+	 * @param whereStatement where cause
+	 * @param args args
+	 * @return Page
 	 * 
 	 * @see com.tsc9526.monalisa.core.resources.HelpDoc#helpQuery(int,int,Example,String, Object...)
 	 */
@@ -260,10 +260,10 @@ public class Select<T extends Model,S extends Select> {
 	
 	/**
 	 * 
-	 * @param limit
-	 * @param offset
-	 * @param example
-	 * @return
+	 * @param limit limit 
+	 * @param offset offset
+	 * @param example Example 
+	 * @return Page
 	 * 
 	 * @see com.tsc9526.monalisa.core.resources.HelpDoc#helpQuery(int,int,Example,String, Object...)
 	 */
@@ -284,9 +284,9 @@ public class Select<T extends Model,S extends Select> {
 	
 	/**
 	 * 
-	 * @param limit
-	 * @param offset
-	 * @return
+	 * @param limit limit 
+	 * @param offset offset
+	 * @return DataTable
 	 * 
 	 * @see com.tsc9526.monalisa.core.resources.HelpDoc#helpQuery(int,int,Example,String, Object...)
 	 */
@@ -296,9 +296,9 @@ public class Select<T extends Model,S extends Select> {
 	
 	/**
 	 * 
-	 * @param limit
-	 * @param offset
-	 * @return
+	 * @param limit limit
+	 * @param offset offset
+	 * @return Page
 	 * 
 	 * @see com.tsc9526.monalisa.core.resources.HelpDoc#helpQuery(int,int,Example,String, Object...)
 	 */
@@ -393,9 +393,9 @@ public class Select<T extends Model,S extends Select> {
 		
 		/**
 		 * 
-		 * @param limit
-		 * @param offset
-		 * @return
+		 * @param limit limit 
+		 * @param offset offset 
+		 * @return DataTable
 		 * 
 		 * @see com.tsc9526.monalisa.core.resources.HelpDoc#helpQuery(int,int,Example,String, Object...)
 		 */
@@ -405,9 +405,9 @@ public class Select<T extends Model,S extends Select> {
 		
 		/**
 		 * 
-		 * @param limit
-		 * @param offset
-		 * @return
+		 * @param limit limit
+		 * @param offset offset
+		 * @return Page
 		 * 
 		 * @see com.tsc9526.monalisa.core.resources.HelpDoc#helpQuery(int,int,Example,String, Object...)
 		 */

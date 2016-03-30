@@ -21,7 +21,7 @@ import com.tsc9526.monalisa.core.annotation.Column;
  * @see 
  */
 public class DS0001 implements java.io.Serializable{
-	private static final long serialVersionUID = 2345146489322L;	
+	private static final long serialVersionUID = 2346792019945L;	
 	final static String  FINGERPRINT = "";
 	  
 	 

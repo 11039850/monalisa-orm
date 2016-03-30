@@ -55,6 +55,9 @@ public class Field<X,Y extends Criteria<?>>{
 		 
 	/**
 	 * SQL: <code>=</code>
+	 * 
+	 * @param value the value
+	 * @return this
 	 */	 
 	public Y eq(X value){
 		return add(" = ?", value); 
@@ -62,13 +65,19 @@ public class Field<X,Y extends Criteria<?>>{
 	
 	/**
 	 * SQL: <code>&lt;&gt;</code>
+	 * 
+	 * @param value the value
+	 * @return this
 	 */	
 	public Y ne(X value){
 		return add(" <> ?", value); 
 	}
 	
 	/**
-	 *  SQL: <code>&gt;</code>
+	 * SQL: <code>&gt;</code>
+	 *  
+	 * @param value the value
+	 * @return this
 	 */
 	public Y gt(X value){
 		return add(" > ?", value); 
@@ -76,6 +85,9 @@ public class Field<X,Y extends Criteria<?>>{
 	
 	/**
 	 * SQL: <code>&gt;=</code>
+	 * 
+	 * @param value the value
+	 * @return this
 	 */
 	public Y ge(X value){
 		return add(" >= ?", value); 
@@ -83,6 +95,9 @@ public class Field<X,Y extends Criteria<?>>{
 	
 	/**
 	 * SQL: <code>&lt;</code>
+	 * 
+	 * @param value the value
+	 * @return this
 	 */
 	public Y lt(X value){
 		return add(" < ?", value); 
@@ -90,6 +105,9 @@ public class Field<X,Y extends Criteria<?>>{
 	
 	/**
 	 * SQL: <code>&lt;=</code>
+	 * 
+	 * @param value the value
+	 * @return this
 	 */
 	public Y le(X value){
 		return add(" <= ?", value); 
@@ -97,11 +115,12 @@ public class Field<X,Y extends Criteria<?>>{
 
 	/**
 	 * Example: <br>
-	 * <li><code>like("%value%"); -> like '%value%'</code></li>
-	 * <li><code>like("value%");  -> like 'value%' </code></li>
-	 * <li><code>like("%value");  -> like '%value' </code></li>
-	 *  
-	 * @param value 
+	 * <code>like("%value%"); -&gt; like '%value%'</code><br>
+	 * <code>like("value%");  -&gt; like 'value%' </code><br>
+	 * <code>like("%value");  -&gt; like '%value' </code><br>
+	 * 
+	 * @param value the value
+	 * @return this
 	 */
 	public Y like(X value){
 		return add(" like ?", value); 
@@ -110,6 +129,8 @@ public class Field<X,Y extends Criteria<?>>{
 	
 	/**
 	 * SQL: <code>IS NULL</code>
+	 * 
+	 * @return this
 	 */
 	public Y isNull(){
 		return add(" IS NULL"); 
@@ -117,6 +138,8 @@ public class Field<X,Y extends Criteria<?>>{
 	
 	/**
 	 * SQL: <code>IS NOT NULL</code>
+	 *
+	 * @return this
 	 */
 	public Y isNotNull(){
 		return add(" IS NOT NULL"); 
@@ -128,7 +151,7 @@ public class Field<X,Y extends Criteria<?>>{
 	 *  
 	 * @param from  &gt;= from
 	 * @param to    &lt;= to
-	 * @return
+	 * @return this
 	 */
 	public Y between(X from,X to){
 		return add(" BETWEEN ? AND ?", from,to); 
@@ -139,7 +162,7 @@ public class Field<X,Y extends Criteria<?>>{
 	 * 
 	 * @param from  &lt; from OR
 	 * @param to    &gt; to
-	 * @return
+	 * @return this
 	 */
 	public Y notBetween(X from,X to){
 		return add(" NOT BETWEEN ? AND ?", from,to); 
@@ -147,6 +170,10 @@ public class Field<X,Y extends Criteria<?>>{
 	
 	/**
 	 * SQL: <code>IN(...)</code>
+	 * 
+	 * @param value the value
+	 * @param values other values
+	 * @return this
 	 */
 	public Y in(X value,X... values){
 		if(isIngore(value)){
@@ -163,6 +190,10 @@ public class Field<X,Y extends Criteria<?>>{
 	
 	/**
 	 * SQL: <code>NOT IN (...)</code>
+	 * 
+	 * @param value the value
+	 * @param values other values
+	 * @return this
 	 */
 	public Y notin(X value,X... values){
 		if(isIngore(value)){
@@ -179,6 +210,9 @@ public class Field<X,Y extends Criteria<?>>{
 	
 	/**
 	 * SQL: <code>IN(...)=</code>
+	 * 
+	 * @param values list values
+	 * @return this
 	 */
 	public Y in(List<X> values){		 
 		if(q.isEmpty()==false){
@@ -191,6 +225,9 @@ public class Field<X,Y extends Criteria<?>>{
 	
 	/**
 	 * SQL: <code>NOT IN (...)</code>
+	 * 
+	 * @param values list values
+	 * @return this
 	 */
 	public Y notin(List<X> values){
 		if(q.isEmpty()==false){
@@ -204,6 +241,8 @@ public class Field<X,Y extends Criteria<?>>{
 	
 	/**
 	 * SQL: <code>[ORDER BY] ASC</code>
+	 * 
+	 * @return this
 	 */
 	public Y asc(){
 		criteria.addOrderByAsc(getColumnName());
@@ -213,6 +252,8 @@ public class Field<X,Y extends Criteria<?>>{
 		
 	/**
 	 * SQL: <code>[ORDER BY] DESC</code>
+	 * 
+	 * @return this
 	 */
 	public Y desc(){
 		criteria.addOrderByDesc(getColumnName());
@@ -337,6 +378,9 @@ public class Field<X,Y extends Criteria<?>>{
 		
 		/**
 		 * SQL: <code>=</code>
+		 * 
+		 * @param value the value
+		 * @return this
 		 */	 
 		public Y eq(String value){
 			if(value==null || value.trim().length()==0){
@@ -348,6 +392,10 @@ public class Field<X,Y extends Criteria<?>>{
 		
 		/**
 		 * SQL: <code>&lt;&gt;</code>
+		 * 
+		 * 
+		 * @param value the value
+		 * @return this
 		 */	
 		public Y ne(String value){
 			if(value==null || value.trim().length()==0){
@@ -359,6 +407,9 @@ public class Field<X,Y extends Criteria<?>>{
 		
 		/**
 		 *  SQL: <code>&gt;</code>
+		 *  
+		 * @param value the value
+		 * @return this
 		 */
 		public Y gt(String value){
 			if(value==null || value.trim().length()==0){
@@ -370,6 +421,9 @@ public class Field<X,Y extends Criteria<?>>{
 		
 		/**
 		 * SQL: <code>&gt;=</code>
+		 * 
+		 * @param value the value
+		 * @return this
 		 */
 		public Y ge(String value){
 			if(value==null || value.trim().length()==0){
@@ -381,6 +435,9 @@ public class Field<X,Y extends Criteria<?>>{
 		
 		/**
 		 * SQL: <code>&lt;</code>
+		 * 
+		 * @param value the value
+		 * @return this
 		 */
 		public Y lt(String value){
 			if(value==null || value.trim().length()==0){
@@ -392,6 +449,9 @@ public class Field<X,Y extends Criteria<?>>{
 		
 		/**
 		 * SQL: <code>&lt;=</code>
+		 * 
+		 * @param value the value
+		 * @return this
 		 */
 		public Y le(String value){
 			if(value==null || value.trim().length()==0){
@@ -402,7 +462,9 @@ public class Field<X,Y extends Criteria<?>>{
 		}
 		
 		/**
+		 * 
 		 * @param valueSplitByComma  逗号分隔的整型列表
+		 * @return this
 		 */
 		public Y in(String valueSplitByComma){
 			return in(valueSplitByComma.split(","));
@@ -410,6 +472,8 @@ public class Field<X,Y extends Criteria<?>>{
 		
 		/**
 		 * @param valueSplitByComma  逗号分隔的整型列表
+		 * 
+		 * @return this
 		 */
 		public Y notin(String valueSplitByComma){
 			return notin(valueSplitByComma.split(","));
@@ -417,6 +481,8 @@ public class Field<X,Y extends Criteria<?>>{
 		
 		/**
 		 * @param values  整型字符串数字
+		 * 
+		 * @return this
 		 */
 		public Y in(String[] values){		 
 			return super.in(toIntegers(values));
@@ -424,6 +490,8 @@ public class Field<X,Y extends Criteria<?>>{
 		 
 		/**
 		 * @param values  整型字符串数字
+		 * 
+		 * @return this
 		 */
 		public Y notin(String[] values){		 
 			return super.notin(toIntegers(values));
@@ -446,6 +514,9 @@ public class Field<X,Y extends Criteria<?>>{
 		
 		/**
 		 * SQL: <code>=</code>
+		 * 
+		 * @param value the value
+		 * @return this
 		 */	 
 		public Y eq(String value){			 
 			if(value==null || value.trim().length()==0){
@@ -457,6 +528,9 @@ public class Field<X,Y extends Criteria<?>>{
 		
 		/**
 		 * SQL: <code>&lt;&gt;</code>
+		 * 
+		 * @param value the value
+		 * @return this
 		 */	
 		public Y ne(String value){
 			if(value==null || value.trim().length()==0){
@@ -468,6 +542,9 @@ public class Field<X,Y extends Criteria<?>>{
 		
 		/**
 		 *  SQL: <code>&gt;</code>
+		 *  
+		 * @param value the value
+		 * @return this
 		 */
 		public Y gt(String value){
 			if(value==null || value.trim().length()==0){
@@ -479,6 +556,9 @@ public class Field<X,Y extends Criteria<?>>{
 		
 		/**
 		 * SQL: <code>&gt;=</code>
+		 * 
+		 * @param value the value
+		 * @return this
 		 */
 		public Y ge(String value){
 			if(value==null || value.trim().length()==0){
@@ -490,6 +570,9 @@ public class Field<X,Y extends Criteria<?>>{
 		
 		/**
 		 * SQL: <code>&lt;</code>
+		 * 
+		 * @param value the value
+		 * @return this
 		 */
 		public Y lt(String value){
 			if(value==null || value.trim().length()==0){
@@ -501,6 +584,9 @@ public class Field<X,Y extends Criteria<?>>{
 		
 		/**
 		 * SQL: <code>&lt;=</code>
+		 * 
+		 * @param value the value
+		 * @return this
 		 */
 		public Y le(String value){
 			if(value==null || value.trim().length()==0){
@@ -512,6 +598,7 @@ public class Field<X,Y extends Criteria<?>>{
 		
 		/**
 		 * @param valueSplitByComma  逗号分隔的长整型列表
+		 * @return this
 		 */
 		public Y in(String valueSplitByComma){
 			return in(valueSplitByComma.split(","));
@@ -519,6 +606,7 @@ public class Field<X,Y extends Criteria<?>>{
 		
 		/**
 		 * @param valueSplitByComma  逗号分隔的长整型列表
+		 * @return this
 		 */
 		public Y notin(String valueSplitByComma){
 			return notin(valueSplitByComma.split(","));
@@ -526,6 +614,7 @@ public class Field<X,Y extends Criteria<?>>{
 		
 		/**
 		 * @param values  长整型字符串数字
+		 * @return this
 		 */
 		public Y in(String[] values){			 
 			return super.in(toLongs(values));
@@ -534,6 +623,7 @@ public class Field<X,Y extends Criteria<?>>{
 		
 		/**
 		 * @param values  长整型字符串数字
+		 * @return this
 		 */
 		public Y notin(String[] values){			 
 			return super.notin(toLongs(values));
@@ -555,6 +645,7 @@ public class Field<X,Y extends Criteria<?>>{
 		
 		/**
 		 * @param valueSplitByComma  逗号分隔的短整型列表
+		 * @return this
 		 */
 		public Y in(String valueSplitByComma){
 			return in(valueSplitByComma.split(","));
@@ -562,6 +653,7 @@ public class Field<X,Y extends Criteria<?>>{
 		
 		/**
 		 * @param valueSplitByComma  逗号分隔的短整型列表
+		 * @return this
 		 */
 		public Y notin(String valueSplitByComma){
 			return notin(valueSplitByComma.split(","));
@@ -569,6 +661,7 @@ public class Field<X,Y extends Criteria<?>>{
 		
 		/**
 		 * @param values  短整型字符串数字
+		 * @return this
 		 */
 		public Y in(String[] values){		 
 			return super.in(toShorts(values));
@@ -577,6 +670,7 @@ public class Field<X,Y extends Criteria<?>>{
 		
 		/**
 		 * @param values  短整型字符串数字
+		 * @return this
 		 */
 		public Y notin(String[] values){			 
 			return super.notin(toShorts(values));
@@ -598,6 +692,7 @@ public class Field<X,Y extends Criteria<?>>{
 		
 		/**
 		 * @param valueSplitByComma  逗号分隔的字符串列表
+		 * @return this
 		 */
 		public Y ins(String valueSplitByComma){				 
 			return in(toStrings(valueSplitByComma));
@@ -605,6 +700,7 @@ public class Field<X,Y extends Criteria<?>>{
 		
 		/**
 		 * @param valueSplitByComma  逗号分隔的字符串列表
+		 * @return this
 		 */
 		public Y notins(String valueSplitByComma){
 			return notin(toStrings(valueSplitByComma));

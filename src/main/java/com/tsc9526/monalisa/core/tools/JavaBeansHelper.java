@@ -72,13 +72,13 @@ public class JavaBeansHelper {
     /**
      * JavaBeans rules:<br>
      * 
-     * eMail     > setEMail() <br>
-     * firstName > setFirstName() <br>
-     * URL       > setURL()<br> 
-     * XAxis     > setXAxis() <br> 
-     * a         > setA() <br> 
-     * B         > setB() <br> 
-     * @param property
+     * eMail     -&gt; setEMail() <br>
+     * firstName -&gt; setFirstName() <br>
+     * URL       -&gt; setURL()<br> 
+     * XAxis     -&gt; setXAxis() <br> 
+     * a         -&gt; setA() <br> 
+     * B         -&gt; setB() <br> 
+     * @param property property
      * @return the setter method name
      */
     public static String getSetterMethodName(String property) {
