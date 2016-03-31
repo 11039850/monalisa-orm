@@ -119,13 +119,15 @@ Step 3: Use the generated model classes
 			//insert
 			new User().setName("zzg.zhou").setStatus(1).save();
 		
+			//parse model. data type may be: Map, json/xml string, HttpServletRequest, JavaBean
+			String data="{'name':'oschina','status':0}";
+			new User().parse(data).save();
 			
 			//select
 			User.SELECT().selectOne("name=?", "zzg.zhou");
 			User.SELECT().selectByPrimaryKey(1);
 			User user=User.WHERE().name.like("zzg%").status.in(1,2,3).SELECT().selectOne(); //selectPage ...
-			
-			
+			 
 			//general query
 			Test.DB.select("SELECT * FROM user WHERE name like ?","zzg%");
 			Test.DB.createQuery().add("SELECT * FROM user WHERE name like ?","zzg%").getList(User.class);
