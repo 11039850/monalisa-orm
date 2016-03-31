@@ -265,5 +265,19 @@ Call DBGeneratorMain in your java project.
 	...
 ```
 
+# Use config file
+···java
+	
+	@DB(configFile="db.cfg")
+···
+
+db.cfg file content like this:
+··· shell
+	
+	DB.cfg.url      = jdbc:mysql://127.0.0.1:3306/test
+	DB.cfg.username = root
+	DB.cfg.password = root
+···
+
 # TODO list
 
