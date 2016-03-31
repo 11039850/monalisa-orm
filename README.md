@@ -241,6 +241,7 @@ Call DBGeneratorMain in your java project.
 	<query namespace="example.monalisa.sql.Demo" db="<%=Test.class%>"> 
 		<q id="findUserByName" resultClass="ResultDemo"> 
 			<%{	
+				//get called parameters use args.pop();
 				String name     =args.pop();
 			%>
 				SELECT * FROM user 
