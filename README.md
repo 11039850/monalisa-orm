@@ -220,8 +220,16 @@ Call DBGeneratorMain in your java project.
 		</plugins>
 ```
 
-## eclipse plugin (coming soon ...)
+## eclipse plugin 
 
+* Download [plugin](https://github.com/11039850/monalisa-core/raw/master/plugins/com.tsc9526.monalisa.plugin.eclipse_0.7.6.jar) and place to eclipse/plugins directory
+* Restart eclipse
+* To ensure that Annotation Processing enabled (Properties->Java Compiler)
+* To ensure that @Select checked (Preferences->Java->Editor->Save Action -> Configure -> monalisa)
+
+The effect of like this:
+![image](https://github.com/11039850/monalisa-core/raw/master/doc/images/db_save.jpg)
+![image](https://github.com/11039850/monalisa-core/raw/master/doc/images/select_save.jpg)
 
 # Dynamic SQL Files
 * Create sql file： demo.jsp (suffix with ".jsp" or ".mql"), place it into project folder: sql
