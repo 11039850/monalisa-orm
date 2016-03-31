@@ -279,18 +279,18 @@ The effect of like this:
 ```
 
 # Use config file
-···java
+```java
 	
 	@DB(configFile="db.cfg")
-···
+```
 
 db.cfg file content like this:
-··· shell
+```shell
 	
 	DB.cfg.url      = jdbc:mysql://127.0.0.1:3306/test
 	DB.cfg.username = root
 	DB.cfg.password = root
-···
+```
 
 # TODO list
 
