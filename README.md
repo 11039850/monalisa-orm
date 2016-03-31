@@ -13,16 +13,6 @@
 * Model classes
 * Dynamic SQL code to result class
 
-# Introduce
-## Maven: 
-```xml
-	
-	<dependency>
-		<groupId>com.tsc9526</groupId>
-		<artifactId>monalisa-core</artifactId>
-		<version>0.7.6</version>
-	</dependency>
-```
 
 # Example
 ## Example 1
@@ -292,5 +282,15 @@ db.cfg file content like this:
 	DB.cfg.password = root
 ```
 
+# Maven: 
+```xml
+	
+	<dependency>
+		<groupId>com.tsc9526</groupId>
+		<artifactId>monalisa-core</artifactId>
+		<version>0.7.6</version>
+	</dependency>
+``` 
+    
 # TODO list
 
