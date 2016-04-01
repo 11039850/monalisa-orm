@@ -109,9 +109,9 @@ Step 3: Use the generated model classes
 			//insert
 			new User().setName("zzg.zhou").setStatus(1).save();
 		
-			//parse model. data type may be: Map, json/xml string, HttpServletRequest, JavaBean
-			String data="{'name':'oschina','status':0}";
-			new User().parse(data).save();
+			//parse data from type: Map, json/xml string, JsonObject(Gson), HttpServletRequest, JavaBean
+			new User().parse("{'name':'oschina','status':0}").save();
+			new User().parse("<data> <name>china01</name><status>1</status> </data>").save();
 			
 			//select
 			User.SELECT().selectOne("name=?", "zzg.zhou");
@@ -135,6 +135,17 @@ Step 3: Use the generated model classes
 			//delete
 			user.delete();
 			User.DELETE().deleteAll();
+			
+			
+			//transaction
+			Tx.execute(new Executable() {
+				public int execute() {
+					new User().setName("name001").setStatus(1).save();
+					new User().setName("name002").setStatus(2.save();
+					//... other database operation
+					return 0;
+				}
+			});
 		}
 	}
 
