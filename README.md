@@ -3,16 +3,12 @@
       "And God said, Let there be light: and there was light."
       
 
-# Main features:
-## Basic
-* Introducing database takes only 1 line of code
-* Using the JSP syntax writing SQL  without JSP container or library
-* Dynamic SQL code Real time compile
-
-## Generator
-* Model classes
+# Features:
 * Dynamic SQL code to result class
+![image](https://github.com/11039850/monalisa-core/raw/master/doc/images/select_save.jpg)
 
+* Introducing database takes only 1 line of code
+![image](https://github.com/11039850/monalisa-core/raw/master/doc/images/db_save.jpg)
 
 # Example
 ## Example 1
@@ -228,13 +224,6 @@ Call DBGeneratorMain in your java project.
 * To ensure that Annotation Processing enabled (Properties->Java Compiler)
 * To ensure that @Select checked (Preferences->Java->Editor->Save Action -> Configure -> monalisa)
 
-The effect of like this:
-![image](https://github.com/11039850/monalisa-core/raw/master/doc/images/db_save.jpg)
-<br/>
-<br/>
-<br/>
-<br/>
-![image](https://github.com/11039850/monalisa-core/raw/master/doc/images/select_save.jpg)
 
 # Dynamic SQL Files
 * Create sql file： demo.jsp (suffix with ".jsp" or ".mql"), place it into project folder: sql
