@@ -663,40 +663,40 @@ public class Query {
  
 	public static class ResultHandler<T>{
 		private Query query;
-		private Class<T> resultHandler;
+		private Class<T> resultClass;
 		
-		public ResultHandler(Query query,Class<T> resultHandler){
+		public ResultHandler(Query query,Class<T> resultClass){
 			this.query=query;
-			this.resultHandler=resultHandler;
+			this.resultClass=resultClass;
 		}
 		
 		public T createResult(ResultSet rs)throws SQLException{
-			if(resultHandler==Long.class || resultHandler==long.class){
+			if(resultClass==Long.class || resultClass==long.class){
 				return (T)new Long(rs.getLong(1));			 
-			}else if(resultHandler==Integer.class || resultHandler==int.class){
+			}else if(resultClass==Integer.class || resultClass==int.class){
 				return (T)new Integer(rs.getInt(1));			 
-			}else if(resultHandler==Float.class || resultHandler==float.class){
+			}else if(resultClass==Float.class || resultClass==float.class){
 				return (T)new Float(rs.getFloat(1));			 
-			}else if(resultHandler==Short.class || resultHandler==short.class){
+			}else if(resultClass==Short.class || resultClass==short.class){
 				return (T)new Short(rs.getShort(1));			 
-			}else if(resultHandler==Byte.class || resultHandler==byte.class){
+			}else if(resultClass==Byte.class || resultClass==byte.class){
 				return (T)new Byte(rs.getByte(1));			 
-			}else if(resultHandler==Double.class || resultHandler==double.class){
+			}else if(resultClass==Double.class || resultClass==double.class){
 				return (T)new Double(rs.getDouble(1));			 
-			}else if(resultHandler==String.class){
+			}else if(resultClass==String.class){
 				return (T)rs.getString(1);
-			}else if(resultHandler==BigDecimal.class){
+			}else if(resultClass==BigDecimal.class){
 				return (T)rs.getBigDecimal(1);
-			}else if(resultHandler==Date.class){
+			}else if(resultClass==Date.class){
 				return (T)rs.getDate(1);
-			}else if(resultHandler==byte[].class){
+			}else if(resultClass==byte[].class){
 				return (T)rs.getBytes(1);
 			}else {
 				try{
-					if(Map.class.isAssignableFrom(resultHandler)){				
+					if(Map.class.isAssignableFrom(resultClass)){				
 						return (T)loadToMap(rs, new DataMap());				 
 					}else{				 
-						return (T)load(rs,resultHandler.newInstance());
+						return (T)load(rs,resultClass.newInstance());
 					}
 				}catch(IllegalAccessException e){
 					throw new RuntimeException(e);
