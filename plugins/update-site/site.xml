@@ -6,9 +6,9 @@
   2. Dynamic SQL code to result class
    </description>
    <feature url="features/com.tsc9526.monalisa.plugin.eclipse_0.7.6.jar" id="com.tsc9526.monalisa.plugin.eclipse" version="0.7.6">
-      <category name="monalisa-db"/>
+      <category name="monalisa"/>
    </feature>
    <archive path="plugins/com.tsc9526.monalisa.plugin.eclipse_0.7.6.jar" url="https://github.com/11039850/monalisa-db/raw/master/plugins/com.tsc9526.monalisa.plugin.eclipse_0.7.6.jar"/>
    <archive path="features/com.tsc9526.monalisa.plugin.eclipse_0.7.6.jar" url="https://github.com/11039850/monalisa-db/raw/master/plugins/com.tsc9526.monalisa.plugin.eclipse_0.7.6.jar"/>
-   <category-def name="monalisa-db" label="monalisa-db"/>
+   <category-def name="monalisa" label="monalisa"/>
 </site>
