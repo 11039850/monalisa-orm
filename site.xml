@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<site>
+	<description url="https://github.com/11039850/monalisa-db">monalisa-db</description>
+	
+	<feature url="https://raw.githubusercontent.com/11039850/monalisa-db/master/plugins/com.tsc9526.monalisa.plugin.eclipse_0.7.6.jar" id="com.tsc9526.monalisa.plugin.eclipse" version="0.7.6" >
+		<category name="ORM" />
+	</feature>
+	
+	<category-def name="ORM" label="monalisa-db">
+		<description>Tools to generate model &amp; sql result classes</description>
+	</category-def>
+</site>
