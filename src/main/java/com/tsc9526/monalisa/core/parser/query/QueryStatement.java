@@ -109,7 +109,7 @@ public class QueryStatement {
 					}
 					
 					String s=line.replaceAll(REGX_VAR, "?");
-					writer.append("q.add(\"").append(s).append("\"");
+					writer.append("q.add(\"").append(s.replaceAll("\"", "\\\\\"")).append("\"");
 					if(vars.size()>0){
 						for(String v:vars){
 							writer.append(","+v);

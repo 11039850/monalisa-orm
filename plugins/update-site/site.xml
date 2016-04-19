@@ -2,13 +2,14 @@
 <site>
    <description name="monalisa-db" url="https://github.com/11039850/monalisa-db">
       Very simple database ORM:
-  1. Introducing database takes only 1 line of code
-  2. Dynamic SQL code to result class
+ 1. Using the database takes only 1 line of code
+ 2. Support dynamic SQL code auto to result class
+ 3. Support written multiple-line syntax in the Java code
    </description>
-   <feature url="features/com.tsc9526.monalisa.plugin.eclipse_0.7.6.jar" id="com.tsc9526.monalisa.plugin.eclipse" version="0.7.6">
+   <feature url="features/com.tsc9526.monalisa.plugin.eclipse_0.8.0.jar" id="com.tsc9526.monalisa.plugin.eclipse" version="0.8.0">
       <category name="monalisa"/>
    </feature>
-   <archive path="plugins/com.tsc9526.monalisa.plugin.eclipse_0.7.6.jar" url="https://github.com/11039850/monalisa-db/raw/master/plugins/com.tsc9526.monalisa.plugin.eclipse_0.7.6.jar"/>
-   <archive path="features/com.tsc9526.monalisa.plugin.eclipse_0.7.6.jar" url="https://github.com/11039850/monalisa-db/raw/master/plugins/com.tsc9526.monalisa.plugin.eclipse_0.7.6.jar"/>
+   <archive path="plugins/com.tsc9526.monalisa.plugin.eclipse_0.8.0.jar" url="https://github.com/11039850/monalisa-db/raw/master/plugins/com.tsc9526.monalisa.plugin.eclipse_0.8.0.jar"/>
+   <archive path="features/com.tsc9526.monalisa.plugin.eclipse_0.8.0.jar" url="https://github.com/11039850/monalisa-db/raw/master/plugins/com.tsc9526.monalisa.plugin.eclipse_0.8.0.jar"/>
    <category-def name="monalisa" label="monalisa"/>
 </site>
