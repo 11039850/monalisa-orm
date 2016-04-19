@@ -7,7 +7,7 @@
 * Support dynamic SQL code auto to result class
 * Support written multiple-line syntax in the Java code
 
-For more details, please refer to [wiki](wiki)
+For more details, please refer to [wiki](https://github.com/11039850/monalisa-db/wiki)
 
 # Example
 
@@ -87,7 +87,7 @@ Output will be:
 	}
 ```
 
-For more details, please refer to [wiki](wiki)
+For more details, please refer to [wiki](https://github.com/11039850/monalisa-db/wiki)
 
 # Maven: 
 ```xml
