@@ -80,7 +80,7 @@ Output will be:
 	Tx.execute(new Executable() {
 		public int execute() {
 			new User().setName("name001").setStatus(1).save();
-			new User().setName("name002").setStatus(2.save();
+			new User().setName("name002").setStatus(2).save();
 			//... other database operation
 			return 0;
 		}
