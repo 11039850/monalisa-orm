@@ -7,6 +7,7 @@
 * Support dynamic SQL code auto to result class
 * Support written multiple-line syntax in the Java code
 
+[Video](http://v.youku.com/v_show/id_XMTU0ODk1MzA2MA==.html) 
 For more details, please refer to [wiki](https://github.com/11039850/monalisa-db/wiki)
 
 # Example
