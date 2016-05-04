@@ -9,7 +9,5 @@
    <feature url="features/com.tsc9526.monalisa.plugin.eclipse_0.8.0.jar" id="com.tsc9526.monalisa.plugin.eclipse" version="0.8.0">
       <category name="monalisa"/>
    </feature>
-   <archive path="plugins/com.tsc9526.monalisa.plugin.eclipse_0.8.0.jar" url="https://github.com/11039850/monalisa-db/raw/master/plugins/com.tsc9526.monalisa.plugin.eclipse_0.8.0.jar"/>
-   <archive path="features/com.tsc9526.monalisa.plugin.eclipse_0.8.0.jar" url="https://github.com/11039850/monalisa-db/raw/master/plugins/com.tsc9526.monalisa.plugin.eclipse_0.8.0.jar"/>
    <category-def name="monalisa" label="monalisa"/>
 </site>
