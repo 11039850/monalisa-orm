@@ -24,7 +24,6 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import com.tsc9526.monalisa.core.generator.DBGenerator;
 import com.tsc9526.monalisa.core.tools.FileHelper;
 
 /**
@@ -33,8 +32,7 @@ import com.tsc9526.monalisa.core.tools.FileHelper;
  */
 public class Java {
 	public static String DEFAULT_PAGE_ENCODING ="utf-8";
-	public static String DEFAULT_WORK_DIR      = DBGenerator.PROJECT_TMP_PATH+"/_java";
- 	
+	 	
 	protected final static String REGX_VAR="\\$[a-zA-Z_]+[a-zA-Z_0-9]*";
 	protected Pattern patternVar = Pattern.compile(REGX_VAR);
 	
@@ -46,6 +44,8 @@ public class Java {
 	protected String name;
 	 
 	protected StringBuffer java=new StringBuffer();
+	
+	protected long version=-1;
 	
 	public Java(File javaFile) {
 		parseFile(javaFile);
@@ -78,6 +78,20 @@ public class Java {
 	
 	protected void parseBody(String body){
 		this.body=body;
+		
+		Pattern v = Pattern.compile("static\\s+long\\s+\\$VERSION\\s*=\\s*[0-9]+L?;");
+		Matcher m=v.matcher(body);
+		if(m.find()){
+			int p1=m.start();
+			int p2=body.indexOf("=",p1);
+			int p3=body.indexOf(";",p2);
+			
+			String s=body.substring(p2+1,p3).trim();
+			if(s.endsWith("L")){
+				s=s.substring(0,s.length()-1);
+			}
+			version=Long.parseLong(s);
+		}
 		
 		java.setLength(0);
 		
@@ -263,5 +277,9 @@ public class Java {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public long getVersion() {
+		return version;
 	}
 }

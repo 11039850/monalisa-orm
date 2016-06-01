@@ -30,6 +30,7 @@ import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 import com.tsc9526.monalisa.core.converters.TypeConverter;
+import com.tsc9526.monalisa.core.datasource.DbProp;
  
 /**
  * 
@@ -39,7 +40,32 @@ public class ClassHelper {
 	public static TypeConverter converter=new TypeConverter();	
 	 
 	private static ConcurrentHashMap<String, MetaClass> hBeanClasses = new ConcurrentHashMap<String, MetaClass>();
-	  
+	 
+	public static long getVersion(String className){
+		try{
+			return getVersion(Class.forName(className));
+		}catch(ClassNotFoundException e){
+			return -1;
+		}
+	}
+	
+	public static long getVersion(Class<?> clazz){
+		try{
+			Field f=clazz.getDeclaredField(DbProp.CFG_FIELD_VERSION);
+			if(f!=null){
+				f.setAccessible(true);
+				return f.getLong(null);
+			} 
+		}catch(NoSuchFieldException e){
+			 
+		}catch( IllegalArgumentException e){
+			e.printStackTrace();
+		}catch(IllegalAccessException e){
+			e.printStackTrace();
+		}
+		return -1;
+	}
+	
 	public static MetaClass getMetaClass(Class<?> clazz) {
 		if(clazz==null){
 			return null;
@@ -52,6 +78,8 @@ public class ClassHelper {
 		}
 		return mc;
 	}
+	
+	
 	
 	public static MetaClass getMetaClass(Object bean) {
 		return getMetaClass(bean.getClass());

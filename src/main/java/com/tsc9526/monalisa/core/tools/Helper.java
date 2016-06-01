@@ -17,13 +17,17 @@
 package com.tsc9526.monalisa.core.tools;
 
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.lang.management.ManagementFactory;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -71,6 +75,18 @@ public class Helper {
 		} catch (ClassNotFoundException e) {
 			return false;
 		}
+	}
+	
+	public static byte[] toByteArray(InputStream input) throws IOException {
+		byte[] buffer = new byte[Math.max(1024, input.available())];
+		int offset = 0;
+		for (int bytesRead; -1 != (bytesRead = input.read(buffer, offset, buffer.length - offset));) {
+			offset += bytesRead;
+			if (offset == buffer.length) {
+				buffer = Arrays.copyOf(buffer, buffer.length + Math.max(input.available(), buffer.length >> 1));
+			}
+		}
+		return (offset == buffer.length) ? buffer : Arrays.copyOf(buffer, offset);
 	}
  
 	public static String[] fieldsToArrays(String... fields) {
@@ -141,27 +157,7 @@ public class Helper {
 				}
 			}
 		}
-	}
-
-	public static String[] combinePaths(String[]... ls) {
-		if (ls == null) {
-			return null;
-		}
-
-		List<String> rs = new ArrayList<String>();
-		for (String[] s : ls) {
-			if (s != null) {
-				for (String x : s) {
-					if (x != null) {
-						if (new File(x).exists() && rs.contains(x) == false) {
-							rs.add(x);
-						}
-					}
-				}
-			}
-		}
-		return rs.toArray(new String[0]);
-	}
+	} 
 
 	public static byte[] hexStringToBytes(String hexString) {
 		if (hexString == null || hexString.equals("")) {
@@ -302,5 +298,22 @@ public class Helper {
 		}catch(MalformedURLException e){
 			throw new RuntimeException(e);
 		}
+	}
+	
+	public static String getPid() {
+		String vmName = ManagementFactory.getRuntimeMXBean().getName();
+		int p = vmName.indexOf('@');
+		return vmName.substring(0, p);
+	}
+
+	public static boolean inDebug() {
+		List<String> args = ManagementFactory.getRuntimeMXBean().getInputArguments();
+
+		for (String arg : args) {
+			if (arg.startsWith("-Xrunjdwp") || arg.startsWith("-agentlib:jdwp")) {
+				return true;
+			}
+		}
+		return false;
 	}
 }

@@ -33,7 +33,7 @@ import com.tsc9526.monalisa.core.parser.java.Java;
 public class JavaTest {
 	
 	public void testParse()throws Exception{
-		Java java=new Java(new File("sql/mysqldb/demo.java"));
+		Java java=new Java(new File("src/test/resources/lab/demo.java"));
 	 
 		
 		Assert.assertEquals("test.com.tsc9526.monalisa.core.sql.java",java.getPackageName());

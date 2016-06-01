@@ -18,6 +18,7 @@ package test.com.tsc9526.monalisa.core.config;
 
 import java.util.Properties;
 
+import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import com.tsc9526.monalisa.core.annotation.DB;
@@ -52,6 +53,6 @@ public class TestDBConfig {
 		record.use(db);
 		
 		long c= record.SELECT().count();
-		System.out.println("Count: "+c);	
+		Assert.assertTrue(c>=0);	
 	}
 }

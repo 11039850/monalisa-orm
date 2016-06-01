@@ -29,6 +29,7 @@ import java.util.Map;
 import java.util.Set;
 
 import com.tsc9526.monalisa.core.annotation.Column;
+import com.tsc9526.monalisa.core.generator.DBExchange;
 import com.tsc9526.monalisa.core.generator.DBMetadata;
 import com.tsc9526.monalisa.core.generator.DBWriterSelect;
 import com.tsc9526.monalisa.core.logger.Logger;
@@ -37,7 +38,6 @@ import com.tsc9526.monalisa.core.meta.MetaTable;
 import com.tsc9526.monalisa.core.parser.jsp.JspContext;
 import com.tsc9526.monalisa.core.parser.query.QueryStatement;
 import com.tsc9526.monalisa.core.query.Args;
-import com.tsc9526.monalisa.core.query.QExchange;
 import com.tsc9526.monalisa.core.query.Query;
 import com.tsc9526.monalisa.core.tools.FileHelper;
 import com.tsc9526.monalisa.core.tools.JavaWriter;
@@ -79,7 +79,10 @@ public class SQLGenerator {
 			
 			writer.write("package "+cs.getPackageName()+";\r\n\r\n");
 			writer.write("import "+Query.class.getName()+";\r\n\r\n");
+			writer.write("import "+SQLResourceManager.class.getName()+";\r\n\r\n");
 			writer.write("public class "+cs.getClassName()+"{\r\n");
+			writer.write("\tprivate static SQLResourceManager SQLRM=SQLResourceManager.getInstance();\r\n");
+			
 			for(QueryStatement qs:cs.getStatements()){
 				String xs1="", xs2="";
 				List<String> args =qs.getArgs();
@@ -116,7 +119,7 @@ public class SQLGenerator {
 					writer.write("\t*/\r\n");
 				}
 				writer.write("\tpublic static Query "+qs.getId()+"("+xs1+"){\r\n");
-				writer.write("\t\t return Query.create("+qs.getId()+xs2+"); \r\n");
+				writer.write("\t\t return SQLRM.createQuery("+qs.getId()+xs2+"); \r\n");
 				
 				writer.write("\t}\r\n\r\n");
 			}
@@ -159,10 +162,10 @@ public class SQLGenerator {
 					}
 					
 					Query q=sqlResourceManager.createQuery(queryId, args); 
-					QExchange.setExchange(new QExchange());
+					DBExchange.setExchange(new DBExchange());
 					q.getResult();
 					 
-					QExchange exchange=QExchange.getExchange(true);
+					DBExchange exchange=DBExchange.getExchange(true);
 					if(exchange.getErrorString()==null){
 						createResultJavaCode(srcDir,exchange,resultClass);
 						
@@ -177,7 +180,7 @@ public class SQLGenerator {
 	}
 	
 	
-	private void createResultJavaCode(String srcDir,QExchange exchange,String resultClass)throws IOException{	
+	private void createResultJavaCode(String srcDir,DBExchange exchange,String resultClass)throws IOException{	
 		int x=resultClass.lastIndexOf(".");
 		String packageName=resultClass.substring(0,x);
 		String javaName=resultClass.substring(x+1);

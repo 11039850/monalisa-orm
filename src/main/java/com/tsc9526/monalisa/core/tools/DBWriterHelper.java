@@ -63,7 +63,7 @@ public class DBWriterHelper {
 		w.println("/*******************************************************************************************");
 		w.println(" *	Copyright (c) 2016, zzg.zhou(11039850@qq.com)");
 		w.println(" * ");
-		w.println(" *  Monalisa is free software: you can redistribute it and/or modify");
+		w.println(" *   Monalisa is free software: you can redistribute it and/or modify");
 		w.println(" *	it under the terms of the GNU Lesser General Public License as published by");
 		w.println(" *	the Free Software Foundation, either version 3 of the License, or");
 		w.println(" *	(at your option) any later version.");

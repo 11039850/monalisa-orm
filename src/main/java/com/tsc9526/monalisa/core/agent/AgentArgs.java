@@ -14,29 +14,39 @@
  *	You should have received a copy of the GNU Lesser General Public License
  *	along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************************/
-package com.tsc9526.monalisa.core.tools;
-
-import javax.tools.JavaCompiler;
-import javax.tools.ToolProvider;
+package com.tsc9526.monalisa.core.agent;
 
 /**
  * 
  * @author zzg.zhou(11039850@qq.com)
  */
-public class JavaLoader {
-
-	public static void main(String[] args) {
-		JavaLoader.load();
+public class AgentArgs {
+	private String[] classNames;
+	private String classFilePathRoot;
+	
+	public AgentArgs(){
 	}
 	
-	public static void load(){
-		JavaCompiler javac=ToolProvider.getSystemJavaCompiler();
-		
-		String dir="src/test/java/test/com/tsc9526/monalisa/core/mysql/mysqldb";
-		
-		javac.run(System.in, System.out,System.err,
-				"-encoding", "utf-8",
-				"-classpath","target/classes;target/test-classes", "-d","target/testing",dir+"/TestTable1.java");
+	public AgentArgs(String classFilePathRoot,String[] classNames){
+		this.classFilePathRoot=classFilePathRoot;
+		this.classNames=classNames;
 		
 	}
+
+	public String[] getClassNames() {
+		return classNames;
+	}
+
+	public void setClassNames(String[] classNames) {
+		this.classNames = classNames;
+	}
+
+	public String getClassFilePathRoot() {
+		return classFilePathRoot;
+	}
+
+	public void setClassFilePathRoot(String classFilePathRoot) {
+		this.classFilePathRoot = classFilePathRoot;
+	}
+	 
 }

@@ -29,8 +29,7 @@ import java.util.Map;
 import javax.tools.JavaCompiler;
 import javax.tools.ToolProvider;
 
-import com.tsc9526.monalisa.core.datasource.DBConfig;
-import com.tsc9526.monalisa.core.generator.DBGenerator;
+import com.tsc9526.monalisa.core.datasource.DbProp;
 import com.tsc9526.monalisa.core.logger.Logger;
 import com.tsc9526.monalisa.core.parser.jsp.Jsp;
 import com.tsc9526.monalisa.core.parser.query.QueryPackage;
@@ -92,7 +91,7 @@ public class SQLClass implements Closeable{
 		packageName=pkg.getPackageName();
 		className=pkg.getClassName();
 		 
-		String workDir  =FileHelper.combinePath(DBConfig.DEFAULT_PATH,DBGenerator.PROJECT_TMP_PATH+"/sqlfile");
+		String workDir   =DbProp.TMP_WORK_DIR_JSP;
 		
 		String dirSrc    =workDir+"/"+packageName+"."+className+"/src/"+PACKAGE_PREFIX+"/"+packageName.replace(".","/");
 		String dirClasses=workDir+"/"+packageName+"."+className+"/classes";

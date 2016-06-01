@@ -24,7 +24,7 @@ import com.tsc9526.monalisa.core.datasource.DBConfig;
  * @author zzg.zhou(11039850@qq.com)
  */
 @DB(
-		url="jdbc:mysql://127.0.0.1:3306/test_monalisa", 
+		url="jdbc:mysql://127.0.0.1:3306/test_monalisa?allowMultiQueries=true", 
 		username="monalisa", 
 		password="monalisa",
 		partitions="test_logyyyymm_{DatePartitionTable(yyyyMM,log_time)}")

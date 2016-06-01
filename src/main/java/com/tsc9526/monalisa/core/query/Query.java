@@ -18,42 +18,31 @@ package com.tsc9526.monalisa.core.query;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.io.StringWriter;
 import java.io.Writer;
-import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-import com.tsc9526.monalisa.core.annotation.DB;
+import com.tsc9526.monalisa.core.agent.AgentClass;
 import com.tsc9526.monalisa.core.datasource.DBConfig;
 import com.tsc9526.monalisa.core.datasource.DataSourceManager;
 import com.tsc9526.monalisa.core.datasource.DbProp;
+import com.tsc9526.monalisa.core.generator.DBExchange;
 import com.tsc9526.monalisa.core.logger.Logger;
-import com.tsc9526.monalisa.core.meta.MetaColumn;
-import com.tsc9526.monalisa.core.meta.MetaTable;
-import com.tsc9526.monalisa.core.meta.Name;
-import com.tsc9526.monalisa.core.parser.executor.SQLResourceManager;
 import com.tsc9526.monalisa.core.query.datatable.DataTable;
 import com.tsc9526.monalisa.core.query.dialect.Dialect;
-import com.tsc9526.monalisa.core.query.model.Model;
-import com.tsc9526.monalisa.core.query.model.ModelEvent;
-import com.tsc9526.monalisa.core.tools.ClassHelper;
-import com.tsc9526.monalisa.core.tools.ClassHelper.FGS;
-import com.tsc9526.monalisa.core.tools.ClassHelper.MetaClass;
+import com.tsc9526.monalisa.core.query.executor.Execute;
+import com.tsc9526.monalisa.core.query.executor.ResultExecutor;
+import com.tsc9526.monalisa.core.query.executor.ResultLoadExecutor;
+import com.tsc9526.monalisa.core.query.executor.ResultSetExecutor;
+import com.tsc9526.monalisa.core.query.executor.ResultSetsExecutor;
+import com.tsc9526.monalisa.core.query.executor.UpdateExecutor;
 import com.tsc9526.monalisa.core.tools.CloseQuietly;
-import com.tsc9526.monalisa.core.tools.JavaBeansHelper;
 import com.tsc9526.monalisa.core.tools.SQLHelper;
-import com.tsc9526.monalisa.core.tools.TypeHelper;
  
 
 /**
@@ -73,22 +62,30 @@ import com.tsc9526.monalisa.core.tools.TypeHelper;
 @SuppressWarnings({"unchecked"})
 public class Query {	
 	static Logger logger=Logger.getLogger(Query.class.getName());
+	  
+	/**
+	 * 创建自定义SQL查询的类
+	 * 
+	 * @param theQueryClass 自定义的SQL查询类
+	 * 		
+	 * @return 如果该类的构造函数为 private, 则只创建唯一的实例，否则每次调用该函数都将创建一个新的实例。
+	 */
+	public static <T> T create(Class<T> theQueryClass){
+		 return AgentClass.createAgent(theQueryClass);
+	}
+	
+	/**
+	 * 设置查询资源的目录， 默认为： ./monalisa/sql
+	 */
+	public static void setReloadPath(){
+		
+	}
 	
 	/**
 	 * 是否显示执行的SQL语句, 默认为: false
 	 */
 	private Boolean debugSql=null;
-	
-	/**
-	 * 从外部文件资源创建一个Query
-	 * @param queryId   查询语句的ID(包名+"."+ID)
-	 * @param args      执行该资源ID对应的SQL语句所需要的参数
-	 * @return Query
-	 */
-	public static Query create(String queryId,Object ...args ) {
-		return SQLResourceManager.getInstance().createQuery(queryId, new Args(args));
-	}
-	
+	 
 	protected DataSourceManager dsm=DataSourceManager.getInstance();
 	
 	protected StringBuffer  sql=new StringBuffer();
@@ -103,6 +100,8 @@ public class Query {
 	protected List<List<Object>> batchParameters=new ArrayList<List<Object>>();
 	
 	protected Object tag;
+	
+	protected PrintWriter writer=null;
 	
 	public Query(){		 
 	}
@@ -248,8 +247,26 @@ public class Query {
 		return this;
 	}
 	
+	protected Connection getConnectionFromTx(Tx tx) throws SQLException{
+		return tx.getConnection(db);		 
+	}
+	
+	protected Connection getConnectionFromDB(boolean autoCommit) throws SQLException{
+		Connection conn=db.getDataSource().getConnection();
+		conn.setAutoCommit(autoCommit);
+		return conn;
+	}
+	
+	public int execute(){
+		return doExecute(new UpdateExecutor());
+	}
+	
+	public <X> X execute(Execute<X> execute){
+		 return doExecute(execute);
+	}	
+	
 	public int[] executeBatch(){
-		TxQuery tx=Tx.getTxQuery();
+		Tx tx=Tx.getTx();
 		
 		Connection conn=null;
 		PreparedStatement pst=null;
@@ -282,19 +299,10 @@ public class Query {
 			}
 		}
 	}
-	
-	protected Connection getConnectionFromTx(TxQuery tx) throws SQLException{
-		return tx.getConnection(db);		 
-	}
-	
-	protected Connection getConnectionFromDB(boolean autoCommit) throws SQLException{
-		Connection conn=db.getDataSource().getConnection();
-		conn.setAutoCommit(autoCommit);
-		return conn;
-	}
+	 
 	
 	protected <X> X doExecute(Execute<X> x){
-		TxQuery tx=Tx.getTxQuery();
+		Tx tx=Tx.getTx();
 		
 		Connection conn=null;
 		PreparedStatement pst=null;
@@ -309,7 +317,13 @@ public class Query {
 			
 			return x.execute(pst);			
 		}catch(SQLException e){
-			throw new RuntimeException(e);
+			String executeSQL=sql.toString();
+			try{
+				executeSQL=getExecutableSQL();
+			}catch(Exception ex){}
+			
+			throw new RuntimeException("SQL ERROR: \r\n========================================================================\r\n"
+					                  +executeSQL+"\r\n========================================================================",e);
 		}finally{
 			CloseQuietly.close(pst);
 			
@@ -318,44 +332,65 @@ public class Query {
 			}
 		}
 	}
-	
-	protected void logSql(){
-		boolean debug=false;
-		if(debugSql==null){
-			debug=  "true".equalsIgnoreCase( DbProp.PROP_DB_SQL_DEBUG.getValue(db));
-		}else{
-			debug=debugSql.booleanValue();
-		}
-		
-		if(debug){
-			logger.info(getExecutableSQL());
-		}
-	}
-	
-	public int execute(){
-		return doExecute(new Execute<Integer>(){
-			public Integer execute(PreparedStatement pst) throws SQLException {				 
-				return pst.executeUpdate();
-			}
- 	 
-			public PreparedStatement preparedStatement(Connection conn,String sql)throws SQLException {				 
-				return conn.prepareStatement(sql);
-			}	 
-		});
-	}
-	
-	public int execute(Execute<Integer> execute){
-		 return doExecute(execute);
-	}	 
+	 
+ 
 	
 	public DataMap getResult(){
 		return getResult(DataMap.class);				
 	}
 	 
+
+	/**
+	 * 使用该方法获取查询返回的多个结果集
+	 * 
+	 * @return
+	 */
+	public List<DataTable<DataMap>> getAllResults(){
+		queryCheck();
+		 
+		int deepth = DbProp.PROP_DB_MULTI_RESULTSET_DEEPTH.getIntValue(db,100);
+		ResultHandler<DataMap> resultHandler=new ResultHandler<DataMap>(this,DataMap.class);
+		
+		return doExecute(new ResultSetsExecutor<DataMap>(resultHandler,deepth));  
+	}
+	 
+	/**
+	 * 将查询结果转换为指定的类
+	 *  
+	 * @param resultClass translate DataMap to the result class
+	 * @param <T> result type
+	 * @return the result object
+	 */
+	public <T> T getResult(final Class<T> resultClass){
+		return getResult(new ResultHandler<T>(this,resultClass));
+	}
+	
+	/**
+	 * 将查询结果转换为指定的类
+	 *  
+	 * @param resultHandler handle result set
+	 * @param <T> result type
+	 * @return the result object
+	 */
+	public <T> T getResult(final ResultHandler<T> resultHandler){
+		if(!doExchange()){			
+			queryCheck();
+			
+			return doExecute(new ResultExecutor<T>(resultHandler));	 
+		}else{
+			return null;
+		}
+	}
 	
 	public DataTable<DataMap> getList() {
 		return getList(DataMap.class);
 	}
+	
+
+	public <T> DataTable<T> getList(final Class<T> resultClass) {
+		return getList(new ResultHandler<T>(this, resultClass));
+	}
+	
 	
 	/**
 	 * @param limit 
@@ -379,55 +414,19 @@ public class Query {
 			
 		return list;
 	}	 
-		
-	public Page<DataMap> getPage(int limit,int offset) {
-		return getPage(DataMap.class,limit, offset);
-	}
-	
-	/**
-	 * 将查询结果转换为指定的类
-	 *  
-	 * @param resultClass translate DataMap to the result class
-	 * @param <T> result type
-	 * @return the result object
-	 */
-	public <T> T getResult(final Class<T> resultClass){
-		return getResult(new ResultHandler<T>(this,resultClass));
-	}
-	
-	/**
-	 * 将查询结果转换为指定的类
-	 *  
-	 * @param resultHandler handle result set
-	 * @param <T> result type
-	 * @return the result object
-	 */
-	public <T> T getResult(final ResultHandler<T> resultHandler){
-		if(!doExchange()){			
+
+	public <T> DataTable<T> getList(final ResultHandler<T> resultHandler) {
+		if(!doExchange()){		 
 			queryCheck();
 			
-			return doExecute(new Execute<T>(){ 
-				public T execute(PreparedStatement pst) throws SQLException {				 
-					T result=null;
-					ResultSet rs=null;
-					try{
-						rs=pst.executeQuery();				
-						if(rs.next()){	
-							result=resultHandler.createResult(rs); 											
-						}	
-						return result;
-					}finally{
-						CloseQuietly.close(rs);
-					}
-				}
-			 
-				public PreparedStatement preparedStatement(Connection conn,String sql)throws SQLException {				 
-					return conn.prepareStatement(sql);
-				}	 
-			});			 
+			return doExecute(new ResultSetExecutor<T>(resultHandler));
 		}else{
-			return null;
+			return new DataTable<T>();
 		}
+	}
+	
+	public Page<DataMap> getPage(int limit,int offset) {
+		return getPage(DataMap.class,limit, offset);
 	}
 	
 	public <T> Page<T> getPage(Class<T> resultClass,int limit,int offset) {
@@ -459,164 +458,75 @@ public class Query {
 		}
 	}
 	
-	 
-	public <T> DataTable<T> getList(final Class<T> resultClass) {
-		return getList(new ResultHandler<T>(this, resultClass));
-	}
-	
-	public <T> DataTable<T> getList(final ResultHandler<T> resultCreator) {
-		if(!doExchange()){		 
-			queryCheck();
-			
-			return doExecute(new Execute<DataTable<T>>(){
-				public DataTable<T> execute(PreparedStatement pst) throws SQLException {		
-					DataTable<T> result=new DataTable<T>();
-					ResultSet rs=null;
-					try{
-						rs=pst.executeQuery();				 		
-						while(rs.next()){
-							T r=resultCreator.createResult(rs); 
-							result.add(r);					
-						}
-						return result;
-					}finally{
-						CloseQuietly.close(rs);
-					}
-				} 
-				
-				public PreparedStatement preparedStatement(Connection conn,String sql)throws SQLException {				 
-					return conn.prepareStatement(sql);
-				}	
-			}); 
-		}else{
-			return new DataTable<T>();
-		}
-	}
-	
 	public <T> T load(final T result){
 		if(!doExchange()){			 
 			queryCheck();
 			
-			return doExecute(new Execute<T>(){
-				public T execute(PreparedStatement pst) throws SQLException {		
-					ResultSet rs=null;
-					try{
-						rs=pst.executeQuery();				 		
-						if(rs.next()){
-							new ResultHandler<T>(Query.this,(Class<T>)result.getClass()).load(rs, result);							 				
-						}
-						return result;
-					}finally{
-						CloseQuietly.close(rs);
-					}
-				}
-				
-				public PreparedStatement preparedStatement(Connection conn,String sql)throws SQLException {				 
-					return conn.prepareStatement(sql);
-				}	
-			}); 
+			ResultHandler<T> resultHandler=new ResultHandler<T>(this,(Class<T>)result.getClass());
+			
+			return doExecute(new ResultLoadExecutor<T>(resultHandler, result)); 
 		}else{
 			return result;
 		}
 	}
 	 
 	protected boolean doExchange(){
-		QExchange exchange=QExchange.getExchange(false);
+		DBExchange exchange=DBExchange.getExchange(false);
 		if(exchange!=null){
-			String psql=getExecutableSQL();
-			exchange.setSql(psql);
-			
-			Connection conn=null;
-			try{
-				exchange.setDbKey(getDb().getCfg().getKey());				
-				
-				conn=dsm.getDataSource(getDb()).getConnection();
-				PreparedStatement pst=conn.prepareStatement(getSql());
-				SQLHelper.setPreparedParameters(pst, getParameters());
-			 				
-				ResultSet rs=pst.executeQuery();
-				ResultSetMetaData rsmd=rs.getMetaData();
-				MetaTable table=new MetaTable();
-				int cc=rsmd.getColumnCount();
-				for(int i=1;i<=cc;i++){
-					String type=TypeHelper.getJavaType(rsmd.getColumnType(i));
-					String name =rsmd.getColumnName(i);
-					String label=rsmd.getColumnLabel(i);
-					
-					MetaColumn column=new MetaColumn();
-					String tableName=rsmd.getTableName(i);	
-					column.setTable(new MetaTable(tableName));
-					 
-					column.setName(name);
-					
-					if(label!=null && label.trim().length()>0){
-						column.setJavaName(JavaBeansHelper.getJavaName(label, false));
-					}
-					
-					column.setJavaType(type);					
-					table.addColumn(column); 					
-				}
-				
-				renameDuplicatedColumns(table);
-				
-				exchange.setTable(table);
-				exchange.setErrorString(null);
-				 
-				rs.close();
-				pst.close();											
-			}catch(Exception e){				 
-				StringWriter s=new StringWriter();
-				e.printStackTrace(new PrintWriter(s));				
-				exchange.setErrorString(s.toString());				 
-			}finally{
-				CloseQuietly.close(conn);
-			}
+			ResultHandler.processExchange(this,exchange);
 			return true;
 		}else{
 			return false;
 		}
 	}
-	
-	private void renameDuplicatedColumns(MetaTable table){
-		Map<String,Integer> names=new HashMap<String,Integer>();
-		for(MetaColumn c:table.getColumns()){
-			String name=c.getJavaName();
-			
-			Integer n=names.get(name);
-			if(n!=null){
-				c.setJavaName(name+n);
-				
-				names.put(name,n+1);
-			}else{
-				names.put(name, 1);
-			}
+ 	
+	protected void queryCheck(){
+		if(db==null){
+			throw new RuntimeException("Query must use db!");
 		}
 	}
 	
-	private PrintWriter writer=null;
 	public PrintWriter getPrintWriter(){
 		if(writer==null){
 			writer= new PrintWriter(new Writer(){
 				public void write(char[] cbuf, int off, int len) throws IOException {
 					 add(new String(cbuf,off,len));
 				}
+
+				public void flush() throws IOException {}
 	
-				public void flush() throws IOException {
-				}
-	
-				public void close() throws IOException {				 
-				}
+				public void close() throws IOException {}
 			});
 		}
 		return writer;
 	}
 	
-	protected void queryCheck(){
-		if(db==null){
-			throw new RuntimeException("Query must use db!");
+	protected void logSql(){
+		boolean debug=false;
+		if(debugSql==null){
+			debug=  "true".equalsIgnoreCase( DbProp.PROP_DB_SQL_DEBUG.getValue(db));
+		}else{
+			debug=debugSql.booleanValue();
+		}
+		
+		if(debug){
+			logger.info(getExecutableSQL());
 		}
 	}
 	 
+	public boolean isReadonly() {
+		if(readonly!=null){
+			return readonly;
+		}else{
+			String x=getSql().toLowerCase().trim();
+			if(x.startsWith("select")){
+				return true;
+			}else{
+				return false;
+			}
+		}		
+	}
+	
 	public int getCacheTime() {
 		return cacheTime;
 	}
@@ -642,165 +552,8 @@ public class Query {
 		
 		return dsm.getDialect(db);
 	}
-   
-	 
-	public boolean isReadonly() {
-		if(readonly!=null){
-			return readonly;
-		}else{
-			String x=getSql().toLowerCase().trim();
-			if(x.startsWith("select")){
-				return true;
-			}else{
-				return false;
-			}
-		}		
-	}
-	  
+      
 	public void setReadonly(Boolean readonly) {
 		this.readonly = readonly;
 	}
- 
-	public static class ResultHandler<T>{
-		private Query query;
-		private Class<T> resultClass;
-		
-		public ResultHandler(Query query,Class<T> resultClass){
-			this.query=query;
-			this.resultClass=resultClass;
-		}
-		
-		public T createResult(ResultSet rs)throws SQLException{
-			if(resultClass==Long.class || resultClass==long.class){
-				return (T)new Long(rs.getLong(1));			 
-			}else if(resultClass==Integer.class || resultClass==int.class){
-				return (T)new Integer(rs.getInt(1));			 
-			}else if(resultClass==Float.class || resultClass==float.class){
-				return (T)new Float(rs.getFloat(1));			 
-			}else if(resultClass==Short.class || resultClass==short.class){
-				return (T)new Short(rs.getShort(1));			 
-			}else if(resultClass==Byte.class || resultClass==byte.class){
-				return (T)new Byte(rs.getByte(1));			 
-			}else if(resultClass==Double.class || resultClass==double.class){
-				return (T)new Double(rs.getDouble(1));			 
-			}else if(resultClass==String.class){
-				return (T)rs.getString(1);
-			}else if(resultClass==BigDecimal.class){
-				return (T)rs.getBigDecimal(1);
-			}else if(resultClass==Date.class){
-				return (T)rs.getDate(1);
-			}else if(resultClass==byte[].class){
-				return (T)rs.getBytes(1);
-			}else {
-				try{
-					if(Map.class.isAssignableFrom(resultClass)){				
-						return (T)loadToMap(rs, new DataMap());				 
-					}else{				 
-						return (T)load(rs,resultClass.newInstance());
-					}
-				}catch(IllegalAccessException e){
-					throw new RuntimeException(e);
-				}catch(InstantiationException e){
-					throw new RuntimeException(e);
-				}
-			}		 
-		}
-		
-
-		protected T load(ResultSet rs,T result)throws SQLException{
-			if(result instanceof Model<?>){
-				loadModel(rs,(Model<?>)result);
-			}else{		
-				loadResult(rs, result);
-			}
-			return result;
-		}
-	  
-		protected DataMap loadToMap(ResultSet rs, DataMap map)throws SQLException{
-			ResultSetMetaData rsmd=rs.getMetaData();
-			 
-			Map<String,Integer> xs=new HashMap<String,Integer>();
-			for(int i=1;i<=rsmd.getColumnCount();i++){
-				String name =rsmd.getColumnLabel(i);
-				if(name==null || name.trim().length()<1){
-					name =rsmd.getColumnName(i);
-				}
-				name=name.toLowerCase();
-				
-				Integer n=xs.get(name);
-				if(n!=null){
-					map.put(name+n, rs.getObject(i));
-					
-					xs.put(name,n+1);
-				}else{
-					xs.put(name,1);
-					
-					map.put(name, rs.getObject(i));
-				}	
-			}
-			
-			return map;
-		}		
-		
-		protected void loadModel(ResultSet rs,Model<?> model)throws SQLException{
-			Class<?> clazz=ClassHelper.findClassWithAnnotation(model.getClass(),DB.class);
-			if(clazz==null && model.use()==null){ 
-				model.use(query.getDb());
-			}
-			
-			model.before(ModelEvent.LOAD);
-			
-			ResultSetMetaData rsmd=rs.getMetaData();
-			
-			for(int i=1;i<=rsmd.getColumnCount();i++){
-				String name =rsmd.getColumnLabel(i);
-				if(name==null || name.trim().length()<1){
-					name =rsmd.getColumnName(i);
-				}
-				
-				Name nColumn =new Name(false).setName(name);
-				 
-				FGS fgs=model.field(nColumn.getJavaName());			 
-				if(fgs!=null){
-					Object v=rs.getObject(i);
-					fgs.setObject(model, v);
-				}
-			}
-			
-			model.after(ModelEvent.LOAD, 0);
-		}	
-		
-		protected T loadResult(ResultSet rs,T result)throws SQLException{
-			MetaClass metaClass=ClassHelper.getMetaClass(result.getClass());
-			
-			ResultSetMetaData rsmd=rs.getMetaData();
-			
-			Map<String,Integer> xs=new HashMap<String,Integer>();
-			for(int i=1;i<=rsmd.getColumnCount();i++){
-				String name =rsmd.getColumnLabel(i);
-				if(name==null || name.trim().length()<1){
-					name =rsmd.getColumnName(i);
-				}
-				
-				Integer n=xs.get(name);
-				if(n!=null){
-					name=name+n;
-					
-					xs.put(name,n+1);
-				}else{
-					xs.put(name,1);
-				}	
-				
-				Name nColumn =new Name(false).setName(name);
-				 
-				FGS fgs=metaClass.getField(nColumn.getJavaName());
-				if(fgs!=null){
-					Object v=rs.getObject(i);
-					fgs.setObject(result, v);
-				}						
-			}
-			return result;
-		}
-	}	 
-	
 }

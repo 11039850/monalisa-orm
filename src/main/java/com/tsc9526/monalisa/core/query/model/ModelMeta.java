@@ -25,7 +25,6 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -35,6 +34,7 @@ import com.tsc9526.monalisa.core.annotation.Index;
 import com.tsc9526.monalisa.core.annotation.Table;
 import com.tsc9526.monalisa.core.datasource.DBConfig;
 import com.tsc9526.monalisa.core.datasource.DbProp;
+import com.tsc9526.monalisa.core.datasource.DBTasks;
 import com.tsc9526.monalisa.core.logger.Logger;
 import com.tsc9526.monalisa.core.meta.MetaColumn;
 import com.tsc9526.monalisa.core.meta.MetaPartition;
@@ -53,7 +53,6 @@ import com.tsc9526.monalisa.core.tools.TableHelper;
 public class ModelMeta{	
 	static Logger logger=Logger.getLogger(ModelMeta.class.getName());
 	
-	public static long ModelChangedMonitorPeriod = 10*1000;
 	
 	private static Map<String, ModelMeta> hMonitorMetas=new ConcurrentHashMap<String, ModelMeta>();
 	private static Map<String, ModelMeta> hMetas=new HashMap<String, ModelMeta>();
@@ -63,7 +62,17 @@ public class ModelMeta{
 		
 		ModelMeta mm=hMetas.get(key);
 		
-		checkModelMetaChanged();
+		int interval=DbProp.CFG_RELOAD_MODEL_INTERVAL;
+		if(mm==null && interval>0){
+			DBTasks.schedule("ModelChangeTask", new TimerTask() {
+				public void run() {
+					for(ModelMeta mm:hMonitorMetas.values()){
+						 mm.checkChanged();
+					}
+				}
+			}, interval*1000, interval*1000);
+		}
+		
 		
 		if(mm==null || mm.iChanged()){
 			mm=new ModelMeta(key);
@@ -77,25 +86,7 @@ public class ModelMeta{
 		}
 		return mm;
 	}
-	
-	static Timer monitorTimer=null;
-	private static void checkModelMetaChanged(){
-		if(monitorTimer==null && ModelChangedMonitorPeriod > 0){
-			long period=ModelChangedMonitorPeriod;
-			
-			monitorTimer=new Timer("ModelChangedMonitor",true);
-			
-			monitorTimer.schedule(new TimerTask() {
-				public void run() {
-					for(ModelMeta mm:hMonitorMetas.values()){
-						 mm.checkChanged();
-					}
-				}
-			}, period, period);
-		}
-	}
-	
-	
+	 
 	
 	private static String getModelKey(Model<?> model){
 		String key=model.getClass().getName();

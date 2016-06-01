@@ -33,9 +33,7 @@ import com.tsc9526.monalisa.core.query.partition.Partition;
 @SuppressWarnings("rawtypes")
 public abstract class DBGenerator {
 	public static Logger logger=Logger.getLogger(DBGenerator.class);
-	
-	public static String PROJECT_TMP_PATH="target/monalisa";
-	
+	 
 	protected DBConfig dbcfg;
 	protected DBMetadata dbmetadata; 
 	

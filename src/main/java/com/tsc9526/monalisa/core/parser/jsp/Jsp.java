@@ -22,7 +22,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.tsc9526.monalisa.core.generator.DBGenerator;
 import com.tsc9526.monalisa.core.tools.FileHelper;
 
 /**
@@ -31,7 +30,7 @@ import com.tsc9526.monalisa.core.tools.FileHelper;
  */
 public class Jsp{
 	public static String DEFAULT_PAGE_ENCODING ="utf-8";
-	public static String DEFAULT_WORK_DIR      = DBGenerator.PROJECT_TMP_PATH+"/_jsp";
+	 
 	private String filePath;
 	private String body;
 	private List<JspElement> elements=new ArrayList<JspElement>();

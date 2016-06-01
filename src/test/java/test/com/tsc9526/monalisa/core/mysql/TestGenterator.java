@@ -122,10 +122,11 @@ public class TestGenterator {
 		t2.save();
 		
 		TestTable2 t2x=TestTable2.SELECT().selectByPrimaryKey(t2.getId());
+		Assert.assertEquals(t2x.getObj(),t2.getObj());
+		
 		for(int i=0;i<i1.length;i++){
 			Assert.assertEquals(t2x.getArrayInt()[i], i1[i]);
 		}
-		
 		for(int i=0;i<s1.length;i++){
 			Assert.assertEquals(t2x.getArrayString()[i], s1[i]);
 		}

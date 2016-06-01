@@ -17,6 +17,7 @@
 package com.tsc9526.monalisa.core.tools;
 
 import java.io.ByteArrayOutputStream;
+import java.io.DataInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -29,6 +30,22 @@ import java.io.ObjectInputStream;
  * @author zzg.zhou(11039850@qq.com)
  */
 public class FileHelper {
+	
+	public static byte[] readFile(String filePath)throws IOException{
+		File f = new File(filePath);
+		return readFile(f);
+	}
+	
+	public static byte[] readFile(File f)throws IOException{
+		 
+		byte[] b = new byte[(int) f.length()];
+		
+		DataInputStream in = new DataInputStream(new FileInputStream(f));
+		in.readFully(b);
+		in.close();
+		
+		return b;
+	}
 	
 	public static String combinePath(String... paths){
 		StringBuffer sb=new StringBuffer();
@@ -103,6 +120,11 @@ public class FileHelper {
 		}
 	}
 	
+	public static void copy(File src,File target)throws Exception {
+		byte[] data=readFile(src);
+		write(target, data);
+	}
+	
 	@SuppressWarnings("unchecked")
 	public static <T> T readToObject(File f){
 		FileInputStream fin=null;
@@ -117,6 +139,14 @@ public class FileHelper {
 		}finally{
 			CloseQuietly.close(fin);
 		}
+	}
+	
+	public static String readToString(File f,String charset){
+		try{
+			return readToString(new FileInputStream(f),charset);
+		}catch(IOException e){    		
+    		throw new RuntimeException(e);
+    	}
 	}
 	
 	public static String readToString(InputStream in,String charset){

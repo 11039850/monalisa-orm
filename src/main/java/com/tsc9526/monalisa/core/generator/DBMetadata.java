@@ -37,6 +37,7 @@ import javax.sql.DataSource;
 
 import com.tsc9526.monalisa.core.datasource.DBConfig;
 import com.tsc9526.monalisa.core.datasource.DataSourceManager;
+import com.tsc9526.monalisa.core.datasource.DbProp;
 import com.tsc9526.monalisa.core.meta.MetaPartition;
 import com.tsc9526.monalisa.core.meta.MetaTable;
 import com.tsc9526.monalisa.core.meta.MetaTable.CreateTable;
@@ -58,7 +59,7 @@ public class DBMetadata {
 		}else{
 			Map<String, MetaTable> tables=hDBMetaTables.get(dbKey);
 			if(tables==null){
-				String metafile=FileHelper.combinePath(projectPath,DBGeneratorProcessing.PROJECT_TMP_PATH,"metatable/"+dbKey+".meta");		
+				String metafile=FileHelper.combinePath(projectPath,DbProp.TMP_WORK_DIR_METATABLE,"/"+dbKey+".meta");		
 				File taget=new File(metafile);
 				tables=FileHelper.readToObject(taget);
 				if(tables!=null){
@@ -222,7 +223,7 @@ public class DBMetadata {
 		outputStream.writeObject(hTables);
 		outputStream.flush();
 		
-		String metafile=FileHelper.combinePath(projectPath,DBGeneratorProcessing.PROJECT_TMP_PATH,"metatable/"+dbcfg.getCfg().getKey()+".meta");		
+		String metafile=FileHelper.combinePath(projectPath,DbProp.TMP_WORK_DIR_METATABLE,"/"+dbcfg.getCfg().getKey()+".meta");		
 		File taget=new File(metafile);
 		FileHelper.write(taget, bufArrayOutputStream.toByteArray());  			 
 	}

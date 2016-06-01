@@ -44,13 +44,14 @@ public class DbProp {
 	public final static DbProp PROP_DB_HISTORY_PREFIX_TABLE   = new DbProp("history.prefix.table", "history_");
 	public final static DbProp PROP_DB_HISTORY_PREFIX_COLUMN  = new DbProp("history.prefix.column","history_");
 	public final static DbProp PROP_DB_HISTORY_TABLES         = new DbProp("history.tables");
+	
+	public final static DbProp PROP_DB_MULTI_RESULTSET_DEEPTH = new DbProp("multi.resultset.deepth",100);
   
+	public final static DbProp PROP_TABLE_MODEL_CLASS         = new DbProp("modelClass");
+	public final static DbProp PROP_TABLE_MODEL_LISTENER      = new DbProp("modelListener");
 	
-	public final static DbProp PROP_TABLE_MODEL_CLASS   =new DbProp("modelClass");
-	public final static DbProp PROP_TABLE_MODEL_LISTENER=new DbProp("modelListener");
-	
-	public final static DbProp PROP_TABLE_VALIDATE 		=new DbProp("validate",false);
-	public final static DbProp PROP_TABLE_VALIDATOR		=new DbProp("validator");	
+	public final static DbProp PROP_TABLE_VALIDATE 		      = new DbProp("validate",false);
+	public final static DbProp PROP_TABLE_VALIDATOR		      = new DbProp("validator");	
 	 
 	public final static DbProp PROP_TABLE_AUTO_SET_CREATE_TIME=new DbProp("auto.create_time","create_time");
 	public final static DbProp PROP_TABLE_AUTO_SET_UPDATE_TIME=new DbProp("auto.update_time","update_time");
@@ -60,6 +61,30 @@ public class DbProp {
 	public final static DbProp PROP_TABLE_EXCEPTION_IF_SET_FIELD_NOT_FOUND=new DbProp("exception_if_set_field_not_found",false);
 	
 	
+	public static String CFG_FIELD_VERSION        ="$VERSION";
+	 
+	/**
+	 * <code>CFG_PATH= ".";</code> <br>
+	 * The file path for DB.configFile() is :<br>
+	 * <code>System.getProperty("DB@"+DB.key(),CFG_PATH)+"/"+configFile;</code> 
+	 */
+	public static String CFG_ROOT_PATH          = System.getProperty("monalisa.path",".");
+	
+	/**
+	 * SQL资源文件缺省放置目录(*.java, *.jsp) 
+	 */
+	public static String  CFG_SQL_PATH          = CFG_ROOT_PATH+"/monalisa/sql";
+	   
+	public static String TMP_ROOT_PATH          = CFG_ROOT_PATH+"/target/monalisa";
+	public static String TMP_WORK_DIR_JSP       = TMP_ROOT_PATH+"/_jsp";
+	public static String TMP_WORK_DIR_JAVA      = TMP_ROOT_PATH+"/_java";
+	public static String TMP_WORK_DIR_METATABLE = TMP_ROOT_PATH+"/metatable";
+	
+	
+	public static int   CFG_RELOAD_CLASS_INTERVAL =10; 
+	
+	public static int 	CFG_RELOAD_MODEL_INTERVAL =10;
+	 
 	private String key;
 	private String value;
 	public DbProp(String key){

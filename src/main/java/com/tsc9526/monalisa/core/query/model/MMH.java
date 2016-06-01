@@ -39,12 +39,4 @@ public class MMH {
 			throw new RuntimeException(e);
 		}
 	}
-	
-	public static void close(){
-		if(ModelMeta.monitorTimer!=null){
-			ModelMeta.monitorTimer.cancel();
-			ModelMeta.monitorTimer=null;
-		}
-	}
-
 }

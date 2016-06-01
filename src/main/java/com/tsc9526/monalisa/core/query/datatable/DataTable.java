@@ -21,6 +21,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
+import com.tsc9526.monalisa.core.query.Page;
 import com.tsc9526.monalisa.core.tools.ClassHelper;
 import com.tsc9526.monalisa.core.tools.ClassHelper.FGS;
 import com.tsc9526.monalisa.core.tools.ClassHelper.MetaClass;
@@ -29,6 +30,7 @@ import com.tsc9526.monalisa.core.tools.ClassHelper.MetaClass;
   *  
   * @author zzg.zhou(11039850@qq.com)
   */
+@SuppressWarnings("unchecked")
 public class DataTable<E> extends ArrayList<E> { 
 	private static final long serialVersionUID = 6839964505006290332L;
 	
@@ -41,7 +43,16 @@ public class DataTable<E> extends ArrayList<E> {
 		super(cs);
 	}
 	
-	@SuppressWarnings("unchecked")
+	public Page<E> getPage(int limit,int offset){
+		DataTable<E> list=new DataTable<E>();
+		
+		for(int i=offset;list.size()<limit && i<size();i++){
+			list.add(get(i));
+		}
+		
+		return new Page<E>(list,size(),limit,offset);
+	}
+	
 	public <T> DataTable<T> as(Class<T> toClass){
 		DataTable<T> r=new DataTable<T>();
 		r.headers=headers;

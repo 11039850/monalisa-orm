@@ -20,6 +20,7 @@ import java.io.File;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import com.tsc9526.monalisa.core.datasource.DbProp;
 import com.tsc9526.monalisa.core.logger.Logger;
 import com.tsc9526.monalisa.core.parser.query.QueryPackage;
 import com.tsc9526.monalisa.core.query.Args;
@@ -33,17 +34,13 @@ import com.tsc9526.monalisa.core.query.Query;
 public class SQLResourceManager {
 	static Logger logger=Logger.getLogger(SQLResourceManager.class.getName());
 	
-	/**
-	 * SQL资源文件缺省放置目录： sql
-	 */
-	public static String SQL_FILES_ROOT=System.getProperty("monalisa.sqlfiles.root","sql");
 	
 	private static SQLResourceManager instance;
  
 	public static synchronized SQLResourceManager getInstance(){
 		if(instance==null){
 			instance=new SQLResourceManager();
-			instance.loadSqlFiles(new File(SQL_FILES_ROOT) ,".jsp|.mql", true);
+			instance.loadSqlFiles(new File(DbProp.CFG_SQL_PATH) ,".jsp", true);
 		}
 		return instance;
 	}
@@ -55,6 +52,12 @@ public class SQLResourceManager {
 		
 	}
 	 
+	/**
+	 * 从外部文件资源创建一个Query
+	 * @param queryId   查询语句的ID(包名+"."+ID)
+	 * @param args      执行该资源ID对应的SQL语句所需要的参数
+	 * @return Query
+	 */
 	public Query createQuery(String queryId,Args args){
 		String namespace=QueryPackage.DEFAULT_PACKAGE_NAME+"."+QueryPackage.DEFAULT_CLASS_NAME;
 		String id=queryId;
@@ -73,6 +76,9 @@ public class SQLResourceManager {
 		}
 	}
 	
+	public Query createQuery(String queryId,Object ...args ) {
+		return createQuery(queryId, new Args(args));
+	}
 	
 	public synchronized void loadSqlFiles(File sqlFile,String exts,boolean recursive){
 		String name=sqlFile.getName();

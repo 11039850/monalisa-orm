@@ -16,7 +16,13 @@
  *******************************************************************************************/
 package com.tsc9526.monalisa.core.query;
 
+import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
+
+import com.tsc9526.monalisa.core.datasource.DBConfig;
 
 /**
  * 
@@ -27,7 +33,21 @@ import java.sql.SQLException;
 public class Tx {
 	public final static String CONTEXT_CURRENT_USERID="CONTEXT_CURRENT_USERID";
 	
-	private static ThreadLocal<TxQuery> txQuery =new ThreadLocal<TxQuery>();  
+	public static interface Atom{
+		public int execute(); 
+	}
+	
+	private static class CI{
+		Connection conn;
+		boolean  autoCommit;
+		
+		CI(Connection conn) throws SQLException{
+			this.conn=conn;
+			this.autoCommit=conn.getAutoCommit();
+		}
+	}
+	
+	private static ThreadLocal<Tx> tx =new ThreadLocal<Tx>();  
 	private static ThreadLocal<DataMap> context=new ThreadLocal<DataMap>();
 	
 	public static void putUserContext(Object user){
@@ -71,19 +91,19 @@ public class Tx {
 		}
 	}
 	
-	public static TxQuery getTxQuery(){
-		return txQuery.get();
+	public static Tx getTx(){
+		return tx.get();
 	}
 	
 	/**
 	 * 
 	 * @return null if the transaction started by other method. 
 	 */
-	public static TxQuery begin(){
-		TxQuery x=txQuery.get();
+	public static Tx begin(){
+		Tx x=tx.get();
 		if(x==null){
-			x=new TxQuery();
-			txQuery.set(x);
+			x=new Tx();
+			tx.set(x);
 			
 			return x;
 		}else{
@@ -92,63 +112,63 @@ public class Tx {
 	}
 	
 	public static void commit() throws SQLException{
-		TxQuery x=txQuery.get();
+		Tx x=tx.get();
 		if(x!=null){			 
-			x.commit();
+			x.doCommit();
 		}else{
 			throw new RuntimeException("Commit error, transaction not start, call begin first!");
 		}
 	}
 	
 	public static void rollback(){
-		TxQuery x=txQuery.get();
+		Tx x=tx.get();
 		if(x!=null){			 
-			x.rollback();
+			x.doRollback();
 		}else{
 			throw new RuntimeException("Rollback error, transaction not start, call begin first!");
 		}
 	}
 	
 	public static void close(){
-		TxQuery x=txQuery.get();
+		Tx x=tx.get();
 		if(x!=null){
-			txQuery.remove();
-			x.close();
+			tx.remove();
+			x.doClose();
 		}
 	}
 	
 	/**
 	 * Execute the run() method in transaction
 	 * 
-	 * @param x Executable
+	 * @param x Atom
 	 * @return Number of rows affected 
 	 */
-	public static int execute(Executable x){
+	public static int execute(Atom x){
 		return execute(x,-1);
 	}
 	
 	/**
 	 * Execute the run() method in transaction
 	 * 	   
-	 * @param x Executable
+	 * @param x Atom
 	 * @param level setTransactionIsolation
 	 * @return Number of rows affected 
 	 */
-	public static int execute(Executable x, int level){
-		TxQuery tq=begin();
+	public static int execute(Atom x, int level){
+		Tx tx=begin();
 		try{
-			if(tq!=null && level>-1){
-				tq.setTransactionIsolation(level);
+			if(tx!=null && level>-1){
+				tx.setTransactionIsolation(level);
 			}
 			
 			int r=x.execute();
 			
-			if(tq!=null){
+			if(tx!=null){
 				commit();
 			}
 			return r;
 		}catch(Exception e){
-			if(tq!=null){
+			if(tx!=null){
 				rollback();
 			}
 			
@@ -158,12 +178,77 @@ public class Tx {
 				throw new RuntimeException(e);
 			}
 		}finally{
-			if(tq!=null){
+			if(tx!=null){
 				close();
 			}
 		}
 	}
-	public static interface Executable{
-		public int execute(); 
+	
+	
+	
+	private Map<String, CI> hcs=new HashMap<String, CI>();
+	 
+	private int level=-1;
+	
+	private String txid=UUID.randomUUID().toString().replace("-","").toLowerCase();
+	
+	public String getTxid(){
+		return txid;
 	}
+	
+	public Connection getConnection(DBConfig db) throws SQLException{		 
+		String key=db.getKey();
+		 
+		CI ci=hcs.get(key);
+		if (ci==null) {
+			Connection conn=db.getDataSource().getConnection();
+			ci=new CI(conn);
+			conn.setAutoCommit(false);
+			
+			if(level>-1){
+				conn.setTransactionIsolation(level);
+			}
+			
+			hcs.put(key, ci);
+		}
+		return ci.conn;
+	}
+	
+	public void setTransactionIsolation(int level)throws SQLException{
+		this.level=level;
+		for(CI ci:hcs.values()){
+			ci.conn.setTransactionIsolation(level);
+		}
+	}
+	
+	public void doCommit()  throws SQLException{
+		for(CI ci:hcs.values()){
+			ci.conn.commit();			
+		} 
+	}
+
+	public void doRollback(){
+		try{
+			for(CI ci:hcs.values()){
+				ci.conn.rollback();			
+			}
+		}catch(SQLException e){
+			throw new RuntimeException(e);
+		} 	
+	}
+	
+	public void doClose(){
+		try{
+			for(CI ci:hcs.values()){
+				ci.conn.setAutoCommit(ci.autoCommit);
+				ci.conn.close();
+			}
+		}catch(SQLException e){
+			throw new RuntimeException(e);		
+		}finally{
+			hcs.clear();
+		}
+	}
+	
+	
 }

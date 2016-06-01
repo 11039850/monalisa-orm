@@ -14,7 +14,7 @@
  *	You should have received a copy of the GNU Lesser General Public License
  *	along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************************/
-package com.tsc9526.monalisa.core.query;
+package com.tsc9526.monalisa.core.generator;
 
 import java.io.Serializable;
 
@@ -24,16 +24,16 @@ import com.tsc9526.monalisa.core.meta.MetaTable;
  * 
  * @author zzg.zhou(11039850@qq.com)
  */
-public class QExchange implements Serializable {
+public class DBExchange implements Serializable {
 	private static final long serialVersionUID = 5069827028195702115L;
  		
-	private static ThreadLocal<QExchange> localExchange=new ThreadLocal<QExchange>();
-	public static void setExchange(QExchange exchange){
+	private static ThreadLocal<DBExchange> localExchange=new ThreadLocal<DBExchange>();
+	public static void setExchange(DBExchange exchange){
 		localExchange.set(exchange);
 	}
 	 
-	public static QExchange getExchange(boolean remove){
-		QExchange exchange=localExchange.get();
+	public static DBExchange getExchange(boolean remove){
+		DBExchange exchange=localExchange.get();
 		if(remove && exchange!=null){
 			localExchange.remove();
 		}
@@ -41,7 +41,7 @@ public class QExchange implements Serializable {
 	}
 	
 	public static void setExchange(int index){
-		QExchange exchange=new QExchange();
+		DBExchange exchange=new DBExchange();
 		exchange.setIndex(index);
 		setExchange(exchange);
 	}

@@ -48,12 +48,6 @@ import com.tsc9526.monalisa.core.tools.CloseQuietly;
  */
 public class DBConfig implements Closeable{ 	
 	static Logger logger=Logger.getLogger(DBConfig.class);
-	/**
-	 * <code>DEFAULT_PATH= ".";</code> <br>
-	 * The file path for DB.configFile() is :<br>
-	 * <code>System.getProperty("DB@"+DB.key(),DEFAULT_PATH)+"/"+configFile;</code> 
-	 */
-	public static String DEFAULT_PATH=".";
 	
 	public final static String PREFIX_DB       ="DB";
 	public final static String CFG_DEFAULT_NAME="cfg";
@@ -459,7 +453,7 @@ public class DBConfig implements Closeable{
 				if(configFile.length()>1 && configFile.charAt(1)==':'){
 					//Windows ROOT C: D: E: ...
 				}else{
-					configFile=System.getProperty("DB@"+key,DEFAULT_PATH)+"/"+configFile;
+					configFile=System.getProperty("DB@"+key,DbProp.CFG_ROOT_PATH)+"/"+configFile;
 				}				
 			}
 			
@@ -641,7 +635,7 @@ public class DBConfig implements Closeable{
 		public String getConfigName() {
 			return configName;
 		}
-		public Properties getP() {
+		public Properties getProperties() {
 			return p;
 		}
 		public List<Host> getDbHosts() {

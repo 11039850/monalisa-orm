@@ -33,8 +33,8 @@ import javax.tools.StandardLocation;
 
 import com.tsc9526.monalisa.core.annotation.DB;
 import com.tsc9526.monalisa.core.datasource.ConfigClass;
-import com.tsc9526.monalisa.core.datasource.DBConfig;
 import com.tsc9526.monalisa.core.datasource.DataSourceManager;
+import com.tsc9526.monalisa.core.datasource.DbProp;
 import com.tsc9526.monalisa.core.meta.MetaTable;
 import com.tsc9526.monalisa.core.meta.MetaTable.CreateTable;
 import com.tsc9526.monalisa.core.query.model.Model;
@@ -69,7 +69,7 @@ public class DBGeneratorProcessing extends DBGenerator{
 		}
 		
 		boolean inEclipseIDE=false;
-		String projectPath=DBConfig.DEFAULT_PATH;
+		String projectPath=DbProp.CFG_ROOT_PATH;
 		if(Helper.inEclipseIDE()){
 			if(processingEnv instanceof org.eclipse.jdt.internal.apt.pluggable.core.dispatch.IdeBuildProcessingEnvImpl) {			
 				org.eclipse.jdt.core.IJavaProject project = ((org.eclipse.jdt.internal.apt.pluggable.core.dispatch.IdeBuildProcessingEnvImpl) processingEnv).getJavaProject();
@@ -80,7 +80,7 @@ public class DBGeneratorProcessing extends DBGenerator{
 			}
 		}
 		if(!inEclipseIDE){
-			logger.info("Building "+dbKey+"("+ (db.configFile().length()>0?db.configFile():db.url() )+"): "+new File(DBConfig.DEFAULT_PATH).getAbsolutePath()+" ...");
+			logger.info("Building "+dbKey+"("+ (db.configFile().length()>0?db.configFile():db.url() )+"): "+new File(DbProp.CFG_ROOT_PATH).getAbsolutePath()+" ...");
 		}
 		System.setProperty("DB@"+dbKey,projectPath);				 
 		System.setProperty("DB_PROJECT_PATH", projectPath);

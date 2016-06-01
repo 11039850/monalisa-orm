@@ -43,6 +43,8 @@ public class DataSourceManager {
 	
 	public static void shutdown(){
 		try{
+			DBTasks.shutdown();
+			
 			for(DBConfig cfg:dm.dss.values()){
 				cfg.close();
 			}

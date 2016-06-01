@@ -16,17 +16,10 @@
  *******************************************************************************************/
 package com.tsc9526.monalisa.core.query.dao;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-
 import com.tsc9526.monalisa.core.datasource.DBConfig;
-import com.tsc9526.monalisa.core.query.Execute;
 import com.tsc9526.monalisa.core.query.Query;
+import com.tsc9526.monalisa.core.query.executor.KeysExecutor;
 import com.tsc9526.monalisa.core.query.model.Model;
-import com.tsc9526.monalisa.core.tools.ClassHelper.FGS;
 
 /**
  * 
@@ -83,40 +76,6 @@ public class Insert<T extends Model>{
 	public int insert(boolean updateOnDuplicateKey){	 
 		Query query=model.dialect().insert(model, updateOnDuplicateKey);
 		query.use(db());
-		return query.execute(new AutoKeyCallback());  
-	}	
-		 
-	private class AutoKeyCallback implements Execute<Integer>{
-		private boolean autoKey=false;
-		
-		AutoKeyCallback(){
-			FGS fgs=model.autoField();
-			if(fgs!=null && fgs.getObject(model)==null){
-				autoKey=true;
-			}
-		}
-		public PreparedStatement preparedStatement(Connection conn, String sql)throws SQLException {
-			if(autoKey){
-				return conn.prepareStatement(sql,Statement.RETURN_GENERATED_KEYS);
-			}else{
-				return conn.prepareStatement(sql);
-			}
-		}
-		 
-		public Integer execute(PreparedStatement pst) throws SQLException {
-			int r=pst.executeUpdate();
-		 
-			if(autoKey){
-				ResultSet rs = pst.getGeneratedKeys();   
-	            if (rs.next()) {  
-	                Long id = rs.getLong(1);   
-	                model.autoField().setObject(model, id.intValue()); 
-	            }  
-	            rs.close();
-			}			
-			
-			return r;
-		}
-		 
+		return query.execute(new KeysExecutor(model));  
 	}
 }

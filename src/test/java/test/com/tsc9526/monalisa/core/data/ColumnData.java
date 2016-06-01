@@ -51,4 +51,11 @@ public class ColumnData {
 	public void setTs(Date ts) {
 		this.ts = ts;
 	}
+	
+	public boolean equals(Object other){
+		if(other instanceof ColumnData){
+			return this.toString().equals(other.toString());
+		}
+		return false;
+	}
 }

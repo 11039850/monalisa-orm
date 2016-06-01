@@ -36,8 +36,7 @@ import com.tsc9526.monalisa.core.meta.MetaTable.CreateTable;
 import com.tsc9526.monalisa.core.meta.MetaTable.TableType;
 import com.tsc9526.monalisa.core.query.Query;
 import com.tsc9526.monalisa.core.query.Tx;
-import com.tsc9526.monalisa.core.query.Tx.Executable;
-import com.tsc9526.monalisa.core.query.TxQuery;
+import com.tsc9526.monalisa.core.query.Tx.Atom;
 import com.tsc9526.monalisa.core.query.dao.Delete;
 import com.tsc9526.monalisa.core.query.dao.Insert;
 import com.tsc9526.monalisa.core.query.dao.Update;
@@ -198,7 +197,7 @@ public abstract class Model<T extends Model> implements Serializable {
 	 */
 	public int save() {
 		if (history()) {
-			return Tx.execute(new Executable() {
+			return Tx.execute(new Atom() {
 				public int execute() {
 					int r=doSave();
 					saveHistory(ModelEvent.INSERT);
@@ -226,7 +225,7 @@ public abstract class Model<T extends Model> implements Serializable {
 	 */
 	public int saveOrUpdate() {
 		if (history()) {
-			return Tx.execute(new Executable() {
+			return Tx.execute(new Atom() {
 				public int execute() {
 					int r=doSaveOrUpdate();
 					saveHistory(ModelEvent.REPLACE);
@@ -254,7 +253,7 @@ public abstract class Model<T extends Model> implements Serializable {
 	 */
 	public int update() {
 		if (history()) {
-			return Tx.execute(new Executable() {
+			return Tx.execute(new Atom() {
 				public int execute() {
 					int r= doUpdate();
 					saveHistory(ModelEvent.UPDATE);
@@ -282,7 +281,7 @@ public abstract class Model<T extends Model> implements Serializable {
 	 */
 	public int delete() {
 		if (history()) {
-			return Tx.execute(new Executable() {
+			return Tx.execute(new Atom() {
 				public int execute() {
 					int r= doDelete();
 					saveHistory(ModelEvent.DELETE);
@@ -333,7 +332,7 @@ public abstract class Model<T extends Model> implements Serializable {
 			hCacheHistoryTables.put(key, key);
 		}
 		
-		TxQuery q = Tx.getTxQuery();
+		Tx tx = Tx.getTx();
 		String prefix = DbProp.PROP_DB_HISTORY_PREFIX_COLUMN.getValue(db);
 		Record history = new Record(historyTableName);
 		history.use(historyDB);
@@ -359,7 +358,7 @@ public abstract class Model<T extends Model> implements Serializable {
 		
 		history.set(prefix + "time", new Date());
 		history.set(prefix + "type", event.name());
-		history.set(prefix + "txid", q == null ? "" : q.getTxid());
+		history.set(prefix + "txid", tx == null ? "" : tx.getTxid());
 		history.set(prefix + "user", Tx.getContext(Tx.CONTEXT_CURRENT_USERID));
 		
 		history.save();

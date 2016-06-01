@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.tsc9526</groupId>
 	<artifactId>monalisa-core</artifactId>
-	<version>0.7.6</version>
+	<version>0.8.5</version>
 	
 	<name>monalisa-core</name>
 	<url>https://github.com/11039850/monalisa-core</url>
@@ -17,7 +17,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<repositoryURL>https://oss.sonatype.org/service/local/staging/deploy/maven2</repositoryURL>
 		<snapshotRepositoryURL>https://oss.sonatype.org/content/repositories/snapshots</snapshotRepositoryURL>		
-		<maven.javadoc.skip>false</maven.javadoc.skip> 	
+		<maven.javadoc.skip>true</maven.javadoc.skip> 	
         <argLine>-Dfile.encoding=UTF-8</argLine>	
 	</properties>
 
@@ -25,7 +25,7 @@
 		<connection>scm:git:https://github.com/11039850/monalisa-core.git</connection>
 		<developerConnection>scm:git:https://github.com/11039850/monalisa-core.git</developerConnection>
 		<url>https://github.com/11039850/monalisa-core.git</url>
-		<tag>tag-0.7.6</tag>
+		<tag>tag-0.8.5</tag>
 	</scm>
 	
 	<developers>
@@ -35,7 +35,7 @@
 			<email>11039850@qq.com</email>
 		</developer>
 	</developers>
-
+ 
 	<licenses>
 		<license>
 			<name>GNU Lesser General Public License, Version 3.0</name>
@@ -44,26 +44,26 @@
 	</licenses>
 
 	<dependencies>
+		 <dependency>
+			<groupId>org.testng</groupId>
+			<artifactId>testng</artifactId>
+			<version>6.9.9</version>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-all</artifactId>
+			<version>1.8.5</version>
+			<scope>test</scope>
+		</dependency>
+	 
 		<dependency>
 		  <groupId>com.google.code.gson</groupId>
 		  <artifactId>gson</artifactId>
 		  <version>2.3.1</version>
 		</dependency>
 		 
-		<dependency>
-			<groupId>org.testng</groupId>
-			<artifactId>testng</artifactId>
-			<version>5.14.10</version>
-			<scope>test</scope>
-		</dependency>
-		
-		<dependency>
-		    <groupId>org.jmockit</groupId>
-		    <artifactId>jmockit</artifactId>
-		    <version>1.22</version>
-		    <scope>test</scope>		
-		</dependency>
-		
 		<dependency>
 			<groupId>commons-logging</groupId>
 		  	<artifactId>commons-logging</artifactId>
@@ -78,7 +78,12 @@
 			<scope>provided</scope>		
 		</dependency>
 		
-		
+		<dependency>
+		  <groupId>org.slf4j</groupId>
+		  <artifactId>slf4j-log4j12</artifactId>
+		  <version>1.7.13</version>
+		  <scope>provided</scope>
+		</dependency>
   
 		<dependency>
 			<groupId>c3p0</groupId>
@@ -110,12 +115,7 @@
 		  <scope>provided</scope>
 		</dependency>
 		
-		<dependency>
-		  <groupId>org.slf4j</groupId>
-		  <artifactId>slf4j-log4j12</artifactId>
-		  <version>1.7.13</version>
-		  <scope>provided</scope>
-		</dependency>
+		
 	</dependencies>
 
 	<build>

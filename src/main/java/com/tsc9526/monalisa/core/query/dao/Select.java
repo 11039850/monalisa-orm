@@ -22,7 +22,7 @@ import java.sql.SQLException;
 import com.tsc9526.monalisa.core.datasource.DBConfig;
 import com.tsc9526.monalisa.core.query.Page;
 import com.tsc9526.monalisa.core.query.Query;
-import com.tsc9526.monalisa.core.query.Query.ResultHandler;
+import com.tsc9526.monalisa.core.query.ResultHandler;
 import com.tsc9526.monalisa.core.query.criteria.Example;
 import com.tsc9526.monalisa.core.query.criteria.QEH;
 import com.tsc9526.monalisa.core.query.datatable.DataTable;

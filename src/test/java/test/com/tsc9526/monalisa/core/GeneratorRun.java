@@ -22,15 +22,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 import test.com.tsc9526.monalisa.core.mysql.MysqlDB;
-import test.com.tsc9526.monalisa.core.mysql.mysqldb.TestTable1;
 
 import com.tsc9526.monalisa.core.generator.DBGeneratorLocal;
 import com.tsc9526.monalisa.core.logger.Logger;
 import com.tsc9526.monalisa.core.parser.executor.SQLGenerator;
+import com.tsc9526.monalisa.core.parser.executor.SQLResourceManager;
 import com.tsc9526.monalisa.core.query.DataMap;
 import com.tsc9526.monalisa.core.query.Query;
 import com.tsc9526.monalisa.core.query.datatable.DataTable;
-import com.tsc9526.monalisa.core.query.model.Record;
 
 /**
  * 
@@ -58,7 +57,7 @@ public class GeneratorRun {
 				}
 				fileTime=sqlFile.lastModified();
 				
-				Query query=Query.create("test.com.tsc9526.monalisa.core.sql.Q0001.testFindAll_A","name","","");
+				Query query=SQLResourceManager.getInstance().createQuery("test.com.tsc9526.monalisa.core.sql.Q0001.testFindAll_A","name","","");
 				System.out.println(query.getExecutableSQL());
 				DataTable<DataMap> rs=query.getList();
 				System.out.println("Total results: "+rs.size());
@@ -72,7 +71,7 @@ public class GeneratorRun {
 				map.put("ts_a",new Date());
 				map.put("title","test tile");
 				map.put("extra_1","good");
-				new Record(TestTable1.M.TABLE).use(MysqlDB.DB).parse(map).save();
+				 
 			}
 		}
 	}
