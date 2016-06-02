@@ -24,9 +24,7 @@ public class DbProp {
 	public static boolean ProcessingEnvironment=false;
 	
 	public final static DbProp PROP_DB_SQL_DEBUG 		= new DbProp("sql.debug",false);
-	public final static DbProp PROP_DB_SQL_PATH 		= new DbProp("sql.path","sql");
-	
-	
+ 	
 	public final static DbProp PROP_DB_URL	   			= new DbProp("url");
 	public final static DbProp PROP_DB_DRIVER  			= new DbProp("driver");
 	public final static DbProp PROP_DB_CATALOG  		= new DbProp("catalog");
@@ -70,6 +68,7 @@ public class DbProp {
 	 */
 	public static String CFG_ROOT_PATH          = System.getProperty("monalisa.path",".");
 	
+	
 	/**
 	 * SQL资源文件缺省放置目录(*.java, *.jsp) 
 	 */
@@ -81,10 +80,33 @@ public class DbProp {
 	public static String TMP_WORK_DIR_METATABLE = TMP_ROOT_PATH+"/metatable";
 	
 	
+	
+	
 	public static int   CFG_RELOAD_CLASS_INTERVAL =10; 
 	
 	public static int 	CFG_RELOAD_MODEL_INTERVAL =10;
 	 
+	
+	public static String SET_CFG_ROOT_PATH(String cfgRootPath) {
+		CFG_ROOT_PATH=cfgRootPath;
+		
+		CFG_SQL_PATH = CFG_ROOT_PATH+"/monalisa/sql";
+		SET_TMP_ROOT_PATH(CFG_ROOT_PATH+"/target/monalisa");
+		
+		return CFG_ROOT_PATH;
+	};
+	
+	public static String SET_TMP_ROOT_PATH(String tmpRootPath){
+		TMP_ROOT_PATH=tmpRootPath;
+		
+		TMP_WORK_DIR_JSP       = TMP_ROOT_PATH+"/_jsp";
+		TMP_WORK_DIR_JAVA      = TMP_ROOT_PATH+"/_java";
+		TMP_WORK_DIR_METATABLE = TMP_ROOT_PATH+"/metatable";
+		
+		return TMP_ROOT_PATH;
+	}
+	
+	
 	private String key;
 	private String value;
 	public DbProp(String key){

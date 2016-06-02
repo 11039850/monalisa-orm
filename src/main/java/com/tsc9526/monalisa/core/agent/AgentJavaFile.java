@@ -30,15 +30,15 @@ public class AgentJavaFile{
 	private File javaFile;
 	private File classFile;
 	private long version;
-	private long lastLoadedTime;
+	private long lastModified;
 	
-	public AgentJavaFile(String className,long version,long lastLoadedTime,File javaFile,File classFile){
+	public AgentJavaFile(String className,long version,long lastModified,File javaFile,File classFile){
 		this.className=className;
 		this.version=version;
 		this.javaFile=javaFile;
 		this.classFile=classFile;
 		
-		this.lastLoadedTime=lastLoadedTime;
+		this.lastModified=lastModified;
 	}
 	
 	public boolean isCompileRequired(){
@@ -46,12 +46,19 @@ public class AgentJavaFile{
 	}
 	
 	public boolean isReloadRequired(){
+		AgentArgs.AgentArgClassInfo ci=AgentClass.getAgentLoadClassInfo(className);
 		long classVersion=ClassHelper.getVersion(className);
-		
+		 	
 		if(version>0 ){
-			return version>classVersion;
+			if(ci==null){
+				return version >classVersion;
+			}else{
+				return version >ci.version;
+			}
+		}else if(classVersion>0){
+			return false;
 		}else{
-			long tm=AgentClass.getAgentClassLoadTime(className);
+			long tm= ci==null?0:ci.lastModified;
 		 
 			if(tm==0){
 				File f=ClassPathHelper.getClassOrJarFile(className);
@@ -95,11 +102,12 @@ public class AgentJavaFile{
 		this.version = version;
 	}
 
-	public long getLastLoadedTime() {
-		return lastLoadedTime;
+	public long getLastModified() {
+		return lastModified;
 	}
 
-	public void setLastLoadedTime(long lastLoadedTime) {
-		this.lastLoadedTime = lastLoadedTime;
+	public void setLastModified(long lastModified) {
+		this.lastModified = lastModified;
 	}
+ 
 }

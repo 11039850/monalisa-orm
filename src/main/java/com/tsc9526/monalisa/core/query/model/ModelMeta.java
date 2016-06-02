@@ -66,9 +66,7 @@ public class ModelMeta{
 		if(mm==null && interval>0){
 			DBTasks.schedule("ModelChangeTask", new TimerTask() {
 				public void run() {
-					for(ModelMeta mm:hMonitorMetas.values()){
-						 mm.checkChanged();
-					}
+					reloadModelMetas();
 				}
 			}, interval*1000, interval*1000);
 		}
@@ -87,6 +85,11 @@ public class ModelMeta{
 		return mm;
 	}
 	 
+	public synchronized static void reloadModelMetas(){
+		for(ModelMeta mm:hMonitorMetas.values()){
+			 mm.checkChanged();
+		}
+	}
 	
 	private static String getModelKey(Model<?> model){
 		String key=model.getClass().getName();

@@ -24,12 +24,10 @@ import test.com.tsc9526.monalisa.core.mysql.MysqlDB;
  * @author zzg.zhou(11039850@qq.com)
  */
 public class Q2 implements MysqlDB {
-	final static long $VERSION=2;
-	
-	private Q2(){}
-	
+	final static long $VERSION=4;
+	 
 	public int findOne(){ 
-		return 3;
+		return 4;
 	}
 
 }

@@ -61,7 +61,7 @@ public class Compiler {
 			String classpath = System.getProperty("java.class.path");
 			List<String> options=Arrays.asList("-encoding", "utf-8","-nowarn","-classpath",classpath,"-d",pkg.getClassOutputDir());
 			
-			logger.info("Compile files: \r\n"+sb.toString());
+			logger.debug("Compile files: \r\n"+sb.toString());
 			
 			JavaCompiler javac=ToolProvider.getSystemJavaCompiler();
 			CompilationTask task = javac.getTask(out, null, null, options, null,fos); 

@@ -79,14 +79,14 @@ public class CompilePackage{
 		}
 	}
 	
-	private void fetchJavaFiles(File f,List<AgentJavaFile> jfs){
+	protected void fetchJavaFiles(File f,List<AgentJavaFile> jfs){
 		if(f.isFile()){
 			if(f.getName().endsWith(".java")){
 				long lastModified=f.lastModified();
 				
 				String key=f.getAbsolutePath();
 				AgentJavaFile jf=hjfs.get(key);
-				if(jf==null || jf.getLastLoadedTime()<lastModified){
+				if(jf==null || jf.getLastModified()<lastModified){
 					String sub=f.getAbsolutePath().substring(pathRoot.length()+1);
 					sub=sub.substring(0,sub.length()-5).replace("\\", "/");
 				 	

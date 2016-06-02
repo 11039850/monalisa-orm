@@ -38,7 +38,6 @@ public class JavaTest {
 		
 		Assert.assertEquals("test.com.tsc9526.monalisa.core.sql.java",java.getPackageName());
 		Assert.assertEquals("Demo",java.getName());
-		
-		System.out.println(java.getJavaCode());
+		 
 	}
 }

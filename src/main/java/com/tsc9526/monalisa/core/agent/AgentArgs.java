@@ -21,32 +21,43 @@ package com.tsc9526.monalisa.core.agent;
  * @author zzg.zhou(11039850@qq.com)
  */
 public class AgentArgs {
-	private String[] classNames;
+	private AgentArgClassInfo[] classes;
 	private String classFilePathRoot;
 	
 	public AgentArgs(){
 	}
 	
-	public AgentArgs(String classFilePathRoot,String[] classNames){
+	public AgentArgs(String classFilePathRoot,AgentArgClassInfo[] classes){
 		this.classFilePathRoot=classFilePathRoot;
-		this.classNames=classNames;
-		
+		this.classes=classes;	
 	}
-
-	public String[] getClassNames() {
-		return classNames;
-	}
-
-	public void setClassNames(String[] classNames) {
-		this.classNames = classNames;
-	}
-
+  
 	public String getClassFilePathRoot() {
 		return classFilePathRoot;
 	}
 
 	public void setClassFilePathRoot(String classFilePathRoot) {
 		this.classFilePathRoot = classFilePathRoot;
+	}
+	
+	public static class AgentArgClassInfo{
+		String className;
+		long   version;
+		long   lastModified;
+		
+		public AgentArgClassInfo(String className,long version,long lastModified){
+			this.className=className;
+			this.version=version;
+			this.lastModified=lastModified;
+		}
+	}
+
+	public AgentArgClassInfo[] getClasses() {
+		return classes;
+	}
+
+	public void setClasses(AgentArgClassInfo[] classes) {
+		this.classes = classes;
 	}
 	 
 }

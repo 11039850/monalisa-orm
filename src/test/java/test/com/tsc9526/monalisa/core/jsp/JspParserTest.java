@@ -41,22 +41,16 @@ public class JspParserTest {
 	
 	public void testQueryByQueryId()throws Exception{
 		Query query=SQLResourceManager.getInstance().createQuery("test.com.tsc9526.monalisa.core.sql.Q0001.testFindAll_A","name","","");
-		System.out.println(query.getExecutableSQL());
+		 
 		DataTable<DataMap> rs=query.getList();
-		System.out.println("Total results: "+rs.size());
-		for(DataMap x:rs){
-			System.out.println(x.toString());
-		}	 
+		Assert.assertTrue(rs.size()>=0);  
 	}
 	
 	public void testQueryByInterface(){
 		Query query=Q0001.testFindAll_A("", "", "");
-		System.out.println(query.getExecutableSQL());
+		 
 		DataTable<DataMap> rs=query.getList();
-		System.out.println("Total results: "+rs.size());
-		for(DataMap x:rs){
-			System.out.println(x.toString());
-		}
+		Assert.assertTrue(rs.size()>=0); 
 	}
 	
 	 

@@ -45,5 +45,21 @@ public class QueryAllResultsTest {
 		
 		Assert.assertEquals(2, rs.size());
 	}
+	
+	public void testGetAllResults3() throws Exception {
+		List<DataTable<DataMap>> rs=MysqlDB.DB.createQuery().add(""+/**~{*/""
+			+ "SET @table=\"test_table_1\";"
+			+ "\r\nSET @sql= CONCAT(\"select * from \", @table, \" where name='N0001'\");"
+			+ "\r\n"
+			+ "\r\nPREPARE statement from @sql;"
+			+ "\r\nEXECUTE statement;"
+			+ "\r\nEXECUTE statement;"
+			+ "\r\nDEALLOCATE PREPARE statement;"
+			+ "\r\n"
+			+ "\r\nSELECT * FROM test_table_1 limit 10;"
+		+ "\r\n"/**}*/).getAllResults();
+		
+		Assert.assertEquals(3, rs.size());
+	}
 
 }

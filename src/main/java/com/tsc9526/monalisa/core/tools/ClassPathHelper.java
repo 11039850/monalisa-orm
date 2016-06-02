@@ -23,17 +23,21 @@ public class ClassPathHelper {
 		URL url = getClassResourceURL(clazz);
 		try {
 			String urlString = url.toString();
-			final int endIndex = urlString.toLowerCase().indexOf("!");
+			int endIndex = urlString.toLowerCase().indexOf("!");
 			if (endIndex > 0) {
 				//class in jar
 				int beginIndex = urlString.lastIndexOf("file:/");
 				if (beginIndex >= 0) {
-					return new File(urlString.substring(beginIndex, endIndex));
+					String path=urlString.substring(beginIndex+6, endIndex);
+					while(path.startsWith("/")){
+						path=path.substring(1);
+					}
+					return new File(path);
 				}
 				
 				beginIndex = urlString.lastIndexOf("://");
 				if (beginIndex > 0) {
-					return new File(urlString.substring(beginIndex, endIndex));
+					return new File(urlString.substring(beginIndex+3, endIndex));
 				}
 			} else {
 				//class in folder

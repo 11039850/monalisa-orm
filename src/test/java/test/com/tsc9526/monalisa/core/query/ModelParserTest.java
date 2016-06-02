@@ -49,6 +49,62 @@ public class ModelParserTest {
 		Assert.assertEquals(sdf.format(model.getDateField2()),sdf.format(now));
 	}
 	
+	public void testParseMapping(){
+		TestSimpleModel model=new TestSimpleModel();
+		  
+		SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		long t1=System.currentTimeMillis();
+		Date now=new Date();
+			
+		String json="{\"P_dateField1\":"+t1+", \"P_date_field2\":\""+sdf.format(now)+"\" }";		
+		model.parse(json,"P_dateField1=dateField1|P_date_field2=date_field2");
+		
+		Assert.assertEquals(model.getDateField1().getTime(),t1);
+		Assert.assertEquals(sdf.format(model.getDateField2()),sdf.format(now));
+		
+		model=new TestSimpleModel();
+		model.parse(json,"P_dateField1=dateField1;P_date_field2=date_field2");
+		
+		Assert.assertEquals(model.getDateField1().getTime(),t1);
+		Assert.assertEquals(sdf.format(model.getDateField2()),sdf.format(now));
+		
+		model=new TestSimpleModel();
+		model.parse(json,"P_dateField1=dateField1,P_date_field2=date_field2");
+		
+		Assert.assertEquals(model.getDateField1().getTime(),t1);
+		Assert.assertEquals(sdf.format(model.getDateField2()),sdf.format(now));
+		
+		model=new TestSimpleModel();
+		model.parse(json,"P_dateField1=dateField1","P_date_field2=date_field2");
+		
+		Assert.assertEquals(model.getDateField1().getTime(),t1);
+		Assert.assertEquals(sdf.format(model.getDateField2()),sdf.format(now));
+	}
+	
+	public void testParsePrefixMapping(){
+		TestSimpleModel model=new TestSimpleModel();
+		  
+		SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		long t1=System.currentTimeMillis();
+		Date now=new Date();
+			
+		String json="{\"P_dateField1\":"+t1+", \"P_date_field2\":\""+sdf.format(now)+"\" }";		
+		model.parse(json,"~P_");
+		
+		Assert.assertEquals(model.getDateField1().getTime(),t1);
+		Assert.assertEquals(sdf.format(model.getDateField2()),sdf.format(now));
+		
+		
+		model=new TestSimpleModel();
+		json="{\"P_dateField1\":"+t1+", \"P_x_date_field2\":\""+sdf.format(now)+"\" }";
+		model.parse(json,"~P_","x_date_field2=date_field2");
+		
+		Assert.assertEquals(model.getDateField1().getTime(),t1);
+		Assert.assertEquals(sdf.format(model.getDateField2()),sdf.format(now));
+		
+	}
+	
+	
 	public void testToJson(){
 		TestSimpleModel model=new TestSimpleModel();
 		  

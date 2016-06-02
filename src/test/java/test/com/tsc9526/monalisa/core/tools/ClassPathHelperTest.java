@@ -14,20 +14,36 @@
  *	You should have received a copy of the GNU Lesser General Public License
  *	along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************************/
-package test.com.tsc9526.monalisa.core.sqlfiles;
+package test.com.tsc9526.monalisa.core.tools;
 
- 
-import test.com.tsc9526.monalisa.core.mysql.MysqlDB;
- 
+import static org.junit.Assert.assertTrue;
+
+import java.io.File;
+
+import org.mockito.Mockito;
+import org.testng.annotations.Test;
+
+import com.tsc9526.monalisa.core.query.Query;
+import com.tsc9526.monalisa.core.tools.ClassPathHelper;
+
 /**
  * 
  * @author zzg.zhou(11039850@qq.com)
  */
-public class Q2 implements MysqlDB {
-	final static long $VERSION=1;
-	 
-	public int findOne(){ 
-		return 1;
-	}
+@Test
+public class ClassPathHelperTest {
 
+	public void testJarClass()throws Exception {
+		File f=ClassPathHelper.getClassOrJarFile(Mockito.class);
+		
+		assertTrue(f.getName().endsWith(".jar"));
+		assertTrue(f.exists());
+	}
+	
+	public void testFileClass()throws Exception {
+		File f=ClassPathHelper.getClassOrJarFile(Query.class);
+		
+		assertTrue(f.getName().endsWith(".class"));
+		assertTrue(f.exists());
+	}
 }

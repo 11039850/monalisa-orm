@@ -19,13 +19,15 @@ package test.com.tsc9526.monalisa.core.agent;
 
  
 import java.io.File;
- 
+
 import org.testng.Assert;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
 import test.com.tsc9526.monalisa.core.sqlfiles.Q1;
 import test.com.tsc9526.monalisa.core.sqlfiles.Q2;
+import test.com.tsc9526.monalisa.core.sqlfiles.Q3;
+import test.com.tsc9526.monalisa.core.sqlfiles.Q4;
 
 import com.tsc9526.monalisa.core.agent.AgentClass;
 import com.tsc9526.monalisa.core.datasource.DbProp;
@@ -51,6 +53,23 @@ public class QueryTest {
 				target.setLastModified(src.lastModified());
 			}
 		}
+		
+		initJavaSources("Q3");
+		initJavaSources("Q4");
+		 
+		Assert.assertEquals(Query.create(Q1.class).findOne(),1);
+		Assert.assertEquals(Query.create(Q2.class).findOne(),1);
+		Assert.assertEquals(Query.create(Q3.class).findOne(),226);
+		Assert.assertEquals(Query.create(Q4.class).findOne(),226);
+	}
+	
+	private void initJavaSources(String name)throws Exception{
+		File java=new File("src/test/java/test/com/tsc9526/monalisa/core/sqlfiles/"+name+".java");
+		String source=FileHelper.readToString(java,"utf-8");
+		 
+		logger.info("Change "+java.getAbsolutePath()+", with version: 226");
+		String r=source.replace("return 1;", "return 226;").replace("$VERSION=1;","$VERSION=226;");
+		FileHelper.write(new File(DbProp.CFG_SQL_PATH+"/"+name+".java"), r.getBytes("utf-8"));
 	}
 	
 	@Test
@@ -89,16 +108,22 @@ public class QueryTest {
 		Assert.assertEquals(q2.findOne(),1);
 		  
 		
-		logger.info("Change "+java.getAbsolutePath()+", return 3 with version change");
-		r=source.replace("return 1;", "return 3;").replace("$VERSION=1;","$VERSION=2;");
+		logger.info("Change "+java.getAbsolutePath()+", return 3 with version 3");
+		r=source.replace("return 1;", "return 3;").replace("$VERSION=1;","$VERSION=3;");
 		 
 		FileHelper.write(java, r.getBytes("utf-8"));
 		AgentClass.reloadClasses(); 
 		
 		Assert.assertEquals(q2.findOne(),3); 
-			 
+		
+		q2=Query.create(Q2.class);
+		logger.info("Change "+java.getAbsolutePath()+", return 4 with version 4");
+		r=source.replace("return 1;", "return 4;").replace("$VERSION=1;","$VERSION=4;");
 		 
-		 
+		FileHelper.write(java, r.getBytes("utf-8"));
+		AgentClass.reloadClasses(); 
+		
+		Assert.assertEquals(q2.findOne(),4); 
 	}
 	
 }

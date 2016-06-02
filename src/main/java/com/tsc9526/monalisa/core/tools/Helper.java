@@ -118,6 +118,12 @@ public class Helper {
 		}
 		return r.toString();
 	}
+	
+	public static String toDateString(long v, String format) {
+		SimpleDateFormat sdf=new SimpleDateFormat(format);
+		
+		return sdf.format(new Date(v));
+	}
 
 	public static Date toDate(Object v, String format, Date defaultValue) {
 		if (v == null) {
@@ -125,6 +131,8 @@ public class Helper {
 		} else {
 			if (v instanceof Date) {
 				return (Date) v;
+			}else if (v.getClass()==Long.class || v.getClass()==long.class) {
+				return new Date( (Long)v);
 			} else {
 				String x = "" + v;
 

@@ -615,6 +615,14 @@ public abstract class Model<T extends Model> implements Serializable {
 		return table;
 	}
 
+	protected Table createTable(String tableName,Table modelTable) {
+		return ModelMeta.createTable(tableName, modelTable);
+	}
+	
+	protected Table createTable(String tableName,String ...primaryKeys) {
+		return ModelMeta.createTable(tableName, primaryKeys);
+	}
+	
 	protected Table createTable(MetaPartition mp) {
 		DBConfig db = db();
 		Partition<Model<?>> partition = mp.getPartition();

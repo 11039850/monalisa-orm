@@ -17,95 +17,97 @@
 package test.com.tsc9526.monalisa.core.query;
 
 import java.util.Date;
-import java.util.LinkedHashMap;
-import java.util.Map;
 
-import com.tsc9526.monalisa.core.annotation.DB;
-import com.tsc9526.monalisa.core.datasource.DBConfig;
+import junit.framework.Assert;
+
+import org.junit.AfterClass;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Test;
+
+import test.com.tsc9526.monalisa.core.mysql.MysqlDB;
+
 import com.tsc9526.monalisa.core.query.DataMap;
 import com.tsc9526.monalisa.core.query.datatable.DataTable;
 import com.tsc9526.monalisa.core.query.model.Model;
 import com.tsc9526.monalisa.core.query.model.Record;
-import com.tsc9526.monalisa.core.tools.ClassHelper.FGS;
 
 /**
  * 
  * @author zzg.zhou(11039850@qq.com)
  */
-@DB(url="jdbc:mysql://127.0.0.1:3306/jy_market", username="jy_market", password="jy_market")
-public class RecordTest extends Model<RecordTest>{ 
+public class RecordTest extends Model<RecordTest> implements MysqlDB{ 
 	private static final long serialVersionUID = -1974865252589672370L;
 
+	@BeforeClass
+	public void setUp(){
+		tearDown();
+		
+		DB.execute(""+/**~{*/""
+			+ "CREATE TABLE IF NOT EXISTS `test_record` ("
+			+ "\r\n  `record_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '唯一主键',"
+			+ "\r\n  `name` varchar(128) NOT NULL default 'N0001' COMMENT '名称',"
+			+ "\r\n  `title` varchar(128) NULL  COMMENT '标题',"
+			+ "\r\n  `ts_a` datetime  NULL,"
+			+ "\r\n  `create_time` datetime NOT NULL,"
+			+ "\r\n  `create_by` varchar(64) NULL,"
+			+ "\r\n  `update_time` datetime NULL,"
+			+ "\r\n  `update_by` varchar(64) NULL,"
+			+ "\r\n  PRIMARY KEY (`record_id`)"
+			+ "\r\n) ENGINE=InnoDB DEFAULT CHARSET=utf8;"
+		+ "\r\n"/**}*/);
+		
+		DB.execute(""+/**~{*/""
+			+ "INSERT INTO test_record(record_id,`name`,`title`,ts_a,create_time)VALUES(1,\"hello\",\"record\",now(),now());"
+		+ "\r\n"/**}*/);
+	}
+	
+	@AfterClass
+	public void tearDown(){
+		DB.execute("DROP TABLE IF EXISTS `test_record`");
+	}
+	
 	String title;
 	
 	public RecordTest() {
-		 super("gift");
+		 super("test_record");
+	}
+	 
+	
+	@Test
+	public void testRecordTest1()throws Exception{
+		RecordTest tx=new RecordTest(); 
+		Assert.assertEquals(DB, tx.db());
+		Assert.assertEquals(tx.entity(),false); 
+		 	
+		tx.set("record_id", 1);
+		tx.load();
+		Assert.assertEquals(tx.entity(),true); 
 	}
 	
+	@Test
+	public void testRecordTest2()throws Exception{
+		RecordTest tx=new RecordTest(); 
+		tx.setTitle("TX");
+		tx.set("name","Test-Tx");
+		tx.set("ts_a", new Date());
+		tx.save();
+		
+		int id=tx.get("record_id");
+		Assert.assertEquals(tx.entity(),true); 
+		Assert.assertTrue(id>1);
+	 
+		RecordTest tx2=new RecordTest().set("record_id", id).load();
+		Assert.assertEquals(tx.getTitle(),tx2.getTitle());
+		Assert.assertTrue(tx2.get("create_time")!=null);
+	}
 	
-	public static void main(String[] args) {
-		String h="1234,";
-		String[] xs=h.trim().split(",|;|\\|");
-		for(String x:xs){
-			System.out.println(x);
-		}
-		
-		
-		DBConfig db=DBConfig.fromClass(RecordTest.class);
-		
-		DataTable<DataMap> r1=db.select("select count(*) from gift");
-		System.out.println(r1.get(0).getInteger(0));
-		
-		Record tx=new Record("gift");
-		tx.use(db);
-		if(tx.entity()){throw new RuntimeException();};
-		
-		tx.set("gift_id", 1);
-		tx.load();
-		if(!tx.entity()){throw new RuntimeException();};
-		
-		System.out.println("=="+tx);
-		
-		Record tx2=new Record("gift_code");
-		tx2.use(db);
-		for(FGS fgs:tx2.fields()){
-			System.out.println("=="+fgs.getFieldName());
-		}
-		if(tx2.field("package_name")!=null){
-			throw new RuntimeException("Error dynamic model!");
-		}
-		
-		
-		
-		Map<String, Object> hs=new LinkedHashMap<String, Object>();
-		hs.put("x",new RecordTest());
-		hs.put("y",new RecordTest());
-		Object c=hs.values();
-		System.out.println(c);
-		Object c2=hs.values();
-		System.out.println(c2);
-	 	
+	@Test
+	public void testRecordTest3()throws Exception{
 		RecordTest m=new RecordTest();
-		m.set("package_name", "package_name");
-		
+		m.set("name", "package_name");
 		m.title="xxx";
-		
-		m.set("icon_path", "icon_path");
-		m.set("description", "description");
-		m.set("begin_time", new Date());
-		m.set("end_time", new Date());
 		m.save();
-		
-		System.out.println("Create gift: "+m.get("gift_id"));
-		
-		RecordTest t=new RecordTest();
-		t.set("gift_id", m.get("gift_id"));
-		t.load();
-		System.out.println("loaded: "+t);
-		
-		
-		System.out.println("NEW: "+new RecordTest());
-		
+		  
 		int times=10000;
 		long l1=System.currentTimeMillis();
 		for(int i=0;i<times;i++){
@@ -113,15 +115,59 @@ public class RecordTest extends Model<RecordTest>{
 			x.changedFields();
 		}
 		long l2=System.currentTimeMillis();
-		System.out.println("Use time: "+(l2-l1)+" ms");		
+		System.out.println("Changed fields: "+times+", use time: "+(l2-l1)+" ms");		
 		
-		Record sm=new Record("gift").use(db);		
-		for(Record x:sm.WHERE()
-				.field("package_name").like("package_name")
-				.field("giftId").gt(10)
-				.forSelect().select()){
-			System.err.println(x.toString());
-		}
+		Assert.assertTrue( (l2-l1) <1000);
+	}
+	
+	@Test
+	public void testRecordSelect()throws Exception{
+		Record sm=new Record("test_record").use(DB);
+		DataTable<Record> rs=sm.WHERE()
+		.field("title").like("record")
+		.field("record_id").gt(0)
+		.forSelect().select();
+		
+		Assert.assertTrue(rs.size()>0);
 	}
 
+	
+	@Test
+	public void testRecordLoad()throws Exception{
+		Record tx=new Record("test_record").use(DB); 
+		Assert.assertEquals(DB, tx.db());
+		Assert.assertTrue(tx.fields().size()>1);
+		Assert.assertTrue(tx.field("title")!=null);
+		Assert.assertEquals(tx.entity(),false); 
+		 	
+		tx.set("record_id", 1);
+		tx.load();
+		Assert.assertEquals(tx.entity(),true); 
+		
+		DataTable<DataMap> rs=DB.select("select count(*) from test_record");
+		Assert.assertTrue(rs.size()>0);
+	}
+	
+	@Test
+	public void testRecordSave()throws Exception{
+		Record tx=new Record("test_record").use(DB); 
+		tx.set("name",  "ns001");
+		tx.set("title", "title001");
+		tx.save();
+		
+		Assert.assertEquals(tx.entity(),true); 
+		Assert.assertTrue(tx.get("record_id")!=null);  
+	}
+	
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+	public String toString() {
+		return "{}";
+	}
 }

@@ -30,8 +30,10 @@ import java.util.concurrent.ConcurrentHashMap;
 import com.tsc9526.monalisa.core.datasource.DBTasks;
 import com.tsc9526.monalisa.core.datasource.DbProp;
 import com.tsc9526.monalisa.core.logger.Logger;
+import com.tsc9526.monalisa.core.tools.ClassHelper;
 import com.tsc9526.monalisa.core.tools.ClassPathHelper;
 import com.tsc9526.monalisa.core.tools.FileHelper;
+import com.tsc9526.monalisa.core.tools.Helper;
 import com.tsc9526.monalisa.core.tools.JsonHelper;
 
 /**
@@ -42,7 +44,7 @@ import com.tsc9526.monalisa.core.tools.JsonHelper;
 public class AgentClass {
 	static Logger logger=Logger.getLogger(AgentClass.class);
 	
-	static Map<String, Long> hAgentClasses=new ConcurrentHashMap<String, Long>();
+	static Map<String, AgentArgs.AgentArgClassInfo> hAgentClasses=new ConcurrentHashMap<String, AgentArgs.AgentArgClassInfo>();
 	
 	public static void premain(String agentArgs, Instrumentation inst){
 		 
@@ -52,28 +54,16 @@ public class AgentClass {
 		try {
 			AgentArgs args=JsonHelper.getGson().fromJson(agentArgs, AgentArgs.class);
 			
-			StringBuffer sb=new StringBuffer();
-			String[] classNames=args.getClassNames();
-			String[][] ccs=new String[classNames.length][2];
-			for(int i=0;i<classNames.length;i++){
-				String classFilePath=getClassFilePath(args.getClassFilePathRoot(),classNames[i]);
+			printAgentInfo(args);
+		 	 
+			for(AgentArgs.AgentArgClassInfo ci:args.getClasses()){
+				String classFilePath=getClassFilePath(args.getClassFilePathRoot(),ci.className);
 				
-				ccs[i][0]=classNames[i];
-				ccs[i][1]=classFilePath;
-				sb.append(classNames[i]+" <- "+new File(classFilePath).getAbsolutePath());
-			}
-			logger.info("Reload classes:\r\n"+sb.toString());
-			
-			for(String[] cc:ccs){
-				String className    =cc[0];
-				String classFilePath=cc[1];
-				
-				long lastestLoadTime=new File(classFilePath).lastModified();
 				byte[] classBytes = FileHelper.readFile(classFilePath); 
 	
-				redefineClass(inst,className,classBytes);
+				redefineClass(inst,ci.className,classBytes);
 				
-				hAgentClasses.put(className, lastestLoadTime);
+				hAgentClasses.put(ci.className, ci);
 			}
 			
 		} catch (Exception e) {
@@ -81,12 +71,35 @@ public class AgentClass {
 		}
 	}
 	
-	public static long getAgentClassLoadTime(String className) {
-		Long time= hAgentClasses.get(className);
-		if(time==null){
-			time=0L;
+	private static void printAgentInfo(AgentArgs args){
+		StringBuffer sb=new StringBuffer();
+		for(AgentArgs.AgentArgClassInfo ci:args.getClasses()){
+			AgentArgs.AgentArgClassInfo old=hAgentClasses.get(ci.className);
+			 
+			long oldVersion     =old!=null?old.version:ClassHelper.getVersion(ci.className);
+		 	long oldLastModified=old!=null?old.lastModified:ClassPathHelper.getClassOrJarFile(ci.className).lastModified();
+			  
+			String oldTs=Helper.toDateString(oldLastModified,"yyyyMMddHHmmss");
+			String newTs=Helper.toDateString(ci.lastModified,"yyyyMMddHHmmss");
+			
+			if(old==null){
+				sb.append("!");
+			}
+		 	sb.append("class: "+ci.className);
+		 	sb.append(", version: "   +oldVersion+(ci.version     ==oldVersion     ?" == ":" -> ")+ci.version  );
+			sb.append(", timestamp:"  +oldTs     +(ci.lastModified==oldLastModified?" == ":" -> ")+newTs       );
+			   
+			sb.append("\r\n"); 
 		}
-		return time;
+		
+		logger.info("Reload classes("+args.getClasses().length+"), Class-Path: "+new File(args.getClassFilePathRoot()).getAbsolutePath()
+				+"\r\n****************************************************************************"
+				+"\r\n"+sb.toString()
+				+    "****************************************************************************");
+	}
+	
+	public static AgentArgs.AgentArgClassInfo getAgentLoadClassInfo(String className) {
+		return hAgentClasses.get(className);
 	}
 	
 	private static void redefineClass(Instrumentation inst,String className,byte[] classBytes)throws Exception{
@@ -131,15 +144,15 @@ public class AgentClass {
 		try{
 			Compiler.compile(compilePackage);
 			
-			List<String> classNames=new ArrayList<String>();
+			List<AgentArgs.AgentArgClassInfo> cis=new ArrayList<AgentArgs.AgentArgClassInfo>();
 			for(AgentJavaFile j:compilePackage.getJavaFiles()){
 				if(j.isReloadRequired()){
-					classNames.add(j.getClassName());
+					cis.add(new AgentArgs.AgentArgClassInfo(j.getClassName(),j.getVersion(),j.getLastModified()));
 				}
 			} 
 			
-			if(classNames.size()>0){
-				AgentArgs args=new AgentArgs(DbProp.TMP_WORK_DIR_JAVA,classNames.toArray(new String[0]));
+			if(cis.size()>0){
+				AgentArgs args=new AgentArgs(DbProp.TMP_WORK_DIR_JAVA,cis.toArray(new AgentArgs.AgentArgClassInfo[0]));
 				String agentArgs=JsonHelper.getGson().toJson(args);
 			    AgentJar.loadAgentClass(AgentClass.class.getName(), agentArgs); 
 			} 
