@@ -14,12 +14,12 @@
  *	You should have received a copy of the GNU Lesser General Public License
  *	along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************************/
-package test.com.tsc9526.monalisa.core.java;
+package test.com.tsc9526.monalisa.core.regex;
 
-import java.io.File;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
-import junit.framework.Assert;
-
+import org.junit.Assert;
 import org.testng.annotations.Test;
 
 import com.tsc9526.monalisa.core.parser.java.Java;
@@ -27,23 +27,34 @@ import com.tsc9526.monalisa.core.parser.java.Java;
 /**
  * 
  * @author zzg.zhou(11039850@qq.com)
- * 
  */
 @Test
-public class JavaTest {
+public class RegexTest {
+	public final static long $VERSION = 2016060219023900L;
 	
-	public void testParse()throws Exception{
-		Java java=new Java(new File("src/test/resources/lab/demo.java"));
-	 
-		
-		Assert.assertEquals("test.com.tsc9526.monalisa.core.sql.java",java.getPackageName());
-		Assert.assertEquals("Demo",java.getName());
-		
-		long version=java.getVersion();
-		Assert.assertTrue(version>0);
-		
-		long newVersion=java.increaseVersion();
-		Assert.assertTrue(newVersion > version );
+	public void testRegexVersion(){
+		Pattern p=Pattern.compile(Java.REGX_VERSION);
 		 
+		Matcher m=p.matcher(""+/**~{*/""
+			+ "public class a{"
+			+ "\r\n	public static final long $VERSION = 1;"
+			+ "\r\n}"
+		+ "\r\n"/**}*/); 
+		 
+		Assert.assertTrue(m.find() && m.start()>0);
+		 
+		m=p.matcher(""+/**~{*/""
+			+ "public class a{"
+			+ "\r\n	public final static  long $VERSION = 1000;"
+			+ "\r\n}"
+		+ "\r\n"/**}*/);	
+		Assert.assertTrue(m.find() && m.start()>0);
+		
+		m=p.matcher(""+/**~{*/""
+			+ "public class a{"
+			+ "\r\n	public static final Long $VERSION = 1000L;"
+			+ "\r\n}"
+		+ "\r\n"/**}*/);	
+		Assert.assertTrue(m.find() && m.start()>0);
 	}
 }

@@ -19,8 +19,8 @@ package com.tsc9526.monalisa.core.parser.java;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -32,10 +32,9 @@ import com.tsc9526.monalisa.core.tools.FileHelper;
  */
 public class Java {
 	public static String DEFAULT_PAGE_ENCODING ="utf-8";
-	 	
-	protected final static String REGX_VAR="\\$[a-zA-Z_]+[a-zA-Z_0-9]*";
-	protected Pattern patternVar = Pattern.compile(REGX_VAR);
-	
+	 
+	public final static String REGX_VERSION ="static\\s+(final\\s+)?(long|Long)\\s+\\$VERSION\\s*=\\s*[0-9]+L?;";
+	 
 	protected String filePath;
 	protected String body;
 	protected long lastModified;
@@ -43,9 +42,10 @@ public class Java {
 	protected String packageName;
 	protected String name;
 	 
-	protected StringBuffer java=new StringBuffer();
-	
 	protected long version=-1;
+	
+	protected int pVersion1=0;
+	protected int pVersion2=0;
 	
 	public Java(File javaFile) {
 		parseFile(javaFile);
@@ -71,20 +71,20 @@ public class Java {
 			throw new RuntimeException(e);
 		}
 	}
-	
-	public String getJavaCode(){
-		return java.toString();
-	}
+	 
 	
 	protected void parseBody(String body){
 		this.body=body;
 		
-		Pattern v = Pattern.compile("static\\s+long\\s+\\$VERSION\\s*=\\s*[0-9]+L?;");
+		Pattern v= Pattern.compile(REGX_VERSION);
 		Matcher m=v.matcher(body);
 		if(m.find()){
 			int p1=m.start();
 			int p2=body.indexOf("=",p1);
 			int p3=body.indexOf(";",p2);
+			
+			pVersion1=p2+1;
+			pVersion2=p3;
 			
 			String s=body.substring(p2+1,p3).trim();
 			if(s.endsWith("L")){
@@ -93,168 +93,69 @@ public class Java {
 			version=Long.parseLong(s);
 		}
 		
-		java.setLength(0);
-		
+		 
 		parsePackage();
-	
-		int len=body.length();
-		for(int i=0;i<len;i++){
-			char c=body.charAt(i);
-			if(c=='<' && i<len-2 && body.charAt(i+1)=='<' && (body.charAt(i+2)=='-' || body.charAt(i+2)=='~')){
-				i=parseBlock(i,false);
-			}else if(c=='>' && i<len-2 && body.charAt(i+1)=='>' && (body.charAt(i+2)=='-' || body.charAt(i+2)=='~')){
-				i=parseBlock(i,true);
-			}else{
-				java.append(c);
-			}
-		}
+	 
 	}
 	
-	protected int parseBlock(int i,boolean output){
-		char f=body.charAt(i+2);
-		
-		StringBuffer block=new StringBuffer();
-		i=readBlock(body, i+3,block);
-		
-		StringBuffer padding=new StringBuffer();
-		if(f=='~'){
-			for(int k=0;k<block.length();k++){
-				char x=block.charAt(k);
-				if(x==' ' || x=='\t'){
-					padding.append(x);
-				}else{
-					break;
-				}
-			}
-		}
-		
-		String left=padding.toString();
-		String[] lines=block.toString().split("\\n");
-		for(int n=0;n<lines.length;n++){
-			String line=lines[n];
-			
-			if(line.startsWith(left)){
-				line=line.substring(left.length());
-			}
-			if(line.endsWith("\r")){
-				line=line.substring(0,line.length()-1);
-			}
-			 
-			java.append("\r\n");
-			 
-			java.append(left);
-			
-			List<String> vars=new ArrayList<String>();
-			Matcher m=patternVar.matcher(line);
-			while(m.find()){
-				String var=m.group();
-				vars.add(var.substring(1));
-			}
-			
-			String s=line.replaceAll(REGX_VAR, "?");
-			s=s.replaceAll("\"", "\\\\\"");
-		 	
-			if(output){
+	public long increaseVersion(){
+		if(version>=0){
+			SimpleDateFormat sdf=new SimpleDateFormat("yyyyMMddHHmmss");
+			long newVersion=Long.parseLong(sdf.format(new Date())+"00");
 				
-				java.append("add(\"").append(s).append("\"");
-				if(vars.size()>0){
-					for(String v:vars){
-						java.append(","+v);
-					}
-				}
-				java.append(").add(\"\\r\\n\");");
-				
+			if((version/100) ==(newVersion/100) ){
+				version++;
+			}else if(newVersion > version){
+				version=newVersion;
 			}else{
-				if(n==0){
-					java.append(" ");
-				}else{
-					java.append("+");
-				}
-				 
-				java.append("\"");
-				java.append(s);
-				java.append("\\r\\n");
-				 
-				java.append("\"");
-				
-				if(n==lines.length-1){
-					java.append(";");
-				}
+				version++;
 			}
-		}
+		} 
 		
-		return i;
+		return this.version;
 	}
 	
+	public String replace(String ... fts){
+		String c= body;
+		if(version>=0){
+			c= body.substring(0,pVersion1)+" "+version+"L;"+body.substring(pVersion2+1);
+		}
+		
+		for(int i=0;i<fts.length;i+=2){
+			c=c.replace(fts[0], fts[1]);
+		}
+		return c;
+	}
+	
+	public void replaceAndSave(String ... fts){
+		String c=replace(fts);
+		
+		FileHelper.writeUTF8(new File(filePath),c);
+	}
+	
+	 
+	 
+	 
 	protected void parsePackage(){
 		Pattern patternPackage = Pattern.compile("package\\s+[a-z0-9A-Z\\._]+\\s*;");
-		Pattern patternClass   = Pattern.compile("class\\s+[a-z0-9A-Z\\_]+");
+		Pattern patternClass   = Pattern.compile("(class|interface)\\s+[a-z0-9A-Z\\_]+");
 		
 		Matcher m=patternPackage.matcher(body);
 		if(m.find()){
 			String x=m.group();
 			packageName=x.substring(7,x.length()-1).trim();
 		}
-		
-		if(packageName==null){
-			throw new RuntimeException("Keyword package not found!");
-		}
+	 
 		
 		m=patternClass.matcher(body);
 		if(m.find()){
 			String x=m.group();
 			name=x.substring(5,x.length()).trim();
 		}
-		
-		if(name==null){
-			throw new RuntimeException("Keyword class not found!");
-		}
+		 
 	}
+	  
 	
-	private int readBlock(String body,int from,StringBuffer buf){
-		int x=from;
-		StringBuffer flag=new StringBuffer();
-		for(int i=from;i<body.length();i++){
-			char c=body.charAt(i);
-			if(c!=' ' && c!='\t' && c!='\r' && c!='\n'){
-				flag.append(c);
-			}else if(flag.length()>0){
-				while(c!='\n' && (c==' '|| c=='\t' || c=='\r')){
-					i++;
-					c=body.charAt(i);
-				}
-				
-				int y=-1;
-				if(flag.toString().equals("/*")){
-					y=body.indexOf("*/",i);
-				}else{
-					y=body.indexOf(flag.toString(),i);
-				} 
-				
-				if(y<0){
-					throw new RuntimeException("String segment flag not found: "+flag.toString());
-				}
-				
-				int z=y-1;
-				c=body.charAt(z);
-				while(c!='\n' && (c==' '|| c=='\t' || c=='\r')){
-					z--;
-					c=body.charAt(z);
-				}
-				if(c=='\n' && body.charAt(z-1)=='\r'){
-					z--;
-				}
-				
-				String block=body.substring(i+1,z+1);
-				buf.append(block);
-				
-				return y+flag.length()-1; 
-			}
-		}
-		
-		return x;
-	}
-
 	public long getLastModified() {
 		return lastModified;
 	}
@@ -281,5 +182,13 @@ public class Java {
 
 	public long getVersion() {
 		return version;
+	}
+
+	public int getpVersion1() {
+		return pVersion1;
+	}
+
+	public int getpVersion2() {
+		return pVersion2;
 	}
 }

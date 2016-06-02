@@ -125,6 +125,18 @@ public class FileHelper {
 		}
 	}
    	
+	public static void writeUTF8(File target,String data){
+		write(target,data,"utf-8");
+	}
+	
+  	public static void write(File target,String data,String charset) {
+  		try{
+  			write(target,data.getBytes(charset));
+  		}catch(IOException e){
+			throw new RuntimeException(e);
+		}
+  	}
+  	
 	public static void write(File target, byte[] data) {
 		try{
 			String path=target.getAbsolutePath().replaceAll("\\\\", "/");

@@ -11,7 +11,8 @@ import com.tsc9526.monalisa.core.query.Query;
 import com.tsc9526.monalisa.core.query.datatable.DataTable;
 
 public class Demo {
-
+	final static long $VERSION =1L;
+	
 	public Page findUserByName(String name,String pwd,int[] status){
 		String sql=<<~
 		===================================================

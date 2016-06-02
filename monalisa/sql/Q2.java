@@ -24,7 +24,7 @@ import test.com.tsc9526.monalisa.core.mysql.MysqlDB;
  * @author zzg.zhou(11039850@qq.com)
  */
 public class Q2 implements MysqlDB {
-	final static long $VERSION=4;
+	final static long $VERSION= 2016060218570901L;
 	 
 	public int findOne(){ 
 		return 4;
