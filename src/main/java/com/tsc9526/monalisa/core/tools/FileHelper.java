@@ -24,6 +24,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 
@@ -74,6 +76,26 @@ public class FileHelper {
 			}			 
 		}
 		return sb.toString(); 
+	}
+	
+	public static String[] combineExistFiles(String[]... ls) {
+		if (ls == null) {
+			return null;
+		}
+
+		List<String> rs = new ArrayList<String>();
+		for (String[] s : ls) {
+			if (s != null) {
+				for (String x : s) {
+					if (x != null) {
+						if (new File(x).exists() && rs.contains(x) == false) {
+							rs.add(x);
+						}
+					}
+				}
+			}
+		}
+		return rs.toArray(new String[0]);
 	}
 	
 	public static File mkdirs(String dir){
