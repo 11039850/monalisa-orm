@@ -36,7 +36,9 @@ public class ConsoleLoggerFactory implements LoggerFactory {
 		return INSTANCE;
 	}
 
-	private static final Logger INSTANCE = new Logger() {
+	private static final Logger INSTANCE = new ConsoleLogger();
+	
+	public static class ConsoleLogger extends Logger {
 		public void debug(String message) {
 			println("DEBUG",message);
 		}
@@ -89,11 +91,11 @@ public class ConsoleLoggerFactory implements LoggerFactory {
 			return true;
 		}
 		
-		private void println(String level,String message){
+		protected void println(String level,String message){
 			println(level,message,null);
 		}
 		
-		private void println(String level,String message, Throwable t){
+		protected void println(String level,String message, Throwable t){
 			StringBuffer sb=new StringBuffer();
 			
 			sb.append("[").append(level).append("] ").append(message);
@@ -104,22 +106,26 @@ public class ConsoleLoggerFactory implements LoggerFactory {
 				sb.append("\r\n").append(writer.getBuffer().toString());
 			}
 			
+			write(level,sb.toString());
+		}
+		
+		protected void write(String level,String message) {
 			if(messager!=null){
 				if(isError(level)){
-					messager.printMessage(Kind.ERROR, sb.toString());
+					messager.printMessage(Kind.ERROR, message);
 				}else{
-					messager.printMessage(Kind.NOTE, sb.toString());
+					messager.printMessage(Kind.NOTE, message);
 				}
 			}else{
 				if(isError(level)){
-					System.err.println(sb.toString());
+					System.err.println(message);
 				}else{
-					System.out.println(sb.toString());
+					System.out.println(message);
 				}
 			}
 		}
 		
-		private boolean isError(String level) {
+		protected boolean isError(String level) {
 			return level.equals("ERROR") || level.equals("FATAL");
 		}
 	};

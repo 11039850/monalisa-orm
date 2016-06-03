@@ -19,8 +19,10 @@ package test.com.tsc9526.monalisa.core.tools;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
+import java.net.URL;
 
 import org.mockito.Mockito;
+import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import com.tsc9526.monalisa.core.query.Query;
@@ -45,5 +47,29 @@ public class ClassPathHelperTest {
 		
 		assertTrue(f.getName().endsWith(".class"));
 		assertTrue(f.exists());
+	}
+	
+	public void testLinuxUrl()throws Exception{
+		URL url=new URL("jar:file:/root/demo/lib/Simple-0.0.1-SNAPSHOT.jar!/example/monalisa/SqlResult.class");
+		
+		String path=ClassPathHelper.getFilePathfromResourceUrl(url);
+		Assert.assertEquals(path, "/root/demo/lib/Simple-0.0.1-SNAPSHOT.jar");
+	}
+	
+	public void testWindowsUrl()throws Exception{
+		URL url=new URL("jar:file:/D:/root/demo/lib/Simple-0.0.1-SNAPSHOT.jar!/example/monalisa/SqlResult.class");
+		
+		String path=ClassPathHelper.getFilePathfromResourceUrl(url);
+		Assert.assertEquals(path, "D:/root/demo/lib/Simple-0.0.1-SNAPSHOT.jar");
+	}
+	
+	public void testFolderUrl()throws Exception{
+		File f=new File("src/test/resources/lab/demo.java");
+		 
+		String path=ClassPathHelper.getFilePathfromResourceUrl(f.toURI().toURL());
+		
+		String expect=f.getAbsolutePath().replace("\\","/");
+		 
+		Assert.assertEquals(path, expect);
 	}
 }

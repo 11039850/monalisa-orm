@@ -202,12 +202,21 @@ public class Helper {
 	}
 
 	public static String bytesToHexString(byte[] src) {
+		return bytesToHexString(src,null);
+	}
+	
+	public static String bytesToHexString(byte[] src,String bytePrefix) {
 		StringBuilder stringBuilder = new StringBuilder("");
 		if (src == null || src.length <= 0) {
 			return null;
 		}
 		for (int i = 0; i < src.length; i++) {
 			int v = src[i] & 0xFF;
+			
+			if(bytePrefix!=null && bytePrefix.length()>0){
+				stringBuilder.append(bytePrefix);
+			}
+			
 			String hv = Integer.toHexString(v).toUpperCase();
 			if (hv.length() < 2) {
 				stringBuilder.append(0);

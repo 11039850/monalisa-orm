@@ -69,14 +69,14 @@ public class DBAnnotationProcessor extends AbstractProcessor {
 					try{	
 						doGenerateFiles(element);
 					}catch(Throwable e){
-						DBGenerator.logger.error(""+e,e);
+						DBGenerator.plogger.error(""+e,e);
 						
 						if(Helper.inEclipseIDE()){
 							processingEnv.getMessager().printMessage(Kind.ERROR,e.getClass().getName()+":\r\n"+Helper.toString(e), element);
 						}
 					}
 				}else{
-					DBGenerator.logger.warn("@DB should used for interface: "+element.getQualifiedName().toString());
+					DBGenerator.plogger.warn("@DB should used for interface: "+element.getQualifiedName().toString());
 					
 					if(Helper.inEclipseIDE()){
 						processingEnv.getMessager().printMessage(Kind.WARNING,"@DB should used for interface: "+element.getQualifiedName().toString(), element);
@@ -89,6 +89,8 @@ public class DBAnnotationProcessor extends AbstractProcessor {
 	}
 	
 	private void doGenerateFiles(TypeElement element)throws Exception{
+		long tm=System.currentTimeMillis();
+		
 		if(Helper.inEclipseIDE()){
 			DBGeneratorProcessingInEclipse g=new DBGeneratorProcessingInEclipse(processingEnv,element);
 			g.generateFiles();
@@ -96,6 +98,10 @@ public class DBAnnotationProcessor extends AbstractProcessor {
 			DBGeneratorProcessing g=new DBGeneratorProcessing(processingEnv,element);
 			g.generateFiles();
 		}
+		
+		long delta=System.currentTimeMillis()-tm;
+		
+		DBGenerator.plogger.info("Finished, use time: "+delta+" ms.");
 	}
   
 }

@@ -136,4 +136,28 @@ public class TestConverter {
 			 Assert.assertEquals(Double.parseDouble(str[i]), dbArr[i]);
 		 }
 	}
+	
+	public void testEnumIntA(){
+		TypeConverter tc=new TypeConverter();
+		 
+		EnumIntA a0=tc.convert(0, EnumIntA.class);
+		Assert.assertEquals(a0, EnumIntA.V0);
+		
+		EnumIntA a1=tc.convert(1, EnumIntA.class);
+		Assert.assertEquals(a1, EnumIntA.V1);
+	}
+	
+	public void testEnumStringA(){
+		TypeConverter tc=new TypeConverter();
+		 
+		EnumStringA a0=tc.convert("V0", EnumStringA.class);
+		Assert.assertEquals(a0, EnumStringA.V0);
+		
+		EnumStringA a1=tc.convert("V1", EnumStringA.class);
+		Assert.assertEquals(a1, EnumStringA.V1);
+	}
+	
+	public static enum EnumIntA{V0,V1}
+	
+	public static enum EnumStringA{V0,V1}
 }

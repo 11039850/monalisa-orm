@@ -24,6 +24,7 @@ import com.tsc9526.monalisa.core.datasource.DbProp;
 import com.tsc9526.monalisa.core.logger.Logger;
 import com.tsc9526.monalisa.core.meta.MetaPartition;
 import com.tsc9526.monalisa.core.meta.MetaTable;
+import com.tsc9526.monalisa.core.processor.DBAnnotationProcessor;
 import com.tsc9526.monalisa.core.query.model.Model;
 import com.tsc9526.monalisa.core.query.partition.Partition;
 /**
@@ -32,8 +33,8 @@ import com.tsc9526.monalisa.core.query.partition.Partition;
  */
 @SuppressWarnings("rawtypes")
 public abstract class DBGenerator {
-	public static Logger logger=Logger.getLogger(DBGenerator.class);
-	 
+	public static Logger plogger=Logger.getLogger(DBAnnotationProcessor.class);
+	  
 	protected DBConfig dbcfg;
 	protected DBMetadata dbmetadata; 
 	
@@ -44,6 +45,8 @@ public abstract class DBGenerator {
 	 
 	public void generateFiles(){					
 		List<MetaTable> tables=dbmetadata.getTables();
+		
+		plogger.info("Loaded tables: "+tables.size());
 		
 		generateJavaFiles(tables);		 
 		generateResources(tables);
@@ -56,10 +59,10 @@ public abstract class DBGenerator {
 				Partition p=mp.getPartition();				 
 				String error=p.verify(mp,table);
 				if(error!=null){
-					logger.error(error);
+					plogger.error(error);
 				}						 				
 			}catch(Exception e) {				 
-				logger.error(e.getClass().getName()+":\r\n"+e.getMessage(),e);
+				plogger.error(e.getClass().getName()+":\r\n"+e.getMessage(),e);
 			}
 		}
 	}
@@ -82,8 +85,8 @@ public abstract class DBGenerator {
 			Writer w = getResourceWriter();
 			for(MetaTable table:tables){
 				if(table.getCreateTable()!=null){
-					logger.info("Create resource for table: "+table.getName());
-					
+					plogger.info("["+table.getName()+"] Create resources");
+				 	
 					w.write("/***CREATE TABLE: "+table.getNamePrefix()+" :: "+table.getName()+"***/\r\n");
 					w.write(table.getCreateTable().getOriginSQL()); 
 					w.write("\r\n\r\n\r\n");
@@ -98,7 +101,7 @@ public abstract class DBGenerator {
 	protected void generateJavaFiles(List<MetaTable> tables){		
 		try{			
 			for(MetaTable table:tables){
-				logger.info("Create java for table: "+table.getName()+"["+table.getJavaName()+"]");
+				plogger.info("["+table.getName()+"] Create class: "+table.getJavaName());
 				
 				MetaTable clone=table.clone();
 				clone.setJavaName(null).setName(clone.getNamePrefix());

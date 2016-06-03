@@ -76,12 +76,15 @@ public class DBGeneratorProcessing extends DBGenerator{
 				projectPath=project.getProject().getLocation().toString();
 				 
 				inEclipseIDE=true;
-				logger.info("Building "+dbKey+"("+ (db.configFile().length()>0?db.configFile():db.url() )+"): "+projectPath+" in eclipse ...");		
+				plogger.info("Building eclipse project: "+projectPath+" ...");
+				plogger.info("Database "+dbKey+", "+ (db.configFile().length()>0?("Config-file: "+db.configFile()):(db.url()) ));		
 			}
 		}
+		
 		if(!inEclipseIDE){
-			logger.info("Building "+dbKey+"("+ (db.configFile().length()>0?db.configFile():db.url() )+"): "+new File(DbProp.CFG_ROOT_PATH).getAbsolutePath()+" ...");
+			plogger.info("Building "+dbKey+"("+ (db.configFile().length()>0?db.configFile():db.url() )+"): "+new File(DbProp.CFG_ROOT_PATH).getAbsolutePath()+" ...");
 		}
+		
 		System.setProperty("DB@"+dbKey,projectPath);				 
 		System.setProperty("DB_PROJECT_PATH", projectPath);
 		
@@ -157,7 +160,7 @@ public class DBGeneratorProcessing extends DBGenerator{
 			try{
 				clazz=(Class<? extends ConfigClass>)ClassHelper.forClassName(className);
 			}catch(ClassNotFoundException e){
-				logger.info("Class not found try load class: "+className+" from project path.");
+				plogger.info("Class not found, try load class: "+className+" from project path.");
 				
 				return loadClassFromProject(className);
 				

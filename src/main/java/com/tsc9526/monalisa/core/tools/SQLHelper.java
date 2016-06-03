@@ -16,6 +16,10 @@
  *******************************************************************************************/
 package com.tsc9526.monalisa.core.tools;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.Reader;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -32,35 +36,85 @@ public class SQLHelper {
 		if(parameters==null || parameters.size()==0){
 			return original;
 		}else{	
-			StringBuffer sb = new StringBuffer();
-			
-			int x=0;
-			for(int i=0;i<original.length();i++){
-				char c=original.charAt(i);
-				if(c=='?'){
-					if(x>=parameters.size()){
-						return original;
-					}
-					
-					Object p=parameters.get(x);
-					if(p==null){
-						sb.append("null");
-					}else if(p instanceof Number || p instanceof Boolean){
-						sb.append(p);
-					}else if(p instanceof Date){
-						sb.append("'").append(Helper.getTime((Date)p)).append("'");
-					}else{
-						sb.append(escapeSqlValue(p.toString()));
-					}	
-					
-					x++;
-				}else{
-					sb.append(c);
-				}
-			}
-			
-			return sb.toString();
+			 try{
+				 return toSQL(original,parameters);
+			 }catch(IOException e){
+				 throw new RuntimeException(e);
+			 }
 		}
+	}
+	
+	private static String toSQL(String original,List<Object> parameters)throws IOException{
+		StringBuffer sb = new StringBuffer();
+		int x=0;
+		for(int i=0;i<original.length();i++){
+			char c=original.charAt(i);
+			if(c=='?'){
+				if(x>=parameters.size()){
+					return original;
+				}
+				
+				Object p=parameters.get(x);
+				if(p==null){
+					sb.append("null");
+				}else if(p instanceof Number || p instanceof Boolean){
+					sb.append(p);
+				}else if(p instanceof Date){
+					sb.append("'").append(Helper.getTime((Date)p)).append("'");
+				}else if(p.getClass() == byte[].class || p.getClass() == Byte[].class){
+					appendBytes(sb,(byte[])p);
+				}else if(p instanceof InputStream){
+					appendStream(sb,(InputStream)p); 
+				}else if(p instanceof Reader){
+					appendReader(sb,(Reader)p); 
+				}else{
+					sb.append(escapeSqlValue(p.toString()));
+				}	
+				
+				x++;
+			}else{
+				sb.append(c);
+			}
+		}
+		
+		return sb.toString();
+	}
+	
+	private static void appendStream(StringBuffer sb,InputStream r)throws IOException{
+		ByteArrayOutputStream tmp=new ByteArrayOutputStream();
+		
+		byte[] buf=new byte[16*1024];
+		int len=r.read(buf);
+		while(len>0){
+			tmp.write(buf,0,len);
+			
+			len=r.read(buf);
+		}
+		r.close();
+		
+		appendBytes(sb,tmp.toByteArray());
+	}
+	
+	private static void appendReader(StringBuffer sb,Reader r)throws IOException{
+		StringBuffer tmp=new StringBuffer();
+		
+		char[] buf=new char[16*1024];
+		int len=r.read(buf);
+		while(len>0){
+			tmp.append(new String(buf,0,len));
+			len=r.read(buf);
+		}
+		r.close();
+		
+		sb.append(escapeSqlValue(tmp.toString()));
+	}
+	
+	private static void appendBytes(StringBuffer sb,byte[] bytes){
+		String s=Helper.bytesToHexString(bytes,"\\x");
+		
+		sb.append("'");
+		sb.append(s);
+		sb.append("'");
 	}
 	
 	

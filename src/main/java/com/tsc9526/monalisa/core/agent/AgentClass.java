@@ -78,7 +78,11 @@ public class AgentClass {
 			 
 			long oldVersion     =old!=null?old.version:ClassHelper.getVersion(ci.className);
 		 	long oldLastModified=old!=null?old.lastModified:ClassPathHelper.getClassOrJarFile(ci.className).lastModified();
-			  
+			
+		 	if(old==null){
+		 		System.out.println(ci.className+" :: "+ClassPathHelper.getClassOrJarFile(ci.className).getAbsolutePath());
+		 	}
+		 	
 			String oldTs=Helper.toDateString(oldLastModified,"yyyyMMddHHmmss");
 			String newTs=Helper.toDateString(ci.lastModified,"yyyyMMddHHmmss");
 			

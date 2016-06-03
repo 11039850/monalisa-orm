@@ -90,7 +90,7 @@ public class TestGenterator {
 		
 		int maxId=MysqlDB.DB.selectOne("select max(id) from test_table_1").getInt(0,0); 
 		
-		Tx.putUserContext("zzg.zhou");
+		Tx.putContext(Tx.CONTEXT_CURRENT_USERID,"zzg.zhou");
 		TestTable1 t1=new TestTable1();
 		t1.defaults();	
 		t1.save();

@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Method;
 import java.net.MalformedURLException;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.LinkedHashMap;
@@ -21,33 +22,47 @@ public class ClassPathHelper {
 	 
 	public static File getClassOrJarFile(Class<?> clazz) {
 		URL url = getClassResourceURL(clazz);
+		String path=null;
 		try {
-			String urlString = url.toString();
-			int endIndex = urlString.toLowerCase().indexOf("!");
-			if (endIndex > 0) {
-				//class in jar
-				int beginIndex = urlString.lastIndexOf("file:/");
-				if (beginIndex >= 0) {
-					String path=urlString.substring(beginIndex+6, endIndex);
-					while(path.startsWith("/")){
-						path=path.substring(1);
-					}
-					return new File(path);
-				}
-				
-				beginIndex = urlString.lastIndexOf("://");
-				if (beginIndex > 0) {
-					return new File(urlString.substring(beginIndex+3, endIndex));
-				}
-			} else {
-				//class in folder
-				return new File(url.toURI());
-			}
+			path=getFilePathfromResourceUrl(url);	 
 		} catch (Exception e) {
 			throw new RuntimeException("Error locating classpath entry for: " + clazz.getName(), e);
 		}
 		
-		throw new RuntimeException("Error locating classpath entry for: " + clazz.getName() + " url: " + url);
+		if(path!=null){
+			return new File(path);
+		}else{
+			throw new RuntimeException("Error locating classpath entry for: " + clazz.getName() + " url: " + url);
+		}
+	}
+	
+	public static String getFilePathfromResourceUrl(URL url) throws URISyntaxException  {
+		String urlString=url.toString();
+		 
+		int endIndex = urlString.toLowerCase().indexOf("!");
+		if (endIndex > 0) {
+			//class in jar
+			int beginIndex = urlString.lastIndexOf("file:/");
+			if (beginIndex >= 0) {
+				String path=urlString.substring(beginIndex+5, endIndex);
+				
+				if(path.indexOf(":")>0){
+					path=path.substring(1);
+				}
+				
+				return path;
+			}
+			
+			beginIndex = urlString.lastIndexOf("://");
+			if (beginIndex > 0) {
+				return urlString.substring(beginIndex+3, endIndex);
+			}
+		} else {
+			//class in folder
+			return new File(url.toURI()).getAbsolutePath().replace("\\","/"); 
+		}
+		
+		return null;
 	}
 	
 	public static File getClassPathFile(Class<?> clazz) {

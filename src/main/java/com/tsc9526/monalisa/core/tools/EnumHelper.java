@@ -40,7 +40,12 @@ public class EnumHelper {
 						return getEnum(type,x);					
 					}else{
 						String x=value.toString();
-						return getEnum(type,x);						
+						try{ 
+							int i=Integer.parseInt(x);
+							return getEnum(type,i);	
+						}catch(NumberFormatException e){
+							return getEnum(type,x);			
+						}
 					}
 				}
 			} 			 

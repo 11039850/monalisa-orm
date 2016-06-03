@@ -49,16 +49,7 @@ public class Tx {
 	
 	private static ThreadLocal<Tx> tx =new ThreadLocal<Tx>();  
 	private static ThreadLocal<DataMap> context=new ThreadLocal<DataMap>();
-	
-	public static void putUserContext(Object user){
-		putContext(CONTEXT_CURRENT_USERID,user);
-	}
-	
-	@SuppressWarnings("unchecked")
-	public static <T> T getUserContext(){
-		return (T)getContext(CONTEXT_CURRENT_USERID);
-	}
-	
+	  
 	public static Object getContext(String key){
 		DataMap m=context.get();
 		if(m!=null){

@@ -18,6 +18,7 @@ package com.tsc9526.monalisa.core.generator;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
+import java.net.URL;
 import java.net.URLClassLoader;
 
 import javax.annotation.processing.ProcessingEnvironment;
@@ -55,7 +56,7 @@ public class DBGeneratorProcessingInEclipse extends DBGeneratorProcessing{
 			
 			String[] classPath=JavaRuntime.computeDefaultRuntimeClassPath(project);
 			 
-		 	loader=new URLClassLoader(Helper.toURLs(classPath),processingEnv.getClass().getClassLoader());
+		 	loader=new LoggerClassLoader(Helper.toURLs(classPath),processingEnv.getClass().getClassLoader());
 			Thread.currentThread().setContextClassLoader(loader);
 			
 			beginProcessing(loader);
@@ -79,11 +80,30 @@ public class DBGeneratorProcessingInEclipse extends DBGeneratorProcessing{
 	private void beginProcessing(URLClassLoader loader)throws Exception{
 		Class<?> dbPropClass=loader.loadClass(DbProp.class.getName());
 		dbPropClass.getField("ProcessingEnvironment").set(null, true);
+		
+		Class<?> dbGenClass=loader.loadClass(DBGenerator.class.getName());
+		dbGenClass.getField("plogger").set(null, DBGenerator.plogger);
 	}
 	
 	private void endProcessing(URLClassLoader loader)throws Exception{
 		Class<?> clazz=loader.loadClass(DataSourceManager.class.getName());
 		clazz.getMethod("shutdown").invoke(null);
+	}
+	
+	private class LoggerClassLoader extends URLClassLoader{
+		 
+		public LoggerClassLoader(URL[] urls,ClassLoader parent) {
+			super(urls,parent);
+		}
+		
+		protected Class<?> findClass(String name) throws ClassNotFoundException{
+			String prefix="com.tsc9526.monalisa.core.logger.";
+			if(name.startsWith(prefix)){
+				return Class.forName(name);
+			}else{
+				return super.findClass(name);
+			}
+		}
 	}
 	   
 }

@@ -195,7 +195,8 @@ public class ResultHandler<T> {
 		Connection conn = null;
 		try {
 			exchange.setDbKey(query.getDb().getCfg().getKey());
-
+			exchange.setSql(query.getExecutableSQL());
+			
 			conn = dsm.getDataSource(query.getDb()).getConnection();
 			PreparedStatement pst = conn.prepareStatement(query.getSql());
 			SQLHelper.setPreparedParameters(pst, query.getParameters());
@@ -227,7 +228,7 @@ public class ResultHandler<T> {
 
 			exchange.setTable(table);
 			exchange.setErrorString(null);
-
+			
 			rs.close();
 			pst.close();
 		} catch (Exception e) {
