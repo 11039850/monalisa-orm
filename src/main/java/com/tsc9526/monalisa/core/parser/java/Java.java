@@ -33,7 +33,7 @@ import com.tsc9526.monalisa.core.tools.FileHelper;
 public class Java {
 	public static String DEFAULT_PAGE_ENCODING ="utf-8";
 	 
-	public final static String REGX_VERSION ="static\\s+(final\\s+)?(long|Long)\\s+\\$VERSION\\s*=\\s*[0-9]+L?;";
+	public final static String REGX_VERSION ="static\\s+(final\\s+)?(long|Long)\\s+\\$VERSION\\$?\\s*=\\s*[0-9]+L?;";
 	 
 	protected String filePath;
 	protected String body;
@@ -46,6 +46,7 @@ public class Java {
 	
 	protected int pVersion1=0;
 	protected int pVersion2=0;
+	protected boolean naturalIncreasing=false;
 	
 	public Java(File javaFile) {
 		parseFile(javaFile);
@@ -86,6 +87,10 @@ public class Java {
 			pVersion1=p2+1;
 			pVersion2=p3;
 			
+			if(body.substring(p1, p2).trim().endsWith("$")){
+				naturalIncreasing=true;
+			}
+			
 			String s=body.substring(p2+1,p3).trim();
 			if(s.endsWith("L")){
 				s=s.substring(0,s.length()-1);
@@ -100,15 +105,19 @@ public class Java {
 	
 	public long increaseVersion(){
 		if(version>=0){
-			SimpleDateFormat sdf=new SimpleDateFormat("yyyyMMddHHmmss");
-			long newVersion=Long.parseLong(sdf.format(new Date())+"00");
-				
-			if((version/100) ==(newVersion/100) ){
+			if(naturalIncreasing){
 				version++;
-			}else if(newVersion > version){
-				version=newVersion;
 			}else{
-				version++;
+				SimpleDateFormat sdf=new SimpleDateFormat("yyyyMMddHHmmss");
+				long newVersion=Long.parseLong(sdf.format(new Date())+"00");
+					
+				if((version/100) ==(newVersion/100) ){
+					version++;
+				}else if(newVersion > version){
+					version=newVersion;
+				}else{
+					version++;
+				}
 			}
 		} 
 		
@@ -190,5 +199,9 @@ public class Java {
 
 	public int getpVersion2() {
 		return pVersion2;
+	}
+
+	public boolean isNaturalIncreasing() {
+		return naturalIncreasing;
 	}
 }

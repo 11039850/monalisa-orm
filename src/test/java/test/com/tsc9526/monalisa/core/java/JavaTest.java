@@ -31,6 +31,7 @@ import com.tsc9526.monalisa.core.parser.java.Java;
  */
 @Test
 public class JavaTest {
+	static final long $VERSION = 2016060310450100L;
 	
 	public void testParse()throws Exception{
 		Java java=new Java(new File("src/test/resources/lab/demo.java"));
@@ -44,6 +45,48 @@ public class JavaTest {
 		
 		long newVersion=java.increaseVersion();
 		Assert.assertTrue(newVersion > version );
+		 
+	}
+	
+	public void testVersioIncreasing()throws Exception{
+		Java java=new Java(""+/**~{*/""
+			+ "package test.version ;"
+			+ "\r\npublic class Demo{"
+			+ "\r\n	public static final long $VERSION = 1;"
+			+ "\r\n}"
+		+ "\r\n"/**}*/);
+	 
+		
+		Assert.assertEquals("test.version",java.getPackageName());
+		Assert.assertEquals("Demo",java.getName());
+		Assert.assertEquals(false,java.isNaturalIncreasing());
+		
+		long version=java.getVersion();
+		Assert.assertEquals(1,version);
+		
+		long newVersion=java.increaseVersion();
+		Assert.assertTrue(newVersion>1900010100000000L);
+		 
+	}
+	 
+	public void testVersionNaturalIncreasing()throws Exception{
+		Java java=new Java(""+/**~{*/""
+			+ "package test.version ;"
+			+ "\r\npublic class Demo{"
+			+ "\r\n	public static final long $VERSION$ = 1;"
+			+ "\r\n}"
+		+ "\r\n"/**}*/);
+	 
+		
+		Assert.assertEquals("test.version",java.getPackageName());
+		Assert.assertEquals("Demo",java.getName());
+		Assert.assertEquals(true,java.isNaturalIncreasing());
+		
+		long version=java.getVersion();
+		Assert.assertEquals(1,version);
+		
+		long newVersion=java.increaseVersion();
+		Assert.assertEquals(2,newVersion);
 		 
 	}
 }

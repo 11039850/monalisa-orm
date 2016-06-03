@@ -30,17 +30,17 @@ import com.tsc9526.monalisa.core.parser.java.Java;
  */
 @Test
 public class RegexTest {
-	public final static long $VERSION = 2016060219023900L;
+	public final static long $VERSION$ = 3L;
 	
 	public void testRegexVersion(){
 		Pattern p=Pattern.compile(Java.REGX_VERSION);
-		 
+		       
 		Matcher m=p.matcher(""+/**~{*/""
 			+ "public class a{"
-			+ "\r\n	public static final long $VERSION = 1;"
+			+ "\r\n	public static final long $VERSION = 2016060310421800L;"
 			+ "\r\n}"
 		+ "\r\n"/**}*/); 
-		 
+		  
 		Assert.assertTrue(m.find() && m.start()>0);
 		 
 		m=p.matcher(""+/**~{*/""
@@ -53,6 +53,14 @@ public class RegexTest {
 		m=p.matcher(""+/**~{*/""
 			+ "public class a{"
 			+ "\r\n	public static final Long $VERSION = 1000L;"
+			+ "\r\n}"
+		+ "\r\n"/**}*/);	
+		Assert.assertTrue(m.find() && m.start()>0);
+		
+		
+		m=p.matcher(""+/**~{*/""
+			+ "public class a{"
+			+ "\r\n	public static final Long $VERSION$ = 1000L;"
 			+ "\r\n}"
 		+ "\r\n"/**}*/);	
 		Assert.assertTrue(m.find() && m.start()>0);
