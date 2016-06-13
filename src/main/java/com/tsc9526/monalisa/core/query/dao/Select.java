@@ -323,7 +323,7 @@ public class Select<T extends Model,S extends Select> {
 	}
 	
 	public class SelectForExample{
-		private Example example;
+		protected Example example;
 		
 		public SelectForExample(Example example){
 			this.example=example;

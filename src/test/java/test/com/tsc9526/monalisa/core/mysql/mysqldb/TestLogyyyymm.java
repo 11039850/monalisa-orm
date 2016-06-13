@@ -31,7 +31,7 @@ import java.util.LinkedHashMap;
 	}
 )
 public class TestLogyyyymm extends com.tsc9526.monalisa.core.query.model.Model<TestLogyyyymm> implements test.com.tsc9526.monalisa.core.mysql.MysqlDB{
-	private static final long serialVersionUID = 1126342135139L;
+	private static final long serialVersionUID = 1125651236859L;
 		 
 	public static final Insert INSERT(){
 	 	return new Insert(new TestLogyyyymm());
@@ -669,6 +669,8 @@ public class TestLogyyyymm extends com.tsc9526.monalisa.core.query.model.Model<T
 		
 		
 		
+		
+		
 			
 				
 		/**
@@ -697,6 +699,29 @@ public class TestLogyyyymm extends com.tsc9526.monalisa.core.query.model.Model<T
 			return m;
 		}
 		
+		
+		
+		public SelectForExample selectForExample(Example example){
+			return new SelectForExample(example);
+		} 	
+		
+		public class SelectForExample extends com.tsc9526.monalisa.core.query.dao.Select<TestLogyyyymm,Select>.SelectForExample{
+			public SelectForExample(Example example) {
+				super(example);
+			}
+			
+			
+			
+					
+			/**
+			* List result to Map, The map key is primary-key:  id
+			*/
+			public Map<Integer,TestLogyyyymm> selectToMap(){
+				return selectByExampleToMap((Example)this.example);
+			}
+			
+		}
+			
 	}
 	 
 		

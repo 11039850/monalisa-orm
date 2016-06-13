@@ -1,7 +1,7 @@
 /*******************************************************************************************
  *	Copyright (c) 2016, zzg.zhou(11039850@qq.com)
  * 
- *  Monalisa is free software: you can redistribute it and/or modify
+ *   Monalisa is free software: you can redistribute it and/or modify
  *	it under the terms of the GNU Lesser General Public License as published by
  *	the Free Software Foundation, either version 3 of the License, or
  *	(at your option) any later version.
@@ -575,6 +575,9 @@ String   dbi       =(String)request.getAttribute("dbi");
 			}		out.println("");
 			out.println("		");
 			out.print("		");
+			boolean select_to_map=false; 		out.println("");
+			out.println("		");
+			out.print("		");
 			for(MetaIndex index:table.getIndexes()){ 		out.println("");
 			out.print("		");
 			
@@ -631,6 +634,8 @@ String   dbi       =(String)request.getAttribute("dbi");
 			
 		if(index.getColumns().size()==1){
 			MetaColumn k=index.getColumns().get(0);
+			
+			select_to_map=true;
 				out.println("");
 			out.println("		/**");
 			out.print("		* List result to Map, The map key is unique-key: ");
@@ -712,6 +717,7 @@ String   dbi       =(String)request.getAttribute("dbi");
 			
 		if(table.getKeyColumns().size()==1){
 			MetaColumn k=table.getKeyColumns().get(0);
+			select_to_map=true;
 				out.println("		");
 			out.println("		/**");
 			out.print("		* List result to Map, The map key is primary-key:  ");
@@ -780,6 +786,78 @@ String   dbi       =(String)request.getAttribute("dbi");
 			out.println("		}");
 			out.print("		");
 			}		out.println("");
+			out.println("		");
+			out.print("		");
+			if(select_to_map){ 		out.println("");
+			out.println("		public SelectForExample selectForExample(Example example){");
+			out.println("			return new SelectForExample(example);");
+			out.println("		} 	");
+			out.println("		");
+			out.print("		public class SelectForExample extends com.tsc9526.monalisa.core.query.dao.Select<");
+			out.print(table.getJavaName());
+			out.println(",Select>.SelectForExample{");
+			out.println("			public SelectForExample(Example example) {");
+			out.println("				super(example);");
+			out.println("			}");
+			out.println("			");
+			out.print("			");
+			
+			for(MetaIndex index:table.getIndexes()){ 
+				if(index.isUnique() && index.getColumns().size()==1){
+					String m="";
+					for(MetaColumn c:index.getColumns()){
+						m=m+firstUpper(c.getJavaName());
+					}
+					if(m.equals("PrimaryKey")){
+						m= "UKPrimaryKey";
+					}
+					
+					MetaColumn k=index.getColumns().get(0);
+					out.println("");
+			out.println("			/**");
+			out.print("			* List result to Map, The map key is unique-key: ");
+			out.print(k.getJavaName());
+			out.println(" ");
+			out.println("			*/");
+			out.print("			public Map<");
+			out.print(k.getJavaType());
+			out.print(",");
+			out.print(table.getJavaName());
+			out.print("> selectToMapWith");
+			out.print(firstUpper(k.getJavaName()));
+			out.println("(){");
+			out.print("				return selectByExampleToMapWith");
+			out.print(firstUpper(k.getJavaName()));
+			out.println("((Example)this.example);");
+			out.println("			}");
+			out.println("			");
+			out.print("			");
+			}		out.println("");
+			out.print("			");
+			}		out.println("");
+			out.println("			");
+			out.print("			");
+			
+			if(table.getKeyColumns().size()==1){
+				MetaColumn k=table.getKeyColumns().get(0);
+					out.println("		");
+			out.println("			/**");
+			out.print("			* List result to Map, The map key is primary-key:  ");
+			out.print(k.getJavaName());
+			out.println("");
+			out.println("			*/");
+			out.print("			public Map<");
+			out.print(k.getJavaType());
+			out.print(",");
+			out.print(table.getJavaName());
+			out.println("> selectToMap(){");
+			out.println("				return selectByExampleToMap((Example)this.example);");
+			out.println("			}");
+			out.print("			");
+			}		out.println("");
+			out.println("		}");
+			out.print("		");
+			}		out.println("	");
 			out.println("	}");
 			out.println("	 ");
 			out.println("		");

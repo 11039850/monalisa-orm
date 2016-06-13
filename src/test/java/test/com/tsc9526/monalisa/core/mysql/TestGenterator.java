@@ -19,6 +19,7 @@ package test.com.tsc9526.monalisa.core.mysql;
  
 import java.io.File;
 import java.text.SimpleDateFormat;
+import java.util.Map;
 
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -106,6 +107,9 @@ public class TestGenterator {
 		
 		t1=new TestTable1(maxId+2).load();
 		Assert.assertTrue(!t1.entity());
+		
+		Map<Integer,TestTable1> ms=TestTable1.WHERE().id.ge(0).SELECT().selectToMap();
+		Assert.assertTrue(ms.size()>0);
 		
 	}
 	

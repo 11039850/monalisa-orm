@@ -20,7 +20,8 @@ import com.tsc9526.monalisa.core.tools.ClassPathHelper;
 public class AgentJar {
 	public final static String VirtualMachineClass = "com.sun.tools.attach.VirtualMachine";
 	public final static String AgentHotSpotClass   = "com.tsc9526.monalisa.core.agent.AgentHotSpotVM";
-
+	public final static String EnhancerClassCglib  = "net.sf.cglib.proxy.Enhancer";
+	
 	private volatile static AgentLoaderInterface agentLoader;
  
 	public static void loadAgent(String agentJar, String options) {
@@ -45,8 +46,7 @@ public class AgentJar {
 	private synchronized static AgentLoaderInterface getAgentLoader(String agentJar) {
 		if (agentLoader == null) {
 			Class<AgentLoaderInterface> agentLoaderClass=loadAgentLoaderClass();
-			
-			try {
+		 	try {
 				final Object agentLoaderObject = agentLoaderClass.newInstance();
 	  
 				agentLoader = new AgentLoaderInterface() {
@@ -74,7 +74,7 @@ public class AgentJar {
 			ClassLoader systemLoader = ClassLoader.getSystemClassLoader();
 			
 			try {
-				loadAttachToolClasses(systemLoader);
+				loadJarClasses(systemLoader,"/sun_vm.jar");
 			} catch (IOException e) {
 				throw new RuntimeException(e);
 			}
@@ -88,8 +88,21 @@ public class AgentJar {
 		}
 	}
 	
-	public static void loadAttachToolClasses(ClassLoader loader)throws IOException{  
-		ZipInputStream zip=new ZipInputStream(AgentJar.class.getResourceAsStream("/sun_vm.jar"));
+	public static void loadCglibClass() {
+		try {
+			Class.forName(EnhancerClassCglib);
+		} catch (ClassNotFoundException e) {
+			try {
+				ClassLoader systemLoader = ClassLoader.getSystemClassLoader();
+				AgentJar.loadJarClasses(systemLoader, "/cglib_asm.jar");
+			} catch (IOException ioe) {
+				throw new RuntimeException(ioe);
+			}
+		}
+	}
+	
+	public static void loadJarClasses(ClassLoader loader,String jarResource)throws IOException{  
+		ZipInputStream zip=new ZipInputStream(AgentJar.class.getResourceAsStream(jarResource));
 		
 		ZipEntry entry;
 		byte[] buffer = new byte[16*1024];

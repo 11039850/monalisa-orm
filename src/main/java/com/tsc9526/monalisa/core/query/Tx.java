@@ -22,6 +22,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+import javax.management.RuntimeErrorException;
+
 import com.tsc9526.monalisa.core.datasource.DBConfig;
 
 /**
@@ -34,7 +36,7 @@ public class Tx {
 	public final static String CONTEXT_CURRENT_USERID="CONTEXT_CURRENT_USERID";
 	
 	public static interface Atom{
-		public int execute(); 
+		public int execute()throws Throwable;
 	}
 	
 	private static class CI{
@@ -158,12 +160,14 @@ public class Tx {
 				commit();
 			}
 			return r;
-		}catch(Exception e){
+		}catch(Throwable e){
 			if(tx!=null){
 				rollback();
 			}
 			
-			if(e instanceof RuntimeException){
+			if(e instanceof Error){
+				throw new RuntimeErrorException((Error)e);
+			}else if(e instanceof RuntimeException){
 				throw (RuntimeException)e;
 			}else{
 				throw new RuntimeException(e);

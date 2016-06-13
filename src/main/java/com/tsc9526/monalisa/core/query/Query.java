@@ -68,19 +68,12 @@ public class Query {
 	 * 
 	 * @param theQueryClass 自定义的SQL查询类
 	 * 		
-	 * @return 如果该类的构造函数为 private, 则只创建唯一的实例，否则每次调用该函数都将创建一个新的实例。
+	 * @return 创建一个新的实例。
 	 */
 	public static <T> T create(Class<T> theQueryClass){
 		 return AgentClass.createAgent(theQueryClass);
 	}
-	
-	/**
-	 * 设置查询资源的目录， 默认为： ./monalisa/sql
-	 */
-	public static void setReloadPath(){
-		
-	}
-	
+ 	
 	/**
 	 * 是否显示执行的SQL语句, 默认为: false
 	 */

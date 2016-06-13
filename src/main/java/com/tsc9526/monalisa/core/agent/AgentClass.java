@@ -19,7 +19,6 @@ package com.tsc9526.monalisa.core.agent;
 import java.io.File;
 import java.lang.instrument.ClassDefinition;
 import java.lang.instrument.Instrumentation;
-import java.lang.reflect.Constructor;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.List;
@@ -40,14 +39,13 @@ import com.tsc9526.monalisa.core.tools.JsonHelper;
  * 
  * @author zzg.zhou(11039850@qq.com)
  */
-@SuppressWarnings("unchecked")
 public class AgentClass {
 	static Logger logger=Logger.getLogger(AgentClass.class);
 	
 	static Map<String, AgentArgs.AgentArgClassInfo> hAgentClasses=new ConcurrentHashMap<String, AgentArgs.AgentArgClassInfo>();
 	
 	public static void premain(String agentArgs, Instrumentation inst){
-		 
+		//agentmain(agentArgs,inst);
 	} 
 	
 	public static void agentmain(String agentArgs, Instrumentation inst) {
@@ -78,16 +76,18 @@ public class AgentClass {
 			 
 			long oldVersion     =old!=null?old.version:ClassHelper.getVersion(ci.className);
 		 	long oldLastModified=old!=null?old.lastModified:ClassPathHelper.getClassOrJarFile(ci.className).lastModified();
-			
-		 	if(old==null){
-		 		System.out.println(ci.className+" :: "+ClassPathHelper.getClassOrJarFile(ci.className).getAbsolutePath());
-		 	}
-		 	
+			 	
 			String oldTs=Helper.toDateString(oldLastModified,"yyyyMMddHHmmss");
 			String newTs=Helper.toDateString(ci.lastModified,"yyyyMMddHHmmss");
 			
 			if(old==null){
-				sb.append("!");
+				if(ci.version<oldVersion){
+					sb.append("<!Error!>");
+				}else if(ci.lastModified<oldLastModified){
+					sb.append("<Warn!!!>");
+				}else{
+					sb.append("<Replace>");
+				}
 			}
 		 	sb.append("class: "+ci.className);
 		 	sb.append(", version: "   +oldVersion+(ci.version     ==oldVersion     ?" == ":" -> ")+ci.version  );
@@ -122,9 +122,11 @@ public class AgentClass {
 		return path;
 	}
 	 
-	private static CompilePackage compilePackage; 
-	private synchronized static void checkClasses(){
-		if(compilePackage==null){
+	private static boolean initilized=false;
+	private synchronized static void initAgentClasses(){
+		if(!initilized){
+			AgentJar.loadCglibClass();
+			
 			reloadClasses();
 			 
 			long delay=DbProp.CFG_RELOAD_CLASS_INTERVAL*1000;
@@ -133,9 +135,12 @@ public class AgentClass {
 					reloadClasses();
 				}
 			}, delay, delay);
+			
+			initilized=true;
 		}
 	}
 	
+	private static CompilePackage compilePackage; 
 	public synchronized static void reloadClasses(){
 		if(compilePackage==null){
 			compilePackage=new CompilePackage(DbProp.CFG_SQL_PATH,DbProp.TMP_WORK_DIR_JAVA);
@@ -166,32 +171,22 @@ public class AgentClass {
 		}
 	}
 	
-	private static Map<Class<?>, Object> hCachedObjects=new ConcurrentHashMap<Class<?>, Object>();
-	
+	 
 	public static <T> T createAgent(Class<T> theClass){
+		if(Modifier.isFinal(theClass.getModifiers())){
+			throw new RuntimeException("Agent class: "+theClass.getName()+" cannot be marked by final!");
+		}
+	 	
 		try {
-			checkClasses();   
-			
-			T value=(T)hCachedObjects.get(theClass);
-			
-			if(value==null){
-				Constructor<T> c=theClass.getDeclaredConstructor();
-				
-				if(Modifier.isPrivate(c.getModifiers())){
-					synchronized (theClass) {
-						if(!hCachedObjects.containsKey(theClass)){
-							c.setAccessible(true);
-							
-							value= c.newInstance();
-							hCachedObjects.put(theClass, value);
-						}else{
-							value=(T)hCachedObjects.get(theClass);
-						}
-					} 
-				}else{
-					value=c.newInstance();
-				}
+			if(!initilized){
+				long t1=System.currentTimeMillis();
+				initAgentClasses();
+				logger.info("init: "+(System.currentTimeMillis() - t1));
 			}
+			
+			long t1=System.currentTimeMillis();
+			T value=AgentEnhancer.createProxyInstance(theClass);
+			logger.info("Proxy: "+(System.currentTimeMillis() - t1));
 			
 			return value;
 		} catch (Exception e) {

@@ -28,6 +28,7 @@ import test.com.tsc9526.monalisa.core.sqlfiles.Q1;
 import test.com.tsc9526.monalisa.core.sqlfiles.Q2;
 import test.com.tsc9526.monalisa.core.sqlfiles.Q3;
 import test.com.tsc9526.monalisa.core.sqlfiles.Q4;
+import test.com.tsc9526.monalisa.core.sqlfiles.Q5;
 
 import com.tsc9526.monalisa.core.agent.AgentClass;
 import com.tsc9526.monalisa.core.datasource.DbProp;
@@ -43,41 +44,55 @@ import com.tsc9526.monalisa.core.tools.FileHelper;
  */
 public class QueryTest {
 	static Logger logger=Logger.getLogger(QueryTest.class);
-
-	@BeforeTest
-	public void setUp()throws Exception{
-		File dir=new File("src/test/java/test/com/tsc9526/monalisa/core/sqlfiles");
-		for(File src:dir.listFiles()){
-			if(src.isFile() && src.getName().endsWith(".java")){
-				File target=new File(DbProp.CFG_SQL_PATH+"/"+src.getName());
-				FileHelper.copy(src, target);
-				target.setLastModified(src.lastModified());
+	
+	static{
+		try{
+			File dir=new File("src/test/java/test/com/tsc9526/monalisa/core/sqlfiles");
+			for(File src:dir.listFiles()){
+				if(src.isFile() && src.getName().endsWith(".java")){
+					File target=new File(DbProp.CFG_SQL_PATH+"/"+src.getName());
+					FileHelper.copy(src, target);
+					target.setLastModified(src.lastModified());
+				}
 			}
+			
+			initJavaSources("Q3",3);
+			initJavaSources("Q4",4);
+			initJavaSources("Q5",5);
+		}catch(Exception e){
+			throw new RuntimeException(e);
 		}
-		
-		initJavaSources("Q3");
-		initJavaSources("Q4");
-		 
-		Assert.assertEquals(Query.create(Q1.class).findOne(),1);
-		Assert.assertEquals(Query.create(Q2.class).findOne(),1);
-		Assert.assertEquals(Query.create(Q3.class).findOne(),226);
-		Assert.assertEquals(Query.create(Q4.class).findOne(),226);
 	}
 	
-	private void initJavaSources(String name)throws Exception{
+	static void initJavaSources(String name,int value)throws Exception{
 		Java java=new Java("src/test/java/test/com/tsc9526/monalisa/core/sqlfiles/"+name+".java");
 		
 		java.increaseVersion();
-		String r=java.replace("return 1;", "return 226;");
+		String r=java.replace("return 1;", "return "+value+";");
 		
 		FileHelper.write(new File(DbProp.CFG_SQL_PATH+"/"+name+".java"), r.getBytes("utf-8"));
 	}
 	
+	private Q4 q4;
+	private Q5 q5=Query.create(Q5.class);
+	
+	@BeforeTest
+	public void setUp()throws Exception{
+		Assert.assertEquals(q5.findOne(),5);
+		  
+		q4=Query.create(Q4.class);
+		Assert.assertEquals(q4.findOne(),4);
+		
+		Assert.assertEquals(Query.create(Q1.class).findOne(),1);
+		Assert.assertEquals(Query.create(Q2.class).findOne(),1);
+		Assert.assertEquals(Query.create(Q3.class).findOne(),3);	 
+	}
+	
 	@Test
 	public void testPrivate(){
-		Q1 q11=Query.create(Q1.class);
-		Q1 q12=Query.create(Q1.class);
-		Assert.assertTrue(q11==q12);
+//		Q1 q11=Query.create(Q1.class);
+//		Q1 q12=Query.create(Q1.class);
+//		Assert.assertTrue(q11==q12);
 		
 		Q2 q21=Query.create(Q2.class);
 		Q2 q22=Query.create(Q2.class);
@@ -123,4 +138,13 @@ public class QueryTest {
 		Assert.assertEquals(q2.findOne(),4); 
 	}
 	
+	@Test
+	public void testQuery4(){
+		Assert.assertEquals(q4.findOne(),4);
+	}
+	
+	@Test
+	public void testQuery5(){
+		Assert.assertEquals(q5.findOne(),5);
+	}
 }

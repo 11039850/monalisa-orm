@@ -14,19 +14,27 @@
  *	You should have received a copy of the GNU Lesser General Public License
  *	along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************************/
-package com.tsc9526.monalisa.core.annotation;
+package test.com.tsc9526.monalisa.core.agent;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import org.testng.annotations.Test;
+
+import com.tsc9526.monalisa.core.query.Query;
 
 /**
  * 
  * @author zzg.zhou(11039850@qq.com)
  */
-@Target(ElementType.METHOD)
-@Retention(RetentionPolicy.RUNTIME)
-public @interface Tx{
-	 int level() default -1;
+@Test
+public class TxQueryTest{
+	public void testWithTx()throws Throwable{
+		TxExample example= Query.create(TxExample.class);
+		
+		example.withTx();
+		
+		example.withoutTx();
+		
+		example.txNesting();
+		
+		example.txNesting_inner();
+	}
 }

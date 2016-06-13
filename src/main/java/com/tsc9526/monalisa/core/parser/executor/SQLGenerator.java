@@ -81,7 +81,9 @@ public class SQLGenerator {
 			writer.write("import "+Query.class.getName()+";\r\n\r\n");
 			writer.write("import "+SQLResourceManager.class.getName()+";\r\n\r\n");
 			writer.write("public class "+cs.getClassName()+"{\r\n");
-			writer.write("\tprivate static SQLResourceManager SQLRM=SQLResourceManager.getInstance();\r\n");
+			
+			String sqlrm=SQLResourceManager.class.getSimpleName();
+			writer.write("\tprivate static "+sqlrm+" SQLRM="+sqlrm+".getInstance();\r\n");
 			
 			for(QueryStatement qs:cs.getStatements()){
 				String xs1="", xs2="";

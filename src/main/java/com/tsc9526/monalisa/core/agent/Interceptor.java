@@ -14,19 +14,17 @@
  *	You should have received a copy of the GNU Lesser General Public License
  *	along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************************/
-package com.tsc9526.monalisa.core.annotation;
+package com.tsc9526.monalisa.core.agent;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import java.lang.reflect.Method;
 
 /**
  * 
  * @author zzg.zhou(11039850@qq.com)
  */
-@Target(ElementType.METHOD)
-@Retention(RetentionPolicy.RUNTIME)
-public @interface Tx{
-	 int level() default -1;
+public interface Interceptor {
+	 public void before(Object target, Method method, Object[] args) throws Throwable;
+	 
+	 
+	 public Object after (Object target, Method method, Object[] args,Object returnValue) throws Throwable;
 }

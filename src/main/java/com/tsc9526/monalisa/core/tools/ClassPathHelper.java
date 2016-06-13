@@ -153,7 +153,7 @@ public class ClassPathHelper {
 				defineClass(loader,dc.bytes);
 				dc.defined=true;
 			}else{
-				throw e;
+				throw new RuntimeException("Define class failed: "+dc.className,e);
 			}
 		}
 	}

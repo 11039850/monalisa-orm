@@ -14,19 +14,20 @@
  *	You should have received a copy of the GNU Lesser General Public License
  *	along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************************/
-package com.tsc9526.monalisa.core.annotation;
+package test.com.tsc9526.monalisa.core.sqlfiles;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
-
+ 
+import test.com.tsc9526.monalisa.core.mysql.MysqlDB;
+ 
 /**
  * 
  * @author zzg.zhou(11039850@qq.com)
  */
-@Target(ElementType.METHOD)
-@Retention(RetentionPolicy.RUNTIME)
-public @interface Tx{
-	 int level() default -1;
+public class Q5 implements MysqlDB {
+	final static long $VERSION= 2016061318210700L;
+	 
+	public int findOne(){ 
+		return 1;
+	}
+
 }

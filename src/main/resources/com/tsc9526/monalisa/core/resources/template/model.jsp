@@ -230,6 +230,8 @@ public class <%=table.getJavaName()%> extends <%=modelClass%><<%=table.getJavaNa
 		}				 
 		<%}%>
 		
+		<%boolean select_to_map=false; %>
+		
 		<%for(MetaIndex index:table.getIndexes()){ %>
 		<%
 			String m="";
@@ -260,6 +262,8 @@ public class <%=table.getJavaName()%> extends <%=modelClass%><<%=table.getJavaNa
 		<%
 		if(index.getColumns().size()==1){
 			MetaColumn k=index.getColumns().get(0);
+			
+			select_to_map=true;
 		%>
 		/**
 		* List result to Map, The map key is unique-key: <%=k.getName() %> 
@@ -293,6 +297,7 @@ public class <%=table.getJavaName()%> extends <%=modelClass%><<%=table.getJavaNa
 		<%
 		if(table.getKeyColumns().size()==1){
 			MetaColumn k=table.getKeyColumns().get(0);
+			select_to_map=true;
 		%>		
 		/**
 		* List result to Map, The map key is primary-key:  <%=k.getJavaName()%>
@@ -320,6 +325,53 @@ public class <%=table.getJavaName()%> extends <%=modelClass%><<%=table.getJavaNa
 			return m;
 		}
 		<%}%>
+		
+		<%if(select_to_map){ %>
+		public SelectForExample selectForExample(Example example){
+			return new SelectForExample(example);
+		} 	
+		
+		public class SelectForExample extends com.tsc9526.monalisa.core.query.dao.Select<<%=table.getJavaName()%>,Select>.SelectForExample{
+			public SelectForExample(Example example) {
+				super(example);
+			}
+			
+			<%
+			for(MetaIndex index:table.getIndexes()){ 
+				if(index.isUnique() && index.getColumns().size()==1){
+					String m="";
+					for(MetaColumn c:index.getColumns()){
+						m=m+firstUpper(c.getJavaName());
+					}
+					if(m.equals("PrimaryKey")){
+						m= "UKPrimaryKey";
+					}
+					
+					MetaColumn k=index.getColumns().get(0);
+			%>
+			/**
+			* List result to Map, The map key is unique-key: <%=k.getJavaName()%> 
+			*/
+			public Map<<%=k.getJavaType()%>,<%=table.getJavaName()%>> selectToMapWith<%=firstUpper(k.getJavaName())%>(){
+				return selectByExampleToMapWith<%=firstUpper(k.getJavaName())%>((Example)this.example);
+			}
+			
+			<%}%>
+			<%}%>
+			
+			<%
+			if(table.getKeyColumns().size()==1){
+				MetaColumn k=table.getKeyColumns().get(0);
+			%>		
+			/**
+			* List result to Map, The map key is primary-key:  <%=k.getJavaName()%>
+			*/
+			public Map<<%=k.getJavaType()%>,<%=table.getJavaName()%>> selectToMap(){
+				return selectByExampleToMap((Example)this.example);
+			}
+			<%}%>
+		}
+		<%}%>	
 	}
 	 
 		

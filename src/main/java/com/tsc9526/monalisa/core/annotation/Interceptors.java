@@ -21,12 +21,14 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+import com.tsc9526.monalisa.core.agent.Interceptor;
+
 /**
- * 
+  *
  * @author zzg.zhou(11039850@qq.com)
  */
-@Target(ElementType.METHOD)
+@Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface Tx{
-	 int level() default -1;
+public @interface Interceptors{
+	Class<? extends Interceptor>[] value();
 }
