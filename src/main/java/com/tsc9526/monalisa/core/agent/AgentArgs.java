@@ -16,11 +16,17 @@
  *******************************************************************************************/
 package com.tsc9526.monalisa.core.agent;
 
+import java.util.concurrent.atomic.AtomicLong;
+
 /**
  * 
  * @author zzg.zhou(11039850@qq.com)
  */
 public class AgentArgs {
+	private static AtomicLong serial=new AtomicLong(1);
+	
+	private long id=serial.getAndIncrement();
+	
 	private AgentArgClassInfo[] classes;
 	private String classFilePathRoot;
 	
@@ -58,6 +64,14 @@ public class AgentArgs {
 
 	public void setClasses(AgentArgClassInfo[] classes) {
 		this.classes = classes;
+	}
+
+	public long getId() {
+		return id;
+	}
+
+	public void setId(long id) {
+		this.id = id;
 	}
 	 
 }
