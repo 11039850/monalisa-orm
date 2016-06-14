@@ -82,16 +82,20 @@ public class AgentClass {
 			
 			if(old==null){
 				if(ci.version<oldVersion){
-					sb.append("<!Error!>");
+					sb.append("<!Error!> ");
 				}else if(ci.lastModified<oldLastModified){
-					sb.append("<Warn!!!>");
+					sb.append("<Warn!!!> ");
 				}else{
-					sb.append("<Replace>");
+					sb.append("<Replace> ");
 				}
 			}
+			
+			String sv=(ci.version     ==oldVersion     ?" == ":(ci.version     >oldVersion     ?" -> ":"-<"));
+			String st=(ci.lastModified==oldLastModified?" == ":(ci.lastModified>oldLastModified?" -> ":"-<"));
+			 
 		 	sb.append("class: "+ci.className);
-		 	sb.append(", version: "   +oldVersion+(ci.version     ==oldVersion     ?" == ":" -> ")+ci.version  );
-			sb.append(", timestamp:"  +oldTs     +(ci.lastModified==oldLastModified?" == ":" -> ")+newTs       );
+		 	sb.append(", version: "   +oldVersion+sv+ci.version  );
+			sb.append(", timestamp:"  +oldTs     +st+newTs       );
 			   
 			sb.append("\r\n"); 
 		}

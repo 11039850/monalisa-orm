@@ -47,11 +47,17 @@ public class ClassHelper {
 		}catch(ClassNotFoundException e){
 			return -1;
 		}
-	}
+	} 
 	
 	public static long getVersion(Class<?> clazz){
 		try{
-			Field f=clazz.getDeclaredField(DbProp.CFG_FIELD_VERSION);
+			Field f=null;
+			try{
+				f=clazz.getDeclaredField(DbProp.CFG_FIELD_VERSION+"$");
+			}catch(NoSuchFieldException e){
+				f=clazz.getDeclaredField(DbProp.CFG_FIELD_VERSION);
+			}
+			
 			if(f!=null){
 				f.setAccessible(true);
 				return f.getLong(null);
@@ -65,6 +71,7 @@ public class ClassHelper {
 		}
 		return -1;
 	}
+	 
 	
 	public static MetaClass getMetaClass(Class<?> clazz) {
 		if(clazz==null){
