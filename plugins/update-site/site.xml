@@ -2,11 +2,13 @@
 <site>
    <description name="monalisa-db" url="https://github.com/11039850/monalisa-db">
       Very simple database ORM:
- 1. Using the database takes only 1 line of code
- 2. Support dynamic SQL code auto to result class
- 3. Support written multiple-line syntax in the Java code
+  1. Using the database takes only 1 line of code
+  2. Support dynamic SQL code auto to result class
+  3. Support written multiple-line syntax in the Java code
+  4. Dynamic load java sql code
+  5. Auto increase the field: final static long $VERSION$=1L;
    </description>
-   <feature url="features/com.tsc9526.monalisa.plugin.eclipse_0.8.0.jar" id="com.tsc9526.monalisa.plugin.eclipse" version="0.8.0">
+   <feature url="features/com.tsc9526.monalisa.plugin.eclipse_1.0.0.jar" id="com.tsc9526.monalisa.plugin.eclipse" version="1.0.0">
       <category name="monalisa"/>
    </feature>
    <category-def name="monalisa" label="monalisa"/>
