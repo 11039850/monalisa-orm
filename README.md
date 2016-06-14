@@ -6,6 +6,8 @@
 * Using the database takes only 1 line of code
 * Support dynamic SQL code auto to result class
 * Support written multiple-line syntax in the Java code
+* Dynamic load java sql code
+* Auto increase the field: final static long $VERSION$=1L;
 
 [![IMAGE ALT monalisa-db](http://img.youtube.com/vi/3qpr0J7D7cQ/0.jpg)](http://www.youtube.com/watch?v=3qpr0J7D7cQ)
 
@@ -99,7 +101,7 @@ For more details, please refer to [wiki](https://github.com/11039850/monalisa-db
 	<dependency>
 		<groupId>com.tsc9526</groupId>
 		<artifactId>monalisa-core</artifactId>
-		<version>0.7.6</version>
+		<version>1.0.0</version>
 	</dependency>
 ``` 
 
