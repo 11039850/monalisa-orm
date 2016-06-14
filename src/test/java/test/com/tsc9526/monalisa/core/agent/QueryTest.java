@@ -90,10 +90,6 @@ public class QueryTest {
 	
 	@Test
 	public void testPrivate(){
-//		Q1 q11=Query.create(Q1.class);
-//		Q1 q12=Query.create(Q1.class);
-//		Assert.assertTrue(q11==q12);
-		
 		Q2 q21=Query.create(Q2.class);
 		Q2 q22=Query.create(Q2.class);
 		Assert.assertTrue(q21!=q22);

@@ -179,15 +179,11 @@ public class AgentClass {
 	 	
 		try {
 			if(!initilized){
-				long t1=System.currentTimeMillis();
 				initAgentClasses();
-				logger.info("init: "+(System.currentTimeMillis() - t1));
 			}
 			
-			long t1=System.currentTimeMillis();
 			T value=AgentEnhancer.createProxyInstance(theClass);
-			logger.info("Proxy: "+(System.currentTimeMillis() - t1));
-			
+ 
 			return value;
 		} catch (Exception e) {
 			throw new RuntimeException(e);

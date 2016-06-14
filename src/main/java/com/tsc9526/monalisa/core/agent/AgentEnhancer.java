@@ -46,7 +46,8 @@ public class AgentEnhancer implements MethodInterceptor {
 	
 
 	public Object intercept(final Object obj, final Method method, final Object[] args, final MethodProxy proxy) throws Throwable {
-		if (method.getAnnotation(Tx.class) != null) {
+		Tx tx=method.getAnnotation(Tx.class);
+		if (tx!= null) {
 			final List<Object> r = new ArrayList<Object>();
 
 			com.tsc9526.monalisa.core.query.Tx.execute(new com.tsc9526.monalisa.core.query.Tx.Atom() {
@@ -56,7 +57,7 @@ public class AgentEnhancer implements MethodInterceptor {
 
 					return 0;
 				}
-			});
+			},tx.level());
 
 			return r.get(0);
 		} else {
