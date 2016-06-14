@@ -17,6 +17,7 @@
 package com.tsc9526.monalisa.core.generator;
 
 import java.io.Writer;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.tsc9526.monalisa.core.datasource.DBConfig;
@@ -46,7 +47,7 @@ public abstract class DBGenerator {
 	public void generateFiles(){					
 		List<MetaTable> tables=dbmetadata.getTables();
 		
-		plogger.info("Loaded tables: "+tables.size());
+		plogger.info("Loaded tables: "+tables.size()+", package: "+javaPackage);
 		
 		generateJavaFiles(tables);		 
 		generateResources(tables);
@@ -81,27 +82,47 @@ public abstract class DBGenerator {
 	 
 	
 	protected void generateResources(List<MetaTable> tables){		
-		try{			 			
-			Writer w = getResourceWriter();
+		try{	
+			List<String> rns=new ArrayList<String>();
 			for(MetaTable table:tables){
 				if(table.getCreateTable()!=null){
-					plogger.info("["+table.getName()+"] Create resources");
-				 	
-					w.write("/***CREATE TABLE: "+table.getNamePrefix()+" :: "+table.getName()+"***/\r\n");
-					w.write(table.getCreateTable().getOriginSQL()); 
-					w.write("\r\n\r\n\r\n");
+					rns.add(table.getName());
 				}
 			}
-			w.close();
+			
+			if(rns.size()>0){
+				plogger.info("Create resource from tables: "+rns);
+				
+				Writer w = getResourceWriter();
+				for(MetaTable table:tables){
+					if(table.getCreateTable()!=null){
+						w.write("/***CREATE TABLE: "+table.getNamePrefix()+" :: "+table.getName()+"***/\r\n");
+						w.write(table.getCreateTable().getOriginSQL()); 
+						w.write("\r\n\r\n\r\n");
+					}
+				}
+				w.close();
+			}
 		}catch(Exception e){
 			throw new RuntimeException(e);
 		}
 	}
 	
 	protected void generateJavaFiles(List<MetaTable> tables){		
-		try{			
+		try{
+			int maxLen=0;
 			for(MetaTable table:tables){
-				plogger.info("["+table.getName()+"] Create class: "+table.getJavaName());
+				int len=table.getJavaName().length();
+				if(len>maxLen){
+					maxLen=len;
+				}
+			}
+			
+			int i=1;
+			int total=tables.size();
+			for(MetaTable table:tables){
+				String message=(i+"/"+total)+" "+" Create class: "+getRightPadding(table.getJavaName(),maxLen,' ')+" from table: "+table.getName();
+				plogger.info(message);
 				
 				MetaTable clone=table.clone();
 				clone.setJavaName(null).setName(clone.getNamePrefix());
@@ -112,10 +133,22 @@ public abstract class DBGenerator {
 				g2.generate(writer);
 				
 				verifyPartition(table);
+				
+				i++;
 			}
 		}catch(Exception e){
 			throw new RuntimeException(e);
 		}
+	}
+	
+	private String getRightPadding(String s,int maxLen,char paddingChar){
+		StringBuilder sb=new StringBuilder(s);
+		
+		int delta=maxLen-s.length();
+		for(int i=0;i<delta;i++){
+			sb.append(paddingChar);
+		}
+		return sb.toString();
 	}
 	
 	

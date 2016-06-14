@@ -78,7 +78,7 @@ public class MetaTable extends Name implements Cloneable{
 			}
 			sb.append("}");
 			
-			serialID=( ((long)sb.length()) << 32 ) + Math.abs(sb.hashCode());
+			serialID=( ((long)sb.length()) << 32 ) + Math.abs(sb.toString().hashCode());
 		}
 		
 		return serialID;

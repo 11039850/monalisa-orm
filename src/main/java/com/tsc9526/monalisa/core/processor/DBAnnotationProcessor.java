@@ -90,6 +90,7 @@ public class DBAnnotationProcessor extends AbstractProcessor {
 	
 	private void doGenerateFiles(TypeElement element)throws Exception{
 		long tm=System.currentTimeMillis();
+		DBGenerator.plogger.info("****** Starting generate model classes ******");
 		
 		if(Helper.inEclipseIDE()){
 			DBGeneratorProcessingInEclipse g=new DBGeneratorProcessingInEclipse(processingEnv,element);
