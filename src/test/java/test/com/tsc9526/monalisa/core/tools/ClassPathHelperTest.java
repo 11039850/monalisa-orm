@@ -20,6 +20,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.net.URL;
+import java.util.List;
 
 import org.mockito.Mockito;
 import org.testng.Assert;
@@ -35,6 +36,27 @@ import com.tsc9526.monalisa.core.tools.ClassPathHelper;
 @Test
 public class ClassPathHelperTest {
 
+	public void testSplitClassPaths(){
+		List<String> rs=ClassPathHelper.splitClassPaths("c:\\a\\a.jar;c:\\b\\b.jar");
+		Assert.assertEquals(rs.size(), 2);
+		Assert.assertEquals(rs.get(0), "c:\\a\\a.jar");
+		Assert.assertEquals(rs.get(1), "c:\\b\\b.jar");
+		
+		
+		rs=ClassPathHelper.splitClassPaths("c:\\a\\a.jar");
+		Assert.assertEquals(rs.size(), 1);
+		Assert.assertEquals(rs.get(0), "c:\\a\\a.jar");
+		
+		rs=ClassPathHelper.splitClassPaths("/tmp/a/a.jar:/tmp/b/b.jar");
+		Assert.assertEquals(rs.size(), 2);
+		Assert.assertEquals(rs.get(0), "/tmp/a/a.jar");
+		Assert.assertEquals(rs.get(1), "/tmp/b/b.jar");
+		
+		rs=ClassPathHelper.splitClassPaths("/tmp/a/a.jar");
+		Assert.assertEquals(rs.size(), 1);
+		Assert.assertEquals(rs.get(0), "/tmp/a/a.jar");
+	}
+	
 	public void testJarClass()throws Exception {
 		File f=ClassPathHelper.getClassOrJarFile(Mockito.class);
 		

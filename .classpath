@@ -44,6 +44,6 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="libs/sun_vm.jar"/>
+	<classpathentry kind="lib" path="libs/sun_vm.jar" sourcepath="/monalisa-vm"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

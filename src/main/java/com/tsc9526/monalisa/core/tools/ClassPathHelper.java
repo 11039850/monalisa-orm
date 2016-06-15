@@ -8,10 +8,40 @@ import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 public class ClassPathHelper {
+	public static List<String> splitClassPaths(String classpath){
+		List<String> rs=new ArrayList<String>();
+		if(classpath==null || classpath.trim().length()==0){
+			return rs;
+		}
+		
+		classpath=classpath.trim();
+		
+		boolean win32=classpath.indexOf(";")>0;
+		if(!win32){
+			String[] vs=classpath.split(":");
+			if(vs.length==2 && vs[0].length()==1){
+				//win32
+				rs.add(classpath);
+			}else{
+				for(String p:vs){
+					rs.add(p);
+				}
+			}
+		}else{
+			for(String p:classpath.split(";")){
+				rs.add(p);
+			}
+		}
+		
+		return rs;
+	}
+	
 	public static File getClassOrJarFile(String clazz) {
 		try {
 			return getClassOrJarFile(Class.forName(clazz));
@@ -23,12 +53,9 @@ public class ClassPathHelper {
 	public static File getClassOrJarFile(Class<?> clazz) {
 		URL url = getClassResourceURL(clazz);
 		String path=null;
-		try {
-			path=getFilePathfromResourceUrl(url);	 
-		} catch (Exception e) {
-			throw new RuntimeException("Error locating classpath entry for: " + clazz.getName(), e);
-		}
-		
+		 
+		path=getFilePathfromResourceUrl(url);	 
+		 
 		if(path!=null){
 			return new File(path);
 		}else{
@@ -36,7 +63,7 @@ public class ClassPathHelper {
 		}
 	}
 	
-	public static String getFilePathfromResourceUrl(URL url) throws URISyntaxException  {
+	public static String getFilePathfromResourceUrl(URL url)  {
 		String urlString=url.toString();
 		 
 		int endIndex = urlString.toLowerCase().indexOf("!");
@@ -59,7 +86,11 @@ public class ClassPathHelper {
 			}
 		} else {
 			//class in folder
-			return new File(url.toURI()).getAbsolutePath().replace("\\","/"); 
+			try{
+				return new File(url.toURI()).getAbsolutePath().replace("\\","/"); 
+			}catch(URISyntaxException e){
+				throw new RuntimeException("Invalid url: "+urlString,e);
+			}
 		}
 		
 		return null;

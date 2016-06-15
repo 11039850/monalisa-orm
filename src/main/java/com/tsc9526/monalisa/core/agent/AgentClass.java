@@ -19,6 +19,7 @@ package com.tsc9526.monalisa.core.agent;
 import java.io.File;
 import java.lang.instrument.ClassDefinition;
 import java.lang.instrument.Instrumentation;
+import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.List;
@@ -47,11 +48,40 @@ public class AgentClass {
 	public static void premain(String agentArgs, Instrumentation inst){
 		//agentmain(agentArgs,inst);
 	} 
+  	
+	public static void agentmain(String agentArgs,Instrumentation inst) {
+		try{
+			Class.forName("com.tsc9526.monalisa.core.tools.JsonHelper");
+			
+		}catch(ClassNotFoundException e){
+			delegateAgent(agentArgs,inst);
+			return;
+		}catch(NoClassDefFoundError e){
+			delegateAgent(agentArgs,inst);
+			return;
+		}
+		
+		callAgent(agentArgs,inst);
+	}
 	
-	public static void agentmain(String agentArgs, Instrumentation inst) {
+	private static void delegateAgent(final String agentArgs,final Instrumentation inst){
+		try{
+			for(Class<?> c:inst.getAllLoadedClasses()){
+				if(c.getName().equals("com.tsc9526.monalisa.core.agent.AgentClass")){
+					Method m=c.getMethod("agentmain", String.class,Instrumentation.class);
+					m.invoke(null, agentArgs,inst);
+					break;
+				}
+			}
+		}catch(Exception ex){
+			throw new RuntimeException(ex);
+		}
+	}
+	
+	private static void callAgent(final String agentArgs,final Instrumentation inst){
 		try {
 			AgentArgs args=JsonHelper.getGson().fromJson(agentArgs, AgentArgs.class);
-			
+  		
 			printAgentInfo(args);
 		 	 
 			for(AgentArgs.AgentArgClassInfo ci:args.getClasses()){

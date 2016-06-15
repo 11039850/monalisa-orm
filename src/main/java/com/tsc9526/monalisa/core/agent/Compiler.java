@@ -16,11 +16,15 @@
  *******************************************************************************************/
 package com.tsc9526.monalisa.core.agent;
 
+import java.io.File;
 import java.io.StringWriter;
 import java.net.URI;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.tools.JavaCompiler;
 import javax.tools.JavaCompiler.CompilationTask;
@@ -29,6 +33,7 @@ import javax.tools.SimpleJavaFileObject;
 import javax.tools.ToolProvider;
 
 import com.tsc9526.monalisa.core.logger.Logger;
+import com.tsc9526.monalisa.core.tools.ClassPathHelper;
 import com.tsc9526.monalisa.core.tools.FileHelper;
 
 /**
@@ -38,7 +43,50 @@ import com.tsc9526.monalisa.core.tools.FileHelper;
 public class Compiler {
 	static Logger logger=Logger.getLogger(Compiler.class);
 	
-	public static void compile(CompilePackage pkg) {
+	public static Set<String> hClassPath=new LinkedHashSet<String>();
+	
+	static{
+		String classpath = System.getProperty("java.class.path");
+		for(String p:ClassPathHelper.splitClassPaths(classpath)){
+			hClassPath.add(p.replace("\\","/"));
+		}
+		
+		URL url=Compiler.class.getClassLoader().getResource("");
+		String filepath=ClassPathHelper.getFilePathfromResourceUrl(url);
+		if(filepath!=null){
+			if(filepath.endsWith("/")){
+				filepath=filepath.substring(0,filepath.length()-1);
+			}
+			
+			hClassPath.add(filepath);
+			
+			if(filepath.endsWith("/classes")){
+				String libpath=filepath.substring(0,filepath.length()-8)+"/lib";
+				
+				for(File lib:new File(libpath).listFiles()){
+					if(lib.getName().endsWith(".jar") || lib.getName().endsWith(".zip")){
+						hClassPath.add(libpath+"/"+lib.getName());
+					}
+				}
+				
+			}
+		}
+	}
+	 
+	 
+	private static String getClassPath(){
+		StringBuffer sb=new StringBuffer();
+		for(String p:hClassPath){
+			if(sb.length()>0){
+				sb.append(File.pathSeparator);
+			}
+			sb.append(p);
+		}
+		
+		return sb.toString();
+	}
+
+	public synchronized static void compile(CompilePackage pkg) {
 		pkg.scan();			 
 	   
 		StringBuffer sb=new StringBuffer();
@@ -58,7 +106,7 @@ public class Compiler {
 		
 		if(fos.size()>0){
 			StringWriter out=new StringWriter();
-			String classpath = System.getProperty("java.class.path");
+			String classpath = getClassPath();
 			List<String> options=Arrays.asList("-encoding", "utf-8","-nowarn","-classpath",classpath,"-d",pkg.getClassOutputDir());
 			
 			logger.debug("Compile files: \r\n"+sb.toString());
@@ -71,6 +119,8 @@ public class Compiler {
 			}
 		}
 	}
+	
+	
 	  	
 	public static class StringFileObject extends SimpleJavaFileObject {  
 	    private String content;  

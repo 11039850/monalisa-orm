@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.tsc9526</groupId>
 	<artifactId>monalisa-core</artifactId>
-	<version>1.0.0</version>
+	<version>1.0.1</version>
 	
 	<name>monalisa-core</name>
 	<url>https://github.com/11039850/monalisa-core</url>
@@ -17,7 +17,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<repositoryURL>https://oss.sonatype.org/service/local/staging/deploy/maven2</repositoryURL>
 		<snapshotRepositoryURL>https://oss.sonatype.org/content/repositories/snapshots</snapshotRepositoryURL>		
-		<maven.javadoc.skip>false</maven.javadoc.skip> 	
+		<maven.javadoc.skip>true</maven.javadoc.skip> 	
         <argLine>-Dfile.encoding=UTF-8</argLine>	
 	</properties>
 
