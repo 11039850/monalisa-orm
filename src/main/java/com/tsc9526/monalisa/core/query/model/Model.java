@@ -535,8 +535,8 @@ public abstract class Model<T extends Model> implements Serializable {
 		return holder().changedFields();
 	}
 
-	protected void fieldChanged(String fieldJavaName) {
-		holder().fieldChanged(fieldJavaName);
+	protected boolean fieldChanged(String fieldJavaName) {
+		return holder().fieldChanged(fieldJavaName);
 	}
 
 	public FGS field(String name) {

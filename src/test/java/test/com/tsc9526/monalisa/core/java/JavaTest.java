@@ -31,10 +31,10 @@ import com.tsc9526.monalisa.core.parser.java.Java;
  */
 @Test
 public class JavaTest {
-	static final long $VERSION = 2016060310450100L;
+	static final long $VERSION = 2016061618153300L;
 	
 	public void testParse()throws Exception{
-		Java java=new Java(new File("src/test/resources/lab/demo.java"));
+		Java java=new Java(new File("src/test/resources/lab/Demo.java"));
 	 
 		
 		Assert.assertEquals("test.com.tsc9526.monalisa.core.sql.java",java.getPackageName());

@@ -207,12 +207,31 @@ public class ModelHolder implements Serializable {
 		 
 	}		
 	
-	public void fieldChanged(String fieldJavaName){
+	public boolean fieldChanged(String fieldJavaName){
+		FGS fgs=model.field(fieldJavaName);
+		Column column=fgs.getAnnotation(Column.class);
+		String cname=model.dialect().getColumnName(column.name().toLowerCase());
+		
+		if(fieldFilterExcludeMode){
+			//排除模式
+			if(fieldFilterSets.contains(cname)){
+				return false;
+			}
+		}else{
+			//包含模式
+			if(!fieldFilterSets.contains(cname)){
+				return false;
+			}
+		}
+		
+		
 		if(!changedFields.contains(fieldJavaName)){
 			changedFields.add(fieldJavaName);
 		}
 		
 		dirty=true;
+		
+		return true;
 	}
 	
 	public void clearChanges(){
