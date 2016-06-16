@@ -120,20 +120,20 @@ public class AgentClass {
 				}
 			}
 			
-			String sv=(ci.version     ==oldVersion     ?" == ":(ci.version     >oldVersion     ?" -> ":"-<"));
-			String st=(ci.lastModified==oldLastModified?" == ":(ci.lastModified>oldLastModified?" -> ":"-<"));
+			String sv=(ci.version     ==oldVersion     ?" == ":(ci.version     >oldVersion     ?" -> ":" -< "));
+			String st=(ci.lastModified==oldLastModified?" == ":(ci.lastModified>oldLastModified?" -> ":" -< "));
 			 
 		 	sb.append("class: "+ci.className);
 		 	sb.append(", version: "   +oldVersion+sv+ci.version  );
-			sb.append(", timestamp:"  +oldTs     +st+newTs       );
+			sb.append(", timestamp: "  +oldTs     +st+newTs       );
 			   
 			sb.append("\r\n"); 
 		}
 		
 		logger.info("Reload classes("+args.getClasses().length+"), Class-Path: "+new File(args.getClassFilePathRoot()).getAbsolutePath()
-				+"\r\n****************************************************************************"
+				+"\r\n***************************************************************************************************"
 				+"\r\n"+sb.toString()
-				+    "****************************************************************************");
+				+    "***************************************************************************************************");
 	}
 	
 	public static AgentArgs.AgentArgClassInfo getAgentLoadClassInfo(String className) {
