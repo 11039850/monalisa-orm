@@ -1,8 +1,9 @@
-# monalisa-db: Very simple database ORM
+# monalisa-db
 
       "And God said, Let there be light: and there was light."
       
-# Features:
+# Features
+
 * Using the database takes only 1 line of code
 * Support dynamic SQL code auto to result class
 * Support written multiple-line syntax in the Java code
@@ -15,7 +16,7 @@
 
 [YouKu](http://v.youku.com/v_show/id_XMTU0ODk1MzA2MA==.html) 
 
-For more details, please refer to [wiki](https://github.com/11039850/monalisa-db/wiki)
+[For more details](https://github.com/11039850/monalisa-db/wiki)
 
 # Example
 
@@ -95,7 +96,7 @@ Output will be:
 	}
 ```
 
-For more details, please refer to [wiki](https://github.com/11039850/monalisa-db/wiki)
+[For more details](https://github.com/11039850/monalisa-db/wiki)
 
 # Maven: 
 ```xml
