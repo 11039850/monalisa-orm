@@ -62,13 +62,14 @@ public class Compiler {
 			
 			if(filepath.endsWith("/classes")){
 				String libpath=filepath.substring(0,filepath.length()-8)+"/lib";
-				
-				for(File lib:new File(libpath).listFiles()){
-					if(lib.getName().endsWith(".jar") || lib.getName().endsWith(".zip")){
-						hClassPath.add(libpath+"/"+lib.getName());
+				File dir=new File(libpath);
+				if(dir.exists() && dir.isDirectory()){
+					for(File lib:dir.listFiles()){
+						if(lib.getName().endsWith(".jar") || lib.getName().endsWith(".zip")){
+							hClassPath.add(libpath+"/"+lib.getName());
+						}
 					}
 				}
-				
 			}
 		}
 	}
