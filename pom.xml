@@ -25,7 +25,7 @@
 		<connection>scm:git:https://github.com/11039850/monalisa-core.git</connection>
 		<developerConnection>scm:git:https://github.com/11039850/monalisa-core.git</developerConnection>
 		<url>https://github.com/11039850/monalisa-core.git</url>
-		<tag>tag-1.0.0</tag>
+		<tag>tag-1.0.4</tag>
 	</scm>
 	
 	<developers>

@@ -77,7 +77,7 @@ public class ModelHolder implements Serializable {
 		
 		for(String name:changedFields){
 			FGS fgs=model.field(name);
-			if(fgs!=null){
+			if(fgs!=null && isInclude(fgs)){
 				fields.add(fgs);
 			}
 		}
@@ -89,7 +89,7 @@ public class ModelHolder implements Serializable {
 				fields.add(fgs);		
 			}
 		}
-		
+		 
 		return fields;
 	}
 	
@@ -208,8 +208,30 @@ public class ModelHolder implements Serializable {
 	}		
 	
 	public boolean fieldChanged(String fieldJavaName){
+		if(isInclude(fieldJavaName)){
+			if(!changedFields.contains(fieldJavaName)){
+				changedFields.add(fieldJavaName);
+			}
+			
+			dirty=true;
+			
+			return true;
+		}else{
+			return false;
+		}
+	}
+	
+	public boolean isInclude(String fieldJavaName){
 		FGS fgs=model.field(fieldJavaName);
+		return isInclude(fgs);
+	}
+	
+	protected  boolean isInclude(FGS fgs){
 		Column column=fgs.getAnnotation(Column.class);
+		if(column==null){
+			return true;
+		}
+		
 		String cname=model.dialect().getColumnName(column.name().toLowerCase());
 		
 		if(fieldFilterExcludeMode){
@@ -223,13 +245,6 @@ public class ModelHolder implements Serializable {
 				return false;
 			}
 		}
-		
-		
-		if(!changedFields.contains(fieldJavaName)){
-			changedFields.add(fieldJavaName);
-		}
-		
-		dirty=true;
 		
 		return true;
 	}

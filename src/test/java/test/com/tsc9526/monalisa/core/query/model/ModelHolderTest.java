@@ -16,12 +16,15 @@
  *******************************************************************************************/
 package test.com.tsc9526.monalisa.core.query.model;
  
+import java.util.Collection;
+
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import test.com.tsc9526.monalisa.core.query.TestSimpleModel;
 
 import com.tsc9526.monalisa.core.query.Query;
+import com.tsc9526.monalisa.core.tools.ClassHelper.FGS;
 
 /**
  * 
@@ -67,6 +70,29 @@ public class ModelHolderTest {
 		model.setIntField1(1);
 		model.setIntField2(2);
 		model.setStringField1("xstring");
+		
+		Query query=model.dialect().insert(model,false);
+		String sql=query.getExecutableSQL(); 
+		Assert.assertEquals(sql,"INSERT INTO `simple_model`(`int_field2`, `string_field1`)VALUES(2, 'xstring')");
+		
+		model.setAuto(1);
+		query=model.dialect().update(model);
+		sql=query.getExecutableSQL(); 
+		Assert.assertEquals(sql,"UPDATE `simple_model` SET `int_field2`=2, `string_field1`='xstring' WHERE `auto` = 1");
+	}
+	
+	public void testChangeFields()throws Exception{
+		TestSimpleModel model=new TestSimpleModel();
+		model.setIntField1(1);
+		model.setIntField2(2);
+		model.setStringField1("xstring");
+		
+		Collection<FGS> cgs= model.changedFields();
+		Assert.assertEquals(cgs.size(),3);
+		
+		model.exclude("int_field1");
+		cgs= model.changedFields();
+		Assert.assertEquals(cgs.size(),2);
 		
 		Query query=model.dialect().insert(model,false);
 		String sql=query.getExecutableSQL(); 
