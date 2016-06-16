@@ -62,8 +62,13 @@ public class Java {
 	
 	protected void parseFile(File javaFile){
 		try{
-			this.filePath=javaFile.getAbsolutePath();
-			this.lastModified=javaFile.lastModified();
+			filePath=javaFile.getAbsolutePath();
+			lastModified=javaFile.lastModified();
+			
+			String name=javaFile.getName();
+			if(name.endsWith(".java")){
+				this.name=name.substring(0,name.length()-5);
+			}
 			
 			String body=FileHelper.readToString(new FileInputStream(filePath), DEFAULT_PAGE_ENCODING);
 			
@@ -155,13 +160,13 @@ public class Java {
 			packageName=x.substring(7,x.length()-1).trim();
 		}
 	 
-		
-		m=patternClass.matcher(body);
-		if(m.find()){
-			String x=m.group();
-			name=x.substring(5,x.length()).trim();
-		}
-		 
+		if(name==null){
+			m=patternClass.matcher(body);
+			if(m.find()){
+				String x=m.group();
+				name=x.substring(5,x.length()).trim();
+			}
+		} 
 	}
 	  
 	

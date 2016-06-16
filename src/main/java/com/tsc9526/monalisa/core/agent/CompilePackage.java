@@ -37,14 +37,10 @@ public class CompilePackage{
 	private String classOutputDir;
 	
 	private Map<String,AgentJavaFile> hjfs=null;
-	
-	private String pathRoot;
-	
+	 
 	public CompilePackage(String javaSourceDir,String classOutputDir){
 		this.javaSourceDir =FileHelper.combinePath(javaSourceDir);
 		this.classOutputDir=FileHelper.combinePath(classOutputDir);
-		
-		this.pathRoot=new File(this.javaSourceDir).getAbsolutePath();
 	}
 	
 	public synchronized void scan(){
@@ -87,17 +83,14 @@ public class CompilePackage{
 				String key=f.getAbsolutePath();
 				AgentJavaFile jf=hjfs.get(key);
 				if(jf==null || jf.getLastModified()<lastModified){
-					String sub=f.getAbsolutePath().substring(pathRoot.length()+1);
-					sub=sub.substring(0,sub.length()-5).replace("\\", "/");
-				 	
 					Java java=new Java(f);
-					sub=java.getPackageName().replace(".","/")+"/"+sub;
+					String classpath=java.getPackageName().replace(".","/")+"/"+java.getName();
 					long version=java.getVersion(); 
 					
 					
-					String className=sub.replace("/",".");
+					String className=classpath.replace("/",".");
 					
-					String classFilePath=FileHelper.combinePath(classOutputDir,sub+".class");
+					String classFilePath=FileHelper.combinePath(classOutputDir,classpath+".class");
 					File   classFile=new File(classFilePath);
 					
 					int p=classFilePath.lastIndexOf("/");
