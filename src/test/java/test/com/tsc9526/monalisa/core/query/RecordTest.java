@@ -126,7 +126,7 @@ public class RecordTest extends Model<RecordTest> implements MysqlDB{
 		DataTable<Record> rs=sm.WHERE()
 		.field("title").like("record")
 		.field("record_id").gt(0)
-		.forSelect().select();
+		.SELECT().select();
 		
 		Assert.assertTrue(rs.size()>0);
 	}

@@ -85,25 +85,25 @@ public class Record extends Model<Record>{
 		 * Create Select for example
 		 * @return Select for example
 		 */
-		public Select<Record,Select<Record, ?>>.SelectForExample forSelect(){
-			return SELECT().selectForExample(example);
+		public Select<Record,Select<Record, ?>>.SelectForExample SELECT(){
+			return Record.this.SELECT().selectForExample(example);
 		}
 		
 		/**
-		 * Create Update for example
+		 * Update records with this example
 		 * @param model update data to this model
-		 * @return Update for example
+		 * @return number of records
 		 */
-		public Update<Record>.UpdateForExample forUpdate(Record model){			 			 
-			return UPDATE(model).updateForExample(this.example);
+		public int update(Record model){			 			 
+			return UPDATE(model).updateByExample(this.example);
 		}
 		
 		/**
-		 * Create Delete for example
-		 * @return Delete for example
+		 * Delete records with this example
+		 * @return number of records
 		 */
-		public Delete<Record>.DeleteForExample forDelete(){
-			return DELETE().deleteForExample(this.example);
+		public int delete(){
+			return DELETE().deleteByExample(this.example);
 		}
 		
 		public Field<Object,Criteria> field(String fieldName){
