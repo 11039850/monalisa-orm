@@ -12,11 +12,7 @@
 
 [Example Project](https://github.com/11039850/monalisa-example)
 
-5 minutes video:
-
-[![IMAGE ALT monalisa-db](http://img.youtube.com/vi/3qpr0J7D7cQ/0.jpg)](http://www.youtube.com/watch?v=3qpr0J7D7cQ)
-
-[YouKu](http://v.youku.com/v_show/id_XMTU0ODk1MzA2MA==.html) 
+5 minutes video: [Youtube](http://www.youtube.com/watch?v=3qpr0J7D7cQ) / [YouKu](http://v.youku.com/v_show/id_XMTU0ODk1MzA2MA==.html) 
 
 [For more details](https://github.com/11039850/monalisa-db/wiki)
 
@@ -66,6 +62,7 @@ Output will be:
 	//select
 	User.SELECT().selectOne("name=?", "zzg.zhou");
 	User.SELECT().selectByPrimaryKey(1);
+	User.SELECT().include("name","status").select();
 	User user=User.WHERE().name.like("zzg%").status.in(1,2,3).SELECT().selectOne(); //selectPage ...
 	 
 	//general query
@@ -97,6 +94,28 @@ Output will be:
 		}
 	}
 ```
+
+## Auto generate result class on save action
+
+```java
+
+	public class UserBlogDao {
+		@Select(name="test.result.UserBlogs") //!!! Auto create the class: test.result.UserBlogs
+		public List  selectUserBlogs(int user_id){ //!!! Auto replace List -> List<UserBlogs>
+			Query q=TestDB.DB.createQuery();
+			           
+			q.add(""/**~{
+					SELECT a.id, a.name, b.title, b.content, b.create_time
+						FROM user a, blog b   
+						WHERE a.id=b.user_id AND a.id=?		
+			}*/, user_id);
+			 
+			return q.getList(); //!!! Auto replace getList() -> getList<UserBlogs>
+		} 
+	}
+```
+
+
 
 [For more details](https://github.com/11039850/monalisa-db/wiki)
 
