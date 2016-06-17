@@ -20,10 +20,12 @@ package test.com.tsc9526.monalisa.core.query.criteria;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import test.com.tsc9526.monalisa.core.mysql.MysqlDB;
 import test.com.tsc9526.monalisa.core.mysql.mysqldb.TestRecord;
 
 import com.tsc9526.monalisa.core.query.Query;
 import com.tsc9526.monalisa.core.query.criteria.QEH;
+import com.tsc9526.monalisa.core.query.model.Record;
 
 /**
  * 
@@ -100,5 +102,22 @@ public class WhereTest {
 		Query w=QEH.getQuery(example);
 		String sql=w.getExecutableSQL();
 		Assert.assertEquals(sql, "(`name` = 'a1') OR (`name` = 'b1' AND `title` = 'b2') ORDER BY `name` DESC");
+	}
+	
+	
+	public void testRecordASC(){
+		Record r=new Record("test_record").use(MysqlDB.DB);
+		 
+		Record.Criteria c=r.WHERE()
+			.field("name").eq("a1")
+			.OR()
+			.field("name").eq("b1").field("title").eq("b2")
+			.field("name").asc().field("title").desc();
+		
+		Record.Example example=c.getExample();
+		
+		Query w=QEH.getQuery(example);
+		String sql=w.getExecutableSQL();
+		Assert.assertEquals(sql, "(`name` = 'a1') OR (`name` = 'b1' AND `title` = 'b2') ORDER BY `name` ASC, `title` DESC");
 	}
 }

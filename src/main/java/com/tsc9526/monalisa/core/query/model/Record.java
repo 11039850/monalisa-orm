@@ -26,8 +26,8 @@ import com.tsc9526.monalisa.core.query.dao.Delete;
 import com.tsc9526.monalisa.core.query.dao.Insert;
 import com.tsc9526.monalisa.core.query.dao.Select;
 import com.tsc9526.monalisa.core.query.dao.Update;
-import com.tsc9526.monalisa.core.tools.Helper;
 import com.tsc9526.monalisa.core.tools.ClassHelper.FGS;
+import com.tsc9526.monalisa.core.tools.Helper;
 
 /**
  * Simple model with getString, getDate, getInt ...
@@ -77,6 +77,10 @@ public class Record extends Model<Record>{
 			this.example=example;
 		}
 		
+		public Example getExample(){
+			return this.example;
+		}
+		
 		/**
 		 * Create Select for example
 		 * @return Select for example
@@ -110,6 +114,13 @@ public class Record extends Model<Record>{
 			}else{
 				throw new RuntimeException("Field not found: "+fieldName+", in model: "+Record.this.mm().tableName);
 			}
+		}
+		
+		/**
+		* Append "OR" Criteria  
+		*/	
+		public Criteria OR(){
+			return this.example.or();
 		}
 	}
 
