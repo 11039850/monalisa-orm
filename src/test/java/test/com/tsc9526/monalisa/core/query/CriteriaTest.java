@@ -257,7 +257,7 @@ public class CriteriaTest {
 		
 		Query eq=QEH.getQuery(example);
 		Query query=model.dialect().select(model, eq.getSql(), eq.getParameters());
-		String sql_expect="SELECT * FROM `simple_model` WHERE `int_field1` BETWEEN ? AND ? AND `date_field1` = ? OR (`int_field1` > ?) ORDER BY `int_field1` ASC, `date_field1` DESC";
+		String sql_expect="SELECT * FROM `simple_model` WHERE (`int_field1` BETWEEN ? AND ? AND `date_field1` = ?) OR (`int_field1` > ?) ORDER BY `int_field1` ASC, `date_field1` DESC";
 		Assert.assertEquals(query.getSql(), sql_expect);
 	}
 	 
