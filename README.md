@@ -51,7 +51,7 @@ Output will be:
 
 ## Query Example
 ```java
-     
+
 	//insert
 	new User().setName("zzg.zhou").setStatus(1).save();
 	
@@ -60,39 +60,94 @@ Output will be:
 	new User().parse("<data> <name>china01</name><status>1</status> </data>").save();
 	
 	//select
-	User.SELECT().selectOne("name=?", "zzg.zhou");
 	User.SELECT().selectByPrimaryKey(1);
+	
+	//SQL: SELECT * FROM `user` WHERE `name` = 'zzg.zhou'
+	User.SELECT().selectOne("name=?", "zzg.zhou");
+	
+	//SQL: SELECT `name`, `status` FROM `user`
 	User.SELECT().include("name","status").select();
-	User user=User.WHERE().name.like("zzg%").status.in(1,2,3).SELECT().selectOne(); //selectPage ...
+	 
+	Page<User> page=User.WHERE().name.like("zzg%").status.in(1,2,3).SELECT().selectPage(10,0);
+	System.out.println(page.getTotalRow());
+	
+	//SQL: SELECT * FROM `user` WHERE `name` like 'zzg%' AND `status` IN(0, 1)
+	for(User x:User.WHERE().name.like("zzg%").status.in(0, 1).SELECT().select()){
+		System.out.println(x);
+	}
+			
+	//SQL: SELECT * FROM `user` WHERE (`name` like 'zzg%' AND `status` >= 0) 
+	//                             OR (`name` = 'zzg' AND `status` > 1) ORDER BY `status` ASC 
+	for(User x:User.WHERE()
+				.name.like("zzg%").status.ge(0)
+				.OR()
+				.name.eq("zzg").status.gt(1)
+				.status.asc()
+				.SELECT().select()){ //SELECT / delete / update
+		System.out.println(x);
+	}
+	
 	 
 	//general query
-	Test.DB.select("SELECT * FROM user WHERE name like ?","zzg%");
-	Test.DB.createQuery().add("SELECT * FROM user WHERE name like ?","zzg%").getList(User.class);
-	
-	Query q=new Query(Test.DB);
-	q.add("SELECT * FROM user WHERE name like ?","zzg%")
-	 .add(" AND status ").in(1,2,3);
-	
+	TestDB.DB.select("SELECT * FROM user WHERE name like ?","zzg%");
+	TestDB.DB.createQuery().add("SELECT * FROM user WHERE name like ?","zzg%").getList(User.class);
+	 
+	Query q=new Query(TestDB.DB);
+	DataTable<DataMap> rs=q.add("SELECT * FROM user WHERE name like ?","zzg%")
+	 .add(" AND status ").in(1,2,3)
+	 .getList();
+	for(User x:rs.as(User.class)){
+		System.out.println(x);
+	}
 	
 	//update
+	User user=User.SELECT().selectOne("name=?", "zzg.zhou");
 	user.setStatus(3).update();
+	
 	User updateTo=new User().setName("tsc9526");
 	User.WHERE().name.like("zzg%").update(updateTo);
 	
-	//delete
-	user.delete();
-	User.DELETE().deleteAll();
-	
 	
 	//transaction
-	Tx.execute(new Executable() {
+	Tx.execute(new Tx.Atom() {
 		public int execute() {
 			new User().setName("name001").setStatus(1).save();
 			new User().setName("name002").setStatus(2).save();
 			//... other database operation
 			return 0;
 		}
-	}
+	});
+	 
+	//Dynamic model: Record
+	Record r=new Record("user").use(TestDB.DB);
+	r.set("name", "jjyy").set("status",1)
+	 .save();
+		
+	//SQL: SELECT * FROM `user` WHERE (`name` like 'jjyy%' AND `status` >= 0)
+	//                             OR (`name` = 'zzg' AND `status` > 1) ORDER BY `status` ASC 
+	for(Record x:r.WHERE()
+			.field("name").like("jjyy%").field("status").ge(0)
+			.OR()
+			.field("name").eq("zzg").field("status").gt(1)
+			.field("status").asc()
+			.SELECT().select()){
+		System.out.println(x);
+	} 
+		
+	//SQL: DELETE FROM `user` WHERE `name` like 'jjyy%' AND `status` >= 0
+	r.WHERE()
+	 .field("name").like("jjyy%").field("status").ge(0)
+	 .delete();
+		  
+	
+	//delete
+	user.delete();
+	
+	//SQL: DELETE FROM `user` WHERE `name`='china01'
+	User.WHERE().name.eq("china01").delete();
+	
+	//User.DELETE().deleteAll();     
+
 ```
 
 ## Auto generate result class on save action
@@ -125,7 +180,7 @@ Output will be:
 	<dependency>
 		<groupId>com.tsc9526</groupId>
 		<artifactId>monalisa-core</artifactId>
-		<version>1.0.3</version>
+		<version>1.0.4</version>
 	</dependency>
 ``` 
 
