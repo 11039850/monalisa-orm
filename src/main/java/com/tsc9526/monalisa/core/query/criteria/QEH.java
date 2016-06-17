@@ -42,7 +42,13 @@ public class QEH {
 	 		Query cq=c.q;
 	 		if(cq.isEmpty()==false){	 			
 				if(q.isEmpty()){
-					q.add(cq.getSql(),cq.getParameters());
+					if(example.cs.size()>1){
+						q.add("(");
+						q.add(cq.getSql(),cq.getParameters());
+						q.add(")");
+					}else{
+						q.add(cq.getSql(),cq.getParameters());
+					}
 				}else{
 					q.add(" OR (");
 					q.add(cq.getSql(),cq.getParameters());
