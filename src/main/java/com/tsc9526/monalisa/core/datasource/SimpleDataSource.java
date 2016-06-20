@@ -235,4 +235,7 @@ public class SimpleDataSource implements PooledDataSource {
 		return password;
 	}
 
+	public void setIdleValidationQuery(int idleInSeconds,String validationQuery){
+		//do noting
+	}
 }

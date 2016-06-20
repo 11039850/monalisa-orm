@@ -31,4 +31,12 @@ public abstract class ConfigClass {
 	public boolean isCfgChanged(){
 		return false;
 	}
+	
+	public String getKey(String key){
+		return DBConfig.PREFIX_DB+"."+DBConfig.CFG_DEFAULT_NAME+"."+key;
+	}
+	
+	public String getPoolKey(String key){
+		return DBConfig.PREFIX_DB+"."+DBConfig.CFG_DEFAULT_NAME+".pool."+key;
+	}
 }

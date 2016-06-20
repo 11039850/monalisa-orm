@@ -62,6 +62,14 @@ public abstract class Dialect{
 	 
 	public abstract CreateTable getCreateTable(DBConfig db,String tableName);
 	
+	/**
+	 * 实现该接口用于保持连接，在连接空闲时将执行该SQL语句。 <br>
+	 * 默认空闲5分钟执行一次检查， 参考：{@link com.tsc9526.monalisa.core.datasource.DbProp#CFG_CONNECT_IDLE_INTERVALS}
+	 * 
+	 * @return 在定时检查时需执行的SQL语句
+	 */
+	public abstract String getIdleValidationQuery();
+	
 	public synchronized void createTable(DBConfig db,CreateTable table){
 		String key=db.getKey()+":"+table.getTableName();
 		if(!hTables.containsKey(key)){
@@ -535,6 +543,4 @@ public abstract class Dialect{
     protected boolean isSplitChar(char c){
     	return c==' '|| c=='\t' || c=='\r' || c=='\n';
     }
-
- 
 }

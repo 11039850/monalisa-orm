@@ -162,11 +162,22 @@ public class DBConfig implements Closeable{
 		CFG cfg=getCfg();
 		
 		String cc=cfg.getDatasourceClass();
-		if(cc!=null && cc.trim().length()>0){			
+		if(cc!=null && cc.trim().length()>0){	
+			cc=cc.trim();
+			
+			if(cc.indexOf(".")<0){
+				cc="com.tsc9526.monalisa.core.datasource."+cc;
+			}
+			
 			try{	
-				Object obj=ClassHelper.forClassName(cc.trim()).newInstance();	
+				Object obj=ClassHelper.forClassName(cc).newInstance();	
 				if(obj instanceof PooledDataSource){
 					PooledDataSource pds=(PooledDataSource)obj;
+					
+					String validationgQuery=getDialect().getIdleValidationQuery();
+					if(validationgQuery!=null && validationgQuery.trim().length()>0){
+						pds.setIdleValidationQuery(DbProp.CFG_CONNECT_IDLE_INTERVALS,validationgQuery.trim());
+					}
 					
 					pds.setProperties(getPoolProperties());
 					
@@ -174,8 +185,7 @@ public class DBConfig implements Closeable{
 					pds.setPassword(cfg.getPassword());
 					pds.setUrl(cfg.getUrl());
 					pds.setUsername(cfg.getUsername());
-					
-					
+					 
 					return pds;
 				}else if(obj instanceof DataSource){				 
 					return(DataSource)obj;

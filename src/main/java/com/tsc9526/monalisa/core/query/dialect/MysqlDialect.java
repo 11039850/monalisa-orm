@@ -36,6 +36,10 @@ public class MysqlDialect extends Dialect {
 	public String getDriver() {
 		return "com.mysql.jdbc.Driver";
 	}
+	
+	public String getIdleValidationQuery(){
+    	return "SELECT 1";
+    }
 
 	public String getSchema(String jdbcUrl) {
 		String schema = "";

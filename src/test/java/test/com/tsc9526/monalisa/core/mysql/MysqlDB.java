@@ -16,6 +16,8 @@
  *******************************************************************************************/
 package test.com.tsc9526.monalisa.core.mysql;
 
+import test.com.tsc9526.monalisa.core.TestConstants;
+
 import com.tsc9526.monalisa.core.annotation.DB;
 import com.tsc9526.monalisa.core.datasource.DBConfig;
 
@@ -24,9 +26,9 @@ import com.tsc9526.monalisa.core.datasource.DBConfig;
  * @author zzg.zhou(11039850@qq.com)
  */
 @DB(
-		url="jdbc:mysql://127.0.0.1:3306/test_monalisa?allowMultiQueries=true", 
-		username="monalisa", 
-		password="monalisa",
+		url=TestConstants.url, 
+		username=TestConstants.username, 
+		password=TestConstants.password,
 		partitions="test_logyyyymm_{DatePartitionTable(yyyyMM,log_time)}")
 public interface MysqlDB {
 	public static DBConfig DB=DBConfig.fromClass(MysqlDB.class);

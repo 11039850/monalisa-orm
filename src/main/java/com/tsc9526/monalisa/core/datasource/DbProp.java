@@ -79,12 +79,16 @@ public class DbProp {
 	public static String TMP_WORK_DIR_JAVA      = TMP_ROOT_PATH+"/_java";
 	public static String TMP_WORK_DIR_METATABLE = TMP_ROOT_PATH+"/metatable";
 	
-	
-	
-	
 	public static int   CFG_RELOAD_CLASS_INTERVAL =10; 
 	
 	public static int 	CFG_RELOAD_MODEL_INTERVAL =10;
+	
+ 	
+	
+	/**
+	 * 默认连接空闲5分钟时，执行保持连接检查的SQL
+	 */
+	public static int   CFG_CONNECT_IDLE_INTERVALS= 300;
 	 
 	
 	public static String SET_CFG_ROOT_PATH(String cfgRootPath) {

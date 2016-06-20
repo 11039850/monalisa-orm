@@ -14,24 +14,14 @@
  *	You should have received a copy of the GNU Lesser General Public License
  *	along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************************/
-package com.tsc9526.monalisa.core.datasource;
-
-import java.io.Closeable;
-import java.util.Properties;
-
-import javax.sql.DataSource;
+package test.com.tsc9526.monalisa.core;
 
 /**
- *  @author zzg.zhou(11039850@qq.com)
+ * 
+ * @author zzg.zhou(11039850@qq.com)
  */
-public interface PooledDataSource extends DataSource,Closeable{
-
-	public void setUrl     (String url);
-	public void setDriver  (String driver);
-	public void setUsername(String username);
-	public void setPassword(String password);
-	
-	public void setProperties(Properties properties);
-	
-	public void setIdleValidationQuery(int idleInSeconds,String validationQuery);
+public class TestConstants {
+	public final static String url="jdbc:mysql://127.0.0.1:3306/test_monalisa?allowMultiQueries=true";
+	public final static String username="monalisa";
+	public final static String password="monalisa";
 }

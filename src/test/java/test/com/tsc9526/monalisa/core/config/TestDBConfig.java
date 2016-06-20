@@ -21,6 +21,8 @@ import java.util.Properties;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import test.com.tsc9526.monalisa.core.TestConstants;
+
 import com.tsc9526.monalisa.core.annotation.DB;
 import com.tsc9526.monalisa.core.datasource.ConfigClass;
 import com.tsc9526.monalisa.core.datasource.DBConfig;
@@ -38,9 +40,9 @@ public class TestDBConfig {
 	public static class DB01 extends ConfigClass{
 	 	public Properties getConfigProperties() {
 			Properties p=new Properties();
-			p.put(DbProp.PROP_DB_URL.getFullKey(),        "jdbc:mysql://127.0.0.1:3306/test_monalisa");
-			p.put(DbProp.PROP_DB_USERNAME.getFullKey(),   "monalisa");
-			p.put(DbProp.PROP_DB_PASSWORD.getFullKey(),   "monalisa");
+			p.put(DbProp.PROP_DB_URL.getFullKey(),        TestConstants.url);
+			p.put(DbProp.PROP_DB_USERNAME.getFullKey(),   TestConstants.username);
+			p.put(DbProp.PROP_DB_PASSWORD.getFullKey(),   TestConstants.password);
 			p.put(DbProp.PROP_DB_PARTITIONS.getFullKey(), "test_logyyyymm_{DatePartitionTable(yyyyMM,log_time)}");
 			return p;
 		}
