@@ -20,8 +20,8 @@ import com.tsc9526.monalisa.core.datasource.DBConfig;
 import com.tsc9526.monalisa.core.datasource.DbProp;
 import com.tsc9526.monalisa.core.meta.MetaTable.CreateTable;
 import com.tsc9526.monalisa.core.meta.MetaTable.TableType;
-import com.tsc9526.monalisa.core.query.DataMap;
 import com.tsc9526.monalisa.core.query.Query;
+import com.tsc9526.monalisa.core.query.datatable.DataMap;
 
 /**
  * 

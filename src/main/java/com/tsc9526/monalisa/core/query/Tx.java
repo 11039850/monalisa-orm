@@ -25,6 +25,7 @@ import java.util.UUID;
 import javax.management.RuntimeErrorException;
 
 import com.tsc9526.monalisa.core.datasource.DBConfig;
+import com.tsc9526.monalisa.core.query.datatable.DataMap;
 
 /**
  * 

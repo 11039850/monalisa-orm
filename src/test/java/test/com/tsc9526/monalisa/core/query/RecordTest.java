@@ -26,7 +26,7 @@ import org.testng.annotations.Test;
 
 import test.com.tsc9526.monalisa.core.mysql.MysqlDB;
 
-import com.tsc9526.monalisa.core.query.DataMap;
+import com.tsc9526.monalisa.core.query.datatable.DataMap;
 import com.tsc9526.monalisa.core.query.datatable.DataTable;
 import com.tsc9526.monalisa.core.query.model.Model;
 import com.tsc9526.monalisa.core.query.model.Record;

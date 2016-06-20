@@ -22,7 +22,7 @@ import junit.framework.Assert;
 
 import org.testng.annotations.Test;
 
-import com.tsc9526.monalisa.core.query.DataMap;
+import com.tsc9526.monalisa.core.query.datatable.DataMap;
 
 /**
  * 

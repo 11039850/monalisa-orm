@@ -60,8 +60,8 @@ public class DataTable<E> extends ArrayList<E> {
 		for(int i=0;i<size();i++){
 			E from=this.get(i);
 			
-			if(from instanceof DataRow){
-				r.add(((DataRow)from).as(toClass));
+			if(from instanceof DataMap){
+				r.add(((DataMap)from).as(toClass));
 			}else{
 				T to=(T)ClassHelper.convert(from, toClass);
 				r.add(to);
@@ -71,19 +71,19 @@ public class DataTable<E> extends ArrayList<E> {
 		return r;
 	}
 	
-	public DataTable<DataRow> select(String columns,String where,String orderBy,String groupBy){
+	public DataTable<DataMap> select(String columns,String where,String orderBy,String groupBy){
 		return null;
 	}	 
 	
-	public DataTable<DataRow> join(DataTable<?> rightTable, String leftFieldName,String rightFieldName){
+	public DataTable<DataMap> join(DataTable<?> rightTable, String leftFieldName,String rightFieldName){
 		return null;
 	}
 
-	public DataTable<DataRow> where(String where,String orderBy){
+	public DataTable<DataMap> where(String where,String orderBy){
 		return select("*",where,orderBy,null);
 	}
 	
-	public DataTable<DataRow> join(DataTable<?> rightTable, String joinFieldName){
+	public DataTable<DataMap> join(DataTable<?> rightTable, String joinFieldName){
 		return join(rightTable, joinFieldName,joinFieldName);
 	}
 	

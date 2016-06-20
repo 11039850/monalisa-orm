@@ -8,7 +8,7 @@ import junit.framework.Assert;
 import test.com.tsc9526.monalisa.core.mysql.MysqlDB;
 import test.com.tsc9526.monalisa.core.mysql.mysqldb.TestTable1;
 
-import com.tsc9526.monalisa.core.query.DataMap;
+import com.tsc9526.monalisa.core.query.datatable.DataMap;
 import com.tsc9526.monalisa.core.query.datatable.DataTable;
  
 

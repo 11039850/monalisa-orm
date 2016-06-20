@@ -19,7 +19,7 @@ package com.tsc9526.monalisa.core.query.datatable;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.Map;
-
+ 
 import com.tsc9526.monalisa.core.tools.ClassHelper;
 import com.tsc9526.monalisa.core.tools.Helper;
 import com.tsc9526.monalisa.core.tools.ClassHelper.FGS;
@@ -29,7 +29,7 @@ import com.tsc9526.monalisa.core.tools.ClassHelper.MetaClass;
  * 
  * @author zzg.zhou(11039850@qq.com)
  */
-public class DataRow extends LinkedHashMap<String,Object>{ 
+public class DataMap extends LinkedHashMap<String,Object>{ 
 	private static final long serialVersionUID = -8132926422921115814L;	
 	 
 	public <T> T as(Class<T> toClass){

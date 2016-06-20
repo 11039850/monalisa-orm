@@ -27,8 +27,8 @@ import com.tsc9526.monalisa.core.generator.DBGeneratorLocal;
 import com.tsc9526.monalisa.core.logger.Logger;
 import com.tsc9526.monalisa.core.parser.executor.SQLGenerator;
 import com.tsc9526.monalisa.core.parser.executor.SQLResourceManager;
-import com.tsc9526.monalisa.core.query.DataMap;
 import com.tsc9526.monalisa.core.query.Query;
+import com.tsc9526.monalisa.core.query.datatable.DataMap;
 import com.tsc9526.monalisa.core.query.datatable.DataTable;
 
 /**
