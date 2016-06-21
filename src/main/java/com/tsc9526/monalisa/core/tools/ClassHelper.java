@@ -160,8 +160,8 @@ public class ClassHelper {
 		return to;
 	}
 	 
-	public static Object convert(Object source,Class<?> target){
-		return converter.convert(source, target);
+	public static <T> T convert(Object source, Class<T> type) {
+		return converter.convert(source, type);
 	}
  
 	private synchronized static MetaClass loadMetaClass(Class<?> clazz) {

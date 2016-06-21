@@ -230,4 +230,23 @@ public class SQLHelper {
 		
 		return kws;
 	}
+	
+	public static boolean isStartByKeyWord(String s,String keyword){
+		if(s==null || s.trim().length()==0){
+			return false;
+		}
+		
+		String x=s.trim().toUpperCase();
+		int len=keyword.length();
+		if(x.startsWith(keyword.toUpperCase()) && x.length()>len ){
+			char c=x.charAt(len);
+			
+		 
+			if( c==' ' || c=='\t' || c=='\r' || c=='\n'){
+				return true;
+			}
+		}
+		
+		return false;
+	}
 }

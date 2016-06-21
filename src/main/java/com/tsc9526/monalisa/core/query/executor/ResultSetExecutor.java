@@ -19,9 +19,15 @@ package com.tsc9526.monalisa.core.query.executor;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import com.tsc9526.monalisa.core.query.ResultHandler;
+import com.tsc9526.monalisa.core.query.datatable.DataColumn;
 import com.tsc9526.monalisa.core.query.datatable.DataTable;
 import com.tsc9526.monalisa.core.tools.CloseQuietly;
 
@@ -40,7 +46,10 @@ public class ResultSetExecutor<T> implements Execute<DataTable<T>>{
 		DataTable<T> result=new DataTable<T>();
 		ResultSet rs=null;
 		try{
-			rs=pst.executeQuery();				 		
+			rs=pst.executeQuery();	
+			
+			result.setHeaders(getHeaders(rs));
+			 
 			while(rs.next()){
 				T r=resultHandler.createResult(rs); 
 				result.add(r);					
@@ -50,6 +59,35 @@ public class ResultSetExecutor<T> implements Execute<DataTable<T>>{
 			CloseQuietly.close(rs);
 		}
 	} 
+	
+	protected List<DataColumn> getHeaders(ResultSet rs) throws SQLException {
+		List<DataColumn> ls=new ArrayList<DataColumn>();
+		
+		ResultSetMetaData rsmd=rs.getMetaData();
+		
+		Map<String, Integer> xs = new HashMap<String, Integer>();
+		for (int i = 1; i <= rsmd.getColumnCount(); i++) {
+			String name = rsmd.getColumnLabel(i);
+			if (name == null || name.trim().length() < 1) {
+				name = rsmd.getColumnName(i);
+			}
+
+			Integer n = xs.get(name);
+			if (n != null) {
+				name = name + n;
+
+				xs.put(name, n + 1);
+			} else {
+				xs.put(name, 1);
+			}
+			
+			
+			ls.add(new DataColumn(name));
+			 
+		}
+		
+		return ls;
+	}
 	
 	public PreparedStatement preparedStatement(Connection conn,String sql)throws SQLException {				 
 		return conn.prepareStatement(sql);

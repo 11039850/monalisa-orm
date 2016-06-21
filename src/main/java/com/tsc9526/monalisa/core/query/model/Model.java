@@ -61,37 +61,37 @@ public abstract class Model<T extends Model> implements Serializable {
 
 	private static final long serialVersionUID = 703976566431364670L;
 
-	protected static DataSourceManager dsm = DataSourceManager.getInstance();
-	private static Map<String, Table>  hCachePartitionTables = new ConcurrentHashMap<String, Table>();
-	private static Map<String, String> hCacheHistoryTables   = new ConcurrentHashMap<String, String>();
+	protected static DataSourceManager   dsm = DataSourceManager.getInstance();
+	private   static Map<String, Table>  hCachePartitionTables = new ConcurrentHashMap<String, Table>();
+	private   static Map<String, String> hCacheHistoryTables   = new ConcurrentHashMap<String, String>();
 
-	protected transient ModelMeta modelMeta;
-	protected transient ModelHolder modelHolder;
-	protected transient DBConfig db;
+	protected transient ModelMeta $modelMeta;
+	protected transient ModelHolder $modelHolder;
+	protected transient DBConfig $db;
 
-	protected String TABLE_NAME;
-	protected String[] PRIMARY_KEYS;
+	protected String   $tableName;
+	protected String[] $primaryKeys;
 
 	public Model() {
 	}
 
 	public Model(String tableName, String... primaryKeys) {
-		this.TABLE_NAME = tableName;
-		this.PRIMARY_KEYS = primaryKeys;
+		this.$tableName = tableName;
+		this.$primaryKeys = primaryKeys;
 	}
 
 	protected ModelMeta mm() {
-		if (modelMeta == null) {
-			modelMeta = ModelMeta.getModelMeta(this);
+		if ($modelMeta == null) {
+			$modelMeta = ModelMeta.getModelMeta(this);
 		}
-		return modelMeta;
+		return $modelMeta;
 	}
 
 	protected synchronized ModelHolder holder() {
-		if (modelHolder == null) {
-			modelHolder = new ModelHolder(this);
+		if ($modelHolder == null) {
+			$modelHolder = new ModelHolder(this);
 		}
-		return modelHolder;
+		return $modelHolder;
 	}
 
 	/**
@@ -101,7 +101,7 @@ public abstract class Model<T extends Model> implements Serializable {
 	 * @return this 
 	 */
 	public T use(DBConfig db) {
-		this.db = db;
+		this.$db = db;
 
 		return (T) this;
 	}
@@ -110,7 +110,7 @@ public abstract class Model<T extends Model> implements Serializable {
 	 * @return  The Used DBConfig
 	 */
 	public DBConfig use(){
-		return this.db;
+		return this.$db;
 	}
 	
 
@@ -659,7 +659,7 @@ public abstract class Model<T extends Model> implements Serializable {
 	 * @return 数据库连接信息
 	 */
 	public DBConfig db() {
-		return db == null ? mm().db : this.db;
+		return $db == null ? mm().db : this.$db;
 	}
 
 	public boolean readonly() {

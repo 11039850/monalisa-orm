@@ -18,6 +18,7 @@ package com.tsc9526.monalisa.core.converters.impl;
 
 import java.io.ByteArrayInputStream;
 import java.io.ObjectInputStream;
+import java.util.Map;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
@@ -38,6 +39,7 @@ public class ObjectTypeConversion implements Conversion<Object> {
 		};
 	}
  
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public Object convert(Object value, Class<?> type) {
 		if (value == null){
 			return null;
@@ -68,6 +70,10 @@ public class ObjectTypeConversion implements Conversion<Object> {
 			}else{
 				JsonElement json=gson.toJsonTree(value);
 				r= gson.fromJson(json, type);
+				
+				if(r instanceof Map){
+					trimDouble((Map)r);
+				}
 			}
 		}
 		
@@ -75,6 +81,22 @@ public class ObjectTypeConversion implements Conversion<Object> {
 			return r;
 		}else{
 			return null;
+		}
+	}
+	
+	protected void trimDouble(Map<Object,Object> map) {
+		for(Object key:map.keySet()){
+			Object v=map.get(key);
+			if(v instanceof Double){
+				Double d=(Double)v;
+				if((""+v).endsWith(".0")){
+					if(d >= Integer.MIN_VALUE && d <=Integer.MAX_VALUE){
+						map.put(key, d.intValue());
+					}else{
+						map.put(key, d.longValue());
+					} 
+				}
+			}
 		}
 	}
 }

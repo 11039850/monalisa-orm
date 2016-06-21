@@ -20,6 +20,8 @@ import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.Map;
  
+
+
 import com.tsc9526.monalisa.core.tools.ClassHelper;
 import com.tsc9526.monalisa.core.tools.Helper;
 import com.tsc9526.monalisa.core.tools.ClassHelper.FGS;
@@ -32,8 +34,13 @@ import com.tsc9526.monalisa.core.tools.ClassHelper.MetaClass;
 public class DataMap extends LinkedHashMap<String,Object>{ 
 	private static final long serialVersionUID = -8132926422921115814L;	
 	 
+	@SuppressWarnings("unchecked")
 	public <T> T as(Class<T> toClass){
 		try {
+			if(toClass.isAssignableFrom(DataMap.class)){
+				return (T)this;
+			}
+			
 			T r = toClass.newInstance();
 			
 			MetaClass mc=ClassHelper.getMetaClass(toClass);
@@ -54,7 +61,6 @@ public class DataMap extends LinkedHashMap<String,Object>{
 		}
 		
 	}
-	 
 	
 	public Object put(String key,Object value){
 		if(key!=null){
@@ -71,6 +77,11 @@ public class DataMap extends LinkedHashMap<String,Object>{
 		return super.get(key);
 	}
 	
+	/**
+	 * 
+	 * @param index  The first key is 0.
+	 * @return Object value
+	 */
 	@SuppressWarnings("unchecked")
 	public Object get(int index){
 		Map.Entry<String,Object> entry=(Map.Entry<String,Object>)this.entrySet().toArray()[index];
@@ -94,6 +105,12 @@ public class DataMap extends LinkedHashMap<String,Object>{
 		return super.containsKey(key);
 	}
 	
+	/**
+	 * 
+	 * @param index  The first key is 0.
+	 * @param defaultValue if null, return the defaultValue
+	 * @return string value
+	 */
 	public String getString(int index,String defaultValue){
 		String v=getString(index);
 		if(v==null){
@@ -141,6 +158,13 @@ public class DataMap extends LinkedHashMap<String,Object>{
 		return v;
 	}
 	
+	
+	/**
+	 * 
+	 * @param index  The first key is 0.
+	 * @param defaultValue  if null , return the defaultValue
+	 * @return boolean value
+	 */
 	public boolean getBool(int index,boolean defaultValue){
 		Boolean v=getBoolean(index);
 		if(v==null){
@@ -162,6 +186,11 @@ public class DataMap extends LinkedHashMap<String,Object>{
 		}
 	}
 	
+	/**
+	 * 
+	 * @param index  The first key is 0.
+	 * @return boolean result
+	 */
 	public Boolean getBoolean(int index){
 		Object v=(Object)get(index);
 		if(v==null){
@@ -183,6 +212,12 @@ public class DataMap extends LinkedHashMap<String,Object>{
 		return v;
 	}
 	
+	/**
+	 * 
+	 * @param index  The first key is 0.
+	 * @param defaultValue if null, return defaultValue
+	 * @return int result
+	 */
 	public int getInt(int index, int defaultValue){
 		Integer v=getInteger(index);
 		if(v==null){
@@ -198,12 +233,20 @@ public class DataMap extends LinkedHashMap<String,Object>{
 		}else{
 			if(v instanceof Integer){
 				return (Integer)v;
+			}else if(v instanceof Double){
+				return ((Double)v).intValue();
 			}else{
 				return Integer.parseInt(""+v);
 			}
 		}
 	}
 	
+	
+	/**
+	 * 
+	 * @param index  The first key is 0.
+	 * @return integer result
+	 */
 	public Integer getInteger(int index){
 		Object v=(Object)get(index);
 		if(v==null){
@@ -211,12 +254,15 @@ public class DataMap extends LinkedHashMap<String,Object>{
 		}else{
 			if(v instanceof Integer){
 				return (Integer)v;
+			}else if(v instanceof Double){
+				return ((Double)v).intValue();
 			}else{
 				return Integer.parseInt(""+v);
 			}
 		}
 	}
 	
+
 	public long getLong(String key, long defaultValue){
 		Long v=getLong(key);
 		if(v==null){
@@ -225,6 +271,12 @@ public class DataMap extends LinkedHashMap<String,Object>{
 		return v;
 	}
 	
+		/**
+	 * 
+	 * @param index  The first key is 0.
+	 * @param defaultValue if null, return defaultValue
+	 * @return long result
+	 */
 	public long getLong(int index, long defaultValue){
 		Long v=getLong(index);
 		if(v==null){
@@ -240,12 +292,19 @@ public class DataMap extends LinkedHashMap<String,Object>{
 		}else{
 			if(v instanceof Long){
 				return (Long)v;
+			}else if(v instanceof Double){
+				return ((Double)v).longValue();
 			}else{
 				return Long.parseLong(""+v);
 			}
 		}
 	}
 	
+	/**
+	 * 
+	 * @param index  The first key is 0.
+	 * @return long result
+	 */
 	public Long getLong(int index){
 		Object v=(Object)get(index);
 		if(v==null){
@@ -253,11 +312,14 @@ public class DataMap extends LinkedHashMap<String,Object>{
 		}else{
 			if(v instanceof Long){
 				return (Long)v;
+			}else if(v instanceof Double){
+				return ((Double)v).longValue();
 			}else{
 				return Long.parseLong(""+v);
 			}
 		}
 	}
+	
 	
 	public float getFloat(String key, float defaultValue){
 		Float v=getFloat(key);
@@ -268,6 +330,12 @@ public class DataMap extends LinkedHashMap<String,Object>{
 	}
 	
 	
+	/**
+	 * 
+	 * @param index  The first key is 0.
+	 * @param defaultValue if null, return defaultValue
+	 * @return float result
+	 */
 	public float getFloat(int index, float defaultValue){
 		Float v=getFloat(index);
 		if(v==null){
@@ -289,6 +357,11 @@ public class DataMap extends LinkedHashMap<String,Object>{
 		}
 	}
 	
+	/**
+	 * 
+	 * @param index  The first key is 0.
+	 * @return float result
+	 */
 	public Float getFloat(int index){
 		Object v=(Object)get(index);
 		if(v==null){
@@ -302,6 +375,12 @@ public class DataMap extends LinkedHashMap<String,Object>{
 		}
 	}
 	
+	/**
+	 * 
+	 * @param index  The first key is 0.
+	 * @param defaultValue if null, return defaultValue
+	 * @return double result
+	 */
 	public double getDouble(int index, double defaultValue){
 		Double v=getDouble(index);
 		if(v==null){
@@ -332,6 +411,11 @@ public class DataMap extends LinkedHashMap<String,Object>{
 	}
 	
 	
+	/**
+	 * 
+	 * @param index  The first key is 0.
+	 * @return double result
+	 */
 	public Double getDouble(int index){
 		Object v=(Object)get(index);
 		if(v==null){
@@ -344,11 +428,23 @@ public class DataMap extends LinkedHashMap<String,Object>{
 			}
 		}
 	}
-		
+
+	/**
+	 * 
+	 * @param index  The first key is 0.
+	 * @return date value
+	 */	
 	public Date getDate(int index){
 		return Helper.toDate(get(index), null, null);
 	}
 	
+	/**
+	 * 
+	 * @param index  The first key is 0.
+	 * @param format  new SimpleDateFormat(format): auto detect date format if null or ''
+	 * @param defaultValue return this value if null
+	 * @return date value
+	 */
 	public Date getDate(int index,String format,Date defaultValue){		 
 		return Helper.toDate(get(index), format, defaultValue);
 	}

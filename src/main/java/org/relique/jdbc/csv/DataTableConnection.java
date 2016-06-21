@@ -14,36 +14,46 @@
  *	You should have received a copy of the GNU Lesser General Public License
  *	along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************************/
-package com.tsc9526.monalisa.core.tools;
+package org.relique.jdbc.csv;
 
-import java.lang.reflect.Type;
+import java.io.Reader;
+import java.io.StringReader;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Properties;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonPrimitive;
-import com.google.gson.JsonSerializationContext;
-import com.google.gson.JsonSerializer;
-import com.tsc9526.monalisa.core.converters.Conversion;
+import org.relique.io.TableReader;
 
 /**
  * 
  * @author zzg.zhou(11039850@qq.com)
  */
-public class JsonHelper {
-	private static GsonBuilder gb=new GsonBuilder().registerTypeAdapter(Double.class,  new JsonSerializer<Double>() {   
-	    public JsonElement serialize(Double src, Type typeOfSrc, JsonSerializationContext context) {
-	        if(src == src.longValue()){
-	            return new JsonPrimitive(src.longValue());      
-	        }
-	        return new JsonPrimitive(src);
-	    }
-	 }).setDateFormat(Conversion.DEFAULT_DATETIME_FORMAT);
-	 
-	
-	public static Gson getGson(){		
-		return gb.create();   
+public class DataTableConnection extends CsvConnection {
+
+	protected DataTableConnection() throws SQLException {
+		
+		super(new DataTableReader(),new Properties(),"");
+		 
 	}
- 	 
+
+	public static class DataTableReader implements TableReader{
+	 
+		public Reader getReader(Statement statement, String tableName) throws SQLException {
+			 
+			return new StringReader("a");
+		}
+	
+		 
+		public List<String> getTableNames(Connection connection) throws SQLException {
+			List<String> tables=new ArrayList<String>();
+			
+			tables.add("_THIS_TABLE");
+			
+			return tables;
+		}
+	}
 
 }

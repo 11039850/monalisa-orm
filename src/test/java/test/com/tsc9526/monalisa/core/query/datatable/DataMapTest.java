@@ -14,36 +14,45 @@
  *	You should have received a copy of the GNU Lesser General Public License
  *	along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************************/
-package com.tsc9526.monalisa.core.tools;
+package test.com.tsc9526.monalisa.core.query.datatable;
 
-import java.lang.reflect.Type;
+import java.util.Map;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonPrimitive;
-import com.google.gson.JsonSerializationContext;
-import com.google.gson.JsonSerializer;
-import com.tsc9526.monalisa.core.converters.Conversion;
+import org.testng.Assert;
+import org.testng.annotations.Test;
+
+import test.com.tsc9526.monalisa.core.query.TestSimpleModel;
+
+import com.tsc9526.monalisa.core.query.datatable.DataMap;
 
 /**
  * 
  * @author zzg.zhou(11039850@qq.com)
  */
-public class JsonHelper {
-	private static GsonBuilder gb=new GsonBuilder().registerTypeAdapter(Double.class,  new JsonSerializer<Double>() {   
-	    public JsonElement serialize(Double src, Type typeOfSrc, JsonSerializationContext context) {
-	        if(src == src.longValue()){
-	            return new JsonPrimitive(src.longValue());      
-	        }
-	        return new JsonPrimitive(src);
-	    }
-	 }).setDateFormat(Conversion.DEFAULT_DATETIME_FORMAT);
-	 
-	
-	public static Gson getGson(){		
-		return gb.create();   
-	}
- 	 
+@Test
+public class DataMapTest {
 
+	public void testAsDataMap(){
+		DataMap x=new DataMap();
+		x.put("a","a");
+		
+		DataMap t1=x.as(DataMap.class);
+		Assert.assertTrue(t1==x);
+	}
+	
+	public void testAsMap(){
+		DataMap x=new DataMap();
+		x.put("a","a");
+		
+		Map<?,?> t1=x.as(Map.class);
+		Assert.assertTrue(t1==x);
+	}
+	
+	public void testAsTestSimpleModel(){
+		DataMap x=new DataMap();
+		x.put("intField1",226);
+		
+		TestSimpleModel t1=x.as(TestSimpleModel.class);
+		Assert.assertEquals(t1.getIntField1().intValue(),226);
+	}
 }

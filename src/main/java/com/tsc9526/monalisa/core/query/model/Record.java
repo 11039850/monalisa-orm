@@ -129,7 +129,7 @@ public class Record extends Model<Record>{
 	public Record(){
 		if(this.getClass()!=Record.class){
 			if(this.getClass().getAnnotation(Table.class)==null){
-				this.TABLE_NAME=this.getClass().getSimpleName();
+				this.$tableName=this.getClass().getSimpleName();
 			}
 		}
 	}

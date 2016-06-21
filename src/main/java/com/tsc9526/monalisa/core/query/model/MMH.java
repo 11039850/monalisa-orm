@@ -30,9 +30,9 @@ public class MMH {
 		try {
 			Model<T> x = model.getClass().newInstance();
 
-			x.TABLE_NAME = model.TABLE_NAME;
-			x.PRIMARY_KEYS = model.PRIMARY_KEYS;
-			x.db = model.db;
+			x.$tableName = model.$tableName;
+			x.$primaryKeys = model.$primaryKeys;
+			x.$db = model.$db;
 
 			return x;
 		} catch (Exception e) {

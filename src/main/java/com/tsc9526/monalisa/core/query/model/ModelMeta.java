@@ -96,26 +96,26 @@ public class ModelMeta{
 		
 		Class<?> clazz=ClassHelper.findClassWithAnnotation(model.getClass(),DB.class);
 		if(clazz==null){
-			if(model.db==null){
+			if(model.$db==null){
 				throw new RuntimeException("Dynamic model can not found DB, call model.use(DB) first!");
 			}
 			
 			Table table=model.getClass().getAnnotation(Table.class);
 			if(table==null){
-				if(model.TABLE_NAME==null || model.TABLE_NAME.trim().length()<1){
-					throw new RuntimeException("Dynamic model can not found table: "+model.TABLE_NAME+", call model(TableName) first!");
+				if(model.$tableName==null || model.$tableName.trim().length()<1){
+					throw new RuntimeException("Dynamic model can not found table: "+model.$tableName+", call model(TableName) first!");
 				}else{				
-					key="#"+model.db.getKey()+"$"+model.TABLE_NAME;
+					key="#"+model.$db.getKey()+"$"+model.$tableName;
 				}
 			}
 		}else{
 			Table table=model.getClass().getAnnotation(Table.class);
 			if(table==null){
-				if(model.TABLE_NAME==null || model.TABLE_NAME.trim().length()<1){
-					throw new RuntimeException("Dynamic model can not found table: "+model.TABLE_NAME+", call model(TableName) first!");
+				if(model.$tableName==null || model.$tableName.trim().length()<1){
+					throw new RuntimeException("Dynamic model can not found table: "+model.$tableName+", call model(TableName) first!");
 				}else{	
 					DBConfig db=Model.dsm.getDBConfig(clazz);
-					key=db.getKey()+"$"+model.TABLE_NAME;
+					key=db.getKey()+"$"+model.$tableName;
 				}
 			}
 		}
@@ -149,8 +149,8 @@ public class ModelMeta{
 	}
 	
 	void init(Model<?> model){		
-		this.tableName  =model.TABLE_NAME;
-		this.primaryKeys=model.PRIMARY_KEYS;
+		this.tableName  =model.$tableName;
+		this.primaryKeys=model.$primaryKeys;
 		
 		initDB(model);
 		
@@ -170,7 +170,7 @@ public class ModelMeta{
 		if(clazz!=null){
 			db=Model.dsm.getDBConfig(clazz);
 		}else{
-			db=model.db;
+			db=model.$db;
 		}
 		
 		if(db==null){

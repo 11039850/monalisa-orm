@@ -17,10 +17,14 @@
 package test.com.tsc9526.monalisa.core.converter;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.testng.Assert;
 import org.testng.annotations.Test;
+
+import test.com.tsc9526.monalisa.core.query.TestSimpleModel;
 
 import com.google.gson.JsonPrimitive;
 import com.tsc9526.monalisa.core.converters.TypeConverter;
@@ -160,4 +164,22 @@ public class TestConverter {
 	public static enum EnumIntA{V0,V1}
 	
 	public static enum EnumStringA{V0,V1}
+	
+	
+	public void testMap001(){
+		Map<String, Object> from=new HashMap<String, Object>();
+		from.put("int",226);
+		
+		Map<?,?> to=converter.convert(from, Map.class);
+		
+		Assert.assertEquals(""+to.get("int"),"226");
+	}
+	
+	public void testMap002(){
+		TestSimpleModel from=new TestSimpleModel();
+		from.setIntField1(226);
+		Map<?,?> to=converter.convert(from, Map.class);
+		
+		Assert.assertEquals(""+to.get("intField1"),"226");
+	}
 }

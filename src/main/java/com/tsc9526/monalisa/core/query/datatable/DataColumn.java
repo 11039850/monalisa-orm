@@ -25,9 +25,11 @@ public class DataColumn {
 	
 	private String label;
 	
-	private Class<?> type;
+	private Class<?> type=String.class;
 	
 	private int index;	
+	
+	private String typeString="String";
 	
 	public DataColumn() {
 		
@@ -80,4 +82,15 @@ public class DataColumn {
 		this.index = index;
 	}
 
+	public String getTypeString() {
+		return typeString;
+	}
+
+	public void setTypeString(String typeString) {
+		this.typeString = typeString;
+	}
+
+	public String toString(){
+		return name;
+	}
 }
