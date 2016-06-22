@@ -100,6 +100,11 @@ Output will be:
 		System.out.println(x);
 	}
 	
+	//DataTable query
+	//SQL: SELECT name, count(*) as cnt FROM _THIS_TABLE WHERE status>=0 GROUP BY name ORDER BY name ASC
+	DataTable<DataMap> newTable=rs.select("name, count(*) as cnt","status>=0","name ASC","GROUP BY name");
+	
+	
 	//update
 	User user=User.SELECT().selectOne("name=?", "zzg.zhou");
 	user.setStatus(3).update();
@@ -180,7 +185,7 @@ Output will be:
 	<dependency>
 		<groupId>com.tsc9526</groupId>
 		<artifactId>monalisa-core</artifactId>
-		<version>1.1.0</version>
+		<version>1.1.1</version>
 	</dependency>
 ``` 
 
