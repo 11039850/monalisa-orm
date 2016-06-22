@@ -420,7 +420,7 @@ public class ModelHelper {
 				}
 				sb.append('<').append(name).append('>');
 				 
-				sb.append(value.replaceAll("<", "&lt;").replaceAll(">","&gt;"));
+				sb.append(value.replace("&","&amp;").replaceAll("<", "&lt;").replaceAll(">","&gt;"));
 
 				sb.append("</").append(name).append('>');
 				if (pretty) {
