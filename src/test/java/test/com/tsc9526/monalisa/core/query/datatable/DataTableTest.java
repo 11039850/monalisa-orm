@@ -141,4 +141,27 @@ public class DataTableTest {
 		Assert.assertTrue(r5.get(0).getInt("intField1",0)==226);
 		
 	}
+	
+	public void testGroupBy(){
+		DataTable<TestSimpleModel> table=new DataTable<TestSimpleModel>();
+		table.add(new TestSimpleModel().setIntField1(1).setStringField1("s1"));
+		table.add(new TestSimpleModel().setIntField1(2).setStringField1("s2"));
+		table.add(new TestSimpleModel().setIntField1(3).setStringField1("s3"));
+		
+		table.add(new TestSimpleModel().setIntField1(10).setStringField1("s1"));
+		
+		DataTable<DataMap> rs=table.select("stringField1,count(*) as cnt"
+				, "intField1>0 AND stringField1 IS NOT NULL"
+				,"stringField1 ASC"
+				,"stringField1");
+		
+		Assert.assertEquals(rs.size(), 3);
+		Assert.assertEquals(rs.get(0).getString("stringField1"), "s1");
+		Assert.assertEquals(rs.get(1).getString("stringField1"), "s2");
+		Assert.assertEquals(rs.get(2).getString("stringField1"), "s3");
+		
+		Assert.assertEquals(rs.get(0).getInt("cnt",0), 2);
+		Assert.assertEquals(rs.get(1).getInt("cnt",0), 1);
+		Assert.assertEquals(rs.get(2).getInt("cnt",0), 1);
+	}
 }

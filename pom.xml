@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.tsc9526</groupId>
 	<artifactId>monalisa-core</artifactId>
-	<version>1.1.0</version>
+	<version>1.1.1</version>
 	
 	<name>monalisa-core</name>
 	<url>https://github.com/11039850/monalisa-core</url>
@@ -25,7 +25,7 @@
 		<connection>scm:git:https://github.com/11039850/monalisa-core.git</connection>
 		<developerConnection>scm:git:https://github.com/11039850/monalisa-core.git</developerConnection>
 		<url>https://github.com/11039850/monalisa-core.git</url>
-		<tag>tag-1.1.0</tag>
+		<tag>tag-1.1.1</tag>
 	</scm>
 	
 	<developers>

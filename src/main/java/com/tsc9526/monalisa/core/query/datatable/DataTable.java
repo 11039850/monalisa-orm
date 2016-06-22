@@ -171,6 +171,14 @@ public class DataTable<E> extends ArrayList<E> {
 				sql+=" WHERE "+where;
 			}
 		}
+		 
+		if(groupBy!=null && groupBy.trim().length()>0){
+			if(SQLHelper.isStartByKeyWord(groupBy,"GROUP")){
+				sql+=" "+groupBy;
+			}else{
+				sql+=" GROUP BY "+groupBy;
+			}
+		}
 		
 		if(orderBy!=null && orderBy.trim().length()>0){
 			if(SQLHelper.isStartByKeyWord(orderBy,"ORDER")){
@@ -180,13 +188,6 @@ public class DataTable<E> extends ArrayList<E> {
 			}
 		}
 		
-		if(groupBy!=null && groupBy.trim().length()>0){
-			if(SQLHelper.isStartByKeyWord(groupBy,"GROUP")){
-				sql+=" "+groupBy;
-			}else{
-				sql+=" GROUP BY "+groupBy;
-			}
-		}
 		return sql;
 	}
 	 
