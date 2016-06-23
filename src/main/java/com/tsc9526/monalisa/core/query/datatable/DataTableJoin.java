@@ -39,7 +39,7 @@ class DataTableJoin {
 	protected Map<String, Integer> xs = new HashMap<String, Integer>();
  	 
 	protected DataTable<DataMap> allTable=new DataTable<DataMap>();
-	protected List<DataColumn> allHeader=new ArrayList<DataColumn>();
+	protected List<DataColumn>  allHeader=new ArrayList<DataColumn>();
 	
 	public DataTableJoin(DataTable<?> leftTable,DataTable<?> rightTable, String joinFieldNames){
 		this(leftTable, rightTable, joinFieldNames.split(","), joinFieldNames.split(","));
@@ -58,7 +58,7 @@ class DataTableJoin {
 		this.rightTable=rightTable.as(DataMap.class);
 		
 		this.leftJoinFields =leftFieldNames;
-		this.rightJoinFields=rightFieldNames;;
+		this.rightJoinFields=rightFieldNames;
 		
 		setup();
 	}
@@ -156,7 +156,29 @@ class DataTableJoin {
 	}
 	
 	protected DataTable<DataMap> doRightJoin(){
-		return new DataTableJoin(rightTable,leftTable,rightJoinFields,leftJoinFields).doLeftJoin();
+		DataTable<DataMap> allTable=new DataTable<DataMap>().setHeaders(allHeader);
+		
+		Map<String,List<DataMap>> leftValues=toMapList(leftTable,leftJoinFields);
+		 
+		for(DataMap x:rightTable){
+			String key=getDataMapKey(x,rightJoinFields);
+			List<DataMap> rms=leftValues.get(key);
+			if(rms!=null){
+				for(DataMap r:rms){
+					DataMap m=new DataMap();
+					
+					addDataMap(m,r,leftKeyMapping);
+					addDataMap(m,x,rightKeyMapping);
+					
+					allTable.add(m);
+				}
+			}else{
+				DataMap m=new DataMap();
+				addDataMap(m,x,rightKeyMapping);
+				allTable.add(m);
+			}
+		}
+		return allTable;
 	}
 	
 	protected void setupHeaders(List<DataColumn> allHeader,DataTable<DataMap> table,DataMap keyMapping,Map<String, Integer> xs){
@@ -211,10 +233,10 @@ class DataTableJoin {
 	protected String getDataMapKey(DataMap x,String[] keyFields){
 		String key="@";
 		for(String n:keyFields){
-			if(key.length()>0){
-				key+="_$&$_";
+			if(key.length()>1){
+				key+="&";
 			}
-			key+=x.getString(n);
+			key+=key+"="+x.getString(n);
 		}
 		
 		return key.toLowerCase();

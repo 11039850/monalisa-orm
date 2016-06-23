@@ -193,7 +193,7 @@ public class DataTable<E> extends ArrayList<E> {
 	 
  
 	/**
-	 * Full Join
+	 * Inner Join
 	 * 
 	 * @param rightTable      
 	 * @param leftFieldNames  左表连接字段，多个字段逗号分隔
@@ -201,7 +201,7 @@ public class DataTable<E> extends ArrayList<E> {
 	 * @return result
 	 */
 	public DataTable<DataMap> join(DataTable<?> rightTable,String leftFieldNames,String rightFieldNames){
-		return new DataTableJoin(this,rightTable,leftFieldNames,rightFieldNames).doFullJoin();
+		return new DataTableJoin(this,rightTable,leftFieldNames,rightFieldNames).doInnerJoin();
 	}
 	
 	
@@ -218,18 +218,6 @@ public class DataTable<E> extends ArrayList<E> {
 	}
 	
 	/**
-	 * Inner Join
-	 * 
-	 * @param rightTable      
-	 * @param leftFieldNames  左表连接字段，多个字段逗号分隔
-	 * @param rightFieldNames 右表连接字段，多个字段逗号分隔
-	 * @return result
-	 */
-	public DataTable<DataMap> joinInner(DataTable<?> rightTable,String leftFieldNames,String rightFieldNames){
-		return new DataTableJoin(this,rightTable,leftFieldNames,rightFieldNames).doInnerJoin();
-	}
-	
-	/**
 	 * Right Join
 	 * 
 	 * @param rightTable      
@@ -241,6 +229,18 @@ public class DataTable<E> extends ArrayList<E> {
 		return new DataTableJoin(this,rightTable,leftFieldNames,rightFieldNames).doRightJoin();
 	}
 	
+	/**
+	 * Full Join
+	 * 
+	 * @param rightTable      
+	 * @param leftFieldNames  左表连接字段，多个字段逗号分隔
+	 * @param rightFieldNames 右表连接字段，多个字段逗号分隔
+	 * @return result
+	 */
+	public DataTable<DataMap> joinFull(DataTable<?> rightTable,String leftFieldNames,String rightFieldNames){
+		return new DataTableJoin(this,rightTable,leftFieldNames,rightFieldNames).doFullJoin();
+	}
+	 
 	
 	public Page<E> getPage(int limit,int offset){
 		DataTable<E> list=new DataTable<E>();

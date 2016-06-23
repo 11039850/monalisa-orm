@@ -185,7 +185,7 @@ Output will be:
 	<dependency>
 		<groupId>com.tsc9526</groupId>
 		<artifactId>monalisa-core</artifactId>
-		<version>1.1.1</version>
+		<version>1.1.2</version>
 	</dependency>
 ``` 
 

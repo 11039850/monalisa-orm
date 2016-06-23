@@ -22,7 +22,42 @@ import com.tsc9526.monalisa.core.query.datatable.DataTable;
  */
 @Test
 public class DataTableTest {
-
+	public void testDataTableMapDefaultHeader() {
+		DataTable<DataMap> table = new DataTable<DataMap>();
+	 
+		//创建测试数据
+		for(int userId=1;userId<=6;userId++){
+			DataMap row = new DataMap();
+			row.put("user", userId);
+			row.put("area", "guangdong-"+(userId%2));
+			row.put("rank"  ,90+userId);
+			table.add(row);
+		}
+		
+		DataMap r=table.selectOne("count(*) as cnt", "rank  > 91", null, null);
+		System.out.println(r); 
+		
+		DataTable<DataMap> rs=table.select(
+				//字段选择: 支持常用的SQL聚合函数：sum/avg/count
+				//(null 或  "" 表示 *)
+				"area,count(*) as cnt"  
+				
+				//过滤条件: 支持AND, OR , 括号
+				//(null 或  "" 表示无条件)
+				, "rank>0"              
+				
+				//排序字段：ASC/DESC
+				//(null 或  "" 表示无指定的排序)
+				,"area ASC"  
+				
+				//分组语句：GROUP BY ... HAVING ...
+				//(null 或  "" 表示无分组)
+				,"area");
+		
+		System.out.println(rs);
+		
+	}
+	
 	public void testDataTableMap() {
 		DataColumn[] headers = new DataColumn[] { new DataColumn("a"), new DataColumn("b"), new DataColumn("c") };
 

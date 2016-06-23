@@ -30,7 +30,7 @@ import com.tsc9526.monalisa.core.query.datatable.DataTable;
  */
 @Test
 public class DataTableJoinTest {
-	public void testJoin(){
+	private DataTable<?>[] createDataTables(){
 		DataTable<TestSimpleModel> left=new DataTable<TestSimpleModel>();
 		TestSimpleModel v1=new TestSimpleModel()
 			.setIntField1(11).setStringField1("s11")
@@ -38,8 +38,8 @@ public class DataTableJoinTest {
 		left.add(v1);
 		
 		TestSimpleModel v2=new TestSimpleModel()
-		.setIntField1(21).setStringField1("s21")
-		.setIntField2(22).setStringField2("s22");
+			.setIntField1(21).setStringField1("s21")
+			.setIntField2(22).setStringField2("s22");
 		left.add(v2);
 		 
 		TestSimpleModel v3=new TestSimpleModel()
@@ -57,6 +57,70 @@ public class DataTableJoinTest {
 		row.put("intField1", 11);
 		row.put("stringField1", "11stringB");
 		right.add(row);
+		
+		return new DataTable[]{left,right};
+	}
+	
+	
+	public void testJoinInner(){
+		DataTable<?>[] dataTables=createDataTables();
+		DataTable<?> left=dataTables[0];
+		DataTable<?> right=dataTables[1];
+		
+		DataTable<DataMap> rs=left.join(right, "intField1", "intField1");
+		Assert.assertEquals(rs.size(),2);
+		Assert.assertEquals(rs.get(0).getInt("intField1",0),11);
+		Assert.assertEquals(rs.get(0).getInt("intField11",0),11);
+		Assert.assertEquals(rs.get(0).getString("stringField1"),"s11");
+		Assert.assertEquals(rs.get(0).getString("stringField11"),"11stringA");
+		
+		Assert.assertEquals(rs.get(1).getInt("intField1",0),11);
+		Assert.assertEquals(rs.get(1).getInt("intField11",0),11);
+		Assert.assertEquals(rs.get(1).getString("stringField1"),"s11");
+		Assert.assertEquals(rs.get(1).getString("stringField11"),"11stringB");
+	}
+	
+	public void testJoinFull(){
+		DataTable<?>[] dataTables=createDataTables();
+		DataTable<?> left=dataTables[0];
+		DataTable<?> right=dataTables[1];
+		
+		DataTable<DataMap> rs=left.joinFull(right, "intField1", "intField1");
+		 
+		Assert.assertEquals(rs.size(),4);
+		Assert.assertEquals(rs.get(0).getInt("intField1",0),11);
+		Assert.assertEquals(rs.get(0).getInt("intField11",0),11);
+		Assert.assertEquals(rs.get(0).getString("stringField1"),"s11");
+		Assert.assertEquals(rs.get(0).getString("stringField11"),"11stringA");
+		
+		Assert.assertEquals(rs.get(1).getInt("intField1",0),11);
+		Assert.assertEquals(rs.get(1).getInt("intField11",0),11);
+		Assert.assertEquals(rs.get(1).getString("stringField1"),"s11");
+		Assert.assertEquals(rs.get(1).getString("stringField11"),"11stringB");
+	}
+	
+	public void testJoinRight(){
+		DataTable<?>[] dataTables=createDataTables();
+		DataTable<?> left=dataTables[0];
+		DataTable<?> right=dataTables[1];
+		
+		DataTable<DataMap> rs=left.joinRight(right, "intField1", "intField1");
+		Assert.assertEquals(rs.size(),2);
+		Assert.assertEquals(rs.get(0).getInt("intField1",0),11);
+		Assert.assertEquals(rs.get(0).getInt("intField11",0),11);
+		Assert.assertEquals(rs.get(0).getString("stringField1"),"s11");
+		Assert.assertEquals(rs.get(0).getString("stringField11"),"11stringA");
+		
+		Assert.assertEquals(rs.get(1).getInt("intField1",0),11);
+		Assert.assertEquals(rs.get(1).getInt("intField11",0),11);
+		Assert.assertEquals(rs.get(1).getString("stringField1"),"s11");
+		Assert.assertEquals(rs.get(1).getString("stringField11"),"11stringB");
+	}
+	
+	public void testJoinLeft(){
+		DataTable<?>[] dataTables=createDataTables();
+		DataTable<?> left=dataTables[0];
+		DataTable<?> right=dataTables[1];
 		
 		
 		DataTable<DataMap> rs=left.joinLeft(right, "intField1", "intField1");
@@ -81,5 +145,30 @@ public class DataTableJoinTest {
 		Assert.assertEquals(rs.get(3).getString("stringField1"),"s31");
 		Assert.assertEquals(rs.get(3).getString("stringField11"),null);
 		
+	}
+	
+	public void testJoinEscapedTime(){
+		long t1=System.currentTimeMillis();
+		
+		DataTable<TestSimpleModel> left=new DataTable<TestSimpleModel>();
+		for(int i=0;i<1000;i++){
+			left.add(new TestSimpleModel().setIntField1(i).setStringField1("s"+i).setIntField2(i*2).setStringField2("s"+(i*2)));
+		}
+		System.out.println("Init left table: "+left.size()+", use time: "+(System.currentTimeMillis()-t1));
+		
+		t1=System.currentTimeMillis();
+		DataTable<DataMap> right = new DataTable<DataMap>();
+		for(int i=0;i<2000;i++){
+			DataMap row = new DataMap();
+			row.put("intField1", i*3);
+			row.put("stringField1", "BStringA"+(i*5));
+			right.add(row);
+		}
+		System.out.println("Init right table: "+right.size()+", use time: "+(System.currentTimeMillis()-t1));
+		
+		t1=System.currentTimeMillis();
+		DataTable<DataMap> rs=left.join(right, "intField1", "intField1");
+		
+		System.out.println("Total: "+rs.size()+", use time: "+(System.currentTimeMillis()-t1));
 	}
 }
