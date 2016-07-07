@@ -256,6 +256,12 @@ public class DataTableTest {
 			table.add(new Object[]{i,"s"+i,"long"+i});
 		}
 		
+		List<DataColumn> cs=table.getHeaders();
+		Assert.assertEquals(cs.size(), 3);
+		Assert.assertEquals(cs.get(0).getName(), "c0");
+		Assert.assertEquals(cs.get(1).getName(), "c1");
+		Assert.assertEquals(cs.get(2).getName(), "c2");
+		
 		List<Object> rs=table.getColumn("c1");
 		Assert.assertEquals(rs.size(), 3);
 		Assert.assertEquals(rs.get(0), "s1");
