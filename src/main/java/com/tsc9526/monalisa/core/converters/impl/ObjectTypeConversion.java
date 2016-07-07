@@ -18,6 +18,7 @@ package com.tsc9526.monalisa.core.converters.impl;
 
 import java.io.ByteArrayInputStream;
 import java.io.ObjectInputStream;
+import java.util.HashMap;
 import java.util.Map;
 
 import com.google.gson.Gson;
@@ -29,6 +30,7 @@ import com.tsc9526.monalisa.core.tools.JsonHelper;
  * 
  * @author zzg.zhou(11039850@qq.com)
  */
+@SuppressWarnings({ "unchecked", "rawtypes" })
 public class ObjectTypeConversion implements Conversion<Object> {
  
 	public Object[] getTypeKeys() {
@@ -38,8 +40,7 @@ public class ObjectTypeConversion implements Conversion<Object> {
 			TYPE_OBJECT
 		};
 	}
- 
-	@SuppressWarnings({ "unchecked", "rawtypes" })
+  
 	public Object convert(Object value, Class<?> type) {
 		if (value == null){
 			return null;
@@ -51,30 +52,11 @@ public class ObjectTypeConversion implements Conversion<Object> {
 		
 		Object r=null;
 		if (value.getClass().isArray() && value.getClass().getComponentType()==Byte.TYPE) {
-			ByteArrayInputStream bis= new ByteArrayInputStream((byte[])value);
-			ObjectInputStream ois=null;
-			try {
-				ois=new ObjectInputStream(bis);
-				r= ois.readObject();
-			}catch (Exception e) {
-				throw new IllegalArgumentException("Could not deserialize object",e);
-			}finally {
-				 CloseQuietly.close(bis,ois); 
-			}
+			r=convertArrayByteToObject((byte[])value);
+		}else if (value.getClass().isArray() && Map.class.isAssignableFrom(type)) {
+			r=convertArrayByteToMap((Object[])value, (Class<? extends Map>)type);
 		}else{
-			Gson gson=JsonHelper.getGson();
-			if(value instanceof JsonElement){
-				r= gson.fromJson((JsonElement)value, type);
-			}else if(value instanceof String){
-				r= gson.fromJson(value.toString(), type);
-			}else{
-				JsonElement json=gson.toJsonTree(value);
-				r= gson.fromJson(json, type);
-				
-				if(r instanceof Map){
-					trimDouble((Map)r);
-				}
-			}
+			r=convertObject(value, type);
 		}
 		
 		if(type.isInstance(r)){
@@ -82,6 +64,58 @@ public class ObjectTypeConversion implements Conversion<Object> {
 		}else{
 			return null;
 		}
+	}
+	
+	protected Object convertArrayByteToObject(byte[] value){
+		ByteArrayInputStream bis= new ByteArrayInputStream((byte[])value);
+		ObjectInputStream ois=null;
+		try {
+			ois=new ObjectInputStream(bis);
+			return  ois.readObject();
+		}catch (Exception e) {
+			throw new IllegalArgumentException("Could not deserialize object",e);
+		}finally {
+			 CloseQuietly.close(bis,ois); 
+		}
+	}
+	
+	protected Map convertArrayByteToMap(Object[] xs,Class<? extends Map> type){
+		Map m=null;
+		if(type.isInterface()){
+			m=new HashMap<Object,Object>();
+		}else{
+			try{
+				m=(Map)type.newInstance();
+			}catch(Exception e){
+				throw new RuntimeException(e);
+			}
+		}
+		
+		for(int k=0;k<xs.length;k++){
+			m.put("c"+k, xs[k]);
+		}
+		
+		return m;
+	}
+	
+	protected Object convertObject(Object value,Class<?> type){
+		Object r=null;
+		
+		Gson gson=JsonHelper.getGson();
+		if(value instanceof JsonElement){
+			r= gson.fromJson((JsonElement)value, type);
+		}else if(value instanceof String){
+			r= gson.fromJson(value.toString(), type);
+		}else{
+			JsonElement json=gson.toJsonTree(value);
+			r= gson.fromJson(json, type);
+			
+			if(r instanceof Map){
+				trimDouble((Map)r);
+			}
+		}
+		
+		return r;
 	}
 	
 	protected void trimDouble(Map<Object,Object> map) {

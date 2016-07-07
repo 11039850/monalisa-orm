@@ -64,6 +64,11 @@ class DataTableReader extends DataReader {
 			}else{
 				if(row.getClass().isPrimitive() || row.getClass().getName().startsWith("java.")){
 					vs[i++]=row;
+				}else if(row.getClass().isArray()){
+					Object[] xs=(Object[])row;
+					for(int k=0;k<vs.length;k++){
+						vs[k]=xs[k];
+					}
 				}else{					
 					MetaClass mc=ClassHelper.getMetaClass(row.getClass());
 					for(String name:columnNames){

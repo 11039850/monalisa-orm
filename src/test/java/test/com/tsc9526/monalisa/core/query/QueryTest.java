@@ -19,8 +19,7 @@ package test.com.tsc9526.monalisa.core.query;
 import java.util.ArrayList;
 import java.util.List;
 
-import junit.framework.Assert;
-
+import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import test.com.tsc9526.monalisa.core.mysql.MysqlDB;
@@ -40,8 +39,8 @@ public class QueryTest {
 		String[] values="x1,x2".split(",");
 		q.add("SELECT * FROM T1 WHERE f1").in((Object)values);
 		
-		Assert.assertEquals("SELECT * FROM T1 WHERE f1 IN(?, ?)", q.getSql());
-		Assert.assertEquals("SELECT * FROM T1 WHERE f1 IN('x1', 'x2')", q.getExecutableSQL());
+		Assert.assertEquals(q.getSql(),"SELECT * FROM T1 WHERE f1 IN(?, ?)");
+		Assert.assertEquals(q.getExecutableSQL(),"SELECT * FROM T1 WHERE f1 IN('x1', 'x2')");
 	}
 	
 	public void testIn02(){
@@ -50,8 +49,8 @@ public class QueryTest {
 		String[] values="x1,x2".split(",");
 		q.add("SELECT * FROM T1 WHERE f1").in((Object[])values);
 		
-		Assert.assertEquals("SELECT * FROM T1 WHERE f1 IN(?, ?)", q.getSql());
-		Assert.assertEquals("SELECT * FROM T1 WHERE f1 IN('x1', 'x2')", q.getExecutableSQL());
+		Assert.assertEquals(q.getSql(),"SELECT * FROM T1 WHERE f1 IN(?, ?)");
+		Assert.assertEquals(q.getExecutableSQL(),"SELECT * FROM T1 WHERE f1 IN('x1', 'x2')");
 	}
 	
 	public void testIn03(){
@@ -59,8 +58,8 @@ public class QueryTest {
 		 
 		q.add("SELECT * FROM T1 WHERE f1").in("x1","x2");
 		
-		Assert.assertEquals("SELECT * FROM T1 WHERE f1 IN(?, ?)", q.getSql());
-		Assert.assertEquals("SELECT * FROM T1 WHERE f1 IN('x1', 'x2')", q.getExecutableSQL());
+		Assert.assertEquals(q.getSql(),"SELECT * FROM T1 WHERE f1 IN(?, ?)");
+		Assert.assertEquals(q.getExecutableSQL(),"SELECT * FROM T1 WHERE f1 IN('x1', 'x2')");
 	}
 	
 	public void testIn04(){
@@ -72,8 +71,8 @@ public class QueryTest {
 		
 		q.add("SELECT * FROM T1 WHERE f1").in(xs);
 		
-		Assert.assertEquals("SELECT * FROM T1 WHERE f1 IN(?, ?)", q.getSql());
-		Assert.assertEquals("SELECT * FROM T1 WHERE f1 IN('x1', 'x2')", q.getExecutableSQL());
+		Assert.assertEquals(q.getSql(),"SELECT * FROM T1 WHERE f1 IN(?, ?)");
+		Assert.assertEquals(q.getExecutableSQL(),"SELECT * FROM T1 WHERE f1 IN('x1', 'x2')");
 	}
 	
 	public void testIn05(){
@@ -85,8 +84,8 @@ public class QueryTest {
 		
 		q.add("SELECT * FROM T1 WHERE f1").in(xs,"x3");
 		
-		Assert.assertEquals("SELECT * FROM T1 WHERE f1 IN(?, ?, ?)", q.getSql());
-		Assert.assertEquals("SELECT * FROM T1 WHERE f1 IN('x1', 'x2', 'x3')", q.getExecutableSQL());
+		Assert.assertEquals(q.getSql(),"SELECT * FROM T1 WHERE f1 IN(?, ?, ?)");
+		Assert.assertEquals(q.getExecutableSQL(),"SELECT * FROM T1 WHERE f1 IN('x1', 'x2', 'x3')");
 	}
 	 
 	public void testNotIn05(){
@@ -98,8 +97,8 @@ public class QueryTest {
 		
 		q.add("SELECT * FROM T1 WHERE f1").notin(xs,"x3");
 		
-		Assert.assertEquals("SELECT * FROM T1 WHERE f1 NOT IN(?, ?, ?)", q.getSql());
-		Assert.assertEquals("SELECT * FROM T1 WHERE f1 NOT IN('x1', 'x2', 'x3')", q.getExecutableSQL());
+		Assert.assertEquals(q.getSql(),"SELECT * FROM T1 WHERE f1 NOT IN(?, ?, ?)");
+		Assert.assertEquals(q.getExecutableSQL(),"SELECT * FROM T1 WHERE f1 NOT IN('x1', 'x2', 'x3')");
 	}
 	
 }

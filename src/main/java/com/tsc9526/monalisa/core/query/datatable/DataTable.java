@@ -96,6 +96,23 @@ public class DataTable<E> extends ArrayList<E> {
 	}
  
 	/**
+	 * 获取指定列数据
+	 * 
+	 * @param column 列名称
+	 * @return 返回指定列名的整列数据
+	 */
+	public List<Object> getColumn(String column){
+		List<Object> rs=new ArrayList<Object>();
+		
+		for(DataMap m:as(DataMap.class)){
+			rs.add( m.get(column) );
+		}
+		
+		return rs;
+	}
+	
+	
+	/**
 	 * 
 	 * @param columns  SELECT fields,        null or ""  means: *(all fields)
 	 * @param where    WHERE statement,      null or ""  means: all records 
@@ -314,6 +331,11 @@ public class DataTable<E> extends ArrayList<E> {
 				}else{
 					if(v.getClass().isPrimitive() || v.getClass().getName().startsWith("java.")){
 						headers.add(new DataColumn("c0"));
+					}else if(v.getClass().isArray()){
+						Object[] xs=(Object[])v;
+						for(int k=0;k<xs.length;k++){
+							headers.add(new DataColumn("c"+k));
+						}
 					}else{					
 						MetaClass mc=ClassHelper.getMetaClass(v.getClass());
 						for(FGS fgs:mc.getFields()){
@@ -342,5 +364,4 @@ public class DataTable<E> extends ArrayList<E> {
 		
 		return this;
 	}
-	 
 }

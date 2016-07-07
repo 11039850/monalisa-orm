@@ -4,6 +4,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.testng.Assert;
@@ -198,5 +199,67 @@ public class DataTableTest {
 		Assert.assertEquals(rs.get(0).getInt("cnt",0), 2);
 		Assert.assertEquals(rs.get(1).getInt("cnt",0), 1);
 		Assert.assertEquals(rs.get(2).getInt("cnt",0), 1);
+	}
+	
+	public void testGetColumn1(){
+		DataTable<TestSimpleModel> table=new DataTable<TestSimpleModel>();
+		table.add(new TestSimpleModel().setIntField1(1).setStringField1("s1"));
+		table.add(new TestSimpleModel().setStringField1("s2"));
+		table.add(new TestSimpleModel().setIntField1(3).setStringField1("s3"));
+		
+		List<Object> rs=table.getColumn("stringField1");
+		Assert.assertEquals(rs.size(), 3);
+		Assert.assertEquals(rs.get(0), "s1");
+		Assert.assertEquals(rs.get(1), "s2");
+		Assert.assertEquals(rs.get(2), "s3");
+	}
+	
+	public void testGetColumn2(){
+		DataTable<Map<Object,Object>> table=new DataTable<Map<Object,Object>>();
+		for(int i=1;i<=3;i++){
+			Map<Object,Object> row = new HashMap<Object, Object>();
+			if(i!=2){
+				row.put("intField1", i);
+			}
+			row.put("stringField1", "s"+i);
+			table.add(row);
+		}
+		 
+		List<Object> rs=table.getColumn("stringField1");
+		Assert.assertEquals(rs.size(), 3);
+		Assert.assertEquals(rs.get(0), "s1");
+		Assert.assertEquals(rs.get(1), "s2");
+		Assert.assertEquals(rs.get(2), "s3");
+	}
+	
+	public void testGetColumn3(){
+		DataTable<DataMap> table=new DataTable<DataMap>();
+		for(int i=1;i<=3;i++){
+			DataMap row = new DataMap();
+			if(i!=2){
+				row.put("intField1", i);
+			}
+			row.put("stringField1", "s"+i);
+			table.add(row);
+		}
+		 
+		List<Object> rs=table.getColumn("stringField1");
+		Assert.assertEquals(rs.size(), 3);
+		Assert.assertEquals(rs.get(0), "s1");
+		Assert.assertEquals(rs.get(1), "s2");
+		Assert.assertEquals(rs.get(2), "s3");
+	}
+	
+	public void testObjectArray(){
+		DataTable<Object[]> table=new DataTable<Object[]>();
+		for(int i=1;i<=3;i++){
+			table.add(new Object[]{i,"s"+i,"long"+i});
+		}
+		
+		List<Object> rs=table.getColumn("c1");
+		Assert.assertEquals(rs.size(), 3);
+		Assert.assertEquals(rs.get(0), "s1");
+		Assert.assertEquals(rs.get(1), "s2");
+		Assert.assertEquals(rs.get(2), "s3");
 	}
 }
