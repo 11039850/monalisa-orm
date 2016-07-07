@@ -122,21 +122,13 @@ public class Query {
 	}
 	 
 	public Query notin(Object... values){
-		 return getDialect().notin(this, values);
+		return getDialect().notin(this, values);
 	}
 	 
 	public Query in(Object... values){
 		 return getDialect().in(this, values);
 	}
-	
-	public Query notin(List<?> values){
-		 return getDialect().notin(this, values.toArray(new Object[]{}));
-	}
-	
-	public Query in(List<?> values){
-		 return getDialect().in(this, values.toArray(new Object[]{}));
-	}
-	
+	  
 	public Query add(Query q){	
 		return add(q.getSql(),q.getParameters());
 	}

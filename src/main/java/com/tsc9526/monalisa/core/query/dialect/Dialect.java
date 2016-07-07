@@ -16,6 +16,7 @@
  *******************************************************************************************/
 package com.tsc9526.monalisa.core.query.dialect;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -316,8 +317,22 @@ public abstract class Dialect{
 		
 		query.add(keyInOrNotin).add("(");
 		
-		for(int i=0;i<values.length;i++){			 
-			query.add(i>0?", ?":"?",values[i]);
+		int i=0;
+		for(Object value:values){	
+			if(value instanceof Collection<?>){
+				for(Object v:(Collection<?>)value){
+					query.add(i>0?", ?":"?",v); 
+					i++;
+				}
+			}else if(value.getClass().isArray()){
+				for(Object v:(Object[])value){
+					query.add(i>0?", ?":"?",v); 
+					i++;
+				}
+			}else{
+				query.add(i>0?", ?":"?",value);
+				i++;
+			}
 		}
 		query.add(")");
 		
