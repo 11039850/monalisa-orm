@@ -38,6 +38,7 @@ import com.tsc9526.monalisa.core.query.datatable.DataMap;
 import com.tsc9526.monalisa.core.query.datatable.DataTable;
 import com.tsc9526.monalisa.core.query.dialect.Dialect;
 import com.tsc9526.monalisa.core.query.model.Model;
+import com.tsc9526.monalisa.core.query.model.ModelEvent;
 import com.tsc9526.monalisa.core.query.model.Record;
 import com.tsc9526.monalisa.core.tools.ClassHelper;
 import com.tsc9526.monalisa.core.tools.CloseQuietly;
@@ -277,6 +278,52 @@ public class DBConfig implements Closeable{
 			query.addBatch(os);
 		}
 		return query.executeBatch();
+	}
+	
+	
+	public int[] batchInsert(List<Model<?>> models){
+		return batchOpModels(models, ModelEvent.INSERT); 
+	}
+	
+	public int[] batchReplace(List<Model<?>> models){
+		return batchOpModels(models, ModelEvent.REPLACE); 
+	}
+	
+	public int[] batchUpdate(List<Model<?>> models){
+		return batchOpModels(models, ModelEvent.UPDATE); 
+	}
+	 
+	public int[] batchDelete(List<Model<?>> models){
+		return batchOpModels(models, ModelEvent.DELETE); 
+	}
+	
+	protected int[] batchOpModels(final List<Model<?>> models,final ModelEvent op){
+		final int[] rs=new int[models.size()];
+		
+		com.tsc9526.monalisa.core.query.Tx.execute(new com.tsc9526.monalisa.core.query.Tx.Atom(){
+			public int execute() throws Throwable {
+				int i=0;
+				for(Model<?> m:models){
+					int r=0;
+					
+					if(op==ModelEvent.INSERT){
+						r=m.save();
+					}else if(op==ModelEvent.REPLACE){
+						r=m.saveOrUpdate();
+					}else if(op==ModelEvent.UPDATE){
+						r=m.update();
+					}else if(op==ModelEvent.DELETE){
+						r=m.delete();
+					}
+					
+					rs[i++]=r;
+				}
+				
+				return 0;
+			}
+		});
+		
+		return rs;
 	}
 	
 	public static DBConfig fromClass(Class<?> clazzWithDBAnnotation){
