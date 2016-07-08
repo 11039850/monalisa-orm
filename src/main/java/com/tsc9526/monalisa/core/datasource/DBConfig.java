@@ -23,7 +23,9 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
+import java.util.concurrent.ConcurrentHashMap;
 
 import javax.sql.DataSource;
 
@@ -34,6 +36,8 @@ import com.tsc9526.monalisa.core.logger.Logger;
 import com.tsc9526.monalisa.core.meta.MetaPartition;
 import com.tsc9526.monalisa.core.query.Page;
 import com.tsc9526.monalisa.core.query.Query;
+import com.tsc9526.monalisa.core.query.cache.Cache;
+import com.tsc9526.monalisa.core.query.cache.CacheManager;
 import com.tsc9526.monalisa.core.query.datatable.DataMap;
 import com.tsc9526.monalisa.core.query.datatable.DataTable;
 import com.tsc9526.monalisa.core.query.dialect.Dialect;
@@ -42,6 +46,7 @@ import com.tsc9526.monalisa.core.query.model.ModelEvent;
 import com.tsc9526.monalisa.core.query.model.Record;
 import com.tsc9526.monalisa.core.tools.ClassHelper;
 import com.tsc9526.monalisa.core.tools.CloseQuietly;
+import com.tsc9526.monalisa.core.tools.Helper;
 
 /**
  * 
@@ -427,6 +432,9 @@ public class DBConfig implements Closeable{
 		private List<MetaPartition> metaPartitions;
 		
 		private ConfigClass configClass;
+	 	
+		private Map<String,String> cacheModels=new ConcurrentHashMap<String,String>();
+		private String      cacheTables;
 		
 		synchronized void init(){
 			loadProperties();
@@ -457,6 +465,8 @@ public class DBConfig implements Closeable{
 			this.modelClass      = getValue(p,DbProp.PROP_TABLE_MODEL_CLASS.getKey(),    db.modelClass(),     prefixs);
 			this.modelListener   = getValue(p,DbProp.PROP_TABLE_MODEL_LISTENER.getKey(), db.modelListener(),  prefixs);
 			 	
+			this.cacheTables	 = getValue(p,DbProp.PROP_DB_CACHE_TABLES.getKey(), "",  prefixs);
+				
 			processUrlHosts();						 
 		}
 		
@@ -642,7 +652,48 @@ public class DBConfig implements Closeable{
 				throw new RuntimeException("Model class: "+m.getClass().getName()+" without annotation Table");
 			}
 		}
-		 
+		
+		public Cache getCache(Model<?> m){
+			if(cacheTables!=null && cacheTables.trim().length()>0 && cacheModels.size()==0){
+				for(String name:Helper.splits(cacheTables)){
+					String ckey=name.trim();
+					String cname=DbProp.PROP_TABLE_CACHE_NAME.getValue(DBConfig.this, ckey);
+					 
+					ckey=getDialect().getTableName(ckey).toLowerCase();
+					 
+					cacheModels.put(ckey, cname);
+				}
+			}
+
+			String tableName=m.table().name();
+			
+			String cacheName=getDialect().getTableName(tableName).toLowerCase();
+			if(cacheModels.containsKey(cacheName)){
+				String name=cacheModels.get(cacheName);
+				
+				String cacheClass=DbProp.PROP_TABLE_CACHE_CLASS.getValue(DBConfig.this, tableName);
+				String eviction  =DbProp.PROP_TABLE_CACHE_EVICTION.getValue(DBConfig.this, tableName);
+				
+				return CacheManager.getInstance().getCache(cacheClass,eviction,name);
+			}else{
+				return null;
+			}
+		}
+	 	
+		public Cache getCache(){
+			String cacheClass=DbProp.PROP_TABLE_CACHE_CLASS.getValue(DBConfig.this);
+			String eviction  =DbProp.PROP_TABLE_CACHE_EVICTION.getValue(DBConfig.this);
+			String name      =DbProp.PROP_TABLE_CACHE_NAME.getValue(DBConfig.this);
+			
+			return CacheManager.getInstance().getCache(cacheClass,eviction,name);
+		}
+		
+		public Cache getCache(String name){
+			String cacheClass=DbProp.PROP_TABLE_CACHE_CLASS.getValue(DBConfig.this);
+			String eviction  =DbProp.PROP_TABLE_CACHE_EVICTION.getValue(DBConfig.this);
+			 
+			return CacheManager.getInstance().getCache(cacheClass,eviction,name);
+		}
 		
 		public DB getDb() {
 			return db;

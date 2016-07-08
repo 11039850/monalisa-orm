@@ -47,7 +47,7 @@ import com.tsc9526.monalisa.core.tools.ClassHelper.MetaClass;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class ModelHelper {
 	private static Map<Class<?>,ModelParser<Object>> parsers=new LinkedHashMap<Class<?>,ModelParser<Object>>();
-	
+	 
 	/**
 	 * 区分参数名的大小写, 默认: false
 	 */
@@ -109,7 +109,7 @@ public class ModelHelper {
 				
 		if(mappings!=null && mappings.length>0){
 			for(String m:mappings){			
-				String[] xs=m.trim().split(",|;|\\|");
+				String[] xs=Helper.splits(m);
 				if(xs.length>0){
 					for(String x:xs){
 						ms.add(x.trim());

@@ -33,9 +33,12 @@ import com.tsc9526.monalisa.core.datasource.DataSourceManager;
 import com.tsc9526.monalisa.core.datasource.DbProp;
 import com.tsc9526.monalisa.core.generator.DBExchange;
 import com.tsc9526.monalisa.core.logger.Logger;
+import com.tsc9526.monalisa.core.query.cache.Cache;
+import com.tsc9526.monalisa.core.query.cache.CacheKey;
 import com.tsc9526.monalisa.core.query.datatable.DataMap;
 import com.tsc9526.monalisa.core.query.datatable.DataTable;
 import com.tsc9526.monalisa.core.query.dialect.Dialect;
+import com.tsc9526.monalisa.core.query.executor.CacheExecutor;
 import com.tsc9526.monalisa.core.query.executor.Execute;
 import com.tsc9526.monalisa.core.query.executor.ResultExecutor;
 import com.tsc9526.monalisa.core.query.executor.ResultLoadExecutor;
@@ -87,7 +90,7 @@ public class Query {
  	 
 	protected DBConfig      db;
  	
-	protected int cacheTime=0;
+	protected boolean enableCache=false;
 	
 	protected Boolean readonly;
  	
@@ -96,6 +99,9 @@ public class Query {
 	protected Object tag;
 	
 	protected PrintWriter writer=null;
+	
+	
+	protected Cache cache;
 	
 	public Query(){		 
 	}
@@ -288,13 +294,15 @@ public class Query {
 	 
 	
 	protected <X> X doExecute(Execute<X> x){
+		x=new CacheExecutor<X>(this, x);
+		
 		Tx tx=Tx.getTx();
 		
 		Connection conn=null;
 		PreparedStatement pst=null;
 		try{
 			conn= tx==null?getConnectionFromDB(true):getConnectionFromTx(tx);
-			
+			 
 			pst=x.preparedStatement(conn,getSql());
 			 
 			SQLHelper.setPreparedParameters(pst, parameters);
@@ -499,29 +507,35 @@ public class Query {
 			logger.info(getExecutableSQL());
 		}
 	}
-	 
-	public boolean isReadonly() {
-		if(readonly!=null){
-			return readonly;
-		}else{
-			String x=getSql().toLowerCase().trim();
-			if(x.startsWith("select")){
-				return true;
-			}else{
-				return false;
-			}
-		}		
+	  
+	public CacheKey getCacheKey(){
+		 CacheKey cacheKey = new CacheKey();
+		    
+		 cacheKey.update(db.getKey());
+		 cacheKey.update(""+tag);
+		 cacheKey.update(getSql());
+		 
+		 for(Object p:this.getParameters()){
+			 cacheKey.update(p);
+		 } 
+		    
+		return cacheKey;    
 	}
 	
-	public int getCacheTime() {
-		return cacheTime;
+	public Cache getCache(){
+		if(this.cache!=null){
+			return this.cache;
+		}else if(enableCache){
+			return getDb().getCfg().getCache();
+		}else{
+			return null;
+		}
 	}
-
-	public Query setCacheTime(int cacheTime) {
-		this.cacheTime = cacheTime;
-		return this;
+	
+	public void setCache(Cache cache){
+		this.cache=cache;
 	}
-
+	 
 	public DBConfig getDb() {
 		return db;
 	}
@@ -541,5 +555,14 @@ public class Query {
       
 	public void setReadonly(Boolean readonly) {
 		this.readonly = readonly;
+	}
+
+	public boolean isEnableCache() {
+		return enableCache;
+	}
+
+	public Query setEnableCache(boolean enableCache) {
+		this.enableCache = enableCache;
+		return this;
 	}
 }

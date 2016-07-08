@@ -45,17 +45,23 @@ public class DbProp {
 	
 	public final static DbProp PROP_DB_MULTI_RESULTSET_DEEPTH = new DbProp("multi.resultset.deepth",100);
   
+	public final static DbProp PROP_DB_CACHE_TABLES	  		  = new DbProp("cache.tables");
+	 
 	public final static DbProp PROP_TABLE_MODEL_CLASS         = new DbProp("modelClass");
 	public final static DbProp PROP_TABLE_MODEL_LISTENER      = new DbProp("modelListener");
 	
 	public final static DbProp PROP_TABLE_VALIDATE 		      = new DbProp("validate",false);
-	public final static DbProp PROP_TABLE_VALIDATOR		      = new DbProp("validator");	
+	public final static DbProp PROP_TABLE_VALIDATOR		      = new DbProp("validator");
+	
+	public final static DbProp PROP_TABLE_CACHE_CLASS         = new DbProp("cache.class");
+	public final static DbProp PROP_TABLE_CACHE_NAME	  	  = new DbProp("cache.name","default");
+	public final static DbProp PROP_TABLE_CACHE_EVICTION      = new DbProp("cache.eviction","LRU");
 	 
 	public final static DbProp PROP_TABLE_AUTO_SET_CREATE_TIME=new DbProp("auto.create_time","create_time");
 	public final static DbProp PROP_TABLE_AUTO_SET_UPDATE_TIME=new DbProp("auto.update_time","update_time");
 	public final static DbProp PROP_TABLE_AUTO_SET_CREATE_BY  =new DbProp("auto.create_by","create_by");
 	public final static DbProp PROP_TABLE_AUTO_SET_UPDATE_BY  =new DbProp("auto.update_by","update_by");
-	
+	  
 	public final static DbProp PROP_TABLE_EXCEPTION_IF_SET_FIELD_NOT_FOUND=new DbProp("exception_if_set_field_not_found",false);
 	
 	

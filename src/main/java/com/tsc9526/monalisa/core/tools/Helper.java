@@ -37,7 +37,22 @@ import java.util.Map;
  * @author zzg.zhou(11039850@qq.com)
  */
 public class Helper {
-
+	 
+	/**
+	 * 分隔字符串， 可能的分隔符号有3个：   逗号(,) 分号(;) 竖号(|)
+	 * @param m
+	 * @return
+	 */
+	public static String[] splits(String m){
+		if(m==null){
+			return null;
+		}
+		
+		String[] xs=m.trim().split(",|;|\\|");
+		
+		return xs;
+	}
+	
 	public static boolean isEmpty(String s) {
 		return s == null || s.length() == 0;
 	}

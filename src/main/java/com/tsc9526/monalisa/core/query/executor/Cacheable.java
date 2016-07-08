@@ -14,28 +14,12 @@
  *	You should have received a copy of the GNU Lesser General Public License
  *	along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************************/
-package com.tsc9526.monalisa.core.query.cache;
-
-import java.util.concurrent.locks.ReadWriteLock;
+package com.tsc9526.monalisa.core.query.executor;
 
 /**
  * 
  * @author zzg.zhou(11039850@qq.com)
  */
-public interface Cache {
-
-	String getId();
-
-	int getSize();
-
-	void putObject(Object key, Object value);
-
-	Object getObject(Object key);
-
-	Object removeObject(Object key);
-
-	void clear();
-
-	ReadWriteLock getReadWriteLock();
+public interface Cacheable {
 
 }

@@ -30,7 +30,7 @@ import com.tsc9526.monalisa.core.query.datatable.DataTable;
  * 
  * @author zzg.zhou(11039850@qq.com)
  */
-public class ResultSetsExecutor<T> implements Execute<List<DataTable<T>>> { 
+public class ResultSetsExecutor<T> implements Execute<List<DataTable<T>>>,Cacheable { 
 	private int deepth;
 	 
 	private ResultHandler<T> resultHandler;

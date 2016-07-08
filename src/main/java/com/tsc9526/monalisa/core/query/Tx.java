@@ -25,6 +25,7 @@ import java.util.UUID;
 import javax.management.RuntimeErrorException;
 
 import com.tsc9526.monalisa.core.datasource.DBConfig;
+import com.tsc9526.monalisa.core.query.cache.TransactionalCacheManager;
 import com.tsc9526.monalisa.core.query.datatable.DataMap;
 
 /**
@@ -188,6 +189,8 @@ public class Tx {
 	
 	private String txid=UUID.randomUUID().toString().replace("-","").toLowerCase();
 	
+	private TransactionalCacheManager tcm = new TransactionalCacheManager();
+
 	public String getTxid(){
 		return txid;
 	}
@@ -221,6 +224,8 @@ public class Tx {
 		for(CI ci:hcs.values()){
 			ci.conn.commit();			
 		} 
+		
+		tcm.commit();
 	}
 
 	public void doRollback(){
@@ -228,6 +233,8 @@ public class Tx {
 			for(CI ci:hcs.values()){
 				ci.conn.rollback();			
 			}
+			
+			tcm.rollback();
 		}catch(SQLException e){
 			throw new RuntimeException(e);
 		} 	
@@ -239,12 +246,15 @@ public class Tx {
 				ci.conn.setAutoCommit(ci.autoCommit);
 				ci.conn.close();
 			}
+			 
 		}catch(SQLException e){
 			throw new RuntimeException(e);		
 		}finally{
 			hcs.clear();
 		}
 	}
-	
-	
+
+	public TransactionalCacheManager getTxCacheManager() {
+		return tcm;
+	}
 }

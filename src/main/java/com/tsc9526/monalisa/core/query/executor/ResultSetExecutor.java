@@ -35,7 +35,7 @@ import com.tsc9526.monalisa.core.tools.CloseQuietly;
  * 
  * @author zzg.zhou(11039850@qq.com)
  */
-public class ResultSetExecutor<T> implements Execute<DataTable<T>>{
+public class ResultSetExecutor<T> implements Execute<DataTable<T>>,Cacheable{
 	private ResultHandler<T> resultHandler;
 	
 	public ResultSetExecutor(ResultHandler<T> resultHandler){

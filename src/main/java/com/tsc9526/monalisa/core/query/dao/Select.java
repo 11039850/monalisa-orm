@@ -117,14 +117,16 @@ public class Select<T extends Model,S extends Select> {
 	 */
 	public T selectOne(String whereStatement,Object ... args){
 		Query query=model.dialect().selectOne(model,whereStatement, args);
-		query.use(db());
+		setup(query);
+		
 		T r=(T)query.getResult(getResultCreator(query));
 		return r;
 	}
 	
 	public long count(){
 		Query query=model.dialect().count(model,null);		 
-		query.use(db());
+		setup(query);
+		
 		return query.getResult(Long.class);
 	}	
 
@@ -151,7 +153,8 @@ public class Select<T extends Model,S extends Select> {
 	 */
 	public long count(String whereStatement,Object ... args){
 		Query query=model.dialect().count(model,whereStatement, args);		 
-		query.use(db());
+		setup(query);
+		
 		return query.getResult(Long.class);
 	}
 	
@@ -166,7 +169,7 @@ public class Select<T extends Model,S extends Select> {
 		Query w=QEH.getQuery(example);
 		
 		Query query=model.dialect().selectOne(model,w.getSql(), w.getParameters());
-		query.use(db());
+		setup(query);
 		
 		T r= (T)query.getResult(getResultCreator(query));
 		return r;
@@ -182,7 +185,7 @@ public class Select<T extends Model,S extends Select> {
 	 */
 	public DataTable<T> select(String whereStatement,Object ... args){
 		Query query=model.dialect().select(model,whereStatement, args);
-		query.use(db());
+		setup(query);
 		
 		return (DataTable<T>)query.getList(getResultCreator(query));
 	}
@@ -198,7 +201,7 @@ public class Select<T extends Model,S extends Select> {
 		Query w=QEH.getQuery(example);
 		
 		Query query=model.dialect().select(model,w.getSql(), w.getParameters());
-		query.use(db());
+		setup(query);
 		
 		DataTable<T> r= (DataTable<T>)query.getList(getResultCreator(query));
 		return r;
@@ -216,8 +219,8 @@ public class Select<T extends Model,S extends Select> {
 	 */
 	public DataTable<T> select(int limit,int offset,String whereStatement,Object ... args){
 		Query query=model.dialect().select(model,whereStatement, args);
-		query.use(db());
-		 
+		setup(query);
+		
 		DataTable<T> r=(DataTable<T>)query.getList(getResultCreator(query),limit, offset);
 		return r;
 	}
@@ -235,7 +238,7 @@ public class Select<T extends Model,S extends Select> {
 		Query w=QEH.getQuery(example);
 		
 		Query query=model.dialect().select(model,w.getSql(), w.getParameters());
-		query.use(db());
+		setup(query);
 		
 		DataTable<T> r=(DataTable<T>)query.getList(getResultCreator(query),limit, offset);
 		return r;
@@ -252,7 +255,7 @@ public class Select<T extends Model,S extends Select> {
 	 */
 	public Page<T> selectPage(int limit,int offset,String whereStatement,Object ... args){
 		Query query=model.dialect().select(model,whereStatement, args);
-		query.use(db());
+		setup(query);
 		
 		Page<T> r=(Page<T>)query.getPage(getResultCreator(query),limit, offset);
 		return r;
@@ -271,7 +274,7 @@ public class Select<T extends Model,S extends Select> {
 		Query w=QEH.getQuery(example);
 		
 		Query query=model.dialect().select(model,w.getSql(), w.getParameters());
-		query.use(db());
+		setup(query);
 		
 		Page<T> r=(Page<T>)query.getPage(getResultCreator(query),limit, offset);
 		return r;
@@ -320,6 +323,17 @@ public class Select<T extends Model,S extends Select> {
 			}
 		};
 		
+	}
+	
+	protected void setup(Query query) {
+		DBConfig db=db();
+		
+		query.use(db);
+		
+		query.setTag("@"+db.getKey()+"#"+model.table().name());
+		 
+		
+		query.setCache(db.getCfg().getCache(model));	
 	}
 	
 	public class SelectForExample{
