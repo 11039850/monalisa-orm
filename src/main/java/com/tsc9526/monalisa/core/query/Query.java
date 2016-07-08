@@ -272,7 +272,7 @@ public class Query {
 			}			
 			
 			return result;
-		}catch(SQLException e){
+		}catch(Exception e){
 			if(tx==null && conn!=null){
 				try{ conn.rollback(); }catch(SQLException ex){}
 			}
