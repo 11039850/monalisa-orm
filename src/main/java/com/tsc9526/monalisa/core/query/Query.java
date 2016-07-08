@@ -159,7 +159,7 @@ public class Query {
 	 * @param args  参数
 	 * @return 查询本身
 	 */
-	public Query addIgnoreEmpty(String segment,Object ... args){
+	public Query addIfNotEmpty(String segment,Object ... args){
 		if(args!=null && args.length==1){
 			if(args[0]==null){
 				return this;
