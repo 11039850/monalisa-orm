@@ -525,7 +525,11 @@ public class Query {
 	public Cache getCache(){
 		if(this.cache!=null){
 			return this.cache;
-		}else if(enableCache){
+		}else if(enableCache || DbProp.CFG_CACHE_GLOABLE_ENABLE){
+			if(db==null){
+				throw new RuntimeException("Query must use db!");
+			}
+			
 			return getDb().getCfg().getCache();
 		}else{
 			return null;

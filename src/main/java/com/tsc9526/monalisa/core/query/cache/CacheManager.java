@@ -32,9 +32,7 @@ import com.tsc9526.monalisa.core.query.cache.impl.PerpetualCache;
  */
 public class CacheManager {
 	private static CacheManager cm=new CacheManager();
-	
-	public final static String DEFALUT_CACHE_NAME="LOCAL_CACHE";
-	
+ 
 	public static CacheManager getInstance(){
 		return cm;
 	}

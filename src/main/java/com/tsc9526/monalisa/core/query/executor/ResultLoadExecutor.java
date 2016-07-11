@@ -28,7 +28,7 @@ import com.tsc9526.monalisa.core.tools.CloseQuietly;
  * 
  * @author zzg.zhou(11039850@qq.com)
  */
-public class ResultLoadExecutor<T> implements Execute<T>{
+public class ResultLoadExecutor<T> implements Execute<T>,Cacheable{
 	private ResultHandler<T> resultHandler;
 	private T result;
 	
