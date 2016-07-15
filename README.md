@@ -23,7 +23,7 @@
 	
 	@DB(url="jdbc:mysql://127.0.0.1:3306/test" ,username="root", password="root")
     public interface TestDB {
-    	public static DBConfig DB=DBConfig.fromClass(Test.class); 
+    	public static DBConfig DB=DBConfig.fromClass(TestDB.class); 
     }
 ```
 
