@@ -22,33 +22,16 @@
 ```java  
 	
 	@DB(url="jdbc:mysql://127.0.0.1:3306/test" ,username="root", password="root")
-    public interface Test {
+    public interface TestDB {
     	public static DBConfig DB=DBConfig.fromClass(Test.class); 
     }
 ```
 
-## Multi-lines
 ```java
-
-	public static void main(String[] args) {
-		String lines = ""/**~{
-			SELECT * 
-				FROM user
-				WHERE name="zzg"
-		}*/;
-		System.out.println(lines);
-	}
-```
-
-Output will be:
-
-```sql
-
-	SELECT * 
-		FROM user
-		WHERE name="zzg"
-```
-
+	
+	TestDB.DB.select("SELECT * FROM user WHERE name like ?","zzg%");
+```	
+ 
 ## Query Example
 ```java
 
@@ -155,7 +138,7 @@ Output will be:
 
 ```
 
-## Auto generate result class on save action
+## Auto generate DTO
 
 ```java
 
@@ -175,6 +158,28 @@ Output will be:
 	}
 ```
 
+
+## Multi-lines
+```java
+
+	public static void main(String[] args) {
+		String lines = ""/**~{
+			SELECT * 
+				FROM user
+				WHERE name="zzg"
+		}*/;
+		System.out.println(lines);
+	}
+```
+
+Output will be:
+
+```sql
+
+	SELECT * 
+		FROM user
+		WHERE name="zzg"
+```
 
 
 [For more details](https://github.com/11039850/monalisa-db/wiki)
