@@ -127,6 +127,14 @@ public class DBConfig implements Closeable{
 		return owner;
 	}
 	
+	public String getSchema(){
+		String schema=getCfg().schema;
+		if(schema==null || schema.length()==0){
+			schema=getDialect().getSchema(getCfg().url);
+		}
+		return schema;
+	}
+	
 	public String getKey(){
 		return getCfg().getKey();
 	}
@@ -466,7 +474,7 @@ public class DBConfig implements Closeable{
 			this.modelListener   = getValue(p,DbProp.PROP_TABLE_MODEL_LISTENER.getKey(), db.modelListener(),  prefixs);
 			 	
 			this.cacheTables	 = getValue(p,DbProp.PROP_DB_CACHE_TABLES.getKey(), "",  prefixs);
-				
+			 
 			processUrlHosts();						 
 		}
 		

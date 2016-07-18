@@ -159,7 +159,7 @@ public class AgentClass {
 	private static boolean initilized=false;
 	private synchronized static void initAgentClasses(){
 		if(!initilized){
-			AgentJar.loadCglibClass();
+			AgentJar.loadAsmClass();
 			
 			reloadClasses();
 			 

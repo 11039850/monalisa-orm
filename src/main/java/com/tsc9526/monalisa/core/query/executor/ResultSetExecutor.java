@@ -35,7 +35,7 @@ import com.tsc9526.monalisa.core.tools.CloseQuietly;
  * 
  * @author zzg.zhou(11039850@qq.com)
  */
-public class ResultSetExecutor<T> implements Execute<DataTable<T>>,Cacheable{
+public class ResultSetExecutor<T>  extends RelationExecutor implements Execute<DataTable<T>>,Cacheable{
 	private ResultHandler<T> resultHandler;
 	
 	public ResultSetExecutor(ResultHandler<T> resultHandler){
@@ -46,7 +46,7 @@ public class ResultSetExecutor<T> implements Execute<DataTable<T>>,Cacheable{
 		DataTable<T> result=new DataTable<T>();
 		ResultSet rs=null;
 		try{
-			rs=pst.executeQuery();	
+			rs=setupRelationTables(pst.executeQuery());	
 			
 			result.setHeaders(getHeaders(rs));
 			 

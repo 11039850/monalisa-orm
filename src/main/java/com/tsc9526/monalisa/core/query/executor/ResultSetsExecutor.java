@@ -30,7 +30,7 @@ import com.tsc9526.monalisa.core.query.datatable.DataTable;
  * 
  * @author zzg.zhou(11039850@qq.com)
  */
-public class ResultSetsExecutor<T> implements Execute<List<DataTable<T>>>,Cacheable { 
+public class ResultSetsExecutor<T>  extends RelationExecutor implements Execute<List<DataTable<T>>>,Cacheable { 
 	private int deepth;
 	 
 	private ResultHandler<T> resultHandler;
@@ -73,6 +73,8 @@ public class ResultSetsExecutor<T> implements Execute<List<DataTable<T>>>,Cachea
 	}
 	
 	private void addResult(List<DataTable<T>> result,ResultSet rs)throws SQLException{
+		setupRelationTables(rs);
+				
 		DataTable<T> r=new DataTable<T>();
 		while(rs.next()){	
 			T m=resultHandler.createResult(rs);

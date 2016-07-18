@@ -18,25 +18,16 @@ package com.tsc9526.monalisa.core.query.datatable;
 
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import org.relique.jdbc.csv.CsvRawReader;
-import org.relique.jdbc.csv.DataTableResultSet;
-import org.relique.jdbc.csv.SqlParser;
 
 import com.tsc9526.monalisa.core.query.Page;
 import com.tsc9526.monalisa.core.tools.ClassHelper;
 import com.tsc9526.monalisa.core.tools.ClassHelper.FGS;
 import com.tsc9526.monalisa.core.tools.ClassHelper.MetaClass;
 import com.tsc9526.monalisa.core.tools.CsvHelper;
-import com.tsc9526.monalisa.core.tools.FileHelper;
 import com.tsc9526.monalisa.core.tools.SQLHelper;
 
  /**
@@ -47,37 +38,11 @@ public class DataTable<E> extends ArrayList<E> {
 	private static final long serialVersionUID = 6839964505006290332L;
 	
 	public static DataTable<DataMap> fromCsv(InputStream csvInputStream,CsvOptions options) {
-		String csvString=FileHelper.readToString(csvInputStream, options.getCharset());
-		
-		return fromCsv(csvString, options);
+		return CsvHelper.fromCsv(csvInputStream, options);
 	}
 	 
 	public static DataTable<DataMap> fromCsv(String csvString,CsvOptions options){
-		try {
-			DataTable<DataMap> table=new DataTable<DataMap>();
-			
-			CsvRawReader reader = CsvHelper.loadCsvRawReader(csvString, options);
-			
-			String[] columns=reader.getColumnNames();
-			table.setHeaders(columns);
-			
-			while(reader.next()){
-				String[] vs=reader.getFieldValues();
-				
-				DataMap m=new DataMap();
-				for(int i=0;i<columns.length;i++){
-					m.put(columns[i], i<vs.length?vs[i]:null);
-					
-				}
-				table.add(m);
-			}
-			
-			reader.close();
-			
-			return table;
-		} catch (Exception e) {
-			throw new RuntimeException(e);
-		}
+		return CsvHelper.fromCsv(csvString, options);
 	}
 	
 	protected List<DataColumn> headers=new ArrayList<DataColumn>();
@@ -142,36 +107,7 @@ public class DataTable<E> extends ArrayList<E> {
 	public DataTable<DataMap> select(String columns,String where,String orderBy,String groupBy){
 		String sql=getSQL(columns, where, orderBy, groupBy);
 		
-		SqlParser parser = new SqlParser();
-		try
-		{
-			parser.parse(sql);
-					
-			ResultSet rs = new DataTableResultSet( 
-				new DataTableReader(this),
-				name,
-				parser.getColumns(),
-				parser.isDistinct(),
-				ResultSet.TYPE_SCROLL_INSENSITIVE,
-				parser.getWhereClause(),
-				parser.getGroupByColumns(),
-				parser.getHavingClause(),
-				parser.getOrderByColumns(),
-				parser.getLimit(),
-				parser.getOffset());
-			
-			DataTable<DataMap> rtable=new DataTable<DataMap>();
-			while(rs.next()){
-				DataMap row=new DataMap();
-				loadToMap(rs,row);
-				rtable.add(row);
-			}
-			rs.close();
-			
-			return rtable;
-		}catch (Exception e){
-			throw new RuntimeException("SQL exception: " + sql+"\r\nHeaders: \r\n"+getHeaders(),e);
-		}
+		return CsvHelper.queryTable(this, sql);
 	}
 	
 	protected String getSQL(String columns,String where,String orderBy,String groupBy){
@@ -292,31 +228,6 @@ public class DataTable<E> extends ArrayList<E> {
 		return r;
 	}
 	 
-	protected DataMap loadToMap(ResultSet rs, DataMap map) throws SQLException {
-		ResultSetMetaData rsmd = rs.getMetaData();
-
-		Map<String, Integer> xs = new HashMap<String, Integer>();
-		for (int i = 1; i <= rsmd.getColumnCount(); i++) {
-			String name = rsmd.getColumnLabel(i);
-			if (name == null || name.trim().length() < 1) {
-				name = rsmd.getColumnName(i);
-			}
-			name = name.toLowerCase();
-
-			Integer n = xs.get(name);
-			if (n != null) {
-				map.put(name + n, rs.getObject(i));
-
-				xs.put(name, n + 1);
-			} else {
-				xs.put(name, 1);
-
-				map.put(name, rs.getObject(i));
-			}
-		}
-
-		return map;
-	}
 	
 	 
 	

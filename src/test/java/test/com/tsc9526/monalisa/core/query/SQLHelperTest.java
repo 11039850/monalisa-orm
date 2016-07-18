@@ -45,7 +45,7 @@ public class SQLHelperTest {
 		String w=", user b where s='gg' and \"g\\\"x\"=g and f=\"ff\" and x='x'";
 		
 		List<String> ws=SQLHelper.splitKeyWords(w);		
-		Assert.assertEquals(ws.size(),18);
+		Assert.assertEquals(ws.size(),19);
 		Assert.assertTrue(ws.contains("WHERE"));		
 	}
 	

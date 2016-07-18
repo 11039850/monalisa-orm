@@ -28,9 +28,9 @@ import com.tsc9526.monalisa.core.tools.CloseQuietly;
  * 
  * @author zzg.zhou(11039850@qq.com)
  */
-public class ResultExecutor<T> implements Execute<T>,Cacheable{ 
+public class ResultExecutor<T> extends RelationExecutor implements Execute<T>,Cacheable { 
 	private ResultHandler<T> resultHandler;
-	
+	 
 	public ResultExecutor(ResultHandler<T> resultHandler){
 		this.resultHandler=resultHandler;
 	}
@@ -39,7 +39,8 @@ public class ResultExecutor<T> implements Execute<T>,Cacheable{
 		T result=null;
 		ResultSet rs=null;
 		try{
-			rs=pst.executeQuery();				
+			rs=setupRelationTables(pst.executeQuery());	
+			   
 			if(rs.next()){	
 				result=resultHandler.createResult(rs); 											
 			}	

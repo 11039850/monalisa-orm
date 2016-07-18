@@ -29,7 +29,7 @@ import com.tsc9526.monalisa.core.tools.ClassHelper.FGS;
  * 
  * @author zzg.zhou(11039850@qq.com)
  */
-public class KeysExecutor implements Execute<Integer>{
+public class KeysExecutor extends RelationExecutor implements Execute<Integer>{
 	private boolean autoKey=false;
 	private Model<?> model;
 	

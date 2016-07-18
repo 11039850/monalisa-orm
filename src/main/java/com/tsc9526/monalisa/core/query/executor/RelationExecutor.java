@@ -14,46 +14,37 @@
  *	You should have received a copy of the GNU Lesser General Public License
  *	along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************************/
-package org.relique.jdbc.csv;
+package com.tsc9526.monalisa.core.query.executor;
 
-import java.io.Reader;
-import java.io.StringReader;
-import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Properties;
+import java.util.HashSet;
+import java.util.Set;
 
-import org.relique.io.TableReader;
+import com.tsc9526.monalisa.core.query.cache.CacheTableRow;
 
 /**
  * 
  * @author zzg.zhou(11039850@qq.com)
  */
-public class DataTableConnection extends CsvConnection {
-
-	protected DataTableConnection() throws SQLException {
-		
-		super(new DataTableReader(),new Properties(),"");
-		 
-	}
-
-	public static class DataTableReader implements TableReader{
+public abstract class RelationExecutor {
+	protected Set<CacheTableRow> relationTables=new HashSet<CacheTableRow>();
 	 
-		public Reader getReader(Statement statement, String tableName) throws SQLException {
-			 
-			return new StringReader("a");
-		}
-	
-		 
-		public List<String> getTableNames(Connection connection) throws SQLException {
-			List<String> tables=new ArrayList<String>();
+	protected ResultSet setupRelationTables(ResultSet rs)throws SQLException{
+		ResultSetMetaData rsmd= rs.getMetaData();
+		for(int i=1;i<=rsmd.getColumnCount();i++){
+			String catalog=rsmd.getCatalogName(i);
+			String schema=rsmd.getSchemaName(i);
+			String table =rsmd.getTableName(i);
 			
-			tables.add("_THIS_TABLE");
-			
-			return tables;
+			relationTables.add(new CacheTableRow(catalog,schema,table));
 		}
+		
+		return rs;
 	}
-
+	
+	public Set<CacheTableRow> getRelationTables(){
+		return relationTables;
+	}
 }

@@ -70,6 +70,14 @@ public class Page<T> implements Serializable {
 		}
 	}
 	
+	/**
+	 * 
+	 * @return 返回本页数据集合的大小
+	 */
+	public int getRows(){
+		return list==null?0:list.size();
+	}
+	
 	 
 	public <X> Page<X> as(Class<X> toClass){
 		Page<X> page=new Page<X>();
@@ -85,7 +93,7 @@ public class Page<T> implements Serializable {
 		
 		return page;
 	}
-	
+	 
 	/**
 	 *  
 	 * @return 一个非null的数据集

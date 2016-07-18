@@ -18,10 +18,11 @@ import com.tsc9526.monalisa.core.tools.ClassPathHelper;
 
 @SuppressWarnings("unchecked")
 public class AgentJar {
-	public final static String VirtualMachineClass = "com.sun.tools.attach.VirtualMachine";
 	public final static String AgentHotSpotClass   = "com.tsc9526.monalisa.core.agent.AgentHotSpotVM";
-	public final static String EnhancerClassCglib  = "net.sf.cglib.proxy.Enhancer";
 	
+	public final static String libVirtualMachineClass = "com.sun.tools.attach.VirtualMachine";
+	public final static String libCglibClass          = "net.sf.cglib.proxy.Enhancer";
+ 	
 	private volatile static AgentLoaderInterface agentLoader;
  
 	public static void loadAgent(String agentJar, String options) {
@@ -68,7 +69,7 @@ public class AgentJar {
 	
 	private static Class<AgentLoaderInterface> loadAgentLoaderClass(){
 		try {
-			Class.forName(VirtualMachineClass);
+			Class.forName(libVirtualMachineClass);
 			return (Class<AgentLoaderInterface>) Class.forName(AgentHotSpotClass);
 		} catch (Exception ex) {
 			ClassLoader systemLoader = ClassLoader.getSystemClassLoader();
@@ -88,9 +89,9 @@ public class AgentJar {
 		}
 	}
 	
-	public static void loadCglibClass() {
+	public static void loadAsmClass() {
 		try {
-			Class.forName(EnhancerClassCglib);
+			Class.forName(libCglibClass);
 		} catch (ClassNotFoundException e) {
 			try {
 				ClassLoader systemLoader = ClassLoader.getSystemClassLoader();
@@ -100,6 +101,7 @@ public class AgentJar {
 			}
 		}
 	}
+ 
 	
 	public static void loadJarClasses(ClassLoader loader,String jarResource)throws IOException{  
 		ZipInputStream zip=new ZipInputStream(AgentJar.class.getResourceAsStream(jarResource));

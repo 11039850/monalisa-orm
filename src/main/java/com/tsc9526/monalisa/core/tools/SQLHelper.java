@@ -174,13 +174,13 @@ public class SQLHelper {
 		StringBuffer word=new StringBuffer();
 		for(int i=0;i<sql.length();i++){
 			char c=sql.charAt(i);
-			if(c==' ' || c=='\t' || c=='\r' || c=='\n' || c==','){
+			if(c==' ' || c=='\t' || c=='\r' || c=='\n' ){
 				if(word.length()>0){
 					kws.add(word.toString().toUpperCase());
 					
 					word.delete(0, word.length());
 				}
-			}else if(c=='=' || c=='>' || c=='<' || c=='!'){
+			}else if(c=='=' || c=='>' || c=='<' || c=='!' || c==','){
 				if(word.length()>0){
 					kws.add(word.toString().toUpperCase());
 					

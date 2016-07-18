@@ -16,10 +16,11 @@
  *******************************************************************************************/
 package com.tsc9526.monalisa.core.query.executor;
 
+
 /**
  * 
  * @author zzg.zhou(11039850@qq.com)
  */
 public interface Cacheable {
-
+	 
 }
