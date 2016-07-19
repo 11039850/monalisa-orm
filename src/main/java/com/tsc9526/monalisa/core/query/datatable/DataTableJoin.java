@@ -61,23 +61,7 @@ class DataTableJoin {
  	 
 	protected DataTable<DataMap> allTable=new DataTable<DataMap>();
 	protected List<DataColumn>  allHeader=new ArrayList<DataColumn>();
-	
-	/**
-	 * 按相同的字段名连接2个表
-	 * 
-	 * @param leftTable
-	 * @param rightTable
-	 */
-	public DataTableJoin(DataTable<?> leftTable,DataTable<?> rightTable){
-		this.leftTable =leftTable.as(DataMap.class);
-		this.rightTable=rightTable.as(DataMap.class);
-		
-		this.leftJoinFields =getJoinFields(leftTable,rightTable);
-		this.rightJoinFields=leftJoinFields;
-		
-		setup();
-	}
-	 
+	  
 	public DataTableJoin(DataTable<?> leftTable,DataTable<?> rightTable, String... joinFieldNames){
 		this.leftTable =leftTable.as(DataMap.class);
 		this.rightTable=rightTable.as(DataMap.class);
@@ -153,39 +137,18 @@ class DataTableJoin {
 	
 	protected DataTable<DataMap> doFullJoin(){
 		DataTable<DataMap> allTable=new DataTable<DataMap>().setHeaders(allHeader);
-		
-		Map<String,List<DataMap>> rightValues=toMapList(rightTable,rightJoinFields);
-	 
+		 
 		for(DataMap x:leftTable){
-			String key=getDataMapKey(x,leftJoinFields);
-			List<DataMap> rms=rightValues.get(key);
-			if(rms!=null){
-				for(DataMap r:rms){
-					DataMap m=new DataMap();
-					
-					addDataMap(m,x,leftKeyMapping);
-					addDataMap(m,r,rightKeyMapping);
-					
-					allTable.add(m);
-				}
+			for(DataMap y:rightTable){
+				DataMap m=new DataMap();
 				
-				rightValues.remove(key);
-			}else{
-				DataMap m=new DataMap();
 				addDataMap(m,x,leftKeyMapping);
+				addDataMap(m,y,rightKeyMapping);
+				
 				allTable.add(m);
 			}
 		}
-		
-		for(List<DataMap> xs:rightValues.values()){
-			for(DataMap x:xs){
-				DataMap m=new DataMap();
-				addDataMap(m,x,rightKeyMapping);
-				allTable.add(m);
-			}
-		}
-		
-		
+		 
 		return allTable;
 	}
 	
@@ -265,15 +228,19 @@ class DataTableJoin {
 	}
 	
 	protected String getDataMapKey(DataMap x,String[] keyFields){
-		String key="@";
-		for(String n:keyFields){
-			if(key.length()>1){
-				key+="&";
+		if(keyFields.length==0){
+			return "#"+x.toString().toLowerCase();
+		}else{
+			String key="@";
+			for(String n:keyFields){
+				if(key.length()>1){
+					key+="&";
+				}
+				key+=key+"="+x.getString(n);
 			}
-			key+=key+"="+x.getString(n);
+			
+			return key.toLowerCase();
 		}
-		
-		return key.toLowerCase();
 	}
 	
 }

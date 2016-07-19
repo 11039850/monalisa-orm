@@ -269,12 +269,53 @@ public class DataTableTest {
 		Assert.assertEquals(rs.get(2), "s3");
 	}
 	
-	public void testJoinOnDefaultName(){
+	public void testJoinOnDefaultName1(){
 		DataTable<Object[]> leftTable=new DataTable<Object[]>();
 		for(int i=1;i<=3;i++){
 			leftTable.add(new Object[]{i,"s"+i,"long"+i});
 		}
 		
+		DataTable<DataMap> rightTable = new DataTable<DataMap>();
+		for(int i=0;i<2;i++){
+			DataMap row = new DataMap();
+			row.put("c0", i);
+			row.put("stringField1", "stringA-"+i);
+			rightTable.add(row); 
+		}
+		
+		DataTable<DataMap> rs=leftTable.joinLeft(rightTable);
+		 
+		Assert.assertEquals(rs.size(), 3);
+		Assert.assertEquals(rs.get(0).get("c0"), 1);
+		Assert.assertEquals(rs.get(0).get("c01"), 1);
+		Assert.assertEquals(rs.get(0).get("stringField1"), "stringA-1");
+		
+	}
+	
+	public void testJoinOnDefaultName2(){
+		DataTable<Object[]> leftTable=new DataTable<Object[]>();
+		for(int i=1;i<=3;i++){
+			leftTable.add(new Object[]{i,"s"+i,"long"+i});
+		}
+		
+		DataTable<DataMap> rightTable = new DataTable<DataMap>();
+		for(int i=0;i<2;i++){
+			DataMap row = new DataMap();
+			row.put("f1", i);
+			row.put("f2", "stringA-"+i);
+			rightTable.add(row); 
+		}
+		
+		
+		DataTable<DataMap> rs=leftTable.joinFull(rightTable);
+		 
+		Assert.assertEquals(rs.size(), 6);
+		Assert.assertEquals(rs.get(0).get("c0"), 1);
+		Assert.assertEquals(rs.get(0).get("f1"), 0);
+		
+		Assert.assertEquals(rs.get(5).get("c0"), 3);
+		Assert.assertEquals(rs.get(5).get("f1"), 1);
+	  
 		 
 	}
 }
