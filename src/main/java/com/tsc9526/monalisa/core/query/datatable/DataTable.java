@@ -37,12 +37,12 @@ import com.tsc9526.monalisa.core.tools.SQLHelper;
 public class DataTable<E> extends ArrayList<E> { 
 	private static final long serialVersionUID = 6839964505006290332L;
 	
-	public static DataTable<DataMap> fromCsv(InputStream csvInputStream,CsvOptions options) {
-		return CsvHelper.fromCsv(csvInputStream, options);
+	public static DataTable<DataMap> fromCsv(InputStream csvInputStream) {
+		return CsvHelper.fromCsv(csvInputStream, CsvOptions.createDefaultOptions());
 	}
 	 
-	public static DataTable<DataMap> fromCsv(String csvString,CsvOptions options){
-		return CsvHelper.fromCsv(csvString, options);
+	public static DataTable<DataMap> fromCsv(String csvString){
+		return CsvHelper.fromCsv(csvString, CsvOptions.createDefaultOptions());
 	}
 	
 	protected List<DataColumn> headers=new ArrayList<DataColumn>();
@@ -56,8 +56,8 @@ public class DataTable<E> extends ArrayList<E> {
 		super(cs);
 	}
 	 
-	public void saveCsv(OutputStream csvOutputStream,CsvOptions options){ 
-		CsvHelper.writeToCsv(this, csvOutputStream, options);
+	public void saveCsv(OutputStream csvOutputStream){ 
+		CsvHelper.writeToCsv(this, csvOutputStream,CsvOptions.createDefaultOptions());
 	}
  
 	/**

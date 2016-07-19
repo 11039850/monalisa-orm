@@ -12,7 +12,6 @@ import org.testng.annotations.Test;
 
 import test.com.tsc9526.monalisa.core.query.TestSimpleModel;
 
-import com.tsc9526.monalisa.core.query.datatable.CsvOptions;
 import com.tsc9526.monalisa.core.query.datatable.DataColumn;
 import com.tsc9526.monalisa.core.query.datatable.DataMap;
 import com.tsc9526.monalisa.core.query.datatable.DataTable;
@@ -119,7 +118,7 @@ public class DataTableTest {
 		table.add(new TestSimpleModel().setIntField1(3).setStringField1("s3"));
 		
 		ByteArrayOutputStream bos=new ByteArrayOutputStream();
-		table.saveCsv(bos, CsvOptions.createDefaultOptions());
+		table.saveCsv(bos);
 		
 		String csv=new String(bos.toByteArray());
 		Assert.assertTrue(csv.indexOf("stringField1")>0  && csv.indexOf("intField1")>0);
@@ -127,7 +126,7 @@ public class DataTableTest {
 		Assert.assertTrue(csv.indexOf("s2")>0);
 		Assert.assertTrue(csv.indexOf("s3")>0);
 		 
-		DataTable<DataMap> rs=DataTable.fromCsv(csv, CsvOptions.createDefaultOptions());
+		DataTable<DataMap> rs=DataTable.fromCsv(csv);
 		Assert.assertEquals(rs.size(),3);
 		Assert.assertEquals(rs.get(0).getString("stringField1"),"\"s1");
 		Assert.assertEquals(rs.get(1).getString("stringField1"),"s2");
