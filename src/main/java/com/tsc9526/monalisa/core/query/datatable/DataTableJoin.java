@@ -19,8 +19,10 @@ package com.tsc9526.monalisa.core.query.datatable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 
 /**
@@ -28,6 +30,25 @@ import java.util.Map;
  * @author zzg.zhou(11039850@qq.com)
  */
 class DataTableJoin {
+	private static String[] getJoinFields(DataTable<?> leftTable, DataTable<?> rightTable) {
+		Set<String> cs=new LinkedHashSet<String>();
+		
+		for(DataColumn c:leftTable.getHeaders()){
+			cs.add(c.getName().toLowerCase());
+		}
+		
+		
+		List<String> joinFieldNames=new ArrayList<String>();
+		for(DataColumn c:rightTable.getHeaders()){
+			String name=c.getName().toLowerCase();
+			if(cs.contains(name)){
+				joinFieldNames.add(name);
+			}
+		}
+		
+		return joinFieldNames.toArray(new String[joinFieldNames.size()]);
+	}
+	
 	protected DataTable<DataMap> leftTable;
 	protected DataTable<DataMap> rightTable;
 	protected String[] leftJoinFields ;
@@ -41,27 +62,40 @@ class DataTableJoin {
 	protected DataTable<DataMap> allTable=new DataTable<DataMap>();
 	protected List<DataColumn>  allHeader=new ArrayList<DataColumn>();
 	
-	public DataTableJoin(DataTable<?> leftTable,DataTable<?> rightTable, String joinFieldNames){
-		this(leftTable, rightTable, joinFieldNames.split(","), joinFieldNames.split(","));
-	}
-	
-	public DataTableJoin(DataTable<?> leftTable,DataTable<?> rightTable, String[] joinFieldNames){
-		this(leftTable, rightTable, joinFieldNames, joinFieldNames);
-	}
-	
-	public DataTableJoin(DataTable<?> leftTable,DataTable<?> rightTable, String leftFieldNames,String rightFieldNames){
-		this(leftTable, rightTable, leftFieldNames.split(","),rightFieldNames.split(","));
-	}
-	
-	public DataTableJoin(DataTable<?> leftTable,DataTable<?> rightTable, String[] leftFieldNames,String[] rightFieldNames){
+	/**
+	 * 按相同的字段名连接2个表
+	 * 
+	 * @param leftTable
+	 * @param rightTable
+	 */
+	public DataTableJoin(DataTable<?> leftTable,DataTable<?> rightTable){
 		this.leftTable =leftTable.as(DataMap.class);
 		this.rightTable=rightTable.as(DataMap.class);
 		
-		this.leftJoinFields =leftFieldNames;
-		this.rightJoinFields=rightFieldNames;
+		this.leftJoinFields =getJoinFields(leftTable,rightTable);
+		this.rightJoinFields=leftJoinFields;
 		
 		setup();
 	}
+	 
+	public DataTableJoin(DataTable<?> leftTable,DataTable<?> rightTable, String... joinFieldNames){
+		this.leftTable =leftTable.as(DataMap.class);
+		this.rightTable=rightTable.as(DataMap.class);
+		
+		if(joinFieldNames.length==0){
+			this.leftJoinFields =getJoinFields(leftTable,rightTable);
+			this.rightJoinFields=leftJoinFields;
+		}else if(joinFieldNames.length==1){
+			this.leftJoinFields =joinFieldNames[0].split(",");
+			this.rightJoinFields=leftJoinFields;
+		}else{
+			this.leftJoinFields =joinFieldNames[0].split(",");
+			this.rightJoinFields=joinFieldNames[1].split(",");
+		}
+		
+		setup();
+	}
+	 	
 	 
 	protected void setup(){
 		setupHeaders(allHeader,this.leftTable,leftKeyMapping,xs);

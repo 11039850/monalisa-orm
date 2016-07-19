@@ -149,12 +149,14 @@ public class DataTable<E> extends ArrayList<E> {
 	 * Inner Join
 	 * 
 	 * @param rightTable      
-	 * @param leftFieldNames  左表连接字段，多个字段逗号分隔
-	 * @param rightFieldNames 右表连接字段，多个字段逗号分隔
+	 * @param joinFieldNames  <br>
+	 * 	1. 表连接字段，多个字段逗号分隔。<br>
+	 * 	2. 如无此参数时，则按2个表中相同的字段名进行连接<br>
+	 * 	3. 如左右表连接字段名不同时，需提供2个逗号分开的字段列表<br>
 	 * @return result
 	 */
-	public DataTable<DataMap> join(DataTable<?> rightTable,String leftFieldNames,String rightFieldNames){
-		return new DataTableJoin(this,rightTable,leftFieldNames,rightFieldNames).doInnerJoin();
+	public DataTable<DataMap> join(DataTable<?> rightTable,String... joinFieldNames){
+		return new DataTableJoin(this,rightTable,joinFieldNames).doInnerJoin();
 	}
 	
 	
@@ -162,36 +164,42 @@ public class DataTable<E> extends ArrayList<E> {
 	 * Left Join
 	 * 
 	 * @param rightTable      
-	 * @param leftFieldNames  左表连接字段，多个字段逗号分隔
-	 * @param rightFieldNames 右表连接字段，多个字段逗号分隔
+	 * @param joinFieldNames  <br>
+	 * 	1. 表连接字段，多个字段逗号分隔。<br>
+	 * 	2. 如无此参数时，则按2个表中相同的字段名进行连接<br>
+	 * 	3. 如左右表连接字段名不同时，需提供2个逗号分开的字段列表<br>
 	 * @return result
 	 */
-	public DataTable<DataMap> joinLeft(DataTable<?> rightTable,String leftFieldNames,String rightFieldNames){
-		return new DataTableJoin(this,rightTable,leftFieldNames,rightFieldNames).doLeftJoin();
+	public DataTable<DataMap> joinLeft(DataTable<?> rightTable,String... joinFieldNames){
+		return new DataTableJoin(this,rightTable,joinFieldNames).doLeftJoin();
 	}
 	
 	/**
 	 * Right Join
 	 * 
 	 * @param rightTable      
-	 * @param leftFieldNames  左表连接字段，多个字段逗号分隔
-	 * @param rightFieldNames 右表连接字段，多个字段逗号分隔
+	 * @param joinFieldNames  <br>
+	 * 	1. 表连接字段，多个字段逗号分隔。<br>
+	 * 	2. 如无此参数时，则按2个表中相同的字段名进行连接<br>
+	 * 	3. 如左右表连接字段名不同时，需提供2个逗号分开的字段列表<br>
 	 * @return result
 	 */
-	public DataTable<DataMap> joinRight(DataTable<?> rightTable,String leftFieldNames,String rightFieldNames){
-		return new DataTableJoin(this,rightTable,leftFieldNames,rightFieldNames).doRightJoin();
+	public DataTable<DataMap> joinRight(DataTable<?> rightTable,String... joinFieldNames){
+		return new DataTableJoin(this,rightTable,joinFieldNames).doRightJoin();
 	}
 	
 	/**
 	 * Full Join
 	 * 
 	 * @param rightTable      
-	 * @param leftFieldNames  左表连接字段，多个字段逗号分隔
-	 * @param rightFieldNames 右表连接字段，多个字段逗号分隔
+	 * @param joinFieldNames  <br>
+	 * 	1. 表连接字段，多个字段逗号分隔。<br>
+	 * 	2. 如无此参数时，则按2个表中相同的字段名进行连接<br>
+	 * 	3. 如左右表连接字段名不同时，需提供2个逗号分开的字段列表<br>
 	 * @return result
 	 */
-	public DataTable<DataMap> joinFull(DataTable<?> rightTable,String leftFieldNames,String rightFieldNames){
-		return new DataTableJoin(this,rightTable,leftFieldNames,rightFieldNames).doFullJoin();
+	public DataTable<DataMap> joinFull(DataTable<?> rightTable,String... joinFieldNames){
+		return new DataTableJoin(this,rightTable,joinFieldNames).doFullJoin();
 	}
 	 
 	
@@ -227,10 +235,19 @@ public class DataTable<E> extends ArrayList<E> {
 		
 		return r;
 	}
-	 
 	
-	 
-	
+	/**
+	 * 如未调用 setHeaders(...)指定列名，则列命名按照如下规则定义：<br>
+	 * 
+	 * 如果表数据为数组, 则列名默认为： c0,c1,c2 ... <br>
+	 * 如果表数据为Map,则列名为key值<br>
+	 * 如果表数据为对象，则列名为字段名<br>
+	 * 如果表数据为原始类型的数据(int,bool 等），则列名为 ： c0
+	 * 
+	 * @return 列名
+	 * 
+	 * @see #setHeaders(List)
+	 */
 	public synchronized List<DataColumn> getHeaders() {
 		if(headers.size()==0 && this.size()>0){
 			Object v=this.get(0);
@@ -259,11 +276,27 @@ public class DataTable<E> extends ArrayList<E> {
 		return headers;
 	}
 
+	/**
+	 * 指定列名
+	 * 
+	 * @param headers 指定列名
+	 * @return 表本身
+	 * 
+	 * @see #getHeaders()
+	 */
 	public DataTable<E> setHeaders(List<DataColumn> headers) {
 		this.headers = headers;
 		return this;
 	}
 	
+	/**
+	 * 指定列名
+	 * 
+	 * @param headers 指定列名
+	 * @return 表本身
+	 * 
+	 * @see #getHeaders()
+	 */
 	public DataTable<E> setHeaders(String... names){
 		headers.clear();
 		

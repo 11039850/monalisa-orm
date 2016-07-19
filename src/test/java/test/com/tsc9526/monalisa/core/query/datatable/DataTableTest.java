@@ -268,4 +268,13 @@ public class DataTableTest {
 		Assert.assertEquals(rs.get(1), "s2");
 		Assert.assertEquals(rs.get(2), "s3");
 	}
+	
+	public void testJoinOnDefaultName(){
+		DataTable<Object[]> leftTable=new DataTable<Object[]>();
+		for(int i=1;i<=3;i++){
+			leftTable.add(new Object[]{i,"s"+i,"long"+i});
+		}
+		
+		 
+	}
 }
