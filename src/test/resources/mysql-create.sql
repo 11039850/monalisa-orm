@@ -21,7 +21,7 @@ CREATE TABLE `test_table_2` (
   `array_int` varchar(256)  NULL COMMENT '整形数组 #array{int}',
   `array_string` varchar(256)  NULL COMMENT '字符串数组 #array{}',
   `json` varchar(1024)  NULL COMMENT 'Json #json{}',
-  `obj` varchar(1024)  NULL COMMENT 'Object #json{test.com.tsc9526.monalisa.core.data.ColumnData}',
+  `obj` varchar(1024)  NULL COMMENT 'Object #json{test.com.tsc9526.monalisa.orm.data.ColumnData}',
   `ts_a` datetime NOT NULL,
   `create_time` datetime NOT NULL,
   `create_by` varchar(64) NULL,
@@ -42,3 +42,18 @@ CREATE TABLE `test_logyyyymm_201601` (
   `update_by` varchar(64)  NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT = 100 DEFAULT CHARSET=utf8;
+
+
+CREATE TABLE IF NOT EXISTS `test_record` (
+	`record_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '唯一主键',
+	`name` varchar(128) NOT NULL default 'N0001' COMMENT '名称',
+	`title` varchar(128) NULL  COMMENT '标题',
+	`ts_a` datetime  NULL,
+	`create_time` datetime NOT NULL,
+	`create_by` varchar(64) NULL,
+	`update_time` datetime NULL,
+	`update_by` varchar(64) NULL,
+	PRIMARY KEY (`record_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+		
+INSERT INTO test_record(record_id,`name`,`title`,ts_a,create_time)VALUES(1,"hello","record",now(),now());

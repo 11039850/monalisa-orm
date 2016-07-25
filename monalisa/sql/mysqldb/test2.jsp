@@ -1,11 +1,11 @@
 <%@page import="java.util.Date"%>
-<%@page import="com.tsc9526.monalisa.core.query.Args"%>
-<%@ page import="com.tsc9526.monalisa.core.meta.MetaTable"%>
-<%@ page import="test.com.tsc9526.monalisa.core.mysql.MysqlDB,com.tsc9526.monalisa.core.query.Query"%>
+<%@page import="com.tsc9526.monalisa.orm.parser.Args"%>
+<%@ page import="com.tsc9526.monalisa.orm.meta.MetaTable"%>
+<%@ page import="test.com.tsc9526.monalisa.orm.mysql.MysqlDB,com.tsc9526.monalisa.orm.Query"%>
 <%@ page language="java" pageEncoding="utf-8"%>
 <%Query q=new Query(); Args args=new Args();%> 
 <!-- hello -->
-<query namespace="test.com.tsc9526.monalisa.core.sql.Q0002" db="<%=MysqlDB.class%>"> 
+<query namespace="test.com.tsc9526.monalisa.orm.sql.Q0002" db="<%=MysqlDB.class%>"> 
 	<!-- 测试查询A --> 
 	<q id="testFindAll_A" resultClass="DS0001"> 
 		<%{	

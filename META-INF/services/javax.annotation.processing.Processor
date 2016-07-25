@@ -1,1 +1,1 @@
-com.tsc9526.monalisa.core.processor.DBAnnotationProcessor
+com.tsc9526.monalisa.orm.processor.DBAnnotationProcessor

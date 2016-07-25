@@ -14,17 +14,17 @@
  *	You should have received a copy of the GNU Lesser General Public License
  *	along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************************/
-package test.com.tsc9526.monalisa.core.sqlfiles.pkg;
+package test.com.tsc9526.monalisa.orm.sqlfiles.pkg;
 
  
-import test.com.tsc9526.monalisa.core.mysql.MysqlDB;
+import test.com.tsc9526.monalisa.orm.mysql.MysqlDB;
  
 /**
  * 
  * @author zzg.zhou(11039850@qq.com)
  */
 public class Qx implements MysqlDB {
-	final static long $VERSION$= 6L; 
+	final static long $VERSION$= 7L; 
 	 
 	public int findOne(){ 
 		return 5;

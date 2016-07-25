@@ -1,7 +1,7 @@
-package test.com.tsc9526.monalisa.core.sql.java;
+package test.com.tsc9526.monalisa.orm.sql.java;
  
  
-import test.com.tsc9526.monalisa.core.mysql.MysqlDB;
+import test.com.tsc9526.monalisa.orm.mysql.MysqlDB;
 
 import com.jy.app.instools.oss.util.DateUtils;
 import com.tsc9526.monalisa.core.annotation.Select;
@@ -11,7 +11,7 @@ import com.tsc9526.monalisa.core.query.Query;
 import com.tsc9526.monalisa.core.query.datatable.DataTable;
 
 public class Demo {
-	final static long $VERSION =1L;
+	final static long $VERSION = 2016072516434000L;
 	
 	public Page findUserByName(String name,String pwd,int[] status){
 		String sql=<<~

@@ -2,8 +2,8 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.tsc9526</groupId>
-	<artifactId>monalisa-core</artifactId>
-	<version>1.2.0</version>
+	<artifactId>monalisa-orm</artifactId>
+	<version>1.6.0</version>
 	
 	<name>monalisa-core</name>
 	<url>https://github.com/11039850/monalisa-core</url>
@@ -25,7 +25,7 @@
 		<connection>scm:git:https://github.com/11039850/monalisa-core.git</connection>
 		<developerConnection>scm:git:https://github.com/11039850/monalisa-core.git</developerConnection>
 		<url>https://github.com/11039850/monalisa-core.git</url>
-		<tag>tag-1.2.0</tag>
+		<tag>tag-1.6.0</tag>
 	</scm>
 	
 	<developers>

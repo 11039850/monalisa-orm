@@ -1,4 +1,4 @@
-# monalisa-db
+# monalisa-orm
 
       "And God said, Let there be light: and there was light."
       
@@ -14,7 +14,7 @@
 
 5 minutes video: [Youtube](http://www.youtube.com/watch?v=3qpr0J7D7cQ) / [YouKu](http://v.youku.com/v_show/id_XMTU0ODk1MzA2MA==.html) 
 
-[For more details](https://github.com/11039850/monalisa-db/wiki)
+[For more details](https://github.com/11039850/monalisa-orm/wiki)
 
 # Example
 
@@ -182,15 +182,15 @@ Output will be:
 ```
 
 
-[For more details](https://github.com/11039850/monalisa-db/wiki)
+[For more details](https://github.com/11039850/monalisa-orm/wiki)
 
 # Maven: 
 ```xml
 	
 	<dependency>
 		<groupId>com.tsc9526</groupId>
-		<artifactId>monalisa-core</artifactId>
-		<version>1.1.2</version>
+		<artifactId>monalisa-orm</artifactId>
+		<version>1.2.0</version>
 	</dependency>
 ``` 
 
