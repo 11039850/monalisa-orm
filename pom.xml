@@ -5,7 +5,7 @@
 	<artifactId>monalisa-orm</artifactId>
 	<version>1.6.0</version>
 	
-	<name>monalisa-core</name>
+	<name>monalisa-orm</name>
 	<url>https://github.com/11039850/monalisa-orm</url>
 	<description>Very simple database ORM</description>
 	<organization>
