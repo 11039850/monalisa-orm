@@ -6,7 +6,7 @@
 	<version>1.6.0</version>
 	
 	<name>monalisa-core</name>
-	<url>https://github.com/11039850/monalisa-core</url>
+	<url>https://github.com/11039850/monalisa-orm</url>
 	<description>Very simple database ORM</description>
 	<organization>
 		<name>zzg</name>
@@ -22,9 +22,9 @@
 	</properties>
 
 	<scm>
-		<connection>scm:git:https://github.com/11039850/monalisa-core.git</connection>
-		<developerConnection>scm:git:https://github.com/11039850/monalisa-core.git</developerConnection>
-		<url>https://github.com/11039850/monalisa-core.git</url>
+		<connection>scm:git:https://github.com/11039850/monalisa-orm.git</connection>
+		<developerConnection>scm:git:https://github.com/11039850/monalisa-orm.git</developerConnection>
+		<url>https://github.com/11039850/monalisa-orm.git</url>
 		<tag>tag-1.6.0</tag>
 	</scm>
 	
