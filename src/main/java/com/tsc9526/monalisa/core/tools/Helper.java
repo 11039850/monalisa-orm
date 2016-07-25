@@ -40,8 +40,8 @@ public class Helper {
 	 
 	/**
 	 * 分隔字符串， 可能的分隔符号有3个：   逗号(,) 分号(;) 竖号(|)
-	 * @param m
-	 * @return
+	 * @param m 待分隔的字符串
+	 * @return 分隔后的数组
 	 */
 	public static String[] splits(String m){
 		if(m==null){

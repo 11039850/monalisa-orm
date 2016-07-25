@@ -148,8 +148,8 @@ public class DataTable<E> extends ArrayList<E> {
 	/**
 	 * Inner Join
 	 * 
-	 * @param rightTable      
-	 * @param joinFieldNames  <br>
+	 * @param rightTable 连接表     
+	 * @param joinFieldNames  连接的字段名称<br>
 	 * 	1. 表连接字段，多个字段逗号分隔。<br>
 	 * 	2. 如无此参数时，则按2个表中相同的字段名进行连接<br>
 	 * 	3. 如左右表连接字段名不同时，需提供2个逗号分开的字段列表<br>
@@ -163,8 +163,8 @@ public class DataTable<E> extends ArrayList<E> {
 	/**
 	 * Left Join
 	 * 
-	 * @param rightTable      
-	 * @param joinFieldNames  <br>
+	 * @param rightTable  连接表    
+	 * @param joinFieldNames  连接的字段名称<br>
 	 * 	1. 表连接字段，多个字段逗号分隔。<br>
 	 * 	2. 如无此参数时，则按2个表中相同的字段名进行连接<br>
 	 * 	3. 如左右表连接字段名不同时，需提供2个逗号分开的字段列表<br>
@@ -177,8 +177,8 @@ public class DataTable<E> extends ArrayList<E> {
 	/**
 	 * Right Join
 	 * 
-	 * @param rightTable      
-	 * @param joinFieldNames  <br>
+	 * @param rightTable   连接表   
+	 * @param joinFieldNames  连接的字段名称<br>
 	 * 	1. 表连接字段，多个字段逗号分隔。<br>
 	 * 	2. 如无此参数时，则按2个表中相同的字段名进行连接<br>
 	 * 	3. 如左右表连接字段名不同时，需提供2个逗号分开的字段列表<br>
@@ -191,8 +191,8 @@ public class DataTable<E> extends ArrayList<E> {
 	/**
 	 * Full Join
 	 * 
-	 * @param rightTable      
-	 * @param joinFieldNames  <br>
+	 * @param rightTable   连接表   
+	 * @param joinFieldNames 连接的字段名称 <br>
 	 * 	1. 表连接字段，多个字段逗号分隔。<br>
 	 * 	2. 如无此参数时，则按2个表中相同的字段名进行连接<br>
 	 * 	3. 如左右表连接字段名不同时，需提供2个逗号分开的字段列表<br>
@@ -292,7 +292,7 @@ public class DataTable<E> extends ArrayList<E> {
 	/**
 	 * 指定列名
 	 * 
-	 * @param headers 指定列名
+	 * @param names 指定列名
 	 * @return 表本身
 	 * 
 	 * @see #getHeaders()

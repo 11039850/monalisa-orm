@@ -55,7 +55,7 @@
 		  <artifactId>csvjdbc</artifactId>
 		  <version>1.0.28</version>
 		</dependency>
-		
+		 
 		 <dependency>
 			<groupId>org.testng</groupId>
 			<artifactId>testng</artifactId>
@@ -67,14 +67,14 @@
 		  <groupId>cglib</groupId>
 		  <artifactId>cglib</artifactId>
 		  <version>3.2.0</version>
-		  <scope>test</scope>
+		  <scope>provided</scope>
 		</dependency>
 
 		<dependency>
 			<groupId>org.mockito</groupId>
 			<artifactId>mockito-all</artifactId>
 			<version>1.8.5</version>
-			<scope>test</scope>
+			<scope>provided</scope>
 		</dependency>
 	  
 		<dependency>
@@ -133,8 +133,7 @@
 		  <version>1.7.13</version>
 		  <scope>provided</scope>
 		</dependency>
-		
-		
+	 	 
 	</dependencies>
 
 	<build>
@@ -202,7 +201,7 @@
 					<charset>UTF-8</charset>
 					<encoding>UTF-8</encoding>
 					<docencoding>UTF-8</docencoding>
-					<extdirs>libs</extdirs>
+					<extdirs>${basedir}/libs</extdirs>
 				</configuration>
 				<executions>
 					<execution>

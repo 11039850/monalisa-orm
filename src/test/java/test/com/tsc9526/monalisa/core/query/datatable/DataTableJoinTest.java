@@ -87,7 +87,7 @@ public class DataTableJoinTest {
 		
 		DataTable<DataMap> rs=left.joinFull(right, "intField1", "intField1");
 		 
-		Assert.assertEquals(rs.size(),4);
+		Assert.assertEquals(rs.size(),6);
 		Assert.assertEquals(rs.get(0).getInt("intField1",0),11);
 		Assert.assertEquals(rs.get(0).getInt("intField11",0),11);
 		Assert.assertEquals(rs.get(0).getString("stringField1"),"s11");

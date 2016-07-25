@@ -118,6 +118,8 @@ public class Record extends Model<Record>{
 		
 		/**
 		* Append "OR" Criteria  
+		* 
+		* @return Criteria
 		*/	
 		public Criteria OR(){
 			return this.example.or();

@@ -337,7 +337,7 @@ public class Query {
 	/**
 	 * 使用该方法获取查询返回的多个结果集
 	 * 
-	 * @return
+	 * @return 多个结果集
 	 */
 	public List<DataTable<DataMap>> getAllResults(){
 		queryCheck();
