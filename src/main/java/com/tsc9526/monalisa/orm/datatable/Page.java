@@ -14,12 +14,10 @@
  *	You should have received a copy of the GNU Lesser General Public License
  *	along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************************/
-package com.tsc9526.monalisa.orm;
+package com.tsc9526.monalisa.orm.datatable;
 
 import java.io.Serializable;
 import java.util.List;
-
-import com.tsc9526.monalisa.orm.datatable.DataTable;
 
 
 /**

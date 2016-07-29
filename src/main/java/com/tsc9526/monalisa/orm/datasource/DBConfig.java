@@ -29,7 +29,6 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import javax.sql.DataSource;
 
-import com.tsc9526.monalisa.orm.Page;
 import com.tsc9526.monalisa.orm.Query;
 import com.tsc9526.monalisa.orm.annotation.DB;
 import com.tsc9526.monalisa.orm.annotation.Table;
@@ -37,6 +36,7 @@ import com.tsc9526.monalisa.orm.cache.Cache;
 import com.tsc9526.monalisa.orm.cache.CacheManager;
 import com.tsc9526.monalisa.orm.datatable.DataMap;
 import com.tsc9526.monalisa.orm.datatable.DataTable;
+import com.tsc9526.monalisa.orm.datatable.Page;
 import com.tsc9526.monalisa.orm.dialect.Dialect;
 import com.tsc9526.monalisa.orm.meta.MetaPartition;
 import com.tsc9526.monalisa.orm.model.Model;

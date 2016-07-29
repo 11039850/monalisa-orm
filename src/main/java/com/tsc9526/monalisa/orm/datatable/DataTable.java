@@ -23,7 +23,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
-import com.tsc9526.monalisa.orm.Page;
 import com.tsc9526.monalisa.orm.tools.helper.ClassHelper;
 import com.tsc9526.monalisa.orm.tools.helper.CsvHelper;
 import com.tsc9526.monalisa.orm.tools.helper.SQLHelper;

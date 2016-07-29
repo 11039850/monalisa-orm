@@ -26,7 +26,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.tsc9526.monalisa.orm.ResultHandler;
 import com.tsc9526.monalisa.orm.datatable.DataColumn;
 import com.tsc9526.monalisa.orm.datatable.DataTable;
 import com.tsc9526.monalisa.orm.tools.helper.CloseQuietly;

@@ -34,10 +34,12 @@ import com.tsc9526.monalisa.orm.datasource.DataSourceManager;
 import com.tsc9526.monalisa.orm.datasource.DbProp;
 import com.tsc9526.monalisa.orm.datatable.DataMap;
 import com.tsc9526.monalisa.orm.datatable.DataTable;
+import com.tsc9526.monalisa.orm.datatable.Page;
 import com.tsc9526.monalisa.orm.dialect.Dialect;
 import com.tsc9526.monalisa.orm.executor.CacheExecutor;
 import com.tsc9526.monalisa.orm.executor.Execute;
 import com.tsc9526.monalisa.orm.executor.ResultExecutor;
+import com.tsc9526.monalisa.orm.executor.ResultHandler;
 import com.tsc9526.monalisa.orm.executor.ResultLoadExecutor;
 import com.tsc9526.monalisa.orm.executor.ResultSetExecutor;
 import com.tsc9526.monalisa.orm.executor.ResultSetsExecutor;
@@ -51,14 +53,23 @@ import com.tsc9526.monalisa.orm.tools.logger.Logger;
 
 /**
  * 数据库查询对象, 基本用法: <br>
+ * 
  * <code>
- * Query q=new Query(); <br>
- * q.use(db); <br>
+ * &#64;DB(url="jdbc:mysql://127.0.0.1:3306/test", username="root", password="root")<br>
+ * public interface TestDB {<br>
+ * 	 &nbsp;&nbsp;&nbsp;&nbsp;public final static DBConfig DB=DBConfig.fromClass(Test.class)<br>
+ * }	
+ * </code> 
+ *<br><br> 
+ * <code>
+ * Query q=new Query(TestDB.DB); <br>
  * q.add("select * from xxx where id=?",1); <br>
  * List&lt;Result&gt; r=q.getList(Result.class);   <br>
  * Page&lt;Result&gt; p=q.getPage(Result.class,10,0);<br>
  * Result       x=q.getResult(Result.class);<br>
  * </code>
+ * 
+ * @see com.tsc9526.monalisa.orm.annotation.DB
  * 
  * @author zzg.zhou(11039850@qq.com)
  */

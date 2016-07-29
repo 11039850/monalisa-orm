@@ -21,7 +21,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import com.tsc9526.monalisa.orm.ResultHandler;
 import com.tsc9526.monalisa.orm.tools.helper.CloseQuietly;
 
 /**
