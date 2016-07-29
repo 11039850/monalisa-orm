@@ -19,9 +19,9 @@ package com.tsc9526.monalisa.orm.tools.generator;
 
 import java.io.PrintWriter;
 import com.tsc9526.monalisa.orm.parser.jsp.JspContext;
+import com.tsc9526.monalisa.orm.meta.MetaTable;
 import com.tsc9526.monalisa.orm.meta.MetaColumn;
 import java.util.Set;
-import com.tsc9526.monalisa.orm.meta.MetaTable;
 /**  @author zzg.zhou(11039850@qq.com)  */
 public class DBWriterSelect{
 	
@@ -36,12 +36,12 @@ public class DBWriterSelect{
 	}
 
 	
-	String getComments(MetaTable table,MetaColumn c,String params){
+	String getComments(MetaTable table,MetaColumn c,String params,String leftPadding){
 		String cname=c.getName();
 		
 		if(cname!=null && cname.length()>0 && c.getTable()!=null){	
-			String r="/**\r\n";
-			r+="* @Column\r\n"; 
+			String r="/**\r\n"+leftPadding;
+			r+="* @Column\r\n"+leftPadding; 
 			r+="* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> "+c.getTable().getName()+"&nbsp;<B>name:</B> "+cname;
 			
 			if(c.isKey() || c.isAuto() || c.isNotnull() || c.isEnum()){
@@ -65,7 +65,7 @@ public class DBWriterSelect{
 				}
 				r+="]";
 			}
-			r+="\r\n";
+			r+="\r\n"+leftPadding;
 			
 			if(c.getLength()>0 || c.getValue()!=null){
 				r+="* <li>&nbsp;&nbsp;&nbsp;";
@@ -76,11 +76,11 @@ public class DBWriterSelect{
 				if(c.getValue()!=null){
 					r+=" &nbsp;<B>value:</B> "+toJavaString(c.getValue());
 				}
-				r+="<br>\r\n";
+				r+="<br>\r\n"+leftPadding;
 			}
 			
 			if(c.getRemarks()!=null){
-				r+="* <li><B>remarks:</B> "+toComments(c.getRemarks())+"\r\n";
+				r+="* <li><B>remarks:</B> "+toComments(c.getRemarks())+"\r\n"+leftPadding;
 			}
 			 
 			if(params==null){
@@ -91,7 +91,7 @@ public class DBWriterSelect{
 				r+="* "+params;
 			}
 			
-		 	r+="*/\r\n";	
+		 	r+="*/\r\n"+leftPadding;	
 		 
 		 	String f=c.getTable().getJavaName()+".M.";
 		 	if(c.getTable().getJavaPackage().equals(table.getJavaPackage())){
@@ -130,27 +130,24 @@ public class DBWriterSelect{
 		}
 	}
 	public void service(JspContext request,PrintWriter out){
-		out.println("");
-			out.println("");
-			out.println("");
-			
+		
 MetaTable    table =(MetaTable)request.getAttribute("table");
 Set<?>     imports =(Set<?>)request.getAttribute("imports");
 String   fingerprint=(String)request.getAttribute("fingerprint");
 String   see        =(String)request.getAttribute("see");
-		out.println("");
-			out.print("package ");
+		out.print("package ");
 			out.print(table.getJavaPackage());
 			out.println(";");
 			out.println(" ");
 			for(Object i:imports){ 		out.println("");
 			out.print("import ");
 			out.print(i);
-			out.println(";");
+			out.print(";");
 			} 		out.println("");
 			out.println(" ");
 			out.println("/**");
-			out.println(" * ");
+			out.println(" * Auto generated code by monalisa 1.6.1");
+			out.println(" *");
 			out.print(" * @see ");
 			out.print(see);
 			out.println("");
@@ -169,7 +166,7 @@ String   see        =(String)request.getAttribute("see");
 			out.print("	");
 			for(MetaColumn f:table.getColumns()){ 		out.println("");
 			out.print("	");
-			out.print(getComments(table, f, "	") );
+			out.print(getComments(table, f, "	","\t") );
 			out.println("");
 			out.print("	private ");
 			out.print(f.getJavaType());
@@ -184,7 +181,7 @@ String   see        =(String)request.getAttribute("see");
 			out.print("	");
 			for(MetaColumn f:table.getColumns()){ 		out.println("");
 			out.print("	");
-			out.print(getComments(table, f, "	") );
+			out.print(getComments(table, f, "	","\t") );
 			out.println("");
 			out.print("	public ");
 			out.print(table.getJavaName());
@@ -210,7 +207,7 @@ String   see        =(String)request.getAttribute("see");
 			out.print("	");
 			for(MetaColumn f:table.getColumns()){ 		out.println("");
 			out.print("	");
-			out.print(getComments(table, f, "	") );
+			out.print(getComments(table, f, "	","\t") );
 			out.println("");
 			out.print("	public ");
 			out.print(f.getJavaType());
@@ -223,7 +220,7 @@ String   see        =(String)request.getAttribute("see");
 			out.println("	}");
 			out.println("	");
 			out.print("	");
-			out.print(getComments(table, f, "@param defaultValue  Return the default value if "+f.getJavaName()+" is null.") );
+			out.print(getComments(table, f, "@param defaultValue  Return the default value if "+f.getJavaName()+" is null.","\t") );
 			out.println("");
 			out.print("	public ");
 			out.print(f.getJavaType());

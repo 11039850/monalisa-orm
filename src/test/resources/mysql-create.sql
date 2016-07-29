@@ -9,7 +9,9 @@ CREATE TABLE `test_table_1` (
   `create_by` varchar(64) NULL,
   `update_time` datetime NULL,
   `update_by` varchar(64) NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  KEY `ix_name_title`(`name`,`title`),
+  UNIQUE KEY `ux_name_time`(`name`,`create_time`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `test_table_2` (

@@ -21,8 +21,8 @@ import java.io.PrintWriter;
 import com.tsc9526.monalisa.orm.parser.jsp.JspContext;
 import com.tsc9526.monalisa.orm.meta.MetaIndex;
 import com.tsc9526.monalisa.orm.meta.MetaColumn;
-import java.util.Set;
 import com.tsc9526.monalisa.orm.meta.MetaTable;
+import java.util.Set;
 /**  @author zzg.zhou(11039850@qq.com)  */
 public class DBWriterModel{
 	
@@ -37,12 +37,12 @@ public class DBWriterModel{
 	}
 
 	
-	String getComments(MetaTable table,MetaColumn c,String params){
+	String getComments(MetaTable table,MetaColumn c,String params,String leftPadding){
 		String cname=c.getName();
 		
 		if(cname!=null && cname.length()>0 && c.getTable()!=null){	
-			String r="/**\r\n";
-			r+="* @Column\r\n"; 
+			String r="/**\r\n"+leftPadding;
+			r+="* @Column\r\n"+leftPadding; 
 			r+="* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> "+c.getTable().getName()+"&nbsp;<B>name:</B> "+cname;
 			
 			if(c.isKey() || c.isAuto() || c.isNotnull() || c.isEnum()){
@@ -66,7 +66,7 @@ public class DBWriterModel{
 				}
 				r+="]";
 			}
-			r+="\r\n";
+			r+="\r\n"+leftPadding;
 			
 			if(c.getLength()>0 || c.getValue()!=null){
 				r+="* <li>&nbsp;&nbsp;&nbsp;";
@@ -77,11 +77,11 @@ public class DBWriterModel{
 				if(c.getValue()!=null){
 					r+=" &nbsp;<B>value:</B> "+toJavaString(c.getValue());
 				}
-				r+="<br>\r\n";
+				r+="<br>\r\n"+leftPadding;
 			}
 			
 			if(c.getRemarks()!=null){
-				r+="* <li><B>remarks:</B> "+toComments(c.getRemarks())+"\r\n";
+				r+="* <li><B>remarks:</B> "+toComments(c.getRemarks())+"\r\n"+leftPadding;
 			}
 			 
 			if(params==null){
@@ -89,10 +89,10 @@ public class DBWriterModel{
 			}
 			params=params.trim();
 			if(params.length()>0){
-				r+="* "+params;
+				r+="* "+params+"\r\n"+leftPadding;
 			}
 			
-		 	r+="*/\r\n";	
+		 	r+="*/\r\n"+leftPadding;	
 		 
 		 	String f=c.getTable().getJavaName()+".M.";
 		 	if(c.getTable().getJavaPackage().equals(table.getJavaPackage())){
@@ -131,27 +131,26 @@ public class DBWriterModel{
 		}
 	}
 	public void service(JspContext request,PrintWriter out){
-		out.println("");
-			out.println("");
-			out.println("");
-			out.println("");
-			
+		
 MetaTable    table =(MetaTable)request.getAttribute("table");
 Set<?>     imports =(Set<?>)request.getAttribute("imports");
 String   modelClass=(String)request.getAttribute("modelClass");
 String   dbi       =(String)request.getAttribute("dbi");
-		out.println("");
-			out.print("package ");
+		out.print("package ");
 			out.print(table.getJavaPackage());
 			out.println(";");
 			out.println(" 		");
-			for(Object i:imports){ 		out.println("");
+			for(Object i:imports){		out.println("");
 			out.print("import ");
 			out.print(i);
-			out.println(";");
+			out.print("; ");
 			} 		out.println("");
 			out.println(" ");
-			out.println("");
+			out.println("/**");
+			out.println(" *");
+			out.println(" * Auto generated code by monalisa 1.6.1");
+			out.println(" *");
+			out.println(" */");
 			out.println("@Table(");
 			out.print("	name=\"");
 			out.print(table.getName() );
@@ -165,11 +164,10 @@ String   dbi       =(String)request.getAttribute("dbi");
 			out.print("	remarks=\"");
 			out.print(toJavaString(table.getRemarks()));
 			out.println("\",");
-			out.println("	indexes={		");
-			out.print("		");
+			out.print("	indexes={");
 			for(MetaIndex index:table.getIndexes()){ 		out.println("");
 			out.print("		");
-			out.print(index==table.getIndexes().get(0)?"":", ");
+			out.print(index==table.getIndexes().get(0)?"  ":", ");
 			out.print("@Index(name=\"");
 			out.print(index.getName());
 			out.print("\", type=");
@@ -181,8 +179,7 @@ String   dbi       =(String)request.getAttribute("dbi");
 			out.print("\"");
 			out.print(c.getName());
 			out.print("\"");
-			}		out.println("})");
-			out.print("		");
+			}		out.print("}) ");
 			} 		out.println("");
 			out.println("	}");
 			out.println(")");
@@ -244,20 +241,16 @@ String   dbi       =(String)request.getAttribute("dbi");
 			}		out.println(");		");
 			out.println("	}		 ");
 			out.println("	");
-			out.println("	 ");
 			out.print("	");
 			if(table.getKeyColumns().size()>0){ 		out.println("");
 			out.println("	/**");
 			out.println("	 * Constructor use primary keys.");
-			out.println("	 *");
-			out.print("	");
+			out.print("	 *");
 			for(MetaColumn k:table.getKeyColumns()){		out.println("");
 			out.print("	 * @param ");
 			out.print(k.getJavaName());
 			out.print("  ");
 			out.print(toComments(k.getRemarks()) );
-			out.println("");
-			out.print("	");
 			}		out.println("	 ");
 			out.println("	 */");
 			out.print("	public ");
@@ -275,7 +268,6 @@ String   dbi       =(String)request.getAttribute("dbi");
 			out.print(k.getName() );
 			out.print("\"");
 			}		out.println(");");
-			out.println("	");
 			out.print("		");
 			for(MetaColumn k:table.getKeyColumns()){		out.println("");
 			out.print("		this.");
@@ -291,22 +283,17 @@ String   dbi       =(String)request.getAttribute("dbi");
 			out.println("	}	 ");
 			out.print("	");
 			} 		out.println("");
-			out.println("	");
-			out.println("	 ");
 			out.print("	");
 			for(MetaColumn f:table.getColumns()){ 		out.println("");
 			out.print("	");
-			out.print(getComments(table,f,"	"));
-			out.println(" ");
-			out.print("	");
+			out.print(getComments(table,f,"	","\t"));
 			
 	String annotation=f.getCode("annotation");
 	if(annotation!=null){ 
 		for(String a:annotation.split("\n")){
-			out.println(a);
+			out.println("\t"+a+"\r\n");
 		}
-	}
-			out.println("");
+	}		out.println("");
 			out.print("	private ");
 			out.print(f.getJavaType() );
 			out.print(" ");
@@ -319,7 +306,7 @@ String   dbi       =(String)request.getAttribute("dbi");
 			out.print("	");
 			for(MetaColumn f:table.getColumns()){ 		out.println("");
 			out.print("	");
-			out.print(getComments(table,f,"	"));
+			out.print(getComments(table,f,"	","\t"));
 			out.println(" ");
 			out.print("	public ");
 			out.print(table.getJavaName());
@@ -335,14 +322,11 @@ String   dbi       =(String)request.getAttribute("dbi");
 		String set=f.getCode("set");
 		if(set!=null){ 
 			out.println(set);
-		}else{
-				out.println("");
-			out.print("		this.");
+		}else{		out.print("this.");
 			out.print(f.getJavaName());
 			out.print(" = ");
 			out.print(f.getJavaName());
-			out.println(";");
-			out.print("		");
+			out.print(";");
 			}		out.println("  ");
 			out.println("		");
 			out.print("		fieldChanged(\"");
@@ -354,12 +338,10 @@ String   dbi       =(String)request.getAttribute("dbi");
 			out.println("	");
 			out.print("	");
 			} 		out.println("");
-			out.println("	");
-			out.println("	");
 			out.print("	");
 			for(MetaColumn f:table.getColumns()){ 		out.println("");
 			out.print("	");
-			out.print(getComments(table,f,"	"));
+			out.print(getComments(table,f,"	","\t"));
 			out.println(" ");
 			out.print("	public ");
 			out.print(f.getJavaType());
@@ -376,12 +358,11 @@ String   dbi       =(String)request.getAttribute("dbi");
 			out.println("return "+value+";");	
 		}else{
 			out.println("return this."+f.getJavaName()+";");
-		}
-				out.println(" ");
+		}		out.println(" ");
 			out.println("	}");
 			out.println("	");
 			out.print("	");
-			out.print(getComments(table,f,"@param defaultValue  Return the default value if "+f.getJavaName()+" is null."));
+			out.print(getComments(table,f,"@param defaultValue  Return the default value if "+f.getJavaName()+" is null.","\t"));
 			out.println(" ");
 			out.print("	public ");
 			out.print(f.getJavaType());
@@ -395,6 +376,7 @@ String   dbi       =(String)request.getAttribute("dbi");
 			out.print(" r=this.");
 			out.print(f.getJavaNameGet());
 			out.println("();");
+			out.println("		");
 			out.println("		if(r==null){");
 			out.println("			r=defaultValue;");
 			out.println("		}");
@@ -433,29 +415,22 @@ String   dbi       =(String)request.getAttribute("dbi");
 			out.print(k.getJavaName());
 			}		out.println("){");
 			out.print("			");
-			for(MetaColumn k:table.getKeyColumns()){ 		out.println("");
-			out.print("			if(");
+			for(MetaColumn k:table.getKeyColumns()){ 		out.print("if(");
 			out.print(k.getJavaName());
-			out.println(" ==null ) return 0;			");
+			out.println(" ==null ) return 0;	");
 			out.print("			");
 			} 		out.println("");
-			out.println("						 			 ");
 			out.print("			");
-			for(MetaColumn k:table.getKeyColumns()){ 		out.println("");
-			out.print("			this.model.");
+			for(MetaColumn k:table.getKeyColumns()){ 		out.print("this.model.");
 			out.print(k.getJavaName());
 			out.print(" = ");
 			out.print(k.getJavaName());
 			out.println(";");
 			out.print("			");
 			} 		out.println("");
-			out.println("				 			 ");
 			out.println("			return this.model.delete();				");
-			out.println("		}				 ");
-			out.print("		");
+			out.print("		}");
 			} 		out.println("");
-			out.println("		");
-			out.println("		 ");
 			out.print("		");
 			for(MetaIndex index:table.getIndexes()){ 		out.println("");
 			out.print("		");
@@ -467,21 +442,15 @@ String   dbi       =(String)request.getAttribute("dbi");
 			if(m.equals("PrimaryKey")){
 				m= "UKPrimaryKey";
 			}
-				out.println("");
-			out.print("		");
-			if(index.isUnique()){ 		out.println("");
+				if(index.isUnique()){ 		out.println("");
 			out.println("		/**");
 			out.print("		* Delete by unique key: ");
 			out.print(index.getName() );
-			out.println("");
-			out.print("		");
 			for(MetaColumn c:index.getColumns()){ 		out.println("");
 			out.print("		* @param ");
 			out.print(c.getJavaName());
 			out.print(" ");
 			out.print(toComments(c.getRemarks()) );
-			out.println("");
-			out.print("		");
 			} 		out.println("	");
 			out.println("		*/");
 			out.print("		public int deleteBy");
@@ -493,8 +462,7 @@ String   dbi       =(String)request.getAttribute("dbi");
 			out.print(k.getJavaName());
 			}		out.println("){			 ");
 			out.print("			");
-			for(MetaColumn k:index.getColumns()){ 		out.println("");
-			out.print("			this.model.");
+			for(MetaColumn k:index.getColumns()){ 		out.print("this.model.");
 			out.print(k.getJavaName());
 			out.print("=");
 			out.print(k.getJavaName());
@@ -505,11 +473,8 @@ String   dbi       =(String)request.getAttribute("dbi");
 			out.println("			return this.model.delete();");
 			out.println("		}			 ");
 			out.print("		");
-			} 		out.println("		");
-			out.println("		");
-			out.print("		");
+			} 		out.print(" ");
 			} 		out.println("");
-			out.println("		");
 			out.println("	}");
 			out.println("	");
 			out.print("	public static class Update extends com.tsc9526.monalisa.orm.dao.Update<");
@@ -530,7 +495,6 @@ String   dbi       =(String)request.getAttribute("dbi");
 			out.println(" x){");
 			out.println("			super(x);");
 			out.println("		}					 ");
-			out.println("		");
 			out.print("		");
 			if(table.getKeyColumns().size()>0){		out.println("");
 			out.println("		/**");
@@ -547,22 +511,21 @@ String   dbi       =(String)request.getAttribute("dbi");
 			out.print(k.getJavaName());
 			}		out.println("){");
 			out.print("			");
-			for(MetaColumn k:table.getKeyColumns()){ 		out.println("");
-			out.print("			if(");
+			for(MetaColumn k:table.getKeyColumns()){ 		out.print("if(");
 			out.print(k.getJavaName());
-			out.println(" ==null ) return null;			");
+			out.println(" ==null ) return null;");
 			out.print("			");
 			} 		out.println("");
-			out.println("						");
+			out.println("			");
 			out.print("			");
-			for(MetaColumn k:table.getKeyColumns()){ 		out.println("");
-			out.print("			this.model.");
+			for(MetaColumn k:table.getKeyColumns()){ 		out.print("this.model.");
 			out.print(k.getJavaName());
 			out.print(" = ");
 			out.print(k.getJavaName());
 			out.println(";");
 			out.print("			");
 			} 		out.println("");
+			out.println("			");
 			out.println("			this.model.load();");
 			out.println("				 			 	 ");
 			out.println("			if(this.model.entity()){");
@@ -576,7 +539,6 @@ String   dbi       =(String)request.getAttribute("dbi");
 			out.println("		");
 			out.print("		");
 			boolean select_to_map=false; 		out.println("");
-			out.println("		");
 			out.print("		");
 			for(MetaIndex index:table.getIndexes()){ 		out.println("");
 			out.print("		");
@@ -588,21 +550,15 @@ String   dbi       =(String)request.getAttribute("dbi");
 			if(m.equals("PrimaryKey")){
 				m= "UKPrimaryKey";
 			}
-				out.println("");
-			out.print("		");
-			if(index.isUnique()){ 		out.println("");
+				if(index.isUnique()){ 		out.println("");
 			out.println("		/**");
 			out.print("		* Find by unique key: ");
 			out.print(index.getName() );
-			out.println("");
-			out.print("		");
 			for(MetaColumn c:index.getColumns()){ 		out.println("");
 			out.print("		* @param ");
 			out.print(c.getJavaName());
 			out.print(" ");
 			out.print(toComments(c.getRemarks()) );
-			out.println("");
-			out.print("		");
 			} 		out.println("	");
 			out.println("		*/");
 			out.print("		public ");
@@ -622,14 +578,11 @@ String   dbi       =(String)request.getAttribute("dbi");
 			out.print(k.getJavaName());
 			out.print(".eq(");
 			out.print(k.getJavaName());
-			out.println(");");
-			out.print("			");
+			out.print(");");
 			} 		out.println("			 ");
 			out.println("			 ");
 			out.println("			return super.selectOneByExample(c.example);");
 			out.println("		}			 ");
-			out.println("		");
-			out.println("		 ");
 			out.print("		");
 			
 		if(index.getColumns().size()==1){
@@ -707,12 +660,7 @@ String   dbi       =(String)request.getAttribute("dbi");
 			out.println("			return m;");
 			out.println("		}");
 			out.print("		");
-			}		out.println("");
-			out.print("		");
-			}		out.println("");
-			out.print("		");
-			}		out.println("");
-			out.println("			");
+			}		}		}		out.println("");
 			out.print("		");
 			
 		if(table.getKeyColumns().size()==1){
@@ -801,7 +749,6 @@ String   dbi       =(String)request.getAttribute("dbi");
 			out.println("			}");
 			out.println("			");
 			out.print("			");
-			
 			for(MetaIndex index:table.getIndexes()){ 
 				if(index.isUnique() && index.getColumns().size()==1){
 					String m="";
@@ -812,8 +759,7 @@ String   dbi       =(String)request.getAttribute("dbi");
 						m= "UKPrimaryKey";
 					}
 					
-					MetaColumn k=index.getColumns().get(0);
-					out.println("");
+					MetaColumn k=index.getColumns().get(0);		out.println("");
 			out.println("			/**");
 			out.print("			* List result to Map, The map key is unique-key: ");
 			out.print(k.getJavaName());
@@ -830,12 +776,8 @@ String   dbi       =(String)request.getAttribute("dbi");
 			out.print(firstUpper(k.getJavaName()));
 			out.println("((Example)this.example);");
 			out.println("			}");
-			out.println("			");
 			out.print("			");
-			}		out.println("");
-			out.print("			");
-			}		out.println("");
-			out.println("			");
+			}		}		out.println("");
 			out.print("			");
 			
 			if(table.getKeyColumns().size()==1){
@@ -877,7 +819,6 @@ String   dbi       =(String)request.getAttribute("dbi");
 			out.println("			");
 			out.println("			return x;");
 			out.println("		}");
-			out.println("		");
 			out.print("		");
 			
 		if(table.getKeyColumns().size()==1){
@@ -963,39 +904,34 @@ String   dbi       =(String)request.getAttribute("dbi");
 			out.print("		");
 			for(MetaColumn f:table.getColumns()){ 		out.println("");
 			out.print("		");
-			out.print(getComments(table, f, "		"));
+			out.print(getComments(table, f, "		","\t\t"));
 			out.println("");
 			out.print("		");
-			if(f.getJavaType().equals("Integer")){ 		out.println("");
-			out.print("		public com.tsc9526.monalisa.orm.criteria.Field.FieldInteger<Criteria> ");
+			if(f.getJavaType().equals("Integer")){      		out.print("public com.tsc9526.monalisa.orm.criteria.Field.FieldInteger<Criteria> ");
 			out.print(f.getJavaName());
 			out.print(" = new com.tsc9526.monalisa.orm.criteria.Field.FieldInteger<Criteria>(\"");
 			out.print(f.getName());
 			out.println("\", this);");
 			out.print("		");
-			}else if(f.getJavaType().equals("Short")){ 		out.println("");
-			out.print("		public com.tsc9526.monalisa.orm.criteria.Field.FieldShort<Criteria> ");
+			}else if(f.getJavaType().equals("Short")){  		out.print("public com.tsc9526.monalisa.orm.criteria.Field.FieldShort<Criteria> ");
 			out.print(f.getJavaName());
 			out.print(" = new com.tsc9526.monalisa.orm.criteria.Field.FieldShort<Criteria>(\"");
 			out.print(f.getName());
 			out.println("\", this);");
 			out.print("		");
-			}else if(f.getJavaType().equals("Long")){ 		out.println("");
-			out.print("		public com.tsc9526.monalisa.orm.criteria.Field.FieldLong<Criteria> ");
+			}else if(f.getJavaType().equals("Long")){   		out.print("public com.tsc9526.monalisa.orm.criteria.Field.FieldLong<Criteria> ");
 			out.print(f.getJavaName());
 			out.print(" = new com.tsc9526.monalisa.orm.criteria.Field.FieldLong<Criteria>(\"");
 			out.print(f.getName());
 			out.println("\", this); ");
 			out.print("		");
-			}else if(f.getJavaType().equals("String")){ 		out.println("");
-			out.print("		public com.tsc9526.monalisa.orm.criteria.Field.FieldString<Criteria> ");
+			}else if(f.getJavaType().equals("String")){ 		out.print("public com.tsc9526.monalisa.orm.criteria.Field.FieldString<Criteria> ");
 			out.print(f.getJavaName());
 			out.print(" = new com.tsc9526.monalisa.orm.criteria.Field.FieldString<Criteria>(\"");
 			out.print(f.getName());
 			out.println("\", this);");
 			out.print("		");
-			}else{ 		out.println("");
-			out.print("		public com.tsc9526.monalisa.orm.criteria.Field<");
+			}else{                                      		out.print("public com.tsc9526.monalisa.orm.criteria.Field<");
 			out.print(f.getJavaType());
 			out.print(",Criteria> ");
 			out.print(f.getJavaName());
@@ -1007,27 +943,20 @@ String   dbi       =(String)request.getAttribute("dbi");
 			out.print(f.getJdbcType());
 			out.println(");		 ");
 			out.print("		");
-			} 		out.println("		");
-			out.print("		");
+			} 		out.print("	");
 			}		out.println("");
 			out.println("	}");
 			out.println("	 ");
 			out.print("	");
-			for(MetaColumn f:table.getColumns()){ 		out.println("");
-			out.print("	");
-			
+			for(MetaColumn f:table.getColumns()){  
 		String em=f.getCode("enum");
-		if(em!=null && em.indexOf("{")>=0){
+		if(em!=null && em.indexOf("{")>=0){ 
 			out.println("		");
-			out.print("			public static enum ");
+			out.print("	public static enum ");
 			out.print(em);
 			out.println("");
 			out.print("	");
-			 
-		}
-			out.println("	 ");
-			out.print("	");
-			}		out.println("");
+			}		}		out.println("");
 			out.println("	 ");
 			out.println("	public static class M{");
 			out.print("		public final static String TABLE =\"");
@@ -1037,7 +966,7 @@ String   dbi       =(String)request.getAttribute("dbi");
 			out.print("		");
 			for(MetaColumn f:table.getColumns()){ 		out.println("");
 			out.print("		");
-			out.print(getComments(table, f, "		"));
+			out.print(getComments(table, f, "		","\t\t"));
 			out.println("");
 			out.print("		public final static String  ");
 			out.print(f.getJavaName());

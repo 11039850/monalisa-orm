@@ -1,33 +1,24 @@
-
-
-
-
-
 package test.com.tsc9526.monalisa.orm.mysql.mysqldb;
  		
 
-import com.tsc9526.monalisa.orm.annotation.DB;
-
-import com.tsc9526.monalisa.orm.annotation.Table;
-
-import com.tsc9526.monalisa.orm.annotation.Column;
-
-import com.tsc9526.monalisa.orm.tools.helper.ClassHelper;
-
-import java.util.List;
-
-import java.util.Map;
-
-import java.util.LinkedHashMap;
-
+import com.tsc9526.monalisa.orm.annotation.DB; 
+import com.tsc9526.monalisa.orm.annotation.Table; 
+import com.tsc9526.monalisa.orm.annotation.Column; 
+import com.tsc9526.monalisa.orm.tools.helper.ClassHelper; 
+import java.util.List; 
+import java.util.Map; 
+import java.util.LinkedHashMap; 
  
-
+/**
+ *
+ * Auto generated code by monalisa 1.6.1
+ *
+ */
 @Table(
 	name="test_record",
 	primaryKeys={"record_id"},
 	remarks="",
-	indexes={		
-		
+	indexes={
 	}
 )
 public class TestRecord extends com.tsc9526.monalisa.orm.model.Model<TestRecord> implements test.com.tsc9526.monalisa.orm.mysql.MysqlDB{
@@ -62,18 +53,14 @@ public class TestRecord extends com.tsc9526.monalisa.orm.model.Model<TestRecord>
 		super("test_record", "record_id");		
 	}		 
 	
-	 
 	
 	/**
 	 * Constructor use primary keys.
 	 *
-	
-	 * @param recordId  唯一主键
-		 
+	 * @param recordId  唯一主键	 
 	 */
 	public TestRecord(Integer recordId){
 		super("test_record", "record_id");
-	
 		
 		this.recordId = recordId;
 		fieldChanged("recordId");
@@ -81,102 +68,90 @@ public class TestRecord extends com.tsc9526.monalisa.orm.model.Model<TestRecord>
 	}	 
 	
 	
-	 
-	
 	/**
-* @Column
-* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record&nbsp;<B>name:</B> record_id &nbsp;[<font color=red>KEY</font>|<font color=red>AUTO</font>|<font color=red>NOTNULL</font>]
-* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 10<br>
-* <li><B>remarks:</B> 唯一主键
-*/
-@Column(table=M.TABLE, jdbcType=4, name=M.recordId$name, key=M.recordId$key, auto=M.recordId$auto, notnull=M.recordId$notnull, length=M.recordId$length, value=M.recordId$value, remarks=M.recordId$remarks) 
-	
+	* @Column
+	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record&nbsp;<B>name:</B> record_id &nbsp;[<font color=red>KEY</font>|<font color=red>AUTO</font>|<font color=red>NOTNULL</font>]
+	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 10<br>
+	* <li><B>remarks:</B> 唯一主键
+	*/
+	@Column(table=M.TABLE, jdbcType=4, name=M.recordId$name, key=M.recordId$key, auto=M.recordId$auto, notnull=M.recordId$notnull, length=M.recordId$length, value=M.recordId$value, remarks=M.recordId$remarks)
 	private Integer recordId;	
 	
 	/**
-* @Column
-* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record&nbsp;<B>name:</B> name &nbsp;[<font color=red>NOTNULL</font>]
-* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 128 &nbsp;<B>value:</B> N0001<br>
-* <li><B>remarks:</B> 名称
-*/
-@Column(table=M.TABLE, jdbcType=12, name=M.name$name, key=M.name$key, auto=M.name$auto, notnull=M.name$notnull, length=M.name$length, value=M.name$value, remarks=M.name$remarks) 
-	
+	* @Column
+	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record&nbsp;<B>name:</B> name &nbsp;[<font color=red>NOTNULL</font>]
+	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 128 &nbsp;<B>value:</B> N0001<br>
+	* <li><B>remarks:</B> 名称
+	*/
+	@Column(table=M.TABLE, jdbcType=12, name=M.name$name, key=M.name$key, auto=M.name$auto, notnull=M.name$notnull, length=M.name$length, value=M.name$value, remarks=M.name$remarks)
 	private String name;	
 	
 	/**
-* @Column
-* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record&nbsp;<B>name:</B> title
-* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 128<br>
-* <li><B>remarks:</B> 标题
-*/
-@Column(table=M.TABLE, jdbcType=12, name=M.title$name, key=M.title$key, auto=M.title$auto, notnull=M.title$notnull, length=M.title$length, value=M.title$value, remarks=M.title$remarks) 
-	
+	* @Column
+	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record&nbsp;<B>name:</B> title
+	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 128<br>
+	* <li><B>remarks:</B> 标题
+	*/
+	@Column(table=M.TABLE, jdbcType=12, name=M.title$name, key=M.title$key, auto=M.title$auto, notnull=M.title$notnull, length=M.title$length, value=M.title$value, remarks=M.title$remarks)
 	private String title;	
 	
 	/**
-* @Column
-* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record&nbsp;<B>name:</B> ts_a
-* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 19<br>
-* <li><B>remarks:</B> 
-*/
-@Column(table=M.TABLE, jdbcType=93, name=M.tsA$name, key=M.tsA$key, auto=M.tsA$auto, notnull=M.tsA$notnull, length=M.tsA$length, value=M.tsA$value, remarks=M.tsA$remarks) 
-	
+	* @Column
+	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record&nbsp;<B>name:</B> ts_a
+	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 19<br>
+	* <li><B>remarks:</B> 
+	*/
+	@Column(table=M.TABLE, jdbcType=93, name=M.tsA$name, key=M.tsA$key, auto=M.tsA$auto, notnull=M.tsA$notnull, length=M.tsA$length, value=M.tsA$value, remarks=M.tsA$remarks)
 	private java.util.Date tsA;	
 	
 	/**
-* @Column
-* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record&nbsp;<B>name:</B> create_time &nbsp;[<font color=red>NOTNULL</font>]
-* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 19<br>
-* <li><B>remarks:</B> 
-*/
-@Column(table=M.TABLE, jdbcType=93, name=M.createTime$name, key=M.createTime$key, auto=M.createTime$auto, notnull=M.createTime$notnull, length=M.createTime$length, value=M.createTime$value, remarks=M.createTime$remarks) 
-	
+	* @Column
+	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record&nbsp;<B>name:</B> create_time &nbsp;[<font color=red>NOTNULL</font>]
+	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 19<br>
+	* <li><B>remarks:</B> 
+	*/
+	@Column(table=M.TABLE, jdbcType=93, name=M.createTime$name, key=M.createTime$key, auto=M.createTime$auto, notnull=M.createTime$notnull, length=M.createTime$length, value=M.createTime$value, remarks=M.createTime$remarks)
 	private java.util.Date createTime;	
 	
 	/**
-* @Column
-* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record&nbsp;<B>name:</B> create_by
-* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 64<br>
-* <li><B>remarks:</B> 
-*/
-@Column(table=M.TABLE, jdbcType=12, name=M.createBy$name, key=M.createBy$key, auto=M.createBy$auto, notnull=M.createBy$notnull, length=M.createBy$length, value=M.createBy$value, remarks=M.createBy$remarks) 
-	
+	* @Column
+	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record&nbsp;<B>name:</B> create_by
+	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 64<br>
+	* <li><B>remarks:</B> 
+	*/
+	@Column(table=M.TABLE, jdbcType=12, name=M.createBy$name, key=M.createBy$key, auto=M.createBy$auto, notnull=M.createBy$notnull, length=M.createBy$length, value=M.createBy$value, remarks=M.createBy$remarks)
 	private String createBy;	
 	
 	/**
-* @Column
-* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record&nbsp;<B>name:</B> update_time
-* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 19<br>
-* <li><B>remarks:</B> 
-*/
-@Column(table=M.TABLE, jdbcType=93, name=M.updateTime$name, key=M.updateTime$key, auto=M.updateTime$auto, notnull=M.updateTime$notnull, length=M.updateTime$length, value=M.updateTime$value, remarks=M.updateTime$remarks) 
-	
+	* @Column
+	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record&nbsp;<B>name:</B> update_time
+	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 19<br>
+	* <li><B>remarks:</B> 
+	*/
+	@Column(table=M.TABLE, jdbcType=93, name=M.updateTime$name, key=M.updateTime$key, auto=M.updateTime$auto, notnull=M.updateTime$notnull, length=M.updateTime$length, value=M.updateTime$value, remarks=M.updateTime$remarks)
 	private java.util.Date updateTime;	
 	
 	/**
-* @Column
-* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record&nbsp;<B>name:</B> update_by
-* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 64<br>
-* <li><B>remarks:</B> 
-*/
-@Column(table=M.TABLE, jdbcType=12, name=M.updateBy$name, key=M.updateBy$key, auto=M.updateBy$auto, notnull=M.updateBy$notnull, length=M.updateBy$length, value=M.updateBy$value, remarks=M.updateBy$remarks) 
-	
+	* @Column
+	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record&nbsp;<B>name:</B> update_by
+	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 64<br>
+	* <li><B>remarks:</B> 
+	*/
+	@Column(table=M.TABLE, jdbcType=12, name=M.updateBy$name, key=M.updateBy$key, auto=M.updateBy$auto, notnull=M.updateBy$notnull, length=M.updateBy$length, value=M.updateBy$value, remarks=M.updateBy$remarks)
 	private String updateBy;	
 	
 	
 	
 	
 	/**
-* @Column
-* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record&nbsp;<B>name:</B> record_id &nbsp;[<font color=red>KEY</font>|<font color=red>AUTO</font>|<font color=red>NOTNULL</font>]
-* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 10<br>
-* <li><B>remarks:</B> 唯一主键
-*/
-@Column(table=M.TABLE, jdbcType=4, name=M.recordId$name, key=M.recordId$key, auto=M.recordId$auto, notnull=M.recordId$notnull, length=M.recordId$length, value=M.recordId$value, remarks=M.recordId$remarks) 
+	* @Column
+	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record&nbsp;<B>name:</B> record_id &nbsp;[<font color=red>KEY</font>|<font color=red>AUTO</font>|<font color=red>NOTNULL</font>]
+	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 10<br>
+	* <li><B>remarks:</B> 唯一主键
+	*/
+	@Column(table=M.TABLE, jdbcType=4, name=M.recordId$name, key=M.recordId$key, auto=M.recordId$auto, notnull=M.recordId$notnull, length=M.recordId$length, value=M.recordId$value, remarks=M.recordId$remarks) 
 	public TestRecord setRecordId(Integer recordId){
-		
-		this.recordId = recordId;
-		  
+		this.recordId = recordId;  
 		
 		fieldChanged("recordId");
 		
@@ -185,16 +160,14 @@ public class TestRecord extends com.tsc9526.monalisa.orm.model.Model<TestRecord>
 	
 	
 	/**
-* @Column
-* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record&nbsp;<B>name:</B> name &nbsp;[<font color=red>NOTNULL</font>]
-* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 128 &nbsp;<B>value:</B> N0001<br>
-* <li><B>remarks:</B> 名称
-*/
-@Column(table=M.TABLE, jdbcType=12, name=M.name$name, key=M.name$key, auto=M.name$auto, notnull=M.name$notnull, length=M.name$length, value=M.name$value, remarks=M.name$remarks) 
+	* @Column
+	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record&nbsp;<B>name:</B> name &nbsp;[<font color=red>NOTNULL</font>]
+	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 128 &nbsp;<B>value:</B> N0001<br>
+	* <li><B>remarks:</B> 名称
+	*/
+	@Column(table=M.TABLE, jdbcType=12, name=M.name$name, key=M.name$key, auto=M.name$auto, notnull=M.name$notnull, length=M.name$length, value=M.name$value, remarks=M.name$remarks) 
 	public TestRecord setName(String name){
-		
-		this.name = name;
-		  
+		this.name = name;  
 		
 		fieldChanged("name");
 		
@@ -203,16 +176,14 @@ public class TestRecord extends com.tsc9526.monalisa.orm.model.Model<TestRecord>
 	
 	
 	/**
-* @Column
-* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record&nbsp;<B>name:</B> title
-* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 128<br>
-* <li><B>remarks:</B> 标题
-*/
-@Column(table=M.TABLE, jdbcType=12, name=M.title$name, key=M.title$key, auto=M.title$auto, notnull=M.title$notnull, length=M.title$length, value=M.title$value, remarks=M.title$remarks) 
+	* @Column
+	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record&nbsp;<B>name:</B> title
+	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 128<br>
+	* <li><B>remarks:</B> 标题
+	*/
+	@Column(table=M.TABLE, jdbcType=12, name=M.title$name, key=M.title$key, auto=M.title$auto, notnull=M.title$notnull, length=M.title$length, value=M.title$value, remarks=M.title$remarks) 
 	public TestRecord setTitle(String title){
-		
-		this.title = title;
-		  
+		this.title = title;  
 		
 		fieldChanged("title");
 		
@@ -221,16 +192,14 @@ public class TestRecord extends com.tsc9526.monalisa.orm.model.Model<TestRecord>
 	
 	
 	/**
-* @Column
-* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record&nbsp;<B>name:</B> ts_a
-* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 19<br>
-* <li><B>remarks:</B> 
-*/
-@Column(table=M.TABLE, jdbcType=93, name=M.tsA$name, key=M.tsA$key, auto=M.tsA$auto, notnull=M.tsA$notnull, length=M.tsA$length, value=M.tsA$value, remarks=M.tsA$remarks) 
+	* @Column
+	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record&nbsp;<B>name:</B> ts_a
+	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 19<br>
+	* <li><B>remarks:</B> 
+	*/
+	@Column(table=M.TABLE, jdbcType=93, name=M.tsA$name, key=M.tsA$key, auto=M.tsA$auto, notnull=M.tsA$notnull, length=M.tsA$length, value=M.tsA$value, remarks=M.tsA$remarks) 
 	public TestRecord setTsA(java.util.Date tsA){
-		
-		this.tsA = tsA;
-		  
+		this.tsA = tsA;  
 		
 		fieldChanged("tsA");
 		
@@ -239,16 +208,14 @@ public class TestRecord extends com.tsc9526.monalisa.orm.model.Model<TestRecord>
 	
 	
 	/**
-* @Column
-* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record&nbsp;<B>name:</B> create_time &nbsp;[<font color=red>NOTNULL</font>]
-* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 19<br>
-* <li><B>remarks:</B> 
-*/
-@Column(table=M.TABLE, jdbcType=93, name=M.createTime$name, key=M.createTime$key, auto=M.createTime$auto, notnull=M.createTime$notnull, length=M.createTime$length, value=M.createTime$value, remarks=M.createTime$remarks) 
+	* @Column
+	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record&nbsp;<B>name:</B> create_time &nbsp;[<font color=red>NOTNULL</font>]
+	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 19<br>
+	* <li><B>remarks:</B> 
+	*/
+	@Column(table=M.TABLE, jdbcType=93, name=M.createTime$name, key=M.createTime$key, auto=M.createTime$auto, notnull=M.createTime$notnull, length=M.createTime$length, value=M.createTime$value, remarks=M.createTime$remarks) 
 	public TestRecord setCreateTime(java.util.Date createTime){
-		
-		this.createTime = createTime;
-		  
+		this.createTime = createTime;  
 		
 		fieldChanged("createTime");
 		
@@ -257,16 +224,14 @@ public class TestRecord extends com.tsc9526.monalisa.orm.model.Model<TestRecord>
 	
 	
 	/**
-* @Column
-* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record&nbsp;<B>name:</B> create_by
-* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 64<br>
-* <li><B>remarks:</B> 
-*/
-@Column(table=M.TABLE, jdbcType=12, name=M.createBy$name, key=M.createBy$key, auto=M.createBy$auto, notnull=M.createBy$notnull, length=M.createBy$length, value=M.createBy$value, remarks=M.createBy$remarks) 
+	* @Column
+	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record&nbsp;<B>name:</B> create_by
+	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 64<br>
+	* <li><B>remarks:</B> 
+	*/
+	@Column(table=M.TABLE, jdbcType=12, name=M.createBy$name, key=M.createBy$key, auto=M.createBy$auto, notnull=M.createBy$notnull, length=M.createBy$length, value=M.createBy$value, remarks=M.createBy$remarks) 
 	public TestRecord setCreateBy(String createBy){
-		
-		this.createBy = createBy;
-		  
+		this.createBy = createBy;  
 		
 		fieldChanged("createBy");
 		
@@ -275,16 +240,14 @@ public class TestRecord extends com.tsc9526.monalisa.orm.model.Model<TestRecord>
 	
 	
 	/**
-* @Column
-* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record&nbsp;<B>name:</B> update_time
-* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 19<br>
-* <li><B>remarks:</B> 
-*/
-@Column(table=M.TABLE, jdbcType=93, name=M.updateTime$name, key=M.updateTime$key, auto=M.updateTime$auto, notnull=M.updateTime$notnull, length=M.updateTime$length, value=M.updateTime$value, remarks=M.updateTime$remarks) 
+	* @Column
+	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record&nbsp;<B>name:</B> update_time
+	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 19<br>
+	* <li><B>remarks:</B> 
+	*/
+	@Column(table=M.TABLE, jdbcType=93, name=M.updateTime$name, key=M.updateTime$key, auto=M.updateTime$auto, notnull=M.updateTime$notnull, length=M.updateTime$length, value=M.updateTime$value, remarks=M.updateTime$remarks) 
 	public TestRecord setUpdateTime(java.util.Date updateTime){
-		
-		this.updateTime = updateTime;
-		  
+		this.updateTime = updateTime;  
 		
 		fieldChanged("updateTime");
 		
@@ -293,16 +256,14 @@ public class TestRecord extends com.tsc9526.monalisa.orm.model.Model<TestRecord>
 	
 	
 	/**
-* @Column
-* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record&nbsp;<B>name:</B> update_by
-* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 64<br>
-* <li><B>remarks:</B> 
-*/
-@Column(table=M.TABLE, jdbcType=12, name=M.updateBy$name, key=M.updateBy$key, auto=M.updateBy$auto, notnull=M.updateBy$notnull, length=M.updateBy$length, value=M.updateBy$value, remarks=M.updateBy$remarks) 
+	* @Column
+	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record&nbsp;<B>name:</B> update_by
+	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 64<br>
+	* <li><B>remarks:</B> 
+	*/
+	@Column(table=M.TABLE, jdbcType=12, name=M.updateBy$name, key=M.updateBy$key, auto=M.updateBy$auto, notnull=M.updateBy$notnull, length=M.updateBy$length, value=M.updateBy$value, remarks=M.updateBy$remarks) 
 	public TestRecord setUpdateBy(String updateBy){
-		
-		this.updateBy = updateBy;
-		  
+		this.updateBy = updateBy;  
 		
 		fieldChanged("updateBy");
 		
@@ -311,29 +272,29 @@ public class TestRecord extends com.tsc9526.monalisa.orm.model.Model<TestRecord>
 	
 	
 	
-	
-	
 	/**
-* @Column
-* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record&nbsp;<B>name:</B> record_id &nbsp;[<font color=red>KEY</font>|<font color=red>AUTO</font>|<font color=red>NOTNULL</font>]
-* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 10<br>
-* <li><B>remarks:</B> 唯一主键
-*/
-@Column(table=M.TABLE, jdbcType=4, name=M.recordId$name, key=M.recordId$key, auto=M.recordId$auto, notnull=M.recordId$notnull, length=M.recordId$length, value=M.recordId$value, remarks=M.recordId$remarks) 
+	* @Column
+	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record&nbsp;<B>name:</B> record_id &nbsp;[<font color=red>KEY</font>|<font color=red>AUTO</font>|<font color=red>NOTNULL</font>]
+	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 10<br>
+	* <li><B>remarks:</B> 唯一主键
+	*/
+	@Column(table=M.TABLE, jdbcType=4, name=M.recordId$name, key=M.recordId$key, auto=M.recordId$auto, notnull=M.recordId$notnull, length=M.recordId$length, value=M.recordId$value, remarks=M.recordId$remarks) 
 	public Integer getRecordId(){
 		return this.recordId;
  
 	}
 	
 	/**
-* @Column
-* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record&nbsp;<B>name:</B> record_id &nbsp;[<font color=red>KEY</font>|<font color=red>AUTO</font>|<font color=red>NOTNULL</font>]
-* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 10<br>
-* <li><B>remarks:</B> 唯一主键
-* @param defaultValue  Return the default value if recordId is null.*/
-@Column(table=M.TABLE, jdbcType=4, name=M.recordId$name, key=M.recordId$key, auto=M.recordId$auto, notnull=M.recordId$notnull, length=M.recordId$length, value=M.recordId$value, remarks=M.recordId$remarks) 
+	* @Column
+	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record&nbsp;<B>name:</B> record_id &nbsp;[<font color=red>KEY</font>|<font color=red>AUTO</font>|<font color=red>NOTNULL</font>]
+	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 10<br>
+	* <li><B>remarks:</B> 唯一主键
+	* @param defaultValue  Return the default value if recordId is null.
+	*/
+	@Column(table=M.TABLE, jdbcType=4, name=M.recordId$name, key=M.recordId$key, auto=M.recordId$auto, notnull=M.recordId$notnull, length=M.recordId$length, value=M.recordId$value, remarks=M.recordId$remarks) 
 	public Integer getRecordId(Integer defaultValue){
 		Integer r=this.getRecordId();
+		
 		if(r==null){
 			r=defaultValue;
 		}
@@ -343,26 +304,28 @@ public class TestRecord extends com.tsc9526.monalisa.orm.model.Model<TestRecord>
 	
 	
 	/**
-* @Column
-* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record&nbsp;<B>name:</B> name &nbsp;[<font color=red>NOTNULL</font>]
-* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 128 &nbsp;<B>value:</B> N0001<br>
-* <li><B>remarks:</B> 名称
-*/
-@Column(table=M.TABLE, jdbcType=12, name=M.name$name, key=M.name$key, auto=M.name$auto, notnull=M.name$notnull, length=M.name$length, value=M.name$value, remarks=M.name$remarks) 
+	* @Column
+	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record&nbsp;<B>name:</B> name &nbsp;[<font color=red>NOTNULL</font>]
+	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 128 &nbsp;<B>value:</B> N0001<br>
+	* <li><B>remarks:</B> 名称
+	*/
+	@Column(table=M.TABLE, jdbcType=12, name=M.name$name, key=M.name$key, auto=M.name$auto, notnull=M.name$notnull, length=M.name$length, value=M.name$value, remarks=M.name$remarks) 
 	public String getName(){
 		return this.name;
  
 	}
 	
 	/**
-* @Column
-* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record&nbsp;<B>name:</B> name &nbsp;[<font color=red>NOTNULL</font>]
-* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 128 &nbsp;<B>value:</B> N0001<br>
-* <li><B>remarks:</B> 名称
-* @param defaultValue  Return the default value if name is null.*/
-@Column(table=M.TABLE, jdbcType=12, name=M.name$name, key=M.name$key, auto=M.name$auto, notnull=M.name$notnull, length=M.name$length, value=M.name$value, remarks=M.name$remarks) 
+	* @Column
+	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record&nbsp;<B>name:</B> name &nbsp;[<font color=red>NOTNULL</font>]
+	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 128 &nbsp;<B>value:</B> N0001<br>
+	* <li><B>remarks:</B> 名称
+	* @param defaultValue  Return the default value if name is null.
+	*/
+	@Column(table=M.TABLE, jdbcType=12, name=M.name$name, key=M.name$key, auto=M.name$auto, notnull=M.name$notnull, length=M.name$length, value=M.name$value, remarks=M.name$remarks) 
 	public String getName(String defaultValue){
 		String r=this.getName();
+		
 		if(r==null){
 			r=defaultValue;
 		}
@@ -372,26 +335,28 @@ public class TestRecord extends com.tsc9526.monalisa.orm.model.Model<TestRecord>
 	
 	
 	/**
-* @Column
-* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record&nbsp;<B>name:</B> title
-* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 128<br>
-* <li><B>remarks:</B> 标题
-*/
-@Column(table=M.TABLE, jdbcType=12, name=M.title$name, key=M.title$key, auto=M.title$auto, notnull=M.title$notnull, length=M.title$length, value=M.title$value, remarks=M.title$remarks) 
+	* @Column
+	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record&nbsp;<B>name:</B> title
+	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 128<br>
+	* <li><B>remarks:</B> 标题
+	*/
+	@Column(table=M.TABLE, jdbcType=12, name=M.title$name, key=M.title$key, auto=M.title$auto, notnull=M.title$notnull, length=M.title$length, value=M.title$value, remarks=M.title$remarks) 
 	public String getTitle(){
 		return this.title;
  
 	}
 	
 	/**
-* @Column
-* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record&nbsp;<B>name:</B> title
-* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 128<br>
-* <li><B>remarks:</B> 标题
-* @param defaultValue  Return the default value if title is null.*/
-@Column(table=M.TABLE, jdbcType=12, name=M.title$name, key=M.title$key, auto=M.title$auto, notnull=M.title$notnull, length=M.title$length, value=M.title$value, remarks=M.title$remarks) 
+	* @Column
+	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record&nbsp;<B>name:</B> title
+	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 128<br>
+	* <li><B>remarks:</B> 标题
+	* @param defaultValue  Return the default value if title is null.
+	*/
+	@Column(table=M.TABLE, jdbcType=12, name=M.title$name, key=M.title$key, auto=M.title$auto, notnull=M.title$notnull, length=M.title$length, value=M.title$value, remarks=M.title$remarks) 
 	public String getTitle(String defaultValue){
 		String r=this.getTitle();
+		
 		if(r==null){
 			r=defaultValue;
 		}
@@ -401,26 +366,28 @@ public class TestRecord extends com.tsc9526.monalisa.orm.model.Model<TestRecord>
 	
 	
 	/**
-* @Column
-* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record&nbsp;<B>name:</B> ts_a
-* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 19<br>
-* <li><B>remarks:</B> 
-*/
-@Column(table=M.TABLE, jdbcType=93, name=M.tsA$name, key=M.tsA$key, auto=M.tsA$auto, notnull=M.tsA$notnull, length=M.tsA$length, value=M.tsA$value, remarks=M.tsA$remarks) 
+	* @Column
+	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record&nbsp;<B>name:</B> ts_a
+	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 19<br>
+	* <li><B>remarks:</B> 
+	*/
+	@Column(table=M.TABLE, jdbcType=93, name=M.tsA$name, key=M.tsA$key, auto=M.tsA$auto, notnull=M.tsA$notnull, length=M.tsA$length, value=M.tsA$value, remarks=M.tsA$remarks) 
 	public java.util.Date getTsA(){
 		return this.tsA;
  
 	}
 	
 	/**
-* @Column
-* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record&nbsp;<B>name:</B> ts_a
-* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 19<br>
-* <li><B>remarks:</B> 
-* @param defaultValue  Return the default value if tsA is null.*/
-@Column(table=M.TABLE, jdbcType=93, name=M.tsA$name, key=M.tsA$key, auto=M.tsA$auto, notnull=M.tsA$notnull, length=M.tsA$length, value=M.tsA$value, remarks=M.tsA$remarks) 
+	* @Column
+	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record&nbsp;<B>name:</B> ts_a
+	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 19<br>
+	* <li><B>remarks:</B> 
+	* @param defaultValue  Return the default value if tsA is null.
+	*/
+	@Column(table=M.TABLE, jdbcType=93, name=M.tsA$name, key=M.tsA$key, auto=M.tsA$auto, notnull=M.tsA$notnull, length=M.tsA$length, value=M.tsA$value, remarks=M.tsA$remarks) 
 	public java.util.Date getTsA(java.util.Date defaultValue){
 		java.util.Date r=this.getTsA();
+		
 		if(r==null){
 			r=defaultValue;
 		}
@@ -430,26 +397,28 @@ public class TestRecord extends com.tsc9526.monalisa.orm.model.Model<TestRecord>
 	
 	
 	/**
-* @Column
-* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record&nbsp;<B>name:</B> create_time &nbsp;[<font color=red>NOTNULL</font>]
-* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 19<br>
-* <li><B>remarks:</B> 
-*/
-@Column(table=M.TABLE, jdbcType=93, name=M.createTime$name, key=M.createTime$key, auto=M.createTime$auto, notnull=M.createTime$notnull, length=M.createTime$length, value=M.createTime$value, remarks=M.createTime$remarks) 
+	* @Column
+	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record&nbsp;<B>name:</B> create_time &nbsp;[<font color=red>NOTNULL</font>]
+	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 19<br>
+	* <li><B>remarks:</B> 
+	*/
+	@Column(table=M.TABLE, jdbcType=93, name=M.createTime$name, key=M.createTime$key, auto=M.createTime$auto, notnull=M.createTime$notnull, length=M.createTime$length, value=M.createTime$value, remarks=M.createTime$remarks) 
 	public java.util.Date getCreateTime(){
 		return this.createTime;
  
 	}
 	
 	/**
-* @Column
-* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record&nbsp;<B>name:</B> create_time &nbsp;[<font color=red>NOTNULL</font>]
-* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 19<br>
-* <li><B>remarks:</B> 
-* @param defaultValue  Return the default value if createTime is null.*/
-@Column(table=M.TABLE, jdbcType=93, name=M.createTime$name, key=M.createTime$key, auto=M.createTime$auto, notnull=M.createTime$notnull, length=M.createTime$length, value=M.createTime$value, remarks=M.createTime$remarks) 
+	* @Column
+	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record&nbsp;<B>name:</B> create_time &nbsp;[<font color=red>NOTNULL</font>]
+	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 19<br>
+	* <li><B>remarks:</B> 
+	* @param defaultValue  Return the default value if createTime is null.
+	*/
+	@Column(table=M.TABLE, jdbcType=93, name=M.createTime$name, key=M.createTime$key, auto=M.createTime$auto, notnull=M.createTime$notnull, length=M.createTime$length, value=M.createTime$value, remarks=M.createTime$remarks) 
 	public java.util.Date getCreateTime(java.util.Date defaultValue){
 		java.util.Date r=this.getCreateTime();
+		
 		if(r==null){
 			r=defaultValue;
 		}
@@ -459,26 +428,28 @@ public class TestRecord extends com.tsc9526.monalisa.orm.model.Model<TestRecord>
 	
 	
 	/**
-* @Column
-* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record&nbsp;<B>name:</B> create_by
-* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 64<br>
-* <li><B>remarks:</B> 
-*/
-@Column(table=M.TABLE, jdbcType=12, name=M.createBy$name, key=M.createBy$key, auto=M.createBy$auto, notnull=M.createBy$notnull, length=M.createBy$length, value=M.createBy$value, remarks=M.createBy$remarks) 
+	* @Column
+	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record&nbsp;<B>name:</B> create_by
+	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 64<br>
+	* <li><B>remarks:</B> 
+	*/
+	@Column(table=M.TABLE, jdbcType=12, name=M.createBy$name, key=M.createBy$key, auto=M.createBy$auto, notnull=M.createBy$notnull, length=M.createBy$length, value=M.createBy$value, remarks=M.createBy$remarks) 
 	public String getCreateBy(){
 		return this.createBy;
  
 	}
 	
 	/**
-* @Column
-* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record&nbsp;<B>name:</B> create_by
-* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 64<br>
-* <li><B>remarks:</B> 
-* @param defaultValue  Return the default value if createBy is null.*/
-@Column(table=M.TABLE, jdbcType=12, name=M.createBy$name, key=M.createBy$key, auto=M.createBy$auto, notnull=M.createBy$notnull, length=M.createBy$length, value=M.createBy$value, remarks=M.createBy$remarks) 
+	* @Column
+	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record&nbsp;<B>name:</B> create_by
+	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 64<br>
+	* <li><B>remarks:</B> 
+	* @param defaultValue  Return the default value if createBy is null.
+	*/
+	@Column(table=M.TABLE, jdbcType=12, name=M.createBy$name, key=M.createBy$key, auto=M.createBy$auto, notnull=M.createBy$notnull, length=M.createBy$length, value=M.createBy$value, remarks=M.createBy$remarks) 
 	public String getCreateBy(String defaultValue){
 		String r=this.getCreateBy();
+		
 		if(r==null){
 			r=defaultValue;
 		}
@@ -488,26 +459,28 @@ public class TestRecord extends com.tsc9526.monalisa.orm.model.Model<TestRecord>
 	
 	
 	/**
-* @Column
-* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record&nbsp;<B>name:</B> update_time
-* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 19<br>
-* <li><B>remarks:</B> 
-*/
-@Column(table=M.TABLE, jdbcType=93, name=M.updateTime$name, key=M.updateTime$key, auto=M.updateTime$auto, notnull=M.updateTime$notnull, length=M.updateTime$length, value=M.updateTime$value, remarks=M.updateTime$remarks) 
+	* @Column
+	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record&nbsp;<B>name:</B> update_time
+	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 19<br>
+	* <li><B>remarks:</B> 
+	*/
+	@Column(table=M.TABLE, jdbcType=93, name=M.updateTime$name, key=M.updateTime$key, auto=M.updateTime$auto, notnull=M.updateTime$notnull, length=M.updateTime$length, value=M.updateTime$value, remarks=M.updateTime$remarks) 
 	public java.util.Date getUpdateTime(){
 		return this.updateTime;
  
 	}
 	
 	/**
-* @Column
-* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record&nbsp;<B>name:</B> update_time
-* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 19<br>
-* <li><B>remarks:</B> 
-* @param defaultValue  Return the default value if updateTime is null.*/
-@Column(table=M.TABLE, jdbcType=93, name=M.updateTime$name, key=M.updateTime$key, auto=M.updateTime$auto, notnull=M.updateTime$notnull, length=M.updateTime$length, value=M.updateTime$value, remarks=M.updateTime$remarks) 
+	* @Column
+	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record&nbsp;<B>name:</B> update_time
+	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 19<br>
+	* <li><B>remarks:</B> 
+	* @param defaultValue  Return the default value if updateTime is null.
+	*/
+	@Column(table=M.TABLE, jdbcType=93, name=M.updateTime$name, key=M.updateTime$key, auto=M.updateTime$auto, notnull=M.updateTime$notnull, length=M.updateTime$length, value=M.updateTime$value, remarks=M.updateTime$remarks) 
 	public java.util.Date getUpdateTime(java.util.Date defaultValue){
 		java.util.Date r=this.getUpdateTime();
+		
 		if(r==null){
 			r=defaultValue;
 		}
@@ -517,26 +490,28 @@ public class TestRecord extends com.tsc9526.monalisa.orm.model.Model<TestRecord>
 	
 	
 	/**
-* @Column
-* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record&nbsp;<B>name:</B> update_by
-* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 64<br>
-* <li><B>remarks:</B> 
-*/
-@Column(table=M.TABLE, jdbcType=12, name=M.updateBy$name, key=M.updateBy$key, auto=M.updateBy$auto, notnull=M.updateBy$notnull, length=M.updateBy$length, value=M.updateBy$value, remarks=M.updateBy$remarks) 
+	* @Column
+	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record&nbsp;<B>name:</B> update_by
+	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 64<br>
+	* <li><B>remarks:</B> 
+	*/
+	@Column(table=M.TABLE, jdbcType=12, name=M.updateBy$name, key=M.updateBy$key, auto=M.updateBy$auto, notnull=M.updateBy$notnull, length=M.updateBy$length, value=M.updateBy$value, remarks=M.updateBy$remarks) 
 	public String getUpdateBy(){
 		return this.updateBy;
  
 	}
 	
 	/**
-* @Column
-* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record&nbsp;<B>name:</B> update_by
-* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 64<br>
-* <li><B>remarks:</B> 
-* @param defaultValue  Return the default value if updateBy is null.*/
-@Column(table=M.TABLE, jdbcType=12, name=M.updateBy$name, key=M.updateBy$key, auto=M.updateBy$auto, notnull=M.updateBy$notnull, length=M.updateBy$length, value=M.updateBy$value, remarks=M.updateBy$remarks) 
+	* @Column
+	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record&nbsp;<B>name:</B> update_by
+	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 64<br>
+	* <li><B>remarks:</B> 
+	* @param defaultValue  Return the default value if updateBy is null.
+	*/
+	@Column(table=M.TABLE, jdbcType=12, name=M.updateBy$name, key=M.updateBy$key, auto=M.updateBy$auto, notnull=M.updateBy$notnull, length=M.updateBy$length, value=M.updateBy$value, remarks=M.updateBy$remarks) 
 	public String getUpdateBy(String defaultValue){
 		String r=this.getUpdateBy();
+		
 		if(r==null){
 			r=defaultValue;
 		}
@@ -559,20 +534,12 @@ public class TestRecord extends com.tsc9526.monalisa.orm.model.Model<TestRecord>
 		 
 		
 		public int deleteByPrimaryKey(Integer recordId){
-			
-			if(recordId ==null ) return 0;			
-			
-						 			 
+			if(recordId ==null ) return 0;	
 			
 			this.model.recordId = recordId;
 			
-				 			 
 			return this.model.delete();				
-		}				 
-		
-		
-		 
-		
+		}
 		
 	}
 	
@@ -587,19 +554,17 @@ public class TestRecord extends com.tsc9526.monalisa.orm.model.Model<TestRecord>
 			super(x);
 		}					 
 		
-		
 		/**
 		* find model by primary keys
 		*
 		* @return the model associated with the primary keys,  null if not found.
 		*/
 		public TestRecord selectByPrimaryKey(Integer recordId){
+			if(recordId ==null ) return null;
 			
-			if(recordId ==null ) return null;			
-			
-						
 			
 			this.model.recordId = recordId;
+			
 			
 			this.model.load();
 				 			 	 
@@ -613,8 +578,6 @@ public class TestRecord extends com.tsc9526.monalisa.orm.model.Model<TestRecord>
 		
 		
 		
-		
-			
 				
 		/**
 		* List result to Map, The map key is primary-key:  recordId
@@ -654,7 +617,6 @@ public class TestRecord extends com.tsc9526.monalisa.orm.model.Model<TestRecord>
 			}
 			
 			
-			
 					
 			/**
 			* List result to Map, The map key is primary-key:  recordId
@@ -680,7 +642,6 @@ public class TestRecord extends com.tsc9526.monalisa.orm.model.Model<TestRecord>
 			
 			return x;
 		}
-		
 		
 		/**
 		* List result to Map, The map key is primary-key: recordId 
@@ -736,111 +697,79 @@ public class TestRecord extends com.tsc9526.monalisa.orm.model.Model<TestRecord>
 		
 		
 		/**
-* @Column
-* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record&nbsp;<B>name:</B> record_id &nbsp;[<font color=red>KEY</font>|<font color=red>AUTO</font>|<font color=red>NOTNULL</font>]
-* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 10<br>
-* <li><B>remarks:</B> 唯一主键
-*/
-@Column(table=M.TABLE, jdbcType=4, name=M.recordId$name, key=M.recordId$key, auto=M.recordId$auto, notnull=M.recordId$notnull, length=M.recordId$length, value=M.recordId$value, remarks=M.recordId$remarks)
-		
+		* @Column
+		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record&nbsp;<B>name:</B> record_id &nbsp;[<font color=red>KEY</font>|<font color=red>AUTO</font>|<font color=red>NOTNULL</font>]
+		* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 10<br>
+		* <li><B>remarks:</B> 唯一主键
+		*/
+		@Column(table=M.TABLE, jdbcType=4, name=M.recordId$name, key=M.recordId$key, auto=M.recordId$auto, notnull=M.recordId$notnull, length=M.recordId$length, value=M.recordId$value, remarks=M.recordId$remarks)
 		public com.tsc9526.monalisa.orm.criteria.Field.FieldInteger<Criteria> recordId = new com.tsc9526.monalisa.orm.criteria.Field.FieldInteger<Criteria>("record_id", this);
-				
-		
+			
 		/**
-* @Column
-* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record&nbsp;<B>name:</B> name &nbsp;[<font color=red>NOTNULL</font>]
-* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 128 &nbsp;<B>value:</B> N0001<br>
-* <li><B>remarks:</B> 名称
-*/
-@Column(table=M.TABLE, jdbcType=12, name=M.name$name, key=M.name$key, auto=M.name$auto, notnull=M.name$notnull, length=M.name$length, value=M.name$value, remarks=M.name$remarks)
-		
+		* @Column
+		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record&nbsp;<B>name:</B> name &nbsp;[<font color=red>NOTNULL</font>]
+		* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 128 &nbsp;<B>value:</B> N0001<br>
+		* <li><B>remarks:</B> 名称
+		*/
+		@Column(table=M.TABLE, jdbcType=12, name=M.name$name, key=M.name$key, auto=M.name$auto, notnull=M.name$notnull, length=M.name$length, value=M.name$value, remarks=M.name$remarks)
 		public com.tsc9526.monalisa.orm.criteria.Field.FieldString<Criteria> name = new com.tsc9526.monalisa.orm.criteria.Field.FieldString<Criteria>("name", this);
-				
-		
+			
 		/**
-* @Column
-* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record&nbsp;<B>name:</B> title
-* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 128<br>
-* <li><B>remarks:</B> 标题
-*/
-@Column(table=M.TABLE, jdbcType=12, name=M.title$name, key=M.title$key, auto=M.title$auto, notnull=M.title$notnull, length=M.title$length, value=M.title$value, remarks=M.title$remarks)
-		
+		* @Column
+		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record&nbsp;<B>name:</B> title
+		* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 128<br>
+		* <li><B>remarks:</B> 标题
+		*/
+		@Column(table=M.TABLE, jdbcType=12, name=M.title$name, key=M.title$key, auto=M.title$auto, notnull=M.title$notnull, length=M.title$length, value=M.title$value, remarks=M.title$remarks)
 		public com.tsc9526.monalisa.orm.criteria.Field.FieldString<Criteria> title = new com.tsc9526.monalisa.orm.criteria.Field.FieldString<Criteria>("title", this);
-				
-		
+			
 		/**
-* @Column
-* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record&nbsp;<B>name:</B> ts_a
-* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 19<br>
-* <li><B>remarks:</B> 
-*/
-@Column(table=M.TABLE, jdbcType=93, name=M.tsA$name, key=M.tsA$key, auto=M.tsA$auto, notnull=M.tsA$notnull, length=M.tsA$length, value=M.tsA$value, remarks=M.tsA$remarks)
-		
+		* @Column
+		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record&nbsp;<B>name:</B> ts_a
+		* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 19<br>
+		* <li><B>remarks:</B> 
+		*/
+		@Column(table=M.TABLE, jdbcType=93, name=M.tsA$name, key=M.tsA$key, auto=M.tsA$auto, notnull=M.tsA$notnull, length=M.tsA$length, value=M.tsA$value, remarks=M.tsA$remarks)
 		public com.tsc9526.monalisa.orm.criteria.Field<java.util.Date,Criteria> tsA = new com.tsc9526.monalisa.orm.criteria.Field<java.util.Date,Criteria>("ts_a", this, 93);		 
-				
-		
+			
 		/**
-* @Column
-* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record&nbsp;<B>name:</B> create_time &nbsp;[<font color=red>NOTNULL</font>]
-* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 19<br>
-* <li><B>remarks:</B> 
-*/
-@Column(table=M.TABLE, jdbcType=93, name=M.createTime$name, key=M.createTime$key, auto=M.createTime$auto, notnull=M.createTime$notnull, length=M.createTime$length, value=M.createTime$value, remarks=M.createTime$remarks)
-		
+		* @Column
+		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record&nbsp;<B>name:</B> create_time &nbsp;[<font color=red>NOTNULL</font>]
+		* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 19<br>
+		* <li><B>remarks:</B> 
+		*/
+		@Column(table=M.TABLE, jdbcType=93, name=M.createTime$name, key=M.createTime$key, auto=M.createTime$auto, notnull=M.createTime$notnull, length=M.createTime$length, value=M.createTime$value, remarks=M.createTime$remarks)
 		public com.tsc9526.monalisa.orm.criteria.Field<java.util.Date,Criteria> createTime = new com.tsc9526.monalisa.orm.criteria.Field<java.util.Date,Criteria>("create_time", this, 93);		 
-				
-		
+			
 		/**
-* @Column
-* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record&nbsp;<B>name:</B> create_by
-* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 64<br>
-* <li><B>remarks:</B> 
-*/
-@Column(table=M.TABLE, jdbcType=12, name=M.createBy$name, key=M.createBy$key, auto=M.createBy$auto, notnull=M.createBy$notnull, length=M.createBy$length, value=M.createBy$value, remarks=M.createBy$remarks)
-		
+		* @Column
+		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record&nbsp;<B>name:</B> create_by
+		* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 64<br>
+		* <li><B>remarks:</B> 
+		*/
+		@Column(table=M.TABLE, jdbcType=12, name=M.createBy$name, key=M.createBy$key, auto=M.createBy$auto, notnull=M.createBy$notnull, length=M.createBy$length, value=M.createBy$value, remarks=M.createBy$remarks)
 		public com.tsc9526.monalisa.orm.criteria.Field.FieldString<Criteria> createBy = new com.tsc9526.monalisa.orm.criteria.Field.FieldString<Criteria>("create_by", this);
-				
-		
+			
 		/**
-* @Column
-* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record&nbsp;<B>name:</B> update_time
-* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 19<br>
-* <li><B>remarks:</B> 
-*/
-@Column(table=M.TABLE, jdbcType=93, name=M.updateTime$name, key=M.updateTime$key, auto=M.updateTime$auto, notnull=M.updateTime$notnull, length=M.updateTime$length, value=M.updateTime$value, remarks=M.updateTime$remarks)
-		
+		* @Column
+		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record&nbsp;<B>name:</B> update_time
+		* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 19<br>
+		* <li><B>remarks:</B> 
+		*/
+		@Column(table=M.TABLE, jdbcType=93, name=M.updateTime$name, key=M.updateTime$key, auto=M.updateTime$auto, notnull=M.updateTime$notnull, length=M.updateTime$length, value=M.updateTime$value, remarks=M.updateTime$remarks)
 		public com.tsc9526.monalisa.orm.criteria.Field<java.util.Date,Criteria> updateTime = new com.tsc9526.monalisa.orm.criteria.Field<java.util.Date,Criteria>("update_time", this, 93);		 
-				
-		
+			
 		/**
-* @Column
-* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record&nbsp;<B>name:</B> update_by
-* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 64<br>
-* <li><B>remarks:</B> 
-*/
-@Column(table=M.TABLE, jdbcType=12, name=M.updateBy$name, key=M.updateBy$key, auto=M.updateBy$auto, notnull=M.updateBy$notnull, length=M.updateBy$length, value=M.updateBy$value, remarks=M.updateBy$remarks)
-		
+		* @Column
+		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record&nbsp;<B>name:</B> update_by
+		* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 64<br>
+		* <li><B>remarks:</B> 
+		*/
+		@Column(table=M.TABLE, jdbcType=12, name=M.updateBy$name, key=M.updateBy$key, auto=M.updateBy$auto, notnull=M.updateBy$notnull, length=M.updateBy$length, value=M.updateBy$value, remarks=M.updateBy$remarks)
 		public com.tsc9526.monalisa.orm.criteria.Field.FieldString<Criteria> updateBy = new com.tsc9526.monalisa.orm.criteria.Field.FieldString<Criteria>("update_by", this);
-				
-		
+			
 	}
 	 
-	
-		 
-	
-		 
-	
-		 
-	
-		 
-	
-		 
-	
-		 
-	
-		 
-	
-		 
 	
 	 
 	public static class M{
@@ -848,12 +777,12 @@ public class TestRecord extends com.tsc9526.monalisa.orm.model.Model<TestRecord>
 		
 		
 		/**
-* @Column
-* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record&nbsp;<B>name:</B> record_id &nbsp;[<font color=red>KEY</font>|<font color=red>AUTO</font>|<font color=red>NOTNULL</font>]
-* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 10<br>
-* <li><B>remarks:</B> 唯一主键
-*/
-@Column(table=M.TABLE, jdbcType=4, name=M.recordId$name, key=M.recordId$key, auto=M.recordId$auto, notnull=M.recordId$notnull, length=M.recordId$length, value=M.recordId$value, remarks=M.recordId$remarks)
+		* @Column
+		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record&nbsp;<B>name:</B> record_id &nbsp;[<font color=red>KEY</font>|<font color=red>AUTO</font>|<font color=red>NOTNULL</font>]
+		* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 10<br>
+		* <li><B>remarks:</B> 唯一主键
+		*/
+		@Column(table=M.TABLE, jdbcType=4, name=M.recordId$name, key=M.recordId$key, auto=M.recordId$auto, notnull=M.recordId$notnull, length=M.recordId$length, value=M.recordId$value, remarks=M.recordId$remarks)
 		public final static String  recordId         = "record_id" ;
 		
 		public final static String  recordId$name    = "record_id" ;
@@ -866,12 +795,12 @@ public class TestRecord extends com.tsc9526.monalisa.orm.model.Model<TestRecord>
 		
 		
 		/**
-* @Column
-* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record&nbsp;<B>name:</B> name &nbsp;[<font color=red>NOTNULL</font>]
-* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 128 &nbsp;<B>value:</B> N0001<br>
-* <li><B>remarks:</B> 名称
-*/
-@Column(table=M.TABLE, jdbcType=12, name=M.name$name, key=M.name$key, auto=M.name$auto, notnull=M.name$notnull, length=M.name$length, value=M.name$value, remarks=M.name$remarks)
+		* @Column
+		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record&nbsp;<B>name:</B> name &nbsp;[<font color=red>NOTNULL</font>]
+		* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 128 &nbsp;<B>value:</B> N0001<br>
+		* <li><B>remarks:</B> 名称
+		*/
+		@Column(table=M.TABLE, jdbcType=12, name=M.name$name, key=M.name$key, auto=M.name$auto, notnull=M.name$notnull, length=M.name$length, value=M.name$value, remarks=M.name$remarks)
 		public final static String  name         = "name" ;
 		
 		public final static String  name$name    = "name" ;
@@ -884,12 +813,12 @@ public class TestRecord extends com.tsc9526.monalisa.orm.model.Model<TestRecord>
 		
 		
 		/**
-* @Column
-* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record&nbsp;<B>name:</B> title
-* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 128<br>
-* <li><B>remarks:</B> 标题
-*/
-@Column(table=M.TABLE, jdbcType=12, name=M.title$name, key=M.title$key, auto=M.title$auto, notnull=M.title$notnull, length=M.title$length, value=M.title$value, remarks=M.title$remarks)
+		* @Column
+		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record&nbsp;<B>name:</B> title
+		* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 128<br>
+		* <li><B>remarks:</B> 标题
+		*/
+		@Column(table=M.TABLE, jdbcType=12, name=M.title$name, key=M.title$key, auto=M.title$auto, notnull=M.title$notnull, length=M.title$length, value=M.title$value, remarks=M.title$remarks)
 		public final static String  title         = "title" ;
 		
 		public final static String  title$name    = "title" ;
@@ -902,12 +831,12 @@ public class TestRecord extends com.tsc9526.monalisa.orm.model.Model<TestRecord>
 		
 		
 		/**
-* @Column
-* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record&nbsp;<B>name:</B> ts_a
-* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 19<br>
-* <li><B>remarks:</B> 
-*/
-@Column(table=M.TABLE, jdbcType=93, name=M.tsA$name, key=M.tsA$key, auto=M.tsA$auto, notnull=M.tsA$notnull, length=M.tsA$length, value=M.tsA$value, remarks=M.tsA$remarks)
+		* @Column
+		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record&nbsp;<B>name:</B> ts_a
+		* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 19<br>
+		* <li><B>remarks:</B> 
+		*/
+		@Column(table=M.TABLE, jdbcType=93, name=M.tsA$name, key=M.tsA$key, auto=M.tsA$auto, notnull=M.tsA$notnull, length=M.tsA$length, value=M.tsA$value, remarks=M.tsA$remarks)
 		public final static String  tsA         = "ts_a" ;
 		
 		public final static String  tsA$name    = "ts_a" ;
@@ -920,12 +849,12 @@ public class TestRecord extends com.tsc9526.monalisa.orm.model.Model<TestRecord>
 		
 		
 		/**
-* @Column
-* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record&nbsp;<B>name:</B> create_time &nbsp;[<font color=red>NOTNULL</font>]
-* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 19<br>
-* <li><B>remarks:</B> 
-*/
-@Column(table=M.TABLE, jdbcType=93, name=M.createTime$name, key=M.createTime$key, auto=M.createTime$auto, notnull=M.createTime$notnull, length=M.createTime$length, value=M.createTime$value, remarks=M.createTime$remarks)
+		* @Column
+		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record&nbsp;<B>name:</B> create_time &nbsp;[<font color=red>NOTNULL</font>]
+		* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 19<br>
+		* <li><B>remarks:</B> 
+		*/
+		@Column(table=M.TABLE, jdbcType=93, name=M.createTime$name, key=M.createTime$key, auto=M.createTime$auto, notnull=M.createTime$notnull, length=M.createTime$length, value=M.createTime$value, remarks=M.createTime$remarks)
 		public final static String  createTime         = "create_time" ;
 		
 		public final static String  createTime$name    = "create_time" ;
@@ -938,12 +867,12 @@ public class TestRecord extends com.tsc9526.monalisa.orm.model.Model<TestRecord>
 		
 		
 		/**
-* @Column
-* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record&nbsp;<B>name:</B> create_by
-* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 64<br>
-* <li><B>remarks:</B> 
-*/
-@Column(table=M.TABLE, jdbcType=12, name=M.createBy$name, key=M.createBy$key, auto=M.createBy$auto, notnull=M.createBy$notnull, length=M.createBy$length, value=M.createBy$value, remarks=M.createBy$remarks)
+		* @Column
+		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record&nbsp;<B>name:</B> create_by
+		* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 64<br>
+		* <li><B>remarks:</B> 
+		*/
+		@Column(table=M.TABLE, jdbcType=12, name=M.createBy$name, key=M.createBy$key, auto=M.createBy$auto, notnull=M.createBy$notnull, length=M.createBy$length, value=M.createBy$value, remarks=M.createBy$remarks)
 		public final static String  createBy         = "create_by" ;
 		
 		public final static String  createBy$name    = "create_by" ;
@@ -956,12 +885,12 @@ public class TestRecord extends com.tsc9526.monalisa.orm.model.Model<TestRecord>
 		
 		
 		/**
-* @Column
-* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record&nbsp;<B>name:</B> update_time
-* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 19<br>
-* <li><B>remarks:</B> 
-*/
-@Column(table=M.TABLE, jdbcType=93, name=M.updateTime$name, key=M.updateTime$key, auto=M.updateTime$auto, notnull=M.updateTime$notnull, length=M.updateTime$length, value=M.updateTime$value, remarks=M.updateTime$remarks)
+		* @Column
+		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record&nbsp;<B>name:</B> update_time
+		* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 19<br>
+		* <li><B>remarks:</B> 
+		*/
+		@Column(table=M.TABLE, jdbcType=93, name=M.updateTime$name, key=M.updateTime$key, auto=M.updateTime$auto, notnull=M.updateTime$notnull, length=M.updateTime$length, value=M.updateTime$value, remarks=M.updateTime$remarks)
 		public final static String  updateTime         = "update_time" ;
 		
 		public final static String  updateTime$name    = "update_time" ;
@@ -974,12 +903,12 @@ public class TestRecord extends com.tsc9526.monalisa.orm.model.Model<TestRecord>
 		
 		
 		/**
-* @Column
-* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record&nbsp;<B>name:</B> update_by
-* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 64<br>
-* <li><B>remarks:</B> 
-*/
-@Column(table=M.TABLE, jdbcType=12, name=M.updateBy$name, key=M.updateBy$key, auto=M.updateBy$auto, notnull=M.updateBy$notnull, length=M.updateBy$length, value=M.updateBy$value, remarks=M.updateBy$remarks)
+		* @Column
+		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record&nbsp;<B>name:</B> update_by
+		* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 64<br>
+		* <li><B>remarks:</B> 
+		*/
+		@Column(table=M.TABLE, jdbcType=12, name=M.updateBy$name, key=M.updateBy$key, auto=M.updateBy$auto, notnull=M.updateBy$notnull, length=M.updateBy$length, value=M.updateBy$value, remarks=M.updateBy$remarks)
 		public final static String  updateBy         = "update_by" ;
 		
 		public final static String  updateBy$name    = "update_by" ;

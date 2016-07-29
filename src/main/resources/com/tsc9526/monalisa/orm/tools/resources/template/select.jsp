@@ -1,20 +1,18 @@
-<%@page import="com.tsc9526.monalisa.orm.meta.MetaColumn"%>
-<%@page import="java.util.Set"%>
-<%@page import="com.tsc9526.monalisa.orm.meta.MetaTable"%>
-<%
+<%@page import="com.tsc9526.monalisa.orm.meta.MetaTable"
+%><%@page import="com.tsc9526.monalisa.orm.meta.MetaColumn"
+%><%@page import="java.util.Set"%><%
 MetaTable    table =(MetaTable)request.getAttribute("table");
 Set<?>     imports =(Set<?>)request.getAttribute("imports");
 String   fingerprint=(String)request.getAttribute("fingerprint");
 String   see        =(String)request.getAttribute("see");
-%>
-package <%=table.getJavaPackage()%>;
+%>package <%=table.getJavaPackage()%>;
  
 <%for(Object i:imports){ %>
-import <%=i%>;
-<%} %>
+import <%=i%>;<%} %>
  
 /**
- * 
+ * Auto generated code by monalisa 1.6.1
+ *
  * @see <%=see%>
  */
 public class <%=table.getJavaName()%> implements java.io.Serializable{
@@ -23,14 +21,14 @@ public class <%=table.getJavaName()%> implements java.io.Serializable{
 	  
 	 
 	<%for(MetaColumn f:table.getColumns()){ %>
-	<%=getComments(table, f, "	") %>
+	<%=getComments(table, f, "	","\t") %>
 	private <%=f.getJavaType()%> <%=f.getJavaName()%>;	
 	
 	<%}%>
 	
 	
 	<%for(MetaColumn f:table.getColumns()){ %>
-	<%=getComments(table, f, "	") %>
+	<%=getComments(table, f, "	","\t") %>
 	public <%=table.getJavaName()%> <%=f.getJavaNameSet()%>(<%=f.getJavaType()%> <%=f.getJavaName()%>){
 		this.<%=f.getJavaName()%> = <%=f.getJavaName()%>;
 		return this;
@@ -40,12 +38,12 @@ public class <%=table.getJavaName()%> implements java.io.Serializable{
 	
 	 
 	<%for(MetaColumn f:table.getColumns()){ %>
-	<%=getComments(table, f, "	") %>
+	<%=getComments(table, f, "	","\t") %>
 	public <%=f.getJavaType()%> <%=f.getJavaNameGet()%>(){
 		return this.<%=f.getJavaName()%>;		
 	}
 	
-	<%=getComments(table, f, "@param defaultValue  Return the default value if "+f.getJavaName()+" is null.") %>
+	<%=getComments(table, f, "@param defaultValue  Return the default value if "+f.getJavaName()+" is null.","\t") %>
 	public <%=f.getJavaType()%> <%=f.getJavaNameGet()%>(<%=f.getJavaType()%> defaultValue){
 		<%=f.getJavaType()%> r=this.<%=f.getJavaNameGet()%>();
 		if(r==null){
@@ -71,12 +69,12 @@ public class <%=table.getJavaName()%> implements java.io.Serializable{
 	}
 
 	
-	String getComments(MetaTable table,MetaColumn c,String params){
+	String getComments(MetaTable table,MetaColumn c,String params,String leftPadding){
 		String cname=c.getName();
 		
 		if(cname!=null && cname.length()>0 && c.getTable()!=null){	
-			String r="/**\r\n";
-			r+="* @Column\r\n"; 
+			String r="/**\r\n"+leftPadding;
+			r+="* @Column\r\n"+leftPadding; 
 			r+="* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> "+c.getTable().getName()+"&nbsp;<B>name:</B> "+cname;
 			
 			if(c.isKey() || c.isAuto() || c.isNotnull() || c.isEnum()){
@@ -100,7 +98,7 @@ public class <%=table.getJavaName()%> implements java.io.Serializable{
 				}
 				r+="]";
 			}
-			r+="\r\n";
+			r+="\r\n"+leftPadding;
 			
 			if(c.getLength()>0 || c.getValue()!=null){
 				r+="* <li>&nbsp;&nbsp;&nbsp;";
@@ -111,11 +109,11 @@ public class <%=table.getJavaName()%> implements java.io.Serializable{
 				if(c.getValue()!=null){
 					r+=" &nbsp;<B>value:</B> "+toJavaString(c.getValue());
 				}
-				r+="<br>\r\n";
+				r+="<br>\r\n"+leftPadding;
 			}
 			
 			if(c.getRemarks()!=null){
-				r+="* <li><B>remarks:</B> "+toComments(c.getRemarks())+"\r\n";
+				r+="* <li><B>remarks:</B> "+toComments(c.getRemarks())+"\r\n"+leftPadding;
 			}
 			 
 			if(params==null){
@@ -126,7 +124,7 @@ public class <%=table.getJavaName()%> implements java.io.Serializable{
 				r+="* "+params;
 			}
 			
-		 	r+="*/\r\n";	
+		 	r+="*/\r\n"+leftPadding;	
 		 
 		 	String f=c.getTable().getJavaName()+".M.";
 		 	if(c.getTable().getJavaPackage().equals(table.getJavaPackage())){
