@@ -30,8 +30,15 @@ import com.tsc9526.monalisa.orm.datatable.DataMap;
 
 /**
  * 
- * Transaction execute 
- * 
+ * 以事务执行数据库操作<br><br>
+ *  
+ * <code>
+ * Tx.execute(new Atom(){ <br>
+ * &nbsp;&nbsp;public int execute()throws Throwable{ <br>
+ * &nbsp;&nbsp;&nbsp;&nbsp;... 数据库操作代码 <br>
+ * &nbsp;&nbsp;}<br>
+ * );<br>
+ * </code> 
  * @author zzg.zhou(11039850@qq.com)
  */
 public class Tx {
