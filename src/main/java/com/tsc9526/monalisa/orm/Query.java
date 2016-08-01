@@ -146,7 +146,7 @@ public class Query {
 		 return getDialect().in(this, values);
 	}
 	  
-	public Query add(Query q){	
+	public Query addQuery(Query q){	
 		return add(q.getSql(),q.getParameters());
 	}
 	

@@ -217,7 +217,7 @@ public abstract class Dialect{
 			throw new RuntimeException("Model: "+model.getClass()+" load fail, no primary key.");
 		}
 		
-		query.add(w);
+		query.addQuery(w);
 		
 		return query;		  
 	}
