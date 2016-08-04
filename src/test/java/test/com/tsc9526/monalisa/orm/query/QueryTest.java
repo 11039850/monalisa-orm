@@ -101,4 +101,37 @@ public class QueryTest {
 		Assert.assertEquals(q.getExecutableSQL(),"SELECT * FROM T1 WHERE f1 NOT IN('x1', 'x2', 'x3')");
 	}
 	
+	public void testNotIn06(){
+		Query q=MysqlDB.DB.createQuery();
+		 
+		String[] xs=new String[]{"x1","x2"};
+		
+		q.add("SELECT * FROM T1 WHERE f1").notin(xs,"x3");
+		
+		Assert.assertEquals(q.getSql(),"SELECT * FROM T1 WHERE f1 NOT IN(?, ?, ?)");
+		Assert.assertEquals(q.getExecutableSQL(),"SELECT * FROM T1 WHERE f1 NOT IN('x1', 'x2', 'x3')");
+	}
+	
+	
+	public void testNotIn07(){
+		Query q=MysqlDB.DB.createQuery();
+		 
+		String[] xs=new String[]{"x2"};
+		
+		q.add("SELECT * FROM T1 WHERE f1").notin("x1",xs,"x3");
+		
+		Assert.assertEquals(q.getSql(),"SELECT * FROM T1 WHERE f1 NOT IN(?, ?, ?)");
+		Assert.assertEquals(q.getExecutableSQL(),"SELECT * FROM T1 WHERE f1 NOT IN('x1', 'x2', 'x3')");
+	}
+	
+	public void testNotIn08(){
+		Query q=MysqlDB.DB.createQuery();
+		 
+		String[] xs=new String[]{"x2","x3"};
+		
+		q.add("SELECT * FROM T1 WHERE f1").notin("x1",xs,"x4");
+		
+		Assert.assertEquals(q.getSql(),"SELECT * FROM T1 WHERE f1 NOT IN(?, ?, ?, ?)");
+		Assert.assertEquals(q.getExecutableSQL(),"SELECT * FROM T1 WHERE f1 NOT IN('x1', 'x2', 'x3', 'x4')");
+	}
 }

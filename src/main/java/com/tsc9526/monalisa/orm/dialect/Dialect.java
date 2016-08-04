@@ -46,6 +46,8 @@ import com.tsc9526.monalisa.orm.tools.logger.Logger;
 @SuppressWarnings({"rawtypes"})
 public abstract class Dialect{
 	static Logger logger=Logger.getLogger(Dialect.class.getName());
+	
+	public static Dialect SQLDialect=new SQLDialect();
 		
 	protected static Map<String, CreateTable> hTables=new ConcurrentHashMap<String, CreateTable>();
 	
@@ -316,27 +318,30 @@ public abstract class Dialect{
 		}
 		
 		query.add(keyInOrNotin).add("(");
+		  
+		addQueryVars(query,values);
 		
-		int i=0;
-		for(Object value:values){	
-			if(value instanceof Collection<?>){
-				for(Object v:(Collection<?>)value){
-					query.add(i>0?", ?":"?",v); 
-					i++;
-				}
-			}else if(value.getClass().isArray()){
-				for(Object v:(Object[])value){
-					query.add(i>0?", ?":"?",v); 
-					i++;
-				}
-			}else{
-				query.add(i>0?", ?":"?",value);
-				i++;
-			}
-		}
 		query.add(")");
 		
 		return query;
+	}
+	
+	protected void addQueryVars(Query query,Object value){
+		if(value instanceof Collection<?>){
+			for(Object v:(Collection<?>)value){
+				addQueryVars(query,v);
+			}
+		}else if(value.getClass().isArray()){
+			for(Object v:(Object[])value){
+				addQueryVars(query,v);
+			}
+		}else{
+			if(query.getSql().endsWith("?")){
+				query.add(", ?",value); 
+			}else{
+				query.add("?",value);
+			}
+		}
 	}
 	
 	protected Query findWhereKey(Model model) {

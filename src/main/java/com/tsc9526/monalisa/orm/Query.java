@@ -138,12 +138,16 @@ public class Query {
 		this.tag=tag;
 	}
 	 
-	public Query notin(Object... values){
-		return getDialect().notin(this, values);
+	public Query notin(Object value,Object... otherValues){
+		Dialect dialect=db==null?Dialect.SQLDialect:getDialect();
+		
+		return dialect.notin(this, new Object[]{value,otherValues});
 	}
 	 
-	public Query in(Object... values){
-		 return getDialect().in(this, values);
+	public Query in(Object value,Object... otherValues){
+		Dialect dialect=db==null?Dialect.SQLDialect:getDialect();
+		 
+		return dialect.in(this, new Object[]{value,otherValues});
 	}
 	  
 	public Query addQuery(Query q){	
