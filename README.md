@@ -1,13 +1,13 @@
 # monalisa-orm
 
-      "And God said, Let there be light: and there was light."
+> And God said, Let there be light: and there was light.
       
 # Features
 
 * Using the database takes only 1 line of code
-* Support dynamic SQL code auto to result class
-* Support written multiple-line syntax in the Java code
-* Dynamic load java sql code
+* Support dynamic SQL code auto to DTO class
+* Support written multiple-line syntax in the java code
+* Dynamic load java code
 * Auto increase the field: final static long $VERSION$=1L;
 
 [Example Project](https://github.com/11039850/monalisa-example)
