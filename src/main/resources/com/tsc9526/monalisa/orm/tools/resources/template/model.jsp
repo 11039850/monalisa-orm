@@ -1,4 +1,5 @@
-<%@page import="com.tsc9526.monalisa.orm.meta.MetaIndex"
+<%@page import="com.tsc9526.monalisa.orm.tools.helper.Version"
+%><%@page import="com.tsc9526.monalisa.orm.meta.MetaIndex"
 %><%@page import="com.tsc9526.monalisa.orm.meta.MetaColumn"
 %><%@page import="com.tsc9526.monalisa.orm.meta.MetaTable"
 %><%@page import="java.util.Set"%><%
@@ -13,7 +14,7 @@ import <%=i%>; <%} %>
  
 /**
  *
- * Auto generated code by monalisa 1.6.1
+ * Auto generated code by monalisa <%=Version.getVersion()%>
  *
  */
 @Table(
@@ -414,24 +415,38 @@ public class <%=table.getJavaName()%> extends <%=modelClass%><<%=table.getJavaNa
 	%>		
 	public static enum <%=em%>
 	<%}%><%}%>
-	 
-	public static class M{
-		public final static String TABLE ="<%=table.getName()%>" ;
-		
+	
+	/**
+	* Easy to import the table fields statically. <br><br>
+	* 
+	* import static <%=table.getJavaPackage()%>.<%=table.getJavaName()%>.<%=table.getJavaName().toUpperCase()%>;
+	*/
+	public static class <%=table.getJavaName().toUpperCase()%>{
 		<%for(MetaColumn f:table.getColumns()){ %>
 		<%=getComments(table, f, "		","\t\t")%>
-		public final static String  <%=f.getJavaName()%>         = "<%=f.getName()%>" ;
-		
-		public final static String  <%=f.getJavaName()%>$name    = "<%=f.getName()%>" ;
+		public final static String  <%=f.getJavaName()%>         = "<%=f.getName()%>";
+		<%}%>
+	}
+	
+	
+	/**
+	* Meta info about table: <%=table.getName()%>
+	*/ 
+	public static class M extends <%=table.getJavaName().toUpperCase()%>{
+		public final static String TABLE ="<%=table.getName()%>";
+	 	
+	 	<%for(MetaColumn f:table.getColumns()){ %>
+		public final static String  <%=f.getJavaName()%>$name    = "<%=f.getName()%>";
 		public final static boolean <%=f.getJavaName()%>$key     = <%=f.isKey()?"true":"false"%>;
 		public final static int     <%=f.getJavaName()%>$length  = <%=f.getLength()%>;
-		public final static String  <%=f.getJavaName()%>$value   = "<%=f.getValue()==null?"NULL":toJavaString(f.getValue())%>" ;
-		public final static String  <%=f.getJavaName()%>$remarks = "<%=toJavaString(f.getRemarks())%>" ;
-		public final static boolean <%=f.getJavaName()%>$auto    = <%=f.isAuto()?"true":"false"%> ;
+		public final static String  <%=f.getJavaName()%>$value   = "<%=f.getValue()==null?"NULL":toJavaString(f.getValue())%>";
+		public final static String  <%=f.getJavaName()%>$remarks = "<%=toJavaString(f.getRemarks())%>";
+		public final static boolean <%=f.getJavaName()%>$auto    = <%=f.isAuto()?"true":"false"%>;
 		public final static boolean <%=f.getJavaName()%>$notnull = <%=f.isNotnull()?"true":"false"%>;
 		
-		<%}%>		 
+		<%}%>	 
 	}
+	
 }
 
 <%!

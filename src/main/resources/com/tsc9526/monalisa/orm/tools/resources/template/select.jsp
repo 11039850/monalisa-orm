@@ -1,4 +1,5 @@
-<%@page import="com.tsc9526.monalisa.orm.meta.MetaTable"
+<%@page import="com.tsc9526.monalisa.orm.tools.helper.Version"
+%><%@page import="com.tsc9526.monalisa.orm.meta.MetaTable"
 %><%@page import="com.tsc9526.monalisa.orm.meta.MetaColumn"
 %><%@page import="java.util.Set"%><%
 MetaTable    table =(MetaTable)request.getAttribute("table");
@@ -11,7 +12,7 @@ String   see        =(String)request.getAttribute("see");
 import <%=i%>;<%} %>
  
 /**
- * Auto generated code by monalisa 1.6.1
+ * Auto generated code by monalisa <%=Version.getVersion()%>
  *
  * @see <%=see%>
  */

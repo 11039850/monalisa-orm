@@ -19,6 +19,7 @@ package com.tsc9526.monalisa.orm.tools.generator;
 
 import java.io.PrintWriter;
 import com.tsc9526.monalisa.orm.parser.jsp.JspContext;
+import com.tsc9526.monalisa.orm.tools.helper.Version;
 import com.tsc9526.monalisa.orm.meta.MetaTable;
 import com.tsc9526.monalisa.orm.meta.MetaColumn;
 import java.util.Set;
@@ -146,7 +147,9 @@ String   see        =(String)request.getAttribute("see");
 			} 		out.println("");
 			out.println(" ");
 			out.println("/**");
-			out.println(" * Auto generated code by monalisa 1.6.1");
+			out.print(" * Auto generated code by monalisa ");
+			out.print(Version.getVersion());
+			out.println("");
 			out.println(" *");
 			out.print(" * @see ");
 			out.print(see);

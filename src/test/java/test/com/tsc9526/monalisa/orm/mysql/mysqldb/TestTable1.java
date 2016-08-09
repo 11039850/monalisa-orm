@@ -12,7 +12,7 @@ import java.util.LinkedHashMap;
  
 /**
  *
- * Auto generated code by monalisa 1.6.1
+ * Auto generated code by monalisa 1.6.3
  *
  */
 @Table(
@@ -939,10 +939,13 @@ public class TestTable1 extends com.tsc9526.monalisa.orm.model.Model<TestTable1>
 			
 	public static enum EnumStringA{ TRUE, FALSE}
 	
-	 
-	public static class M{
-		public final static String TABLE ="test_table_1" ;
-		
+	
+	/**
+	* Easy to import the table fields statically. <br><br>
+	* 
+	* import static test.com.tsc9526.monalisa.orm.mysql.mysqldb.TestTable1.TESTTABLE1;
+	*/
+	public static class TESTTABLE1{
 		
 		/**
 		* @Column
@@ -951,16 +954,7 @@ public class TestTable1 extends com.tsc9526.monalisa.orm.model.Model<TestTable1>
 		* <li><B>remarks:</B> 唯一主键
 		*/
 		@Column(table=M.TABLE, jdbcType=4, name=M.id$name, key=M.id$key, auto=M.id$auto, notnull=M.id$notnull, length=M.id$length, value=M.id$value, remarks=M.id$remarks)
-		public final static String  id         = "id" ;
-		
-		public final static String  id$name    = "id" ;
-		public final static boolean id$key     = true;
-		public final static int     id$length  = 10;
-		public final static String  id$value   = "NULL" ;
-		public final static String  id$remarks = "唯一主键" ;
-		public final static boolean id$auto    = true ;
-		public final static boolean id$notnull = true;
-		
+		public final static String  id         = "id";
 		
 		/**
 		* @Column
@@ -969,16 +963,7 @@ public class TestTable1 extends com.tsc9526.monalisa.orm.model.Model<TestTable1>
 		* <li><B>remarks:</B> 名称
 		*/
 		@Column(table=M.TABLE, jdbcType=12, name=M.name$name, key=M.name$key, auto=M.name$auto, notnull=M.name$notnull, length=M.name$length, value=M.name$value, remarks=M.name$remarks)
-		public final static String  name         = "name" ;
-		
-		public final static String  name$name    = "name" ;
-		public final static boolean name$key     = false;
-		public final static int     name$length  = 128;
-		public final static String  name$value   = "N0001" ;
-		public final static String  name$remarks = "名称" ;
-		public final static boolean name$auto    = false ;
-		public final static boolean name$notnull = true;
-		
+		public final static String  name         = "name";
 		
 		/**
 		* @Column
@@ -987,16 +972,7 @@ public class TestTable1 extends com.tsc9526.monalisa.orm.model.Model<TestTable1>
 		* <li><B>remarks:</B> 标题
 		*/
 		@Column(table=M.TABLE, jdbcType=12, name=M.title$name, key=M.title$key, auto=M.title$auto, notnull=M.title$notnull, length=M.title$length, value=M.title$value, remarks=M.title$remarks)
-		public final static String  title         = "title" ;
-		
-		public final static String  title$name    = "title" ;
-		public final static boolean title$key     = false;
-		public final static int     title$length  = 128;
-		public final static String  title$value   = "NULL" ;
-		public final static String  title$remarks = "标题" ;
-		public final static boolean title$auto    = false ;
-		public final static boolean title$notnull = false;
-		
+		public final static String  title         = "title";
 		
 		/**
 		* @Column
@@ -1005,16 +981,7 @@ public class TestTable1 extends com.tsc9526.monalisa.orm.model.Model<TestTable1>
 		* <li><B>remarks:</B> 枚举字段A  #enum{{V0,V1}}
 		*/
 		@Column(table=M.TABLE, jdbcType=4, name=M.enumIntA$name, key=M.enumIntA$key, auto=M.enumIntA$auto, notnull=M.enumIntA$notnull, length=M.enumIntA$length, value=M.enumIntA$value, remarks=M.enumIntA$remarks)
-		public final static String  enumIntA         = "enum_int_a" ;
-		
-		public final static String  enumIntA$name    = "enum_int_a" ;
-		public final static boolean enumIntA$key     = false;
-		public final static int     enumIntA$length  = 10;
-		public final static String  enumIntA$value   = "0" ;
-		public final static String  enumIntA$remarks = "枚举字段A  #enum{{V0,V1}}" ;
-		public final static boolean enumIntA$auto    = false ;
-		public final static boolean enumIntA$notnull = true;
-		
+		public final static String  enumIntA         = "enum_int_a";
 		
 		/**
 		* @Column
@@ -1023,16 +990,7 @@ public class TestTable1 extends com.tsc9526.monalisa.orm.model.Model<TestTable1>
 		* <li><B>remarks:</B> #enum{{ TRUE, FALSE}}
 		*/
 		@Column(table=M.TABLE, jdbcType=12, name=M.enumStringA$name, key=M.enumStringA$key, auto=M.enumStringA$auto, notnull=M.enumStringA$notnull, length=M.enumStringA$length, value=M.enumStringA$value, remarks=M.enumStringA$remarks)
-		public final static String  enumStringA         = "enum_string_a" ;
-		
-		public final static String  enumStringA$name    = "enum_string_a" ;
-		public final static boolean enumStringA$key     = false;
-		public final static int     enumStringA$length  = 64;
-		public final static String  enumStringA$value   = "TRUE" ;
-		public final static String  enumStringA$remarks = "#enum{{ TRUE, FALSE}}" ;
-		public final static boolean enumStringA$auto    = false ;
-		public final static boolean enumStringA$notnull = true;
-		
+		public final static String  enumStringA         = "enum_string_a";
 		
 		/**
 		* @Column
@@ -1041,16 +999,7 @@ public class TestTable1 extends com.tsc9526.monalisa.orm.model.Model<TestTable1>
 		* <li><B>remarks:</B> 
 		*/
 		@Column(table=M.TABLE, jdbcType=93, name=M.tsA$name, key=M.tsA$key, auto=M.tsA$auto, notnull=M.tsA$notnull, length=M.tsA$length, value=M.tsA$value, remarks=M.tsA$remarks)
-		public final static String  tsA         = "ts_a" ;
-		
-		public final static String  tsA$name    = "ts_a" ;
-		public final static boolean tsA$key     = false;
-		public final static int     tsA$length  = 19;
-		public final static String  tsA$value   = "NULL" ;
-		public final static String  tsA$remarks = "" ;
-		public final static boolean tsA$auto    = false ;
-		public final static boolean tsA$notnull = true;
-		
+		public final static String  tsA         = "ts_a";
 		
 		/**
 		* @Column
@@ -1059,16 +1008,7 @@ public class TestTable1 extends com.tsc9526.monalisa.orm.model.Model<TestTable1>
 		* <li><B>remarks:</B> 
 		*/
 		@Column(table=M.TABLE, jdbcType=93, name=M.createTime$name, key=M.createTime$key, auto=M.createTime$auto, notnull=M.createTime$notnull, length=M.createTime$length, value=M.createTime$value, remarks=M.createTime$remarks)
-		public final static String  createTime         = "create_time" ;
-		
-		public final static String  createTime$name    = "create_time" ;
-		public final static boolean createTime$key     = false;
-		public final static int     createTime$length  = 19;
-		public final static String  createTime$value   = "NULL" ;
-		public final static String  createTime$remarks = "" ;
-		public final static boolean createTime$auto    = false ;
-		public final static boolean createTime$notnull = true;
-		
+		public final static String  createTime         = "create_time";
 		
 		/**
 		* @Column
@@ -1077,16 +1017,7 @@ public class TestTable1 extends com.tsc9526.monalisa.orm.model.Model<TestTable1>
 		* <li><B>remarks:</B> 
 		*/
 		@Column(table=M.TABLE, jdbcType=12, name=M.createBy$name, key=M.createBy$key, auto=M.createBy$auto, notnull=M.createBy$notnull, length=M.createBy$length, value=M.createBy$value, remarks=M.createBy$remarks)
-		public final static String  createBy         = "create_by" ;
-		
-		public final static String  createBy$name    = "create_by" ;
-		public final static boolean createBy$key     = false;
-		public final static int     createBy$length  = 64;
-		public final static String  createBy$value   = "NULL" ;
-		public final static String  createBy$remarks = "" ;
-		public final static boolean createBy$auto    = false ;
-		public final static boolean createBy$notnull = false;
-		
+		public final static String  createBy         = "create_by";
 		
 		/**
 		* @Column
@@ -1095,16 +1026,7 @@ public class TestTable1 extends com.tsc9526.monalisa.orm.model.Model<TestTable1>
 		* <li><B>remarks:</B> 
 		*/
 		@Column(table=M.TABLE, jdbcType=93, name=M.updateTime$name, key=M.updateTime$key, auto=M.updateTime$auto, notnull=M.updateTime$notnull, length=M.updateTime$length, value=M.updateTime$value, remarks=M.updateTime$remarks)
-		public final static String  updateTime         = "update_time" ;
-		
-		public final static String  updateTime$name    = "update_time" ;
-		public final static boolean updateTime$key     = false;
-		public final static int     updateTime$length  = 19;
-		public final static String  updateTime$value   = "NULL" ;
-		public final static String  updateTime$remarks = "" ;
-		public final static boolean updateTime$auto    = false ;
-		public final static boolean updateTime$notnull = false;
-		
+		public final static String  updateTime         = "update_time";
 		
 		/**
 		* @Column
@@ -1113,18 +1035,110 @@ public class TestTable1 extends com.tsc9526.monalisa.orm.model.Model<TestTable1>
 		* <li><B>remarks:</B> 
 		*/
 		@Column(table=M.TABLE, jdbcType=12, name=M.updateBy$name, key=M.updateBy$key, auto=M.updateBy$auto, notnull=M.updateBy$notnull, length=M.updateBy$length, value=M.updateBy$value, remarks=M.updateBy$remarks)
-		public final static String  updateBy         = "update_by" ;
+		public final static String  updateBy         = "update_by";
 		
-		public final static String  updateBy$name    = "update_by" ;
+	}
+	
+	
+	/**
+	* Meta info about table: test_table_1
+	*/ 
+	public static class M extends TESTTABLE1{
+		public final static String TABLE ="test_table_1";
+	 	
+	 	
+		public final static String  id$name    = "id";
+		public final static boolean id$key     = true;
+		public final static int     id$length  = 10;
+		public final static String  id$value   = "NULL";
+		public final static String  id$remarks = "唯一主键";
+		public final static boolean id$auto    = true;
+		public final static boolean id$notnull = true;
+		
+		
+		public final static String  name$name    = "name";
+		public final static boolean name$key     = false;
+		public final static int     name$length  = 128;
+		public final static String  name$value   = "N0001";
+		public final static String  name$remarks = "名称";
+		public final static boolean name$auto    = false;
+		public final static boolean name$notnull = true;
+		
+		
+		public final static String  title$name    = "title";
+		public final static boolean title$key     = false;
+		public final static int     title$length  = 128;
+		public final static String  title$value   = "NULL";
+		public final static String  title$remarks = "标题";
+		public final static boolean title$auto    = false;
+		public final static boolean title$notnull = false;
+		
+		
+		public final static String  enumIntA$name    = "enum_int_a";
+		public final static boolean enumIntA$key     = false;
+		public final static int     enumIntA$length  = 10;
+		public final static String  enumIntA$value   = "0";
+		public final static String  enumIntA$remarks = "枚举字段A  #enum{{V0,V1}}";
+		public final static boolean enumIntA$auto    = false;
+		public final static boolean enumIntA$notnull = true;
+		
+		
+		public final static String  enumStringA$name    = "enum_string_a";
+		public final static boolean enumStringA$key     = false;
+		public final static int     enumStringA$length  = 64;
+		public final static String  enumStringA$value   = "TRUE";
+		public final static String  enumStringA$remarks = "#enum{{ TRUE, FALSE}}";
+		public final static boolean enumStringA$auto    = false;
+		public final static boolean enumStringA$notnull = true;
+		
+		
+		public final static String  tsA$name    = "ts_a";
+		public final static boolean tsA$key     = false;
+		public final static int     tsA$length  = 19;
+		public final static String  tsA$value   = "NULL";
+		public final static String  tsA$remarks = "";
+		public final static boolean tsA$auto    = false;
+		public final static boolean tsA$notnull = true;
+		
+		
+		public final static String  createTime$name    = "create_time";
+		public final static boolean createTime$key     = false;
+		public final static int     createTime$length  = 19;
+		public final static String  createTime$value   = "NULL";
+		public final static String  createTime$remarks = "";
+		public final static boolean createTime$auto    = false;
+		public final static boolean createTime$notnull = true;
+		
+		
+		public final static String  createBy$name    = "create_by";
+		public final static boolean createBy$key     = false;
+		public final static int     createBy$length  = 64;
+		public final static String  createBy$value   = "NULL";
+		public final static String  createBy$remarks = "";
+		public final static boolean createBy$auto    = false;
+		public final static boolean createBy$notnull = false;
+		
+		
+		public final static String  updateTime$name    = "update_time";
+		public final static boolean updateTime$key     = false;
+		public final static int     updateTime$length  = 19;
+		public final static String  updateTime$value   = "NULL";
+		public final static String  updateTime$remarks = "";
+		public final static boolean updateTime$auto    = false;
+		public final static boolean updateTime$notnull = false;
+		
+		
+		public final static String  updateBy$name    = "update_by";
 		public final static boolean updateBy$key     = false;
 		public final static int     updateBy$length  = 64;
-		public final static String  updateBy$value   = "NULL" ;
-		public final static String  updateBy$remarks = "" ;
-		public final static boolean updateBy$auto    = false ;
+		public final static String  updateBy$value   = "NULL";
+		public final static String  updateBy$remarks = "";
+		public final static boolean updateBy$auto    = false;
 		public final static boolean updateBy$notnull = false;
 		
-				 
+			 
 	}
+	
 }
 
 
