@@ -26,7 +26,7 @@ import com.tsc9526.monalisa.orm.tools.helper.JsonHelper;
 
 
 /**
- * 页面数据
+ * Page data
  * 
  * @author zzg.zhou(11039850@qq.com)
  */
@@ -44,12 +44,12 @@ public class Page<T> implements Serializable {
 	}
 	
 	/**
-	 * 构造页面数据对象
+	 * Constructor of the page
 	 * 
-	 * @param list    本页的数据集合
-	 * @param total   总记录数
-	 * @param limit   页面大小
-	 * @param offset  本记录起始位置（0 表示第一条）
+	 * @param list    records in this page
+	 * @param total   total records
+	 * @param limit   size of page
+	 * @param offset  position of the first record. first is 0.
 	 */
 	public Page(List<T> list,long total, long limit , long offset) {
 		if(list!=null){
@@ -75,13 +75,19 @@ public class Page<T> implements Serializable {
 	
 	/**
 	 * 
-	 * @return 返回本页数据集合的大小
+	 * @return rows in this page
 	 */
 	public int getRows(){
 		return list==null?0:list.size();
 	}
 	
-	 
+	
+	/**
+	 * Copy to new page, and transform the list data to target class
+	 * 
+	 * @param toClass the target class
+	 * @return the new page object
+	 */
 	public <X> Page<X> as(Class<X> toClass){
 		Page<X> page=new Page<X>();
 		
@@ -99,7 +105,7 @@ public class Page<T> implements Serializable {
 	 
 	/**
 	 *  
-	 * @return 一个非null的数据集
+	 * @return non null data list
 	 */
 	public DataTable<T> getList() {
 		return list;
@@ -107,7 +113,7 @@ public class Page<T> implements Serializable {
 	 
 	/**
 	 * 
-	 * @return 页面号， 1表示第1页 ...
+	 * @return first page: 1, the second is 2 ...
 	 */
 	public long getPageNo() {
 		return pageNo;
@@ -116,7 +122,7 @@ public class Page<T> implements Serializable {
  
 	/**
 	 * 
-	 * @return 页面大小
+	 * @return size of page
 	 */
 	public long getPageSize() {
 		return pageSize;
@@ -124,7 +130,7 @@ public class Page<T> implements Serializable {
 	 
 	/**
 	 * 
-	 * @return 总页数
+	 * @return total pages
 	 */
 	public long getTotalPage() {
 		return totalPage;
@@ -132,11 +138,12 @@ public class Page<T> implements Serializable {
 		 
 	/**
 	 * 
-	 * @return 总记录数
+	 * @return total records
 	 */
 	public long getTotalRow() {
 		return totalRow;
 	}
+	
 	
 	public String toJson(){
 		try{
@@ -151,9 +158,7 @@ public class Page<T> implements Serializable {
 			w.name("totalRow").value(totalRow);
 			
 			w.name("list");
-			w.beginObject();
 			JsonHelper.writeJson(w,list,false);
-			w.endObject();
 			 
 			w.endObject();
 			w.close();
