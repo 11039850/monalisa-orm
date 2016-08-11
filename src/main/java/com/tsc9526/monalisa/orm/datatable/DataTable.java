@@ -18,16 +18,19 @@ package com.tsc9526.monalisa.orm.datatable;
 
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
+import com.google.gson.stream.JsonWriter;
 import com.tsc9526.monalisa.orm.tools.helper.ClassHelper;
-import com.tsc9526.monalisa.orm.tools.helper.CsvHelper;
-import com.tsc9526.monalisa.orm.tools.helper.SQLHelper;
 import com.tsc9526.monalisa.orm.tools.helper.ClassHelper.FGS;
 import com.tsc9526.monalisa.orm.tools.helper.ClassHelper.MetaClass;
+import com.tsc9526.monalisa.orm.tools.helper.CsvHelper;
+import com.tsc9526.monalisa.orm.tools.helper.JsonHelper;
+import com.tsc9526.monalisa.orm.tools.helper.SQLHelper;
 
  /**
   *  
@@ -306,5 +309,15 @@ public class DataTable<E> extends ArrayList<E> {
 		}
 		
 		return this;
+	}
+	
+	public String toJson(){
+		StringWriter buffer=new StringWriter();
+		JsonWriter w=new JsonWriter(buffer);
+		w.setSerializeNulls(true);
+		
+		JsonHelper.writeJson(w,this,true);
+		 
+		return buffer.toString();
 	}
 }

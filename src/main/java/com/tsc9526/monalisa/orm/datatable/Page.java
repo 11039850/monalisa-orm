@@ -16,8 +16,13 @@
  *******************************************************************************************/
 package com.tsc9526.monalisa.orm.datatable;
 
+import java.io.IOException;
 import java.io.Serializable;
+import java.io.StringWriter;
 import java.util.List;
+
+import com.google.gson.stream.JsonWriter;
+import com.tsc9526.monalisa.orm.tools.helper.JsonHelper;
 
 
 /**
@@ -131,6 +136,32 @@ public class Page<T> implements Serializable {
 	 */
 	public long getTotalRow() {
 		return totalRow;
+	}
+	
+	public String toJson(){
+		try{
+			StringWriter buffer=new StringWriter();
+			JsonWriter w=new JsonWriter(buffer);
+			w.setSerializeNulls(true);
+			w.beginObject();
+			
+			w.name("pageNo").value(pageNo);
+			w.name("pageSize").value(pageSize);
+			w.name("totalPage").value(totalPage);
+			w.name("totalRow").value(totalRow);
+			
+			w.name("list");
+			w.beginObject();
+			JsonHelper.writeJson(w,list,false);
+			w.endObject();
+			 
+			w.endObject();
+			w.close();
+			
+			return buffer.toString();
+		}catch(IOException e){
+			throw new RuntimeException(e);
+		}
 	}
 }
 

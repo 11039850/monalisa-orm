@@ -12,9 +12,14 @@ import org.testng.annotations.Test;
 
 import test.com.tsc9526.monalisa.orm.query.TestSimpleModel;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.tsc9526.monalisa.orm.datatable.DataColumn;
 import com.tsc9526.monalisa.orm.datatable.DataMap;
 import com.tsc9526.monalisa.orm.datatable.DataTable;
+import com.tsc9526.monalisa.orm.tools.helper.ClassHelper;
+import com.tsc9526.monalisa.orm.tools.helper.ClassHelper.MetaClass;
 
 /**
  * 
@@ -35,7 +40,7 @@ public class DataTableTest {
 		}
 		
 		DataMap r=table.selectOne("count(*) as cnt", "rank  > 91", null, null);
-		System.out.println(r); 
+		Assert.assertEquals(5, r.get(0)); 
 		
 		DataTable<DataMap> rs=table.select(
 				//字段选择: 支持常用的SQL聚合函数：sum/avg/count
@@ -54,7 +59,11 @@ public class DataTableTest {
 				//(null 或  "" 表示无分组)
 				,"area");
 		
-		System.out.println(rs);
+		Assert.assertEquals(2, rs.size());
+		Assert.assertEquals("guangdong-0", rs.get(0).get("area"));
+		Assert.assertEquals(3,             rs.get(0).get("cnt"));
+		Assert.assertEquals("guangdong-1", rs.get(1).get("area"));
+		Assert.assertEquals(3,             rs.get(1).get("cnt"));
 		
 	}
 	
@@ -314,7 +323,95 @@ public class DataTableTest {
 		
 		Assert.assertEquals(rs.get(5).get("c0"), 3);
 		Assert.assertEquals(rs.get(5).get("f1"), 1);
-	  
-		 
 	}
+	
+	public void testToJsonMap() {
+		DataTable<DataMap> table = new DataTable<DataMap>();
+	 
+		//创建测试数据
+		for(int userId=1;userId<=6;userId++){
+			DataMap row = new DataMap();
+			row.put("user", userId);
+			row.put("area", "guangdong-"+(userId%2));
+			if(userId!=3){
+				row.put("rank"  ,90+userId);
+			}
+			table.add(row);
+		}
+		
+		chheckTableResults(table,new String[]{"user","area","rank"});
+	}
+	
+	public void testToJsonArray() {
+		DataTable<Object> table = new DataTable<Object>();
+		table.setHeaders("user","area","rank");
+		
+		//创建测试数据
+		for(int userId=1;userId<=6;userId++){
+			Object[] row=new Object[3];
+			row[0]=userId;
+			row[1]="guangdong-"+(userId%2);
+			if(userId!=3){
+				row[2]=90+userId;
+			}
+			
+			table.add(row);
+		}
+		
+		chheckTableResults(table,new String[]{"user","area","rank"});
+	}
+	
+	public void testToJsonObj() {
+		DataTable<Object> table = new DataTable<Object>();
+		 
+		//创建测试数据
+		MetaClass mc=ClassHelper.getMetaClass(TestUserAreaRank.class);
+		for(int userId=1;userId<=6;userId++){
+			Object row=new TestUserAreaRank();
+
+			mc.getField("user").setObject(row, userId);
+			mc.getField("area").setObject(row,"guangdong-"+(userId%2));
+			if(userId!=3){
+				mc.getField("rank").setObject(row,90+userId);
+			}
+			
+			table.add(row);
+		}
+		
+		chheckTableResults(table,new String[]{"user","area","rank"});
+	}
+	
+	private void chheckTableResults(DataTable<?> table,String[] hs){
+		String json=table.toJson();
+		
+		JsonParser parser=new JsonParser();
+		JsonObject root=parser.parse(json).getAsJsonObject();
+		
+		JsonArray headers=root.get("header").getAsJsonArray();
+		Assert.assertEquals(headers.size(),hs.length);
+		for(int i=0;i<hs.length;i++){
+			Assert.assertEquals(headers.get(i).getAsString(),hs[i]);
+		}
+		
+		JsonArray datas=root.get("data").getAsJsonArray();
+		Assert.assertEquals(datas.size(),6);
+		for(int userId=1;userId<=6;userId++){
+			JsonArray row=datas.get(userId-1).getAsJsonArray();
+			
+			Assert.assertEquals(row.get(0).getAsInt(),userId);
+			Assert.assertEquals(row.get(1).getAsString(),"guangdong-"+(userId%2));
+			  
+			if(userId!=3){
+				Assert.assertEquals(row.get(2).getAsInt(),90+userId);
+			}else{
+				Assert.assertTrue(row.get(2).isJsonNull());
+			} 
+		}
+	}
+	
+	static class TestUserAreaRank{
+		int user;
+		String area;
+		Integer rank;
+	};
 }
