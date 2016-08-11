@@ -21,6 +21,10 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.sql.Connection;
+import java.sql.DatabaseMetaData;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -338,6 +342,27 @@ public class DBConfig implements Closeable{
 		});
 		
 		return rs;
+	}
+	
+	public List<String> getTables(){
+		try{
+			Connection conn=getDataSource().getConnection();
+			 
+			List<String> tables=new ArrayList<String>();
+			 
+			DatabaseMetaData dbm=conn.getMetaData();
+			ResultSet rs=dbm.getTables("", "","%", new String[]{"TABLE"});
+			while(rs.next()){
+				String table=rs.getString("TABLE_NAME");
+				tables.add(table);
+			}
+			
+			CloseQuietly.close(rs,conn);
+			
+			return tables;
+		}catch(SQLException e){
+			throw new RuntimeException(e);
+		}
 	}
 	
 	public static DBConfig fromClass(Class<?> clazzWithDBAnnotation){

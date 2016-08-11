@@ -22,7 +22,7 @@ public class DS0001 implements java.io.Serializable{
 	* @Column
 	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_1&nbsp;<B>name:</B> id &nbsp;[<font color=red>KEY</font>|<font color=red>AUTO</font>|<font color=red>NOTNULL</font>]
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 10<br>
-	* <li><B>remarks:</B> 唯一主键
+	* <li><B>remarks:</B> primary key
 	*/
 	@Column(table=TestTable1.M.TABLE, jdbcType=4, name=TestTable1.M.id$name, key=TestTable1.M.id$key, auto=TestTable1.M.id$auto, notnull=TestTable1.M.id$notnull, length=TestTable1.M.id$length, value=TestTable1.M.id$value, remarks=TestTable1.M.id$remarks)
 	private Integer id;	
@@ -32,7 +32,7 @@ public class DS0001 implements java.io.Serializable{
 	* @Column
 	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_1&nbsp;<B>name:</B> name &nbsp;[<font color=red>NOTNULL</font>]
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 128 &nbsp;<B>value:</B> N0001<br>
-	* <li><B>remarks:</B> 名称
+	* <li><B>remarks:</B> the name
 	*/
 	@Column(table=TestTable1.M.TABLE, jdbcType=12, name=TestTable1.M.name$name, key=TestTable1.M.name$key, auto=TestTable1.M.name$auto, notnull=TestTable1.M.name$notnull, length=TestTable1.M.name$length, value=TestTable1.M.name$value, remarks=TestTable1.M.name$remarks)
 	private String name;	
@@ -42,7 +42,7 @@ public class DS0001 implements java.io.Serializable{
 	* @Column
 	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_1&nbsp;<B>name:</B> title
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 128<br>
-	* <li><B>remarks:</B> 标题
+	* <li><B>remarks:</B> the title
 	*/
 	@Column(table=TestTable1.M.TABLE, jdbcType=12, name=TestTable1.M.title$name, key=TestTable1.M.title$key, auto=TestTable1.M.title$auto, notnull=TestTable1.M.title$notnull, length=TestTable1.M.title$length, value=TestTable1.M.title$value, remarks=TestTable1.M.title$remarks)
 	private String title;	
@@ -52,7 +52,7 @@ public class DS0001 implements java.io.Serializable{
 	* @Column
 	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_1&nbsp;<B>name:</B> enum_int_a &nbsp;[<font color=red>NOTNULL</font>|<font color=red>ENUM</font>]
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 10 &nbsp;<B>value:</B> 0<br>
-	* <li><B>remarks:</B> 枚举字段A  #enum{{V0,V1}}
+	* <li><B>remarks:</B> enum fields A  #enum{{V0,V1}}
 	*/
 	@Column(table=TestTable1.M.TABLE, jdbcType=4, name=TestTable1.M.enumIntA$name, key=TestTable1.M.enumIntA$key, auto=TestTable1.M.enumIntA$auto, notnull=TestTable1.M.enumIntA$notnull, length=TestTable1.M.enumIntA$length, value=TestTable1.M.enumIntA$value, remarks=TestTable1.M.enumIntA$remarks)
 	private TestTable1.EnumIntA enumIntA;	
@@ -122,7 +122,7 @@ public class DS0001 implements java.io.Serializable{
 	* @Column
 	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_2&nbsp;<B>name:</B> id &nbsp;[<font color=red>KEY</font>|<font color=red>AUTO</font>|<font color=red>NOTNULL</font>]
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 10<br>
-	* <li><B>remarks:</B> 唯一主键
+	* <li><B>remarks:</B> primary key
 	*/
 	@Column(table=TestTable2.M.TABLE, jdbcType=4, name=TestTable2.M.id$name, key=TestTable2.M.id$key, auto=TestTable2.M.id$auto, notnull=TestTable2.M.id$notnull, length=TestTable2.M.id$length, value=TestTable2.M.id$value, remarks=TestTable2.M.id$remarks)
 	private Integer id1;	
@@ -132,7 +132,7 @@ public class DS0001 implements java.io.Serializable{
 	* @Column
 	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_2&nbsp;<B>name:</B> name &nbsp;[<font color=red>NOTNULL</font>]
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 128 &nbsp;<B>value:</B> N0001<br>
-	* <li><B>remarks:</B> 名称
+	* <li><B>remarks:</B> the name
 	*/
 	@Column(table=TestTable2.M.TABLE, jdbcType=12, name=TestTable2.M.name$name, key=TestTable2.M.name$key, auto=TestTable2.M.name$auto, notnull=TestTable2.M.name$notnull, length=TestTable2.M.name$length, value=TestTable2.M.name$value, remarks=TestTable2.M.name$remarks)
 	private String name1;	
@@ -142,7 +142,7 @@ public class DS0001 implements java.io.Serializable{
 	* @Column
 	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_2&nbsp;<B>name:</B> title
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 128<br>
-	* <li><B>remarks:</B> 标题
+	* <li><B>remarks:</B> the title
 	*/
 	@Column(table=TestTable2.M.TABLE, jdbcType=12, name=TestTable2.M.title$name, key=TestTable2.M.title$key, auto=TestTable2.M.title$auto, notnull=TestTable2.M.title$notnull, length=TestTable2.M.title$length, value=TestTable2.M.title$value, remarks=TestTable2.M.title$remarks)
 	private String title1;	
@@ -152,7 +152,7 @@ public class DS0001 implements java.io.Serializable{
 	* @Column
 	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_2&nbsp;<B>name:</B> enum_int_a &nbsp;[<font color=red>NOTNULL</font>|<font color=red>ENUM</font>]
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 10 &nbsp;<B>value:</B> 0<br>
-	* <li><B>remarks:</B> 枚举字段A  #enum{{V0,V1}}
+	* <li><B>remarks:</B> enum fields A  #enum{{V0,V1}}
 	*/
 	@Column(table=TestTable2.M.TABLE, jdbcType=4, name=TestTable2.M.enumIntA$name, key=TestTable2.M.enumIntA$key, auto=TestTable2.M.enumIntA$auto, notnull=TestTable2.M.enumIntA$notnull, length=TestTable2.M.enumIntA$length, value=TestTable2.M.enumIntA$value, remarks=TestTable2.M.enumIntA$remarks)
 	private TestTable2.EnumIntA enumIntA1;	
@@ -172,7 +172,7 @@ public class DS0001 implements java.io.Serializable{
 	* @Column
 	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_2&nbsp;<B>name:</B> array_int
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 256<br>
-	* <li><B>remarks:</B> 整形数组 #array{int}
+	* <li><B>remarks:</B> array of int. #array{int}
 	*/
 	@Column(table=TestTable2.M.TABLE, jdbcType=12, name=TestTable2.M.arrayInt$name, key=TestTable2.M.arrayInt$key, auto=TestTable2.M.arrayInt$auto, notnull=TestTable2.M.arrayInt$notnull, length=TestTable2.M.arrayInt$length, value=TestTable2.M.arrayInt$value, remarks=TestTable2.M.arrayInt$remarks)
 	private int[] arrayInt;	
@@ -182,7 +182,7 @@ public class DS0001 implements java.io.Serializable{
 	* @Column
 	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_2&nbsp;<B>name:</B> array_string
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 256<br>
-	* <li><B>remarks:</B> 字符串数组 #array{}
+	* <li><B>remarks:</B> array of string. #array{}
 	*/
 	@Column(table=TestTable2.M.TABLE, jdbcType=12, name=TestTable2.M.arrayString$name, key=TestTable2.M.arrayString$key, auto=TestTable2.M.arrayString$auto, notnull=TestTable2.M.arrayString$notnull, length=TestTable2.M.arrayString$length, value=TestTable2.M.arrayString$value, remarks=TestTable2.M.arrayString$remarks)
 	private String[] arrayString;	
@@ -192,7 +192,7 @@ public class DS0001 implements java.io.Serializable{
 	* @Column
 	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_2&nbsp;<B>name:</B> json
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 1024<br>
-	* <li><B>remarks:</B> Json #json{}
+	* <li><B>remarks:</B> Json object. #json{}
 	*/
 	@Column(table=TestTable2.M.TABLE, jdbcType=12, name=TestTable2.M.json$name, key=TestTable2.M.json$key, auto=TestTable2.M.json$auto, notnull=TestTable2.M.json$notnull, length=TestTable2.M.json$length, value=TestTable2.M.json$value, remarks=TestTable2.M.json$remarks)
 	private JsonObject json;	
@@ -202,7 +202,7 @@ public class DS0001 implements java.io.Serializable{
 	* @Column
 	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_2&nbsp;<B>name:</B> obj
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 1024<br>
-	* <li><B>remarks:</B> Object #json{test.com.tsc9526.monalisa.orm.data.ColumnData}
+	* <li><B>remarks:</B> Json object with given class.  #json{test.com.tsc9526.monalisa.orm.data.ColumnData}
 	*/
 	@Column(table=TestTable2.M.TABLE, jdbcType=12, name=TestTable2.M.obj$name, key=TestTable2.M.obj$key, auto=TestTable2.M.obj$auto, notnull=TestTable2.M.obj$notnull, length=TestTable2.M.obj$length, value=TestTable2.M.obj$value, remarks=TestTable2.M.obj$remarks)
 	private ColumnData obj;	
@@ -262,7 +262,7 @@ public class DS0001 implements java.io.Serializable{
 	* @Column
 	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_2&nbsp;<B>name:</B> id &nbsp;[<font color=red>KEY</font>|<font color=red>AUTO</font>|<font color=red>NOTNULL</font>]
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 10<br>
-	* <li><B>remarks:</B> 唯一主键
+	* <li><B>remarks:</B> primary key
 	*/
 	@Column(table=TestTable2.M.TABLE, jdbcType=4, name=TestTable2.M.id$name, key=TestTable2.M.id$key, auto=TestTable2.M.id$auto, notnull=TestTable2.M.id$notnull, length=TestTable2.M.id$length, value=TestTable2.M.id$value, remarks=TestTable2.M.id$remarks)
 	private Integer id2;	
@@ -275,7 +275,7 @@ public class DS0001 implements java.io.Serializable{
 	* @Column
 	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_1&nbsp;<B>name:</B> id &nbsp;[<font color=red>KEY</font>|<font color=red>AUTO</font>|<font color=red>NOTNULL</font>]
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 10<br>
-	* <li><B>remarks:</B> 唯一主键
+	* <li><B>remarks:</B> primary key
 	*/
 	@Column(table=TestTable1.M.TABLE, jdbcType=4, name=TestTable1.M.id$name, key=TestTable1.M.id$key, auto=TestTable1.M.id$auto, notnull=TestTable1.M.id$notnull, length=TestTable1.M.id$length, value=TestTable1.M.id$value, remarks=TestTable1.M.id$remarks)
 	public DS0001 setId(Integer id){
@@ -288,7 +288,7 @@ public class DS0001 implements java.io.Serializable{
 	* @Column
 	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_1&nbsp;<B>name:</B> name &nbsp;[<font color=red>NOTNULL</font>]
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 128 &nbsp;<B>value:</B> N0001<br>
-	* <li><B>remarks:</B> 名称
+	* <li><B>remarks:</B> the name
 	*/
 	@Column(table=TestTable1.M.TABLE, jdbcType=12, name=TestTable1.M.name$name, key=TestTable1.M.name$key, auto=TestTable1.M.name$auto, notnull=TestTable1.M.name$notnull, length=TestTable1.M.name$length, value=TestTable1.M.name$value, remarks=TestTable1.M.name$remarks)
 	public DS0001 setName(String name){
@@ -301,7 +301,7 @@ public class DS0001 implements java.io.Serializable{
 	* @Column
 	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_1&nbsp;<B>name:</B> title
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 128<br>
-	* <li><B>remarks:</B> 标题
+	* <li><B>remarks:</B> the title
 	*/
 	@Column(table=TestTable1.M.TABLE, jdbcType=12, name=TestTable1.M.title$name, key=TestTable1.M.title$key, auto=TestTable1.M.title$auto, notnull=TestTable1.M.title$notnull, length=TestTable1.M.title$length, value=TestTable1.M.title$value, remarks=TestTable1.M.title$remarks)
 	public DS0001 setTitle(String title){
@@ -314,7 +314,7 @@ public class DS0001 implements java.io.Serializable{
 	* @Column
 	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_1&nbsp;<B>name:</B> enum_int_a &nbsp;[<font color=red>NOTNULL</font>|<font color=red>ENUM</font>]
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 10 &nbsp;<B>value:</B> 0<br>
-	* <li><B>remarks:</B> 枚举字段A  #enum{{V0,V1}}
+	* <li><B>remarks:</B> enum fields A  #enum{{V0,V1}}
 	*/
 	@Column(table=TestTable1.M.TABLE, jdbcType=4, name=TestTable1.M.enumIntA$name, key=TestTable1.M.enumIntA$key, auto=TestTable1.M.enumIntA$auto, notnull=TestTable1.M.enumIntA$notnull, length=TestTable1.M.enumIntA$length, value=TestTable1.M.enumIntA$value, remarks=TestTable1.M.enumIntA$remarks)
 	public DS0001 setEnumIntA(TestTable1.EnumIntA enumIntA){
@@ -405,7 +405,7 @@ public class DS0001 implements java.io.Serializable{
 	* @Column
 	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_2&nbsp;<B>name:</B> id &nbsp;[<font color=red>KEY</font>|<font color=red>AUTO</font>|<font color=red>NOTNULL</font>]
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 10<br>
-	* <li><B>remarks:</B> 唯一主键
+	* <li><B>remarks:</B> primary key
 	*/
 	@Column(table=TestTable2.M.TABLE, jdbcType=4, name=TestTable2.M.id$name, key=TestTable2.M.id$key, auto=TestTable2.M.id$auto, notnull=TestTable2.M.id$notnull, length=TestTable2.M.id$length, value=TestTable2.M.id$value, remarks=TestTable2.M.id$remarks)
 	public DS0001 setId1(Integer id1){
@@ -418,7 +418,7 @@ public class DS0001 implements java.io.Serializable{
 	* @Column
 	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_2&nbsp;<B>name:</B> name &nbsp;[<font color=red>NOTNULL</font>]
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 128 &nbsp;<B>value:</B> N0001<br>
-	* <li><B>remarks:</B> 名称
+	* <li><B>remarks:</B> the name
 	*/
 	@Column(table=TestTable2.M.TABLE, jdbcType=12, name=TestTable2.M.name$name, key=TestTable2.M.name$key, auto=TestTable2.M.name$auto, notnull=TestTable2.M.name$notnull, length=TestTable2.M.name$length, value=TestTable2.M.name$value, remarks=TestTable2.M.name$remarks)
 	public DS0001 setName1(String name1){
@@ -431,7 +431,7 @@ public class DS0001 implements java.io.Serializable{
 	* @Column
 	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_2&nbsp;<B>name:</B> title
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 128<br>
-	* <li><B>remarks:</B> 标题
+	* <li><B>remarks:</B> the title
 	*/
 	@Column(table=TestTable2.M.TABLE, jdbcType=12, name=TestTable2.M.title$name, key=TestTable2.M.title$key, auto=TestTable2.M.title$auto, notnull=TestTable2.M.title$notnull, length=TestTable2.M.title$length, value=TestTable2.M.title$value, remarks=TestTable2.M.title$remarks)
 	public DS0001 setTitle1(String title1){
@@ -444,7 +444,7 @@ public class DS0001 implements java.io.Serializable{
 	* @Column
 	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_2&nbsp;<B>name:</B> enum_int_a &nbsp;[<font color=red>NOTNULL</font>|<font color=red>ENUM</font>]
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 10 &nbsp;<B>value:</B> 0<br>
-	* <li><B>remarks:</B> 枚举字段A  #enum{{V0,V1}}
+	* <li><B>remarks:</B> enum fields A  #enum{{V0,V1}}
 	*/
 	@Column(table=TestTable2.M.TABLE, jdbcType=4, name=TestTable2.M.enumIntA$name, key=TestTable2.M.enumIntA$key, auto=TestTable2.M.enumIntA$auto, notnull=TestTable2.M.enumIntA$notnull, length=TestTable2.M.enumIntA$length, value=TestTable2.M.enumIntA$value, remarks=TestTable2.M.enumIntA$remarks)
 	public DS0001 setEnumIntA1(TestTable2.EnumIntA enumIntA1){
@@ -470,7 +470,7 @@ public class DS0001 implements java.io.Serializable{
 	* @Column
 	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_2&nbsp;<B>name:</B> array_int
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 256<br>
-	* <li><B>remarks:</B> 整形数组 #array{int}
+	* <li><B>remarks:</B> array of int. #array{int}
 	*/
 	@Column(table=TestTable2.M.TABLE, jdbcType=12, name=TestTable2.M.arrayInt$name, key=TestTable2.M.arrayInt$key, auto=TestTable2.M.arrayInt$auto, notnull=TestTable2.M.arrayInt$notnull, length=TestTable2.M.arrayInt$length, value=TestTable2.M.arrayInt$value, remarks=TestTable2.M.arrayInt$remarks)
 	public DS0001 setArrayInt(int[] arrayInt){
@@ -483,7 +483,7 @@ public class DS0001 implements java.io.Serializable{
 	* @Column
 	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_2&nbsp;<B>name:</B> array_string
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 256<br>
-	* <li><B>remarks:</B> 字符串数组 #array{}
+	* <li><B>remarks:</B> array of string. #array{}
 	*/
 	@Column(table=TestTable2.M.TABLE, jdbcType=12, name=TestTable2.M.arrayString$name, key=TestTable2.M.arrayString$key, auto=TestTable2.M.arrayString$auto, notnull=TestTable2.M.arrayString$notnull, length=TestTable2.M.arrayString$length, value=TestTable2.M.arrayString$value, remarks=TestTable2.M.arrayString$remarks)
 	public DS0001 setArrayString(String[] arrayString){
@@ -496,7 +496,7 @@ public class DS0001 implements java.io.Serializable{
 	* @Column
 	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_2&nbsp;<B>name:</B> json
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 1024<br>
-	* <li><B>remarks:</B> Json #json{}
+	* <li><B>remarks:</B> Json object. #json{}
 	*/
 	@Column(table=TestTable2.M.TABLE, jdbcType=12, name=TestTable2.M.json$name, key=TestTable2.M.json$key, auto=TestTable2.M.json$auto, notnull=TestTable2.M.json$notnull, length=TestTable2.M.json$length, value=TestTable2.M.json$value, remarks=TestTable2.M.json$remarks)
 	public DS0001 setJson(JsonObject json){
@@ -509,7 +509,7 @@ public class DS0001 implements java.io.Serializable{
 	* @Column
 	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_2&nbsp;<B>name:</B> obj
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 1024<br>
-	* <li><B>remarks:</B> Object #json{test.com.tsc9526.monalisa.orm.data.ColumnData}
+	* <li><B>remarks:</B> Json object with given class.  #json{test.com.tsc9526.monalisa.orm.data.ColumnData}
 	*/
 	@Column(table=TestTable2.M.TABLE, jdbcType=12, name=TestTable2.M.obj$name, key=TestTable2.M.obj$key, auto=TestTable2.M.obj$auto, notnull=TestTable2.M.obj$notnull, length=TestTable2.M.obj$length, value=TestTable2.M.obj$value, remarks=TestTable2.M.obj$remarks)
 	public DS0001 setObj(ColumnData obj){
@@ -587,7 +587,7 @@ public class DS0001 implements java.io.Serializable{
 	* @Column
 	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_2&nbsp;<B>name:</B> id &nbsp;[<font color=red>KEY</font>|<font color=red>AUTO</font>|<font color=red>NOTNULL</font>]
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 10<br>
-	* <li><B>remarks:</B> 唯一主键
+	* <li><B>remarks:</B> primary key
 	*/
 	@Column(table=TestTable2.M.TABLE, jdbcType=4, name=TestTable2.M.id$name, key=TestTable2.M.id$key, auto=TestTable2.M.id$auto, notnull=TestTable2.M.id$notnull, length=TestTable2.M.id$length, value=TestTable2.M.id$value, remarks=TestTable2.M.id$remarks)
 	public DS0001 setId2(Integer id2){
@@ -603,7 +603,7 @@ public class DS0001 implements java.io.Serializable{
 	* @Column
 	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_1&nbsp;<B>name:</B> id &nbsp;[<font color=red>KEY</font>|<font color=red>AUTO</font>|<font color=red>NOTNULL</font>]
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 10<br>
-	* <li><B>remarks:</B> 唯一主键
+	* <li><B>remarks:</B> primary key
 	*/
 	@Column(table=TestTable1.M.TABLE, jdbcType=4, name=TestTable1.M.id$name, key=TestTable1.M.id$key, auto=TestTable1.M.id$auto, notnull=TestTable1.M.id$notnull, length=TestTable1.M.id$length, value=TestTable1.M.id$value, remarks=TestTable1.M.id$remarks)
 	public Integer getId(){
@@ -614,7 +614,7 @@ public class DS0001 implements java.io.Serializable{
 	* @Column
 	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_1&nbsp;<B>name:</B> id &nbsp;[<font color=red>KEY</font>|<font color=red>AUTO</font>|<font color=red>NOTNULL</font>]
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 10<br>
-	* <li><B>remarks:</B> 唯一主键
+	* <li><B>remarks:</B> primary key
 	* @param defaultValue  Return the default value if id is null.*/
 	@Column(table=TestTable1.M.TABLE, jdbcType=4, name=TestTable1.M.id$name, key=TestTable1.M.id$key, auto=TestTable1.M.id$auto, notnull=TestTable1.M.id$notnull, length=TestTable1.M.id$length, value=TestTable1.M.id$value, remarks=TestTable1.M.id$remarks)
 	public Integer getId(Integer defaultValue){
@@ -631,7 +631,7 @@ public class DS0001 implements java.io.Serializable{
 	* @Column
 	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_1&nbsp;<B>name:</B> name &nbsp;[<font color=red>NOTNULL</font>]
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 128 &nbsp;<B>value:</B> N0001<br>
-	* <li><B>remarks:</B> 名称
+	* <li><B>remarks:</B> the name
 	*/
 	@Column(table=TestTable1.M.TABLE, jdbcType=12, name=TestTable1.M.name$name, key=TestTable1.M.name$key, auto=TestTable1.M.name$auto, notnull=TestTable1.M.name$notnull, length=TestTable1.M.name$length, value=TestTable1.M.name$value, remarks=TestTable1.M.name$remarks)
 	public String getName(){
@@ -642,7 +642,7 @@ public class DS0001 implements java.io.Serializable{
 	* @Column
 	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_1&nbsp;<B>name:</B> name &nbsp;[<font color=red>NOTNULL</font>]
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 128 &nbsp;<B>value:</B> N0001<br>
-	* <li><B>remarks:</B> 名称
+	* <li><B>remarks:</B> the name
 	* @param defaultValue  Return the default value if name is null.*/
 	@Column(table=TestTable1.M.TABLE, jdbcType=12, name=TestTable1.M.name$name, key=TestTable1.M.name$key, auto=TestTable1.M.name$auto, notnull=TestTable1.M.name$notnull, length=TestTable1.M.name$length, value=TestTable1.M.name$value, remarks=TestTable1.M.name$remarks)
 	public String getName(String defaultValue){
@@ -659,7 +659,7 @@ public class DS0001 implements java.io.Serializable{
 	* @Column
 	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_1&nbsp;<B>name:</B> title
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 128<br>
-	* <li><B>remarks:</B> 标题
+	* <li><B>remarks:</B> the title
 	*/
 	@Column(table=TestTable1.M.TABLE, jdbcType=12, name=TestTable1.M.title$name, key=TestTable1.M.title$key, auto=TestTable1.M.title$auto, notnull=TestTable1.M.title$notnull, length=TestTable1.M.title$length, value=TestTable1.M.title$value, remarks=TestTable1.M.title$remarks)
 	public String getTitle(){
@@ -670,7 +670,7 @@ public class DS0001 implements java.io.Serializable{
 	* @Column
 	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_1&nbsp;<B>name:</B> title
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 128<br>
-	* <li><B>remarks:</B> 标题
+	* <li><B>remarks:</B> the title
 	* @param defaultValue  Return the default value if title is null.*/
 	@Column(table=TestTable1.M.TABLE, jdbcType=12, name=TestTable1.M.title$name, key=TestTable1.M.title$key, auto=TestTable1.M.title$auto, notnull=TestTable1.M.title$notnull, length=TestTable1.M.title$length, value=TestTable1.M.title$value, remarks=TestTable1.M.title$remarks)
 	public String getTitle(String defaultValue){
@@ -687,7 +687,7 @@ public class DS0001 implements java.io.Serializable{
 	* @Column
 	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_1&nbsp;<B>name:</B> enum_int_a &nbsp;[<font color=red>NOTNULL</font>|<font color=red>ENUM</font>]
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 10 &nbsp;<B>value:</B> 0<br>
-	* <li><B>remarks:</B> 枚举字段A  #enum{{V0,V1}}
+	* <li><B>remarks:</B> enum fields A  #enum{{V0,V1}}
 	*/
 	@Column(table=TestTable1.M.TABLE, jdbcType=4, name=TestTable1.M.enumIntA$name, key=TestTable1.M.enumIntA$key, auto=TestTable1.M.enumIntA$auto, notnull=TestTable1.M.enumIntA$notnull, length=TestTable1.M.enumIntA$length, value=TestTable1.M.enumIntA$value, remarks=TestTable1.M.enumIntA$remarks)
 	public TestTable1.EnumIntA getEnumIntA(){
@@ -698,7 +698,7 @@ public class DS0001 implements java.io.Serializable{
 	* @Column
 	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_1&nbsp;<B>name:</B> enum_int_a &nbsp;[<font color=red>NOTNULL</font>|<font color=red>ENUM</font>]
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 10 &nbsp;<B>value:</B> 0<br>
-	* <li><B>remarks:</B> 枚举字段A  #enum{{V0,V1}}
+	* <li><B>remarks:</B> enum fields A  #enum{{V0,V1}}
 	* @param defaultValue  Return the default value if enumIntA is null.*/
 	@Column(table=TestTable1.M.TABLE, jdbcType=4, name=TestTable1.M.enumIntA$name, key=TestTable1.M.enumIntA$key, auto=TestTable1.M.enumIntA$auto, notnull=TestTable1.M.enumIntA$notnull, length=TestTable1.M.enumIntA$length, value=TestTable1.M.enumIntA$value, remarks=TestTable1.M.enumIntA$remarks)
 	public TestTable1.EnumIntA getEnumIntA(TestTable1.EnumIntA defaultValue){
@@ -883,7 +883,7 @@ public class DS0001 implements java.io.Serializable{
 	* @Column
 	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_2&nbsp;<B>name:</B> id &nbsp;[<font color=red>KEY</font>|<font color=red>AUTO</font>|<font color=red>NOTNULL</font>]
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 10<br>
-	* <li><B>remarks:</B> 唯一主键
+	* <li><B>remarks:</B> primary key
 	*/
 	@Column(table=TestTable2.M.TABLE, jdbcType=4, name=TestTable2.M.id$name, key=TestTable2.M.id$key, auto=TestTable2.M.id$auto, notnull=TestTable2.M.id$notnull, length=TestTable2.M.id$length, value=TestTable2.M.id$value, remarks=TestTable2.M.id$remarks)
 	public Integer getId1(){
@@ -894,7 +894,7 @@ public class DS0001 implements java.io.Serializable{
 	* @Column
 	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_2&nbsp;<B>name:</B> id &nbsp;[<font color=red>KEY</font>|<font color=red>AUTO</font>|<font color=red>NOTNULL</font>]
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 10<br>
-	* <li><B>remarks:</B> 唯一主键
+	* <li><B>remarks:</B> primary key
 	* @param defaultValue  Return the default value if id1 is null.*/
 	@Column(table=TestTable2.M.TABLE, jdbcType=4, name=TestTable2.M.id$name, key=TestTable2.M.id$key, auto=TestTable2.M.id$auto, notnull=TestTable2.M.id$notnull, length=TestTable2.M.id$length, value=TestTable2.M.id$value, remarks=TestTable2.M.id$remarks)
 	public Integer getId1(Integer defaultValue){
@@ -911,7 +911,7 @@ public class DS0001 implements java.io.Serializable{
 	* @Column
 	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_2&nbsp;<B>name:</B> name &nbsp;[<font color=red>NOTNULL</font>]
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 128 &nbsp;<B>value:</B> N0001<br>
-	* <li><B>remarks:</B> 名称
+	* <li><B>remarks:</B> the name
 	*/
 	@Column(table=TestTable2.M.TABLE, jdbcType=12, name=TestTable2.M.name$name, key=TestTable2.M.name$key, auto=TestTable2.M.name$auto, notnull=TestTable2.M.name$notnull, length=TestTable2.M.name$length, value=TestTable2.M.name$value, remarks=TestTable2.M.name$remarks)
 	public String getName1(){
@@ -922,7 +922,7 @@ public class DS0001 implements java.io.Serializable{
 	* @Column
 	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_2&nbsp;<B>name:</B> name &nbsp;[<font color=red>NOTNULL</font>]
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 128 &nbsp;<B>value:</B> N0001<br>
-	* <li><B>remarks:</B> 名称
+	* <li><B>remarks:</B> the name
 	* @param defaultValue  Return the default value if name1 is null.*/
 	@Column(table=TestTable2.M.TABLE, jdbcType=12, name=TestTable2.M.name$name, key=TestTable2.M.name$key, auto=TestTable2.M.name$auto, notnull=TestTable2.M.name$notnull, length=TestTable2.M.name$length, value=TestTable2.M.name$value, remarks=TestTable2.M.name$remarks)
 	public String getName1(String defaultValue){
@@ -939,7 +939,7 @@ public class DS0001 implements java.io.Serializable{
 	* @Column
 	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_2&nbsp;<B>name:</B> title
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 128<br>
-	* <li><B>remarks:</B> 标题
+	* <li><B>remarks:</B> the title
 	*/
 	@Column(table=TestTable2.M.TABLE, jdbcType=12, name=TestTable2.M.title$name, key=TestTable2.M.title$key, auto=TestTable2.M.title$auto, notnull=TestTable2.M.title$notnull, length=TestTable2.M.title$length, value=TestTable2.M.title$value, remarks=TestTable2.M.title$remarks)
 	public String getTitle1(){
@@ -950,7 +950,7 @@ public class DS0001 implements java.io.Serializable{
 	* @Column
 	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_2&nbsp;<B>name:</B> title
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 128<br>
-	* <li><B>remarks:</B> 标题
+	* <li><B>remarks:</B> the title
 	* @param defaultValue  Return the default value if title1 is null.*/
 	@Column(table=TestTable2.M.TABLE, jdbcType=12, name=TestTable2.M.title$name, key=TestTable2.M.title$key, auto=TestTable2.M.title$auto, notnull=TestTable2.M.title$notnull, length=TestTable2.M.title$length, value=TestTable2.M.title$value, remarks=TestTable2.M.title$remarks)
 	public String getTitle1(String defaultValue){
@@ -967,7 +967,7 @@ public class DS0001 implements java.io.Serializable{
 	* @Column
 	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_2&nbsp;<B>name:</B> enum_int_a &nbsp;[<font color=red>NOTNULL</font>|<font color=red>ENUM</font>]
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 10 &nbsp;<B>value:</B> 0<br>
-	* <li><B>remarks:</B> 枚举字段A  #enum{{V0,V1}}
+	* <li><B>remarks:</B> enum fields A  #enum{{V0,V1}}
 	*/
 	@Column(table=TestTable2.M.TABLE, jdbcType=4, name=TestTable2.M.enumIntA$name, key=TestTable2.M.enumIntA$key, auto=TestTable2.M.enumIntA$auto, notnull=TestTable2.M.enumIntA$notnull, length=TestTable2.M.enumIntA$length, value=TestTable2.M.enumIntA$value, remarks=TestTable2.M.enumIntA$remarks)
 	public TestTable2.EnumIntA getEnumIntA1(){
@@ -978,7 +978,7 @@ public class DS0001 implements java.io.Serializable{
 	* @Column
 	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_2&nbsp;<B>name:</B> enum_int_a &nbsp;[<font color=red>NOTNULL</font>|<font color=red>ENUM</font>]
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 10 &nbsp;<B>value:</B> 0<br>
-	* <li><B>remarks:</B> 枚举字段A  #enum{{V0,V1}}
+	* <li><B>remarks:</B> enum fields A  #enum{{V0,V1}}
 	* @param defaultValue  Return the default value if enumIntA1 is null.*/
 	@Column(table=TestTable2.M.TABLE, jdbcType=4, name=TestTable2.M.enumIntA$name, key=TestTable2.M.enumIntA$key, auto=TestTable2.M.enumIntA$auto, notnull=TestTable2.M.enumIntA$notnull, length=TestTable2.M.enumIntA$length, value=TestTable2.M.enumIntA$value, remarks=TestTable2.M.enumIntA$remarks)
 	public TestTable2.EnumIntA getEnumIntA1(TestTable2.EnumIntA defaultValue){
@@ -1023,7 +1023,7 @@ public class DS0001 implements java.io.Serializable{
 	* @Column
 	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_2&nbsp;<B>name:</B> array_int
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 256<br>
-	* <li><B>remarks:</B> 整形数组 #array{int}
+	* <li><B>remarks:</B> array of int. #array{int}
 	*/
 	@Column(table=TestTable2.M.TABLE, jdbcType=12, name=TestTable2.M.arrayInt$name, key=TestTable2.M.arrayInt$key, auto=TestTable2.M.arrayInt$auto, notnull=TestTable2.M.arrayInt$notnull, length=TestTable2.M.arrayInt$length, value=TestTable2.M.arrayInt$value, remarks=TestTable2.M.arrayInt$remarks)
 	public int[] getArrayInt(){
@@ -1034,7 +1034,7 @@ public class DS0001 implements java.io.Serializable{
 	* @Column
 	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_2&nbsp;<B>name:</B> array_int
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 256<br>
-	* <li><B>remarks:</B> 整形数组 #array{int}
+	* <li><B>remarks:</B> array of int. #array{int}
 	* @param defaultValue  Return the default value if arrayInt is null.*/
 	@Column(table=TestTable2.M.TABLE, jdbcType=12, name=TestTable2.M.arrayInt$name, key=TestTable2.M.arrayInt$key, auto=TestTable2.M.arrayInt$auto, notnull=TestTable2.M.arrayInt$notnull, length=TestTable2.M.arrayInt$length, value=TestTable2.M.arrayInt$value, remarks=TestTable2.M.arrayInt$remarks)
 	public int[] getArrayInt(int[] defaultValue){
@@ -1051,7 +1051,7 @@ public class DS0001 implements java.io.Serializable{
 	* @Column
 	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_2&nbsp;<B>name:</B> array_string
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 256<br>
-	* <li><B>remarks:</B> 字符串数组 #array{}
+	* <li><B>remarks:</B> array of string. #array{}
 	*/
 	@Column(table=TestTable2.M.TABLE, jdbcType=12, name=TestTable2.M.arrayString$name, key=TestTable2.M.arrayString$key, auto=TestTable2.M.arrayString$auto, notnull=TestTable2.M.arrayString$notnull, length=TestTable2.M.arrayString$length, value=TestTable2.M.arrayString$value, remarks=TestTable2.M.arrayString$remarks)
 	public String[] getArrayString(){
@@ -1062,7 +1062,7 @@ public class DS0001 implements java.io.Serializable{
 	* @Column
 	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_2&nbsp;<B>name:</B> array_string
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 256<br>
-	* <li><B>remarks:</B> 字符串数组 #array{}
+	* <li><B>remarks:</B> array of string. #array{}
 	* @param defaultValue  Return the default value if arrayString is null.*/
 	@Column(table=TestTable2.M.TABLE, jdbcType=12, name=TestTable2.M.arrayString$name, key=TestTable2.M.arrayString$key, auto=TestTable2.M.arrayString$auto, notnull=TestTable2.M.arrayString$notnull, length=TestTable2.M.arrayString$length, value=TestTable2.M.arrayString$value, remarks=TestTable2.M.arrayString$remarks)
 	public String[] getArrayString(String[] defaultValue){
@@ -1079,7 +1079,7 @@ public class DS0001 implements java.io.Serializable{
 	* @Column
 	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_2&nbsp;<B>name:</B> json
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 1024<br>
-	* <li><B>remarks:</B> Json #json{}
+	* <li><B>remarks:</B> Json object. #json{}
 	*/
 	@Column(table=TestTable2.M.TABLE, jdbcType=12, name=TestTable2.M.json$name, key=TestTable2.M.json$key, auto=TestTable2.M.json$auto, notnull=TestTable2.M.json$notnull, length=TestTable2.M.json$length, value=TestTable2.M.json$value, remarks=TestTable2.M.json$remarks)
 	public JsonObject getJson(){
@@ -1090,7 +1090,7 @@ public class DS0001 implements java.io.Serializable{
 	* @Column
 	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_2&nbsp;<B>name:</B> json
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 1024<br>
-	* <li><B>remarks:</B> Json #json{}
+	* <li><B>remarks:</B> Json object. #json{}
 	* @param defaultValue  Return the default value if json is null.*/
 	@Column(table=TestTable2.M.TABLE, jdbcType=12, name=TestTable2.M.json$name, key=TestTable2.M.json$key, auto=TestTable2.M.json$auto, notnull=TestTable2.M.json$notnull, length=TestTable2.M.json$length, value=TestTable2.M.json$value, remarks=TestTable2.M.json$remarks)
 	public JsonObject getJson(JsonObject defaultValue){
@@ -1107,7 +1107,7 @@ public class DS0001 implements java.io.Serializable{
 	* @Column
 	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_2&nbsp;<B>name:</B> obj
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 1024<br>
-	* <li><B>remarks:</B> Object #json{test.com.tsc9526.monalisa.orm.data.ColumnData}
+	* <li><B>remarks:</B> Json object with given class.  #json{test.com.tsc9526.monalisa.orm.data.ColumnData}
 	*/
 	@Column(table=TestTable2.M.TABLE, jdbcType=12, name=TestTable2.M.obj$name, key=TestTable2.M.obj$key, auto=TestTable2.M.obj$auto, notnull=TestTable2.M.obj$notnull, length=TestTable2.M.obj$length, value=TestTable2.M.obj$value, remarks=TestTable2.M.obj$remarks)
 	public ColumnData getObj(){
@@ -1118,7 +1118,7 @@ public class DS0001 implements java.io.Serializable{
 	* @Column
 	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_2&nbsp;<B>name:</B> obj
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 1024<br>
-	* <li><B>remarks:</B> Object #json{test.com.tsc9526.monalisa.orm.data.ColumnData}
+	* <li><B>remarks:</B> Json object with given class.  #json{test.com.tsc9526.monalisa.orm.data.ColumnData}
 	* @param defaultValue  Return the default value if obj is null.*/
 	@Column(table=TestTable2.M.TABLE, jdbcType=12, name=TestTable2.M.obj$name, key=TestTable2.M.obj$key, auto=TestTable2.M.obj$auto, notnull=TestTable2.M.obj$notnull, length=TestTable2.M.obj$length, value=TestTable2.M.obj$value, remarks=TestTable2.M.obj$remarks)
 	public ColumnData getObj(ColumnData defaultValue){
@@ -1275,7 +1275,7 @@ public class DS0001 implements java.io.Serializable{
 	* @Column
 	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_2&nbsp;<B>name:</B> id &nbsp;[<font color=red>KEY</font>|<font color=red>AUTO</font>|<font color=red>NOTNULL</font>]
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 10<br>
-	* <li><B>remarks:</B> 唯一主键
+	* <li><B>remarks:</B> primary key
 	*/
 	@Column(table=TestTable2.M.TABLE, jdbcType=4, name=TestTable2.M.id$name, key=TestTable2.M.id$key, auto=TestTable2.M.id$auto, notnull=TestTable2.M.id$notnull, length=TestTable2.M.id$length, value=TestTable2.M.id$value, remarks=TestTable2.M.id$remarks)
 	public Integer getId2(){
@@ -1286,7 +1286,7 @@ public class DS0001 implements java.io.Serializable{
 	* @Column
 	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_2&nbsp;<B>name:</B> id &nbsp;[<font color=red>KEY</font>|<font color=red>AUTO</font>|<font color=red>NOTNULL</font>]
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 10<br>
-	* <li><B>remarks:</B> 唯一主键
+	* <li><B>remarks:</B> primary key
 	* @param defaultValue  Return the default value if id2 is null.*/
 	@Column(table=TestTable2.M.TABLE, jdbcType=4, name=TestTable2.M.id$name, key=TestTable2.M.id$key, auto=TestTable2.M.id$auto, notnull=TestTable2.M.id$notnull, length=TestTable2.M.id$length, value=TestTable2.M.id$value, remarks=TestTable2.M.id$remarks)
 	public Integer getId2(Integer defaultValue){

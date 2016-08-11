@@ -57,7 +57,7 @@ public class TestLogyyyymm extends com.tsc9526.monalisa.orm.model.Model<TestLogy
 	/**
 	 * Constructor use primary keys.
 	 *
-	 * @param id  唯一主键	 
+	 * @param id  primary key	 
 	 */
 	public TestLogyyyymm(Integer id){
 		super("test_logyyyymm_", "id");
@@ -70,16 +70,16 @@ public class TestLogyyyymm extends com.tsc9526.monalisa.orm.model.Model<TestLogy
 	
 	/**
 	* @Column
-	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201603&nbsp;<B>name:</B> id &nbsp;[<font color=red>KEY</font>|<font color=red>AUTO</font>|<font color=red>NOTNULL</font>]
+	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201602&nbsp;<B>name:</B> id &nbsp;[<font color=red>KEY</font>|<font color=red>AUTO</font>|<font color=red>NOTNULL</font>]
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 10<br>
-	* <li><B>remarks:</B> 唯一主键
+	* <li><B>remarks:</B> primary key
 	*/
 	@Column(table=M.TABLE, jdbcType=4, name=M.id$name, key=M.id$key, auto=M.id$auto, notnull=M.id$notnull, length=M.id$length, value=M.id$value, remarks=M.id$remarks)
 	private Integer id;	
 	
 	/**
 	* @Column
-	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201603&nbsp;<B>name:</B> log_time &nbsp;[<font color=red>NOTNULL</font>]
+	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201602&nbsp;<B>name:</B> log_time &nbsp;[<font color=red>NOTNULL</font>]
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 19<br>
 	* <li><B>remarks:</B> 
 	*/
@@ -88,34 +88,34 @@ public class TestLogyyyymm extends com.tsc9526.monalisa.orm.model.Model<TestLogy
 	
 	/**
 	* @Column
-	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201603&nbsp;<B>name:</B> name
+	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201602&nbsp;<B>name:</B> name
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 128<br>
-	* <li><B>remarks:</B> 名称
+	* <li><B>remarks:</B> the name
 	*/
 	@Column(table=M.TABLE, jdbcType=12, name=M.name$name, key=M.name$key, auto=M.name$auto, notnull=M.name$notnull, length=M.name$length, value=M.name$value, remarks=M.name$remarks)
 	private String name;	
 	
 	/**
 	* @Column
-	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201603&nbsp;<B>name:</B> enum_int_a &nbsp;[<font color=red>ENUM</font>]
+	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201602&nbsp;<B>name:</B> enum_int_a &nbsp;[<font color=red>ENUM</font>]
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 10<br>
-	* <li><B>remarks:</B> 枚举字段A  #enum{{V0,V1}}
+	* <li><B>remarks:</B> enum field a.  #enum{{V0,V1}}
 	*/
 	@Column(table=M.TABLE, jdbcType=4, name=M.enumIntA$name, key=M.enumIntA$key, auto=M.enumIntA$auto, notnull=M.enumIntA$notnull, length=M.enumIntA$length, value=M.enumIntA$value, remarks=M.enumIntA$remarks)
 	private EnumIntA enumIntA;	
 	
 	/**
 	* @Column
-	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201603&nbsp;<B>name:</B> enum_string_a &nbsp;[<font color=red>ENUM</font>]
+	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201602&nbsp;<B>name:</B> enum_string_a &nbsp;[<font color=red>ENUM</font>]
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 64<br>
-	* <li><B>remarks:</B> #enum{{ TRUE, FALSE}}
+	* <li><B>remarks:</B> enum field string. #enum{{ TRUE, FALSE}}
 	*/
 	@Column(table=M.TABLE, jdbcType=12, name=M.enumStringA$name, key=M.enumStringA$key, auto=M.enumStringA$auto, notnull=M.enumStringA$notnull, length=M.enumStringA$length, value=M.enumStringA$value, remarks=M.enumStringA$remarks)
 	private EnumStringA enumStringA;	
 	
 	/**
 	* @Column
-	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201603&nbsp;<B>name:</B> create_time
+	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201602&nbsp;<B>name:</B> create_time
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 19<br>
 	* <li><B>remarks:</B> 
 	*/
@@ -124,7 +124,7 @@ public class TestLogyyyymm extends com.tsc9526.monalisa.orm.model.Model<TestLogy
 	
 	/**
 	* @Column
-	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201603&nbsp;<B>name:</B> create_by
+	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201602&nbsp;<B>name:</B> create_by
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 64<br>
 	* <li><B>remarks:</B> 
 	*/
@@ -133,7 +133,7 @@ public class TestLogyyyymm extends com.tsc9526.monalisa.orm.model.Model<TestLogy
 	
 	/**
 	* @Column
-	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201603&nbsp;<B>name:</B> update_time
+	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201602&nbsp;<B>name:</B> update_time
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 19<br>
 	* <li><B>remarks:</B> 
 	*/
@@ -142,7 +142,7 @@ public class TestLogyyyymm extends com.tsc9526.monalisa.orm.model.Model<TestLogy
 	
 	/**
 	* @Column
-	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201603&nbsp;<B>name:</B> update_by
+	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201602&nbsp;<B>name:</B> update_by
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 64<br>
 	* <li><B>remarks:</B> 
 	*/
@@ -154,9 +154,9 @@ public class TestLogyyyymm extends com.tsc9526.monalisa.orm.model.Model<TestLogy
 	
 	/**
 	* @Column
-	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201603&nbsp;<B>name:</B> id &nbsp;[<font color=red>KEY</font>|<font color=red>AUTO</font>|<font color=red>NOTNULL</font>]
+	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201602&nbsp;<B>name:</B> id &nbsp;[<font color=red>KEY</font>|<font color=red>AUTO</font>|<font color=red>NOTNULL</font>]
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 10<br>
-	* <li><B>remarks:</B> 唯一主键
+	* <li><B>remarks:</B> primary key
 	*/
 	@Column(table=M.TABLE, jdbcType=4, name=M.id$name, key=M.id$key, auto=M.id$auto, notnull=M.id$notnull, length=M.id$length, value=M.id$value, remarks=M.id$remarks) 
 	public TestLogyyyymm setId(Integer id){
@@ -170,7 +170,7 @@ public class TestLogyyyymm extends com.tsc9526.monalisa.orm.model.Model<TestLogy
 	
 	/**
 	* @Column
-	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201603&nbsp;<B>name:</B> log_time &nbsp;[<font color=red>NOTNULL</font>]
+	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201602&nbsp;<B>name:</B> log_time &nbsp;[<font color=red>NOTNULL</font>]
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 19<br>
 	* <li><B>remarks:</B> 
 	*/
@@ -186,9 +186,9 @@ public class TestLogyyyymm extends com.tsc9526.monalisa.orm.model.Model<TestLogy
 	
 	/**
 	* @Column
-	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201603&nbsp;<B>name:</B> name
+	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201602&nbsp;<B>name:</B> name
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 128<br>
-	* <li><B>remarks:</B> 名称
+	* <li><B>remarks:</B> the name
 	*/
 	@Column(table=M.TABLE, jdbcType=12, name=M.name$name, key=M.name$key, auto=M.name$auto, notnull=M.name$notnull, length=M.name$length, value=M.name$value, remarks=M.name$remarks) 
 	public TestLogyyyymm setName(String name){
@@ -202,9 +202,9 @@ public class TestLogyyyymm extends com.tsc9526.monalisa.orm.model.Model<TestLogy
 	
 	/**
 	* @Column
-	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201603&nbsp;<B>name:</B> enum_int_a &nbsp;[<font color=red>ENUM</font>]
+	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201602&nbsp;<B>name:</B> enum_int_a &nbsp;[<font color=red>ENUM</font>]
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 10<br>
-	* <li><B>remarks:</B> 枚举字段A  #enum{{V0,V1}}
+	* <li><B>remarks:</B> enum field a.  #enum{{V0,V1}}
 	*/
 	@Column(table=M.TABLE, jdbcType=4, name=M.enumIntA$name, key=M.enumIntA$key, auto=M.enumIntA$auto, notnull=M.enumIntA$notnull, length=M.enumIntA$length, value=M.enumIntA$value, remarks=M.enumIntA$remarks) 
 	public TestLogyyyymm setEnumIntA(EnumIntA enumIntA){
@@ -218,9 +218,9 @@ public class TestLogyyyymm extends com.tsc9526.monalisa.orm.model.Model<TestLogy
 	
 	/**
 	* @Column
-	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201603&nbsp;<B>name:</B> enum_string_a &nbsp;[<font color=red>ENUM</font>]
+	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201602&nbsp;<B>name:</B> enum_string_a &nbsp;[<font color=red>ENUM</font>]
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 64<br>
-	* <li><B>remarks:</B> #enum{{ TRUE, FALSE}}
+	* <li><B>remarks:</B> enum field string. #enum{{ TRUE, FALSE}}
 	*/
 	@Column(table=M.TABLE, jdbcType=12, name=M.enumStringA$name, key=M.enumStringA$key, auto=M.enumStringA$auto, notnull=M.enumStringA$notnull, length=M.enumStringA$length, value=M.enumStringA$value, remarks=M.enumStringA$remarks) 
 	public TestLogyyyymm setEnumStringA(EnumStringA enumStringA){
@@ -234,7 +234,7 @@ public class TestLogyyyymm extends com.tsc9526.monalisa.orm.model.Model<TestLogy
 	
 	/**
 	* @Column
-	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201603&nbsp;<B>name:</B> create_time
+	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201602&nbsp;<B>name:</B> create_time
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 19<br>
 	* <li><B>remarks:</B> 
 	*/
@@ -250,7 +250,7 @@ public class TestLogyyyymm extends com.tsc9526.monalisa.orm.model.Model<TestLogy
 	
 	/**
 	* @Column
-	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201603&nbsp;<B>name:</B> create_by
+	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201602&nbsp;<B>name:</B> create_by
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 64<br>
 	* <li><B>remarks:</B> 
 	*/
@@ -266,7 +266,7 @@ public class TestLogyyyymm extends com.tsc9526.monalisa.orm.model.Model<TestLogy
 	
 	/**
 	* @Column
-	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201603&nbsp;<B>name:</B> update_time
+	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201602&nbsp;<B>name:</B> update_time
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 19<br>
 	* <li><B>remarks:</B> 
 	*/
@@ -282,7 +282,7 @@ public class TestLogyyyymm extends com.tsc9526.monalisa.orm.model.Model<TestLogy
 	
 	/**
 	* @Column
-	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201603&nbsp;<B>name:</B> update_by
+	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201602&nbsp;<B>name:</B> update_by
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 64<br>
 	* <li><B>remarks:</B> 
 	*/
@@ -299,9 +299,9 @@ public class TestLogyyyymm extends com.tsc9526.monalisa.orm.model.Model<TestLogy
 	
 	/**
 	* @Column
-	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201603&nbsp;<B>name:</B> id &nbsp;[<font color=red>KEY</font>|<font color=red>AUTO</font>|<font color=red>NOTNULL</font>]
+	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201602&nbsp;<B>name:</B> id &nbsp;[<font color=red>KEY</font>|<font color=red>AUTO</font>|<font color=red>NOTNULL</font>]
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 10<br>
-	* <li><B>remarks:</B> 唯一主键
+	* <li><B>remarks:</B> primary key
 	*/
 	@Column(table=M.TABLE, jdbcType=4, name=M.id$name, key=M.id$key, auto=M.id$auto, notnull=M.id$notnull, length=M.id$length, value=M.id$value, remarks=M.id$remarks) 
 	public Integer getId(){
@@ -311,9 +311,9 @@ public class TestLogyyyymm extends com.tsc9526.monalisa.orm.model.Model<TestLogy
 	
 	/**
 	* @Column
-	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201603&nbsp;<B>name:</B> id &nbsp;[<font color=red>KEY</font>|<font color=red>AUTO</font>|<font color=red>NOTNULL</font>]
+	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201602&nbsp;<B>name:</B> id &nbsp;[<font color=red>KEY</font>|<font color=red>AUTO</font>|<font color=red>NOTNULL</font>]
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 10<br>
-	* <li><B>remarks:</B> 唯一主键
+	* <li><B>remarks:</B> primary key
 	* @param defaultValue  Return the default value if id is null.
 	*/
 	@Column(table=M.TABLE, jdbcType=4, name=M.id$name, key=M.id$key, auto=M.id$auto, notnull=M.id$notnull, length=M.id$length, value=M.id$value, remarks=M.id$remarks) 
@@ -330,7 +330,7 @@ public class TestLogyyyymm extends com.tsc9526.monalisa.orm.model.Model<TestLogy
 	
 	/**
 	* @Column
-	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201603&nbsp;<B>name:</B> log_time &nbsp;[<font color=red>NOTNULL</font>]
+	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201602&nbsp;<B>name:</B> log_time &nbsp;[<font color=red>NOTNULL</font>]
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 19<br>
 	* <li><B>remarks:</B> 
 	*/
@@ -342,7 +342,7 @@ public class TestLogyyyymm extends com.tsc9526.monalisa.orm.model.Model<TestLogy
 	
 	/**
 	* @Column
-	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201603&nbsp;<B>name:</B> log_time &nbsp;[<font color=red>NOTNULL</font>]
+	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201602&nbsp;<B>name:</B> log_time &nbsp;[<font color=red>NOTNULL</font>]
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 19<br>
 	* <li><B>remarks:</B> 
 	* @param defaultValue  Return the default value if logTime is null.
@@ -361,9 +361,9 @@ public class TestLogyyyymm extends com.tsc9526.monalisa.orm.model.Model<TestLogy
 	
 	/**
 	* @Column
-	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201603&nbsp;<B>name:</B> name
+	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201602&nbsp;<B>name:</B> name
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 128<br>
-	* <li><B>remarks:</B> 名称
+	* <li><B>remarks:</B> the name
 	*/
 	@Column(table=M.TABLE, jdbcType=12, name=M.name$name, key=M.name$key, auto=M.name$auto, notnull=M.name$notnull, length=M.name$length, value=M.name$value, remarks=M.name$remarks) 
 	public String getName(){
@@ -373,9 +373,9 @@ public class TestLogyyyymm extends com.tsc9526.monalisa.orm.model.Model<TestLogy
 	
 	/**
 	* @Column
-	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201603&nbsp;<B>name:</B> name
+	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201602&nbsp;<B>name:</B> name
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 128<br>
-	* <li><B>remarks:</B> 名称
+	* <li><B>remarks:</B> the name
 	* @param defaultValue  Return the default value if name is null.
 	*/
 	@Column(table=M.TABLE, jdbcType=12, name=M.name$name, key=M.name$key, auto=M.name$auto, notnull=M.name$notnull, length=M.name$length, value=M.name$value, remarks=M.name$remarks) 
@@ -392,9 +392,9 @@ public class TestLogyyyymm extends com.tsc9526.monalisa.orm.model.Model<TestLogy
 	
 	/**
 	* @Column
-	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201603&nbsp;<B>name:</B> enum_int_a &nbsp;[<font color=red>ENUM</font>]
+	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201602&nbsp;<B>name:</B> enum_int_a &nbsp;[<font color=red>ENUM</font>]
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 10<br>
-	* <li><B>remarks:</B> 枚举字段A  #enum{{V0,V1}}
+	* <li><B>remarks:</B> enum field a.  #enum{{V0,V1}}
 	*/
 	@Column(table=M.TABLE, jdbcType=4, name=M.enumIntA$name, key=M.enumIntA$key, auto=M.enumIntA$auto, notnull=M.enumIntA$notnull, length=M.enumIntA$length, value=M.enumIntA$value, remarks=M.enumIntA$remarks) 
 	public EnumIntA getEnumIntA(){
@@ -404,9 +404,9 @@ public class TestLogyyyymm extends com.tsc9526.monalisa.orm.model.Model<TestLogy
 	
 	/**
 	* @Column
-	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201603&nbsp;<B>name:</B> enum_int_a &nbsp;[<font color=red>ENUM</font>]
+	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201602&nbsp;<B>name:</B> enum_int_a &nbsp;[<font color=red>ENUM</font>]
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 10<br>
-	* <li><B>remarks:</B> 枚举字段A  #enum{{V0,V1}}
+	* <li><B>remarks:</B> enum field a.  #enum{{V0,V1}}
 	* @param defaultValue  Return the default value if enumIntA is null.
 	*/
 	@Column(table=M.TABLE, jdbcType=4, name=M.enumIntA$name, key=M.enumIntA$key, auto=M.enumIntA$auto, notnull=M.enumIntA$notnull, length=M.enumIntA$length, value=M.enumIntA$value, remarks=M.enumIntA$remarks) 
@@ -423,9 +423,9 @@ public class TestLogyyyymm extends com.tsc9526.monalisa.orm.model.Model<TestLogy
 	
 	/**
 	* @Column
-	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201603&nbsp;<B>name:</B> enum_string_a &nbsp;[<font color=red>ENUM</font>]
+	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201602&nbsp;<B>name:</B> enum_string_a &nbsp;[<font color=red>ENUM</font>]
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 64<br>
-	* <li><B>remarks:</B> #enum{{ TRUE, FALSE}}
+	* <li><B>remarks:</B> enum field string. #enum{{ TRUE, FALSE}}
 	*/
 	@Column(table=M.TABLE, jdbcType=12, name=M.enumStringA$name, key=M.enumStringA$key, auto=M.enumStringA$auto, notnull=M.enumStringA$notnull, length=M.enumStringA$length, value=M.enumStringA$value, remarks=M.enumStringA$remarks) 
 	public EnumStringA getEnumStringA(){
@@ -435,9 +435,9 @@ public class TestLogyyyymm extends com.tsc9526.monalisa.orm.model.Model<TestLogy
 	
 	/**
 	* @Column
-	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201603&nbsp;<B>name:</B> enum_string_a &nbsp;[<font color=red>ENUM</font>]
+	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201602&nbsp;<B>name:</B> enum_string_a &nbsp;[<font color=red>ENUM</font>]
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 64<br>
-	* <li><B>remarks:</B> #enum{{ TRUE, FALSE}}
+	* <li><B>remarks:</B> enum field string. #enum{{ TRUE, FALSE}}
 	* @param defaultValue  Return the default value if enumStringA is null.
 	*/
 	@Column(table=M.TABLE, jdbcType=12, name=M.enumStringA$name, key=M.enumStringA$key, auto=M.enumStringA$auto, notnull=M.enumStringA$notnull, length=M.enumStringA$length, value=M.enumStringA$value, remarks=M.enumStringA$remarks) 
@@ -454,7 +454,7 @@ public class TestLogyyyymm extends com.tsc9526.monalisa.orm.model.Model<TestLogy
 	
 	/**
 	* @Column
-	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201603&nbsp;<B>name:</B> create_time
+	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201602&nbsp;<B>name:</B> create_time
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 19<br>
 	* <li><B>remarks:</B> 
 	*/
@@ -466,7 +466,7 @@ public class TestLogyyyymm extends com.tsc9526.monalisa.orm.model.Model<TestLogy
 	
 	/**
 	* @Column
-	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201603&nbsp;<B>name:</B> create_time
+	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201602&nbsp;<B>name:</B> create_time
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 19<br>
 	* <li><B>remarks:</B> 
 	* @param defaultValue  Return the default value if createTime is null.
@@ -485,7 +485,7 @@ public class TestLogyyyymm extends com.tsc9526.monalisa.orm.model.Model<TestLogy
 	
 	/**
 	* @Column
-	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201603&nbsp;<B>name:</B> create_by
+	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201602&nbsp;<B>name:</B> create_by
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 64<br>
 	* <li><B>remarks:</B> 
 	*/
@@ -497,7 +497,7 @@ public class TestLogyyyymm extends com.tsc9526.monalisa.orm.model.Model<TestLogy
 	
 	/**
 	* @Column
-	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201603&nbsp;<B>name:</B> create_by
+	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201602&nbsp;<B>name:</B> create_by
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 64<br>
 	* <li><B>remarks:</B> 
 	* @param defaultValue  Return the default value if createBy is null.
@@ -516,7 +516,7 @@ public class TestLogyyyymm extends com.tsc9526.monalisa.orm.model.Model<TestLogy
 	
 	/**
 	* @Column
-	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201603&nbsp;<B>name:</B> update_time
+	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201602&nbsp;<B>name:</B> update_time
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 19<br>
 	* <li><B>remarks:</B> 
 	*/
@@ -528,7 +528,7 @@ public class TestLogyyyymm extends com.tsc9526.monalisa.orm.model.Model<TestLogy
 	
 	/**
 	* @Column
-	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201603&nbsp;<B>name:</B> update_time
+	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201602&nbsp;<B>name:</B> update_time
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 19<br>
 	* <li><B>remarks:</B> 
 	* @param defaultValue  Return the default value if updateTime is null.
@@ -547,7 +547,7 @@ public class TestLogyyyymm extends com.tsc9526.monalisa.orm.model.Model<TestLogy
 	
 	/**
 	* @Column
-	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201603&nbsp;<B>name:</B> update_by
+	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201602&nbsp;<B>name:</B> update_by
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 64<br>
 	* <li><B>remarks:</B> 
 	*/
@@ -559,7 +559,7 @@ public class TestLogyyyymm extends com.tsc9526.monalisa.orm.model.Model<TestLogy
 	
 	/**
 	* @Column
-	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201603&nbsp;<B>name:</B> update_by
+	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201602&nbsp;<B>name:</B> update_by
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 64<br>
 	* <li><B>remarks:</B> 
 	* @param defaultValue  Return the default value if updateBy is null.
@@ -754,16 +754,16 @@ public class TestLogyyyymm extends com.tsc9526.monalisa.orm.model.Model<TestLogy
 		
 		/**
 		* @Column
-		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201603&nbsp;<B>name:</B> id &nbsp;[<font color=red>KEY</font>|<font color=red>AUTO</font>|<font color=red>NOTNULL</font>]
+		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201602&nbsp;<B>name:</B> id &nbsp;[<font color=red>KEY</font>|<font color=red>AUTO</font>|<font color=red>NOTNULL</font>]
 		* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 10<br>
-		* <li><B>remarks:</B> 唯一主键
+		* <li><B>remarks:</B> primary key
 		*/
 		@Column(table=M.TABLE, jdbcType=4, name=M.id$name, key=M.id$key, auto=M.id$auto, notnull=M.id$notnull, length=M.id$length, value=M.id$value, remarks=M.id$remarks)
 		public com.tsc9526.monalisa.orm.criteria.Field.FieldInteger<Criteria> id = new com.tsc9526.monalisa.orm.criteria.Field.FieldInteger<Criteria>("id", this);
 			
 		/**
 		* @Column
-		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201603&nbsp;<B>name:</B> log_time &nbsp;[<font color=red>NOTNULL</font>]
+		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201602&nbsp;<B>name:</B> log_time &nbsp;[<font color=red>NOTNULL</font>]
 		* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 19<br>
 		* <li><B>remarks:</B> 
 		*/
@@ -772,34 +772,34 @@ public class TestLogyyyymm extends com.tsc9526.monalisa.orm.model.Model<TestLogy
 			
 		/**
 		* @Column
-		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201603&nbsp;<B>name:</B> name
+		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201602&nbsp;<B>name:</B> name
 		* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 128<br>
-		* <li><B>remarks:</B> 名称
+		* <li><B>remarks:</B> the name
 		*/
 		@Column(table=M.TABLE, jdbcType=12, name=M.name$name, key=M.name$key, auto=M.name$auto, notnull=M.name$notnull, length=M.name$length, value=M.name$value, remarks=M.name$remarks)
 		public com.tsc9526.monalisa.orm.criteria.Field.FieldString<Criteria> name = new com.tsc9526.monalisa.orm.criteria.Field.FieldString<Criteria>("name", this);
 			
 		/**
 		* @Column
-		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201603&nbsp;<B>name:</B> enum_int_a &nbsp;[<font color=red>ENUM</font>]
+		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201602&nbsp;<B>name:</B> enum_int_a &nbsp;[<font color=red>ENUM</font>]
 		* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 10<br>
-		* <li><B>remarks:</B> 枚举字段A  #enum{{V0,V1}}
+		* <li><B>remarks:</B> enum field a.  #enum{{V0,V1}}
 		*/
 		@Column(table=M.TABLE, jdbcType=4, name=M.enumIntA$name, key=M.enumIntA$key, auto=M.enumIntA$auto, notnull=M.enumIntA$notnull, length=M.enumIntA$length, value=M.enumIntA$value, remarks=M.enumIntA$remarks)
 		public com.tsc9526.monalisa.orm.criteria.Field<EnumIntA,Criteria> enumIntA = new com.tsc9526.monalisa.orm.criteria.Field<EnumIntA,Criteria>("enum_int_a", this, 4);		 
 			
 		/**
 		* @Column
-		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201603&nbsp;<B>name:</B> enum_string_a &nbsp;[<font color=red>ENUM</font>]
+		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201602&nbsp;<B>name:</B> enum_string_a &nbsp;[<font color=red>ENUM</font>]
 		* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 64<br>
-		* <li><B>remarks:</B> #enum{{ TRUE, FALSE}}
+		* <li><B>remarks:</B> enum field string. #enum{{ TRUE, FALSE}}
 		*/
 		@Column(table=M.TABLE, jdbcType=12, name=M.enumStringA$name, key=M.enumStringA$key, auto=M.enumStringA$auto, notnull=M.enumStringA$notnull, length=M.enumStringA$length, value=M.enumStringA$value, remarks=M.enumStringA$remarks)
 		public com.tsc9526.monalisa.orm.criteria.Field<EnumStringA,Criteria> enumStringA = new com.tsc9526.monalisa.orm.criteria.Field<EnumStringA,Criteria>("enum_string_a", this, 12);		 
 			
 		/**
 		* @Column
-		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201603&nbsp;<B>name:</B> create_time
+		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201602&nbsp;<B>name:</B> create_time
 		* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 19<br>
 		* <li><B>remarks:</B> 
 		*/
@@ -808,7 +808,7 @@ public class TestLogyyyymm extends com.tsc9526.monalisa.orm.model.Model<TestLogy
 			
 		/**
 		* @Column
-		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201603&nbsp;<B>name:</B> create_by
+		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201602&nbsp;<B>name:</B> create_by
 		* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 64<br>
 		* <li><B>remarks:</B> 
 		*/
@@ -817,7 +817,7 @@ public class TestLogyyyymm extends com.tsc9526.monalisa.orm.model.Model<TestLogy
 			
 		/**
 		* @Column
-		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201603&nbsp;<B>name:</B> update_time
+		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201602&nbsp;<B>name:</B> update_time
 		* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 19<br>
 		* <li><B>remarks:</B> 
 		*/
@@ -826,7 +826,7 @@ public class TestLogyyyymm extends com.tsc9526.monalisa.orm.model.Model<TestLogy
 			
 		/**
 		* @Column
-		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201603&nbsp;<B>name:</B> update_by
+		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201602&nbsp;<B>name:</B> update_by
 		* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 64<br>
 		* <li><B>remarks:</B> 
 		*/
@@ -850,16 +850,16 @@ public class TestLogyyyymm extends com.tsc9526.monalisa.orm.model.Model<TestLogy
 		
 		/**
 		* @Column
-		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201603&nbsp;<B>name:</B> id &nbsp;[<font color=red>KEY</font>|<font color=red>AUTO</font>|<font color=red>NOTNULL</font>]
+		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201602&nbsp;<B>name:</B> id &nbsp;[<font color=red>KEY</font>|<font color=red>AUTO</font>|<font color=red>NOTNULL</font>]
 		* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 10<br>
-		* <li><B>remarks:</B> 唯一主键
+		* <li><B>remarks:</B> primary key
 		*/
 		@Column(table=M.TABLE, jdbcType=4, name=M.id$name, key=M.id$key, auto=M.id$auto, notnull=M.id$notnull, length=M.id$length, value=M.id$value, remarks=M.id$remarks)
 		public final static String  id         = "id";
 		
 		/**
 		* @Column
-		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201603&nbsp;<B>name:</B> log_time &nbsp;[<font color=red>NOTNULL</font>]
+		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201602&nbsp;<B>name:</B> log_time &nbsp;[<font color=red>NOTNULL</font>]
 		* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 19<br>
 		* <li><B>remarks:</B> 
 		*/
@@ -868,34 +868,34 @@ public class TestLogyyyymm extends com.tsc9526.monalisa.orm.model.Model<TestLogy
 		
 		/**
 		* @Column
-		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201603&nbsp;<B>name:</B> name
+		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201602&nbsp;<B>name:</B> name
 		* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 128<br>
-		* <li><B>remarks:</B> 名称
+		* <li><B>remarks:</B> the name
 		*/
 		@Column(table=M.TABLE, jdbcType=12, name=M.name$name, key=M.name$key, auto=M.name$auto, notnull=M.name$notnull, length=M.name$length, value=M.name$value, remarks=M.name$remarks)
 		public final static String  name         = "name";
 		
 		/**
 		* @Column
-		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201603&nbsp;<B>name:</B> enum_int_a &nbsp;[<font color=red>ENUM</font>]
+		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201602&nbsp;<B>name:</B> enum_int_a &nbsp;[<font color=red>ENUM</font>]
 		* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 10<br>
-		* <li><B>remarks:</B> 枚举字段A  #enum{{V0,V1}}
+		* <li><B>remarks:</B> enum field a.  #enum{{V0,V1}}
 		*/
 		@Column(table=M.TABLE, jdbcType=4, name=M.enumIntA$name, key=M.enumIntA$key, auto=M.enumIntA$auto, notnull=M.enumIntA$notnull, length=M.enumIntA$length, value=M.enumIntA$value, remarks=M.enumIntA$remarks)
 		public final static String  enumIntA         = "enum_int_a";
 		
 		/**
 		* @Column
-		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201603&nbsp;<B>name:</B> enum_string_a &nbsp;[<font color=red>ENUM</font>]
+		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201602&nbsp;<B>name:</B> enum_string_a &nbsp;[<font color=red>ENUM</font>]
 		* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 64<br>
-		* <li><B>remarks:</B> #enum{{ TRUE, FALSE}}
+		* <li><B>remarks:</B> enum field string. #enum{{ TRUE, FALSE}}
 		*/
 		@Column(table=M.TABLE, jdbcType=12, name=M.enumStringA$name, key=M.enumStringA$key, auto=M.enumStringA$auto, notnull=M.enumStringA$notnull, length=M.enumStringA$length, value=M.enumStringA$value, remarks=M.enumStringA$remarks)
 		public final static String  enumStringA         = "enum_string_a";
 		
 		/**
 		* @Column
-		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201603&nbsp;<B>name:</B> create_time
+		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201602&nbsp;<B>name:</B> create_time
 		* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 19<br>
 		* <li><B>remarks:</B> 
 		*/
@@ -904,7 +904,7 @@ public class TestLogyyyymm extends com.tsc9526.monalisa.orm.model.Model<TestLogy
 		
 		/**
 		* @Column
-		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201603&nbsp;<B>name:</B> create_by
+		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201602&nbsp;<B>name:</B> create_by
 		* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 64<br>
 		* <li><B>remarks:</B> 
 		*/
@@ -913,7 +913,7 @@ public class TestLogyyyymm extends com.tsc9526.monalisa.orm.model.Model<TestLogy
 		
 		/**
 		* @Column
-		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201603&nbsp;<B>name:</B> update_time
+		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201602&nbsp;<B>name:</B> update_time
 		* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 19<br>
 		* <li><B>remarks:</B> 
 		*/
@@ -922,7 +922,7 @@ public class TestLogyyyymm extends com.tsc9526.monalisa.orm.model.Model<TestLogy
 		
 		/**
 		* @Column
-		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201603&nbsp;<B>name:</B> update_by
+		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201602&nbsp;<B>name:</B> update_by
 		* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 64<br>
 		* <li><B>remarks:</B> 
 		*/
@@ -943,7 +943,7 @@ public class TestLogyyyymm extends com.tsc9526.monalisa.orm.model.Model<TestLogy
 		public final static boolean id$key     = true;
 		public final static int     id$length  = 10;
 		public final static String  id$value   = "NULL";
-		public final static String  id$remarks = "唯一主键";
+		public final static String  id$remarks = "primary key";
 		public final static boolean id$auto    = true;
 		public final static boolean id$notnull = true;
 		
@@ -961,7 +961,7 @@ public class TestLogyyyymm extends com.tsc9526.monalisa.orm.model.Model<TestLogy
 		public final static boolean name$key     = false;
 		public final static int     name$length  = 128;
 		public final static String  name$value   = "NULL";
-		public final static String  name$remarks = "名称";
+		public final static String  name$remarks = "the name";
 		public final static boolean name$auto    = false;
 		public final static boolean name$notnull = false;
 		
@@ -970,7 +970,7 @@ public class TestLogyyyymm extends com.tsc9526.monalisa.orm.model.Model<TestLogy
 		public final static boolean enumIntA$key     = false;
 		public final static int     enumIntA$length  = 10;
 		public final static String  enumIntA$value   = "NULL";
-		public final static String  enumIntA$remarks = "枚举字段A  #enum{{V0,V1}}";
+		public final static String  enumIntA$remarks = "enum field a.  #enum{{V0,V1}}";
 		public final static boolean enumIntA$auto    = false;
 		public final static boolean enumIntA$notnull = false;
 		
@@ -979,7 +979,7 @@ public class TestLogyyyymm extends com.tsc9526.monalisa.orm.model.Model<TestLogy
 		public final static boolean enumStringA$key     = false;
 		public final static int     enumStringA$length  = 64;
 		public final static String  enumStringA$value   = "NULL";
-		public final static String  enumStringA$remarks = "#enum{{ TRUE, FALSE}}";
+		public final static String  enumStringA$remarks = "enum field string. #enum{{ TRUE, FALSE}}";
 		public final static boolean enumStringA$auto    = false;
 		public final static boolean enumStringA$notnull = false;
 		

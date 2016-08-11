@@ -59,7 +59,7 @@ public class TestTable2 extends com.tsc9526.monalisa.orm.model.Model<TestTable2>
 	/**
 	 * Constructor use primary keys.
 	 *
-	 * @param id  唯一主键	 
+	 * @param id  primary key	 
 	 */
 	public TestTable2(Integer id){
 		super("test_table_2", "id");
@@ -74,7 +74,7 @@ public class TestTable2 extends com.tsc9526.monalisa.orm.model.Model<TestTable2>
 	* @Column
 	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_2&nbsp;<B>name:</B> id &nbsp;[<font color=red>KEY</font>|<font color=red>AUTO</font>|<font color=red>NOTNULL</font>]
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 10<br>
-	* <li><B>remarks:</B> 唯一主键
+	* <li><B>remarks:</B> primary key
 	*/
 	@Column(table=M.TABLE, jdbcType=4, name=M.id$name, key=M.id$key, auto=M.id$auto, notnull=M.id$notnull, length=M.id$length, value=M.id$value, remarks=M.id$remarks)
 	private Integer id;	
@@ -83,7 +83,7 @@ public class TestTable2 extends com.tsc9526.monalisa.orm.model.Model<TestTable2>
 	* @Column
 	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_2&nbsp;<B>name:</B> name &nbsp;[<font color=red>NOTNULL</font>]
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 128 &nbsp;<B>value:</B> N0001<br>
-	* <li><B>remarks:</B> 名称
+	* <li><B>remarks:</B> the name
 	*/
 	@Column(table=M.TABLE, jdbcType=12, name=M.name$name, key=M.name$key, auto=M.name$auto, notnull=M.name$notnull, length=M.name$length, value=M.name$value, remarks=M.name$remarks)
 	private String name;	
@@ -92,7 +92,7 @@ public class TestTable2 extends com.tsc9526.monalisa.orm.model.Model<TestTable2>
 	* @Column
 	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_2&nbsp;<B>name:</B> title
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 128<br>
-	* <li><B>remarks:</B> 标题
+	* <li><B>remarks:</B> the title
 	*/
 	@Column(table=M.TABLE, jdbcType=12, name=M.title$name, key=M.title$key, auto=M.title$auto, notnull=M.title$notnull, length=M.title$length, value=M.title$value, remarks=M.title$remarks)
 	private String title;	
@@ -101,7 +101,7 @@ public class TestTable2 extends com.tsc9526.monalisa.orm.model.Model<TestTable2>
 	* @Column
 	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_2&nbsp;<B>name:</B> enum_int_a &nbsp;[<font color=red>NOTNULL</font>|<font color=red>ENUM</font>]
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 10 &nbsp;<B>value:</B> 0<br>
-	* <li><B>remarks:</B> 枚举字段A  #enum{{V0,V1}}
+	* <li><B>remarks:</B> enum fields A  #enum{{V0,V1}}
 	*/
 	@Column(table=M.TABLE, jdbcType=4, name=M.enumIntA$name, key=M.enumIntA$key, auto=M.enumIntA$auto, notnull=M.enumIntA$notnull, length=M.enumIntA$length, value=M.enumIntA$value, remarks=M.enumIntA$remarks)
 	private EnumIntA enumIntA;	
@@ -119,7 +119,7 @@ public class TestTable2 extends com.tsc9526.monalisa.orm.model.Model<TestTable2>
 	* @Column
 	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_2&nbsp;<B>name:</B> array_int
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 256<br>
-	* <li><B>remarks:</B> 整形数组 #array{int}
+	* <li><B>remarks:</B> array of int. #array{int}
 	*/
 	@Column(table=M.TABLE, jdbcType=12, name=M.arrayInt$name, key=M.arrayInt$key, auto=M.arrayInt$auto, notnull=M.arrayInt$notnull, length=M.arrayInt$length, value=M.arrayInt$value, remarks=M.arrayInt$remarks)
 	private int[] arrayInt;	
@@ -128,7 +128,7 @@ public class TestTable2 extends com.tsc9526.monalisa.orm.model.Model<TestTable2>
 	* @Column
 	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_2&nbsp;<B>name:</B> array_string
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 256<br>
-	* <li><B>remarks:</B> 字符串数组 #array{}
+	* <li><B>remarks:</B> array of string. #array{}
 	*/
 	@Column(table=M.TABLE, jdbcType=12, name=M.arrayString$name, key=M.arrayString$key, auto=M.arrayString$auto, notnull=M.arrayString$notnull, length=M.arrayString$length, value=M.arrayString$value, remarks=M.arrayString$remarks)
 	private String[] arrayString;	
@@ -137,7 +137,7 @@ public class TestTable2 extends com.tsc9526.monalisa.orm.model.Model<TestTable2>
 	* @Column
 	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_2&nbsp;<B>name:</B> json
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 1024<br>
-	* <li><B>remarks:</B> Json #json{}
+	* <li><B>remarks:</B> Json object. #json{}
 	*/
 	@Column(table=M.TABLE, jdbcType=12, name=M.json$name, key=M.json$key, auto=M.json$auto, notnull=M.json$notnull, length=M.json$length, value=M.json$value, remarks=M.json$remarks)
 	private JsonObject json;	
@@ -146,7 +146,7 @@ public class TestTable2 extends com.tsc9526.monalisa.orm.model.Model<TestTable2>
 	* @Column
 	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_2&nbsp;<B>name:</B> obj
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 1024<br>
-	* <li><B>remarks:</B> Object #json{test.com.tsc9526.monalisa.orm.data.ColumnData}
+	* <li><B>remarks:</B> Json object with given class.  #json{test.com.tsc9526.monalisa.orm.data.ColumnData}
 	*/
 	@Column(table=M.TABLE, jdbcType=12, name=M.obj$name, key=M.obj$key, auto=M.obj$auto, notnull=M.obj$notnull, length=M.obj$length, value=M.obj$value, remarks=M.obj$remarks)
 	private ColumnData obj;	
@@ -203,7 +203,7 @@ public class TestTable2 extends com.tsc9526.monalisa.orm.model.Model<TestTable2>
 	* @Column
 	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_2&nbsp;<B>name:</B> id &nbsp;[<font color=red>KEY</font>|<font color=red>AUTO</font>|<font color=red>NOTNULL</font>]
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 10<br>
-	* <li><B>remarks:</B> 唯一主键
+	* <li><B>remarks:</B> primary key
 	*/
 	@Column(table=M.TABLE, jdbcType=4, name=M.id$name, key=M.id$key, auto=M.id$auto, notnull=M.id$notnull, length=M.id$length, value=M.id$value, remarks=M.id$remarks) 
 	public TestTable2 setId(Integer id){
@@ -219,7 +219,7 @@ public class TestTable2 extends com.tsc9526.monalisa.orm.model.Model<TestTable2>
 	* @Column
 	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_2&nbsp;<B>name:</B> name &nbsp;[<font color=red>NOTNULL</font>]
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 128 &nbsp;<B>value:</B> N0001<br>
-	* <li><B>remarks:</B> 名称
+	* <li><B>remarks:</B> the name
 	*/
 	@Column(table=M.TABLE, jdbcType=12, name=M.name$name, key=M.name$key, auto=M.name$auto, notnull=M.name$notnull, length=M.name$length, value=M.name$value, remarks=M.name$remarks) 
 	public TestTable2 setName(String name){
@@ -235,7 +235,7 @@ public class TestTable2 extends com.tsc9526.monalisa.orm.model.Model<TestTable2>
 	* @Column
 	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_2&nbsp;<B>name:</B> title
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 128<br>
-	* <li><B>remarks:</B> 标题
+	* <li><B>remarks:</B> the title
 	*/
 	@Column(table=M.TABLE, jdbcType=12, name=M.title$name, key=M.title$key, auto=M.title$auto, notnull=M.title$notnull, length=M.title$length, value=M.title$value, remarks=M.title$remarks) 
 	public TestTable2 setTitle(String title){
@@ -251,7 +251,7 @@ public class TestTable2 extends com.tsc9526.monalisa.orm.model.Model<TestTable2>
 	* @Column
 	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_2&nbsp;<B>name:</B> enum_int_a &nbsp;[<font color=red>NOTNULL</font>|<font color=red>ENUM</font>]
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 10 &nbsp;<B>value:</B> 0<br>
-	* <li><B>remarks:</B> 枚举字段A  #enum{{V0,V1}}
+	* <li><B>remarks:</B> enum fields A  #enum{{V0,V1}}
 	*/
 	@Column(table=M.TABLE, jdbcType=4, name=M.enumIntA$name, key=M.enumIntA$key, auto=M.enumIntA$auto, notnull=M.enumIntA$notnull, length=M.enumIntA$length, value=M.enumIntA$value, remarks=M.enumIntA$remarks) 
 	public TestTable2 setEnumIntA(EnumIntA enumIntA){
@@ -283,7 +283,7 @@ public class TestTable2 extends com.tsc9526.monalisa.orm.model.Model<TestTable2>
 	* @Column
 	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_2&nbsp;<B>name:</B> array_int
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 256<br>
-	* <li><B>remarks:</B> 整形数组 #array{int}
+	* <li><B>remarks:</B> array of int. #array{int}
 	*/
 	@Column(table=M.TABLE, jdbcType=12, name=M.arrayInt$name, key=M.arrayInt$key, auto=M.arrayInt$auto, notnull=M.arrayInt$notnull, length=M.arrayInt$length, value=M.arrayInt$value, remarks=M.arrayInt$remarks) 
 	public TestTable2 setArrayInt(int[] arrayInt){
@@ -299,7 +299,7 @@ public class TestTable2 extends com.tsc9526.monalisa.orm.model.Model<TestTable2>
 	* @Column
 	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_2&nbsp;<B>name:</B> array_string
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 256<br>
-	* <li><B>remarks:</B> 字符串数组 #array{}
+	* <li><B>remarks:</B> array of string. #array{}
 	*/
 	@Column(table=M.TABLE, jdbcType=12, name=M.arrayString$name, key=M.arrayString$key, auto=M.arrayString$auto, notnull=M.arrayString$notnull, length=M.arrayString$length, value=M.arrayString$value, remarks=M.arrayString$remarks) 
 	public TestTable2 setArrayString(String[] arrayString){
@@ -315,7 +315,7 @@ public class TestTable2 extends com.tsc9526.monalisa.orm.model.Model<TestTable2>
 	* @Column
 	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_2&nbsp;<B>name:</B> json
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 1024<br>
-	* <li><B>remarks:</B> Json #json{}
+	* <li><B>remarks:</B> Json object. #json{}
 	*/
 	@Column(table=M.TABLE, jdbcType=12, name=M.json$name, key=M.json$key, auto=M.json$auto, notnull=M.json$notnull, length=M.json$length, value=M.json$value, remarks=M.json$remarks) 
 	public TestTable2 setJson(JsonObject json){
@@ -331,7 +331,7 @@ public class TestTable2 extends com.tsc9526.monalisa.orm.model.Model<TestTable2>
 	* @Column
 	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_2&nbsp;<B>name:</B> obj
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 1024<br>
-	* <li><B>remarks:</B> Object #json{test.com.tsc9526.monalisa.orm.data.ColumnData}
+	* <li><B>remarks:</B> Json object with given class.  #json{test.com.tsc9526.monalisa.orm.data.ColumnData}
 	*/
 	@Column(table=M.TABLE, jdbcType=12, name=M.obj$name, key=M.obj$key, auto=M.obj$auto, notnull=M.obj$notnull, length=M.obj$length, value=M.obj$value, remarks=M.obj$remarks) 
 	public TestTable2 setObj(ColumnData obj){
@@ -428,7 +428,7 @@ public class TestTable2 extends com.tsc9526.monalisa.orm.model.Model<TestTable2>
 	* @Column
 	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_2&nbsp;<B>name:</B> id &nbsp;[<font color=red>KEY</font>|<font color=red>AUTO</font>|<font color=red>NOTNULL</font>]
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 10<br>
-	* <li><B>remarks:</B> 唯一主键
+	* <li><B>remarks:</B> primary key
 	*/
 	@Column(table=M.TABLE, jdbcType=4, name=M.id$name, key=M.id$key, auto=M.id$auto, notnull=M.id$notnull, length=M.id$length, value=M.id$value, remarks=M.id$remarks) 
 	public Integer getId(){
@@ -440,7 +440,7 @@ public class TestTable2 extends com.tsc9526.monalisa.orm.model.Model<TestTable2>
 	* @Column
 	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_2&nbsp;<B>name:</B> id &nbsp;[<font color=red>KEY</font>|<font color=red>AUTO</font>|<font color=red>NOTNULL</font>]
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 10<br>
-	* <li><B>remarks:</B> 唯一主键
+	* <li><B>remarks:</B> primary key
 	* @param defaultValue  Return the default value if id is null.
 	*/
 	@Column(table=M.TABLE, jdbcType=4, name=M.id$name, key=M.id$key, auto=M.id$auto, notnull=M.id$notnull, length=M.id$length, value=M.id$value, remarks=M.id$remarks) 
@@ -459,7 +459,7 @@ public class TestTable2 extends com.tsc9526.monalisa.orm.model.Model<TestTable2>
 	* @Column
 	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_2&nbsp;<B>name:</B> name &nbsp;[<font color=red>NOTNULL</font>]
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 128 &nbsp;<B>value:</B> N0001<br>
-	* <li><B>remarks:</B> 名称
+	* <li><B>remarks:</B> the name
 	*/
 	@Column(table=M.TABLE, jdbcType=12, name=M.name$name, key=M.name$key, auto=M.name$auto, notnull=M.name$notnull, length=M.name$length, value=M.name$value, remarks=M.name$remarks) 
 	public String getName(){
@@ -471,7 +471,7 @@ public class TestTable2 extends com.tsc9526.monalisa.orm.model.Model<TestTable2>
 	* @Column
 	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_2&nbsp;<B>name:</B> name &nbsp;[<font color=red>NOTNULL</font>]
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 128 &nbsp;<B>value:</B> N0001<br>
-	* <li><B>remarks:</B> 名称
+	* <li><B>remarks:</B> the name
 	* @param defaultValue  Return the default value if name is null.
 	*/
 	@Column(table=M.TABLE, jdbcType=12, name=M.name$name, key=M.name$key, auto=M.name$auto, notnull=M.name$notnull, length=M.name$length, value=M.name$value, remarks=M.name$remarks) 
@@ -490,7 +490,7 @@ public class TestTable2 extends com.tsc9526.monalisa.orm.model.Model<TestTable2>
 	* @Column
 	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_2&nbsp;<B>name:</B> title
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 128<br>
-	* <li><B>remarks:</B> 标题
+	* <li><B>remarks:</B> the title
 	*/
 	@Column(table=M.TABLE, jdbcType=12, name=M.title$name, key=M.title$key, auto=M.title$auto, notnull=M.title$notnull, length=M.title$length, value=M.title$value, remarks=M.title$remarks) 
 	public String getTitle(){
@@ -502,7 +502,7 @@ public class TestTable2 extends com.tsc9526.monalisa.orm.model.Model<TestTable2>
 	* @Column
 	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_2&nbsp;<B>name:</B> title
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 128<br>
-	* <li><B>remarks:</B> 标题
+	* <li><B>remarks:</B> the title
 	* @param defaultValue  Return the default value if title is null.
 	*/
 	@Column(table=M.TABLE, jdbcType=12, name=M.title$name, key=M.title$key, auto=M.title$auto, notnull=M.title$notnull, length=M.title$length, value=M.title$value, remarks=M.title$remarks) 
@@ -521,7 +521,7 @@ public class TestTable2 extends com.tsc9526.monalisa.orm.model.Model<TestTable2>
 	* @Column
 	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_2&nbsp;<B>name:</B> enum_int_a &nbsp;[<font color=red>NOTNULL</font>|<font color=red>ENUM</font>]
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 10 &nbsp;<B>value:</B> 0<br>
-	* <li><B>remarks:</B> 枚举字段A  #enum{{V0,V1}}
+	* <li><B>remarks:</B> enum fields A  #enum{{V0,V1}}
 	*/
 	@Column(table=M.TABLE, jdbcType=4, name=M.enumIntA$name, key=M.enumIntA$key, auto=M.enumIntA$auto, notnull=M.enumIntA$notnull, length=M.enumIntA$length, value=M.enumIntA$value, remarks=M.enumIntA$remarks) 
 	public EnumIntA getEnumIntA(){
@@ -533,7 +533,7 @@ public class TestTable2 extends com.tsc9526.monalisa.orm.model.Model<TestTable2>
 	* @Column
 	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_2&nbsp;<B>name:</B> enum_int_a &nbsp;[<font color=red>NOTNULL</font>|<font color=red>ENUM</font>]
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 10 &nbsp;<B>value:</B> 0<br>
-	* <li><B>remarks:</B> 枚举字段A  #enum{{V0,V1}}
+	* <li><B>remarks:</B> enum fields A  #enum{{V0,V1}}
 	* @param defaultValue  Return the default value if enumIntA is null.
 	*/
 	@Column(table=M.TABLE, jdbcType=4, name=M.enumIntA$name, key=M.enumIntA$key, auto=M.enumIntA$auto, notnull=M.enumIntA$notnull, length=M.enumIntA$length, value=M.enumIntA$value, remarks=M.enumIntA$remarks) 
@@ -583,7 +583,7 @@ public class TestTable2 extends com.tsc9526.monalisa.orm.model.Model<TestTable2>
 	* @Column
 	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_2&nbsp;<B>name:</B> array_int
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 256<br>
-	* <li><B>remarks:</B> 整形数组 #array{int}
+	* <li><B>remarks:</B> array of int. #array{int}
 	*/
 	@Column(table=M.TABLE, jdbcType=12, name=M.arrayInt$name, key=M.arrayInt$key, auto=M.arrayInt$auto, notnull=M.arrayInt$notnull, length=M.arrayInt$length, value=M.arrayInt$value, remarks=M.arrayInt$remarks) 
 	public int[] getArrayInt(){
@@ -595,7 +595,7 @@ public class TestTable2 extends com.tsc9526.monalisa.orm.model.Model<TestTable2>
 	* @Column
 	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_2&nbsp;<B>name:</B> array_int
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 256<br>
-	* <li><B>remarks:</B> 整形数组 #array{int}
+	* <li><B>remarks:</B> array of int. #array{int}
 	* @param defaultValue  Return the default value if arrayInt is null.
 	*/
 	@Column(table=M.TABLE, jdbcType=12, name=M.arrayInt$name, key=M.arrayInt$key, auto=M.arrayInt$auto, notnull=M.arrayInt$notnull, length=M.arrayInt$length, value=M.arrayInt$value, remarks=M.arrayInt$remarks) 
@@ -614,7 +614,7 @@ public class TestTable2 extends com.tsc9526.monalisa.orm.model.Model<TestTable2>
 	* @Column
 	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_2&nbsp;<B>name:</B> array_string
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 256<br>
-	* <li><B>remarks:</B> 字符串数组 #array{}
+	* <li><B>remarks:</B> array of string. #array{}
 	*/
 	@Column(table=M.TABLE, jdbcType=12, name=M.arrayString$name, key=M.arrayString$key, auto=M.arrayString$auto, notnull=M.arrayString$notnull, length=M.arrayString$length, value=M.arrayString$value, remarks=M.arrayString$remarks) 
 	public String[] getArrayString(){
@@ -626,7 +626,7 @@ public class TestTable2 extends com.tsc9526.monalisa.orm.model.Model<TestTable2>
 	* @Column
 	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_2&nbsp;<B>name:</B> array_string
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 256<br>
-	* <li><B>remarks:</B> 字符串数组 #array{}
+	* <li><B>remarks:</B> array of string. #array{}
 	* @param defaultValue  Return the default value if arrayString is null.
 	*/
 	@Column(table=M.TABLE, jdbcType=12, name=M.arrayString$name, key=M.arrayString$key, auto=M.arrayString$auto, notnull=M.arrayString$notnull, length=M.arrayString$length, value=M.arrayString$value, remarks=M.arrayString$remarks) 
@@ -645,7 +645,7 @@ public class TestTable2 extends com.tsc9526.monalisa.orm.model.Model<TestTable2>
 	* @Column
 	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_2&nbsp;<B>name:</B> json
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 1024<br>
-	* <li><B>remarks:</B> Json #json{}
+	* <li><B>remarks:</B> Json object. #json{}
 	*/
 	@Column(table=M.TABLE, jdbcType=12, name=M.json$name, key=M.json$key, auto=M.json$auto, notnull=M.json$notnull, length=M.json$length, value=M.json$value, remarks=M.json$remarks) 
 	public JsonObject getJson(){
@@ -657,7 +657,7 @@ public class TestTable2 extends com.tsc9526.monalisa.orm.model.Model<TestTable2>
 	* @Column
 	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_2&nbsp;<B>name:</B> json
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 1024<br>
-	* <li><B>remarks:</B> Json #json{}
+	* <li><B>remarks:</B> Json object. #json{}
 	* @param defaultValue  Return the default value if json is null.
 	*/
 	@Column(table=M.TABLE, jdbcType=12, name=M.json$name, key=M.json$key, auto=M.json$auto, notnull=M.json$notnull, length=M.json$length, value=M.json$value, remarks=M.json$remarks) 
@@ -676,7 +676,7 @@ public class TestTable2 extends com.tsc9526.monalisa.orm.model.Model<TestTable2>
 	* @Column
 	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_2&nbsp;<B>name:</B> obj
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 1024<br>
-	* <li><B>remarks:</B> Object #json{test.com.tsc9526.monalisa.orm.data.ColumnData}
+	* <li><B>remarks:</B> Json object with given class.  #json{test.com.tsc9526.monalisa.orm.data.ColumnData}
 	*/
 	@Column(table=M.TABLE, jdbcType=12, name=M.obj$name, key=M.obj$key, auto=M.obj$auto, notnull=M.obj$notnull, length=M.obj$length, value=M.obj$value, remarks=M.obj$remarks) 
 	public ColumnData getObj(){
@@ -688,7 +688,7 @@ public class TestTable2 extends com.tsc9526.monalisa.orm.model.Model<TestTable2>
 	* @Column
 	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_2&nbsp;<B>name:</B> obj
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 1024<br>
-	* <li><B>remarks:</B> Object #json{test.com.tsc9526.monalisa.orm.data.ColumnData}
+	* <li><B>remarks:</B> Json object with given class.  #json{test.com.tsc9526.monalisa.orm.data.ColumnData}
 	* @param defaultValue  Return the default value if obj is null.
 	*/
 	@Column(table=M.TABLE, jdbcType=12, name=M.obj$name, key=M.obj$key, auto=M.obj$auto, notnull=M.obj$notnull, length=M.obj$length, value=M.obj$value, remarks=M.obj$remarks) 
@@ -1038,7 +1038,7 @@ public class TestTable2 extends com.tsc9526.monalisa.orm.model.Model<TestTable2>
 		* @Column
 		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_2&nbsp;<B>name:</B> id &nbsp;[<font color=red>KEY</font>|<font color=red>AUTO</font>|<font color=red>NOTNULL</font>]
 		* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 10<br>
-		* <li><B>remarks:</B> 唯一主键
+		* <li><B>remarks:</B> primary key
 		*/
 		@Column(table=M.TABLE, jdbcType=4, name=M.id$name, key=M.id$key, auto=M.id$auto, notnull=M.id$notnull, length=M.id$length, value=M.id$value, remarks=M.id$remarks)
 		public com.tsc9526.monalisa.orm.criteria.Field.FieldInteger<Criteria> id = new com.tsc9526.monalisa.orm.criteria.Field.FieldInteger<Criteria>("id", this);
@@ -1047,7 +1047,7 @@ public class TestTable2 extends com.tsc9526.monalisa.orm.model.Model<TestTable2>
 		* @Column
 		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_2&nbsp;<B>name:</B> name &nbsp;[<font color=red>NOTNULL</font>]
 		* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 128 &nbsp;<B>value:</B> N0001<br>
-		* <li><B>remarks:</B> 名称
+		* <li><B>remarks:</B> the name
 		*/
 		@Column(table=M.TABLE, jdbcType=12, name=M.name$name, key=M.name$key, auto=M.name$auto, notnull=M.name$notnull, length=M.name$length, value=M.name$value, remarks=M.name$remarks)
 		public com.tsc9526.monalisa.orm.criteria.Field.FieldString<Criteria> name = new com.tsc9526.monalisa.orm.criteria.Field.FieldString<Criteria>("name", this);
@@ -1056,7 +1056,7 @@ public class TestTable2 extends com.tsc9526.monalisa.orm.model.Model<TestTable2>
 		* @Column
 		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_2&nbsp;<B>name:</B> title
 		* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 128<br>
-		* <li><B>remarks:</B> 标题
+		* <li><B>remarks:</B> the title
 		*/
 		@Column(table=M.TABLE, jdbcType=12, name=M.title$name, key=M.title$key, auto=M.title$auto, notnull=M.title$notnull, length=M.title$length, value=M.title$value, remarks=M.title$remarks)
 		public com.tsc9526.monalisa.orm.criteria.Field.FieldString<Criteria> title = new com.tsc9526.monalisa.orm.criteria.Field.FieldString<Criteria>("title", this);
@@ -1065,7 +1065,7 @@ public class TestTable2 extends com.tsc9526.monalisa.orm.model.Model<TestTable2>
 		* @Column
 		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_2&nbsp;<B>name:</B> enum_int_a &nbsp;[<font color=red>NOTNULL</font>|<font color=red>ENUM</font>]
 		* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 10 &nbsp;<B>value:</B> 0<br>
-		* <li><B>remarks:</B> 枚举字段A  #enum{{V0,V1}}
+		* <li><B>remarks:</B> enum fields A  #enum{{V0,V1}}
 		*/
 		@Column(table=M.TABLE, jdbcType=4, name=M.enumIntA$name, key=M.enumIntA$key, auto=M.enumIntA$auto, notnull=M.enumIntA$notnull, length=M.enumIntA$length, value=M.enumIntA$value, remarks=M.enumIntA$remarks)
 		public com.tsc9526.monalisa.orm.criteria.Field<EnumIntA,Criteria> enumIntA = new com.tsc9526.monalisa.orm.criteria.Field<EnumIntA,Criteria>("enum_int_a", this, 4);		 
@@ -1083,7 +1083,7 @@ public class TestTable2 extends com.tsc9526.monalisa.orm.model.Model<TestTable2>
 		* @Column
 		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_2&nbsp;<B>name:</B> array_int
 		* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 256<br>
-		* <li><B>remarks:</B> 整形数组 #array{int}
+		* <li><B>remarks:</B> array of int. #array{int}
 		*/
 		@Column(table=M.TABLE, jdbcType=12, name=M.arrayInt$name, key=M.arrayInt$key, auto=M.arrayInt$auto, notnull=M.arrayInt$notnull, length=M.arrayInt$length, value=M.arrayInt$value, remarks=M.arrayInt$remarks)
 		public com.tsc9526.monalisa.orm.criteria.Field<int[],Criteria> arrayInt = new com.tsc9526.monalisa.orm.criteria.Field<int[],Criteria>("array_int", this, 12);		 
@@ -1092,7 +1092,7 @@ public class TestTable2 extends com.tsc9526.monalisa.orm.model.Model<TestTable2>
 		* @Column
 		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_2&nbsp;<B>name:</B> array_string
 		* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 256<br>
-		* <li><B>remarks:</B> 字符串数组 #array{}
+		* <li><B>remarks:</B> array of string. #array{}
 		*/
 		@Column(table=M.TABLE, jdbcType=12, name=M.arrayString$name, key=M.arrayString$key, auto=M.arrayString$auto, notnull=M.arrayString$notnull, length=M.arrayString$length, value=M.arrayString$value, remarks=M.arrayString$remarks)
 		public com.tsc9526.monalisa.orm.criteria.Field<String[],Criteria> arrayString = new com.tsc9526.monalisa.orm.criteria.Field<String[],Criteria>("array_string", this, 12);		 
@@ -1101,7 +1101,7 @@ public class TestTable2 extends com.tsc9526.monalisa.orm.model.Model<TestTable2>
 		* @Column
 		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_2&nbsp;<B>name:</B> json
 		* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 1024<br>
-		* <li><B>remarks:</B> Json #json{}
+		* <li><B>remarks:</B> Json object. #json{}
 		*/
 		@Column(table=M.TABLE, jdbcType=12, name=M.json$name, key=M.json$key, auto=M.json$auto, notnull=M.json$notnull, length=M.json$length, value=M.json$value, remarks=M.json$remarks)
 		public com.tsc9526.monalisa.orm.criteria.Field<JsonObject,Criteria> json = new com.tsc9526.monalisa.orm.criteria.Field<JsonObject,Criteria>("json", this, 12);		 
@@ -1110,7 +1110,7 @@ public class TestTable2 extends com.tsc9526.monalisa.orm.model.Model<TestTable2>
 		* @Column
 		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_2&nbsp;<B>name:</B> obj
 		* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 1024<br>
-		* <li><B>remarks:</B> Object #json{test.com.tsc9526.monalisa.orm.data.ColumnData}
+		* <li><B>remarks:</B> Json object with given class.  #json{test.com.tsc9526.monalisa.orm.data.ColumnData}
 		*/
 		@Column(table=M.TABLE, jdbcType=12, name=M.obj$name, key=M.obj$key, auto=M.obj$auto, notnull=M.obj$notnull, length=M.obj$length, value=M.obj$value, remarks=M.obj$remarks)
 		public com.tsc9526.monalisa.orm.criteria.Field<ColumnData,Criteria> obj = new com.tsc9526.monalisa.orm.criteria.Field<ColumnData,Criteria>("obj", this, 12);		 
@@ -1179,7 +1179,7 @@ public class TestTable2 extends com.tsc9526.monalisa.orm.model.Model<TestTable2>
 		* @Column
 		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_2&nbsp;<B>name:</B> id &nbsp;[<font color=red>KEY</font>|<font color=red>AUTO</font>|<font color=red>NOTNULL</font>]
 		* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 10<br>
-		* <li><B>remarks:</B> 唯一主键
+		* <li><B>remarks:</B> primary key
 		*/
 		@Column(table=M.TABLE, jdbcType=4, name=M.id$name, key=M.id$key, auto=M.id$auto, notnull=M.id$notnull, length=M.id$length, value=M.id$value, remarks=M.id$remarks)
 		public final static String  id         = "id";
@@ -1188,7 +1188,7 @@ public class TestTable2 extends com.tsc9526.monalisa.orm.model.Model<TestTable2>
 		* @Column
 		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_2&nbsp;<B>name:</B> name &nbsp;[<font color=red>NOTNULL</font>]
 		* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 128 &nbsp;<B>value:</B> N0001<br>
-		* <li><B>remarks:</B> 名称
+		* <li><B>remarks:</B> the name
 		*/
 		@Column(table=M.TABLE, jdbcType=12, name=M.name$name, key=M.name$key, auto=M.name$auto, notnull=M.name$notnull, length=M.name$length, value=M.name$value, remarks=M.name$remarks)
 		public final static String  name         = "name";
@@ -1197,7 +1197,7 @@ public class TestTable2 extends com.tsc9526.monalisa.orm.model.Model<TestTable2>
 		* @Column
 		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_2&nbsp;<B>name:</B> title
 		* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 128<br>
-		* <li><B>remarks:</B> 标题
+		* <li><B>remarks:</B> the title
 		*/
 		@Column(table=M.TABLE, jdbcType=12, name=M.title$name, key=M.title$key, auto=M.title$auto, notnull=M.title$notnull, length=M.title$length, value=M.title$value, remarks=M.title$remarks)
 		public final static String  title         = "title";
@@ -1206,7 +1206,7 @@ public class TestTable2 extends com.tsc9526.monalisa.orm.model.Model<TestTable2>
 		* @Column
 		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_2&nbsp;<B>name:</B> enum_int_a &nbsp;[<font color=red>NOTNULL</font>|<font color=red>ENUM</font>]
 		* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 10 &nbsp;<B>value:</B> 0<br>
-		* <li><B>remarks:</B> 枚举字段A  #enum{{V0,V1}}
+		* <li><B>remarks:</B> enum fields A  #enum{{V0,V1}}
 		*/
 		@Column(table=M.TABLE, jdbcType=4, name=M.enumIntA$name, key=M.enumIntA$key, auto=M.enumIntA$auto, notnull=M.enumIntA$notnull, length=M.enumIntA$length, value=M.enumIntA$value, remarks=M.enumIntA$remarks)
 		public final static String  enumIntA         = "enum_int_a";
@@ -1224,7 +1224,7 @@ public class TestTable2 extends com.tsc9526.monalisa.orm.model.Model<TestTable2>
 		* @Column
 		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_2&nbsp;<B>name:</B> array_int
 		* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 256<br>
-		* <li><B>remarks:</B> 整形数组 #array{int}
+		* <li><B>remarks:</B> array of int. #array{int}
 		*/
 		@Column(table=M.TABLE, jdbcType=12, name=M.arrayInt$name, key=M.arrayInt$key, auto=M.arrayInt$auto, notnull=M.arrayInt$notnull, length=M.arrayInt$length, value=M.arrayInt$value, remarks=M.arrayInt$remarks)
 		public final static String  arrayInt         = "array_int";
@@ -1233,7 +1233,7 @@ public class TestTable2 extends com.tsc9526.monalisa.orm.model.Model<TestTable2>
 		* @Column
 		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_2&nbsp;<B>name:</B> array_string
 		* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 256<br>
-		* <li><B>remarks:</B> 字符串数组 #array{}
+		* <li><B>remarks:</B> array of string. #array{}
 		*/
 		@Column(table=M.TABLE, jdbcType=12, name=M.arrayString$name, key=M.arrayString$key, auto=M.arrayString$auto, notnull=M.arrayString$notnull, length=M.arrayString$length, value=M.arrayString$value, remarks=M.arrayString$remarks)
 		public final static String  arrayString         = "array_string";
@@ -1242,7 +1242,7 @@ public class TestTable2 extends com.tsc9526.monalisa.orm.model.Model<TestTable2>
 		* @Column
 		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_2&nbsp;<B>name:</B> json
 		* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 1024<br>
-		* <li><B>remarks:</B> Json #json{}
+		* <li><B>remarks:</B> Json object. #json{}
 		*/
 		@Column(table=M.TABLE, jdbcType=12, name=M.json$name, key=M.json$key, auto=M.json$auto, notnull=M.json$notnull, length=M.json$length, value=M.json$value, remarks=M.json$remarks)
 		public final static String  json         = "json";
@@ -1251,7 +1251,7 @@ public class TestTable2 extends com.tsc9526.monalisa.orm.model.Model<TestTable2>
 		* @Column
 		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_2&nbsp;<B>name:</B> obj
 		* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 1024<br>
-		* <li><B>remarks:</B> Object #json{test.com.tsc9526.monalisa.orm.data.ColumnData}
+		* <li><B>remarks:</B> Json object with given class.  #json{test.com.tsc9526.monalisa.orm.data.ColumnData}
 		*/
 		@Column(table=M.TABLE, jdbcType=12, name=M.obj$name, key=M.obj$key, auto=M.obj$auto, notnull=M.obj$notnull, length=M.obj$length, value=M.obj$value, remarks=M.obj$remarks)
 		public final static String  obj         = "obj";
@@ -1315,7 +1315,7 @@ public class TestTable2 extends com.tsc9526.monalisa.orm.model.Model<TestTable2>
 		public final static boolean id$key     = true;
 		public final static int     id$length  = 10;
 		public final static String  id$value   = "NULL";
-		public final static String  id$remarks = "唯一主键";
+		public final static String  id$remarks = "primary key";
 		public final static boolean id$auto    = true;
 		public final static boolean id$notnull = true;
 		
@@ -1324,7 +1324,7 @@ public class TestTable2 extends com.tsc9526.monalisa.orm.model.Model<TestTable2>
 		public final static boolean name$key     = false;
 		public final static int     name$length  = 128;
 		public final static String  name$value   = "N0001";
-		public final static String  name$remarks = "名称";
+		public final static String  name$remarks = "the name";
 		public final static boolean name$auto    = false;
 		public final static boolean name$notnull = true;
 		
@@ -1333,7 +1333,7 @@ public class TestTable2 extends com.tsc9526.monalisa.orm.model.Model<TestTable2>
 		public final static boolean title$key     = false;
 		public final static int     title$length  = 128;
 		public final static String  title$value   = "NULL";
-		public final static String  title$remarks = "标题";
+		public final static String  title$remarks = "the title";
 		public final static boolean title$auto    = false;
 		public final static boolean title$notnull = false;
 		
@@ -1342,7 +1342,7 @@ public class TestTable2 extends com.tsc9526.monalisa.orm.model.Model<TestTable2>
 		public final static boolean enumIntA$key     = false;
 		public final static int     enumIntA$length  = 10;
 		public final static String  enumIntA$value   = "0";
-		public final static String  enumIntA$remarks = "枚举字段A  #enum{{V0,V1}}";
+		public final static String  enumIntA$remarks = "enum fields A  #enum{{V0,V1}}";
 		public final static boolean enumIntA$auto    = false;
 		public final static boolean enumIntA$notnull = true;
 		
@@ -1360,7 +1360,7 @@ public class TestTable2 extends com.tsc9526.monalisa.orm.model.Model<TestTable2>
 		public final static boolean arrayInt$key     = false;
 		public final static int     arrayInt$length  = 256;
 		public final static String  arrayInt$value   = "NULL";
-		public final static String  arrayInt$remarks = "整形数组 #array{int}";
+		public final static String  arrayInt$remarks = "array of int. #array{int}";
 		public final static boolean arrayInt$auto    = false;
 		public final static boolean arrayInt$notnull = false;
 		
@@ -1369,7 +1369,7 @@ public class TestTable2 extends com.tsc9526.monalisa.orm.model.Model<TestTable2>
 		public final static boolean arrayString$key     = false;
 		public final static int     arrayString$length  = 256;
 		public final static String  arrayString$value   = "NULL";
-		public final static String  arrayString$remarks = "字符串数组 #array{}";
+		public final static String  arrayString$remarks = "array of string. #array{}";
 		public final static boolean arrayString$auto    = false;
 		public final static boolean arrayString$notnull = false;
 		
@@ -1378,7 +1378,7 @@ public class TestTable2 extends com.tsc9526.monalisa.orm.model.Model<TestTable2>
 		public final static boolean json$key     = false;
 		public final static int     json$length  = 1024;
 		public final static String  json$value   = "NULL";
-		public final static String  json$remarks = "Json #json{}";
+		public final static String  json$remarks = "Json object. #json{}";
 		public final static boolean json$auto    = false;
 		public final static boolean json$notnull = false;
 		
@@ -1387,7 +1387,7 @@ public class TestTable2 extends com.tsc9526.monalisa.orm.model.Model<TestTable2>
 		public final static boolean obj$key     = false;
 		public final static int     obj$length  = 1024;
 		public final static String  obj$value   = "NULL";
-		public final static String  obj$remarks = "Object #json{test.com.tsc9526.monalisa.orm.data.ColumnData}";
+		public final static String  obj$remarks = "Json object with given class.  #json{test.com.tsc9526.monalisa.orm.data.ColumnData}";
 		public final static boolean obj$auto    = false;
 		public final static boolean obj$notnull = false;
 		
