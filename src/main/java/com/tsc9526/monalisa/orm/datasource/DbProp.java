@@ -79,6 +79,7 @@ public class DbProp {
 	 * SQL资源文件缺省放置目录(*.java, *.jsp) 
 	 */
 	public static String  CFG_SQL_PATH          = CFG_ROOT_PATH+"/monalisa/sql";
+	public static String  CFG_LIB_PATH          = CFG_ROOT_PATH+"/monalisa/lib";
 	   
 	public static String TMP_ROOT_PATH          = CFG_ROOT_PATH+"/target/monalisa";
 	public static String TMP_WORK_DIR_JSP       = TMP_ROOT_PATH+"/_jsp";
@@ -106,6 +107,8 @@ public class DbProp {
 		CFG_ROOT_PATH=cfgRootPath;
 		
 		CFG_SQL_PATH = CFG_ROOT_PATH+"/monalisa/sql";
+		CFG_LIB_PATH = CFG_ROOT_PATH+"/monalisa/lib";
+		
 		SET_TMP_ROOT_PATH(CFG_ROOT_PATH+"/target/monalisa");
 		
 		return CFG_ROOT_PATH;

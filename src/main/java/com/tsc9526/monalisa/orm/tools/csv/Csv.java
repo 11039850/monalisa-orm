@@ -14,63 +14,50 @@
  *	You should have received a copy of the GNU Lesser General Public License
  *	along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************************/
-package com.tsc9526.monalisa.orm.tools.helper;
+package com.tsc9526.monalisa.orm.tools.csv;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.LineNumberReader;
 import java.io.OutputStream;
 import java.io.PrintStream;
-import java.io.Reader;
 import java.io.StringReader;
-import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Properties;
 
 import org.relique.io.DataReader;
-import org.relique.io.TableReader;
-import org.relique.jdbc.csv.CsvConnection;
 import org.relique.jdbc.csv.CsvRawReader;
-import org.relique.jdbc.csv.CsvResultSet;
-import org.relique.jdbc.csv.CsvStatement;
 import org.relique.jdbc.csv.SqlParser;
-
- 
-
-
 
 import com.tsc9526.monalisa.orm.datatable.CsvOptions;
 import com.tsc9526.monalisa.orm.datatable.DataColumn;
 import com.tsc9526.monalisa.orm.datatable.DataMap;
 import com.tsc9526.monalisa.orm.datatable.DataTable;
+import com.tsc9526.monalisa.orm.tools.helper.ClassHelper;
 import com.tsc9526.monalisa.orm.tools.helper.ClassHelper.FGS;
 import com.tsc9526.monalisa.orm.tools.helper.ClassHelper.MetaClass;
+import com.tsc9526.monalisa.orm.tools.helper.FileHelper;
 
 /**
  * 
  * @author zzg.zhou(11039850@qq.com)
  */
-public class CsvHelper {
-	 
-	public static DataTable<DataMap> fromCsv(InputStream csvInputStream,CsvOptions options) {
+public class Csv{	 
+	public DataTable<DataMap> fromCsv(InputStream csvInputStream,CsvOptions options) {
 		String csvString=FileHelper.readToString(csvInputStream, options.getCharset());
 		
 		return fromCsv(csvString, options);
 	}
 	 
-	public static DataTable<DataMap> fromCsv(String csvString,CsvOptions options){
+	public DataTable<DataMap> fromCsv(String csvString,CsvOptions options){
 		try {
 			DataTable<DataMap> table=new DataTable<DataMap>();
 			
-			CsvRawReader reader = CsvHelper.loadCsvRawReader(csvString, options);
+			CsvRawReader reader = loadCsvRawReader(csvString, options);
 			
 			String[] columns=reader.getColumnNames();
 			table.setHeaders(columns);
@@ -94,7 +81,7 @@ public class CsvHelper {
 		}
 	}
 	
-	public static void writeToCsv(DataTable<?> table, OutputStream outputStream, CsvOptions options){
+	public void writeToCsv(DataTable<?> table, OutputStream outputStream, CsvOptions options){
 		PrintStream out=null;
 		
 		try{ 
@@ -167,13 +154,13 @@ public class CsvHelper {
 		}
 	}
 	
-	public static DataTable<DataMap> queryTable(DataTable<?>table,String sql){
+	public DataTable<DataMap> queryTable(DataTable<?>table,String sql){
 		SqlParser parser = new SqlParser();
 		try{
 			parser.parse(sql);
 					
 			ResultSet rs = new DataTableResultSet( 
-				CsvHelper.createDataReader(table),
+				createDataReader(table),
 				"_THIS_TABLE",ResultSet.TYPE_SCROLL_INSENSITIVE,
 				parser);
 			
@@ -191,7 +178,7 @@ public class CsvHelper {
 		}
 	}
 	
-	protected static DataMap loadToMap(ResultSet rs, DataMap map) throws SQLException {
+	protected DataMap loadToMap(ResultSet rs, DataMap map) throws SQLException {
 		ResultSetMetaData rsmd = rs.getMetaData();
 
 		Map<String, Integer> xs = new HashMap<String, Integer>();
@@ -218,7 +205,7 @@ public class CsvHelper {
 	}
 	
 
-	private static String addQuotes(String value, String separator, char quoteChar, String quoteStyle) {
+	private String addQuotes(String value, String separator, char quoteChar, String quoteStyle) {
 		if ("C".equals(quoteStyle)) {
 			value = value.replace("\\", "\\\\");
 			value = value.replace("" + quoteChar, "\\" + quoteChar);
@@ -233,7 +220,7 @@ public class CsvHelper {
 		return value;
 	}
 
-	public static CsvRawReader loadCsvRawReader(String csvString, CsvOptions options) {
+	public CsvRawReader loadCsvRawReader(String csvString, CsvOptions options) {
 		try {
 			LineNumberReader input = new LineNumberReader(new StringReader(csvString));
  
@@ -265,174 +252,7 @@ public class CsvHelper {
 		}
 	}
 	
-	public static DataReader createDataReader(DataTable<?> table){
+	public DataReader createDataReader(DataTable<?> table){
 		return new DataTableReader(table);
-	}
-	
-	
-	public static class DataTableConnection extends CsvConnection {
-
-		protected DataTableConnection() throws SQLException {
-			
-			super(new SimpleDataTableReader(),new Properties(),"");
-		}
- 	}
-	
-	public static class SimpleDataTableReader implements TableReader{
-		 
-		public Reader getReader(Statement statement, String tableName) throws SQLException {
-			 
-			return new StringReader("a");
-		}
- 		 
-		public List<String> getTableNames(Connection connection) throws SQLException {
-			List<String> tables=new ArrayList<String>();
-			
-			tables.add("_THIS_TABLE");
-			
-			return tables;
-		}
-	}
-	
-
-	public static class DataTableResultSet extends CsvResultSet{
-		 
-		public DataTableResultSet(
-				DataReader reader,
-				String tableName,
-				int resultSetType,
-				SqlParser parser) throws ClassNotFoundException, SQLException
-		{
-			super(createCsvStatement(), reader, tableName, parser.getColumns(),
-					parser.isDistinct(),
-					resultSetType,
-					parser.getWhereClause(),
-					parser.getGroupByColumns(),
-					parser.getHavingClause(),
-					parser.getOrderByColumns(),
-					parser.getLimit(),
-					parser.getOffset()
-		 			, getColumnTypes(), getSkipLeadingLines(),new HashMap<String, Object>()); 
-		}
-		
-		private static CsvStatement createCsvStatement() throws SQLException{
-			return new TableStatement(new DataTableConnection(),ResultSet.TYPE_SCROLL_INSENSITIVE);
-		}
-		
-		private static String getColumnTypes(){
-			return null;
-		}
-		
-		private static int getSkipLeadingLines(){
-			return 0;
-		}
-	}
-
-	public static class TableStatement extends CsvStatement{
-		protected TableStatement(CsvConnection connection, int resultSetType) {
-			super(connection, resultSetType);
-		}
-	}
-
-	public static class DataTableReader extends DataReader {
-		private String[] columnNames;
-		private String[] columnTypes;
-		private List<Object[]> columnValues;
-		private int rowIndex;
-
-		DataTableReader(DataTable<?> table){
-			List<DataColumn> hs=table.getHeaders();
-			
-			List<String>  columnNames=new ArrayList<String>();
-			List<String>  columnTypes=new ArrayList<String>();
-			 
-			List<Object[]> columnValues=new ArrayList<Object[]>();
-
-			for(DataColumn c:hs){
-				columnNames.add(c.getName());
-				columnTypes.add(c.getTypeString());
-			}
-		
-			for(Object row:table){
-				Object[] vs=new Object[columnNames.size()];
-				
-				int i=0;
-				if(row instanceof Map){
-					Map<?,?> map=(Map<?,?>)row;
-					for(String name:columnNames){
-						vs[i++]=map.get(name);
-					}
-				}else{
-					if(row.getClass().isPrimitive() || row.getClass().getName().startsWith("java.")){
-						vs[i++]=row;
-					}else if(row.getClass().isArray()){
-						Object[] xs=(Object[])row;
-						for(int k=0;k<vs.length;k++){
-							vs[k]=xs[k];
-						}
-					}else{					
-						MetaClass mc=ClassHelper.getMetaClass(row.getClass());
-						for(String name:columnNames){
-							FGS fgs=mc.getField(name);
-							Object v=null;
-							if(fgs!=null){
-								v=fgs.getObject(row);
-							}
-							vs[i++]=v;
-						}
-					}
-				}
-				 
-				columnValues.add(vs);
-			}
-		 
-		  
-			this.columnNames = columnNames.toArray(new String[0]);
-			this.columnTypes = columnTypes.toArray(new String[0]);
-			this.columnValues = columnValues;
-			rowIndex = -1;
-		}
-
-		 
-		public boolean next() throws SQLException {
-			rowIndex++;
-			boolean retval = (rowIndex < columnValues.size());
-			return retval;
-		}
-
-		 
-		public String[] getColumnNames() throws SQLException {
-			return columnNames;
-		}
-
-		 
-		public void close() throws SQLException {
-		}
-
-		 
-		public Map<String, Object> getEnvironment() throws SQLException {
-			HashMap<String, Object> retval = new HashMap<String, Object>();
-			Object[] o = columnValues.get(rowIndex);
-			for (int i = 0; i < columnNames.length; i++) {
-				retval.put(columnNames[i].toUpperCase(), o[i]);
-			}
-			return retval;
-		}
-
-		 
-		public String[] getColumnTypes() throws SQLException {
-			return columnTypes;
-		}
-
-		 
-		public int[] getColumnSizes() throws SQLException {
-			int[] columnSizes = new int[columnTypes.length];
-			Arrays.fill(columnSizes, DEFAULT_COLUMN_SIZE);
-			return columnSizes;
-		}
-
-		public String getTableAlias() {
-			return null;
-		}
 	}
 }

@@ -17,15 +17,18 @@
 package com.tsc9526.monalisa.orm.tools.helper;
 
 import java.io.File;
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
+
+import com.tsc9526.monalisa.orm.tools.logger.Logger;
 
 /**
  * 
  * @author zzg.zhou(11039850@qq.com)
  */
 public class Version {
+	static Logger logger=Logger.getLogger(Version.class);
+	
 	private static String version;
 	
 	public static String getVersion(){
@@ -48,8 +51,8 @@ public class Version {
 						version=xml.substring(p1+"<version>".length(),p2).trim();
 					}
 				}
-			}catch(IOException e){
-				e.printStackTrace();
+			}catch(Exception e){
+				logger.error("Error get version: "+e,e);
 			}finally{
 				CloseQuietly.close(in);
 			}

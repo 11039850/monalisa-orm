@@ -173,7 +173,7 @@ public class ClassPathHelper {
 		try {
 			if(!dc.defined){
 				defineClass(loader,dc.bytes);
-				dc.defined=true;
+				dc.defined=true; 
 			}
 		}catch(RuntimeException e){
 			String missing=getClassNotFoundError(e);

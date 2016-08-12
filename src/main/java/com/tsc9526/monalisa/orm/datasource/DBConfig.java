@@ -49,7 +49,9 @@ import com.tsc9526.monalisa.orm.model.Record;
 import com.tsc9526.monalisa.orm.tools.generator.DBGeneratorProcessing;
 import com.tsc9526.monalisa.orm.tools.helper.ClassHelper;
 import com.tsc9526.monalisa.orm.tools.helper.CloseQuietly;
+import com.tsc9526.monalisa.orm.tools.helper.DynmicLibHelper;
 import com.tsc9526.monalisa.orm.tools.helper.Helper;
+import com.tsc9526.monalisa.orm.tools.helper.JarLocationHelper;
 import com.tsc9526.monalisa.orm.tools.logger.Logger;
 import com.tsc9526.monalisa.orm.tools.resources.PkgNames;
 
@@ -155,6 +157,9 @@ public class DBConfig implements Closeable{
 	public synchronized DataSource getDataSource(){
 		CFG cfg=getCfg();
 		
+		String driverClass=cfg.getDriver();
+		JarLocationHelper.loadClass(driverClass);
+		
 		if(cfg.isCfgFileChanged()){
 			init(cfg.db);
 			
@@ -187,9 +192,9 @@ public class DBConfig implements Closeable{
 			if(cc.indexOf(".")<0){
 				cc=PkgNames.ORM_DATASOURCE+"."+cc;
 			}
-			
+		 	
 			try{	
-				Object obj=ClassHelper.forClassName(cc).newInstance();	
+				Object obj=instanceDataSource(cc); 	
 				if(obj instanceof PooledDataSource){
 					PooledDataSource pds=(PooledDataSource)obj;
 					
@@ -214,6 +219,16 @@ public class DBConfig implements Closeable{
 			}
 		}
 		return null;
+	}
+	
+	protected Object instanceDataSource(String clazz)throws Exception{
+		if(clazz.equals(PkgNames.ORM_DS_C3p0)){
+			return DynmicLibHelper.createC3p0DataSource();
+		}else if(clazz.equals(PkgNames.ORM_DS_Durid)){
+			return DynmicLibHelper.createDruidDataSource();
+		}else{
+			return ClassHelper.forClassName(clazz).newInstance();	
+		}
 	}
 	
 	protected Properties getPoolProperties(){

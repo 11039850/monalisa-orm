@@ -24,6 +24,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -154,7 +155,22 @@ public class FileHelper {
 		}
 	}
 	
-	public static void copy(File src,File target)throws Exception {
+	
+	public static void write(InputStream from,OutputStream to)throws IOException {
+		try{
+			byte[] buf=new byte[64*1024];
+			
+			int len=from.read(buf);
+			while(len>0){
+				to.write(buf,0,len);
+				len=from.read(buf);
+			}
+		}finally{
+			CloseQuietly.close(from,to);
+		}
+	}
+	
+	public static void copy(File src,File target)throws IOException {
 		byte[] data=readFile(src);
 		write(target, data);
 	}

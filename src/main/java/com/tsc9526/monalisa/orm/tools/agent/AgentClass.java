@@ -31,6 +31,7 @@ import com.tsc9526.monalisa.orm.datasource.DBTasks;
 import com.tsc9526.monalisa.orm.datasource.DbProp;
 import com.tsc9526.monalisa.orm.tools.helper.ClassHelper;
 import com.tsc9526.monalisa.orm.tools.helper.ClassPathHelper;
+import com.tsc9526.monalisa.orm.tools.helper.DynmicLibHelper;
 import com.tsc9526.monalisa.orm.tools.helper.FileHelper;
 import com.tsc9526.monalisa.orm.tools.helper.Helper;
 import com.tsc9526.monalisa.orm.tools.helper.JsonHelper;
@@ -160,8 +161,6 @@ public class AgentClass {
 	private static boolean initilized=false;
 	private synchronized static void initAgentClasses(){
 		if(!initilized){
-			AgentJar.loadAsmClass();
-			
 			reloadClasses();
 			 
 			long delay=DbProp.CFG_RELOAD_CLASS_INTERVAL*1000;
@@ -217,7 +216,7 @@ public class AgentClass {
 				initAgentClasses();
 			}
 			
-			T value=AgentEnhancer.createProxyInstance(theClass);
+			T value=DynmicLibHelper.createAgentEnhancer().createProxyInstance(theClass);
  
 			return value;
 		} catch (Exception e) {

@@ -34,7 +34,7 @@ import com.tsc9526.monalisa.orm.annotation.Tx;
 public class AgentEnhancer implements MethodInterceptor {
 
 	@SuppressWarnings("unchecked")
-	public static <T> T createProxyInstance(Class<T> theClass) {
+	public <T> T createProxyInstance(Class<T> theClass) {
 		Enhancer enhancer = new Enhancer();
 		enhancer.setSuperclass(theClass);
 		 

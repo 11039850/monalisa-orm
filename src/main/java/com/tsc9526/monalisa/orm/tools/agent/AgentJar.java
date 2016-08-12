@@ -4,6 +4,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.lang.reflect.Method;
 import java.util.LinkedHashMap;
@@ -72,7 +73,7 @@ public class AgentJar {
 			ClassLoader systemLoader = ClassLoader.getSystemClassLoader();
 			
 			try {
-				loadJarClasses(systemLoader,"/sun_vm.jar");
+				loadClassFromStream(systemLoader,AgentJar.class.getResourceAsStream("/sun_vm.jar"));
 			} catch (IOException e) {
 				throw new RuntimeException(e);
 			}
@@ -85,23 +86,9 @@ public class AgentJar {
 			}
 		}
 	}
-	
-	public static void loadAsmClass() {
-		try {
-			Class.forName(PkgNames.libCglibClass);
-		} catch (ClassNotFoundException e) {
-			try {
-				ClassLoader systemLoader = ClassLoader.getSystemClassLoader();
-				AgentJar.loadJarClasses(systemLoader, "/cglib_asm.jar");
-			} catch (IOException ioe) {
-				throw new RuntimeException(ioe);
-			}
-		}
-	}
- 
-	
-	public static void loadJarClasses(ClassLoader loader,String jarResource)throws IOException{  
-		ZipInputStream zip=new ZipInputStream(AgentJar.class.getResourceAsStream(jarResource));
+
+	public static void loadClassFromStream(ClassLoader loader,InputStream zipStream)throws IOException{  
+		ZipInputStream zip=new ZipInputStream(zipStream);
 		
 		ZipEntry entry;
 		byte[] buffer = new byte[16*1024];
@@ -130,6 +117,7 @@ public class AgentJar {
 
          ClassPathHelper.defineClasses(loader,hClasses);
 	}
+ 
 	 
 	private static File createAgentJar(String agentClass, String bootClassPath, boolean canRedefineClasses, boolean canRetransformClasses,
 			boolean canSetNativeMethodPrefix) throws IOException {
