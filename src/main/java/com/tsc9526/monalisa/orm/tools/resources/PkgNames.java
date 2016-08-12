@@ -53,7 +53,7 @@ public class PkgNames {
  			put(libCglibClass,   new String[]{"cglib:cglib:3.2.0"});
  			put(libAsmClass,     new String[]{"org.ow2.asm:asm:5.0.3"});
  			put(libC3p0Class,    new String[]{"c3p0:c3p0:0.9.1.2"});
- 			put(libDruidClass,   new String[]{"com.alibaba.druid:druid-wrapper:0.2.9"});
+ 			put(libDruidClass,   new String[]{"com.alibaba:druid:0.2.9"});
  			put(libMysqlClass,   new String[]{"mysql:mysql-connector-java:5.1.24"});
  			put(libCsvjdbcClass, new String[]{"net.sourceforge.csvjdbc:csvjdbc:1.0.28"});
  		}

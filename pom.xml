@@ -4,7 +4,7 @@
 	<groupId>com.tsc9526</groupId>
 	<artifactId>monalisa-orm</artifactId>
 	<version>1.6.3</version>
-	
+
 	<name>monalisa-orm</name>
 	<url>https://github.com/11039850/monalisa-orm</url>
 	<description>Very simple database ORM</description>
@@ -12,13 +12,13 @@
 		<name>zzg</name>
 		<url>http://www.tsc9526.com</url>
 	</organization>
-	  
+
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<repositoryURL>https://oss.sonatype.org/service/local/staging/deploy/maven2</repositoryURL>
-		<snapshotRepositoryURL>https://oss.sonatype.org/content/repositories/snapshots</snapshotRepositoryURL>		
-		<maven.javadoc.skip>false</maven.javadoc.skip> 	
-        <argLine>-Dfile.encoding=UTF-8</argLine>	
+		<snapshotRepositoryURL>https://oss.sonatype.org/content/repositories/snapshots</snapshotRepositoryURL>
+		<maven.javadoc.skip>false</maven.javadoc.skip>
+		<argLine>-Dfile.encoding=UTF-8</argLine>
 	</properties>
 
 	<scm>
@@ -27,7 +27,7 @@
 		<url>https://github.com/11039850/monalisa-orm.git</url>
 		<tag>tag-1.6.1</tag>
 	</scm>
-	
+
 	<developers>
 		<developer>
 			<name>zzg.zhou</name>
@@ -35,7 +35,7 @@
 			<email>11039850@qq.com</email>
 		</developer>
 	</developers>
- 
+
 	<licenses>
 		<license>
 			<name>GNU Lesser General Public License, Version 3.0</name>
@@ -45,19 +45,19 @@
 
 	<dependencies>
 		<dependency>
-		  <groupId>com.google.code.gson</groupId>
-		  <artifactId>gson</artifactId>
-		  <version>2.3.1</version>
+			<groupId>com.google.code.gson</groupId>
+			<artifactId>gson</artifactId>
+			<version>2.3.1</version>
 		</dependency>
-		
+
 		<dependency>
-		  <groupId>net.sourceforge.csvjdbc</groupId>
-		  <artifactId>csvjdbc</artifactId>
-		  <version>1.0.28</version>
-		  <scope>provided</scope>
+			<groupId>net.sourceforge.csvjdbc</groupId>
+			<artifactId>csvjdbc</artifactId>
+			<version>1.0.28</version>
+			<scope>provided</scope>
 		</dependency>
-		 
-		 <dependency>
+
+		<dependency>
 			<groupId>org.testng</groupId>
 			<artifactId>testng</artifactId>
 			<version>6.9.9</version>
@@ -65,10 +65,10 @@
 		</dependency>
 
 		<dependency>
-		  <groupId>cglib</groupId>
-		  <artifactId>cglib</artifactId>
-		  <version>3.2.0</version>
-		  <scope>provided</scope>
+			<groupId>cglib</groupId>
+			<artifactId>cglib</artifactId>
+			<version>3.2.0</version>
+			<scope>provided</scope>
 		</dependency>
 
 		<dependency>
@@ -77,42 +77,42 @@
 			<version>1.8.5</version>
 			<scope>provided</scope>
 		</dependency>
-	  
+
 		<dependency>
 			<groupId>commons-logging</groupId>
-		  	<artifactId>commons-logging</artifactId>
-		  	<version>1.1.1</version>
-		  	<scope>provided</scope>
+			<artifactId>commons-logging</artifactId>
+			<version>1.1.1</version>
+			<scope>provided</scope>
 		</dependency>
-  
+
 		<dependency>
 			<groupId>log4j</groupId>
 			<artifactId>log4j</artifactId>
-			<version>1.2.16</version>	
-			<scope>provided</scope>		
+			<version>1.2.16</version>
+			<scope>provided</scope>
 		</dependency>
-		
+
 		<dependency>
-		  <groupId>org.slf4j</groupId>
-		  <artifactId>slf4j-log4j12</artifactId>
-		  <version>1.7.13</version>
-		  <scope>provided</scope>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-log4j12</artifactId>
+			<version>1.7.13</version>
+			<scope>provided</scope>
 		</dependency>
-  
+
 		<dependency>
 			<groupId>c3p0</groupId>
 			<artifactId>c3p0</artifactId>
 			<version>0.9.1.2</version>
 			<scope>provided</scope>
 		</dependency>
-		
+
 		<dependency>
-		  <groupId>com.alibaba.druid</groupId>
-		  <artifactId>druid-wrapper</artifactId>
-		  <version>0.2.9</version>
-		  <scope>provided</scope>
+			<groupId>com.alibaba</groupId>
+			<artifactId>druid</artifactId>
+			<version>0.2.9</version>
+			<scope>provided</scope>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
@@ -127,15 +127,15 @@
 			<type>jar</type>
 			<scope>provided</scope>
 		</dependency>
-	 
-		 
-       <dependency> 
-		  <groupId>org.slf4j</groupId>
-		  <artifactId>slf4j-api</artifactId>
-		  <version>1.7.13</version>
-		  <scope>provided</scope>
+
+
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>1.7.13</version>
+			<scope>provided</scope>
 		</dependency>
-	 	 
+
 	</dependencies>
 
 	<build>
@@ -150,10 +150,10 @@
 		</resources>
 		<plugins>
 			<plugin>
-	            <groupId>org.apache.maven.plugins</groupId>
-	            <artifactId>maven-javadoc-plugin</artifactId>
-	            <version>2.9</version>
-        	</plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>2.9</version>
+			</plugin>
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>2.3.2</version>
@@ -163,22 +163,22 @@
 					<!-- Disable annotation processing for ourselves. -->
 					<compilerArgument>-proc:none</compilerArgument>
 					<compilerArguments>
-                   		<extdirs>libs</extdirs>
-                 	</compilerArguments>
+						<extdirs>libs</extdirs>
+					</compilerArguments>
 				</configuration>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
-			    <artifactId>maven-source-plugin</artifactId>
-			    <version>2.1.2</version>
+				<artifactId>maven-source-plugin</artifactId>
+				<version>2.1.2</version>
 				<executions>
 					<execution>
-			          <id>attach-sources</id>
-			          <phase>verify</phase>
-			          <goals>
-			            <goal>jar-no-fork</goal>
-			          </goals>
-			        </execution>
+						<id>attach-sources</id>
+						<phase>verify</phase>
+						<goals>
+							<goal>jar-no-fork</goal>
+						</goals>
+					</execution>
 				</executions>
 			</plugin>
 			<plugin>
@@ -193,7 +193,7 @@
 					</execution>
 				</executions>
 			</plugin>
-			
+
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-javadoc-plugin</artifactId>
@@ -214,22 +214,22 @@
 					</execution>
 				</executions>
 			</plugin>
-			 
+
 			<plugin>
-		        <groupId>org.apache.maven.plugins</groupId>
-		        <artifactId>maven-gpg-plugin</artifactId>
-		        <executions>
-		          <execution>
-		            <id>sign-artifacts</id>
-		            <phase>verify</phase>
-		            <goals>
-		              <goal>sign</goal>
-		            </goals>
-		          </execution>
-		        </executions>
-		    </plugin>
-		     
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-gpg-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>sign-artifacts</id>
+						<phase>verify</phase>
+						<goals>
+							<goal>sign</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
 		</plugins>
 	</build>
-	
+
 </project>
