@@ -51,7 +51,6 @@ import com.tsc9526.monalisa.orm.tools.helper.ClassHelper;
 import com.tsc9526.monalisa.orm.tools.helper.CloseQuietly;
 import com.tsc9526.monalisa.orm.tools.helper.DynmicLibHelper;
 import com.tsc9526.monalisa.orm.tools.helper.Helper;
-import com.tsc9526.monalisa.orm.tools.helper.JarLocationHelper;
 import com.tsc9526.monalisa.orm.tools.logger.Logger;
 import com.tsc9526.monalisa.orm.tools.resources.PkgNames;
 
@@ -158,7 +157,10 @@ public class DBConfig implements Closeable{
 		CFG cfg=getCfg();
 		
 		String driverClass=cfg.getDriver();
-		JarLocationHelper.loadClass(driverClass);
+		
+		if(DynmicLibHelper.hLibClasses.containsKey(driverClass)){
+			DynmicLibHelper.loadClass(driverClass);
+		}
 		
 		if(cfg.isCfgFileChanged()){
 			init(cfg.db);

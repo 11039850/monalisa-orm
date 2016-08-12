@@ -16,28 +16,55 @@
  *******************************************************************************************/
 package com.tsc9526.monalisa.orm.tools.helper;
 
+import java.io.File;
+import java.lang.reflect.Method;
+import java.net.URL;
+import java.net.URLClassLoader;
+import java.util.LinkedHashMap;
+import java.util.Map;
+
 import com.tsc9526.monalisa.orm.datasource.C3p0DataSource;
 import com.tsc9526.monalisa.orm.datasource.DruidDataSource;
 import com.tsc9526.monalisa.orm.tools.agent.AgentEnhancer;
 import com.tsc9526.monalisa.orm.tools.csv.Csv;
-import com.tsc9526.monalisa.orm.tools.resources.PkgNames;
+import com.tsc9526.monalisa.orm.tools.logger.Logger;
+import com.tsc9526.monalisa.orm.tools.maven.JarLocation;
 
 /**
  * 
  * @author zzg.zhou(11039850@qq.com)
  */
 public class DynmicLibHelper {
-	private static boolean init_libCglibClass  =false;
+	private static Logger logger=Logger.getLogger(DynmicLibHelper.class);
 	
+	public final static String libCglibClass     = "net.sf.cglib.proxy.Enhancer";
+	public final static String libAsmClass       = "org.objectweb.asm.ClassWriter";
+	public final static String libC3p0Class      = "com.mchange.v2.c3p0.ComboPooledDataSource";
+	public final static String libDruidClass     = "com.alibaba.druid.pool.DruidDataSource";
+	public final static String libMysqlClass     = "com.mysql.jdbc.Driver";
+	public final static String libCsvjdbcClass   = "org.relique.jdbc.csv.CsvDriver";
+	 
+ 	public static Map<String, String[]> hLibClasses=new LinkedHashMap<String, String[]>(){
+ 		private static final long serialVersionUID = 1L;
+		{
+ 			put(libCglibClass,   new String[]{"cglib:cglib:3.2.0"});
+ 			put(libAsmClass,     new String[]{"org.ow2.asm:asm:5.0.3"});
+ 			put(libC3p0Class,    new String[]{"c3p0:c3p0:0.9.1.2"});
+ 			put(libDruidClass,   new String[]{"com.alibaba:druid:0.2.9"});
+ 			put(libMysqlClass,   new String[]{"mysql:mysql-connector-java:5.1.24"});
+ 			put(libCsvjdbcClass, new String[]{"net.sourceforge.csvjdbc:csvjdbc:1.0.28"});
+ 		}
+ 	};
+ 	
+	private static boolean init_libCglibClass  =false;
 	private static boolean init_libCsvjdbcClass=false;
 	private static boolean init_libC3p0Class   =false;
 	private static boolean init_libDruidClass  =false;
-	
-	
+	 
 	public static AgentEnhancer createAgentEnhancer(){
 		if(!init_libCglibClass){
-			JarLocationHelper.loadClass(PkgNames.libAsmClass);
-			JarLocationHelper.loadClass(PkgNames.libCglibClass);
+			loadClass(libAsmClass);
+			loadClass(libCglibClass);
 			
 			init_libCglibClass=true;
 		}
@@ -47,7 +74,7 @@ public class DynmicLibHelper {
 	
 	public static Csv createCsv(){
 		if(!init_libCsvjdbcClass){
-			JarLocationHelper.loadClass(PkgNames.libCsvjdbcClass);
+			loadClass(libCsvjdbcClass);
 			init_libCsvjdbcClass=true;
 		}
 		
@@ -56,7 +83,7 @@ public class DynmicLibHelper {
 	
 	public static C3p0DataSource createC3p0DataSource(){
 		if(!init_libC3p0Class){
-			JarLocationHelper.loadClass(PkgNames.libC3p0Class);
+			loadClass(libC3p0Class);
 			init_libC3p0Class=true;
 		}
 		
@@ -65,10 +92,60 @@ public class DynmicLibHelper {
 	
 	public static DruidDataSource createDruidDataSource(){
 		if(!init_libDruidClass){
-			JarLocationHelper.loadClass(PkgNames.libDruidClass);
+			loadClass(libDruidClass);
 			init_libDruidClass=true;
 		}
 		
 		return new DruidDataSource();
 	}
+	
+	  
+	public static boolean loadClass(String clazz) {
+		try {
+			Class.forName(clazz);
+			return true;
+		} catch (ClassNotFoundException e) {
+			String[] GAV_URL=hLibClasses.get(clazz);
+			if(GAV_URL==null){
+				throw new RuntimeException("Can't locate class: "+clazz+", add jar to classpath OR setup DynmicLibHelper.hLibClasses",e);
+			}
+			
+			JarLocation location=new JarLocation(GAV_URL[0]);
+			if(GAV_URL.length>1){
+				location.setBaseUrl(GAV_URL[1]);
+			}
+			
+			try {
+				File jar=location.findJar();
+				if(jar.exists()){
+					addJarToClassPath(DynmicLibHelper.class.getClassLoader(), jar);
+					return true;
+				}
+			} catch(Exception ioe) {
+				throw new RuntimeException("Class not found: "+clazz,ioe);
+			}
+				
+			throw new RuntimeException("Class not found: "+clazz+", can't locate GAV: "+GAV_URL[0]);	
+		}
+	}
+	
+	public static void addJarToClassPath(ClassLoader loader,File jar){
+		try {
+		    URL url = jar.toURI().toURL();
+		    
+		    URLClassLoader classLoader = (URLClassLoader)ClassLoader.getSystemClassLoader();
+		    if(loader instanceof URLClassLoader){
+		    	classLoader=(URLClassLoader)loader;
+		    }
+		    
+		    logger.debug("Add jar: "+jar.getAbsolutePath()+", to classloader: "+classLoader);
+		    
+		    Method method = URLClassLoader.class.getDeclaredMethod("addURL", URL.class);
+		    method.setAccessible(true);
+		    method.invoke(classLoader, url);
+		} catch (Exception e) {
+		    logger.error("Add jar:"+jar.getAbsolutePath()+" to class path("+loader+") exception: "+e,e);
+		}
+	}
+   
 }

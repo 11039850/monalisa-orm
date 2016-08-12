@@ -16,8 +16,6 @@
  *******************************************************************************************/
 package com.tsc9526.monalisa.orm.tools.resources;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
 
 
 /**
@@ -40,22 +38,4 @@ public class PkgNames {
 	
 	public final static String libVirtualMachineClass = "com.sun.tools.attach.VirtualMachine";
 	
-	public final static String libCglibClass     = "net.sf.cglib.proxy.Enhancer";
-	public final static String libAsmClass       = "org.objectweb.asm.ClassWriter";
-	public final static String libC3p0Class      = "com.mchange.v2.c3p0.ComboPooledDataSource";
-	public final static String libDruidClass     = "com.alibaba.druid.pool.DruidDataSource";
-	public final static String libMysqlClass     = "com.mysql.jdbc.Driver";
-	public final static String libCsvjdbcClass   = "org.relique.jdbc.csv.CsvDriver";
-	 
- 	public static Map<String, String[]> hLibClasses=new LinkedHashMap<String, String[]>(){
- 		private static final long serialVersionUID = 1L;
-		{
- 			put(libCglibClass,   new String[]{"cglib:cglib:3.2.0"});
- 			put(libAsmClass,     new String[]{"org.ow2.asm:asm:5.0.3"});
- 			put(libC3p0Class,    new String[]{"c3p0:c3p0:0.9.1.2"});
- 			put(libDruidClass,   new String[]{"com.alibaba:druid:0.2.9"});
- 			put(libMysqlClass,   new String[]{"mysql:mysql-connector-java:5.1.24"});
- 			put(libCsvjdbcClass, new String[]{"net.sourceforge.csvjdbc:csvjdbc:1.0.28"});
- 		}
- 	};
 }

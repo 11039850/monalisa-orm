@@ -17,23 +17,24 @@
 package com.tsc9526.monalisa.orm.tools.helper;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.net.URLConnection;
-import java.security.KeyStore;
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 import java.util.LinkedHashMap;
 import java.util.Locale;
 import java.util.Map;
 
+import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
-import javax.net.ssl.SSLSocketFactory;
+import javax.net.ssl.SSLSession;
 import javax.net.ssl.TrustManager;
-import javax.net.ssl.TrustManagerFactory;
 import javax.net.ssl.X509TrustManager;
 
 /**
@@ -42,7 +43,7 @@ import javax.net.ssl.X509TrustManager;
  */
 public class HttpHelper {
 
-	public static void download(String url, File target) throws Exception {
+	public static void download(String url, File target) throws IOException {
 		URL theUrl = new URL(url);
 
 		URLConnection conn = theUrl.openConnection();
@@ -51,23 +52,35 @@ public class HttpHelper {
 		File tmp = File.createTempFile(target.getName(), ".tmp");
 
 		FileHelper.write(getStream(conn), new FileOutputStream(tmp));
-		 
+
 		FileHelper.copy(tmp, target);
 		tmp.delete();
 	}
- 
 
-	private static InputStream getStream(URLConnection conn) throws Exception {
+	private static InputStream getStream(URLConnection conn) throws IOException {
 		if (conn instanceof HttpsURLConnection) {
-			HttpsURLConnection httpsConn = (HttpsURLConnection) conn;
-
-			TrustManager[] tm = { new HttpsX509TrustManager() };
-
-			SSLContext sslContext = SSLContext.getInstance("SSL", "SunJSSE");
-			sslContext.init(null, tm, new java.security.SecureRandom());
-
-			SSLSocketFactory ssf = sslContext.getSocketFactory();
-			httpsConn.setSSLSocketFactory(ssf);
+			HttpsURLConnection https = (HttpsURLConnection) conn;
+			
+			https.setHostnameVerifier(new HostnameVerifier() {
+				public boolean verify(String urlHostName, SSLSession session) {
+					return true;
+				}
+			});
+			
+			try{
+				TrustManager[] trustAllCerts = new TrustManager[1];
+		        TrustManager tm = new HttpsX509TrustManager();
+		        trustAllCerts[0] = tm;
+		        
+		        SSLContext sc = SSLContext.getInstance("SSL");
+		        sc.init(null, trustAllCerts, null);
+		        
+				https.setSSLSocketFactory(sc.getSocketFactory());
+			}catch(NoSuchAlgorithmException e) {
+				 throw new RuntimeException(e);
+			}catch(KeyManagementException e) {
+				throw new RuntimeException(e);
+			}
 		}
 
 		return conn.getInputStream();
@@ -96,47 +109,20 @@ public class HttpHelper {
 		}
 		return header;
 	}
-
-	private static class HttpsX509TrustManager implements X509TrustManager {
-		X509TrustManager sunJSSEX509TrustManager;
-
-		HttpsX509TrustManager() throws Exception {
-
-			KeyStore ks = KeyStore.getInstance("JKS");
-			ks.load(new FileInputStream("trustedCerts"), "passphrase".toCharArray());
-			TrustManagerFactory tmf = TrustManagerFactory.getInstance("SunX509", "SunJSSE");
-			tmf.init(ks);
-			TrustManager tms[] = tmf.getTrustManagers();
-
-			for (int i = 0; i < tms.length; i++) {
-				if (tms[i] instanceof X509TrustManager) {
-					sunJSSEX509TrustManager = (X509TrustManager) tms[i];
-					return;
-				}
-			}
-		 
-			throw new Exception("Couldn't initialize");
-		}
-
-		 
-		public void checkClientTrusted(X509Certificate[] chain, String authType) throws CertificateException {
-			try {
-				sunJSSEX509TrustManager.checkClientTrusted(chain, authType);
-			} catch (CertificateException excep) {
-				 
-			}
-		}
-
-		 
-		public void checkServerTrusted(X509Certificate[] chain, String authType) throws CertificateException {
-			try {
-				sunJSSEX509TrustManager.checkServerTrusted(chain, authType);
-			} catch (CertificateException excep) {
-			}
-		}
  
+ 
+	private static class HttpsX509TrustManager implements TrustManager, X509TrustManager {
+
 		public X509Certificate[] getAcceptedIssuers() {
-			return sunJSSEX509TrustManager.getAcceptedIssuers();
+			return null;
+		}
+
+		public void checkServerTrusted(X509Certificate[] certs, String authType) throws CertificateException {
+			return;
+		}
+
+		public void checkClientTrusted(X509Certificate[] certs, String authType) throws CertificateException {
+			return;
 		}
 	}
 }
