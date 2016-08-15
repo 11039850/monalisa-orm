@@ -23,19 +23,23 @@ package com.tsc9526.monalisa.orm.tools.resources;
  * @author zzg.zhou(11039850@qq.com)
  */
 public class PkgNames {
-	public final static String ORM_ANNOTATION_DB = "com.tsc9526.monalisa.orm.annotation.DB";
+	public final static String ORM_PACKAGE       = "com.tsc9526.monalisa.orm";
+	
+	public final static String ORM_ANNOTATION_DB = ORM_PACKAGE+".annotation.DB";
 	
 	
-	public final static String ORM_DATASOURCE    = "com.tsc9526.monalisa.orm.datasource";
+	public final static String ORM_DATASOURCE    = ORM_PACKAGE+".datasource";
 	
-	public final static String ORM_LOGGER_PKG    = "com.tsc9526.monalisa.orm.tools.logger";
-	public final static String ORM_JSONHELPER    = "com.tsc9526.monalisa.orm.tools.helper.JsonHelper";
-	public final static String ORM_AGENTCLASS    = "com.tsc9526.monalisa.orm.tools.agent.AgentClass";
-	public final static String ORM_AgentHotSpotVM= "com.tsc9526.monalisa.orm.tools.agent.AgentHotSpotVM";
+	public final static String ORM_LOGGER_PKG    = ORM_PACKAGE+".tools.logger";
+	public final static String ORM_JSONHELPER    = ORM_PACKAGE+".tools.helper.JsonHelper";
+	public final static String ORM_LOADERCLASS   = ORM_PACKAGE+".tools.helper.DynmicLibHelper"; 
+	public final static String ORM_AGENTCLASS    = ORM_PACKAGE+".tools.agent.AgentClass";
+	public final static String ORM_AgentHotSpotVM= ORM_PACKAGE+".tools.agent.AgentHotSpotVM";
 	
-	public final static String ORM_DS_C3p0       = "com.tsc9526.monalisa.orm.datasource.C3p0DataSource";
-	public final static String ORM_DS_Durid      = "com.tsc9526.monalisa.orm.datasource.DruidDataSource";
 	
+	public final static String ORM_DS_C3p0       = ORM_PACKAGE+".datasource.C3p0DataSource";
+	public final static String ORM_DS_Durid      = ORM_PACKAGE+".datasource.DruidDataSource";
+	 
 	public final static String libVirtualMachineClass = "com.sun.tools.attach.VirtualMachine";
 	
 }

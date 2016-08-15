@@ -16,6 +16,8 @@
  *******************************************************************************************/
 package com.tsc9526.monalisa.orm.tools.helper;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.Serializable;
 import java.io.StringReader;
 import java.util.ArrayList;
@@ -347,20 +349,32 @@ public class ModelHelper {
 	}
 	
 	public static String toString(Model<?> model){
-		StringBuffer sb = new StringBuffer();
-		for (FGS fgs : model.fields()) {
-			Object v = fgs.getObject(model);
-			if (v != null) {
-				String s = "" + ClassHelper.convert(v, String.class);
-				if (sb.length() > 0) {
-					sb.append(", ");
+		try{
+			StringBuffer sb = new StringBuffer();
+			for (FGS fgs : model.fields()) {
+				Object v = fgs.getObject(model);
+				if (v != null) {
+					if (sb.length() > 0) {
+						sb.append(", ");
+					}
+					sb.append(fgs.getFieldName() + ": ");
+					
+					if(v.getClass() == byte[].class || v.getClass() == Byte[].class){
+						SQLHelper.appendBytes(sb,(byte[])v);
+					}else if(v instanceof InputStream){
+						SQLHelper.appendStream(sb,(InputStream)v);
+					}else{
+						String s = "" + ClassHelper.convert(v, String.class);
+						sb.append(s);
+					}
 				}
-				sb.append(fgs.getFieldName() + ": ").append(s);
 			}
+			sb.append("}");
+			sb.insert(0, model.table().name() + ":{");
+			return sb.toString();
+		}catch(IOException e){
+			throw new RuntimeException(e);
 		}
-		sb.append("}");
-		sb.insert(0, model.table().name() + ":{");
-		return sb.toString();
 	}
 	
 	public static String toJson(Model<?> model) {

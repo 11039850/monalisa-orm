@@ -86,5 +86,16 @@ public class DataMapTest {
 		Assert.assertEquals(yyyyMMddHH.parse(d3).getTime(),m.getDate("d3").getTime());
 		Assert.assertEquals(yyyyMMdd.parse(d4).getTime(),m.getDate("d4").getTime());
 	}
+	
+	public void testCaseInsensitive(){
+		DataMap row=new DataMap();
+		row.put("AbC","aBC");
+		
+		Map<String,Object> map=(Map<String,Object>)row;
+		
+		Assert.assertEquals(map.get("abc"),"aBC");
+		Assert.assertEquals(map.get("ABC"),"aBC");
+		Assert.assertEquals(map.get("Abc"),"aBC");
+	}
 
 }

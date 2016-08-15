@@ -29,6 +29,7 @@ import com.tsc9526.monalisa.orm.tools.agent.AgentEnhancer;
 import com.tsc9526.monalisa.orm.tools.csv.Csv;
 import com.tsc9526.monalisa.orm.tools.logger.Logger;
 import com.tsc9526.monalisa.orm.tools.maven.JarLocation;
+import com.tsc9526.monalisa.orm.tools.resources.PkgNames;
 
 /**
  * 
@@ -41,9 +42,10 @@ public class DynmicLibHelper {
 	public final static String libAsmClass       = "org.objectweb.asm.ClassWriter";
 	public final static String libC3p0Class      = "com.mchange.v2.c3p0.ComboPooledDataSource";
 	public final static String libDruidClass     = "com.alibaba.druid.pool.DruidDataSource";
-	public final static String libMysqlClass     = "com.mysql.jdbc.Driver";
 	public final static String libCsvjdbcClass   = "org.relique.jdbc.csv.CsvDriver";
-	 
+	
+	public final static String libMysqlClass     = "com.mysql.jdbc.Driver";
+	
  	public static Map<String, String[]> hLibClasses=new LinkedHashMap<String, String[]>(){
  		private static final long serialVersionUID = 1L;
 		{
@@ -105,12 +107,15 @@ public class DynmicLibHelper {
 			Class.forName(clazz);
 			return true;
 		} catch (ClassNotFoundException e) {
+			StackTraceElement theCaller=findTheCaller(e);			
+			
 			String[] GAV_URL=hLibClasses.get(clazz);
 			if(GAV_URL==null){
 				throw new RuntimeException("Can't locate class: "+clazz+", add jar to classpath OR setup DynmicLibHelper.hLibClasses",e);
 			}
 			
 			JarLocation location=new JarLocation(GAV_URL[0]);
+			location.setTheCaller(theCaller);
 			if(GAV_URL.length>1){
 				location.setBaseUrl(GAV_URL[1]);
 			}
@@ -127,6 +132,19 @@ public class DynmicLibHelper {
 				
 			throw new RuntimeException("Class not found: "+clazz+", can't locate GAV: "+GAV_URL[0]);	
 		}
+	}
+	
+	private static StackTraceElement findTheCaller(Exception e){
+		boolean begin=false;
+		for(StackTraceElement ste:e.getStackTrace()){
+			String mname=ste.getClassName()+"."+ste.getMethodName();
+			if(mname.equals(PkgNames.ORM_LOADERCLASS+".loadClass")){
+				begin=true;
+			}else if(begin && !mname.startsWith(PkgNames.ORM_PACKAGE+".")){
+				return ste;
+			}
+		}
+		return null;
 	}
 	
 	public static void addJarToClassPath(ClassLoader loader,File jar){

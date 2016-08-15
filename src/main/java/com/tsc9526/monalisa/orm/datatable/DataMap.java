@@ -17,24 +17,19 @@
 package com.tsc9526.monalisa.orm.datatable;
 
 import java.util.Date;
-import java.util.LinkedHashMap;
 import java.util.Map;
- 
 
-
-
-
-
+import com.tsc9526.monalisa.orm.tools.helper.CaseInsensitiveMap;
 import com.tsc9526.monalisa.orm.tools.helper.ClassHelper;
-import com.tsc9526.monalisa.orm.tools.helper.Helper;
 import com.tsc9526.monalisa.orm.tools.helper.ClassHelper.FGS;
 import com.tsc9526.monalisa.orm.tools.helper.ClassHelper.MetaClass;
+import com.tsc9526.monalisa.orm.tools.helper.Helper;
 
 /**
  * 
  * @author zzg.zhou(11039850@qq.com)
  */
-public class DataMap extends LinkedHashMap<String,Object>{ 
+public class DataMap extends CaseInsensitiveMap<Object>{ 
 	private static final long serialVersionUID = -8132926422921115814L;	
 	 
 	@SuppressWarnings("unchecked")
@@ -64,21 +59,7 @@ public class DataMap extends LinkedHashMap<String,Object>{
 		}
 		
 	}
-	
-	public Object put(String key,Object value){
-		if(key!=null){
-			key=key.toLowerCase();
-		}		
-		return super.put(key, value);
-	}
-	
-	public Object get(String key){
-		if(key!=null){
-			key=key.toLowerCase();
-		}
-		 
-		return super.get(key);
-	}
+	 
 	
 	/**
 	 * 
@@ -93,20 +74,6 @@ public class DataMap extends LinkedHashMap<String,Object>{
 		return v;
 	}
 	
-	public Object remove(String key){
-		if(key!=null){
-			key=key.toLowerCase();
-		}
-		return super.remove(key);
-	}
-	
-	public boolean containsKey(String key){
-		if(key!=null){
-			key=key.toLowerCase();
-		}
-		 
-		return super.containsKey(key);
-	}
 	
 	/**
 	 * 

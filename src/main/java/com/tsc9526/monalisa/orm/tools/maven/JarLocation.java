@@ -18,6 +18,8 @@ package com.tsc9526.monalisa.orm.tools.maven;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URLConnection;
+import java.util.List;
 
 import com.tsc9526.monalisa.orm.datasource.DbProp;
 import com.tsc9526.monalisa.orm.tools.helper.FileHelper;
@@ -28,7 +30,7 @@ import com.tsc9526.monalisa.orm.tools.logger.Logger;
  * 
  * @author zzg.zhou(11039850@qq.com)
  */
-public class JarLocation {
+public class JarLocation implements HttpHelper.DownloadListener{
 	static Logger logger=Logger.getLogger(JarLocation.class);
 	 
 	private String group;
@@ -36,10 +38,12 @@ public class JarLocation {
 	private String version;
 	
 	private String jarfile;
-	
-	private String baseUrl="https://repo1.maven.org/maven2";
-	
+ 
 	private String GAV;
+	
+	private StackTraceElement theCaller;
+	
+	private String baseUrl;
 	
 	public JarLocation(String GAV){
 		super();
@@ -58,7 +62,7 @@ public class JarLocation {
 		super();
 		
 		this.GAV=group+":"+artifact+":"+version;
-		
+	
 		this.group = group;
 		this.artifact = artifact;
 		this.version = version;
@@ -67,86 +71,110 @@ public class JarLocation {
 	}
 	
 	public File findJar()throws IOException{
-		File jar=new File(DbProp.CFG_LIB_PATH,jarfile);
+		String callAt="";
+		if(theCaller!=null){
+			callAt=", Call at: "+theCaller.getClassName()+"."+theCaller.getMethodName()+"("+theCaller.getFileName()+":"+theCaller.getLineNumber()+")";
+		}
+		String gav=paddingRight(GAV,35);
 		
+		File jar=new File(DbProp.CFG_LIB_PATH,jarfile);
 		if(!jar.exists()){
-			File jarFromMaven=locateJarFromMaven();
+			Respository respository=new Respository();
 			
+			String localRepository=respository.getLocalRepository();
+			logger.debug(">>> Maven local repository: "+respository);	
+			
+			String pathfile=FileHelper.combinePath(localRepository,group.replaceAll("\\.","/"),artifact,version,jarfile);
+				
+			File jarFromMaven=new File(pathfile);
 			if(jarFromMaven.exists()){
-				logger.info(">>> Locate artifact: "+GAV+", from "+jarFromMaven.getAbsolutePath());
+				logger.info(">>> Located  artifact: "+gav+", from "+jarFromMaven.getAbsolutePath()+callAt);
 				 
 				FileHelper.copy(jarFromMaven, jar);
 			}else{
-				String baseurl=getBaseUrl();
-				if(!baseurl.endsWith("/")){
-					baseurl+="/";
+				List<String> urls=respository.getRemoteRepositoryUrls();
+				if(this.baseUrl!=null && this.baseUrl.length()>0){
+					urls.clear();
+					urls.add(this.baseUrl);
 				}
-				String downUrl=baseurl+group.replaceAll("\\.","/")+"/"+artifact+"/"+version+"/"+jarfile;
 				
-				download(downUrl,jar);
+				for(int i=0;i<urls.size();i++){
+					String downUrl=urls.get(i);
+					if(!downUrl.endsWith("/")){
+						downUrl+="/";
+					}
+					downUrl+=group.replaceAll("\\.","/")+"/"+artifact+"/"+version+"/"+jarfile;
+					
+					if(i==0){
+						logger.info(">>> Locating artifact: "+gav+", from "+downUrl+callAt);
+					}else{
+						logger.info(">>> Locating artifact: "+gav+", try another site("+(i+1)+"/"+urls.size()+"): "+downUrl);
+					}
+					
+					if(download(downUrl,jar)){
+						break;
+					}
+				}
 			}
 		}else{
-			logger.info(">>> Locate artifact: "+GAV+", from "+jar.getAbsolutePath());
+			logger.info(">>> Located  artifact: "+gav+", from "+jar.getAbsolutePath()+callAt);
 		}
 		
 		return jar;
 	}
-	
-	public String getBaseUrl(){
-		return baseUrl;
-	}
-	
-	public void setBaseUrl(String baseUrl){
-		this.baseUrl=baseUrl;
-	}
 	 
-	protected File locateJarFromMaven() {
-		String localRepository=getRepository();
-		
-		logger.debug(">>> Maven repository: "+localRepository);	
-		
-		String pathfile=FileHelper.combinePath(localRepository,group.replaceAll("\\.","/"),artifact,version,jarfile);
-			  
-	    return new File(pathfile);
-    }
-	
 	protected boolean download(String url,File jar){
-		logger.info(">>> Locating artifact: "+GAV+", from "+url);
 		try{ 
-			HttpHelper.download(url, jar);
+			HttpHelper.download(url, jar,this);
 			
-			logger.info(">>> Dowloaded artifact: "+GAV+" -> "+jar.getAbsolutePath());
+			logger.info(">>> Dowloaded: "+GAV+" to "+jar.getAbsolutePath());
 			
 			return true;
 		}catch(Exception e){
-			logger.error(">>> Download artifact: "+GAV+" exception: "+e+", URL: "+url,e);
+			logger.error(">>> Download: "+GAV+" exception: "+e+", URL: "+url,e);
 			return false;
 		}
 		
 	}
 	
-	protected String getRepository(){
-		String repository=System.getProperty("user.home")+"/.m2/repository";
+	public void onConnected(URLConnection conn) {
+		logger.info(">>> Connected, total bytes: "+conn.getContentLength());
 		
-		String home=System.getenv("MAVEN_HOME");
-		if(home==null){
-			home=System.getProperty("MAVEN_HOME");
-		}
-		if(home!=null){
-			String settings=home+"/conf/settings.xml";
+	}
+
+	private long lastLogTime=0L;
+	public void onProgress(long receivedBytes, long totalBytes) {
+		long tm=System.currentTimeMillis();
+		if( (tm-lastLogTime) >= 2000 || receivedBytes>= totalBytes){
+			lastLogTime=tm;
 			
-			File pom=new File(settings);
-			if(pom.exists()){
-				String xml=FileHelper.readToString(pom,"utf-8");
-				
-				int p1=xml.indexOf("<localRepository>");
-				int p2=xml.indexOf("</localRepository>");
-				if(p2>p1 && p1>0){
-					repository=xml.substring(p1+"<localRepository>".length(),p2).trim();
-				}
-			}
+			logger.info(">>> Dowloading: "+GAV+",  "+receivedBytes+"/"+totalBytes);	
 		}
-		
-		return repository;
+	}
+	 
+
+	public StackTraceElement getTheCaller() {
+		return theCaller;
+	}
+
+	public void setTheCaller(StackTraceElement theCaller) {
+		this.theCaller = theCaller;
+	}
+
+	private static String paddingRight(String s,int length){
+		StringBuilder sb=new StringBuilder(s);
+		int len=length-sb.length();
+		for(int i=0;i<len;i++){
+			sb.append(" ");
+		}
+		return sb.toString();
+	}
+
+	public String getBaseUrl() {
+		return baseUrl;
+	}
+
+	public void setBaseUrl(String baseUrl) {
+		this.baseUrl = baseUrl;
 	}
 }

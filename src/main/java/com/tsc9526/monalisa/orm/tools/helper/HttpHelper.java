@@ -20,6 +20,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.URL;
 import java.net.URLConnection;
 import java.security.KeyManagementException;
@@ -42,22 +43,54 @@ import javax.net.ssl.X509TrustManager;
  * @author zzg.zhou(11039850@qq.com)
  */
 public class HttpHelper {
-
-	public static void download(String url, File target) throws IOException {
+	public static interface DownloadListener{
+		public void onConnected(URLConnection conn);
+		public void onProgress(long receivedBytes,long totalBytes);
+	}
+	public static void download(String url, File target,DownloadListener listener) throws IOException {
 		URL theUrl = new URL(url);
 
 		URLConnection conn = theUrl.openConnection();
+		
 		setupHeaders(conn);
-
+		setupConnection(conn);
+		
+		long totalBytes=conn.getContentLength();
+		if(listener!=null){
+			listener.onConnected(conn);
+		}
+		
 		File tmp = File.createTempFile(target.getName(), ".tmp");
 
-		FileHelper.write(getStream(conn), new FileOutputStream(tmp));
+		InputStream from=conn.getInputStream();
+		OutputStream to =new FileOutputStream(tmp);
+		try{
+			long receivedBytes=0;
+			
+			byte[] buf=new byte[512*1024];
+			
+			int len=from.read(buf);
+			while(len>0){
+				receivedBytes+=len;
+				
+				if(listener!=null){
+					listener.onProgress(receivedBytes,totalBytes);
+				}
+				
+				to.write(buf,0,len);
+				 
+				len=from.read(buf);
+			}
+		}finally{
+			CloseQuietly.close(from,to);
+		}
+		 
 
 		FileHelper.copy(tmp, target);
 		tmp.delete();
 	}
 
-	private static InputStream getStream(URLConnection conn) throws IOException {
+	private static void setupConnection(URLConnection conn) throws IOException {
 		if (conn instanceof HttpsURLConnection) {
 			HttpsURLConnection https = (HttpsURLConnection) conn;
 			
@@ -82,8 +115,6 @@ public class HttpHelper {
 				throw new RuntimeException(e);
 			}
 		}
-
-		return conn.getInputStream();
 	}
 
 	private static void setupHeaders(URLConnection con) {

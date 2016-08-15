@@ -80,7 +80,7 @@ public class SQLHelper {
 		return sb.toString();
 	}
 	
-	private static void appendStream(StringBuffer sb,InputStream r)throws IOException{
+	public static void appendStream(StringBuffer sb,InputStream r)throws IOException{
 		ByteArrayOutputStream tmp=new ByteArrayOutputStream();
 		
 		byte[] buf=new byte[16*1024];
@@ -109,7 +109,7 @@ public class SQLHelper {
 		sb.append(escapeSqlValue(tmp.toString()));
 	}
 	
-	private static void appendBytes(StringBuffer sb,byte[] bytes){
+	public static void appendBytes(StringBuffer sb,byte[] bytes){
 		String s=Helper.bytesToHexString(bytes,"\\x");
 		
 		sb.append("'");

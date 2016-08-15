@@ -339,7 +339,7 @@ public class DataTableTest {
 			table.add(row);
 		}
 		
-		chheckTableResults(table,new String[]{"user","area","rank"});
+		checkTableResults(table,new String[]{"user","area","rank"});
 	}
 	
 	public void testToJsonArray() {
@@ -358,7 +358,7 @@ public class DataTableTest {
 			table.add(row);
 		}
 		
-		chheckTableResults(table,new String[]{"user","area","rank"});
+		checkTableResults(table,new String[]{"user","area","rank"});
 	}
 	
 	public void testToJsonObj() {
@@ -378,10 +378,10 @@ public class DataTableTest {
 			table.add(row);
 		}
 		
-		chheckTableResults(table,new String[]{"user","area","rank"});
+		checkTableResults(table,new String[]{"user","area","rank"});
 	}
 	
-	private void chheckTableResults(DataTable<?> table,String[] hs){
+	private void checkTableResults(DataTable<?> table,String[] hs){
 		String json=table.toJson();
 		
 		JsonParser parser=new JsonParser();

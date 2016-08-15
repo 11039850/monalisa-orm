@@ -16,13 +16,13 @@
  *******************************************************************************************/
 package com.tsc9526.monalisa.orm.tools.helper;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 /**
  * 
  * @author zzg.zhou(11039850@qq.com)
  */
-public class CaseInsensitiveMap<T> extends HashMap<String, T> {
+public class CaseInsensitiveMap<T> extends LinkedHashMap<String, T> {
 
 	private static final long serialVersionUID = -5859767087732654080L;
 
@@ -38,6 +38,10 @@ public class CaseInsensitiveMap<T> extends HashMap<String, T> {
 		return super.containsKey(convertKey(key));
 	}
 
+	public T remove(Object key){
+		return super.remove(convertKey(key));
+	}
+	 
 	protected String convertKey(Object key) {
 		if (key != null) {
 			return key.toString().toLowerCase();
