@@ -82,7 +82,7 @@ public class JarLocation implements HttpHelper.DownloadListener{
 			Respository respository=new Respository();
 			
 			String localRepository=respository.getLocalRepository();
-			logger.debug(">>> Maven local repository: "+respository);	
+			logger.debug(">>> Maven local repository: "+localRepository);	
 			
 			String pathfile=FileHelper.combinePath(localRepository,group.replaceAll("\\.","/"),artifact,version,jarfile);
 				

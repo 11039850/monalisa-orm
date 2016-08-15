@@ -76,6 +76,9 @@ public class DBGeneratorProcessing extends DBGenerator{
 				projectPath=project.getProject().getLocation().toString();
 				 
 				inEclipseIDE=true;
+				
+				DbProp.SET_CFG_ROOT_PATH(projectPath);
+				
 				plogger.info("Building eclipse project: "+projectPath+" ...");
 				plogger.info("Database "+dbKey+", "+ (db.configFile().length()>0?("Config-file: "+db.configFile()):(db.url()) ));		
 			}
@@ -86,8 +89,7 @@ public class DBGeneratorProcessing extends DBGenerator{
 		}
 		
 		System.setProperty("DB@"+dbKey,projectPath);				 
-		System.setProperty("DB_PROJECT_PATH", projectPath);
-		
+		 
 		this.dbcfg=DataSourceManager.getInstance().getDBConfig(dbKey,db,true);
 				
 		String name=typeElement.getQualifiedName().toString();

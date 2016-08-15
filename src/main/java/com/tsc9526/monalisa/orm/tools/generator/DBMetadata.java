@@ -59,7 +59,7 @@ public class DBMetadata {
 		}else{
 			Map<String, MetaTable> tables=hDBMetaTables.get(dbKey);
 			if(tables==null){
-				String metafile=FileHelper.combinePath(projectPath,DbProp.TMP_WORK_DIR_METATABLE,"/"+dbKey+".meta");		
+				String metafile=FileHelper.combinePath(DbProp.TMP_WORK_DIR_METATABLE,"/"+dbKey+".meta");		
 				File taget=new File(metafile);
 				tables=FileHelper.readToObject(taget);
 				if(tables!=null){
@@ -223,7 +223,7 @@ public class DBMetadata {
 		outputStream.writeObject(hTables);
 		outputStream.flush();
 		
-		String metafile=FileHelper.combinePath(projectPath,DbProp.TMP_WORK_DIR_METATABLE,"/"+dbcfg.getCfg().getKey()+".meta");		
+		String metafile=FileHelper.combinePath(DbProp.TMP_WORK_DIR_METATABLE,"/"+dbcfg.getCfg().getKey()+".meta");		
 		File taget=new File(metafile);
 		FileHelper.write(taget, bufArrayOutputStream.toByteArray());  			 
 	}

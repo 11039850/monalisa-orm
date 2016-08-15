@@ -12,7 +12,7 @@ import java.util.LinkedHashMap;
  
 /**
  *
- * Auto generated code by monalisa 1.6.3
+ * Auto generated code by monalisa 1.7.0
  *
  */
 @Table(

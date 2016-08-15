@@ -118,6 +118,7 @@ public abstract class Logger {
 			Logger logger = (Logger) loggers.get(category);
 			if (logger == null) {
 				logger = factory.getLogger(category);
+				logger=new LoggerWrapper(logger);
 				loggers.put(category, logger);
 			}
 			return logger;

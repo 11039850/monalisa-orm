@@ -82,6 +82,8 @@ public class DBGeneratorProcessingInEclipse extends DBGeneratorProcessing{
 		Class<?> dbPropClass=loader.loadClass(DbProp.class.getName());
 		dbPropClass.getField("ProcessingEnvironment").set(null, true);
 		
+		dbPropClass.getMethod("SET_CFG_ROOT_PATH",String.class).invoke(null, DbProp.CFG_ROOT_PATH);
+		 
 		Class<?> dbGenClass=loader.loadClass(DBGenerator.class.getName());
 		dbGenClass.getField("plogger").set(null, DBGenerator.plogger);
 	}

@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.tsc9526</groupId>
 	<artifactId>monalisa-orm</artifactId>
-	<version>1.6.3</version>
+	<version>1.7.0</version>
 
 	<name>monalisa-orm</name>
 	<url>https://github.com/11039850/monalisa-orm</url>
@@ -25,7 +25,7 @@
 		<connection>scm:git:https://github.com/11039850/monalisa-orm.git</connection>
 		<developerConnection>scm:git:https://github.com/11039850/monalisa-orm.git</developerConnection>
 		<url>https://github.com/11039850/monalisa-orm.git</url>
-		<tag>tag-1.6.1</tag>
+		<tag>tag-1.7.0</tag>
 	</scm>
 
 	<developers>
