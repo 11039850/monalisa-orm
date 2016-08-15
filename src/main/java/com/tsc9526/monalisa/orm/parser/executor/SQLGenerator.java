@@ -193,10 +193,9 @@ public class SQLGenerator {
 		Set<String> imps=new LinkedHashSet<String>();
 		boolean importColumn=false;
 		
-		String projectPath=".";
 		for(MetaColumn c:table.getColumns()){
 			String tableName=c.getTable().getName();
-			MetaTable columnTable=DBMetadata.getTable(projectPath,exchange.getDbKey(),tableName);
+			MetaTable columnTable=DBMetadata.getTable(exchange.getDbKey(),tableName);
 			c.setTable(columnTable);
 			if(columnTable!=null){
 				MetaColumn cd=columnTable.getColumn(c.getName());

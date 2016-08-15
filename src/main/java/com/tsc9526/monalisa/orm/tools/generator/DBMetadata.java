@@ -53,7 +53,7 @@ import com.tsc9526.monalisa.orm.tools.helper.TableHelper;
 public class DBMetadata {
 	private static Map<String,Map<String, MetaTable>> hDBMetaTables=new ConcurrentHashMap<String,Map<String,MetaTable>>();
 	
-	public static MetaTable getTable(String projectPath,String dbKey,String tableName){
+	public static MetaTable getTable(String dbKey,String tableName){
 		if(tableName==null || dbKey==null || tableName.trim().length()<1){
 			return null;
 		}else{

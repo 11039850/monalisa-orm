@@ -18,6 +18,7 @@ package com.tsc9526.monalisa.orm.tools.helper;
 
 import java.io.File;
 import java.io.InputStream;
+import java.net.URL;
 import java.util.Properties;
 
 import com.tsc9526.monalisa.orm.tools.logger.Logger;
@@ -41,14 +42,23 @@ public class Version {
 					p.load(in);
 					version=p.getProperty("version");
 				}else{
-					File pom=new File("pom.xml");
-					
-					String xml=FileHelper.readToString(pom,"utf-8");
-					
-					int p1=xml.indexOf("<version>");
-					int p2=xml.indexOf("</version>");
-					if(p2>p1 && p1>0){
-						version=xml.substring(p1+"<version>".length(),p2).trim();
+					URL url=Version.class.getResource("");
+					String path=url.toString();
+					if(path.startsWith("file:")){
+						int p=path.lastIndexOf("/com/tsc9526/monalisa");
+						path=path.substring(0,p)+"/../../pom.xml";
+						URL fileUrl=new URL(path);
+						File pom=new File(fileUrl.toURI());
+						
+						if(pom.exists()){
+							String xml=FileHelper.readToString(pom,"utf-8");
+							
+							int p1=xml.indexOf("<version>");
+							int p2=xml.indexOf("</version>");
+							if(p2>p1 && p1>0){
+								version=xml.substring(p1+"<version>".length(),p2).trim();
+							}
+						}
 					}
 				}
 			}catch(Exception e){
