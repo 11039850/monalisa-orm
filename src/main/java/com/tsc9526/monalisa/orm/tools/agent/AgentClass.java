@@ -213,6 +213,8 @@ public class AgentClass {
 	 	
 		try {
 			if(!initilized){
+				DynmicLibHelper.tryLoadGson();
+				
 				initAgentClasses();
 			}
 			

@@ -39,6 +39,10 @@ import com.tsc9526.monalisa.orm.tools.helper.ClassHelper.MetaClass;
  * @author zzg.zhou(11039850@qq.com)
  */
 public class JsonHelper {
+	static{
+		DynmicLibHelper.tryLoadGson();
+	}
+	
 	private static GsonBuilder gb=new GsonBuilder().registerTypeAdapter(Double.class,  new JsonSerializer<Double>() {   
 	    public JsonElement serialize(Double src, Type typeOfSrc, JsonSerializationContext context) {
 	        if(src == src.longValue()){

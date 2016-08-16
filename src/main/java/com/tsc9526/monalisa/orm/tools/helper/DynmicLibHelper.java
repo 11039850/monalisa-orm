@@ -38,6 +38,8 @@ import com.tsc9526.monalisa.orm.tools.resources.PkgNames;
 public class DynmicLibHelper {
 	private static Logger logger=Logger.getLogger(DynmicLibHelper.class);
 	
+	public final static String libGsonClass      = "com.google.gson.Gson";
+	
 	public final static String libCglibClass     = "net.sf.cglib.proxy.Enhancer";
 	public final static String libAsmClass       = "org.objectweb.asm.ClassWriter";
 	public final static String libC3p0Class      = "com.mchange.v2.c3p0.ComboPooledDataSource";
@@ -49,6 +51,8 @@ public class DynmicLibHelper {
  	public static Map<String, String[]> hLibClasses=new LinkedHashMap<String, String[]>(){
  		private static final long serialVersionUID = 1L;
 		{
+			put(libGsonClass,    new String[]{"com.google.code.gson:gson:2.3.1"});
+			 
  			put(libCglibClass,   new String[]{"cglib:cglib:3.2.0"});
  			put(libAsmClass,     new String[]{"org.ow2.asm:asm:5.0.3"});
  			put(libC3p0Class,    new String[]{"c3p0:c3p0:0.9.1.2"});
@@ -101,6 +105,13 @@ public class DynmicLibHelper {
 		return new DruidDataSource();
 	}
 	
+	public static void tryLoadGson(){
+		try{
+			DynmicLibHelper.loadClass(libGsonClass);
+		}catch(Exception e){
+			logger.error("Exception load gson: "+e,e);
+		}
+	}
 	  
 	public static boolean loadClass(String clazz) {
 		try {
