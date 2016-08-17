@@ -17,6 +17,8 @@
 package com.tsc9526.monalisa.orm.tools.generator;
 
 import java.io.Serializable;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 import com.tsc9526.monalisa.orm.meta.MetaTable;
 
@@ -26,55 +28,70 @@ import com.tsc9526.monalisa.orm.meta.MetaTable;
  */
 public class DBExchange implements Serializable {
 	private static final long serialVersionUID = 5069827028195702115L;
- 		
-	private static ThreadLocal<DBExchange> localExchange=new ThreadLocal<DBExchange>();
-	public static void setExchange(DBExchange exchange){
+
+	private static ThreadLocal<DBExchange> localExchange = new ThreadLocal<DBExchange>();
+
+	public static void setExchange(DBExchange exchange) {
 		localExchange.set(exchange);
 	}
-	 
-	public static DBExchange getExchange(boolean remove){
-		DBExchange exchange=localExchange.get();
-		if(remove && exchange!=null){
+
+	public static DBExchange getExchange(boolean remove) {
+		DBExchange exchange = localExchange.get();
+		if (remove && exchange != null) {
 			localExchange.remove();
 		}
 		return exchange;
 	}
-	
-	public static void setExchange(int index){
-		DBExchange exchange=new DBExchange();
+
+	public static void setExchange(int index) {
+		DBExchange exchange = new DBExchange();
 		exchange.setIndex(index);
 		setExchange(exchange);
 	}
-	
-	
-	private int   index;
-	
+
+	private int index;
+
 	private MetaTable table;
-	
+
 	private String sql;
-	
-	private String errorString="NOT RUN!";
- 	
+
+	private String errorString = "NOT RUN!";
+
 	private String dbKey;
-	
+
+	private Map<String, Object> tags = new LinkedHashMap<String, Object>();
+
 	public MetaTable getTable() {
 		return table;
 	}
+
 	public void setTable(MetaTable table) {
 		this.table = table;
 	}
+	
+	public void putTag(String tag,Object value){
+		tags.put(tag, value);
+	}
+	
+	public Object getTag(String tag){
+		return tags.get(tag);
+	}
+
 	public String getSql() {
 		return sql;
 	}
+
 	public void setSql(String sql) {
 		this.sql = sql;
 	}
+
 	public String getErrorString() {
 		return errorString;
 	}
+
 	public void setErrorString(String errorString) {
 		this.errorString = errorString;
-	}	 
+	}
 
 	public int getIndex() {
 		return index;
@@ -84,11 +101,9 @@ public class DBExchange implements Serializable {
 		this.index = index;
 	}
 
-
 	public String getDbKey() {
 		return dbKey;
 	}
-
 
 	public void setDbKey(String dbKey) {
 		this.dbKey = dbKey;

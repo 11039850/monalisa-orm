@@ -120,7 +120,9 @@ public @interface DB{
 	
 	
 	/**
-	 * 数据源Class
+	 * Datasouce class, the value can be C3p0DataSource / DruidDataSource <br>
+	 *   OR other class which implement PooledDataSource
+	 * @see com.tsc9526.monalisa.orm.datasource.PooledDataSource
 	 * @return datasource clalss
 	 */
 	String datasourceClass()  default "";

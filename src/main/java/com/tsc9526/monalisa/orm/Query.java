@@ -52,17 +52,17 @@ import com.tsc9526.monalisa.orm.tools.logger.Logger;
  
 
 /**
- * 数据库查询对象, 基本用法: <br>
+ * Database query, usage: <br><br>
  * 
  * <code>
  * &#64;DB(url="jdbc:mysql://127.0.0.1:3306/test", username="root", password="root")<br>
  * public interface TestDB {<br>
- * 	 &nbsp;&nbsp;&nbsp;&nbsp;public final static DBConfig DB=DBConfig.fromClass(Test.class)<br>
+ * 	 &nbsp;&nbsp;&nbsp;&nbsp;public final static DBConfig DB=DBConfig.fromClass(TestDB.class)<br>
  * }	
  * </code> 
  *<br><br> 
  * <code>
- * Query q=new Query(TestDB.DB); <br>
+ * Query q=new Query(TestDB.DB); //or: Query q=TestDB.DB.createQuery(); <br>
  * q.add("select * from xxx where id=?",1); <br>
  * List&lt;Result&gt; r=q.getList(Result.class);   <br>
  * Page&lt;Result&gt; p=q.getPage(Result.class,10,0);<br>
