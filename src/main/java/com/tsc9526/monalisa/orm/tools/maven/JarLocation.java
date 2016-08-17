@@ -70,13 +70,31 @@ public class JarLocation implements HttpHelper.DownloadListener{
 		jarfile=artifact + "-" + version + ".jar";
 	}
 	
-	public File findJar()throws IOException{
-		String callAt="";
-		if(theCaller!=null){
-			callAt=", Call at: "+theCaller.getClassName()+"."+theCaller.getMethodName()+"("+theCaller.getFileName()+":"+theCaller.getLineNumber()+")";
+	
+	private String getCallDetailMessage(){
+		String callMessage="";
+		if(DbProp.CFG_LOG_JARLOCATION_DETAIL){
+			if(theCaller!=null){
+				callMessage="\r\nCall at: "+theCaller.getClassName()+"."+theCaller.getMethodName()+"("+theCaller.getFileName()+":"+theCaller.getLineNumber()+")";
+			}
+			callMessage+="\r\n"+/**~!{*/""
+				+ "If you don't want to see this message, please add the jar: " +(jarfile)+ " to your class path. Here is an example for maven: "
+				+ "\r\n<dependency>"
+				+ "\r\n	<groupId>" +(group)+ "</groupId>"
+				+ "\r\n	<artifactId>" +(artifact)+ "</artifactId>"
+				+ "\r\n	<version>" +(version)+ "</version>"
+				+ "\r\n</dependency>  "
+				+ "\r\n"
+				+ "\r\nOR first call: com.tsc9526.monalisa.orm.datasource.DbProp.CFG_LOG_JARLOCATION_DETAIL = false;"
+			+ "\r\n"/**}*/;
 		}
-		String gav=paddingRight(GAV,35);
 		
+		return callMessage;
+	}
+	
+	public File findJar()throws IOException{
+		String callMessage=getCallDetailMessage();
+		 
 		File jar=new File(DbProp.CFG_LIB_PATH,jarfile);
 		if(!jar.exists()){
 			Respository respository=new Respository();
@@ -88,7 +106,7 @@ public class JarLocation implements HttpHelper.DownloadListener{
 				
 			File jarFromMaven=new File(pathfile);
 			if(jarFromMaven.exists()){
-				logger.info(">>> Located  artifact: "+gav+", from "+jarFromMaven.getAbsolutePath()+callAt);
+				logger.info(">>> Located  artifact: "+GAV+", from "+jarFromMaven.getAbsolutePath()+callMessage);
 				 
 				FileHelper.copy(jarFromMaven, jar);
 			}else{
@@ -106,9 +124,9 @@ public class JarLocation implements HttpHelper.DownloadListener{
 					downUrl+=group.replaceAll("\\.","/")+"/"+artifact+"/"+version+"/"+jarfile;
 					
 					if(i==0){
-						logger.info(">>> Locating artifact: "+gav+", from "+downUrl+callAt);
+						logger.info(">>> Locating artifact: "+GAV+", from "+downUrl+callMessage);
 					}else{
-						logger.info(">>> Locating artifact: "+gav+", try another site("+(i+1)+"/"+urls.size()+"): "+downUrl);
+						logger.info(">>> Locating artifact: "+GAV+", try another site("+(i+1)+"/"+urls.size()+"): "+downUrl);
 					}
 					
 					if(download(downUrl,jar)){
@@ -117,7 +135,7 @@ public class JarLocation implements HttpHelper.DownloadListener{
 				}
 			}
 		}else{
-			logger.info(">>> Located  artifact: "+gav+", from "+jar.getAbsolutePath()+callAt);
+			logger.info(">>> Located  artifact: "+GAV+", from "+jar.getAbsolutePath()+callMessage);
 		}
 		
 		return jar;
@@ -139,7 +157,6 @@ public class JarLocation implements HttpHelper.DownloadListener{
 	
 	public void onConnected(URLConnection conn) {
 		logger.info(">>> Connected, total bytes: "+conn.getContentLength());
-		
 	}
 
 	private long lastLogTime=0L;
@@ -152,6 +169,9 @@ public class JarLocation implements HttpHelper.DownloadListener{
 		}
 	}
 	 
+	public void onMessage(String message){
+		logger.info(">>> "+message);	
+	}
 
 	public StackTraceElement getTheCaller() {
 		return theCaller;
@@ -160,15 +180,7 @@ public class JarLocation implements HttpHelper.DownloadListener{
 	public void setTheCaller(StackTraceElement theCaller) {
 		this.theCaller = theCaller;
 	}
-
-	private static String paddingRight(String s,int length){
-		StringBuilder sb=new StringBuilder(s);
-		int len=length-sb.length();
-		for(int i=0;i<len;i++){
-			sb.append(" ");
-		}
-		return sb.toString();
-	}
+ 
 
 	public String getBaseUrl() {
 		return baseUrl;

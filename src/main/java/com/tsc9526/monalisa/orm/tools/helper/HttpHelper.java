@@ -21,6 +21,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
 import java.security.KeyManagementException;
@@ -45,23 +46,70 @@ import javax.net.ssl.X509TrustManager;
 public class HttpHelper {
 	public static interface DownloadListener{
 		public void onConnected(URLConnection conn);
+		public void onMessage(String message);
 		public void onProgress(long receivedBytes,long totalBytes);
 	}
+	
 	public static void download(String url, File target,DownloadListener listener) throws IOException {
 		URL theUrl = new URL(url);
+		File tmp = File.createTempFile(target.getName(), ".tmp");
+		
+		for(int i=0;i<3;i++){
+			try{
+				if(doDownload(theUrl,tmp,target,listener)){
+					break;
+				}
+			}catch(IOException e){
+				if(i==2){
+					throw e;
+				}else if(listener!=null && i<2){
+					listener.onMessage("Socket exception: "+e+", retry: "+(i+1));
+					try{ Thread.sleep(1000); }catch(Exception ex){}
+				}
+			}
+		}
+		
+		FileHelper.copy(tmp, target);
+		
+		tmp.delete();
+	}
 
+	private static boolean doDownload(URL theUrl,File tmp,File target,DownloadListener listener)throws IOException{
+		return doDownload0(theUrl, tmp, target, listener,0);
+	}
+	
+	private static boolean doDownload0(URL theUrl,File tmp,File target,DownloadListener listener,int times)throws IOException{
+		if(times>=3){
+			throw new IOException("Redirect too many times: "+times+", URL: "+theUrl);
+		}
+		
 		URLConnection conn = theUrl.openConnection();
 		
 		setupHeaders(conn);
 		setupConnection(conn);
 		
+		String location=getLocation(conn);
+		if(location!=null){
+			if(listener!=null){
+				listener.onMessage("Redirect to: "+location);
+			}
+			
+			CloseQuietly.close(conn);
+			
+			URL redirectUrl = new URL(location);
+			return doDownload0(redirectUrl,tmp,target,listener,times+1);
+		}else{
+			downloadStream(conn,tmp,target,listener);
+			return true;
+		}
+	}
+	
+	private static void downloadStream(URLConnection conn,File tmp,File target,DownloadListener listener)throws IOException{
 		long totalBytes=conn.getContentLength();
 		if(listener!=null){
 			listener.onConnected(conn);
 		}
-		
-		File tmp = File.createTempFile(target.getName(), ".tmp");
-
+		 
 		InputStream from=conn.getInputStream();
 		OutputStream to =new FileOutputStream(tmp);
 		try{
@@ -82,14 +130,24 @@ public class HttpHelper {
 				len=from.read(buf);
 			}
 		}finally{
-			CloseQuietly.close(from,to);
+			CloseQuietly.close(from,to,conn);
 		}
-		 
-
-		FileHelper.copy(tmp, target);
-		tmp.delete();
 	}
-
+	
+	private static String getLocation(URLConnection conn)throws IOException{
+		 if(conn instanceof HttpURLConnection){
+			HttpURLConnection http=(HttpURLConnection)conn;
+			int code=http.getResponseCode();
+			if(code==301 || code==302){
+				String location=http.getHeaderField("Location");
+				return location;
+			}
+		}
+		
+		return null;
+	}
+	
+	
 	private static void setupConnection(URLConnection conn) throws IOException {
 		if (conn instanceof HttpsURLConnection) {
 			HttpsURLConnection https = (HttpsURLConnection) conn;

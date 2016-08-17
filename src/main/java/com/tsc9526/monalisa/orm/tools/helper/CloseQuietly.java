@@ -18,6 +18,7 @@ package com.tsc9526.monalisa.orm.tools.helper;
 
 import java.io.Closeable;
 import java.lang.reflect.Method;
+import java.net.HttpURLConnection;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -44,6 +45,8 @@ public class CloseQuietly {
 				close((Closeable)x);
 			}else if(x instanceof AutoCloseable){
 				close((AutoCloseable)x);
+			}else if(x instanceof HttpURLConnection){
+				close((HttpURLConnection)x);
 			}else{		
 				try{
 					Method m=x.getClass().getMethod("close");
@@ -57,6 +60,15 @@ public class CloseQuietly {
 		}
 	}
 		
+	public static void close(HttpURLConnection c){
+		try{
+			if(c!=null){
+				c.disconnect();
+			}
+		}catch(Exception e){}
+	}	
+	 
+	
 	public static void close(Closeable c){
 		try{
 			if(c!=null){

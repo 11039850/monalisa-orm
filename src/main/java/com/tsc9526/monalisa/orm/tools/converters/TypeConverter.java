@@ -37,7 +37,7 @@ import com.tsc9526.monalisa.orm.tools.converters.impl.ObjectTypeConversion;
 import com.tsc9526.monalisa.orm.tools.converters.impl.SameTypeConversion;
 import com.tsc9526.monalisa.orm.tools.converters.impl.ShortTypeConversion;
 import com.tsc9526.monalisa.orm.tools.converters.impl.StringTypeConversion;
-import com.tsc9526.monalisa.orm.tools.helper.DynmicLibHelper;
+import com.tsc9526.monalisa.orm.tools.helper.DynamicLibHelper;
 import com.tsc9526.monalisa.orm.tools.logger.Logger;
 
 /**
@@ -126,7 +126,7 @@ public class TypeConverter {
 	private static final Conversion<?> SAME_CONVERSION = new SameTypeConversion();
 
 	static {
-		DynmicLibHelper.tryLoadGson();
+		DynamicLibHelper.tryLoadGson();
 		 
 		registerTypeConversion(new BigDecimalTypeConversion());
 		registerTypeConversion(new BooleanTypeConversion());

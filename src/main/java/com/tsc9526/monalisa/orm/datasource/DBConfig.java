@@ -49,7 +49,7 @@ import com.tsc9526.monalisa.orm.model.Record;
 import com.tsc9526.monalisa.orm.tools.generator.DBGeneratorProcessing;
 import com.tsc9526.monalisa.orm.tools.helper.ClassHelper;
 import com.tsc9526.monalisa.orm.tools.helper.CloseQuietly;
-import com.tsc9526.monalisa.orm.tools.helper.DynmicLibHelper;
+import com.tsc9526.monalisa.orm.tools.helper.DynamicLibHelper;
 import com.tsc9526.monalisa.orm.tools.helper.Helper;
 import com.tsc9526.monalisa.orm.tools.logger.Logger;
 import com.tsc9526.monalisa.orm.tools.resources.PkgNames;
@@ -158,8 +158,8 @@ public class DBConfig implements Closeable{
 		
 		String driverClass=cfg.getDriver();
 		
-		if(DynmicLibHelper.hLibClasses.containsKey(driverClass)){
-			DynmicLibHelper.loadClass(driverClass);
+		if(DynamicLibHelper.hLibClasses.containsKey(driverClass)){
+			DynamicLibHelper.loadClass(driverClass);
 		}
 		
 		if(cfg.isCfgFileChanged()){
@@ -225,9 +225,9 @@ public class DBConfig implements Closeable{
 	
 	protected Object instanceDataSource(String clazz)throws Exception{
 		if(clazz.equals(PkgNames.ORM_DS_C3p0)){
-			return DynmicLibHelper.createC3p0DataSource();
+			return DynamicLibHelper.createC3p0DataSource();
 		}else if(clazz.equals(PkgNames.ORM_DS_Durid)){
-			return DynmicLibHelper.createDruidDataSource();
+			return DynamicLibHelper.createDruidDataSource();
 		}else{
 			return ClassHelper.forClassName(clazz).newInstance();	
 		}

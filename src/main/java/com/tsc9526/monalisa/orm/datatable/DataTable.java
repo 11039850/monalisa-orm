@@ -28,7 +28,7 @@ import com.google.gson.stream.JsonWriter;
 import com.tsc9526.monalisa.orm.tools.helper.ClassHelper;
 import com.tsc9526.monalisa.orm.tools.helper.ClassHelper.FGS;
 import com.tsc9526.monalisa.orm.tools.helper.ClassHelper.MetaClass;
-import com.tsc9526.monalisa.orm.tools.helper.DynmicLibHelper;
+import com.tsc9526.monalisa.orm.tools.helper.DynamicLibHelper;
 import com.tsc9526.monalisa.orm.tools.helper.JsonHelper;
 import com.tsc9526.monalisa.orm.tools.helper.SQLHelper;
 
@@ -40,11 +40,11 @@ public class DataTable<E> extends ArrayList<E> {
 	private static final long serialVersionUID = 6839964505006290332L;
 	
 	public static DataTable<DataMap> fromCsv(InputStream csvInputStream) {
-		return DynmicLibHelper.createCsv().fromCsv(csvInputStream, CsvOptions.createDefaultOptions());
+		return DynamicLibHelper.createCsv().fromCsv(csvInputStream, CsvOptions.createDefaultOptions());
 	}
 	 
 	public static DataTable<DataMap> fromCsv(String csvString){
-		return DynmicLibHelper.createCsv().fromCsv(csvString, CsvOptions.createDefaultOptions());
+		return DynamicLibHelper.createCsv().fromCsv(csvString, CsvOptions.createDefaultOptions());
 	}
 	
 	protected List<DataColumn> headers=new ArrayList<DataColumn>();
@@ -59,7 +59,7 @@ public class DataTable<E> extends ArrayList<E> {
 	}
 	 
 	public void saveCsv(OutputStream csvOutputStream){ 
-		DynmicLibHelper.createCsv().writeToCsv(this, csvOutputStream,CsvOptions.createDefaultOptions());
+		DynamicLibHelper.createCsv().writeToCsv(this, csvOutputStream,CsvOptions.createDefaultOptions());
 	}
  
 	/**
@@ -109,7 +109,7 @@ public class DataTable<E> extends ArrayList<E> {
 	public DataTable<DataMap> select(String columns,String where,String orderBy,String groupBy){
 		String sql=getSQL(columns, where, orderBy, groupBy);
 		
-		return DynmicLibHelper.createCsv().queryTable(this, sql);
+		return DynamicLibHelper.createCsv().queryTable(this, sql);
 	}
 	
 	protected String getSQL(String columns,String where,String orderBy,String groupBy){

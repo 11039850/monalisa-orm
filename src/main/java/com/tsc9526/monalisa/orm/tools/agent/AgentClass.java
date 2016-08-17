@@ -31,7 +31,7 @@ import com.tsc9526.monalisa.orm.datasource.DBTasks;
 import com.tsc9526.monalisa.orm.datasource.DbProp;
 import com.tsc9526.monalisa.orm.tools.helper.ClassHelper;
 import com.tsc9526.monalisa.orm.tools.helper.ClassPathHelper;
-import com.tsc9526.monalisa.orm.tools.helper.DynmicLibHelper;
+import com.tsc9526.monalisa.orm.tools.helper.DynamicLibHelper;
 import com.tsc9526.monalisa.orm.tools.helper.FileHelper;
 import com.tsc9526.monalisa.orm.tools.helper.Helper;
 import com.tsc9526.monalisa.orm.tools.helper.JsonHelper;
@@ -213,12 +213,12 @@ public class AgentClass {
 	 	
 		try {
 			if(!initilized){
-				DynmicLibHelper.tryLoadGson();
+				DynamicLibHelper.tryLoadGson();
 				
 				initAgentClasses();
 			}
 			
-			T value=DynmicLibHelper.createAgentEnhancer().createProxyInstance(theClass);
+			T value=DynamicLibHelper.createAgentEnhancer().createProxyInstance(theClass);
  
 			return value;
 		} catch (Exception e) {

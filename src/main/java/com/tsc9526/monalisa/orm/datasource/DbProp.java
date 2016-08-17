@@ -94,15 +94,15 @@ public class DbProp {
 	 * 全局Cache开关， 一个Query在未指定Cache时，允许读取另一个Query对象的缓存数据.  默认关闭
 	 */
 	public static boolean CFG_CACHE_GLOABLE_ENABLE=false; 
-	
- 	
-	
-	/**
-	 * 默认连接空闲5分钟时，执行保持连接检查的SQL
-	 */
-	public static int   CFG_CONNECT_IDLE_INTERVALS= 300;
 	 
+	/**
+	 * 默认连接空闲1分钟时，执行保持连接检查的SQL
+	 */
+	public static int     CFG_CONNECT_IDLE_INTERVALS= 60;
 	
+	
+	public static boolean CFG_LOG_JARLOCATION_DETAIL=true;
+	 
 	public static String SET_CFG_ROOT_PATH(String cfgRootPath) {
 		CFG_ROOT_PATH=cfgRootPath;
 		

@@ -35,8 +35,8 @@ import com.tsc9526.monalisa.orm.tools.resources.PkgNames;
  * 
  * @author zzg.zhou(11039850@qq.com)
  */
-public class DynmicLibHelper {
-	private static Logger logger=Logger.getLogger(DynmicLibHelper.class);
+public class DynamicLibHelper {
+	private static Logger logger=Logger.getLogger(DynamicLibHelper.class);
 	
 	public final static String libGsonClass      = "com.google.gson.Gson";
 	
@@ -62,6 +62,7 @@ public class DynmicLibHelper {
  		}
  	};
  	
+ 	private static boolean init_libGsonClass   =false;
 	private static boolean init_libCglibClass  =false;
 	private static boolean init_libCsvjdbcClass=false;
 	private static boolean init_libC3p0Class   =false;
@@ -106,10 +107,14 @@ public class DynmicLibHelper {
 	}
 	
 	public static void tryLoadGson(){
-		try{
-			DynmicLibHelper.loadClass(libGsonClass);
-		}catch(Exception e){
-			logger.error("Exception load gson: "+e,e);
+		if(!init_libGsonClass){
+			try{
+				DynamicLibHelper.loadClass(libGsonClass);
+			}catch(Exception e){
+				logger.error("Exception load gson: "+e,e);
+			}
+			
+			init_libGsonClass=true;
 		}
 	}
 	  
@@ -118,31 +123,40 @@ public class DynmicLibHelper {
 			Class.forName(clazz);
 			return true;
 		} catch (ClassNotFoundException e) {
-			StackTraceElement theCaller=findTheCaller(e);			
-			
-			String[] GAV_URL=hLibClasses.get(clazz);
-			if(GAV_URL==null){
-				throw new RuntimeException("Can't locate class: "+clazz+", add jar to classpath OR setup DynmicLibHelper.hLibClasses",e);
-			}
-			
-			JarLocation location=new JarLocation(GAV_URL[0]);
-			location.setTheCaller(theCaller);
-			if(GAV_URL.length>1){
-				location.setBaseUrl(GAV_URL[1]);
-			}
-			
-			try {
-				File jar=location.findJar();
-				if(jar.exists()){
-					addJarToClassPath(DynmicLibHelper.class.getClassLoader(), jar);
-					return true;
-				}
-			} catch(Exception ioe) {
-				throw new RuntimeException("Class not found: "+clazz,ioe);
-			}
-				
-			throw new RuntimeException("Class not found: "+clazz+", can't locate GAV: "+GAV_URL[0]);	
+			return appendClass(clazz,e);	
 		}
+	}
+	
+	private synchronized static boolean appendClass(String clazz,ClassNotFoundException e){
+		try {
+			Class.forName(clazz);
+			return true;
+		}catch(ClassNotFoundException cnfe){}
+		
+		StackTraceElement theCaller=findTheCaller(e);			
+		
+		String[] GAV_URL=hLibClasses.get(clazz);
+		if(GAV_URL==null){
+			throw new RuntimeException("Can't locate class: "+clazz+", add the jar to classpath OR setup DynmicLibHelper.hLibClasses",e);
+		}
+		
+		JarLocation location=new JarLocation(GAV_URL[0]);
+		location.setTheCaller(theCaller);
+		if(GAV_URL.length>1){
+			location.setBaseUrl(GAV_URL[1]);
+		}
+		
+		try {
+			File jar=location.findJar();
+			if(jar.exists()){
+				addJarToClassPath(DynamicLibHelper.class.getClassLoader(), jar);
+				return true;
+			}
+		} catch(Exception ioe) {
+			throw new RuntimeException("Class not found: "+clazz,ioe);
+		}
+			
+		throw new RuntimeException("Class not found: "+clazz+", can't locate GAV: "+GAV_URL[0]);
 	}
 	
 	private static StackTraceElement findTheCaller(Exception e){

@@ -32,7 +32,7 @@ public class PkgNames {
 	
 	public final static String ORM_LOGGER_PKG    = ORM_PACKAGE+".tools.logger";
 	public final static String ORM_JSONHELPER    = ORM_PACKAGE+".tools.helper.JsonHelper";
-	public final static String ORM_LOADERCLASS   = ORM_PACKAGE+".tools.helper.DynmicLibHelper"; 
+	public final static String ORM_LOADERCLASS   = ORM_PACKAGE+".tools.helper.DynamicLibHelper"; 
 	public final static String ORM_AGENTCLASS    = ORM_PACKAGE+".tools.agent.AgentClass";
 	public final static String ORM_AgentHotSpotVM= ORM_PACKAGE+".tools.agent.AgentHotSpotVM";
 	

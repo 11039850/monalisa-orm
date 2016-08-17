@@ -331,7 +331,7 @@ public abstract class Dialect{
 			for(Object v:(Collection<?>)value){
 				addQueryVars(query,v);
 			}
-		}else if(value.getClass().isArray()){
+		}else if(value!=null && value.getClass().isArray()){
 			for(Object v:(Object[])value){
 				addQueryVars(query,v);
 			}

@@ -56,7 +56,7 @@ public class ModelHelper {
 	public final static String OPTIONS_NAME_CASE_SENSITIVE  = "[NAME_CASE_SENSITIVE]";
 	 
 	static{
-		DynmicLibHelper.tryLoadGson();
+		DynamicLibHelper.tryLoadGson();
 		 
 		registerModelParser(Map.class,new MapModelParser());
 		registerModelParser(JsonObject.class,new JsonObjectModelParser());

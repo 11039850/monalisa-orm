@@ -40,7 +40,7 @@ import com.tsc9526.monalisa.orm.tools.helper.ClassHelper.MetaClass;
  */
 public class JsonHelper {
 	static{
-		DynmicLibHelper.tryLoadGson();
+		DynamicLibHelper.tryLoadGson();
 	}
 	
 	private static GsonBuilder gb=new GsonBuilder().registerTypeAdapter(Double.class,  new JsonSerializer<Double>() {   
