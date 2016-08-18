@@ -71,30 +71,34 @@ public class JarLocation implements HttpHelper.DownloadListener{
 	}
 	
 	
-	private String getCallDetailMessage(){
+	private String getCallDetailMessage(boolean withTips){
 		String callMessage="";
 		if(DbProp.CFG_LOG_JARLOCATION_DETAIL){
-			if(theCaller!=null){
-				callMessage="\r\nCall at: "+theCaller.getClassName()+"."+theCaller.getMethodName()+"("+theCaller.getFileName()+":"+theCaller.getLineNumber()+")";
+			if(withTips){
+				if(theCaller!=null){
+					callMessage="\r\nCall at: "+theCaller.getClassName()+"."+theCaller.getMethodName()+"("+theCaller.getFileName()+":"+theCaller.getLineNumber()+")";
+				}
+				callMessage+="\r\n"+/**~!{*/""
+					+ "If you don't want to see this message, please add the jar: " +(jarfile)+ " to your class path. Here is an example for maven: "
+					+ "\r\n<dependency>"
+					+ "\r\n	<groupId>" +(group)+ "</groupId>"
+					+ "\r\n	<artifactId>" +(artifact)+ "</artifactId>"
+					+ "\r\n	<version>" +(version)+ "</version>"
+					+ "\r\n</dependency>  "
+					+ "\r\n"
+					+ "\r\nOR first call: com.tsc9526.monalisa.orm.datasource.DbProp.CFG_LOG_JARLOCATION_DETAIL = false;"
+				+ "\r\n"/**}*/;
+			}else{
+				if(theCaller!=null){
+					callMessage=", Call at: "+theCaller.getClassName()+"."+theCaller.getMethodName()+"("+theCaller.getFileName()+":"+theCaller.getLineNumber()+")";
+				}
 			}
-			callMessage+="\r\n"+/**~!{*/""
-				+ "If you don't want to see this message, please add the jar: " +(jarfile)+ " to your class path. Here is an example for maven: "
-				+ "\r\n<dependency>"
-				+ "\r\n	<groupId>" +(group)+ "</groupId>"
-				+ "\r\n	<artifactId>" +(artifact)+ "</artifactId>"
-				+ "\r\n	<version>" +(version)+ "</version>"
-				+ "\r\n</dependency>  "
-				+ "\r\n"
-				+ "\r\nOR first call: com.tsc9526.monalisa.orm.datasource.DbProp.CFG_LOG_JARLOCATION_DETAIL = false;"
-			+ "\r\n"/**}*/;
 		}
 		
 		return callMessage;
 	}
 	
 	public File findJar()throws IOException{
-		String callMessage=getCallDetailMessage();
-		 
 		File jar=new File(DbProp.CFG_LIB_PATH,jarfile);
 		if(!jar.exists()){
 			Respository respository=new Respository();
@@ -106,7 +110,7 @@ public class JarLocation implements HttpHelper.DownloadListener{
 				
 			File jarFromMaven=new File(pathfile);
 			if(jarFromMaven.exists()){
-				logger.info(">>> Located  artifact: "+GAV+", from "+jarFromMaven.getAbsolutePath()+callMessage);
+				logger.info(">>> Located  artifact: "+GAV+", from "+jarFromMaven.getAbsolutePath()+getCallDetailMessage(true));
 				 
 				FileHelper.copy(jarFromMaven, jar);
 			}else{
@@ -124,7 +128,7 @@ public class JarLocation implements HttpHelper.DownloadListener{
 					downUrl+=group.replaceAll("\\.","/")+"/"+artifact+"/"+version+"/"+jarfile;
 					
 					if(i==0){
-						logger.info(">>> Locating artifact: "+GAV+", from "+downUrl+callMessage);
+						logger.info(">>> Locating artifact: "+GAV+", from "+downUrl+getCallDetailMessage(true));
 					}else{
 						logger.info(">>> Locating artifact: "+GAV+", try another site("+(i+1)+"/"+urls.size()+"): "+downUrl);
 					}
@@ -135,7 +139,7 @@ public class JarLocation implements HttpHelper.DownloadListener{
 				}
 			}
 		}else{
-			logger.info(">>> Located  artifact: "+GAV+", from "+jar.getAbsolutePath()+callMessage);
+			logger.info(">>> Located  artifact: "+GAV+", from "+jar.getAbsolutePath()+getCallDetailMessage(false));
 		}
 		
 		return jar;
