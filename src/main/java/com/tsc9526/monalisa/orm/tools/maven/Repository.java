@@ -34,8 +34,8 @@ import com.tsc9526.monalisa.orm.tools.xml.XMLParser;
  * 
  * @author zzg.zhou(11039850@qq.com)
  */
-public class Respository {
-	static Logger logger=Logger.getLogger(Respository.class);
+public class Repository {
+	static Logger logger=Logger.getLogger(Repository.class);
 	
 	private List<String> activeProfiles=new ArrayList<String>();
 	
@@ -50,7 +50,7 @@ public class Respository {
 	private XMLParser parser;
 	private Document document;
 	
-	public Respository(){
+	public Repository(){
 		localRepository      = System.getProperty("user.home") + "/.m2/repository";
 		
 		remoteRepositoryUrls.add("https://repo1.maven.org/maven2");
@@ -99,7 +99,7 @@ public class Respository {
 		
 		parseActiveProfiles();
 		
-		parseRemoteRespositoryUrls();
+		parseRemoteRepositoryUrls();
 	}
 	
 	protected void parseLocalRespository()throws Exception {
@@ -158,7 +158,7 @@ public class Respository {
 		}
 	}
 	
-	protected void parseRemoteRespositoryUrls()throws Exception {
+	protected void parseRemoteRepositoryUrls()throws Exception {
 		Set<String> mirrorUrls=new LinkedHashSet<String>();
 		Set<String> urls=new LinkedHashSet<String>();
 		

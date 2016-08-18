@@ -101,10 +101,10 @@ public class JarLocation implements HttpHelper.DownloadListener{
 	public File findJar()throws IOException{
 		File jar=new File(DbProp.CFG_LIB_PATH,jarfile);
 		if(!jar.exists()){
-			Respository respository=new Respository();
+			Repository repository=new Repository();
 			
-			String localRepository=respository.getLocalRepository();
-			logger.debug(">>> Maven local repository: "+localRepository);	
+			String localRepository=repository.getLocalRepository();
+			logger.debug(">>> Maven repository: "+localRepository);	
 			
 			String pathfile=FileHelper.combinePath(localRepository,group.replaceAll("\\.","/"),artifact,version,jarfile);
 				
@@ -114,7 +114,7 @@ public class JarLocation implements HttpHelper.DownloadListener{
 				 
 				FileHelper.copy(jarFromMaven, jar);
 			}else{
-				List<String> urls=respository.getRemoteRepositoryUrls();
+				List<String> urls=repository.getRemoteRepositoryUrls();
 				if(this.baseUrl!=null && this.baseUrl.length()>0){
 					urls.clear();
 					urls.add(this.baseUrl);
