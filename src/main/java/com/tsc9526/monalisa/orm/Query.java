@@ -79,18 +79,18 @@ public class Query {
 	static Logger logger=Logger.getLogger(Query.class.getName());
 	  
 	/**
-	 * 创建自定义SQL查询的类
+	 * Create a database query dynamically
 	 * 
-	 * @param theQueryClass 自定义的SQL查询类
+	 * @param theQueryClass Database query class which can be loaded dynamically.
 	 * 		
-	 * @return 创建一个新的实例。
+	 * @return create new instance.
 	 */
 	public static <T> T create(Class<T> theQueryClass){
 		 return AgentClass.createAgent(theQueryClass);
 	}
  	
 	/**
-	 * 是否显示执行的SQL语句, 默认为: false
+	 * Weather if show the running sql, default: false
 	 */
 	private Boolean debugSql=null;
 	 
@@ -174,11 +174,11 @@ public class Query {
 	}	
   
 	/**
-	 * 如果参数非空，则添加该SQL片段，否则忽略
+	 * Add segment to SQL only if the args is not empty
 	 * 
-	 * @param segment  SQL片段
-	 * @param args  参数
-	 * @return 查询本身
+	 * @param segment  SQL segment
+	 * @param args  the SQL parameters
+	 * @return this
 	 */
 	public Query addIfNotEmpty(String segment,Object ... args){
 		if(args!=null && args.length==1){
@@ -201,7 +201,7 @@ public class Query {
 	
 	/**
 	 * 
-	 * @return 原始的SQL语句, 中间可能会有参数
+	 * @return Original SQL, maybe "?" in it.
 	 */
 	public String getSql() {
 		String r=sql.toString();
@@ -210,7 +210,7 @@ public class Query {
 	
 	/**
 	 * 
-	 * @return 处理过参数后的SQL语句
+	 * @return the executable SQL
 	 */
 	public String getExecutableSQL() {
 		 return SQLHelper.getExecutableSQL(getSql(), parameters);
@@ -264,6 +264,11 @@ public class Query {
 		return conn;
 	}
 	
+	/**
+	 * Execute the SQL
+	 * 
+	 * @return the effected number of rows
+	 */
 	public int execute(){
 		return doExecute(new UpdateExecutor());
 	}
@@ -343,16 +348,20 @@ public class Query {
 	}
 	 
  
-	
+	/**
+	 * Get single result
+	 * 
+	 * @return DataMap
+	 */
 	public DataMap getResult(){
 		return getResult(DataMap.class);				
 	}
 	 
 
 	/**
-	 * 使用该方法获取查询返回的多个结果集
+	 * Get multi ResultSets from the SQL query
 	 * 
-	 * @return 多个结果集
+	 * @return multi ResultSets
 	 */
 	public List<DataTable<DataMap>> getAllResults(){
 		queryCheck();
@@ -364,7 +373,7 @@ public class Query {
 	}
 	 
 	/**
-	 * 将查询结果转换为指定的类
+	 * Translate data to the resultClass
 	 *  
 	 * @param resultClass translate DataMap to the result class
 	 * @param <T> result type
@@ -375,7 +384,7 @@ public class Query {
 	}
 	
 	/**
-	 * 将查询结果转换为指定的类
+	 * Translate data to the resultClass
 	 *  
 	 * @param resultHandler handle result set
 	 * @param <T> result type
@@ -391,32 +400,50 @@ public class Query {
 		}
 	}
 	
+	/**
+	 * @return List DataMap
+	 */
 	public DataTable<DataMap> getList() {
 		return getList(DataMap.class);
 	}
 	
-
+	/**
+	 * @param resultClass the result class
+	 * @param <T> result type
+	 * @return List Data
+	 */
 	public <T> DataTable<T> getList(final Class<T> resultClass) {
 		return getList(new ResultHandler<T>(this, resultClass));
 	}
 	
 	
 	/**
-	 * @param limit 
-	 *   The max number of records for this query
-	 *    
-	 * @param offset  
-	 *   Base 0, the first record is 0
-	 * @return List对象
+	 * @param limit The max number of records for this query
+	 * @param offset Base 0, the first record is 0
+	 * @return List DataMap
 	 */
 	public DataTable<DataMap> getList(int limit,int offset) {		 
 		return getList(DataMap.class,limit,offset);		 
 	}
 	
+	/**
+	 * @param resultClass the result class
+	 * @param limit The max number of records for this query
+	 * @param offset Base 0, the first record is 0
+	 * @param <T> result type
+	 * @return List Data
+	 */
 	public <T> DataTable<T> getList(Class<T> resultClass,int limit,int offset) {		 
 		return getList(new ResultHandler<T>(this,resultClass),limit,offset);
 	}	
 	
+	/**
+	 * @param resultHandler handle result set
+	 * @param limit The max number of records for this query
+	 * @param offset Base 0, the first record is 0
+	 * @param <T> result type
+	 * @return List Data
+	 */
 	public <T> DataTable<T> getList(ResultHandler<T> resultHandler,int limit,int offset) {
 		Query listQuery=getDialect().getLimitQuery(this, limit, offset);
 		DataTable<T>  list=listQuery.getList(resultHandler);
@@ -424,6 +451,11 @@ public class Query {
 		return list;
 	}	 
 
+	/**
+	 * @param resultHandler handle result set
+	 * @param <T> result type
+	 * @return List Data
+	 */
 	public <T> DataTable<T> getList(final ResultHandler<T> resultHandler) {
 		if(!doExchange()){		 
 			queryCheck();
@@ -434,10 +466,22 @@ public class Query {
 		}
 	}
 	
+	/**
+	 * @param limit The max number of records for this query
+	 * @param offset   Base 0, the first record is 0
+	 * @return Page Data
+	 */
 	public Page<DataMap> getPage(int limit,int offset) {
 		return getPage(DataMap.class,limit, offset);
 	}
 	
+	/**
+	 * @param resultClass the result class
+	 * @param limit The max number of records for this query
+	 * @param offset   Base 0, the first record is 0
+	 * @param <T> result type
+	 * @return Page Data
+	 */
 	public <T> Page<T> getPage(Class<T> resultClass,int limit,int offset) {
 		return getPage(new ResultHandler<T>(this,resultClass), limit, offset);
 	}
@@ -447,7 +491,7 @@ public class Query {
 	 * @param limit The max number of records for this query
 	 * @param offset   Base 0, the first record is 0
 	 * @param <T> result type
-	 * @return Page对象
+	 * @return Page Data
 	 */
 	public <T> Page<T> getPage(ResultHandler<T> resultHandler,int limit,int offset) {
 		if(!doExchange()){			
