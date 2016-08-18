@@ -34,6 +34,9 @@ import com.tsc9526.monalisa.orm.datasource.ConfigClass;
  * Test.DB.select("SELECT * FROM user");<br><br>
  * </code>
  * 
+ * <br><br>
+ * More properties setup, see: {@link com.tsc9526.monalisa.orm.datasource.DbProp}
+ * 
  * @see com.tsc9526.monalisa.orm.tools.generator.DBGeneratorMain
  * 
  * @author zzg.zhou(11039850@qq.com)
