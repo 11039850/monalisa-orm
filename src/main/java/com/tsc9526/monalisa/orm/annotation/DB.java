@@ -43,77 +43,81 @@ import com.tsc9526.monalisa.orm.datasource.ConfigClass;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface DB{
 	/**
-	 * @return JDBC-URL链接. 例如mysql:<br>
+	 * @return JDBC-URL. This is an example for mysql:<br>
 	 * <code>jdbc:mysql://127.0.0.1:3306/world</code><br>
 	 *<br>
-	 * 多个数据库例子:<br>
+	 * Multi databases:<br>
 	 * <code>jdbc:mysql://[127.0.0.1:3306,127.0.0.1:3307]/world</code><br>
 	 *<br>
-	 * Host格式: <code>[name1@host1:port1,name2@host2:port2 ...]</code>
+	 * Host: <code>[name1@host1:port1,name2@host2:port2 ...]</code>
 	 */
 	String url()      default "";
 	
 	/**
-	 * @return 数据库驱动.  默认为mysql： com.mysql.jdbc.Driver
+	 * @return Database driver.  default is： com.mysql.jdbc.Driver
 	 */
 	String driver()   default "com.mysql.jdbc.Driver";
 	
 	/**
 	 * 
-	 * @return 数据库Catalog
+	 * @return Database's catalog. default is ""
 	 */
 	String catalog()  default "";
 	
 	/**
 	 * 
-	 * @return 数据库Schema
+	 * @return Database's schema. default is ""
 	 */
 	String schema()   default "";
 	
 	/**
-	 * @return 数据库连接用户名, 默认值: root
+	 * @return Database's user name. default is: root
 	 */
 	String username() default "root";
 	
 	/**
-	 * @return 数据库连接密码, 默认值: ""
+	 * @return Database's password, default is: ""
 	 */
 	String password() default "";
 	 
 	/**
-	 * @return 操作的表名, 默认值: "%": 表示所有的表<br>
-	 * 例如: pre_%: 表示所有以"pre_"为前缀的表 
+	 * Indicates the table name to generate the model class, default is "%" (means is all tables). <br>
+	 * For example: pre_%: all tables with the prefix: "pre_"
+	 * @return table’s name
 	 */
 	String tables()   default "%";
 	
 	/**
-	 * @return  分号分隔的分区表. 格式: 表名前缀{分区类(参数,...)}; ...<br>
-	 * 其中有个默认日期分区类为: DatePartitionTable, 参数1: 日期格式, 参数2: 日期字段名 
-	 * 例如按天存储的日志表定义:<br>
+	 * Define partition tables. format: table_prefix{partition_class(arg1,arg2,arg3 ...)}; ...<br>
+	 * partition_class: DatePartitionTable, arg1: date format, arg2: date field  <br>
+	 * For example, storage of the log table every day:<br>
 	 * <code>log_access_{DatePartitionTable(yyyyMMdd,log_time)}</code>
 	 * 
 	 *<br><br>
-	 * 或Json格式定义:<br>
+	 * Json format:<br>
 	 * <code> {prefix:'log_access_', class='DatePartitionTable', args=['yyyyMMdd','log_time']} </code><br> or<br>
 	 * <code>[{prefix:'log_access_', class='DatePartitionTable', args=['yyyyMMdd','log_time']},...] </code>
+	 * 
+	 * @return  the define of partition tables
 	 */
 	String partitions() default "";
 	
 	/**
-	 * @return 表名映射, 默认值: ""<br>
-	 * 可以通过这个参数对个别的表指明特别的命名, 格式: Table=Class;Table=Class ...<br>
-	 * 例如: table_123=TableX;table123=TableY 
+	 * @return Table name's mapping, default is: ""<br>
+	 * For example: table_123=ModelX;table123=ModelY 
 	 */
 	String mapping()          default "";
 			
 	/**
-	 * 指定表模型的父类Class,  该Class须继承于 {@link com.tsc9526.monalisa.orm.model.Model} 
-	 * @return model class
+	 * Specifies the parent class of the mode class. The Class must be inherited from {@link com.tsc9526.monalisa.orm.model.Model} 
+	 *
+	 * @return parent class, default is ""
 	 */
 	String modelClass()       default "";
 	
 	/**
-	 * 指定表模型监听类,  该类须实现 {@link com.tsc9526.monalisa.orm.model.ModelListener} 
+	 * Mode listener,  he Class must be implements {@link com.tsc9526.monalisa.orm.model.ModelListener} 
+	 * 
 	 * @return mode listener
 	 */
 	String modelListener()    default "";
@@ -121,43 +125,55 @@ public @interface DB{
 	
 	/**
 	 * Datasouce class, the value can be C3p0DataSource / DruidDataSource <br>
-	 *   OR other class which implement PooledDataSource
+	 * OR other class which implement PooledDataSource
+	 * 
 	 * @see com.tsc9526.monalisa.orm.datasource.PooledDataSource
 	 * @return datasource clalss
 	 */
 	String datasourceClass()  default "";
  	
 	/**
-	 * 指定数据库配置唯一名称, 需使用标准的JAVA包类命名风格: x.y.z<br>
-	 * 如果使用configFile配置文件, 则会读取系统属性: "DB@"+key()  作为配置文件的根路径
+	 * Unique identifier for this db, Use the standard JAVA package class naming style, e.g.: x.y.z<br>
+	 * The default value is the class name annotated with @DB
 	 * 
-	 * @return 默认值为包含@DB注解的类名<br>
+	 * @return Unique identifier for this db<br>
 	 * 
 	 */
 	String key()      default "";
 	
 	/**
 	 * 
-	 * 如指定值为: TEST, 则配置前缀为: DB.TEST.xxx<br>
-	 * cfg 为通用配置项名, 不能作为配置名. 
+	 * the configuration name. For example: TEST, The configuration prefix is: DB.TEST.xxx<br>
+	 * Note: "cfg" is a generic configuration name, not as a configuration name. 
 	 * 
 	 * @return config name of this db
 	 */
 	String configName()       default "";
 	
 	/**
-	 * 属性存在于该配置文件中, 配置项前缀为: DB. 优先级低于 configClass()<br>
-	 * 下列属性除外:<br>
-	 * <b>configFile,  configName, key</b><br><br>
-	 * 例如: url属性的配置项为: DB.url <br>
+	 * Database's properties are stored in this configuration file.<br>
+	 * Each of item's name with prefix: "DB." <br>
+	 * For example: url, the property item is: <br><code> DB.url = jdbc:mysql://127.0.0.1:3306/world </code> <br><br>
 	 * 
+	 * Default configuration file is: full class name annotated with @DB<br><br>
+	 * For example:
+	 * <code><br>
+	 * package test; <br> @DB public interface UserDB{}
+	 * </code><br> The configuration file will be: test.UserDB <br> <br>
 	 * 
+	 * Another example: 
+	 * <code><br>
+	 * package test; <br> @DB(configFile="test.cfg") public interface UserDB{}
+	 * </code><br> The configuration file will be: test.cfg <br>
+	 * <br>
+	 * It's priority is lower than configClass()<br>
 	 * @return path of the config file
 	 */
 	String configFile()       default "";
 	
 	/**
-	 * 配置属性由该class提供， 配置项定义和configFile相同, 优先级高于 configFile()
+	 * Database's properties are stored in this class. <br><br>
+	 * It's priority is higer than configFile()<br>
 	 * @return ConfigClass.class
 	 */
 	Class<? extends ConfigClass> configClass() default ConfigClass.class; 
