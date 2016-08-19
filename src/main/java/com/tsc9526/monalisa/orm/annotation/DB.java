@@ -19,7 +19,7 @@ package com.tsc9526.monalisa.orm.annotation;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target; 
+import java.lang.annotation.Target;
 
 import com.tsc9526.monalisa.orm.datasource.ConfigClass;
 
@@ -35,7 +35,7 @@ import com.tsc9526.monalisa.orm.datasource.ConfigClass;
  * </code>
  * 
  * <br><br>
- * More properties setup, see: {@link com.tsc9526.monalisa.orm.datasource.DbProp}
+ * More properties setup, see：  {@link #configFile}  
  * 
  * @see com.tsc9526.monalisa.orm.tools.generator.DBGeneratorMain
  * 
@@ -127,11 +127,11 @@ public @interface DB{
 	
 	
 	/**
-	 * Datasouce class, the value can be C3p0DataSource / DruidDataSource <br>
-	 * OR other class which implement PooledDataSource
+	 * Data source class, the value can be C3p0DataSource or DruidDataSource or other class which implementations of the class:<br>
+	 *  {@link com.tsc9526.monalisa.orm.datasource.PooledDataSource}
 	 * 
 	 * @see com.tsc9526.monalisa.orm.datasource.PooledDataSource
-	 * @return datasource clalss
+	 * @return data source class
 	 */
 	String datasourceClass()  default "";
  	
@@ -146,7 +146,7 @@ public @interface DB{
 	
 	/**
 	 * 
-	 * the configuration name. For example: TEST, The configuration prefix is: DB.TEST.xxx<br>
+	 * the configuration name. For example: TEST, The prefix of property xxx is: DB.TEST.xxx<br>
 	 * Note: "cfg" is a generic configuration name, not as a configuration name. 
 	 * 
 	 * @return config name of this db
@@ -155,8 +155,10 @@ public @interface DB{
 	
 	/**
 	 * Database's properties are stored in this configuration file.<br>
-	 * Each of item's name with prefix: "DB." <br>
-	 * For example: url, the property item is: <br><code> DB.url = jdbc:mysql://127.0.0.1:3306/world </code> <br><br>
+	 * Each of property with prefix: "DB.cfg." <br>
+	 * For example: url, the property name is: <br><code> DB.cfg.url = jdbc:mysql://127.0.0.1:3306/world </code> <br><br>
+	 * 
+	 * Full properties see: {@link com.tsc9526.monalisa.orm.datasource.DbProp} <br><br>
 	 * 
 	 * Default configuration file is: full class name annotated with @DB<br><br>
 	 * For example:

@@ -17,7 +17,116 @@
 package com.tsc9526.monalisa.orm.datasource;
 
 /**
+ * Database properties: <br>
+ * <li><b>sql.debug = false </b> [scope: DB]</li>
+ * &nbsp;&nbsp;&nbsp;&nbsp; If show running SQL statements
  * 
+ * <li><b>url</b> [scope: DB]</li>
+ * &nbsp;&nbsp;&nbsp;&nbsp; the JDBC url, for example: jdbc:mysql://127.0.0.1:3306/world 
+ * 
+ * <li><b>driver    = com.mysql.jdbc.Driver</b> [scope: DB]</li>
+ * &nbsp;&nbsp;&nbsp;&nbsp; the JDBC driver class 
+ * 
+ * <li><b>username    = root</b> [scope: DB]</li>
+ * &nbsp;&nbsp;&nbsp;&nbsp;  the database username 
+ * 
+ * <li><b>password    = </b> [scope: DB]</li>
+ * &nbsp;&nbsp;&nbsp;&nbsp;  the database password 
+ * 
+ * <li><b>catalog    = </b> [scope: DB]</li>
+ * &nbsp;&nbsp;&nbsp;&nbsp;  the database catalog 
+ * 
+ * <li><b>schema    = </b> [scope: DB]</li>
+ * &nbsp;&nbsp;&nbsp;&nbsp;  the database schema 
+ * 
+ * <li><b>tables    = %</b> [scope: DB]</li>
+ * &nbsp;&nbsp;&nbsp;&nbsp;  Indicates the table names to generate the model classes, "%"： means all of tables. <br>
+ * &nbsp;&nbsp;&nbsp;&nbsp;  For example: pre_%: all tables with the prefix: "pre_"  
+ * 
+ * <li><b>mapping    = </b> [scope: DB]</li>
+ * &nbsp;&nbsp;&nbsp;&nbsp;  Table name's mapping, For example: table_123=ModelX;table123=ModelY...  
+ * 
+ * <li><b>partitions = </b> [scope: DB]</li>
+ * &nbsp;&nbsp;&nbsp;&nbsp;  Define partition tables 
+
+ * <li><b>datasourceClass = </b> [scope: DB]</li>
+ * &nbsp;&nbsp;&nbsp;&nbsp;  Data source class, the value can be C3p0DataSource or DruidDataSource<br>
+ * &nbsp;&nbsp;&nbsp;&nbsp;  or other class which implementations of the class:<br>
+ * &nbsp;&nbsp;&nbsp;&nbsp;  {@link com.tsc9526.monalisa.orm.datasource.PooledDataSource}
+ *
+ * <li><b>datasourceDelayClose = </b> [scope: DB]</li>
+ * &nbsp;&nbsp;&nbsp;&nbsp;  After database configuration reload, delay closing data source that has been opened   
+ * 
+ * <li><b>history.db = </b> [scope: DB]</li>
+ * &nbsp;&nbsp;&nbsp;&nbsp;  The history table is saved in the database.
+ * 
+ * <li><b>history.prefix.table = history_</b> [scope: DB]</li>
+ * &nbsp;&nbsp;&nbsp;&nbsp;  Prefix of history tables
+ * 
+ * <li><b>history.prefix.column = history_</b> [scope: DB]</li>
+ * &nbsp;&nbsp;&nbsp;&nbsp;  Column's prefix in the history tables
+ * 
+ * <li><b>history.tables = </b> [scope: DB]</li>
+ * &nbsp;&nbsp;&nbsp;&nbsp;  Those tables need to record changes in history. %: means all of tables
+ * 
+ * <li><b>multi.resultset.deepth = 100</b> [scope: DB]</li>
+ * &nbsp;&nbsp;&nbsp;&nbsp;  Useful when only the SQL query return multiple results
+ * 
+ * <li><b>cache.tables = </b> [scope: DB]</li>
+ * &nbsp;&nbsp;&nbsp;&nbsp;  Which tables will be cached 
+ * 
+ * <li><b>modelClass = </b> [scope: TABLE]</li>
+ * &nbsp;&nbsp;&nbsp;&nbsp;   A base mode class, which must be extends of {@link com.tsc9526.monalisa.orm.model.Model}
+ * 
+ * <li><b>modelListener = </b> [scope: TABLE]</li>
+ * &nbsp;&nbsp;&nbsp;&nbsp;  A listen class when model changed 
+ * 
+ * <li><b>validate = false</b> [scope: TABLE]</li>
+ * &nbsp;&nbsp;&nbsp;&nbsp;  Whether you need to verify the data before you save it
+ * 
+ * <li><b>validator = </b> [scope: TABLE]</li>
+ * &nbsp;&nbsp;&nbsp;&nbsp;  The model validator class
+ * 
+ * <li><b>cache.class = </b> [scope: TABLE]</li>
+ * &nbsp;&nbsp;&nbsp;&nbsp;  The cache class
+ * 
+ * <li><b>cache.name = default</b> [scope: TABLE]</li>
+ * &nbsp;&nbsp;&nbsp;&nbsp;  The name of cache setting
+ * 
+ * <li><b>cache.eviction = LRU</b> [scope: TABLE]</li>
+ * &nbsp;&nbsp;&nbsp;&nbsp;  The cache eviction's algorithm
+ * 
+ * <li><b>auto.create_time = create_time</b> [scope: TABLE]</li>
+ * &nbsp;&nbsp;&nbsp;&nbsp;  When calling Model.save(), auto set model field's value if exists: create_time<br>
+ * 
+ * <li><b>auto.update_time = update_time </b> [scope: TABLE]</li>
+ * &nbsp;&nbsp;&nbsp;&nbsp;  When calling Model.update(), auto set model field's value if exists: update_time<br>
+ * 
+ * <li><b>auto.create_by = create_by</b> [scope: TABLE]</li>
+ * &nbsp;&nbsp;&nbsp;&nbsp;  When calling Model.save(), auto set model field's value if exists: create_by<br>
+ * &nbsp;&nbsp;&nbsp;&nbsp;  You need to set up thread context by call: <br>
+ * &nbsp;&nbsp;&nbsp;&nbsp; <code>Tx.put(CONTEXT_CURRENT_USERID,"the_operate_user_id");</code>
+ * 
+ * <li><b>auto.update_by = update_by</b> [scope: TABLE]</li>
+ * &nbsp;&nbsp;&nbsp;&nbsp;  When calling Model.update(), auto set model field's value if exists: update_by<br>
+ * &nbsp;&nbsp;&nbsp;&nbsp;  You need to set up thread context by call: <br>
+ * &nbsp;&nbsp;&nbsp;&nbsp; <code>Tx.put(CONTEXT_CURRENT_USERID,"the_operate_user_id");</code>
+ * 
+ * <li><b>exception_if_set_field_not_found = false</b> [scope: TABLE]</li>
+ * &nbsp;&nbsp;&nbsp;&nbsp;  If true, throw a exception if set a not exists field in a model, otherwise false.
+ *
+ * <br><br>scope:
+ * <li><b>DB</b></li>
+ * &nbsp;&nbsp;&nbsp;&nbsp; Meaning: this property is a configuration item for a database scope level 
+ * <li><b>TABLE</b></li>
+ * &nbsp;&nbsp;&nbsp;&nbsp; Meaning: this property is a configuration item for a table scope level, <br>
+ * &nbsp;&nbsp;&nbsp;&nbsp; you can specify a value for each table. for example:<br>
+ * <code>
+ * &nbsp;&nbsp;&nbsp; DB.cfg.modelClass &nbsp;&nbsp;&nbsp;&nbsp; = MyBaseModelClassName <br>
+ * &nbsp;&nbsp;&nbsp; DB.cfg.modelClass.user = MyUserModelClassName <br>
+ * </code> 
+ * &nbsp;&nbsp;&nbsp;&nbsp; All generated model classes will be extends from MyBaseModelClassName except for model: "user",<br>
+ * &nbsp;&nbsp;&nbsp;&nbsp; the model: "user" will be extends from MyUserModelClassName 
  * @author zzg.zhou(11039850@qq.com)
  */
 public class DbProp {
