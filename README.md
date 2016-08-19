@@ -138,7 +138,7 @@
 
 ```
 
-## Auto generate DTO
+## Auto generate DTOs
 
 ```java
 
@@ -159,7 +159,7 @@
 ```
 
 
-## Multi-lines
+## Multi-line strings
 ```java
 
 	public static void main(String[] args) {
@@ -197,3 +197,12 @@ Output will be:
     
 # TODO list
 
+* Other database's dialect
+* Direct access data through HTTP
+* Automatic refresh the query cache in the background
+* ...
+
+
+If you have any ideas or you want to help with the development just write me a message.
+
+**zzg zhou**, 11039850@qq.com

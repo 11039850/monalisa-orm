@@ -21,7 +21,7 @@ package com.tsc9526.monalisa.orm.datasource;
  * <li><b>sql.debug = false </b> [scope: DB]</li>
  * &nbsp;&nbsp;&nbsp;&nbsp; If show running SQL statements
  * 
- * <li><b>url</b> [scope: DB]</li>
+ * <li><b>url = </b> [scope: DB]</li>
  * &nbsp;&nbsp;&nbsp;&nbsp; the JDBC url, for example: jdbc:mysql://127.0.0.1:3306/world 
  * 
  * <li><b>driver    = com.mysql.jdbc.Driver</b> [scope: DB]</li>
@@ -76,7 +76,7 @@ package com.tsc9526.monalisa.orm.datasource;
  * &nbsp;&nbsp;&nbsp;&nbsp;  Which tables will be cached 
  * 
  * <li><b>modelClass = </b> [scope: TABLE]</li>
- * &nbsp;&nbsp;&nbsp;&nbsp;   A base mode class, which must be extends of {@link com.tsc9526.monalisa.orm.model.Model}
+ * &nbsp;&nbsp;&nbsp;&nbsp;   A base mode class, which inherits from  {@link com.tsc9526.monalisa.orm.model.Model}
  * 
  * <li><b>modelListener = </b> [scope: TABLE]</li>
  * &nbsp;&nbsp;&nbsp;&nbsp;  A listen class when model changed 
@@ -125,8 +125,8 @@ package com.tsc9526.monalisa.orm.datasource;
  * &nbsp;&nbsp;&nbsp; DB.cfg.modelClass &nbsp;&nbsp;&nbsp;&nbsp; = MyBaseModelClassName <br>
  * &nbsp;&nbsp;&nbsp; DB.cfg.modelClass.user = MyUserModelClassName <br>
  * </code> 
- * &nbsp;&nbsp;&nbsp;&nbsp; All generated model classes will be extends from MyBaseModelClassName except for model: "user",<br>
- * &nbsp;&nbsp;&nbsp;&nbsp; the model: "user" will be extends from MyUserModelClassName 
+ * &nbsp;&nbsp;&nbsp;&nbsp; All generated model classes which inherits from MyBaseModelClassName except for model: "user",<br>
+ * &nbsp;&nbsp;&nbsp;&nbsp; the model: "user" will inherits from MyUserModelClassName 
  * @author zzg.zhou(11039850@qq.com)
  */
 public class DbProp {
