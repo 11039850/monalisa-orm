@@ -5,10 +5,11 @@
 # Features
 
 * Using the database takes only 1 line of code
-* Support dynamic SQL code auto to DTO class
-* Support written multiple-line syntax in the java code
+* Generic ORM functions(CRUD)
+* Auto generate DTOs
 * Dynamic load java code
-* Auto increase the field: final static long $VERSION$=1L;
+* Dynamic load jar if needed
+* Easily write multi-line strings in the java code
 
 [Example Project](https://github.com/11039850/monalisa-example)
 
