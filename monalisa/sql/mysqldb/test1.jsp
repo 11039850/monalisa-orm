@@ -10,7 +10,7 @@
 	<q id="testFindAll_A" resultClass="DS0001"> 
 		<%{	
 			/*名称*/
-			String name     =args.pop();
+			String name     =args.pop(); 
 			String title    =args.pop();
 			String create_by=args.pop("");
 		
