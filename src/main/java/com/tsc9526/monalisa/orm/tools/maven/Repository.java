@@ -70,7 +70,11 @@ public class Repository {
 	protected void loadFromSettings(){
 		String settings = System.getProperty("user.home") + "/.m2/settings.xml";
 		if (!new File(settings).exists()) {
-			String home = System.getProperty("MAVEN_HOME", System.getenv("MAVEN_HOME"));
+			String home = System.getProperty("M2_HOME", System.getenv("M2_HOME"));
+			if(home==null){
+				home = System.getProperty("MAVEN_HOME", System.getenv("MAVEN_HOME"));
+			}
+			
 			if (home != null) {
 				settings = home + "/conf/settings.xml";
 			}
