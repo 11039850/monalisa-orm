@@ -50,7 +50,7 @@ public class HttpHelper {
 		public void onProgress(long receivedBytes,long totalBytes);
 	}
 	
-	public static void download(String url, File target,DownloadListener listener) throws IOException {
+	public static boolean download(String url, File target,DownloadListener listener) throws IOException {
 		URL theUrl = new URL(url);
 		File tmp = File.createTempFile(target.getName(), ".tmp");
 		
@@ -72,6 +72,7 @@ public class HttpHelper {
 		FileHelper.copy(tmp, target);
 		
 		tmp.delete();
+		return true;
 	}
 
 	private static boolean doDownload(URL theUrl,File tmp,File target,DownloadListener listener)throws IOException{

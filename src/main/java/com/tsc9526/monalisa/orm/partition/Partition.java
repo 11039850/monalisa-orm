@@ -16,6 +16,8 @@
  *******************************************************************************************/
 package com.tsc9526.monalisa.orm.partition;
 
+import java.io.Serializable;
+
 import com.tsc9526.monalisa.orm.meta.MetaPartition;
 import com.tsc9526.monalisa.orm.meta.MetaTable;
 import com.tsc9526.monalisa.orm.model.Model;
@@ -25,7 +27,7 @@ import com.tsc9526.monalisa.orm.model.Model;
  * @author zzg.zhou(11039850@qq.com)
  */
 @SuppressWarnings("rawtypes")
-public interface Partition<T extends Model> {
+public interface Partition<T extends Model> extends Serializable{
 	
 	/**
 	 * 根据分区定义获取Model对应的表名

@@ -26,7 +26,7 @@ import com.tsc9526.monalisa.orm.tools.helper.JsonHelper;
 
 
 /**
- * Page data
+ * Page data. The first page: 1, the second is 2 ...
  * 
  * @author zzg.zhou(11039850@qq.com)
  */

@@ -16,14 +16,19 @@
  *******************************************************************************************/
 package com.tsc9526.monalisa.orm.tools.generator;
 
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.tsc9526.monalisa.orm.datasource.DBConfig;
 import com.tsc9526.monalisa.orm.datasource.DbProp;
 import com.tsc9526.monalisa.orm.meta.MetaPartition;
 import com.tsc9526.monalisa.orm.meta.MetaTable;
+import com.tsc9526.monalisa.orm.meta.MetaTable.CreateTable;
 import com.tsc9526.monalisa.orm.model.Model;
 import com.tsc9526.monalisa.orm.partition.Partition;
 import com.tsc9526.monalisa.orm.processor.DBAnnotationProcessor;
@@ -90,10 +95,10 @@ public abstract class DBGenerator {
 				}
 			}
 			
+			plogger.info("Create resource for table create: "+rns);
 			if(rns.size()>0){
-				plogger.info("Create resource from tables: "+rns);
-				
-				Writer w = getResourceWriter();
+				OutputStream os=getResourceOutputStream(resourcePackage,CreateTable.FILE_NAME);
+				Writer w = new OutputStreamWriter(os,"utf-8");
 				for(MetaTable table:tables){
 					if(table.getCreateTable()!=null){
 						w.write("/***CREATE TABLE: "+table.getNamePrefix()+" :: "+table.getName()+"***/\r\n");
@@ -103,6 +108,15 @@ public abstract class DBGenerator {
 				}
 				w.close();
 			}
+			
+			plogger.info("Create resource for table metadata: "+tables.size());
+			Map<String, MetaTable> hTables=new HashMap<String, MetaTable>();
+			for(MetaTable table:tables){
+				hTables.put(table.getName().toLowerCase(),table);
+			}
+			String dbKey=dbcfg.getCfg().getKey();	
+			OutputStream out= getResourceOutputStream("resources",dbKey+".meta");
+			dbmetadata.saveTables(hTables, out);
 		}catch(Exception e){
 			throw new RuntimeException(e);
 		}
@@ -154,5 +168,5 @@ public abstract class DBGenerator {
 	
 	protected abstract Writer getJavaWriter(MetaTable table);
 	
-	protected abstract Writer getResourceWriter();
+	protected abstract OutputStream getResourceOutputStream(String pkg,String filename);
 }

@@ -22,9 +22,11 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
@@ -452,5 +454,19 @@ public class ClassHelper {
 		public Method getGetMethod(){
 			return getMethod;
 		}
-	}	 
+	}	
+	
+	
+	public static Set<String> OBJECT_METHODS = new HashSet<String>() {
+		private static final long serialVersionUID = -4949935939426517392L;
+		{
+			add("equals");
+			add("getClass");
+			add("hashCode");
+			add("notify");
+			add("notifyAll");
+			add("toString");
+			add("wait");
+		}
+	};
 }

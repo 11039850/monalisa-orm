@@ -159,6 +159,23 @@ public class RecordTest extends Model<RecordTest> implements MysqlDB{
 		Assert.assertTrue(tx.get("record_id")!=null);  
 	}
 	
+	@Test
+	public void testRecordTimestampLong()throws Exception{
+		long ts=System.currentTimeMillis();
+		
+		Record tx=new Record("test_record").use(DB); 
+		tx.set("name",  "ns001");
+		tx.set("title", "title001");
+		tx.set("ts_a", ts);
+		tx.save();
+		
+		Assert.assertEquals(tx.entity(),true); 
+		Assert.assertTrue(tx.get("record_id")!=null);  
+		
+		Assert.assertEquals(tx.getDate("ts_a").getTime()/1000,ts/1000); 
+	}
+	 
+	
 	public String getTitle() {
 		return title;
 	}

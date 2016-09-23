@@ -18,12 +18,11 @@ package com.tsc9526.monalisa.orm.tools.generator;
 
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.OutputStreamWriter;
+import java.io.OutputStream;
 import java.io.Writer;
 
 import com.tsc9526.monalisa.orm.datasource.DBConfig;
 import com.tsc9526.monalisa.orm.meta.MetaTable;
-import com.tsc9526.monalisa.orm.meta.MetaTable.CreateTable;
 import com.tsc9526.monalisa.orm.tools.helper.JavaWriter;
 import com.tsc9526.monalisa.orm.tools.logger.Logger;
 
@@ -70,18 +69,18 @@ public class DBGeneratorLocal extends DBGenerator{
 		
 	}	 
 	  
-	
-	protected Writer getResourceWriter(){		
+ 
+	protected OutputStream getResourceOutputStream(String pkg,String filename){		
 		try{			 			
-			String resdir=outputResourceDir+"/"+resourcePackage.replace('.','/');
-			File dir=new File(resdir);
-			if(!dir.exists()){
-				dir.mkdirs();
+			String resdir=outputResourceDir+"/"+pkg.replace('.','/');
+			File dirRoot=new File(resdir);
+			if(!dirRoot.exists()){
+				dirRoot.mkdirs();
 			}
 		 
-			FileOutputStream out=new FileOutputStream(new File(dir,CreateTable.FILE_NAME));
+			FileOutputStream out=new FileOutputStream(new File(dirRoot,filename));
 			 
-			return new OutputStreamWriter(out,"UTF-8");
+			return out;
 		}catch(Exception e){
 			throw new RuntimeException(e);
 		}

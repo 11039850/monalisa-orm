@@ -21,6 +21,8 @@ import java.lang.reflect.Type;
 import java.util.List;
 import java.util.Map;
 
+import com.google.gson.ExclusionStrategy;
+import com.google.gson.FieldAttributes;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
@@ -43,17 +45,31 @@ public class JsonHelper {
 		DynamicLibHelper.tryLoadGson();
 	}
 	
-	private static GsonBuilder gb=new GsonBuilder().registerTypeAdapter(Double.class,  new JsonSerializer<Double>() {   
-	    public JsonElement serialize(Double src, Type typeOfSrc, JsonSerializationContext context) {
-	        if(src == src.longValue()){
-	            return new JsonPrimitive(src.longValue());      
-	        }
-	        return new JsonPrimitive(src);
-	    }
-	 }).setDateFormat(Conversion.DEFAULT_DATETIME_FORMAT);
-	 
+	private static GsonBuilder gb=createGsonBuilder();
 	
-	public static Gson getGson(){		
+	public static GsonBuilder createGsonBuilder(){
+		return new GsonBuilder()
+		.registerTypeAdapter(Double.class,  new JsonSerializer<Double>() {   
+		    public JsonElement serialize(Double src, Type typeOfSrc, JsonSerializationContext context) {
+		        if(src == src.longValue()){
+		            return new JsonPrimitive(src.longValue());      
+		        }
+		        return new JsonPrimitive(src);
+		    }
+		})
+		.setExclusionStrategies(new ExclusionStrategy() {
+			public boolean shouldSkipField(FieldAttributes fa) {
+				return fa.getName().startsWith("$");
+			}
+
+			public boolean shouldSkipClass(Class<?> clazz) {
+				return false;
+			}
+		})
+		.setDateFormat(Conversion.DEFAULT_DATETIME_FORMAT);
+	}
+	
+	public static Gson getGson(){	
 		return gb.create();   
 	}
 	

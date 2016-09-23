@@ -300,6 +300,11 @@ public class DBConfig implements Closeable{
 		return query.getPage(limit, offset);
 	}
 	
+	public List<DataMap> selectList(int limit, int offset,String sql,Object... args){
+		Query query=createQuery().add(sql,args);
+		return query.getList(limit, offset);
+	}
+	
 	public int execute(String sql,Object... args){
 		Query query=createQuery().add(sql,args);
 		return query.execute();

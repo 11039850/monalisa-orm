@@ -191,6 +191,20 @@ public class FileHelper {
 		}
 	}
 	
+	@SuppressWarnings("unchecked")
+	public static <T> T readToObject(InputStream fin){
+	 	try{
+			ObjectInputStream inputStream=new ObjectInputStream(fin);
+			T r=(T)inputStream.readObject();
+			inputStream.close();
+			return r;
+		}catch(Exception e){
+			throw new RuntimeException(e);
+		}finally{
+			CloseQuietly.close(fin);
+		}
+	}
+	
 	public static String readToString(File f,String charset){
 		try{
 			return readToString(new FileInputStream(f),charset);

@@ -26,7 +26,9 @@ import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedHashSet;
 import java.util.Map;
+import java.util.Set;
 
 import com.tsc9526.monalisa.orm.Query;
 import com.tsc9526.monalisa.orm.annotation.DB;
@@ -38,6 +40,7 @@ import com.tsc9526.monalisa.orm.meta.Name;
 import com.tsc9526.monalisa.orm.model.Model;
 import com.tsc9526.monalisa.orm.model.ModelEvent;
 import com.tsc9526.monalisa.orm.tools.generator.DBExchange;
+import com.tsc9526.monalisa.orm.tools.generator.DBMetadata;
 import com.tsc9526.monalisa.orm.tools.helper.ClassHelper;
 import com.tsc9526.monalisa.orm.tools.helper.CloseQuietly;
 import com.tsc9526.monalisa.orm.tools.helper.JavaBeansHelper;
@@ -227,9 +230,11 @@ public class ResultHandler<T> {
 			}
 
 			renameDuplicatedColumns(table);
-
+ 			
 			exchange.setTable(table);
 			exchange.setErrorString(null);
+			
+			processMetaTable(exchange);
 			
 			rs.close();
 			pst.close();
@@ -239,6 +244,34 @@ public class ResultHandler<T> {
 			exchange.setErrorString(s.toString());
 		} finally {
 			CloseQuietly.close(conn);
+		}
+	}
+	
+	private static void processMetaTable(DBExchange exchange){
+		Set<String> imps = new LinkedHashSet<String>();
+		 
+		for (MetaColumn c : exchange.getTable().getColumns()) {
+			String tableName = c.getTable().getName();
+			MetaTable columnTable = DBMetadata.getTable(exchange.getDbKey(), tableName);
+			c.setTable(columnTable);
+			if (columnTable != null) {
+				MetaColumn cd = columnTable.getColumn(c.getName());
+				if (cd != null) {
+					c.setAuto(cd.isAuto());
+					c.setJavaType(cd.getJavaType());
+					c.setJdbcType(cd.getJdbcType());
+					c.setKey(cd.isKey());
+					c.setLength(cd.getLength());
+					c.setNotnull(cd.isNotnull());
+					c.setRemarks(cd.getRemarks());
+					c.setValue(cd.getValue());
+
+					imps.add(columnTable.getJavaPackage() + "." + columnTable.getJavaName());
+					imps.addAll(c.getImports());
+				} else {
+					c.setTable(null);
+				}
+			}
 		}
 	}
 

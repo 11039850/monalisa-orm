@@ -21,6 +21,7 @@ import java.lang.reflect.Field;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -461,7 +462,9 @@ public class ModelMeta{
 	}
 	 
 
-	protected static FGS createFGS(final MetaColumn c,final FGS mfd){		 
+	protected static FGS createFGS(final MetaColumn c,final FGS mfd){	
+		
+		
 		FGS fgs=new FGS(c.getJavaName(), mfd==null?null:mfd.getType()){
 			
 			public void setObject(Object bean,Object v){
@@ -470,6 +473,11 @@ public class ModelMeta{
 				}else{
 					if(bean instanceof Model<?>){
 						Model<?> m=(Model<?>)bean;
+						
+						if(Date.class.getName().equals(c.getJavaType())){
+							v=ClassHelper.converter.convert(v, Date.class);
+						}
+						
 						m.holder().set(c.getName(), v);							
 					} 					
 				}				

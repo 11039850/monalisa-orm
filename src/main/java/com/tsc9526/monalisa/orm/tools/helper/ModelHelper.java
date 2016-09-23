@@ -37,6 +37,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.tsc9526.monalisa.orm.annotation.Column;
+import com.tsc9526.monalisa.orm.model.MMH;
 import com.tsc9526.monalisa.orm.model.Model;
 import com.tsc9526.monalisa.orm.model.ModelParser;
 import com.tsc9526.monalisa.orm.tools.helper.ClassHelper.FGS;
@@ -263,6 +264,56 @@ public class ModelHelper {
 			return true;
 		}
 		
+		public static List<Model<?>> parseModels(Model<?> targetTemplate, javax.servlet.ServletRequest data, String... mappings) {
+			StringMap map = new StringMap(data.getParameterMap(), mappings);
+			List<Model<?>> rs=new ArrayList<Model<?>>();
+			
+			int size=0;
+			for (FGS fgs : targetTemplate.fields()) {
+				String name = fgs.getFieldName();
+
+				if (map.containsKey(name) == false) {
+					Column column = fgs.getAnnotation(Column.class);
+					name = column.name();
+				}
+
+				if (map.containsKey(name)) {
+					String[] value = (String[]) map.get(name);
+					if(value!=null && value.length>size){
+						size=value.length;
+					}
+				}
+			}
+			
+			if(size<1){
+				return rs;
+			}
+			
+			for(int i=0;i<size;i++){
+				Model<?> m= MMH.createFrom(targetTemplate);
+				rs.add(m);
+			}
+			
+			for (FGS fgs : targetTemplate.fields()) {
+				String name = fgs.getFieldName();
+
+				if (map.containsKey(name) == false) {
+					Column column = fgs.getAnnotation(Column.class);
+					name = column.name();
+				}
+
+				if (map.containsKey(name)) {
+					String[] value = (String[]) map.get(name);
+					if(value!=null){
+						for(int i=0;i<value.length;i++){
+							fgs.setObject(rs.get(i), value[i]);
+						} 
+					} 
+				}
+			}
+			
+			return rs;
+		}	
 	}
 	
 	public static class MapModelParser implements ModelParser<Map<String,Object>>{		
@@ -382,6 +433,10 @@ public class ModelHelper {
 	public static String toJson(Model<?> model) {
 		Gson gson=JsonHelper.getGson();
 		
+		return toJson(gson,model); 
+	}
+	
+	public static String toJson(Gson gson,Model<?> model) {
 		JsonObject json=new JsonObject(); 
 		for (FGS fgs : model.fields()) {
 			String name=fgs.getFieldName();
@@ -397,7 +452,7 @@ public class ModelHelper {
 				json.add(name, e);
 			}			 
 		} 		
-		return gson.toJson(json);		 
+		return gson.toJson(json);	
 	}
  
 

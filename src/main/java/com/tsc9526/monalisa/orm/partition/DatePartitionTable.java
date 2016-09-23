@@ -34,6 +34,8 @@ import com.tsc9526.monalisa.orm.tools.helper.ClassHelper.MetaClass;
  */
 @SuppressWarnings("rawtypes")
 public class DatePartitionTable implements Partition<Model>{	 
+	private static final long serialVersionUID = 5743936516178062272L;
+
 	public  String verify(MetaPartition mp,MetaTable table) {	
 		String[] args=mp.getArgs();
 		

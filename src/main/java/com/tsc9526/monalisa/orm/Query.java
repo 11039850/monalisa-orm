@@ -176,9 +176,9 @@ public class Query {
 	/**
 	 * Add segment to SQL only if the args is not empty
 	 * 
-	 * @param segment  SQL segment
+	 * @param segment the SQL segment
 	 * @param args  the SQL parameters
-	 * @return this
+	 * @return  this Query
 	 */
 	public Query addIfNotEmpty(String segment,Object ... args){
 		if(args!=null && args.length==1){
@@ -193,6 +193,21 @@ public class Query {
 		}
 		
 		return add(segment, args);
+	}
+	
+	/**
+	 * Add segment to SQL only if 'condition' is true
+	 * 
+	 * @param condition true: add the segment and args to SQL otherwise ignore.
+	 * @param segment the SQL segment
+	 * @param args the SQL parameters
+	 * @return this Query
+	 */
+	public Query addIf(boolean condition,String segment,Object ... args){
+		if(condition){
+			add(segment, args);
+		}
+		return this;
 	}
 	
 	public boolean isEmpty(){
@@ -210,12 +225,20 @@ public class Query {
 	
 	/**
 	 * 
+	 * get the SQL which replace ? to the real value
+	 * 
 	 * @return the executable SQL
 	 */
 	public String getExecutableSQL() {
 		 return SQLHelper.getExecutableSQL(getSql(), parameters);
 	}
 
+	/**
+	 * 
+	 * Clear the SQL statement and parameters.
+	 * 
+	 * @return this Query
+	 */
 	public Query clear(){		 
 		if(this.sql.length()>0){
 			this.sql.delete(0,this.sql.length());

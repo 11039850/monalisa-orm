@@ -18,7 +18,6 @@ package com.tsc9526.monalisa.orm.tools.generator;
 
 import java.io.File;
 import java.io.OutputStream;
-import java.io.OutputStreamWriter;
 import java.io.Writer;
 
 import javax.annotation.processing.ProcessingEnvironment;
@@ -36,7 +35,6 @@ import com.tsc9526.monalisa.orm.datasource.ConfigClass;
 import com.tsc9526.monalisa.orm.datasource.DataSourceManager;
 import com.tsc9526.monalisa.orm.datasource.DbProp;
 import com.tsc9526.monalisa.orm.meta.MetaTable;
-import com.tsc9526.monalisa.orm.meta.MetaTable.CreateTable;
 import com.tsc9526.monalisa.orm.model.Model;
 import com.tsc9526.monalisa.orm.tools.helper.ClassHelper;
 import com.tsc9526.monalisa.orm.tools.helper.Helper;
@@ -105,13 +103,12 @@ public class DBGeneratorProcessing extends DBGenerator{
 		this.dbmetadata=new DBMetadata(projectPath,javaPackage,dbcfg);		
 	}	 
 	  
-	protected Writer getResourceWriter(){		
+	protected OutputStream getResourceOutputStream(String pkg,String filename){		
 		try{			 					
-			FileObject res = processingEnv.getFiler().createResource(StandardLocation.SOURCE_OUTPUT, resourcePackage, CreateTable.FILE_NAME, typeElement);
+			FileObject res = processingEnv.getFiler().createResource(StandardLocation.SOURCE_OUTPUT, pkg, filename, typeElement);
 			OutputStream out=res.openOutputStream();
 			
-			Writer w = new OutputStreamWriter(out,"UTF-8");
-			return w;
+			return out;
 		}catch(Exception e){
 			throw new RuntimeException(e);
 		}

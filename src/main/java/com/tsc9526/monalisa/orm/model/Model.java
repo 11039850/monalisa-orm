@@ -527,6 +527,10 @@ public abstract class Model<T extends Model> implements Serializable {
 		return mm().fields();
 	}
 
+	public List<FGS> pkFields() {
+		return mm().getPkFields();
+	}
+	
 	/**
 	 * 
 	 * @return fields if called set("xxx",value) or setXxx()

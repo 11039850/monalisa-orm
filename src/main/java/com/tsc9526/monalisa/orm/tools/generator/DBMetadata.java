@@ -17,12 +17,15 @@
 package com.tsc9526.monalisa.orm.tools.generator;
 
 import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.ObjectOutputStream;
+import java.io.OutputStream;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
@@ -61,11 +64,28 @@ public class DBMetadata {
 			if(tables==null){
 				String metafile=FileHelper.combinePath(DbProp.TMP_WORK_DIR_METATABLE,"/"+dbKey+".meta");		
 				File taget=new File(metafile);
-				tables=FileHelper.readToObject(taget);
+				if(taget.exists()){
+					DBGenerator.plogger.info("Load meta-table("+dbKey+") from file: "+taget.getAbsolutePath());
+					tables=FileHelper.readToObject(taget);
+					
+				}else{
+					String resource="resources/"+dbKey+".meta";
+						
+					InputStream in=DBMetadata.class.getClassLoader().getResourceAsStream(resource);
+					if(in!=null){
+						DBGenerator.plogger.info("Load meta-table("+dbKey+") from resource: "+resource+", ClassLoader: "+DBMetadata.class.getClassLoader());
+						
+						tables=FileHelper.readToObject(in);
+					}else{
+						DBGenerator.plogger.error("Load meta-table("+dbKey+") failed, resource: "+resource+", ClassLoader: "+DBMetadata.class.getClassLoader());
+					}
+				}
+				
 				if(tables!=null){
 					hDBMetaTables.put(dbKey, tables);
 				}
-			}			
+			}		
+			
 			if(tables!=null){
 				tableName=tableName.trim().toLowerCase();
 				char c=tableName.charAt(0);
@@ -206,7 +226,12 @@ public class DBMetadata {
 		    }		    
 		    
 		    if(projectPath!=null){
-		    	cacheTables(hTables);
+		    	if(!new File(DbProp.TMP_WORK_DIR_METATABLE).exists()){
+		    		new File(DbProp.TMP_WORK_DIR_METATABLE).mkdirs();
+		    	}
+		    	String metafile=FileHelper.combinePath(DbProp.TMP_WORK_DIR_METATABLE,"/"+dbcfg.getCfg().getKey()+".meta");	
+		    	
+				saveTables(hTables,new FileOutputStream(metafile));
 		    }
 		    
 			return tables;
@@ -216,18 +241,16 @@ public class DBMetadata {
 			CloseQuietly.close(conn);			 
 		}
 	}	 
-	
-	private void cacheTables(Map<String, MetaTable> hTables)throws IOException {
-		ByteArrayOutputStream bufArrayOutputStream=new ByteArrayOutputStream();
-		ObjectOutputStream outputStream=new ObjectOutputStream(bufArrayOutputStream);
+	 
+	public void saveTables(Map<String, MetaTable> hTables,OutputStream out)throws IOException {
+		ByteArrayOutputStream buf=new ByteArrayOutputStream();
+		ObjectOutputStream outputStream=new ObjectOutputStream(buf);
 		outputStream.writeObject(hTables);
 		outputStream.flush();
 		
-		String metafile=FileHelper.combinePath(DbProp.TMP_WORK_DIR_METATABLE,"/"+dbcfg.getCfg().getKey()+".meta");		
-		File taget=new File(metafile);
-		FileHelper.write(taget, bufArrayOutputStream.toByteArray());  			 
+		 
+		FileHelper.write(new ByteArrayInputStream(buf.toByteArray()),out);  
 	}
- 
 	
 	private MetaPartition findPartition(List<MetaPartition> partitions,MetaTable table){
 		for(MetaPartition p:partitions){
