@@ -178,7 +178,7 @@ public class DbProp {
 	public final static DbProp PROP_TABLE_EXCEPTION_IF_SET_FIELD_NOT_FOUND=new DbProp("exception_if_set_field_not_found",false);
 	
 	
-	public final static DbProp PROP_TABLE_DBS_MAX_ROWS  =new DbProp("dbs.max.rows",1000);
+	public final static DbProp PROP_TABLE_DBS_MAX_ROWS  =new DbProp("dbs.max.rows",10000);
 	
 	public static String CFG_FIELD_VERSION        ="$VERSION";
 	 

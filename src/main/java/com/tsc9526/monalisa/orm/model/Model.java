@@ -34,6 +34,7 @@ import com.tsc9526.monalisa.orm.dao.Update;
 import com.tsc9526.monalisa.orm.datasource.DBConfig;
 import com.tsc9526.monalisa.orm.datasource.DataSourceManager;
 import com.tsc9526.monalisa.orm.datasource.DbProp;
+import com.tsc9526.monalisa.orm.datatable.DataMap;
 import com.tsc9526.monalisa.orm.dialect.Dialect;
 import com.tsc9526.monalisa.orm.meta.MetaPartition;
 import com.tsc9526.monalisa.orm.meta.MetaTable;
@@ -41,9 +42,9 @@ import com.tsc9526.monalisa.orm.meta.MetaTable.CreateTable;
 import com.tsc9526.monalisa.orm.meta.MetaTable.TableType;
 import com.tsc9526.monalisa.orm.partition.Partition;
 import com.tsc9526.monalisa.orm.tools.generator.DBMetadata;
+import com.tsc9526.monalisa.orm.tools.helper.ClassHelper.FGS;
 import com.tsc9526.monalisa.orm.tools.helper.JavaBeansHelper;
 import com.tsc9526.monalisa.orm.tools.helper.ModelHelper;
-import com.tsc9526.monalisa.orm.tools.helper.ClassHelper.FGS;
 import com.tsc9526.monalisa.orm.tools.logger.Logger;
 
 
@@ -779,5 +780,22 @@ public abstract class Model<T extends Model> implements Serializable {
 
 	public String toXml(boolean withXmlHeader, boolean ignoreNullFields) {
 		return ModelHelper.toXml(this, withXmlHeader, ignoreNullFields);
+	}
+	 
+	public DataMap toMap(boolean usingFieldName){
+		DataMap m=new DataMap();
+		
+		Map<String,FGS> hs=usingFieldName?mm().hFieldsByJavaName:mm().hFieldsByColumnName;
+	 
+		for (String column:hs.keySet()) {
+			FGS fgs=hs.get(column);
+			
+			Object v = fgs.getObject(this);
+			if (v != null) {
+				m.put(column,v);
+			}			 
+		} 		
+		
+		return m;
 	}
 }
