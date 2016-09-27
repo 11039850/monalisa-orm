@@ -14,44 +14,26 @@
  *	You should have received a copy of the GNU Lesser General Public License
  *	along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************************/
-package test.com.tsc9526.monalisa.orm.service.servlet;
+package test.com.tsc9526.monalisa.orm.service.action;
 
 import org.springframework.mock.web.MockHttpServletRequest;
-import org.springframework.mock.web.MockHttpServletResponse;
 import org.testng.Assert;
-import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
-
-import test.com.tsc9526.monalisa.orm.mysql.MysqlDB;
-import test.com.tsc9526.monalisa.orm.mysql.mysqldb.TestRecordV2;
 
 import com.tsc9526.monalisa.orm.datatable.DataMap;
 import com.tsc9526.monalisa.orm.datatable.DataTable;
-import com.tsc9526.monalisa.orm.service.DBS;
 import com.tsc9526.monalisa.orm.service.Response;
-import com.tsc9526.monalisa.orm.service.servlet.MonalisaServlet;
 
 /**
  * 
  * @author zzg.zhou(11039850@qq.com)
  */
 @Test
-public class MonalisaServletTest {
-	@BeforeClass
-	public void init(){
-		//MysqlDB.DB.getCfg().setProperty(DbProp.PROP_DB_SQL_DEBUG.getFullKey(), "true");
-		DBS.add("db1",MysqlDB.DB);
-		
-		//clear data
-		TestRecordV2.DELETE().truncate();
-		
-		for(int i=1;i<=10;i++){
-			new TestRecordV2().parse("{recordId: "+i+", name: 'ns0"+i+"', title: 'title"+i+"'}").save();
-		}
-	}
+public class GetActionTest extends AbstractActionTest {
+	
 	
 	public void testGetDb()throws Exception{
-		MockHttpServletRequest       req=new MockHttpServletRequest("GET","/db1");
+		MockHttpServletRequest       req=createRequest("/db1");
 		 	
 		Response resp=getRespone(req);
 		Assert.assertEquals(resp.getStatus(),200);
@@ -65,14 +47,24 @@ public class MonalisaServletTest {
  	}
 	
 	public void testGetDbTableNotExist()throws Exception{
-		MockHttpServletRequest       req=new MockHttpServletRequest("GET","/db1/test_record_v2_not_exists");
+		MockHttpServletRequest       req=createRequest("/db1/test_record_v2_not_exists");
+
 		req.addHeader("DEV_TEST", "true"); 	
+	
 		Response resp=getRespone(req);
 		Assert.assertEquals(resp.getStatus(),500);
  	}
 	
+	
+	public void testGetDbInvalidName()throws Exception{
+		MockHttpServletRequest       req=createRequest("/db1/test_%20");
+		
+		Response resp=getRespone(req);
+		Assert.assertEquals(resp.getStatus(),400);
+ 	}
+	
 	public void testGetDbTable1()throws Exception{
-		MockHttpServletRequest       req=new MockHttpServletRequest("GET","/db1/test_record_v2");
+		MockHttpServletRequest       req=createRequest("/db1/test_record_v2");
 		req.addParameter("-columns","record_id,name");
 		
 		Response resp=getRespone(req);
@@ -91,7 +83,7 @@ public class MonalisaServletTest {
 	
 	
 	public void testGetDbTable2()throws Exception{
-		MockHttpServletRequest       req=new MockHttpServletRequest("GET","/db1/test_record_v2");
+		MockHttpServletRequest       req=createRequest("/db1/test_record_v2");
 		req.addParameter("columns","record_id,name");
 		
 		Response resp=getRespone(req);
@@ -109,7 +101,7 @@ public class MonalisaServletTest {
  	}
 	
 	public void testGetDbTableFilter01()throws Exception{
-		MockHttpServletRequest       req=new MockHttpServletRequest("GET","/db1/test_record_v2");
+		MockHttpServletRequest       req=createRequest("/db1/test_record_v2");
 		req.addParameter("columns","record_id,name");
 		req.addParameter("record_id>1","");
 		
@@ -127,7 +119,7 @@ public class MonalisaServletTest {
  	}
 	
 	public void testGetDbTableFilter02()throws Exception{
-		MockHttpServletRequest       req=new MockHttpServletRequest("GET","/db1/test_record_v2");
+		MockHttpServletRequest       req=createRequest("/db1/test_record_v2");
 		req.addParameter("columns","record_id,name");
 		req.addParameter("record_id>","1");
 		
@@ -145,7 +137,7 @@ public class MonalisaServletTest {
  	}
 	
 	public void testGetDbTableFilter03()throws Exception{
-		MockHttpServletRequest       req=new MockHttpServletRequest("GET","/db1/test_record_v2");
+		MockHttpServletRequest       req=createRequest("/db1/test_record_v2");
 		req.addParameter("columns","record_id,name");
 		req.addParameter("record_id<>1","");
 		
@@ -163,7 +155,7 @@ public class MonalisaServletTest {
  	}
 	
 	public void testGetDbTableFilter04()throws Exception{
-		MockHttpServletRequest       req=new MockHttpServletRequest("GET","/db1/test_record_v2");
+		MockHttpServletRequest       req=createRequest("/db1/test_record_v2");
 		req.addParameter("columns","record_id,name");
 		req.addParameter("name~ns*","");
 		
@@ -181,7 +173,7 @@ public class MonalisaServletTest {
  	}
 	
 	public void testGetDbTablePk1()throws Exception{
-		MockHttpServletRequest       req=new MockHttpServletRequest("GET","/db1/test_record_v2/1");
+		MockHttpServletRequest       req=createRequest("/db1/test_record_v2/1");
 		req.addParameter("-columns","record_id,name");
 		
 		Response resp=getRespone(req);
@@ -195,7 +187,7 @@ public class MonalisaServletTest {
  	}
 	
 	public void testGetDbTablePkWithJavaName()throws Exception{
-		MockHttpServletRequest       req=new MockHttpServletRequest("GET","/db1/test_record_v2/recordId=1");
+		MockHttpServletRequest       req=createRequest("/db1/test_record_v2/recordId=1");
 		req.addParameter("columns","record_id,name");
 		
 		Response resp=getRespone(req);
@@ -208,7 +200,7 @@ public class MonalisaServletTest {
 	}
 	
 	public void testGetDbTablePkWithColumnName()throws Exception{
-		MockHttpServletRequest       req=new MockHttpServletRequest("GET","/db1/test_record_v2/record_Id=1");
+		MockHttpServletRequest       req=createRequest("/db1/test_record_v2/record_Id=1");
 		req.addParameter("columns","record_id,name");
 		
 		Response resp=getRespone(req);
@@ -221,7 +213,7 @@ public class MonalisaServletTest {
 	}
 	
 	public void testGetDbTableWithuQalifier()throws Exception{
-		MockHttpServletRequest       req=new MockHttpServletRequest("GET","/db1/test_record_v2/`recordId`=1");
+		MockHttpServletRequest       req=createRequest("/db1/test_record_v2/`recordId`=1");
 		req.addParameter("columns","record_id,name");
 		
 		Response resp=getRespone(req);
@@ -231,38 +223,5 @@ public class MonalisaServletTest {
 		Assert.assertEquals(data.getString("record_id"),"1");
 		Assert.assertNotNull(data.getString("name"));
 		Assert.assertEquals(data.size(),2);
-	}
-	
-	public void testGetDbTablePkNotFound()throws Exception{
-		MockHttpServletRequest       req=new MockHttpServletRequest("GET","/db1/test_record_v2/recordId="+Integer.MAX_VALUE);
-		req.addParameter("columns","record_id,name");
-		
-		Response resp=getRespone(req);
-		Assert.assertEquals(resp.getStatus(),404);
-		
-		Assert.assertNull(resp.getData());
-	}
- 
-	public void testGetDbTableInvalidField()throws Exception{
-		MockHttpServletRequest       req=new MockHttpServletRequest("GET","/db1/test_record_v2/recordx=1");
-		req.addParameter("columns","record_id,name");
-		
-		Response resp=getRespone(req);
-		Assert.assertEquals(resp.getStatus(),400);
-		
-		Assert.assertTrue(resp.getMessage().indexOf("Column not found: recordx")>=0);
-	}
-	
-	protected Response getRespone(MockHttpServletRequest req)throws Exception{
-		MockHttpServletResponse resp=new MockHttpServletResponse(); 
-		
-		MonalisaServlet ms=new MonalisaServlet();
-		ms.service(req, resp);
-		 
-		Assert.assertEquals("application/json;charset=utf-8", resp.getContentType());
-		
-		String body=resp.getContentAsString();
-		 
-		return Response.fromJson(body); 
 	}
 }

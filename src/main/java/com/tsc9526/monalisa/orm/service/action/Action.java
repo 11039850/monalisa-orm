@@ -246,7 +246,7 @@ public abstract class Action {
 	}
 	
 	protected String checkName(String name){
-		if(!name.matches("[a-z0-9A-Z_`\\\"'\\[\\]]+")){
+		if(!name.matches("[a-z0-9A-Z_`\\.\\\"'\\[\\]]+")){
 			errors.add("Invalid column name: "+name);
 		}
 		return name;

@@ -30,11 +30,13 @@ public class DBS {
 	private static DataMap dbs=new DataMap();
 	
 	public static void add(String dbName,DBConfig db){
-		logger.info("Add database service: /"+dbName+", dbkey: "+db.getKey());
-		dbs.put(dbName,db);
+		if(!dbs.containsKey(dbName)){
+			logger.info("Add database service: /"+dbName+", dbkey: "+db.getKey());
+			dbs.put(dbName,db);
+		}
 	}
 
 	public static DBConfig getDB(String dbName){
-		return (DBConfig)dbs.get(dbName);	 
+		return (DBConfig)dbs.get(dbName);
 	}
 }
