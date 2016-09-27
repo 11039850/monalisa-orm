@@ -16,17 +16,19 @@
  *******************************************************************************************/
 package test.com.tsc9526.monalisa.orm.service.servlet;
 
-import org.junit.Assert;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
+import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 import test.com.tsc9526.monalisa.orm.mysql.MysqlDB;
+import test.com.tsc9526.monalisa.orm.mysql.mysqldb.TestRecordV2;
 
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
+import com.tsc9526.monalisa.orm.datatable.DataMap;
+import com.tsc9526.monalisa.orm.datatable.DataTable;
 import com.tsc9526.monalisa.orm.service.DBS;
+import com.tsc9526.monalisa.orm.service.Response;
 import com.tsc9526.monalisa.orm.service.servlet.MonalisaServlet;
 
 /**
@@ -37,49 +39,230 @@ import com.tsc9526.monalisa.orm.service.servlet.MonalisaServlet;
 public class MonalisaServletTest {
 	@BeforeClass
 	public void init(){
+		//MysqlDB.DB.getCfg().setProperty(DbProp.PROP_DB_SQL_DEBUG.getFullKey(), "true");
 		DBS.add("db1",MysqlDB.DB);
+		
+		//clear data
+		TestRecordV2.DELETE().truncate();
+		
+		for(int i=1;i<=10;i++){
+			new TestRecordV2().parse("{recordId: "+i+", name: 'ns0"+i+"', title: 'title"+i+"'}").save();
+		}
 	}
 	
-	public void testGetDbTablePk1()throws Exception{
-		MonalisaServlet ms=new MonalisaServlet();
+	public void testGetDb()throws Exception{
+		MockHttpServletRequest       req=new MockHttpServletRequest("GET","/db1");
+		 	
+		Response resp=getRespone(req);
+		Assert.assertEquals(resp.getStatus(),200);
+		 
+		DataTable<DataMap> table=resp.getData();
 		
-		MockHttpServletRequest       req=new MockHttpServletRequest("GET","/db1/test_record/1");
+		Assert.assertTrue(table.size()>1);
+		
+		DataMap data=table.get(0);
+		Assert.assertNotNull(data.getString("table_name"));
+ 	}
+	
+	public void testGetDbTableNotExist()throws Exception{
+		MockHttpServletRequest       req=new MockHttpServletRequest("GET","/db1/test_record_v2_not_exists");
+		req.addHeader("DEV_TEST", "true"); 	
+		Response resp=getRespone(req);
+		Assert.assertEquals(resp.getStatus(),500);
+ 	}
+	
+	public void testGetDbTable1()throws Exception{
+		MockHttpServletRequest       req=new MockHttpServletRequest("GET","/db1/test_record_v2");
 		req.addParameter("-columns","record_id,name");
 		
-		MockHttpServletResponse resp=new MockHttpServletResponse(); 
+		Response resp=getRespone(req);
+		Assert.assertEquals(resp.getStatus(),200);
+		 
+		DataTable<DataMap> table=resp.getData();
 		
-		ms.service(req, resp);
+		Assert.assertTrue(table.size()>1);
 		
-		String body=resp.getContentAsString();
-		JsonObject http=new JsonParser().parse(body).getAsJsonObject();
-		Assert.assertEquals(200,http.get("status").getAsInt());
-		
-		System.out.println(body);
-		
-		JsonObject js=http.get("data").getAsJsonObject();
-		Assert.assertEquals(1,js.get("record_id").getAsInt());
-		
-		
-	}
+		DataMap data=table.get(0);
+		Assert.assertNull(data.getString("record_id"));
+		Assert.assertNull(data.getString("name"));
+		Assert.assertNotNull(data.getString("title"));
+		Assert.assertTrue(data.size()>1);
+ 	}
 	
-	public void testGetDbTablePk2()throws Exception{
-		MonalisaServlet ms=new MonalisaServlet();
-		
-		MockHttpServletRequest       req=new MockHttpServletRequest("GET","/db1/test_record/recordId=1");
+	
+	public void testGetDbTable2()throws Exception{
+		MockHttpServletRequest       req=new MockHttpServletRequest("GET","/db1/test_record_v2");
 		req.addParameter("columns","record_id,name");
 		
+		Response resp=getRespone(req);
+		Assert.assertEquals(resp.getStatus(),200);
+		 
+		DataTable<DataMap> table=resp.getData();
+		
+		Assert.assertTrue(table.size()>1);
+		
+		DataMap data=table.get(0);
+		Assert.assertEquals(data.getString("record_id"),"1");
+		Assert.assertNotNull(data.getString("name"));
+		Assert.assertNull(data.getString("title"));
+		Assert.assertTrue(data.size()>1);
+ 	}
+	
+	public void testGetDbTableFilter01()throws Exception{
+		MockHttpServletRequest       req=new MockHttpServletRequest("GET","/db1/test_record_v2");
+		req.addParameter("columns","record_id,name");
+		req.addParameter("record_id>1","");
+		
+		Response resp=getRespone(req);
+		Assert.assertEquals(resp.getStatus(),200);
+		 
+		DataTable<DataMap> table=resp.getData();
+		
+		Assert.assertTrue(table.size()>0);
+		
+		DataMap data=table.get(0);
+		Assert.assertEquals(data.getString("record_id"),"2");
+		Assert.assertNotNull(data.getString("name"));
+		Assert.assertNull(data.getString("title"));
+ 	}
+	
+	public void testGetDbTableFilter02()throws Exception{
+		MockHttpServletRequest       req=new MockHttpServletRequest("GET","/db1/test_record_v2");
+		req.addParameter("columns","record_id,name");
+		req.addParameter("record_id>","1");
+		
+		Response resp=getRespone(req);
+		Assert.assertEquals(resp.getStatus(),200);
+		 
+		DataTable<DataMap> table=resp.getData();
+		
+		Assert.assertTrue(table.size()>0);
+		
+		DataMap data=table.get(0);
+		Assert.assertEquals(data.getString("record_id"),"1");
+		Assert.assertNotNull(data.getString("name"));
+		Assert.assertNull(data.getString("title"));
+ 	}
+	
+	public void testGetDbTableFilter03()throws Exception{
+		MockHttpServletRequest       req=new MockHttpServletRequest("GET","/db1/test_record_v2");
+		req.addParameter("columns","record_id,name");
+		req.addParameter("record_id<>1","");
+		
+		Response resp=getRespone(req);
+		Assert.assertEquals(resp.getStatus(),200);
+		 
+		DataTable<DataMap> table=resp.getData();
+		
+		Assert.assertTrue(table.size()>0);
+		
+		DataMap data=table.get(0);
+		Assert.assertEquals(data.getString("record_id"),"2");
+		Assert.assertNotNull(data.getString("name"));
+		Assert.assertNull(data.getString("title"));
+ 	}
+	
+	public void testGetDbTableFilter04()throws Exception{
+		MockHttpServletRequest       req=new MockHttpServletRequest("GET","/db1/test_record_v2");
+		req.addParameter("columns","record_id,name");
+		req.addParameter("name~ns*","");
+		
+		Response resp=getRespone(req);
+		Assert.assertEquals(resp.getStatus(),200);
+		 
+		DataTable<DataMap> table=resp.getData();
+		
+		Assert.assertTrue(table.size()>0);
+		
+		DataMap data=table.get(0);
+		Assert.assertEquals(data.getString("record_id"),"1");
+		Assert.assertNotNull(data.getString("name"));
+		Assert.assertNull(data.getString("title"));
+ 	}
+	
+	public void testGetDbTablePk1()throws Exception{
+		MockHttpServletRequest       req=new MockHttpServletRequest("GET","/db1/test_record_v2/1");
+		req.addParameter("-columns","record_id,name");
+		
+		Response resp=getRespone(req);
+		Assert.assertEquals(resp.getStatus(),200);
+		 
+		DataMap data=resp.getData();
+		Assert.assertEquals(data.getInt("record_id",0),1);
+		Assert.assertNull(data.getString("name"));
+		Assert.assertNotNull(data.getString("title"));
+		Assert.assertTrue(data.size()>2);
+ 	}
+	
+	public void testGetDbTablePkWithJavaName()throws Exception{
+		MockHttpServletRequest       req=new MockHttpServletRequest("GET","/db1/test_record_v2/recordId=1");
+		req.addParameter("columns","record_id,name");
+		
+		Response resp=getRespone(req);
+		Assert.assertEquals(resp.getStatus(),200);
+		
+		DataMap data=resp.getData();
+		Assert.assertEquals(data.getString("record_id"),"1");
+		Assert.assertNotNull(data.getString("name"));
+		Assert.assertEquals(data.size(),2);
+	}
+	
+	public void testGetDbTablePkWithColumnName()throws Exception{
+		MockHttpServletRequest       req=new MockHttpServletRequest("GET","/db1/test_record_v2/record_Id=1");
+		req.addParameter("columns","record_id,name");
+		
+		Response resp=getRespone(req);
+		Assert.assertEquals(resp.getStatus(),200);
+		
+		DataMap data=resp.getData();
+		Assert.assertEquals(data.getString("record_id"),"1");
+		Assert.assertNotNull(data.getString("name"));
+		Assert.assertEquals(data.size(),2);
+	}
+	
+	public void testGetDbTableWithuQalifier()throws Exception{
+		MockHttpServletRequest       req=new MockHttpServletRequest("GET","/db1/test_record_v2/`recordId`=1");
+		req.addParameter("columns","record_id,name");
+		
+		Response resp=getRespone(req);
+		Assert.assertEquals(resp.getStatus(),200);
+		
+		DataMap data=resp.getData();
+		Assert.assertEquals(data.getString("record_id"),"1");
+		Assert.assertNotNull(data.getString("name"));
+		Assert.assertEquals(data.size(),2);
+	}
+	
+	public void testGetDbTablePkNotFound()throws Exception{
+		MockHttpServletRequest       req=new MockHttpServletRequest("GET","/db1/test_record_v2/recordId="+Integer.MAX_VALUE);
+		req.addParameter("columns","record_id,name");
+		
+		Response resp=getRespone(req);
+		Assert.assertEquals(resp.getStatus(),404);
+		
+		Assert.assertNull(resp.getData());
+	}
+ 
+	public void testGetDbTableInvalidField()throws Exception{
+		MockHttpServletRequest       req=new MockHttpServletRequest("GET","/db1/test_record_v2/recordx=1");
+		req.addParameter("columns","record_id,name");
+		
+		Response resp=getRespone(req);
+		Assert.assertEquals(resp.getStatus(),400);
+		
+		Assert.assertTrue(resp.getMessage().indexOf("Column not found: recordx")>=0);
+	}
+	
+	protected Response getRespone(MockHttpServletRequest req)throws Exception{
 		MockHttpServletResponse resp=new MockHttpServletResponse(); 
 		
+		MonalisaServlet ms=new MonalisaServlet();
 		ms.service(req, resp);
+		 
+		Assert.assertEquals("application/json;charset=utf-8", resp.getContentType());
 		
 		String body=resp.getContentAsString();
-		JsonObject http=new JsonParser().parse(body).getAsJsonObject();
-		Assert.assertEquals(200,http.get("status").getAsInt());
-		
-		JsonObject js=http.get("data").getAsJsonObject();
-		Assert.assertEquals(1,js.get("record_id").getAsInt());
-		
-		System.out.println(body);
+		 
+		return Response.fromJson(body); 
 	}
-	 
 }

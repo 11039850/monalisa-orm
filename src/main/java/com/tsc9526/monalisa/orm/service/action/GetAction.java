@@ -16,15 +16,19 @@
  *******************************************************************************************/
 package com.tsc9526.monalisa.orm.service.action;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.tsc9526.monalisa.orm.Query;
+import com.tsc9526.monalisa.orm.annotation.Column;
 import com.tsc9526.monalisa.orm.datatable.DataMap;
+import com.tsc9526.monalisa.orm.datatable.DataTable;
 import com.tsc9526.monalisa.orm.datatable.Page;
-import com.tsc9526.monalisa.orm.model.ModelMeta;
+import com.tsc9526.monalisa.orm.dialect.Dialect;
 import com.tsc9526.monalisa.orm.model.Record;
 import com.tsc9526.monalisa.orm.service.Response;
 import com.tsc9526.monalisa.orm.tools.helper.ClassHelper.FGS;
@@ -54,42 +58,54 @@ public class GetAction extends Action{
 	}
 
 	public Response getTables(){
-		return new Response( db.getTables() );
+		DataTable<DataMap> table=new DataTable<DataMap>();
+		for(String t:db.getTables()){
+			DataMap m=new DataMap();
+			
+			m.put("table_name",t);
+			
+			table.add(m);
+		}
+		return new Response( table );
 	}
-	
-	public Response getRows(){
-		return null;
-	}
-	
+	 
 	public Response getTableRows(){
 		Query query=db.createQuery();
 		
 		query.add("SELECT ");
-		if(includeColumns.size()>0){
-			for(int i=0;i<includeColumns.size();i++){
-				String c=includeColumns.get(i);
-				if(i>0){
-					query.add(", ?",c);
-				}else{
-					query.add("?", c);
-				}
+		
+		List<String> ics=includeColumns;
+		if(ics.size()==0 && excludeColumns.size()>0){
+			Set<String> es=new HashSet<String>();
+			for(String n:excludeColumns){
+				es.add(Dialect.getRealname(n).toLowerCase());
 			}
-		}if(excludeColumns.size()>0){
-			Record model=db.createRecord(table);
-			model.fields();
 			
-			for(int i=0;i<includeColumns.size();i++){
-				String c=includeColumns.get(i);
+			Record model=db.createRecord(table);
+			
+			for(FGS fgs:model.fields()){
+				Column c=fgs.getAnnotation(Column.class);
+				
+				String cname=c.name();
+				if(!es.contains(cname.toLowerCase())){
+					ics.add(cname);
+				}		
+			} 
+		}
+		
+		if(ics.size()>0){
+			for(int i=0;i<ics.size();i++){
+				String c=ics.get(i);
 				if(i>0){
-					query.add(", ?",c);
+					query.add(", "+c);
 				}else{
-					query.add("?", c);
+					query.add( c);
 				}
 			}
 		}else{
 			query.add("*");
 		}
-		query.add(" FROM ?",this.table);
+		query.add(" FROM "+this.table);
 		
 		if(filters.size()>0){
 			query.add(" WHERE ");
@@ -126,13 +142,7 @@ public class GetAction extends Action{
 		}
 		
 	}
-	
-	public Response getTableRowsByFilter(){
-		Record model=db.createRecord(table);
-		
-		return null;
-	}
-	
+	 
 	public Response getTableRowBySinglePK(){
 		Record model=db.createRecord(table);
 		List<FGS> pks=model.pkFields();
@@ -165,9 +175,21 @@ public class GetAction extends Action{
 	public Response getTableRowByMultiKeys(){
 		Record model=db.createRecord(table);
 		
+		for(String c:excludeColumns){
+			model.exclude(c);
+		}
+
+		for(String c:includeColumns){
+			model.include(c);
+		}
+		
 		Record.Criteria c=model.WHERE();
 		for(String[] nv:multiKeys){
-			c.field(nv[0]).eq(nv[1]);
+			if(model.field(nv[0])!=null){
+				c.field(nv[0]).eq(nv[1]);
+			}else{
+				return new Response(400,"Column not found: "+nv[0]+" in the table: "+table);
+			}
 		}
 		
 		Record x=c.SELECT().selectOne();

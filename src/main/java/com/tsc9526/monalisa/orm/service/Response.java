@@ -20,7 +20,9 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.tsc9526.monalisa.orm.model.Model;
 import com.tsc9526.monalisa.orm.tools.helper.JsonHelper;
 
@@ -30,7 +32,26 @@ import com.tsc9526.monalisa.orm.tools.helper.JsonHelper;
 public class Response implements Serializable{	 
 	private static final long serialVersionUID = 5042617802808490420L;
  	
-	private static Gson gson=JsonHelper.createGsonBuilder().setPrettyPrinting().create();
+	public static Response fromJson(String jsonString){
+		JsonObject json=new JsonParser().parse(jsonString).getAsJsonObject();
+		
+		Response r=new Response();
+		r.setStatus(json.get("status").getAsInt());
+		r.setMessage(JsonHelper.getString(json,"message"));
+		r.setDetail(JsonHelper.getString(json,"detail"));
+		
+		JsonElement jd=json.get("data");
+		if(jd!=null && !jd.isJsonNull()){
+			if(jd.isJsonArray()){
+				r.setData(JsonHelper.parseToDataTable(jd.getAsJsonArray()));
+			}else if(jd.isJsonObject()){
+				r.setData(JsonHelper.parseToDataMap(jd.getAsJsonObject()));
+			}else{
+				r.setData(jd);
+			}
+		}
+		return r;
+	}
 	
 	private int status=200;
 	
@@ -114,10 +135,7 @@ public class Response implements Serializable{
 		
 		return this;
 	}	 
- 	
-	public String toJson(){
-		return gson.toJson(this);
-	}
+ 	  
 
 	public String getDetail() {
 		return detail;

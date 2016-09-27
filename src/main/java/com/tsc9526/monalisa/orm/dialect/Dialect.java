@@ -563,4 +563,14 @@ public abstract class Dialect{
     protected boolean isSplitChar(char c){
     	return c==' '|| c=='\t' || c=='\r' || c=='\n';
     }
+    
+    public static String getRealname(String name){
+    	char c=name.charAt(0);
+    	
+    	if(c=='`' || c=='[' || c=='"' || c=='\''){
+			return name.substring(1,name.length()-1);
+		}
+    	
+		return name;
+	}
 }

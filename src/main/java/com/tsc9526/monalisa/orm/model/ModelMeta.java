@@ -355,12 +355,15 @@ public class ModelMeta{
 	public FGS findFieldByName(String name){
 		name=name.toLowerCase();
 		
+		name=Dialect.getRealname(name);
+		
 		FGS fgs=hFieldsByColumnName.get(name);
 		if(fgs==null){
 			fgs=hFieldsByJavaName.get(name);
 		}
 		return fgs;
 	}
+ 
 	
 	public Collection<FGS> fields(){
 		return hFieldsByColumnName.values();

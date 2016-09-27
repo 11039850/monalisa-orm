@@ -523,7 +523,11 @@ public class DBConfig implements Closeable{
 			 	
 			this.cacheTables	 = getValue(p,DbProp.PROP_DB_CACHE_TABLES.getKey(), "",  prefixs);
 			 
-			processUrlHosts();						 
+			processUrlHosts();
+		}
+		
+		public void setProperty(String key,String value){
+			p.setProperty(key, value);
 		}
 		
 		private void loadProperties(){

@@ -314,6 +314,8 @@ public class Query {
 				pst.addBatch();
 			}
 			
+			logSql();
+			
 			int[] result=pst.executeBatch();
 			
 			if(tx==null){
@@ -359,7 +361,7 @@ public class Query {
 				executeSQL=getExecutableSQL();
 			}catch(Exception ex){}
 			
-			throw new RuntimeException("SQL ERROR: \r\n========================================================================\r\n"
+			throw new RuntimeException("ERROR: "+e.getMessage()+"\r\nERROR SQL: \r\n========================================================================\r\n"
 					                  +executeSQL+"\r\n========================================================================",e);
 		}finally{
 			CloseQuietly.close(pst);

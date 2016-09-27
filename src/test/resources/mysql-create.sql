@@ -45,6 +45,17 @@ CREATE TABLE `test_record` (
 	PRIMARY KEY (`record_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 	
+CREATE TABLE `test_record_v2` (
+	`record_id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'primary key',
+	`name` varchar(128) NOT NULL default 'N0001' COMMENT 'the name',
+	`title` varchar(128) NULL  COMMENT 'the title',
+	`ts_a` datetime  NULL COMMENT 'date time field',
+	`create_time` datetime NOT NULL,
+	`create_by` varchar(64) NULL,
+	`update_time` datetime NULL,
+	`update_by` varchar(64) NULL,
+	PRIMARY KEY (`record_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `test_logyyyymm_201601` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'primary key',

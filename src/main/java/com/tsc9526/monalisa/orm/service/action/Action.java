@@ -28,12 +28,14 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.google.gson.Gson;
 import com.tsc9526.monalisa.orm.datasource.DBConfig;
 import com.tsc9526.monalisa.orm.datasource.DbProp;
 import com.tsc9526.monalisa.orm.datatable.DataMap;
 import com.tsc9526.monalisa.orm.service.DBS;
 import com.tsc9526.monalisa.orm.service.Response;
 import com.tsc9526.monalisa.orm.tools.helper.Helper;
+import com.tsc9526.monalisa.orm.tools.helper.JsonHelper;
 import com.tsc9526.monalisa.orm.tools.logger.Logger;
 
 /**
@@ -124,13 +126,13 @@ public abstract class Action {
 		
 		String[] vs=path.split("/");
 		
-		database=vs[0];
+		database=checkName(vs[0]);
 		
 		if(vs.length>=2){
 			if(vs[1].indexOf(",")>0){
 				tables=vs[1].split(",");
 			}else{
-				table=vs[1];
+				table=checkName(vs[1]);
 		
 				if(vs.length==3){
 					String x=vs[2];
@@ -140,7 +142,7 @@ public abstract class Action {
 					}else{
 						singlePK=vs[2];
 					}
-				}else{
+				}else if(vs.length>3){
 					multiKeys=new String[vs.length-2][];
 					 
 					for(int i=0;i<vs.length-2;i++){
@@ -205,12 +207,12 @@ public abstract class Action {
 				c=c.trim();
 				if(c.startsWith("-")){
 					c=c.substring(1);
-					orderBy.add(new String[]{checkField(c),"DESC"});
+					orderBy.add(new String[]{checkName(c),"DESC"});
 				}else{
 					if(c.startsWith("+")){
 						c=c.substring(1);
 					}
-					orderBy.add(new String[]{checkField(c),"ASC"});
+					orderBy.add(new String[]{checkName(c),"ASC"});
 				}
 			}
 		}
@@ -228,14 +230,14 @@ public abstract class Action {
 		
 		if(cs!=null){
 			for(String c:cs.split(",")){
-				includeColumns.add(checkField(c.trim()));
+				includeColumns.add(checkName(c.trim()));
 			}
 		}else{
 			cs=rd.getString("-columns");
 			
 			if(cs!=null){
 				for(String c:cs.split(",")){
-					excludeColumns.add(checkField(c.trim()));
+					excludeColumns.add(checkName(c.trim()));
 				}
 			}
 		}
@@ -243,9 +245,9 @@ public abstract class Action {
 		return null;
 	}
 	
-	protected String checkField(String name){
-		if(!name.matches("[a-z0-9A-Z_`\\[\\]]+")){
-			errors.add("Invalid field name: "+name);
+	protected String checkName(String name){
+		if(!name.matches("[a-z0-9A-Z_`\\\"'\\[\\]]+")){
+			errors.add("Invalid column name: "+name);
 		}
 		return name;
 	}
@@ -282,11 +284,11 @@ public abstract class Action {
 					field=name.substring(0,p2);
 					op="<>";
 					value=name.substring(p2+2);
-				}else if(p3>0){
+				}else if(p3>0 && (value==null || value.length()==0)){
 					field=name.substring(0,p3);
 					op=">";
 					value=name.substring(p3+1);
-				}else if(p4>0){
+				}else if(p4>0 && (value==null || value.length()==0)){
 					field=name.substring(0,p4);
 					op="<";
 					value=name.substring(p4+1);
@@ -320,7 +322,7 @@ public abstract class Action {
 				response=getResponse();
 			}
 		}catch(Exception e){
-			logger.error("Error process path: "+requestPath+", Error message: \r\n"+e,e);
+			logger.error("Error process path: "+requestPath,"true".equalsIgnoreCase(req.getHeader("DEV_TEST"))?null:e);
 			
 			response=new Response(500,e.getMessage());
 			 
@@ -334,7 +336,8 @@ public abstract class Action {
 	protected void writeResponse(Response r)throws ServletException, IOException {
 		resp.setContentType("application/json;charset=utf-8");
 		 
-		String body=r.toJson();
+		Gson gson=JsonHelper.createGsonBuilder().setPrettyPrinting().create();
+		String body=gson.toJson(r);
 		 
 		PrintWriter w=resp.getWriter();
 		w.write(body);

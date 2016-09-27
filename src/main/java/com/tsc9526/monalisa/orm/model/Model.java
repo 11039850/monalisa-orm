@@ -468,7 +468,7 @@ public abstract class Model<T extends Model> implements Serializable {
 	}
 
 	/**
-	 * 设置所有字段为null, 并清除改变字段集合
+	 * Set all fields to null and clear any field changes
 	 * 
 	 * @return this
 	 */
@@ -485,7 +485,7 @@ public abstract class Model<T extends Model> implements Serializable {
 	}
 
 	/**
-	 * 设置所有字段为缺省值
+	 * Set all fields to the default value 
 	 * 
 	 * @return this
 	 */
@@ -514,7 +514,7 @@ public abstract class Model<T extends Model> implements Serializable {
 
 	/**
 	 * 
-	 * @return 返回数据库方言
+	 * @return the database's dialect
 	 */
 	public Dialect dialect() {
 		return mm().dialect;
@@ -522,7 +522,7 @@ public abstract class Model<T extends Model> implements Serializable {
 
 	/**
 	 * 
-	 * @return 返回表的字段列表
+	 * @return all fields
 	 */
 	public Collection<FGS> fields() {
 		return mm().fields();
@@ -606,7 +606,7 @@ public abstract class Model<T extends Model> implements Serializable {
 
 	/**
 	 * 
-	 * @return 返回表名等信息
+	 * @return table informations
 	 */
 	public Table table() {
 		Table table = mm().table;
@@ -653,7 +653,7 @@ public abstract class Model<T extends Model> implements Serializable {
 
 	/**
 	 * 
-	 * @return 返回表的自增字段， 如果没有则返回null
+	 * @return find all auto increase fields, return null if not found.
 	 */
 	public FGS autoField() {
 		return mm().autoField;
@@ -661,7 +661,7 @@ public abstract class Model<T extends Model> implements Serializable {
 
 	/**
 	 * 
-	 * @return 数据库连接信息
+	 * @return the database 
 	 */
 	public DBConfig db() {
 		return $db == null ? mm().db : this.$db;
@@ -677,7 +677,7 @@ public abstract class Model<T extends Model> implements Serializable {
 
 	/**
 	 * 
-	 * @return 逗号分隔的字段名， *： 表示返回所有字段
+	 * @return select fields split by comma OR "*"
 	 */
 	public String filterFields() {
 		return holder().filterFields();
@@ -733,7 +733,7 @@ public abstract class Model<T extends Model> implements Serializable {
 	}
 
 	/**
-	 * 复制对象数据
+	 * copy model
 	 * 
 	 * @return copy of this model
 	 */
