@@ -44,7 +44,15 @@ public class MonalisaServlet extends HttpServlet{
 	
 	//POST用来新建资源（也可以用于更新资源）
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		new PostAction(req,resp).service();
+		String m=req.getHeader("X-HTTP-Method-Override");
+		
+		if("DELETE".equals(m)){
+			new DeleteAction(req,resp).service();
+		}else if("PUT".equals(m)){
+			new PutAction(req,resp).service();
+		}else{
+			new PostAction(req,resp).service();
+		}
 	}
 	
 	//DELETE用来删除资源。 
