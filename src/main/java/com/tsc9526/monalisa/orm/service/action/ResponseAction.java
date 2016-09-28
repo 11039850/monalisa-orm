@@ -14,15 +14,24 @@
  *	You should have received a copy of the GNU Lesser General Public License
  *	along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************************/
-package com.tsc9526.monalisa.orm.jdbc;
+package com.tsc9526.monalisa.orm.service.action;
 
-import javax.sql.DataSource;
- 
+import com.tsc9526.monalisa.orm.service.Response;
+
 /**
  * 
  * @author zzg.zhou(11039850@qq.com)
  */
-public abstract class JDBCWrapper implements DataSource {
- 
+public class ResponseAction extends Action{
+	private Response response;
+	
+	public ResponseAction(Response response) {
+		super(null);
+		
+		this.response=response;
+	}
 
+	public Response getResponse() {
+		return response;
+	}	
 }

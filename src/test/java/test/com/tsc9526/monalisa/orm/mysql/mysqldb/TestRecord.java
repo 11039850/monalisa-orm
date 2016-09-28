@@ -57,7 +57,7 @@ public class TestRecord extends com.tsc9526.monalisa.orm.model.Model<TestRecord>
 	/**
 	 * Constructor use primary keys.
 	 *
-	 * @param recordId  primary key	 
+	 * @param recordId  唯一主键	 
 	 */
 	public TestRecord(Integer recordId){
 		super("test_record", "record_id");
@@ -72,7 +72,7 @@ public class TestRecord extends com.tsc9526.monalisa.orm.model.Model<TestRecord>
 	* @Column
 	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record&nbsp;<B>name:</B> record_id &nbsp;[<font color=red>KEY</font>|<font color=red>AUTO</font>|<font color=red>NOTNULL</font>]
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 10<br>
-	* <li><B>remarks:</B> primary key
+	* <li><B>remarks:</B> 唯一主键
 	*/
 	@Column(table=M.TABLE, jdbcType=4, name=M.recordId$name, key=M.recordId$key, auto=M.recordId$auto, notnull=M.recordId$notnull, length=M.recordId$length, value=M.recordId$value, remarks=M.recordId$remarks)
 	private Integer recordId;	
@@ -81,7 +81,7 @@ public class TestRecord extends com.tsc9526.monalisa.orm.model.Model<TestRecord>
 	* @Column
 	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record&nbsp;<B>name:</B> name &nbsp;[<font color=red>NOTNULL</font>]
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 128 &nbsp;<B>value:</B> N0001<br>
-	* <li><B>remarks:</B> the name
+	* <li><B>remarks:</B> 名称
 	*/
 	@Column(table=M.TABLE, jdbcType=12, name=M.name$name, key=M.name$key, auto=M.name$auto, notnull=M.name$notnull, length=M.name$length, value=M.name$value, remarks=M.name$remarks)
 	private String name;	
@@ -90,7 +90,7 @@ public class TestRecord extends com.tsc9526.monalisa.orm.model.Model<TestRecord>
 	* @Column
 	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record&nbsp;<B>name:</B> title
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 128<br>
-	* <li><B>remarks:</B> the title
+	* <li><B>remarks:</B> 标题
 	*/
 	@Column(table=M.TABLE, jdbcType=12, name=M.title$name, key=M.title$key, auto=M.title$auto, notnull=M.title$notnull, length=M.title$length, value=M.title$value, remarks=M.title$remarks)
 	private String title;	
@@ -99,7 +99,7 @@ public class TestRecord extends com.tsc9526.monalisa.orm.model.Model<TestRecord>
 	* @Column
 	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record&nbsp;<B>name:</B> ts_a
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 19<br>
-	* <li><B>remarks:</B> date time field
+	* <li><B>remarks:</B> 
 	*/
 	@Column(table=M.TABLE, jdbcType=93, name=M.tsA$name, key=M.tsA$key, auto=M.tsA$auto, notnull=M.tsA$notnull, length=M.tsA$length, value=M.tsA$value, remarks=M.tsA$remarks)
 	private java.util.Date tsA;	
@@ -147,7 +147,7 @@ public class TestRecord extends com.tsc9526.monalisa.orm.model.Model<TestRecord>
 	* @Column
 	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record&nbsp;<B>name:</B> record_id &nbsp;[<font color=red>KEY</font>|<font color=red>AUTO</font>|<font color=red>NOTNULL</font>]
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 10<br>
-	* <li><B>remarks:</B> primary key
+	* <li><B>remarks:</B> 唯一主键
 	*/
 	@Column(table=M.TABLE, jdbcType=4, name=M.recordId$name, key=M.recordId$key, auto=M.recordId$auto, notnull=M.recordId$notnull, length=M.recordId$length, value=M.recordId$value, remarks=M.recordId$remarks) 
 	public TestRecord setRecordId(Integer recordId){
@@ -163,7 +163,7 @@ public class TestRecord extends com.tsc9526.monalisa.orm.model.Model<TestRecord>
 	* @Column
 	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record&nbsp;<B>name:</B> name &nbsp;[<font color=red>NOTNULL</font>]
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 128 &nbsp;<B>value:</B> N0001<br>
-	* <li><B>remarks:</B> the name
+	* <li><B>remarks:</B> 名称
 	*/
 	@Column(table=M.TABLE, jdbcType=12, name=M.name$name, key=M.name$key, auto=M.name$auto, notnull=M.name$notnull, length=M.name$length, value=M.name$value, remarks=M.name$remarks) 
 	public TestRecord setName(String name){
@@ -179,7 +179,7 @@ public class TestRecord extends com.tsc9526.monalisa.orm.model.Model<TestRecord>
 	* @Column
 	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record&nbsp;<B>name:</B> title
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 128<br>
-	* <li><B>remarks:</B> the title
+	* <li><B>remarks:</B> 标题
 	*/
 	@Column(table=M.TABLE, jdbcType=12, name=M.title$name, key=M.title$key, auto=M.title$auto, notnull=M.title$notnull, length=M.title$length, value=M.title$value, remarks=M.title$remarks) 
 	public TestRecord setTitle(String title){
@@ -195,7 +195,7 @@ public class TestRecord extends com.tsc9526.monalisa.orm.model.Model<TestRecord>
 	* @Column
 	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record&nbsp;<B>name:</B> ts_a
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 19<br>
-	* <li><B>remarks:</B> date time field
+	* <li><B>remarks:</B> 
 	*/
 	@Column(table=M.TABLE, jdbcType=93, name=M.tsA$name, key=M.tsA$key, auto=M.tsA$auto, notnull=M.tsA$notnull, length=M.tsA$length, value=M.tsA$value, remarks=M.tsA$remarks) 
 	public TestRecord setTsA(java.util.Date tsA){
@@ -276,7 +276,7 @@ public class TestRecord extends com.tsc9526.monalisa.orm.model.Model<TestRecord>
 	* @Column
 	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record&nbsp;<B>name:</B> record_id &nbsp;[<font color=red>KEY</font>|<font color=red>AUTO</font>|<font color=red>NOTNULL</font>]
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 10<br>
-	* <li><B>remarks:</B> primary key
+	* <li><B>remarks:</B> 唯一主键
 	*/
 	@Column(table=M.TABLE, jdbcType=4, name=M.recordId$name, key=M.recordId$key, auto=M.recordId$auto, notnull=M.recordId$notnull, length=M.recordId$length, value=M.recordId$value, remarks=M.recordId$remarks) 
 	public Integer getRecordId(){
@@ -288,7 +288,7 @@ public class TestRecord extends com.tsc9526.monalisa.orm.model.Model<TestRecord>
 	* @Column
 	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record&nbsp;<B>name:</B> record_id &nbsp;[<font color=red>KEY</font>|<font color=red>AUTO</font>|<font color=red>NOTNULL</font>]
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 10<br>
-	* <li><B>remarks:</B> primary key
+	* <li><B>remarks:</B> 唯一主键
 	* @param defaultValue  Return the default value if recordId is null.
 	*/
 	@Column(table=M.TABLE, jdbcType=4, name=M.recordId$name, key=M.recordId$key, auto=M.recordId$auto, notnull=M.recordId$notnull, length=M.recordId$length, value=M.recordId$value, remarks=M.recordId$remarks) 
@@ -307,7 +307,7 @@ public class TestRecord extends com.tsc9526.monalisa.orm.model.Model<TestRecord>
 	* @Column
 	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record&nbsp;<B>name:</B> name &nbsp;[<font color=red>NOTNULL</font>]
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 128 &nbsp;<B>value:</B> N0001<br>
-	* <li><B>remarks:</B> the name
+	* <li><B>remarks:</B> 名称
 	*/
 	@Column(table=M.TABLE, jdbcType=12, name=M.name$name, key=M.name$key, auto=M.name$auto, notnull=M.name$notnull, length=M.name$length, value=M.name$value, remarks=M.name$remarks) 
 	public String getName(){
@@ -319,7 +319,7 @@ public class TestRecord extends com.tsc9526.monalisa.orm.model.Model<TestRecord>
 	* @Column
 	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record&nbsp;<B>name:</B> name &nbsp;[<font color=red>NOTNULL</font>]
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 128 &nbsp;<B>value:</B> N0001<br>
-	* <li><B>remarks:</B> the name
+	* <li><B>remarks:</B> 名称
 	* @param defaultValue  Return the default value if name is null.
 	*/
 	@Column(table=M.TABLE, jdbcType=12, name=M.name$name, key=M.name$key, auto=M.name$auto, notnull=M.name$notnull, length=M.name$length, value=M.name$value, remarks=M.name$remarks) 
@@ -338,7 +338,7 @@ public class TestRecord extends com.tsc9526.monalisa.orm.model.Model<TestRecord>
 	* @Column
 	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record&nbsp;<B>name:</B> title
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 128<br>
-	* <li><B>remarks:</B> the title
+	* <li><B>remarks:</B> 标题
 	*/
 	@Column(table=M.TABLE, jdbcType=12, name=M.title$name, key=M.title$key, auto=M.title$auto, notnull=M.title$notnull, length=M.title$length, value=M.title$value, remarks=M.title$remarks) 
 	public String getTitle(){
@@ -350,7 +350,7 @@ public class TestRecord extends com.tsc9526.monalisa.orm.model.Model<TestRecord>
 	* @Column
 	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record&nbsp;<B>name:</B> title
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 128<br>
-	* <li><B>remarks:</B> the title
+	* <li><B>remarks:</B> 标题
 	* @param defaultValue  Return the default value if title is null.
 	*/
 	@Column(table=M.TABLE, jdbcType=12, name=M.title$name, key=M.title$key, auto=M.title$auto, notnull=M.title$notnull, length=M.title$length, value=M.title$value, remarks=M.title$remarks) 
@@ -369,7 +369,7 @@ public class TestRecord extends com.tsc9526.monalisa.orm.model.Model<TestRecord>
 	* @Column
 	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record&nbsp;<B>name:</B> ts_a
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 19<br>
-	* <li><B>remarks:</B> date time field
+	* <li><B>remarks:</B> 
 	*/
 	@Column(table=M.TABLE, jdbcType=93, name=M.tsA$name, key=M.tsA$key, auto=M.tsA$auto, notnull=M.tsA$notnull, length=M.tsA$length, value=M.tsA$value, remarks=M.tsA$remarks) 
 	public java.util.Date getTsA(){
@@ -381,7 +381,7 @@ public class TestRecord extends com.tsc9526.monalisa.orm.model.Model<TestRecord>
 	* @Column
 	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record&nbsp;<B>name:</B> ts_a
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 19<br>
-	* <li><B>remarks:</B> date time field
+	* <li><B>remarks:</B> 
 	* @param defaultValue  Return the default value if tsA is null.
 	*/
 	@Column(table=M.TABLE, jdbcType=93, name=M.tsA$name, key=M.tsA$key, auto=M.tsA$auto, notnull=M.tsA$notnull, length=M.tsA$length, value=M.tsA$value, remarks=M.tsA$remarks) 
@@ -700,7 +700,7 @@ public class TestRecord extends com.tsc9526.monalisa.orm.model.Model<TestRecord>
 		* @Column
 		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record&nbsp;<B>name:</B> record_id &nbsp;[<font color=red>KEY</font>|<font color=red>AUTO</font>|<font color=red>NOTNULL</font>]
 		* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 10<br>
-		* <li><B>remarks:</B> primary key
+		* <li><B>remarks:</B> 唯一主键
 		*/
 		@Column(table=M.TABLE, jdbcType=4, name=M.recordId$name, key=M.recordId$key, auto=M.recordId$auto, notnull=M.recordId$notnull, length=M.recordId$length, value=M.recordId$value, remarks=M.recordId$remarks)
 		public com.tsc9526.monalisa.orm.criteria.Field.FieldInteger<Criteria> recordId = new com.tsc9526.monalisa.orm.criteria.Field.FieldInteger<Criteria>("record_id", this);
@@ -709,7 +709,7 @@ public class TestRecord extends com.tsc9526.monalisa.orm.model.Model<TestRecord>
 		* @Column
 		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record&nbsp;<B>name:</B> name &nbsp;[<font color=red>NOTNULL</font>]
 		* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 128 &nbsp;<B>value:</B> N0001<br>
-		* <li><B>remarks:</B> the name
+		* <li><B>remarks:</B> 名称
 		*/
 		@Column(table=M.TABLE, jdbcType=12, name=M.name$name, key=M.name$key, auto=M.name$auto, notnull=M.name$notnull, length=M.name$length, value=M.name$value, remarks=M.name$remarks)
 		public com.tsc9526.monalisa.orm.criteria.Field.FieldString<Criteria> name = new com.tsc9526.monalisa.orm.criteria.Field.FieldString<Criteria>("name", this);
@@ -718,7 +718,7 @@ public class TestRecord extends com.tsc9526.monalisa.orm.model.Model<TestRecord>
 		* @Column
 		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record&nbsp;<B>name:</B> title
 		* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 128<br>
-		* <li><B>remarks:</B> the title
+		* <li><B>remarks:</B> 标题
 		*/
 		@Column(table=M.TABLE, jdbcType=12, name=M.title$name, key=M.title$key, auto=M.title$auto, notnull=M.title$notnull, length=M.title$length, value=M.title$value, remarks=M.title$remarks)
 		public com.tsc9526.monalisa.orm.criteria.Field.FieldString<Criteria> title = new com.tsc9526.monalisa.orm.criteria.Field.FieldString<Criteria>("title", this);
@@ -727,7 +727,7 @@ public class TestRecord extends com.tsc9526.monalisa.orm.model.Model<TestRecord>
 		* @Column
 		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record&nbsp;<B>name:</B> ts_a
 		* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 19<br>
-		* <li><B>remarks:</B> date time field
+		* <li><B>remarks:</B> 
 		*/
 		@Column(table=M.TABLE, jdbcType=93, name=M.tsA$name, key=M.tsA$key, auto=M.tsA$auto, notnull=M.tsA$notnull, length=M.tsA$length, value=M.tsA$value, remarks=M.tsA$remarks)
 		public com.tsc9526.monalisa.orm.criteria.Field<java.util.Date,Criteria> tsA = new com.tsc9526.monalisa.orm.criteria.Field<java.util.Date,Criteria>("ts_a", this, 93);		 
@@ -783,7 +783,7 @@ public class TestRecord extends com.tsc9526.monalisa.orm.model.Model<TestRecord>
 		* @Column
 		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record&nbsp;<B>name:</B> record_id &nbsp;[<font color=red>KEY</font>|<font color=red>AUTO</font>|<font color=red>NOTNULL</font>]
 		* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 10<br>
-		* <li><B>remarks:</B> primary key
+		* <li><B>remarks:</B> 唯一主键
 		*/
 		@Column(table=M.TABLE, jdbcType=4, name=M.recordId$name, key=M.recordId$key, auto=M.recordId$auto, notnull=M.recordId$notnull, length=M.recordId$length, value=M.recordId$value, remarks=M.recordId$remarks)
 		public final static String  recordId         = "record_id";
@@ -792,7 +792,7 @@ public class TestRecord extends com.tsc9526.monalisa.orm.model.Model<TestRecord>
 		* @Column
 		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record&nbsp;<B>name:</B> name &nbsp;[<font color=red>NOTNULL</font>]
 		* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 128 &nbsp;<B>value:</B> N0001<br>
-		* <li><B>remarks:</B> the name
+		* <li><B>remarks:</B> 名称
 		*/
 		@Column(table=M.TABLE, jdbcType=12, name=M.name$name, key=M.name$key, auto=M.name$auto, notnull=M.name$notnull, length=M.name$length, value=M.name$value, remarks=M.name$remarks)
 		public final static String  name         = "name";
@@ -801,7 +801,7 @@ public class TestRecord extends com.tsc9526.monalisa.orm.model.Model<TestRecord>
 		* @Column
 		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record&nbsp;<B>name:</B> title
 		* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 128<br>
-		* <li><B>remarks:</B> the title
+		* <li><B>remarks:</B> 标题
 		*/
 		@Column(table=M.TABLE, jdbcType=12, name=M.title$name, key=M.title$key, auto=M.title$auto, notnull=M.title$notnull, length=M.title$length, value=M.title$value, remarks=M.title$remarks)
 		public final static String  title         = "title";
@@ -810,7 +810,7 @@ public class TestRecord extends com.tsc9526.monalisa.orm.model.Model<TestRecord>
 		* @Column
 		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record&nbsp;<B>name:</B> ts_a
 		* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 19<br>
-		* <li><B>remarks:</B> date time field
+		* <li><B>remarks:</B> 
 		*/
 		@Column(table=M.TABLE, jdbcType=93, name=M.tsA$name, key=M.tsA$key, auto=M.tsA$auto, notnull=M.tsA$notnull, length=M.tsA$length, value=M.tsA$value, remarks=M.tsA$remarks)
 		public final static String  tsA         = "ts_a";
@@ -865,7 +865,7 @@ public class TestRecord extends com.tsc9526.monalisa.orm.model.Model<TestRecord>
 		public final static boolean recordId$key     = true;
 		public final static int     recordId$length  = 10;
 		public final static String  recordId$value   = "NULL";
-		public final static String  recordId$remarks = "primary key";
+		public final static String  recordId$remarks = "唯一主键";
 		public final static boolean recordId$auto    = true;
 		public final static boolean recordId$notnull = true;
 		
@@ -874,7 +874,7 @@ public class TestRecord extends com.tsc9526.monalisa.orm.model.Model<TestRecord>
 		public final static boolean name$key     = false;
 		public final static int     name$length  = 128;
 		public final static String  name$value   = "N0001";
-		public final static String  name$remarks = "the name";
+		public final static String  name$remarks = "名称";
 		public final static boolean name$auto    = false;
 		public final static boolean name$notnull = true;
 		
@@ -883,7 +883,7 @@ public class TestRecord extends com.tsc9526.monalisa.orm.model.Model<TestRecord>
 		public final static boolean title$key     = false;
 		public final static int     title$length  = 128;
 		public final static String  title$value   = "NULL";
-		public final static String  title$remarks = "the title";
+		public final static String  title$remarks = "标题";
 		public final static boolean title$auto    = false;
 		public final static boolean title$notnull = false;
 		
@@ -892,7 +892,7 @@ public class TestRecord extends com.tsc9526.monalisa.orm.model.Model<TestRecord>
 		public final static boolean tsA$key     = false;
 		public final static int     tsA$length  = 19;
 		public final static String  tsA$value   = "NULL";
-		public final static String  tsA$remarks = "date time field";
+		public final static String  tsA$remarks = "";
 		public final static boolean tsA$auto    = false;
 		public final static boolean tsA$notnull = false;
 		

@@ -26,7 +26,7 @@ import com.tsc9526.monalisa.orm.tools.helper.JsonHelper;
 
 
 /**
- * Page data. The first page: 1, the second is 2 ...
+ * Page data. The first page is 1, the second is 2 ...
  * 
  * @author zzg.zhou(11039850@qq.com)
  */
@@ -86,6 +86,7 @@ public class Page<T> implements Serializable {
 	 * Copy to new page, and transform the list data to target class
 	 * 
 	 * @param toClass the target class
+	 * @param <X> target class type
 	 * @return the new page object
 	 */
 	public <X> Page<X> as(Class<X> toClass){

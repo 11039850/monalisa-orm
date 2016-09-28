@@ -16,7 +16,9 @@
  *******************************************************************************************/
 package com.tsc9526.monalisa.orm.tools.helper;
 
+import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  * 
@@ -26,8 +28,22 @@ public class CaseInsensitiveMap<T> extends LinkedHashMap<String, T> {
 
 	private static final long serialVersionUID = -5859767087732654080L;
 
+	private transient Map<String,String> keys=new HashMap<String,String>();
+	
 	public T put(String key, T value) {
-		return super.put(convertKey(key), value);
+		if(key==null){
+			return super.put(key, value);
+		}else{
+			String lower=key.toLowerCase();
+			
+			String origin=getKeys().get(lower);
+			if(origin==null){
+				origin=key;
+				keys.put(lower, origin);
+			}
+			
+			return super.put(origin, value);
+		}
 	}
 
 	public T get(Object key) {
@@ -44,9 +60,27 @@ public class CaseInsensitiveMap<T> extends LinkedHashMap<String, T> {
 	 
 	protected String convertKey(Object key) {
 		if (key != null) {
-			return key.toString().toLowerCase();
+			String lower=key.toString().toLowerCase();
+			String origin=getKeys().get(lower);
+			if(origin==null){
+				origin=key.toString();
+			}
+			 
+			return origin;
 		} else {
 			return null;
 		}
+	}
+	
+	protected Map<String,String> getKeys(){
+		if(keys==null){
+			keys=new HashMap<String,String>();
+			for(String origin:keySet()){
+				if(origin!=null){
+					keys.put(origin.toLowerCase(), origin);
+				}
+			}
+		}
+		return keys;
 	}
 }

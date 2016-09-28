@@ -31,47 +31,45 @@ import net.sf.cglib.proxy.MethodProxy;
  * @author zzg.zhou(11039850@qq.com)
  */
 public class StatementEnhancer {
-	
+
 	@SuppressWarnings("rawtypes")
-	public static Class<?> createClass(Class<?> clazz){
+	public static Class<?> createClass(Class<?> clazz) {
 		if (Statement.class.isAssignableFrom(clazz) && clazz.isInterface() == false) {
 			Enhancer enhancer = new Enhancer() {
 				protected void filterConstructors(Class sc, List constructors) {
-					// don't filter, so that even classes without visible constructors will work
+					// don't filter, so that even classes without visible
+					// constructors will work
 				}
 			};
-	
+
 			enhancer.setSuperclass(clazz);
-			enhancer.setInterfaces(new Class<?>[]{Statement.class}); 
-			
-			enhancer.setCallbackTypes(new Class[] {Interceptor.class} ); 
-	        enhancer.setCallbackFilter(new InterceptorFilter()); 
-	         
-	        return enhancer.createClass();
-		}else{
+			enhancer.setInterfaces(new Class<?>[] { Statement.class });
+
+			enhancer.setCallbackTypes(new Class[] { Interceptor.class });
+			enhancer.setCallbackFilter(new InterceptorFilter());
+
+			return enhancer.createClass();
+		} else {
 			return clazz;
 		}
 	}
-	
- 
-    public static class Interceptor implements MethodInterceptor { 
-        
-         
-        public Object intercept(Object enhanced, Method method, Object[] args, MethodProxy fastProxy) throws Throwable { 
-        	System.err.println("intercept Object");
-        	return method.invoke(enhanced, args); 
-        } 
-    } 
- 
-    static class InterceptorFilter implements CallbackFilter { 
-       
-        public InterceptorFilter() { 
-          
-        } 
- 
-        public int accept(Method method) { 
-          return 0; 
-        } 
-    } 
-     
+
+	public static class Interceptor implements MethodInterceptor {
+		public Object intercept(Object enhanced, Method method, Object[] args, MethodProxy fastProxy) throws Throwable {
+			System.err.println("intercept Object");
+			return method.invoke(enhanced, args);
+		}
+	}
+
+	static class InterceptorFilter implements CallbackFilter {
+
+		public InterceptorFilter() {
+
+		}
+
+		public int accept(Method method) {
+			return 0;
+		}
+	}
+
 }

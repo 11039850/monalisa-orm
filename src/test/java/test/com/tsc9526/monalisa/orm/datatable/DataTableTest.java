@@ -1,4 +1,4 @@
-package test.com.tsc9526.monalisa.orm.query.datatable;
+package test.com.tsc9526.monalisa.orm.datatable;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;

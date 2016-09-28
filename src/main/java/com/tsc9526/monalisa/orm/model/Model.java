@@ -168,7 +168,7 @@ public abstract class Model<T extends Model> implements Serializable {
 	 *            
 	 * @return this
 	 * 
-	 * @see com.tsc9526.monalisa.orm.tools.helper.ModelHelper#parse(Model,Object,String ...)
+	 * @see com.tsc9526.monalisa.orm.tools.helper.ModelHelper#parse(Model, Object, String...)
 	 */
 	public T parse(Object dataObject, String... mappings) {
 		ModelHelper.parse(this, dataObject, mappings);

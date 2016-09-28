@@ -1,4 +1,4 @@
-/***CREATE TABLE: test_logyyyymm_ :: test_logyyyymm_201601***/
+/***CREATE TABLE: test_logyyyymm_ :: test_logyyyymm_201603***/
 CREATE TABLE IF NOT EXISTS `#{table}`(
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'primary key',
   `log_time` datetime NOT NULL,
@@ -10,6 +10,6 @@ CREATE TABLE IF NOT EXISTS `#{table}`(
   `update_time` datetime DEFAULT NULL,
   `update_by` varchar(64) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=100 DEFAULT CHARSET=utf8
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8
 
 

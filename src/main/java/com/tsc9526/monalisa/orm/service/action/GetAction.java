@@ -20,11 +20,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import com.tsc9526.monalisa.orm.Query;
 import com.tsc9526.monalisa.orm.annotation.Column;
+import com.tsc9526.monalisa.orm.datasource.DbProp;
 import com.tsc9526.monalisa.orm.datatable.DataMap;
 import com.tsc9526.monalisa.orm.datatable.DataTable;
 import com.tsc9526.monalisa.orm.datatable.Page;
@@ -38,18 +36,18 @@ import com.tsc9526.monalisa.orm.tools.helper.ClassHelper.FGS;
  * @author zzg.zhou(11039850@qq.com)
  */
 public class GetAction extends Action{
- 
-	public GetAction(HttpServletRequest req, HttpServletResponse resp) {
-		super(req, resp);
+  
+	public GetAction(ActionArgs args) {
+		super(args);
 	}
 
 	public Response getResponse() {
-		if(table==null){
+		if(args.getTable()==null){
 			return getTables();
 		}else{
-			if(this.singlePK!=null){
+			if(args.getSinglePK()!=null){
 				return getTableRowBySinglePK();
-			}else if(this.multiKeys!=null){
+			}else if(args.getMultiKeys()!=null){
 				return getTableRowByMultiKeys();
 			}else{
 				return getTableRows();
@@ -70,18 +68,19 @@ public class GetAction extends Action{
 	}
 	 
 	public Response getTableRows(){
-		Query query=db.createQuery();
+		Query query=createQuery();
 		
 		query.add("SELECT ");
 		
-		List<String> ics=includeColumns;
-		if(ics.size()==0 && excludeColumns.size()>0){
+		List<String> ics=args.getIncludeColumns();
+		List<String> exs=args.getExcludeColumns();
+		if(ics.size()==0 && exs.size()>0){
 			Set<String> es=new HashSet<String>();
-			for(String n:excludeColumns){
+			for(String n:exs){
 				es.add(Dialect.getRealname(n).toLowerCase());
 			}
 			
-			Record model=db.createRecord(table);
+			Record model=createRecord();
 			
 			for(FGS fgs:model.fields()){
 				Column c=fgs.getAnnotation(Column.class);
@@ -105,8 +104,9 @@ public class GetAction extends Action{
 		}else{
 			query.add("*");
 		}
-		query.add(" FROM "+this.table);
+		query.add(" FROM "+args.getTable());
 		
+		List<String[]> filters=args.getFilters();
 		if(filters.size()>0){
 			query.add(" WHERE ");
 			for(int i=0;i<filters.size();i++){
@@ -118,6 +118,7 @@ public class GetAction extends Action{
 			}
 		}
 		
+		List<String[]> orderBy=args.getOrderBy();
 		if(orderBy.size()>0){
 			query.add(" ORDER BY ");
 			for(int i=0;i<orderBy.size();i++){
@@ -129,10 +130,18 @@ public class GetAction extends Action{
 			}
 		}
 		
-		if(paging){
+		int limit =args.getLimit();
+		int offset=args.getOffset();
+		
+		int maxLimit=DbProp.PROP_TABLE_DBS_MAX_ROWS.getIntValue(db, 10000);
+		if(limit>maxLimit){
+			return new Response(400, "Error parameter: limit = "+limit+", it is too bigger than the max value: "+maxLimit+". (OR increase the max value: \"DB.cfg.dbs.max.rows\")");
+		}
+		
+		if(args.isPaging()){
 			Page<DataMap> r=query.getPage(limit,offset);
-			resp.setHeader("X-Total-Count", ""+r.getTotalRow());
-			resp.setHeader("X-Total-Page" , ""+r.getTotalPage());
+			args.getResp().setHeader("X-Total-Count", ""+r.getTotalRow());
+			args.getResp().setHeader("X-Total-Page" , ""+r.getTotalPage());
 			
 			return new Response(r.getList());
 		}else{
@@ -144,27 +153,28 @@ public class GetAction extends Action{
 	}
 	 
 	public Response getTableRowBySinglePK(){
-		Record model=db.createRecord(table);
+		Record model=createRecord();
 		List<FGS> pks=model.pkFields();
 		if(pks.size()==1){
-			for(String c:excludeColumns){
+			for(String c:args.getExcludeColumns()){
 				model.exclude(c);
 			}
 	
-			for(String c:includeColumns){
+			for(String c:args.getIncludeColumns()){
 				model.include(c);
 			}
 			
-			model.set(pks.get(0).getFieldName(),singlePK).load();
+			model.set(pks.get(0).getFieldName(),args.getSinglePK()).load();
 			if(model.entity()){
 				return new Response(model);
 			}else{
-				return new Response(404,"Primary key not found: /"+database+"/"+table+"/"+singlePK);
+				return new Response(404,args.getActionName()
+						+" error, primary key not found: /"+args.getDatabase()+"/"+args.getTable()+"/"+args.getSinglePK());
 			}
 		}else{
 			StringBuilder sb=new StringBuilder();
-			sb.append("Table: "+table+" primary key has more than one columns");
-			sb.append(", change the request's path to: /"+database+"/"+table);
+			sb.append(args.getActionName()+" error, table: "+args.getTable()+" primary key has more than one columns");
+			sb.append(", change the request's path to: /"+args.getDatabase()+"/"+args.getTable());
 			for(FGS fgs:pks){
 				sb.append("/").append(fgs.getFieldName()).append("=xxx");
 			}
@@ -173,22 +183,22 @@ public class GetAction extends Action{
 	}
 	
 	public Response getTableRowByMultiKeys(){
-		Record model=db.createRecord(table);
+		Record model=createRecord();
 		
-		for(String c:excludeColumns){
+		for(String c:args.getExcludeColumns()){
 			model.exclude(c);
 		}
 
-		for(String c:includeColumns){
+		for(String c:args.getIncludeColumns()){
 			model.include(c);
 		}
 		
 		Record.Criteria c=model.WHERE();
-		for(String[] nv:multiKeys){
+		for(String[] nv:args.getMultiKeys()){
 			if(model.field(nv[0])!=null){
 				c.field(nv[0]).eq(nv[1]);
 			}else{
-				return new Response(400,"Column not found: "+nv[0]+" in the table: "+table);
+				return new Response(400,args.getActionName()+" error, column not found: "+nv[0]+" in the table: "+args.getTable());
 			}
 		}
 		
@@ -196,7 +206,7 @@ public class GetAction extends Action{
 		if(x!=null){
 			return new Response(x);
 		}else{
-			return new Response(404,"Multi key not found: "+requestPath);
+			return new Response(404,args.getActionName()+" error, multi keys not found: "+args.getRequestPath());
 		}
 	}
 

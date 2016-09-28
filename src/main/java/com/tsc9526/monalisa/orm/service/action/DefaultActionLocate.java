@@ -16,10 +16,8 @@
  *******************************************************************************************/
 package com.tsc9526.monalisa.orm.service.action;
 
-import com.tsc9526.monalisa.orm.Query;
-import com.tsc9526.monalisa.orm.datasource.DBConfig;
-import com.tsc9526.monalisa.orm.model.Record;
-import com.tsc9526.monalisa.orm.service.DBS;
+import java.lang.reflect.Method;
+
 import com.tsc9526.monalisa.orm.service.Response;
 import com.tsc9526.monalisa.orm.tools.logger.Logger;
 
@@ -27,31 +25,41 @@ import com.tsc9526.monalisa.orm.tools.logger.Logger;
  * 
  * @author zzg.zhou(11039850@qq.com)
  */
-public abstract class Action {
-	protected Logger logger=Logger.getLogger(this.getClass());
-	 
-	protected ActionArgs args;
-	protected DBConfig   db;
+public class DefaultActionLocate implements ActionLocate{
+	static Logger logger=Logger.getLogger(DefaultActionLocate.class);
 	
-	public Action(ActionArgs args){
-		this.args=args;
-		
-		if(args!=null){
-			DBS dbs=DBS.getDB(args.getDatabase());
-			if(dbs!=null){
-				db=dbs.getDB();
-			}
+	public Action getAction(ActionArgs args) {
+		String m=args.getActionName();
+		try{
+			String name=m.substring(0,1).toUpperCase()+m.substring(1).toLowerCase();
+			name="on"+name+"Action";
+			
+			Method call=this.getClass().getMethod(name, ActionArgs.class);
+			call.setAccessible(true);
+			return (Action)call.invoke(this, args);
+		}catch(NoSuchMethodException e){
+			return new ResponseAction(new Response(403, "Invalid request method: "+m));
+		}catch(Exception e){
+			throw new RuntimeException(e.getMessage(),e);
 		}
 	}
-	 
-	protected Query createQuery(){
-		return db.createQuery();
-	}
+ 	
 	
-	public Record createRecord(){
-		return db.createRecord(args.getTable());
+	public static class GetPutDeletePostAction extends DefaultActionLocate{
+		public Action onGetAction(ActionArgs args){
+			return new GetAction(args);
+		}
+		
+		public Action onDeleteAction(ActionArgs args){
+			return new DeleteAction(args);
+		}
+		
+		public Action onPutAction(ActionArgs args){
+			return new PutAction(args);
+		}
+		
+		public Action onPostAction(ActionArgs args){
+			return new PostAction(args);
+		}
 	}
-	 
-	public abstract Response getResponse();
-	
 }

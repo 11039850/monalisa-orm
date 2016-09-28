@@ -20,6 +20,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -43,7 +44,12 @@ public class Response implements Serializable{
 		JsonElement jd=json.get("data");
 		if(jd!=null && !jd.isJsonNull()){
 			if(jd.isJsonArray()){
-				r.setData(JsonHelper.parseToDataTable(jd.getAsJsonArray()));
+				JsonArray array=jd.getAsJsonArray();
+				if(array.size()>0 && array.get(0).isJsonObject()){
+					r.setData(JsonHelper.parseToDataTable(array));
+				}else{
+					r.setData(jd);
+				}
 			}else if(jd.isJsonObject()){
 				r.setData(JsonHelper.parseToDataMap(jd.getAsJsonObject()));
 			}else{
@@ -82,6 +88,8 @@ public class Response implements Serializable{
 	 * 200 - OK <br>
 	 * 4xx - Request error <br>
 	 * 5xx - Server internal error<br>
+	 * 
+	 * @return http status code.
 	 */
 	public int getStatus() {
 		return status;
@@ -106,7 +114,7 @@ public class Response implements Serializable{
 	}
    
 	/**
-	 * @parameter <T> the data type
+	 * @param <T> the data type
 	 * @return Response data body
 	 */
 	@SuppressWarnings("unchecked")

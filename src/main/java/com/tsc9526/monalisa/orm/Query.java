@@ -82,7 +82,7 @@ public class Query {
 	 * Create a database query dynamically
 	 * 
 	 * @param theQueryClass Database query class which can be loaded dynamically.
-	 * 		
+	 * @param <T> the class type		
 	 * @return create new instance.
 	 */
 	public static <T> T create(Class<T> theQueryClass){

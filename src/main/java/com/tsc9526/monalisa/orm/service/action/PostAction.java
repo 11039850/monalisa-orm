@@ -16,24 +16,99 @@
  *******************************************************************************************/
 package com.tsc9526.monalisa.orm.service.action;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 
+import com.tsc9526.monalisa.orm.annotation.Column;
+import com.tsc9526.monalisa.orm.datatable.DataMap;
+import com.tsc9526.monalisa.orm.datatable.DataTable;
+import com.tsc9526.monalisa.orm.model.Model;
+import com.tsc9526.monalisa.orm.model.Record;
 import com.tsc9526.monalisa.orm.service.Response;
+import com.tsc9526.monalisa.orm.tools.helper.ClassHelper.FGS;
+import com.tsc9526.monalisa.orm.tools.helper.ModelHelper;
 
 /**
  * 
  * @author zzg.zhou(11039850@qq.com)
  */
-public class PostAction extends Action{
- 
-	public PostAction(HttpServletRequest req, HttpServletResponse resp) {
-		super(req, resp);
-	}
-
-	public Response getResponse() {
-		 
+public class PostAction extends PutAction{
+  
+	public PostAction(ActionArgs args) {
+		super(args);
+	} 
+	
+	public Response postTableRows(){
+		Record tpl=createRecord();
+		
+		List<Model<?>> models=ModelHelper.ServletRequestModelParser.parseModels(tpl, args.getReq());
+		if(models.size()==1){
+		
+		
+		}else if(models.size()>1){
+			
+		}else{
+			return postTableNoData();
+		}
+		
+		
 		return null;
 	}
-
+	
+	public Response postTableRow(Model<?> m){
+		int n=m.save();
+		 
+		Response r=new Response();
+		r.setMessage("Insert table: "+args.getTable()+" ok: "+n);
+		
+		DataMap map=new DataMap();
+		map.put("rows",n);
+		
+		DataMap entity=new DataMap();
+		FGS fgs=m.autoField();
+		if(fgs!=null){
+			Column c=fgs.getAnnotation(Column.class);
+			entity.put(c.name(), fgs.getObject(m));
+			map.put("entity", entity);
+		}
+		
+		r.setData(map);
+		
+		return r;
+	}
+	
+	public Response postTableRows(List<Model<?>> models){
+		int[] rs= db.batchInsert(models);
+		
+		int n=0;
+		for(int x:rs){
+			n+=x;
+		}
+		
+		FGS fgs=models.get(0).autoField();
+		Column c=fgs==null?null:fgs.getAnnotation(Column.class);
+		
+		Response r=new Response();
+		r.setMessage("Insert table: "+args.getTable()+" ok: "+n);
+		
+		DataTable<DataMap> data=new DataTable<DataMap>();
+		for(int i=0;i<rs.length;i++){
+			DataMap map=new DataMap();
+			map.put("rows",rs[i]);
+			 
+			DataMap entity=new DataMap();
+			if(fgs!=null){
+				entity.put(c.name(), fgs.getObject(models.get(i)));
+				
+				map.put("entity", entity);
+			}
+			
+			r.setData(data);
+		}
+		
+		return r;
+	}
+	
+	public Response postTableNoData(){
+		return new Response(400, "No post data found for table: "+args.getTable());
+	}
 }

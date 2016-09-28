@@ -16,8 +16,16 @@
  *******************************************************************************************/
 package com.tsc9526.monalisa.orm.service;
 
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.List;
+
 import com.tsc9526.monalisa.orm.datasource.DBConfig;
 import com.tsc9526.monalisa.orm.datatable.DataMap;
+import com.tsc9526.monalisa.orm.dialect.Dialect;
+import com.tsc9526.monalisa.orm.service.action.ActionArgs;
+import com.tsc9526.monalisa.orm.service.action.ActionLocate;
+import com.tsc9526.monalisa.orm.service.action.DefaultActionLocate;
 import com.tsc9526.monalisa.orm.tools.logger.Logger;
 
 /**
@@ -25,18 +33,87 @@ import com.tsc9526.monalisa.orm.tools.logger.Logger;
  * @author zzg.zhou(11039850@qq.com)
  */
 public class DBS {
-	static Logger logger=Logger.getLogger(DBS.class);
-	
-	private static DataMap dbs=new DataMap();
-	
-	public static void add(String dbName,DBConfig db){
-		if(!dbs.containsKey(dbName)){
-			logger.info("Add database service: /"+dbName+", dbkey: "+db.getKey());
-			dbs.put(dbName,db);
+	static Logger logger = Logger.getLogger(DBS.class);
+
+	private static DataMap dbs = new DataMap();
+
+	public static void add(String dbName, DBConfig db) {
+		add(dbName, db, new DefaultActionLocate.GetPutDeletePostAction());
+	}
+
+	public static void add(String dbName, DBConfig db, ActionLocate locate) {
+		dbName=Dialect.getRealname(dbName);
+		
+		if (!dbs.containsKey(dbName)) {
+			DBS s=new DBS(dbName, db, locate);
+			
+			logger.info("Add DB service" + s.methods + ": /" + dbName + ", dbkey: " + db.getKey());
+			dbs.put(dbName, s);
+		} else {
+			logger.info("Database service existed: /" + dbName + ", dbkey: " + db.getKey());
 		}
 	}
 
-	public static DBConfig getDB(String dbName){
-		return (DBConfig)dbs.get(dbName);
+	public static void remove(String dbName) {
+		dbName=Dialect.getRealname(dbName);
+		
+		DBS s=(DBS)dbs.remove(dbName);
+		if(s!=null){
+			logger.info("Removed DB service" + s.methods + ": /" + dbName);
+		}
 	}
+
+	public static void clear() {
+		dbs.clear();
+	}
+
+	public static DBS getDB(String dbName) {
+		dbName=Dialect.getRealname(dbName);
+		
+		return (DBS) dbs.get(dbName);
+	}
+
+	private String dbName;
+
+	private DBConfig db;
+
+	private ActionLocate locate;
+
+	private List<String> methods = new ArrayList<String>();
+
+	private DBS(String dbName, DBConfig db, ActionLocate locate) {
+		this.dbName = dbName;
+
+		this.db = db;
+
+		this.locate = locate;
+		
+		getMethods();
+	}
+
+	private void getMethods() {
+		for (Method m : locate.getClass().getMethods()) {
+			String name = m.getName();
+			if (name.startsWith("on") && name.endsWith("Action")) {
+				name = name.substring(2, name.length() - 6);
+
+				if (m.getParameterCount() == 1 && m.getParameterTypes()[0] == ActionArgs.class) {
+					methods.add(name.toUpperCase());
+				}
+			}
+		}
+	}
+
+	public DBConfig getDB() {
+		return this.db;
+	}
+
+	public ActionLocate getLocate() {
+		return locate;
+	}
+
+	public String getDbName() {
+		return dbName;
+	}
+
 }

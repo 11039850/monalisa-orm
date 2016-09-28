@@ -14,7 +14,7 @@
  *	You should have received a copy of the GNU Lesser General Public License
  *	along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************************/
-package test.com.tsc9526.monalisa.orm.query.datatable;
+package test.com.tsc9526.monalisa.orm.datatable;
 
 import org.testng.Assert;
 import org.testng.annotations.Test;

@@ -14,15 +14,13 @@
  *	You should have received a copy of the GNU Lesser General Public License
  *	along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************************/
-package com.tsc9526.monalisa.orm.jdbc;
+package com.tsc9526.monalisa.orm.service.action;
 
-import javax.sql.DataSource;
- 
+
 /**
  * 
  * @author zzg.zhou(11039850@qq.com)
  */
-public abstract class JDBCWrapper implements DataSource {
- 
-
+public interface ActionLocate {
+	Action getAction(ActionArgs args);
 }

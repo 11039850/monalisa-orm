@@ -34,7 +34,7 @@ import com.tsc9526.monalisa.orm.service.servlet.MonalisaServlet;
  */
 public abstract class AbstractActionTest {
 	@BeforeClass
-	public void init(){
+	public void setup(){
 		//MysqlDB.DB.getCfg().setProperty(DbProp.PROP_DB_SQL_DEBUG.getFullKey(), "true");
 		DBS.add("db1",MysqlDB.DB);
 		
@@ -51,6 +51,10 @@ public abstract class AbstractActionTest {
 		int p=name.indexOf("Action");
 		String method=name.substring(0,p).toUpperCase();
 		
+		return createRequest(method, requestURI);
+	}
+	
+	protected MockHttpServletRequest createRequest(String method,String requestURI){
 		MockHttpServletRequest       req=new MockHttpServletRequest(method,requestURI);
 			
 		return req;
@@ -62,7 +66,7 @@ public abstract class AbstractActionTest {
 		MonalisaServlet ms=new MonalisaServlet();
 		ms.service(req, resp);
 		 
-		Assert.assertEquals("application/json;charset=utf-8", resp.getContentType());
+		Assert.assertEquals(resp.getContentType(),"application/json;charset=utf-8");
 		
 		String body=resp.getContentAsString();
 		 

@@ -43,16 +43,16 @@ public class StatementEnhancerTest {
 	public void testCreateStatement() throws Exception {
 		String sql = "SELECT * FROM _THIS_TABLE";
 		 
-		Class<?> proxyClazz = StatementEnhancer.createClass(SimpleStatement.class);
-		SimpleStatement s1=(SimpleStatement)proxyClazz.newInstance();
-		((Factory) s1).setCallbacks(new Callback[] { new StatementEnhancer.Interceptor() }); 
-		ResultSet rs=s1.executeQuery(sql); 
-		System.out.println(rs + ":" + proxyClazz);
-		
-		
-		SimpleStatement s2=(SimpleStatement)proxyClazz.getConstructor(String.class).newInstance("zzg");
-		
-		System.out.println(s2 + ":" + proxyClazz);
+//		Class<?> proxyClazz = StatementEnhancer.createClass(SimpleStatement.class);
+//		SimpleStatement s1=(SimpleStatement)proxyClazz.newInstance();
+//		((Factory) s1).setCallbacks(new Callback[] { new StatementEnhancer.Interceptor() }); 
+//		ResultSet rs=s1.executeQuery(sql); 
+//		System.out.println(rs + ":" + proxyClazz);
+//		
+//		
+//		SimpleStatement s2=(SimpleStatement)proxyClazz.getConstructor(String.class).newInstance("zzg");
+//		
+//		System.out.println(s2 + ":" + proxyClazz);
 	}
 
 	public static class SimpleStatement implements Statement {

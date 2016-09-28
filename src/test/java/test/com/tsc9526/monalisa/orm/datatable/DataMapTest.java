@@ -14,7 +14,7 @@
  *	You should have received a copy of the GNU Lesser General Public License
  *	along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************************/
-package test.com.tsc9526.monalisa.orm.query.datatable;
+package test.com.tsc9526.monalisa.orm.datatable;
 
 import java.text.SimpleDateFormat;
 import java.util.Map;
@@ -98,4 +98,22 @@ public class DataMapTest {
 		Assert.assertEquals(map.get("Abc"),"aBC");
 	}
 
+	
+	public void testKeySensitive(){
+		DataMap row=new DataMap();
+		row.put("AbC","aBC");
+		
+		String key=row.keySet().iterator().next();
+		Assert.assertEquals(key, "AbC");
+	}
+	
+	public void testNull(){
+		DataMap row=new DataMap();
+		row.put(null,"aBC");
+		
+		Assert.assertEquals(row.get(null),"aBC");
+		
+		String key=row.keySet().iterator().next();
+		Assert.assertEquals(key, null);
+	}
 }
