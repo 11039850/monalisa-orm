@@ -51,7 +51,26 @@ public abstract class Action {
 	public Record createRecord(){
 		return db.createRecord(args.getTable());
 	}
-	 
+	
+	/**
+	 * 
+	 * @return null if verify is OK, otherwise return the response with some error message
+	 */
+	public Response verify(){
+		return null;
+	}
+	
+	/**
+	 * default column prefix  is: "~the_table_name."
+	 * 
+	 * @param table: name of the table
+	 * 
+	 * @return column name prefix
+	 */
+	protected String getTableMapping(String table){
+		return "~"+table+".";
+	}
+	
 	public abstract Response getResponse();
 	
 }

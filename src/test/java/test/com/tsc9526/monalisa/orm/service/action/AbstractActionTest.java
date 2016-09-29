@@ -36,6 +36,8 @@ public abstract class AbstractActionTest {
 	@BeforeClass
 	public void setup(){
 		//MysqlDB.DB.getCfg().setProperty(DbProp.PROP_DB_SQL_DEBUG.getFullKey(), "true");
+		System.out.println("Reinit table: test_record_v2");
+		DBS.remove("db1");
 		DBS.add("db1",MysqlDB.DB);
 		
 		//clear data
@@ -46,12 +48,10 @@ public abstract class AbstractActionTest {
 		}
 	}
 	
+	protected abstract String getRequestMethod();
+	
 	protected MockHttpServletRequest createRequest(String requestURI){
-		String name=this.getClass().getSimpleName();
-		int p=name.indexOf("Action");
-		String method=name.substring(0,p).toUpperCase();
-		
-		return createRequest(method, requestURI);
+		return createRequest(getRequestMethod(),requestURI);
 	}
 	
 	protected MockHttpServletRequest createRequest(String method,String requestURI){
@@ -70,6 +70,14 @@ public abstract class AbstractActionTest {
 		
 		String body=resp.getContentAsString();
 		 
-		return Response.fromJson(body); 
+		Response r= Response.fromJson(body); 
+		
+		if("true".equalsIgnoreCase( req.getParameter("paging")) && r.getStatus()==200){
+			Assert.assertTrue(Integer.parseInt( r.getMessage() )>=0);
+			Assert.assertEquals( r.getMessage(), resp.getHeader("X-Total-Count"));
+		}
+		
+		
+		return r;
 	}
 }

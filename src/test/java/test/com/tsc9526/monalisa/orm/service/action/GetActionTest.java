@@ -31,6 +31,9 @@ import com.tsc9526.monalisa.orm.service.Response;
 @Test
 public class GetActionTest extends AbstractActionTest {
 	
+	protected String getRequestMethod(){
+		return "GET";
+	}
 	
 	public void testGetDb()throws Exception{
 		MockHttpServletRequest       req=createRequest("/db1");
@@ -66,6 +69,7 @@ public class GetActionTest extends AbstractActionTest {
 	public void testGetDbTable1()throws Exception{
 		MockHttpServletRequest       req=createRequest("/db1/test_record_v2");
 		req.addParameter("-columns","record_id,name");
+		req.addParameter("paging","true");
 		
 		Response resp=getRespone(req);
 		Assert.assertEquals(resp.getStatus(),200);

@@ -24,6 +24,8 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.tsc9526.monalisa.orm.datatable.DataMap;
+import com.tsc9526.monalisa.orm.datatable.DataTable;
 import com.tsc9526.monalisa.orm.model.Model;
 import com.tsc9526.monalisa.orm.tools.helper.JsonHelper;
 
@@ -32,7 +34,42 @@ import com.tsc9526.monalisa.orm.tools.helper.JsonHelper;
  */
 public class Response implements Serializable{	 
 	private static final long serialVersionUID = 5042617802808490420L;
+	
+	/**
+	 * HTTP status: 200-OK
+	 */
+	public final static int OK                    = 200;
+	
+	/**
+	 * HTTP status: 304-Not Modified
+	 */
+	public final static int RESOURCE_NOT_MODIFIED = 304;	
+	
+	/**
+	 * HTTP status: 400-Bad Request 
+	 */
+	public final static int REQUEST_BAD_PARAMETER = 400;
+	
+	/**
+	 * HTTP status: 401-Unauthorized
+	 */
+	public final static int REQUEST_UNAUTHORIZED  = 401;
+	
+	/**
+	 * HTTP status: 403-Access Forbidden
+	 */
+	public final static int REQUEST_FORBIDDEN     = 403;
+	
+	/**
+	 * HTTP status: 404-Resource Not found
+	 */
+	public final static int REQUEST_NOT_FOUND     = 404;
  	
+	/**
+	 * HTTP status: 500-Internal Server Error 
+	 */
+	public final static int ERROR_SERVER_ERROR    = 500;
+	
 	public static Response fromJson(String jsonString){
 		JsonObject json=new JsonParser().parse(jsonString).getAsJsonObject();
 		
@@ -47,6 +84,8 @@ public class Response implements Serializable{
 				JsonArray array=jd.getAsJsonArray();
 				if(array.size()>0 && array.get(0).isJsonObject()){
 					r.setData(JsonHelper.parseToDataTable(array));
+				}else if(array.size()==0){
+					r.setData(new DataTable<DataMap>());
 				}else{
 					r.setData(jd);
 				}
@@ -59,7 +98,7 @@ public class Response implements Serializable{
 		return r;
 	}
 	
-	private int status=200;
+	private int status=OK;
 	
 	private String message="OK";
 	 
@@ -68,7 +107,7 @@ public class Response implements Serializable{
 	private Object data;
 	 
 	public Response(){
-		this(200,"OK");
+		this(OK,"OK");
 	}
 	
 	public Response(int status,String message){
@@ -78,7 +117,7 @@ public class Response implements Serializable{
 	
 	
 	public Response(Object data){
-		this(200,"OK");
+		this(OK,"OK");
 		setData(data);
 	}
 	 

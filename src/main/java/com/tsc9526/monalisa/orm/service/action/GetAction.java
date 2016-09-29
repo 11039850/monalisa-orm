@@ -42,19 +42,115 @@ public class GetAction extends Action{
 	}
 
 	public Response getResponse() {
-		if(args.getTable()==null){
-			return getTables();
+		if(args.getTables()!=null){
+			return getMultiTableRows();
 		}else{
-			if(args.getSinglePK()!=null){
-				return getTableRowBySinglePK();
-			}else if(args.getMultiKeys()!=null){
-				return getTableRowByMultiKeys();
+			if(args.getTable()==null){
+				return getTables();
 			}else{
-				return getTableRows();
+				if(args.getSinglePK()!=null){
+					return getTableRowBySinglePK();
+				}else if(args.getMultiKeys()!=null){
+					return getTableRowByMultiKeys();
+				}else{
+					return getTableRows();
+				}
 			}
 		}
 	}
+	
 
+	/**
+	 * Get data using query multi-tables
+	 * @return rows
+	 */
+	public Response getMultiTableRows(){
+		Query query=createQuery();
+		
+		query.add("SELECT ");
+		List<String> ics=args.getIncludeColumns();
+		if(ics.size()>0){
+			for(int i=0;i<ics.size();i++){
+				String c=ics.get(i);
+				if(i>0){
+					query.add(", "+c);
+				}else{
+					query.add( c);
+				}
+			}
+		}else{
+			query.add("*");
+		}
+		
+		query.add(" FROM ");
+		String[] tables=args.getTables();
+		for(int i=0;i<tables.length;i++){
+			if(i>0){
+				query.add(", "+tables[i]);
+			}else{
+				query.add( tables[i] );
+			}
+		}
+		
+		query.add(" WHERE ");
+		String[] joins =args.getJoins();
+		if(joins!=null){
+			for(int i=0;i<joins.length;i++){
+				if(i>0){
+					query.add(" AND "+joins[i]);
+				}else{
+					query.add( joins[i] );
+				}
+			}
+		}else{
+			//TODO: find table joins
+			query.add("1=1 ");
+		}
+		
+		List<String[]> filters=args.getFilters();
+		for(int i=0;i<filters.size();i++){
+			String[] fs=filters.get(i);
+			query.add(" AND "+fs[0]+" "+fs[1]+" ?",fs[2]);
+		}
+		
+		List<String[]> orderBy=args.getOrderBy();
+		if(orderBy.size()>0){
+			query.add(" ORDER BY ");
+			for(int i=0;i<orderBy.size();i++){
+				String[] fs=orderBy.get(i);
+				if(i>0){
+					query.add(", ");
+				}
+				query.add(fs[0]+" "+fs[1]);
+			}
+		}
+		
+		int limit =args.getLimit();
+		int offset=args.getOffset();
+		
+		int maxLimit=DbProp.PROP_TABLE_DBS_MAX_ROWS.getIntValue(db, 10000);
+		if(limit>maxLimit){
+			return new Response(Response.REQUEST_BAD_PARAMETER, "Error parameter: limit = "+limit+", it is too bigger than the max value: "+maxLimit+". (OR increase the max value: \"DB.cfg.dbs.max.rows\")");
+		}
+		
+		if(args.isPaging()){
+			Page<DataMap> r=query.getPage(limit,offset);
+			args.getResp().setHeader("X-Total-Count", ""+r.getTotalRow());
+			args.getResp().setHeader("X-Total-Page" , ""+r.getTotalPage());
+			
+			return new Response(r.getList()).setMessage(""+r.getTotalRow());
+		}else{
+			List<DataMap> r=query.getList(limit, offset);
+			
+			return new Response(r).setMessage(""+r.size());
+		}
+	}
+
+	/**
+	 * Get the database tables
+	 * 
+	 * @return list tables of the database 
+	 */
 	public Response getTables(){
 		DataTable<DataMap> table=new DataTable<DataMap>();
 		for(String t:db.getTables()){
@@ -66,7 +162,12 @@ public class GetAction extends Action{
 		}
 		return new Response( table );
 	}
-	 
+	  
+	/**
+	 * Get the table rows
+	 * 
+	 * @return list rows of the table
+	 */
 	public Response getTableRows(){
 		Query query=createQuery();
 		
@@ -133,9 +234,9 @@ public class GetAction extends Action{
 		int limit =args.getLimit();
 		int offset=args.getOffset();
 		
-		int maxLimit=DbProp.PROP_TABLE_DBS_MAX_ROWS.getIntValue(db, 10000);
+		int maxLimit=DbProp.PROP_TABLE_DBS_MAX_ROWS.getIntValue(db,args.getTable(),10000);
 		if(limit>maxLimit){
-			return new Response(400, "Error parameter: limit = "+limit+", it is too bigger than the max value: "+maxLimit+". (OR increase the max value: \"DB.cfg.dbs.max.rows\")");
+			return new Response(Response.REQUEST_BAD_PARAMETER, "Error parameter: limit = "+limit+", it is too bigger than the max value: "+maxLimit+". (OR increase the max value: \"DB.cfg.dbs.max.rows\")");
 		}
 		
 		if(args.isPaging()){
@@ -143,15 +244,19 @@ public class GetAction extends Action{
 			args.getResp().setHeader("X-Total-Count", ""+r.getTotalRow());
 			args.getResp().setHeader("X-Total-Page" , ""+r.getTotalPage());
 			
-			return new Response(r.getList());
+			return new Response(r.getList()).setMessage(""+r.getTotalRow());
 		}else{
 			List<DataMap> r=query.getList(limit, offset);
 			
-			return new Response(r);
+			return new Response(r).setMessage(""+r.size());
 		}
 		
 	}
 	 
+	/**
+	 * Get row of the table by single primary key
+	 * @return 200: one row,  404: NOT found
+	 */
 	public Response getTableRowBySinglePK(){
 		Record model=createRecord();
 		List<FGS> pks=model.pkFields();
@@ -168,8 +273,7 @@ public class GetAction extends Action{
 			if(model.entity()){
 				return new Response(model);
 			}else{
-				return new Response(404,args.getActionName()
-						+" error, primary key not found: /"+args.getDatabase()+"/"+args.getTable()+"/"+args.getSinglePK());
+				return new Response(Response.REQUEST_NOT_FOUND,"Primary key not found: /"+args.getDatabase()+"/"+args.getTable()+"/"+args.getSinglePK());
 			}
 		}else{
 			StringBuilder sb=new StringBuilder();
@@ -178,7 +282,7 @@ public class GetAction extends Action{
 			for(FGS fgs:pks){
 				sb.append("/").append(fgs.getFieldName()).append("=xxx");
 			}
-			return new Response(400,sb.toString());
+			return new Response(Response.REQUEST_BAD_PARAMETER,sb.toString());
 		}
 	}
 	
@@ -198,7 +302,7 @@ public class GetAction extends Action{
 			if(model.field(nv[0])!=null){
 				c.field(nv[0]).eq(nv[1]);
 			}else{
-				return new Response(400,args.getActionName()+" error, column not found: "+nv[0]+" in the table: "+args.getTable());
+				return new Response(Response.REQUEST_BAD_PARAMETER,args.getActionName()+" error, column not found: "+nv[0]+" in the table: "+args.getTable());
 			}
 		}
 		
@@ -206,7 +310,7 @@ public class GetAction extends Action{
 		if(x!=null){
 			return new Response(x);
 		}else{
-			return new Response(404,args.getActionName()+" error, multi keys not found: "+args.getRequestPath());
+			return new Response(Response.REQUEST_NOT_FOUND,args.getActionName()+" error, multi keys not found: "+args.getRequestPath());
 		}
 	}
 

@@ -38,7 +38,7 @@ public class DBS {
 	private static DataMap dbs = new DataMap();
 
 	public static void add(String dbName, DBConfig db) {
-		add(dbName, db, new DefaultActionLocate.GetPutDeletePostAction());
+		add(dbName, db, new DefaultActionLocate());
 	}
 
 	public static void add(String dbName, DBConfig db, ActionLocate locate) {

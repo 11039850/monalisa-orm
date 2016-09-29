@@ -565,6 +565,14 @@ public abstract class Dialect{
     }
     
     public static String getRealname(String name){
+    	if(name==null){
+    		return null;
+    	}
+    	
+    	if(name.length()<2){
+    		return name;
+    	}
+    	
     	char c=name.charAt(0);
     	
     	if(c=='`' || c=='[' || c=='"' || c=='\''){

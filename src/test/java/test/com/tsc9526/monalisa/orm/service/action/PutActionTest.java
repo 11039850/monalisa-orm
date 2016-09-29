@@ -18,8 +18,9 @@ package test.com.tsc9526.monalisa.orm.service.action;
 
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.testng.Assert;
-import org.testng.annotations.AfterClass;
 import org.testng.annotations.Test;
+
+import test.com.tsc9526.monalisa.orm.mysql.mysqldb.TestRecordV2;
 
 import com.tsc9526.monalisa.orm.service.Response;
 
@@ -28,41 +29,46 @@ import com.tsc9526.monalisa.orm.service.Response;
  * @author zzg.zhou(11039850@qq.com)
  */
 @Test
-public class DeleteActionTest extends AbstractActionTest {
+public class PutActionTest extends AbstractActionTest {
 	protected String getRequestMethod(){
-		return "DELETE";
+		return "PUT";
 	}
 	
-	public void testDeleteDbTableByPk()throws Exception{
+	public void testPutDbTableByPk()throws Exception{
+		Assert.assertNotEquals(TestRecordV2.SELECT().selectByPrimaryKey(1).getName(),"ppyyzz001");
+		
 		MockHttpServletRequest       req=createRequest("/db1/test_record_v2/1");
-		 
+		req.addParameter("name", "ppyyzz001");
+		
 		Response resp=getRespone(req);
-		Assert.assertEquals(resp.getStatus(),200);
-		Assert.assertEquals(resp.getData().toString(),"1");
+		Assert.assertEquals(resp.getStatus(),200,resp.getMessage());
+		 
+		Assert.assertEquals(TestRecordV2.SELECT().selectByPrimaryKey(1).getName(),"ppyyzz001");
  	}
 	
-	public void testDeleteDbTableByMultiKeys()throws Exception{
+	public void testPutDbTableByMultiKeys()throws Exception{
+		Assert.assertNotEquals(TestRecordV2.SELECT().selectByPrimaryKey(2).getName(),"ppyyzz002");
+		
+		MockHttpServletRequest       req=createRequest("/db1/test_record_v2/record_id=2");
+		
+		req.addParameter("name", "ppyyzz002");
+		Response resp=getRespone(req);
+		Assert.assertEquals(resp.getStatus(),200,resp.getMessage()); 
+		Assert.assertEquals(TestRecordV2.SELECT().selectByPrimaryKey(2).getName(),"ppyyzz002");
+ 	}
+	
+	public void testPutDbTableNone()throws Exception{
 		MockHttpServletRequest       req=createRequest("/db1/test_record_v2/record_id=2");
 		 
 		Response resp=getRespone(req);
-		Assert.assertEquals(resp.getStatus(),200);
-		Assert.assertEquals(resp.getData().toString(),"1");
+		Assert.assertEquals(resp.getStatus(),400,resp.getMessage()); 
  	}
 	
-	public void testDeleteDbTableByWhere()throws Exception{
+	public void testPutDbTableRow1()throws Exception{
 		MockHttpServletRequest       req=createRequest("/db1/test_record_v2");
-		req.addParameter("record_id>", "8");
+		req.addParameter("name", "new_002");
 		 
 		Response resp=getRespone(req);
-		Assert.assertEquals(resp.getStatus(),200);
-		Assert.assertEquals(resp.getData().toString(),"3");
- 	}
-	
-	@AfterClass
-	public void testDeleteAllTable()throws Exception{
-		MockHttpServletRequest       req=createRequest("/db1/test_record_v2");
-		 
-		Response resp=getRespone(req);
-		Assert.assertEquals(resp.getStatus(),403);
+		Assert.assertEquals(resp.getStatus(),403,resp.getMessage());
  	}
 }

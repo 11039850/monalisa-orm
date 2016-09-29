@@ -30,6 +30,7 @@ import com.tsc9526.monalisa.orm.service.action.ActionArgs;
 import com.tsc9526.monalisa.orm.service.action.DefaultActionLocate;
 import com.tsc9526.monalisa.orm.service.action.DeleteAction;
 import com.tsc9526.monalisa.orm.service.action.GetAction;
+import com.tsc9526.monalisa.orm.service.action.ResponseAction;
 
 /**
  * 
@@ -38,22 +39,20 @@ import com.tsc9526.monalisa.orm.service.action.GetAction;
 @Test
 @SuppressWarnings("unused")
 public class OnlyActionTest extends AbstractActionTest{
-
+	protected String getRequestMethod(){
+		return "NONE";
+	}
+	
 	@BeforeClass
 	public void setup(){
 		DBS.remove("db1");
 		DBS.add("db1",MysqlDB.DB,new DefaultActionLocate() {
-			public Action onGetAction(ActionArgs args){
-				return new GetAction(args);
+			public Action onPostAction(ActionArgs args){
+				return new ResponseAction(new Response(403, "Access forbidden, only GET/DELETE"));
 			}
 		 	
-			public Action onDeleteAction(ActionArgs args){
-				//Disable delete table without filters
-				return new DeleteAction(args){
-					public Response deleteTableRowsAll() {
-						return new Response(403,"Delete table disabled without filters, "+args.getTable());
-					}
-				};
+			public Action onPutAction(ActionArgs args){
+				return new ResponseAction(new Response(403, "Access forbidden, only GET/DELETE"));
 			}
 		});
 	}

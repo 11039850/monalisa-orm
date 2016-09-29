@@ -16,11 +16,14 @@
  *******************************************************************************************/
 package com.tsc9526.monalisa.orm.service.action;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import com.tsc9526.monalisa.orm.annotation.Column;
 import com.tsc9526.monalisa.orm.datatable.DataMap;
 import com.tsc9526.monalisa.orm.datatable.DataTable;
+import com.tsc9526.monalisa.orm.dialect.Dialect;
 import com.tsc9526.monalisa.orm.model.Model;
 import com.tsc9526.monalisa.orm.model.Record;
 import com.tsc9526.monalisa.orm.service.Response;
@@ -36,22 +39,68 @@ public class PostAction extends PutAction{
 	public PostAction(ActionArgs args) {
 		super(args);
 	} 
+	 
+	public Response postMultiTableRows(){
+		List<Model<?>> all=new ArrayList<Model<?>>();
+		
+		for(String table:args.getTables()){
+			String tb=Dialect.getRealname(table);
+			
+			Record tpl=db.createRecord(tb);
+			List<Model<?>> models=ModelHelper.ServletRequestModelParser.parseModels(tpl, args.getReq(),getTableMapping(tb));
+			
+			if(models.size()==0){
+				return postTableNoData(table);
+			}
+			
+			all.addAll(models);
+		}
+		 
+		int[] rs= db.batchInsert(all);
+		
+		int n=0;
+		for(int x:rs){
+			n+=x;
+		}
+		
+		Response r=new Response();
+		r.setMessage("Insert tables: "+Arrays.toString(args.getTables())+" ok: "+n);
+		
+		DataTable<DataMap> data=new DataTable<DataMap>();
+		for(int i=0;i<rs.length;i++){
+			DataMap map=new DataMap();
+			map.put("table",Dialect.getRealname(all.get(i).table().name()));
+			map.put("rows",rs[i]);
+			 
+			FGS fgs=all.get(0).autoField();
+			Column c=fgs==null?null:fgs.getAnnotation(Column.class);
+			
+			DataMap entity=new DataMap();
+			if(fgs!=null){
+				entity.put(c.name(), fgs.getObject(all.get(i)));
+				
+				map.put("entity", entity);
+			}
+			
+			data.add(map);
+			
+			r.setData(data);
+		}
+		
+		return r;
+	}
 	
 	public Response postTableRows(){
 		Record tpl=createRecord();
 		
 		List<Model<?>> models=ModelHelper.ServletRequestModelParser.parseModels(tpl, args.getReq());
 		if(models.size()==1){
-		
-		
+			return postTableRow(models.get(0));
 		}else if(models.size()>1){
-			
+			return postTableRows(models);
 		}else{
-			return postTableNoData();
+			return postTableNoData(args.getTable());
 		}
-		
-		
-		return null;
 	}
 	
 	public Response postTableRow(Model<?> m){
@@ -94,7 +143,7 @@ public class PostAction extends PutAction{
 		for(int i=0;i<rs.length;i++){
 			DataMap map=new DataMap();
 			map.put("rows",rs[i]);
-			 
+			map.put("table",Dialect.getRealname(args.getTable()));
 			DataMap entity=new DataMap();
 			if(fgs!=null){
 				entity.put(c.name(), fgs.getObject(models.get(i)));
@@ -102,13 +151,15 @@ public class PostAction extends PutAction{
 				map.put("entity", entity);
 			}
 			
+			data.add(map);
+			
 			r.setData(data);
 		}
 		
 		return r;
 	}
 	
-	public Response postTableNoData(){
-		return new Response(400, "No post data found for table: "+args.getTable());
+	public Response postTableNoData(String table){
+		return new Response(Response.REQUEST_BAD_PARAMETER, "No post data found for table: "+table);
 	}
 }

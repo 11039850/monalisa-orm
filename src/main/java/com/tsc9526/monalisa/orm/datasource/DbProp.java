@@ -16,6 +16,8 @@
  *******************************************************************************************/
 package com.tsc9526.monalisa.orm.datasource;
 
+import com.tsc9526.monalisa.orm.dialect.Dialect;
+
 /**
  * Database properties: <br><ul>
    <li><b>sql.debug = false </b> [scope: DB]<br>
@@ -288,6 +290,7 @@ public class DbProp {
 	}
 	
 	public String getValue(DBConfig db,String tableName){
+		tableName=Dialect.getRealname(tableName);
 		String v=db.getCfg().getProperty(key+"."+tableName);
 		if(v!=null){
 			return v;

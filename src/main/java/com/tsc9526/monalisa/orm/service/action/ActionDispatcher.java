@@ -37,22 +37,39 @@ public class ActionDispatcher {
 	static Logger logger=Logger.getLogger(ActionDispatcher.class);
 	 
 	public void doDispatch(HttpServletRequest req,HttpServletResponse resp)throws ServletException, IOException {
-		logger.info("Request URI: "+req.getRequestURI());
+		String om = req.getHeader("X-HTTP-Method-Override");
+		String method=req.getMethod();
+		String q=req.getQueryString();
 		
-		Response r=new Response(500,"None service.");
+		String req_msg=method+(om==null?"":"["+om+"]")+" "+req.getRequestURI()+(q==null?"":"?"+q);
+		logger.info(req_msg);
+		
+		Response r=new Response(Response.ERROR_SERVER_ERROR,"None service.");
 		try{
 			ActionArgs args=new ActionArgs(req,resp);
 			if(args.getErrors().size()>0){
-				r=new Response(400,"Request parameter error.").setData(args.getErrors());
+				r=new Response(Response.REQUEST_BAD_PARAMETER,"Request parameter error.").setData(args.getErrors());
 			}else{
 				Action action=getAction(args);
 				
-				r=action.getResponse(); 
+				r=action.verify();
+				
+				if(r==null){
+					r=action.getResponse();
+				}
 			}
 		}catch(Throwable t){
 			logger.error("Error process path: "+req.getRequestURI(),"true".equalsIgnoreCase(req.getHeader("DEV_TEST"))?null:t);
 		
-			r=new Response(500, t.getMessage());
+			r=new Response(Response.ERROR_SERVER_ERROR, t.getMessage());
+		}
+		
+		if(r==null){
+			r=new Response(Response.ERROR_SERVER_ERROR,"Server error: null response!");
+		}
+		
+		if(r.getStatus()!=Response.OK){
+			logger.error("["+r.getStatus()+"] " +req_msg+"\r\n"+r.getMessage());
 		}
 		
 		writeResponse(r,req,resp);
@@ -61,7 +78,7 @@ public class ActionDispatcher {
 	public Action getAction(ActionArgs args){
 		DBS dbs=DBS.getDB(args.getDatabase());
 		if(dbs==null){
-			return new ResponseAction(new Response(404,"Database not found: "+args.getDatabase()));
+			return new ResponseAction(new Response(Response.REQUEST_BAD_PARAMETER,"Database not found: "+args.getDatabase()));
 		}else{
 			return dbs.getLocate().getAction(args);
 		}
@@ -70,7 +87,7 @@ public class ActionDispatcher {
 	public void writeResponse(Response r,HttpServletRequest req,HttpServletResponse resp)throws ServletException, IOException {
 		resp.setContentType("application/json;charset=utf-8");
 		 
-		Gson gson=JsonHelper.createGsonBuilder().setPrettyPrinting().create();
+		Gson gson=JsonHelper.createGsonBuilder().disableHtmlEscaping().setPrettyPrinting().create();
 		String body=gson.toJson(r);
 		 
 		PrintWriter w=resp.getWriter();

@@ -34,32 +34,40 @@ public class DefaultActionLocate implements ActionLocate{
 			String name=m.substring(0,1).toUpperCase()+m.substring(1).toLowerCase();
 			name="on"+name+"Action";
 			
-			Method call=this.getClass().getMethod(name, ActionArgs.class);
-			call.setAccessible(true);
-			return (Action)call.invoke(this, args);
+			if(name.equals("onGetAction")){
+				return onGetAction(args);
+			}else if(name.equals("onDeleteAction")){
+				return onDeleteAction(args);
+			}else if(name.equals("onPutAction")){
+				return onPutAction(args);
+			}else if(name.equals("onPostAction")){
+				return onPostAction(args);
+			}else{
+				Method call=this.getClass().getMethod(name, ActionArgs.class);
+				call.setAccessible(true);
+				return (Action)call.invoke(this, args);
+			}
 		}catch(NoSuchMethodException e){
-			return new ResponseAction(new Response(403, "Invalid request method: "+m));
+			return new ResponseAction(new Response(Response.REQUEST_FORBIDDEN, "Access forbidden, method: "+m+" not found in the class: "+this.getClass().getName()));
 		}catch(Exception e){
 			throw new RuntimeException(e.getMessage(),e);
 		}
 	}
  	
 	
-	public static class GetPutDeletePostAction extends DefaultActionLocate{
-		public Action onGetAction(ActionArgs args){
-			return new GetAction(args);
-		}
-		
-		public Action onDeleteAction(ActionArgs args){
-			return new DeleteAction(args);
-		}
-		
-		public Action onPutAction(ActionArgs args){
-			return new PutAction(args);
-		}
-		
-		public Action onPostAction(ActionArgs args){
-			return new PostAction(args);
-		}
+	public Action onGetAction(ActionArgs args){
+		return new GetAction(args);
+	}
+	
+	public Action onDeleteAction(ActionArgs args){
+		return new DeleteAction(args);
+	}
+	
+	public Action onPutAction(ActionArgs args){
+		return new PutAction(args);
+	}
+	
+	public Action onPostAction(ActionArgs args){
+		return new PostAction(args);
 	}
 }

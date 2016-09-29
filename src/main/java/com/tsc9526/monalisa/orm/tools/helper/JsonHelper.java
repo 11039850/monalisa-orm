@@ -131,7 +131,17 @@ public class JsonHelper {
 		                JsonObject jsonObject = json.getAsJsonObject();
 		                Set<Map.Entry<String, JsonElement>> entrySet = jsonObject.entrySet();
 		                for (Map.Entry<String, JsonElement> entry : entrySet) {
-		                	map.put(entry.getKey(), entry.getValue());
+		                	JsonElement e=entry.getValue();
+		                	if(e.isJsonPrimitive()){
+		                		JsonPrimitive p=(JsonPrimitive)e;
+		                		if(p.isString()){
+		                			map.put(entry.getKey(), p.getAsString());
+		                		}else{
+		                			map.put(entry.getKey(), p);
+		                		}
+		                	}else{
+		                		map.put(entry.getKey(), entry.getValue());
+		                	}
 		                }
 		                return map;
 		            }

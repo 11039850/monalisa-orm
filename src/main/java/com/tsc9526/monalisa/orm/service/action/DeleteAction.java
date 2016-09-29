@@ -35,7 +35,7 @@ public class DeleteAction extends Action{
 	
 	public Response getResponse() {
 		if(args.getTable()==null){
-			return new Response(400,args.getActionName()+" error, missing table, using: /"+args.getDatabase()+"/your_table_name");
+			return new Response(Response.REQUEST_BAD_PARAMETER,args.getActionName()+" error, missing table, using: /"+args.getDatabase()+"/your_table_name");
 		}else{
 			if(args.getSinglePK()!=null){
 				return deleteTableRowBySinglePK();
@@ -61,14 +61,17 @@ public class DeleteAction extends Action{
 		}
 		int n=query.execute();
 		
-		return new Response(200,"Delete from table "+args.getTable()+" success: "+n).setData(n);  
+		return new Response(Response.OK,"Delete from table "+args.getTable()+" success: "+n).setData(n);  
 	}
 	
 	public Response deleteTableRowsAll(){
+		/*
 		Record model=createRecord();
-		
 		int n=model.DELETE().deleteAll();
 		return new Response(200,"Delete all from table "+args.getTable()+" success: "+n).setData(n);
+		*/
+		
+		return new Response(Response.REQUEST_FORBIDDEN,"Access forbidden, delete all from table disabled: "+args.getTable());
 	}
 
 	public Response deleteTableRowByMultiKeys() {
@@ -79,12 +82,12 @@ public class DeleteAction extends Action{
 			if(model.field(nv[0])!=null){
 				c.field(nv[0]).eq(nv[1]);
 			}else{
-				return new Response(400,"Column not found: "+nv[0]+" in the table: "+args.getTable());
+				return new Response(Response.REQUEST_BAD_PARAMETER,"Column not found: "+nv[0]+" in the table: "+args.getTable());
 			}
 		}
 		
 		int n=c.delete();
-		return new Response(200,"Delete by multi-keys from table "+args.getTable()+" success: "+n).setData(n); 
+		return new Response(Response.OK,"Delete by multi-keys from table "+args.getTable()+" success: "+n).setData(n); 
 	}
 
 	public Response deleteTableRowBySinglePK() {
@@ -92,7 +95,7 @@ public class DeleteAction extends Action{
 		List<FGS> pks=model.pkFields();
 		if(pks.size()==1){
 			int n=model.set(pks.get(0).getFieldName(),args.getSinglePK()).DELETE().delete();
-			return new Response(200,"Delete by single primary key: "+args.getSinglePK()+" from table "+args.getTable()+" success: "+n).setData(n); 
+			return new Response(Response.OK,"Delete by single primary key: "+args.getSinglePK()+" from table "+args.getTable()+" success: "+n).setData(n); 
 		}else{
 			StringBuilder sb=new StringBuilder();
 			sb.append(args.getActionName()+" error, table: "+args.getTable()+" primary key has more than one columns");
@@ -100,7 +103,7 @@ public class DeleteAction extends Action{
 			for(FGS fgs:pks){
 				sb.append("/").append(fgs.getFieldName()).append("=xxx");
 			}
-			return new Response(400,sb.toString());
+			return new Response(Response.REQUEST_BAD_PARAMETER,sb.toString());
 		}
 	}
 
