@@ -35,7 +35,7 @@ public class DeleteAction extends Action{
 	
 	public Response getResponse() {
 		if(args.getTable()==null){
-			return new Response(Response.REQUEST_BAD_PARAMETER,args.getActionName()+" error, missing table, using: /"+args.getDatabase()+"/your_table_name");
+			return new Response(Response.REQUEST_BAD_PARAMETER,args.getActionName()+" error, missing table, using: /"+args.getPathDatabases()+"/your_table_name");
 		}else{
 			if(args.getSinglePK()!=null){
 				return deleteTableRowBySinglePK();
@@ -99,7 +99,7 @@ public class DeleteAction extends Action{
 		}else{
 			StringBuilder sb=new StringBuilder();
 			sb.append(args.getActionName()+" error, table: "+args.getTable()+" primary key has more than one columns");
-			sb.append(", change the request's path to: /"+args.getDatabase()+"/"+args.getTable());
+			sb.append(", change the request's path to: /"+args.getPathDatabases()+"/"+args.getPathTables());
 			for(FGS fgs:pks){
 				sb.append("/").append(fgs.getFieldName()).append("=xxx");
 			}

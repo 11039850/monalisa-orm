@@ -28,6 +28,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.tsc9526.monalisa.orm.datatable.DataMap;
+import com.tsc9526.monalisa.orm.service.DBS;
 import com.tsc9526.monalisa.orm.service.Response;
 
 /**
@@ -43,10 +44,10 @@ import com.tsc9526.monalisa.orm.service.Response;
  * <li><b>/@Database/@Table/@SinglePk</b><br>
  * Get a record by single primary key
  * 
- * <li><b>/@Database/@Table/C1=V1/C2=V2/...</b><br>
+ * <li><b>/@Database/@Table/C1=V1,C2=V2,...</b><br>
  * Get a record by multiple primary keys 
  * 
- * <li><b>/@Database/@Table1,@Table2,@Table3/@Table1.id=@Table2.id/@Table2.id=@Table3.id</b><br>
+ * <li><b>/@Database/@Table1,@Table2,@Table3/@Table1.id=@Table2.id,@Table2.id=@Table3.id</b><br>
  * Get records by multiple tables' join
  * 
  * </ul>
@@ -54,8 +55,9 @@ import com.tsc9526.monalisa.orm.service.Response;
  * @author zzg.zhou(11039850@qq.com)
  */
 public class ActionArgs {
-	private String database;
-
+	private String   database;
+	private String[] databases;
+	
 	private String table;
 	private String singlePK;
 	private String[][] multiKeys;
@@ -68,7 +70,9 @@ public class ActionArgs {
 	private int limit = 100;
 	private int offset = 0;
 
-	private String requestPath;
+	private String pathRequest;
+	private String pathDatabases;
+	private String pathTables;
 
 	private List<String> includeColumns = new ArrayList<String>();
 	private List<String> excludeColumns = new ArrayList<String>();
@@ -100,15 +104,15 @@ public class ActionArgs {
 		String prefix = req.getContextPath();
 		prefix += req.getServletPath();
 
-		requestPath = uri.substring(prefix.length());
-		if (requestPath.endsWith("/") && requestPath.length() > 1) {
-			requestPath = requestPath.substring(0, requestPath.length() - 1);
+		pathRequest = uri.substring(prefix.length());
+		if (pathRequest.endsWith("/") && pathRequest.length() > 1) {
+			pathRequest = pathRequest.substring(0, pathRequest.length() - 1);
 		}
-		if (requestPath.startsWith("/")) {
-			requestPath = requestPath.substring(1);
+		if (pathRequest.startsWith("/")) {
+			pathRequest = pathRequest.substring(1);
 		}
 		try {
-			requestPath = URLDecoder.decode(requestPath, "utf-8");
+			pathRequest = URLDecoder.decode(pathRequest, "utf-8");
 		} catch (UnsupportedEncodingException e) {
 			throw new RuntimeException(e);
 		}
@@ -131,7 +135,7 @@ public class ActionArgs {
 	}
 
 	protected void parsePathParameters() {
-		if (requestPath.length() < 1) {
+		if (pathRequest.length() < 1) {
 			errors.add("Missing database, using URI: " + req.getRequestURI() + "/your_database");
 		}
 
@@ -152,58 +156,87 @@ public class ActionArgs {
 		paging = rd.getBool("paging", false);
 	}
 
+	public boolean isMultiDatabase(){
+		return databases.length>1;
+	}
+	
 	protected void parsePathInfo() {
-		String[] vs = requestPath.split("/");
+		String[] vs = pathRequest.split("/");
 
 		if (vs.length > 0) {
-			database = checkName(vs[0]);
-		}
+			if (vs[0].indexOf(",") > 0) {
+				databases=vs[0].split(",");
+			}else{
+				database = checkName(vs[0]);
+			}
+			
+			pathDatabases=vs[0];
+		}	
 
 		if (vs.length >= 2) {
-			if (vs[1].indexOf(",") > 0) {
+			pathTables=vs[1];
+			
+			if (vs[1].indexOf(",") > 0) {//table joins
 				tables = vs[1].split(",");
 				
 				for(String t:tables){
 					checkName(t);
 				}
 				
-				if (vs.length > 2) {
-					joins = new String[vs.length - 2];
-					System.arraycopy(vs, 2, joins, 0, joins.length);
+				if (vs.length == 3) {
+					joins =vs[2].split(",");
 					for(String js:joins){
 						String[] ns=js.split("=");
 						
 						if(ns.length!=2){
-							errors.add("Invliad join field: "+js+", for example: .../Table1.column1=Table2.column2/...");
+							errors.add("Invalid join field: "+js+", for example: .../Table1.column1=Table2.column1,Table1.column2=Table2.column2,...");
 						}else{
 							checkName(ns[0]);
 							checkName(ns[1]);
 						}
 					}
+				}else if(vs.length>3){
+					unnecessaryPath(vs,3);
 				}
-			} else {
+			} else {//single table
 				table = checkName(vs[1]);
 
 				if (vs.length == 3) {
-					String x = vs[2];
-					int p = x.indexOf("=");
-					if (p > 0) {
-						multiKeys = new String[][] { { x.substring(0, p), x.substring(p + 1) } };
-					} else {
-						singlePK = vs[2];
-					}
-				} else if (vs.length > 3) {
-					multiKeys = new String[vs.length - 2][];
+					String[] xs=vs[2].split(",");
+					
+					if(xs.length==1){//single primary key
+						int p = xs[0].indexOf("=");
+						if (p > 0) {
+							multiKeys = new String[][] { { xs[0].substring(0, p), xs[0].substring(p + 1) } };
+						} else {
+							singlePK = vs[2];
+						}
+					}else{//multiple keys
+						multiKeys = new String[xs.length][];
 
-					for (int i = 0; i < vs.length - 2; i++) {
-						String x = vs[i + 2];
-						int p = x.indexOf("=");
+						for (int i = 0; i < xs.length; i++) {
+							String x = xs[i];
+							int p = x.indexOf("=");
 
-						multiKeys[i] = new String[] { x.substring(0, p), x.substring(p + 1) };
+							multiKeys[i] = new String[] { x.substring(0, p), x.substring(p + 1) };
+						}
 					}
+				}else if (vs.length > 3) {
+					unnecessaryPath(vs,3);
 				}
 			}
 		}
+	}
+	
+	protected void unnecessaryPath(String[] vs,int from) {
+		StringBuilder sb=new StringBuilder();
+		for(int i=from;i<vs.length;i++){
+			if(sb.length()>0){
+				sb.append("/");
+			}
+			sb.append(vs[i]);
+		}
+		errors.add("Unnecessary path: "+sb.toString());
 	}
 
 	protected void parseParameterLimit() {
@@ -269,7 +302,7 @@ public class ActionArgs {
 	protected String checkName(String name) {
 		if (!name.matches("[a-z0-9A-Z_`\\.\\\"'\\[\\]]+")) {
 			errors.add("Invalid name: " + name);
-		}
+		} 
 		return name;
 	}
 
@@ -336,12 +369,20 @@ public class ActionArgs {
 		return null;
 	}
 
+	public DBS getDBS(){
+		return DBS.getDB(databases!=null?databases[0]:database);
+	}
+	
 	public DataMap getRequestDataMap() {
 		return rd;
 	}
 
 	public String getDatabase() {
 		return database;
+	}
+	
+	public String[] getDatabases() {
+		return databases;
 	}
 
 	public String getTable() {
@@ -376,8 +417,8 @@ public class ActionArgs {
 		return offset;
 	}
 
-	public String getRequestPath() {
-		return requestPath;
+	public String getPathRequest() {
+		return pathRequest;
 	}
 
 	public List<String> getIncludeColumns() {
@@ -406,6 +447,14 @@ public class ActionArgs {
 
 	public HttpServletResponse getResp() {
 		return resp;
+	}
+
+	public String getPathDatabases() {
+		return pathDatabases;
+	}
+
+	public String getPathTables() {
+		return pathTables;
 	}
 
 }

@@ -76,9 +76,9 @@ public class ActionDispatcher {
 	}
 	
 	public Action getAction(ActionArgs args){
-		DBS dbs=DBS.getDB(args.getDatabase());
+		DBS dbs=args.getDBS();
 		if(dbs==null){
-			return new ResponseAction(new Response(Response.REQUEST_BAD_PARAMETER,"Database not found: "+args.getDatabase()));
+			return new ResponseAction(new Response(Response.REQUEST_BAD_PARAMETER,"Database not found: "+args.getPathDatabases()));
 		}else{
 			return dbs.getLocate().getAction(args);
 		}

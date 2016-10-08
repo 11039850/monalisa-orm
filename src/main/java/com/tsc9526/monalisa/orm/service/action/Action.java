@@ -37,7 +37,7 @@ public abstract class Action {
 		this.args=args;
 		
 		if(args!=null){
-			DBS dbs=DBS.getDB(args.getDatabase());
+			DBS dbs=args.getDBS();
 			if(dbs!=null){
 				db=dbs.getDB();
 			}

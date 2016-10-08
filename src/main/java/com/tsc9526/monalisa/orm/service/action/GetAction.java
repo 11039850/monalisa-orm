@@ -273,12 +273,12 @@ public class GetAction extends Action{
 			if(model.entity()){
 				return new Response(model);
 			}else{
-				return new Response(Response.REQUEST_NOT_FOUND,"Primary key not found: /"+args.getDatabase()+"/"+args.getTable()+"/"+args.getSinglePK());
+				return new Response(Response.REQUEST_NOT_FOUND,"Primary key not found: /"+args.getPathDatabases()+"/"+args.getPathTables()+"/"+args.getSinglePK());
 			}
 		}else{
 			StringBuilder sb=new StringBuilder();
 			sb.append(args.getActionName()+" error, table: "+args.getTable()+" primary key has more than one columns");
-			sb.append(", change the request's path to: /"+args.getDatabase()+"/"+args.getTable());
+			sb.append(", change the request's path to: /"+args.getPathDatabases()+"/"+args.getPathTables());
 			for(FGS fgs:pks){
 				sb.append("/").append(fgs.getFieldName()).append("=xxx");
 			}
@@ -310,7 +310,7 @@ public class GetAction extends Action{
 		if(x!=null){
 			return new Response(x);
 		}else{
-			return new Response(Response.REQUEST_NOT_FOUND,args.getActionName()+" error, multi keys not found: "+args.getRequestPath());
+			return new Response(Response.REQUEST_NOT_FOUND,args.getActionName()+" error, multi keys not found: "+args.getPathRequest());
 		}
 	}
 
