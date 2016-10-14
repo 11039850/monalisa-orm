@@ -26,10 +26,6 @@ import java.util.logging.LogManager;
  */
 public class JDK14LoggerFactory implements LoggerFactory {
 	static{
-		initConfig();
-	}
-	
-	private static void initConfig(){
 		try{
 			String fname = System.getProperty("java.util.logging.config.file");
 	        if (fname == null) {
