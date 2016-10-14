@@ -321,23 +321,23 @@ public class DBConfig implements Closeable{
 	}
 	
 	
-	public int[] batchInsert(List<Model<?>> models){
+	public int[] batchInsert(List<? extends Model<?>> models){
 		return batchOpModels(models, ModelEvent.INSERT); 
 	}
 	
-	public int[] batchReplace(List<Model<?>> models){
+	public int[] batchReplace(List<? extends Model<?>> models){
 		return batchOpModels(models, ModelEvent.REPLACE); 
 	}
 	
-	public int[] batchUpdate(List<Model<?>> models){
+	public int[] batchUpdate(List<? extends Model<?>> models){
 		return batchOpModels(models, ModelEvent.UPDATE); 
 	}
 	 
-	public int[] batchDelete(List<Model<?>> models){
+	public int[] batchDelete(List<? extends Model<?>> models){
 		return batchOpModels(models, ModelEvent.DELETE); 
 	}
 	
-	protected int[] batchOpModels(final List<Model<?>> models,final ModelEvent op){
+	protected int[] batchOpModels(final List<? extends Model<?>> models,final ModelEvent op){
 		final int[] rs=new int[models.size()];
 		
 		com.tsc9526.monalisa.orm.Tx.execute(new com.tsc9526.monalisa.orm.Tx.Atom(){

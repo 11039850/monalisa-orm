@@ -264,9 +264,9 @@ public class ModelHelper {
 			return true;
 		}
 		
-		public static List<Model<?>> parseModels(Model<?> targetTemplate, javax.servlet.ServletRequest data, String... mappings) {
+		public static <T extends Model<?>> List<T> parseModels(Model<T> targetTemplate, javax.servlet.ServletRequest data, String... mappings) {
 			StringMap map = new StringMap(data.getParameterMap(), mappings);
-			List<Model<?>> rs=new ArrayList<Model<?>>();
+			List<T> rs=new ArrayList<T>();
 			
 			int size=0;
 			for (FGS fgs : targetTemplate.fields()) {
@@ -290,8 +290,8 @@ public class ModelHelper {
 			}
 			
 			for(int i=0;i<size;i++){
-				Model<?> m= MMH.createFrom(targetTemplate);
-				rs.add(m);
+				Model<T> m= MMH.createFrom(targetTemplate);
+				rs.add((T)m);
 			}
 			
 			for (FGS fgs : targetTemplate.fields()) {

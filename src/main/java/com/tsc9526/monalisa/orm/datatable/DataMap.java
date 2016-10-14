@@ -120,6 +120,34 @@ public class DataMap extends CaseInsensitiveMap<Object>{
 		}
 	}
 	
+	public String getStringFromArray(String key,int index){
+		String[] vs=getStringFromArray(key);
+		if(vs==null){
+			return null;
+		}else{
+			return vs[index];
+		}
+	}
+	
+	public String[] getStringFromArray(String key){
+		Object v=get(key);
+		if(v==null){
+			return null;
+		}else {
+			if( v.getClass().isArray() ) {
+				Object[] os=(Object[])v;
+				
+				String[] r=new String[os.length];
+				for(int i=0;i<r.length;i++){
+					r[i]=os[i]==null?null:os[i].toString();
+				}
+				return r;
+			}else{
+				return new String[]{v.toString()};
+			}
+		}
+	}
+	
 	public boolean getBool(String key,boolean defaultValue){
 		Boolean v=getBoolean(key);
 		if(v==null){

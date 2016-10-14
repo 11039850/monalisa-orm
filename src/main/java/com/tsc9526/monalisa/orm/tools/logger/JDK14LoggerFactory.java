@@ -16,18 +16,39 @@
  *******************************************************************************************/
 package com.tsc9526.monalisa.orm.tools.logger;
 
+import java.io.InputStream;
 import java.util.logging.Level;
+import java.util.logging.LogManager;
 
 /**
  *
  * @author zzg.zhou(11039850@qq.com)
  */
 public class JDK14LoggerFactory implements LoggerFactory {
+	static{
+		initConfig();
+	}
+	
+	private static void initConfig(){
+		try{
+			String fname = System.getProperty("java.util.logging.config.file");
+	        if (fname == null) {
+	        	InputStream is  = LoggerFactory.class.getClass().getResourceAsStream("/logger/jdklog.properties");
+				LogManager lm=LogManager.getLogManager();
+				lm.readConfiguration(is);
+				
+				is.close();
+	        } 
+		}catch(Exception e){
+			throw new RuntimeException(e);
+		}
+	}
+	
 	public Logger getLogger(String category) {
 		return new JDK14Logger(java.util.logging.Logger.getLogger(category));
 	}
-
-	private static class JDK14Logger extends Logger {
+ 	
+	private  class JDK14Logger extends Logger {
 		private final java.util.logging.Logger logger;
 
 		JDK14Logger(java.util.logging.Logger logger) {

@@ -44,7 +44,8 @@ public class DBGeneratorProcessingInEclipse extends DBGeneratorProcessing{
 	 
 	public DBGeneratorProcessingInEclipse(ProcessingEnvironment processingEnv,TypeElement typeElement) {
 		super();
-		 
+		
+		
 		this.processingEnv = (IdeProcessingEnvImpl)processingEnv;		 
 		this.typeElement = typeElement;
 		 	
@@ -92,7 +93,7 @@ public class DBGeneratorProcessingInEclipse extends DBGeneratorProcessing{
 		Class<?> clazz=loader.loadClass(DataSourceManager.class.getName());
 		clazz.getMethod("shutdown").invoke(null);
 	}
-	
+	 
 	private class LoggerClassLoader extends URLClassLoader{
 		 
 		public LoggerClassLoader(URL[] urls,ClassLoader parent) {

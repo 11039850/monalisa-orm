@@ -49,6 +49,7 @@ public class DBGeneratorProcessing extends DBGenerator{
 	private TypeElement typeElement;
 	
 	DBGeneratorProcessing(){
+		org.eclipse.jdt.internal.compiler.apt.dispatch.BaseProcessingEnvImpl a;
 	}
 	
 	public DBGeneratorProcessing(ProcessingEnvironment processingEnv,TypeElement typeElement) {
