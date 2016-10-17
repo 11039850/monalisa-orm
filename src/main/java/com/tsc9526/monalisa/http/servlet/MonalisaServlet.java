@@ -17,6 +17,8 @@
 package com.tsc9526.monalisa.http.servlet;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -37,21 +39,44 @@ public class MonalisaServlet extends HttpServlet{
 	
 	//GET: get data
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		dispatcher.doDispatch(req, resp);
+		doDispatch(req, resp);
 	}
 	
 	//POST: create or update data
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		dispatcher.doDispatch(req, resp);
+		doDispatch(req, resp);
 	}
 	
 	//DELETE: delete data
 	protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		dispatcher.doDispatch(req, resp);
+		doDispatch(req, resp);
 	}
 	
-	//PUT: update datta 
+	//PUT: update data 
 	protected void doPut(HttpServletRequest req, HttpServletResponse resp)throws ServletException, IOException {
-		dispatcher.doDispatch(req, resp);
+		doDispatch(req, resp);
+	}
+	
+	protected void doDispatch(HttpServletRequest req, HttpServletResponse resp)throws ServletException, IOException {
+		String uri=req.getRequestURI();
+		if("/favicon.ico".equalsIgnoreCase( uri )){
+			doFavicon(req,resp);
+		}else{
+			dispatcher.doDispatch(req, resp);
+		}
+	}
+	
+	protected void doFavicon(HttpServletRequest req, HttpServletResponse resp)throws ServletException, IOException {
+		byte[] buf=new byte[16*1024];
+		InputStream in=HttpServlet.class.getResourceAsStream("/com/tsc9526/monalisa/http/web/image/monalisa.png");
+		int len=in.read(buf);
+		
+		resp.addHeader("Content-Type","image/png");
+		resp.addHeader("Content-Length",""+len);
+		
+		OutputStream out=resp.getOutputStream();
+		out.write(buf,0,len);
+		out.flush();
+		out.close();
 	}
 }

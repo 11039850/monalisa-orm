@@ -38,6 +38,8 @@ public class ActionDispatcher {
 	static Logger logger=Logger.getLogger(ActionDispatcher.class);
 	 
 	public void doDispatch(HttpServletRequest req,HttpServletResponse resp)throws ServletException, IOException {
+		long tm=System.currentTimeMillis();
+		
 		String om = req.getHeader("X-HTTP-Method-Override");
 		String method=req.getMethod();
 		String q=req.getQueryString();
@@ -77,6 +79,9 @@ public class ActionDispatcher {
 			logger.error("["+r.getStatus()+"] " +req_msg+"\r\n"+r.getMessage());
 		}
 		
+		 	 
+		resp.addHeader("X-Cost-Time",""+(System.currentTimeMillis()-tm));
+		 
 		writeResponse(r,req,resp);
 	}
 	
