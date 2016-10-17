@@ -178,6 +178,8 @@ public class DataMap extends CaseInsensitiveMap<Object>{
 		}else{
 			if(v instanceof Boolean){
 				return (Boolean)v;
+			}else if(v.getClass().isArray()){
+				return Boolean.valueOf( ((Object[])v)[0].toString());
 			}else{
 				return Boolean.valueOf(""+v);
 			}
@@ -196,6 +198,8 @@ public class DataMap extends CaseInsensitiveMap<Object>{
 		}else{
 			if(v instanceof Boolean){
 				return (Boolean)v;
+			}else if(v.getClass().isArray()){
+				return Boolean.valueOf( ((Object[])v)[0].toString());
 			}else{
 				return Boolean.valueOf(""+v);
 			}
@@ -233,6 +237,8 @@ public class DataMap extends CaseInsensitiveMap<Object>{
 				return (Integer)v;
 			}else if(v instanceof Double){
 				return ((Double)v).intValue();
+			}else if(v.getClass().isArray()){
+				return Integer.parseInt( ((Object[])v)[0].toString());
 			}else{
 				return Integer.parseInt(""+v);
 			}
@@ -254,6 +260,8 @@ public class DataMap extends CaseInsensitiveMap<Object>{
 				return (Integer)v;
 			}else if(v instanceof Double){
 				return ((Double)v).intValue();
+			}else if(v.getClass().isArray()){
+				return Integer.parseInt( ((Object[])v)[0].toString());
 			}else{
 				return Integer.parseInt(""+v);
 			}
@@ -292,6 +300,8 @@ public class DataMap extends CaseInsensitiveMap<Object>{
 				return (Long)v;
 			}else if(v instanceof Double){
 				return ((Double)v).longValue();
+			}else if(v.getClass().isArray()){
+				return Long.parseLong( ((Object[])v)[0].toString());
 			}else{
 				return Long.parseLong(""+v);
 			}
@@ -312,6 +322,8 @@ public class DataMap extends CaseInsensitiveMap<Object>{
 				return (Long)v;
 			}else if(v instanceof Double){
 				return ((Double)v).longValue();
+			}else if(v.getClass().isArray()){
+				return Long.parseLong( ((Object[])v)[0].toString());
 			}else{
 				return Long.parseLong(""+v);
 			}
@@ -349,6 +361,10 @@ public class DataMap extends CaseInsensitiveMap<Object>{
 		}else{
 			if(v instanceof Float){
 				return (Float)v;
+			}else if(v instanceof Double){
+				return ((Double)v).floatValue();
+			}else if(v.getClass().isArray()){
+				return Float.parseFloat( ((Object[])v)[0].toString());
 			}else{
 				return Float.parseFloat(""+v);
 			}
@@ -367,6 +383,10 @@ public class DataMap extends CaseInsensitiveMap<Object>{
 		}else{
 			if(v instanceof Float){
 				return (Float)v;
+			}else if(v instanceof Double){
+				return ((Double)v).floatValue();
+			}else if(v.getClass().isArray()){
+				return Float.parseFloat( ((Object[])v)[0].toString());
 			}else{
 				return Float.parseFloat(""+v);
 			}
@@ -402,6 +422,8 @@ public class DataMap extends CaseInsensitiveMap<Object>{
 		}else{
 			if(v instanceof Double){
 				return (Double)v;
+			}else if(v.getClass().isArray()){
+				return Double.parseDouble( ((Object[])v)[0].toString());
 			}else{
 				return Double.parseDouble(""+v);
 			}
@@ -421,6 +443,8 @@ public class DataMap extends CaseInsensitiveMap<Object>{
 		}else{
 			if(v instanceof Double){
 				return (Double)v;
+			}else if(v.getClass().isArray()){
+				return Double.parseDouble( ((Object[])v)[0].toString());
 			}else{
 				return Double.parseDouble(""+v);
 			}

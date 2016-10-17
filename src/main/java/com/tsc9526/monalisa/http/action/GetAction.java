@@ -271,7 +271,7 @@ public class GetAction extends Action{
 		
 		int maxLimit=DbProp.PROP_TABLE_DBS_MAX_ROWS.getIntValue(db,args.getTable(),10000);
 		if(limit>maxLimit){
-			return new Response(Response.REQUEST_BAD_PARAMETER, "Error parameter: limit = "+limit+", it is too bigger than the max value: "+maxLimit+". (OR increase the max value: \"DB.cfg.dbs.max.rows\")");
+			return new Response(Response.REQUEST_BAD_PARAMETER, "Error: limit = "+limit+", it is too bigger than the max value: "+maxLimit+". (OR increase the max value: \"DB.cfg.dbs.max.rows\")");
 		}
 		
 		if(args.isPaging()){
