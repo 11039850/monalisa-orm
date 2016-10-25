@@ -14,13 +14,43 @@
  *	You should have received a copy of the GNU Lesser General Public License
  *	along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************************/
-package com.tsc9526.monalisa.http.action;
+package com.tsc9526.monalisa.orm.tools.logger;
 
+import java.net.URL;
 
 /**
  * 
  * @author zzg.zhou(11039850@qq.com)
  */
-public interface ActionLocate {
-	Action getAction(ActionArgs args);
+public class Log4jCfg {
+	public static void initLog4jConfiguration(){
+		try{
+			Class.forName("org.apache.log4j.Logger");
+			
+			boolean cfg=false;
+			if(System.getProperty("log4j.configuration")!=null){
+				cfg=true;
+			}
+			
+			if(!cfg){
+				ClassLoader[] loaders=new ClassLoader[]{
+					Thread.currentThread().getContextClassLoader(),
+					LoggerFactory.class.getClassLoader()
+				};
+				 
+				for(ClassLoader loader:loaders){
+					if(loader.getResource("/log4j.xml")!=null ||  loader.getResource("/log4j.properties")!=null){
+						cfg=true;
+						break;
+					}
+				}
+			}
+			
+			if(!cfg){
+				URL log4jCfg=LoggerFactory.class.getResource("/logger/log4j.xml");
+				org.apache.log4j.xml.DOMConfigurator.configure(log4jCfg);
+			}
+			
+		}catch(ClassNotFoundException e){}
+	}
 }

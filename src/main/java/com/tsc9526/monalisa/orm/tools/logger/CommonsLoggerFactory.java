@@ -21,7 +21,10 @@ package com.tsc9526.monalisa.orm.tools.logger;
  * @author zzg.zhou(11039850@qq.com)
  */
 public class CommonsLoggerFactory implements LoggerFactory {
-
+	static{
+		Log4jCfg.initLog4jConfiguration();
+	}
+	
 	public Logger getLogger(String category) {
 		return new CommonsLoggingLogger(org.apache.commons.logging.LogFactory.getLog(category));
 	}

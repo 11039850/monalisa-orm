@@ -462,6 +462,8 @@ public abstract class Model<T extends Model> implements Serializable {
 			}
 		}
 
+		holder().clearChanges();
+		
 		if (mm().listener != null) {
 			mm().listener.after(event, this, r);
 		}

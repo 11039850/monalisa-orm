@@ -16,6 +16,10 @@
  *******************************************************************************************/
 package test.com.tsc9526.monalisa.orm.datatable;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Map;
 
@@ -99,12 +103,24 @@ public class DataMapTest {
 	}
 
 	
-	public void testKeySensitive(){
+	public void testKeySensitive1(){
 		DataMap row=new DataMap();
 		row.put("AbC","aBC");
 		
 		String key=row.keySet().iterator().next();
 		Assert.assertEquals(key, "AbC");
+	}
+	
+	public void testKeySensitive2(){
+		DataMap row=new DataMap();
+		row.put("Abc","aBC");
+		
+		row.put("ABC","xxx");
+		
+		String key=row.keySet().iterator().next();
+		Assert.assertEquals(key, "Abc");
+		
+		Assert.assertEquals(row.get(key),"xxx");
 	}
 	
 	public void testNull(){
@@ -115,5 +131,24 @@ public class DataMapTest {
 		
 		String key=row.keySet().iterator().next();
 		Assert.assertEquals(key, null);
+	}
+	
+	public void testSerial()throws Exception{
+		DataMap row=new DataMap();
+		row.put("AbC","aBC");
+		
+		ByteArrayOutputStream buf=new ByteArrayOutputStream();
+		ObjectOutputStream out=new ObjectOutputStream(buf);
+		out.writeObject(row);
+		out.close();
+		
+		ObjectInputStream in=new ObjectInputStream(new ByteArrayInputStream(buf.toByteArray()));
+		DataMap rs=(DataMap)in.readObject();
+		
+		Assert.assertEquals(rs.getString("abc"),"aBC");
+		
+		String key=row.keySet().iterator().next();
+		Assert.assertEquals(key, "AbC");
+		
 	}
 }

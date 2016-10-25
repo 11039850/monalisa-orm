@@ -26,29 +26,9 @@ import org.slf4j.spi.LocationAwareLogger;
  */
 public class SLF4JLoggerFactory implements LoggerFactory {
 	static{
-		try{
-			Class.forName("org.apache.log4j.Logger");
-			
-			boolean cfgExists=false;
-			if(System.getProperty("log4j.configuration")!=null){
-				cfgExists=true;
-			}
-			
-			if(!cfgExists){
-				ClassLoader loader=LoggerFactory.class.getClassLoader();
-				if(loader.getResource("/log4j.xml")!=null ||  loader.getResource("/log4j.properties")!=null){
-					cfgExists=true;
-				}
-			}
-			
-			if(!cfgExists){
-				URL log4jCfg=LoggerFactory.class.getResource("/logger/log4j.xml");
-				org.apache.log4j.xml.DOMConfigurator.configure(log4jCfg);
-			}
-			
-		}catch(ClassNotFoundException e){
-		}
+		Log4jCfg.initLog4jConfiguration();
 	}
+	
 	public Logger getLogger(String category) {
 		org.slf4j.Logger slf4jLogger = org.slf4j.LoggerFactory.getLogger(category);
 		if (slf4jLogger instanceof LocationAwareLogger) {

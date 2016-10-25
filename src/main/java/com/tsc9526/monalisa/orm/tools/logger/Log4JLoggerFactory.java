@@ -23,6 +23,10 @@ import org.apache.log4j.Level;
  * @author zzg.zhou(11039850@qq.com)
  */
 public class Log4JLoggerFactory implements LoggerFactory {
+	static{
+		Log4jCfg.initLog4jConfiguration();
+	}
+	
 	public Logger getLogger(String category) {
 		return new Log4JLogger(org.apache.log4j.Logger.getLogger(category));
 	}

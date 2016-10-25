@@ -14,17 +14,29 @@
  *	You should have received a copy of the GNU Lesser General Public License
  *	along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************************/
-package test.com.tsc9526.monalisa.http.server;
+package test.com.tsc9526.monalisa.orm.tools;
 
-import com.tsc9526.monalisa.http.server.MonalisaServer;
+import java.lang.reflect.Method;
+import java.util.Arrays;
+
+import org.testng.annotations.Test;
+
+import com.tsc9526.monalisa.orm.Query;
+import com.tsc9526.monalisa.orm.tools.helper.AsmHelper;
 
 /**
  * 
  * @author zzg.zhou(11039850@qq.com)
  */
-public class JettyTest {
-
-	public static void main(String[] args)throws Exception {
-		MonalisaServer.main(args);
+@Test
+public class AsmHelperTest {
+	
+	public void testGetParameter()throws Exception{
+		for(Method m:Query.class.getClass().getMethods()){
+				
+		String[] ns=AsmHelper.getMethodParamNames(m);
+		
+		System.out.println(""+m.getName()+": "+Arrays.toString(ns));
+		}
 	}
 }

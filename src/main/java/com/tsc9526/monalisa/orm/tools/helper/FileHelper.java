@@ -35,19 +35,25 @@ import java.util.List;
 public class FileHelper {
 	
 	public static byte[] readFile(String filePath)throws IOException{
-		File f = new File(filePath);
-		return readFile(f);
+		return readBytes(new FileInputStream(filePath));
 	}
 	
-	public static byte[] readFile(File f)throws IOException{
-		 
-		byte[] b = new byte[(int) f.length()];
-		
-		DataInputStream in = new DataInputStream(new FileInputStream(f));
-		in.readFully(b);
+	public static byte[] readFile(File file)throws IOException{
+		return readBytes(new FileInputStream(file));
+	}
+	
+	public static byte[] readBytes(InputStream in)throws IOException{
+		ByteArrayOutputStream bos=new ByteArrayOutputStream();
+		byte[] buf=new byte[16*1024];
+		int len=in.read(buf);
+		while(len>0){
+			bos.write(buf,0, len);
+			
+			len=in.read(buf);
+		}
 		in.close();
 		
-		return b;
+		return bos.toByteArray();
 	}
 	
 	public static String combinePath(String... paths){

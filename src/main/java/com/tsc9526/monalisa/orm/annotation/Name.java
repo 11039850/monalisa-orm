@@ -14,27 +14,19 @@
  *	You should have received a copy of the GNU Lesser General Public License
  *	along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************************/
-package com.tsc9526.monalisa.http.exception;
+package com.tsc9526.monalisa.orm.annotation;
 
-import com.tsc9526.monalisa.http.Response;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 /**
  * 
  * @author zzg.zhou(11039850@qq.com)
  */
-public class ResponseException extends RuntimeException{
- 
-	private static final long serialVersionUID = 6026117668654694435L;
-
-	private Response response;
-	
-	public ResponseException(Response response){
-		super(response.getMessage());
-		
-		this.response=response;
-	}
-	
-	public Response getResponse(){
-		return response;
-	}
+@Target(ElementType.PARAMETER)  
+@Retention(RetentionPolicy.RUNTIME)  
+public @interface Name{
+	String value();
 }
