@@ -155,7 +155,7 @@ public class Query {
 	}
 	
 	public Query add(String segment,Object ... args){		
-		if(segment!=null){			 
+		if(segment!=null && segment.length()>0){			 
 			sql.append(segment);
 		}
 		

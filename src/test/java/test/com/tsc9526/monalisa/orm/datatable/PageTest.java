@@ -28,6 +28,7 @@ import com.google.gson.JsonParser;
 import com.tsc9526.monalisa.orm.datatable.DataTable;
 import com.tsc9526.monalisa.orm.datatable.Page;
 import com.tsc9526.monalisa.orm.tools.helper.ClassHelper;
+import com.tsc9526.monalisa.orm.tools.helper.JsonHelper;
 import com.tsc9526.monalisa.orm.tools.helper.ClassHelper.MetaClass;
 
 /**
@@ -54,18 +55,18 @@ public class PageTest {
 		}
 		
 		Page<Object> page=table.getPage(5,0);
-		Assert.assertEquals(page.getPageNo(), 1);
-		Assert.assertEquals(page.getTotalPage(), 2);
-		Assert.assertEquals(page.getTotalRow(), 6);
-		Assert.assertEquals(page.getPageSize(),5);
-		Assert.assertEquals(page.getRows(),5);
+		Assert.assertEquals(page.getPage(), 1);
+		Assert.assertEquals(page.getTotal(), 2);
+		Assert.assertEquals(page.getRecords(), 6);
+		Assert.assertEquals(page.getSize(),5);
+		Assert.assertEquals(page.rows(),5);
 		 
 		page=table.getPage(5,5);
-		Assert.assertEquals(page.getPageNo(), 2);
-		Assert.assertEquals(page.getTotalPage(), 2);
-		Assert.assertEquals(page.getTotalRow(), 6);
-		Assert.assertEquals(page.getPageSize(),5);
-		Assert.assertEquals(page.getRows(),1);
+		Assert.assertEquals(page.getPage(), 2);
+		Assert.assertEquals(page.getTotal(), 2);
+		Assert.assertEquals(page.getRecords(), 6);
+		Assert.assertEquals(page.getSize(),5);
+		Assert.assertEquals(page.rows(),1);
 	}
 	
 	
@@ -87,24 +88,26 @@ public class PageTest {
 		}
 		
 		Page<Object> page=table.getPage(6,0);
-		Assert.assertEquals(page.getPageNo(), 1);
-		Assert.assertEquals(page.getTotalPage(), 1);
-		Assert.assertEquals(page.getTotalRow(), 6);
-		Assert.assertEquals(page.getPageSize(),6);
-		Assert.assertEquals(page.getRows(),6);
+		Assert.assertEquals(page.getPage(), 1);
+		Assert.assertEquals(page.getTotal(), 1);
+		Assert.assertEquals(page.getRecords(), 6);
+		Assert.assertEquals(page.getSize(),6);
+		Assert.assertEquals(page.rows(),6);
 		
 		String json=page.toJson();
 		JsonParser parser=new JsonParser();
 		JsonObject root=parser.parse(json).getAsJsonObject();
 		
-		Assert.assertEquals(root.get("pageNo").getAsInt(),1);
-		Assert.assertEquals(root.get("totalPage").getAsInt(),1);
-		Assert.assertEquals(root.get("totalRow").getAsInt(),6);
-		Assert.assertEquals(root.get("pageSize").getAsInt(),6);
+		Assert.assertEquals(root.get("page").getAsInt(),1);
+		Assert.assertEquals(root.get("total").getAsInt(),1);
+		Assert.assertEquals(root.get("records").getAsInt(),6);
+		Assert.assertEquals(root.get("size").getAsInt(),6);
 	 	 
-		JsonElement list=root.get("list");
+		JsonElement list=root.get("rows");
 		String target=new GsonBuilder().serializeNulls().create().toJson(list);
 		Assert.assertEquals(target,table.toJson());
+		
+		System.out.println(JsonHelper.getGson().toJson(page));
 		 
 	}
 	

@@ -40,6 +40,7 @@ import com.google.gson.stream.JsonWriter;
 import com.tsc9526.monalisa.orm.datatable.DataColumn;
 import com.tsc9526.monalisa.orm.datatable.DataMap;
 import com.tsc9526.monalisa.orm.datatable.DataTable;
+import com.tsc9526.monalisa.orm.datatable.Page;
 import com.tsc9526.monalisa.orm.tools.converters.Conversion;
 import com.tsc9526.monalisa.orm.tools.helper.ClassHelper.FGS;
 import com.tsc9526.monalisa.orm.tools.helper.ClassHelper.MetaClass;
@@ -115,12 +116,32 @@ public class JsonHelper {
 	
 	public static DataTable<DataMap> parseToDataTable(JsonArray array){
 		DataTable<DataMap> table=new DataTable<DataMap>();
+		
 		for(int i=0;i<array.size();i++){
 			DataMap data=parseToDataMap(array.get(i).getAsJsonObject());
 			
 			table.add(data);		
 		}
 		return table;
+	}	
+	
+	public static Page<DataMap> parseToPage(JsonObject json){
+		DataTable<DataMap> rows=parseToDataTable(json.get("rows").getAsJsonArray());
+		
+		long records=json.get("records").getAsLong();
+		long size   =json.get("size").getAsLong();
+		long page   =json.get("page").getAsLong();
+		long total  =json.get("total").getAsLong();
+	 
+				 
+		Page<DataMap> r= new Page<DataMap>();
+		r.setRecords(records);
+		r.setSize(size);
+		r.setPage(page);
+		r.setTotal(total);
+		r.setRows(rows); 
+		
+		return r;
 	}	
 	
 	public static DataMap parseToDataMap(JsonObject json){

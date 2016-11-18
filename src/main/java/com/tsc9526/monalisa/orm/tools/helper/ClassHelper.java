@@ -176,6 +176,24 @@ public class ClassHelper {
 			return mc;
 		}
 	}
+	
+	public static List<Field> fetchFields(Class<?> clazz){	
+		List<Field> fs=new ArrayList<Field>();
+		fetchFields(fs,clazz);
+		return fs;
+	}
+	
+	public static void fetchFields(List<Field> fields,Class<?> clazz){			 
+		Field[] fs=clazz.getDeclaredFields();
+		for(Field f:fs){
+			fields.add(f);
+		}
+		
+		Class<?> su=clazz.getSuperclass();
+		if(su!=null){
+			fetchFields(fields,su);
+		}						
+	}	
 
 	public static class MetaClass {
 		private Class<?> clazz;
@@ -201,19 +219,7 @@ public class ClassHelper {
 				}
 			}
 		}
-		 
-		private void fetchFields(List<Field> fields,Class<?> clazz){			 
-			Field[] fs=clazz.getDeclaredFields();
-			for(Field f:fs){
-				fields.add(f);
-			}
-			
-			Class<?> su=clazz.getSuperclass();
-			if(su!=null){
-				fetchFields(fields,su);
-			}						
-		}		 
-		
+	 	
 		/**
 		 * 
 		 * @param fs Fields will be remove

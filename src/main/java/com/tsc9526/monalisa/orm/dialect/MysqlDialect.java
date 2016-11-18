@@ -16,6 +16,8 @@
  *******************************************************************************************/
 package com.tsc9526.monalisa.orm.dialect;
 
+import java.util.List;
+
 import com.tsc9526.monalisa.orm.Query;
 import com.tsc9526.monalisa.orm.datasource.DBConfig;
 import com.tsc9526.monalisa.orm.datasource.DbProp;
@@ -87,11 +89,17 @@ public class MysqlDialect extends Dialect {
 		return query;
 	}
 
+	public boolean tableExist(DBConfig db,String name,boolean incudeView){
+		//always include view 
+		List<DataMap> rs=db.select("show tables like ?", name);
+		return rs.size()>0;
+	}
+	
 	public CreateTable getCreateTable(DBConfig db, String tableName) {
 		String sql = "SHOW CREATE TABLE " + getTableName(tableName);
 		DataMap rs = db.selectOne(sql);
 		if (rs != null) {
-			String createSQL = rs.getString(1);
+			String createSQL = rs.get(1).toString();
 
 			int p = createSQL.indexOf("(");
 

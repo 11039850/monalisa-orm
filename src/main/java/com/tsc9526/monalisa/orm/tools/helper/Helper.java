@@ -316,6 +316,28 @@ public class Helper {
 		return Class.forName(className);
 	}
 	
+	
+	public static String join(String[] vs,int from,int len,String joinString){
+		StringBuffer sb=new StringBuffer();
+		for(int i=from; i<(from+len); i++){
+			if(sb.length()>0){
+				sb.append(joinString);
+			}
+			sb.append(vs[i]);
+		}
+		return sb.toString();	
+	}
+	
+	
+	public static String[] shiftLeft(String[] vs,int len){
+		if(vs.length>len){
+			return Arrays.copyOfRange(vs, len, vs.length-1);
+		}else{
+			return null;
+		}
+	}
+	
+	
 	public static URL[] toURLs(String[] classPath){
 		List<URL> urls = new ArrayList<URL>();
 		try{ 

@@ -31,6 +31,8 @@ public class DataColumn {
 	
 	private String typeString="String";
 	
+	private int jdbcType;
+	
 	public DataColumn() {
 		
 	}
@@ -92,5 +94,13 @@ public class DataColumn {
 
 	public String toString(){
 		return name;
+	}
+
+	public int getJdbcType() {
+		return jdbcType;
+	}
+
+	public void setJdbcType(int jdbcType) {
+		this.jdbcType = jdbcType;
 	}
 }

@@ -73,7 +73,7 @@ public class Record extends Model<Record>{
 		
 		private Example example;
 		
-		private Criteria(Example example){
+		protected Criteria(Example example){
 			this.example=example;
 		}
 		

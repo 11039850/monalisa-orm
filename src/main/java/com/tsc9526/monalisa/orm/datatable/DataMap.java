@@ -29,11 +29,11 @@ import com.tsc9526.monalisa.orm.tools.helper.Helper;
  * 
  * @author zzg.zhou(11039850@qq.com)
  */
+@SuppressWarnings("unchecked")
 public class DataMap extends CaseInsensitiveMap<Object>{ 
 	private static final long serialVersionUID = -8132926422921115814L;	
 	 
-	@SuppressWarnings("unchecked")
-	public <T> T as(Class<T> toClass){
+ 	public <T> T as(Class<T> toClass){
 		try {
 			if(toClass.isAssignableFrom(DataMap.class)){
 				return (T)this;
@@ -66,42 +66,24 @@ public class DataMap extends CaseInsensitiveMap<Object>{
 	 * @param index  The first key is 0.
 	 * @return Object value
 	 */
-	@SuppressWarnings("unchecked")
 	public Object get(int index){
 		Map.Entry<String,Object> entry=(Map.Entry<String,Object>)this.entrySet().toArray()[index];
 		
 		Object v=entry.getValue();
 		return v;
 	}
+	  
 	
-	
-	/**
-	 * 
-	 * @param index  The first key is 0.
-	 * @param defaultValue if null, return the defaultValue
-	 * @return string value
-	 */
-	public String getString(int index,String defaultValue){
-		String v=getString(index);
-		if(v==null){
-			v= defaultValue;
-		}
-		return v;
-	}
-	
-	/**
-	 * 
-	 * @param index  The first key is 0.
-	 * @return string value
-	 */
-	public String getString(int index){		 
-		Object v=get(index);
-		if(v==null){
-			return null;
-		}else {
-			return v.toString();
+	protected Object getOne(String key) {
+		Object v=get(key);
+		
+		if(v!=null && v.getClass().isArray() ) {
+			return ((Object[])v)[0];
+		}else{
+			return v;
 		}
 	}
+	 
 	
 	public String getString(String key,String defaultValue){
 		String v=getString(key);
@@ -112,25 +94,34 @@ public class DataMap extends CaseInsensitiveMap<Object>{
 	}
 	
 	public String getString(String key){
-		Object v=get(key);
+		Object v=getOne(key);
 		if(v==null){
 			return null;
 		}else {
 			return v.toString();
 		}
 	}
-	
-	public String getStringFromArray(String key,int index){
-		String[] vs=getStringFromArray(key);
-		if(vs==null){
-			return null;
+	 
+	public Integer[] getIntegerValues(String key){
+		String[] xs=getStringValues(key);
+		if(xs!=null){
+			Integer[] rs=new Integer[xs.length];
+			for(int i=0;i<xs.length;i++){
+				rs[i]=Integer.parseInt(xs[i]);			
+			}
+			return rs;
 		}else{
-			return vs[index];
+			return null;
 		}
 	}
 	
-	public String[] getStringFromArray(String key){
+	public String[] getStringValues(String key){
 		Object v=get(key);
+		
+		if(v==null){
+			v=get(key+"[]");
+		}
+		
 		if(v==null){
 			return null;
 		}else {
@@ -155,56 +146,20 @@ public class DataMap extends CaseInsensitiveMap<Object>{
 		}
 		return v;
 	}
-	
-	
-	/**
-	 * 
-	 * @param index  The first key is 0.
-	 * @param defaultValue  if null , return the defaultValue
-	 * @return boolean value
-	 */
-	public boolean getBool(int index,boolean defaultValue){
-		Boolean v=getBoolean(index);
-		if(v==null){
-			v=defaultValue;
-		}
-		return v;
-	}
-	
+	 
 	public Boolean getBoolean(String key){
-		Object v=(Object)get(key);
+		Object v=getOne(key);
 		if(v==null){
 			return null;
 		}else{
 			if(v instanceof Boolean){
 				return (Boolean)v;
-			}else if(v.getClass().isArray()){
-				return Boolean.valueOf( ((Object[])v)[0].toString());
 			}else{
 				return Boolean.valueOf(""+v);
 			}
 		}
 	}
-	
-	/**
-	 * 
-	 * @param index  The first key is 0.
-	 * @return boolean result
-	 */
-	public Boolean getBoolean(int index){
-		Object v=(Object)get(index);
-		if(v==null){
-			return null;
-		}else{
-			if(v instanceof Boolean){
-				return (Boolean)v;
-			}else if(v.getClass().isArray()){
-				return Boolean.valueOf( ((Object[])v)[0].toString());
-			}else{
-				return Boolean.valueOf(""+v);
-			}
-		}
-	}
+	 
 	
 	public int getInt(String key, int defaultValue){
 		Integer v=getInteger(key);
@@ -213,23 +168,10 @@ public class DataMap extends CaseInsensitiveMap<Object>{
 		}
 		return v;
 	}
-	
-	/**
-	 * 
-	 * @param index  The first key is 0.
-	 * @param defaultValue if null, return defaultValue
-	 * @return int result
-	 */
-	public int getInt(int index, int defaultValue){
-		Integer v=getInteger(index);
-		if(v==null){
-			v=defaultValue;
-		}
-		return v;
-	}
+	 
 	
 	public Integer getInteger(String key){
-		Object v=(Object)get(key);
+		Object v=getOne(key);
 		if(v==null){
 			return null;
 		}else{
@@ -237,37 +179,12 @@ public class DataMap extends CaseInsensitiveMap<Object>{
 				return (Integer)v;
 			}else if(v instanceof Double){
 				return ((Double)v).intValue();
-			}else if(v.getClass().isArray()){
-				return Integer.parseInt( ((Object[])v)[0].toString());
 			}else{
 				return Integer.parseInt(""+v);
 			}
 		}
 	}
-	
-	
-	/**
-	 * 
-	 * @param index  The first key is 0.
-	 * @return integer result
-	 */
-	public Integer getInteger(int index){
-		Object v=(Object)get(index);
-		if(v==null){
-			return null;
-		}else{
-			if(v instanceof Integer){
-				return (Integer)v;
-			}else if(v instanceof Double){
-				return ((Double)v).intValue();
-			}else if(v.getClass().isArray()){
-				return Integer.parseInt( ((Object[])v)[0].toString());
-			}else{
-				return Integer.parseInt(""+v);
-			}
-		}
-	}
-	
+	 
 
 	public long getLong(String key, long defaultValue){
 		Long v=getLong(key);
@@ -276,23 +193,10 @@ public class DataMap extends CaseInsensitiveMap<Object>{
 		}
 		return v;
 	}
-	
-		/**
-	 * 
-	 * @param index  The first key is 0.
-	 * @param defaultValue if null, return defaultValue
-	 * @return long result
-	 */
-	public long getLong(int index, long defaultValue){
-		Long v=getLong(index);
-		if(v==null){
-			v=defaultValue;
-		}
-		return v;
-	}
+	 
 	
 	public Long getLong(String key){
-		Object v=(Object)get(key);
+		Object v=getOne(key);
 		if(v==null){
 			return null;
 		}else{
@@ -300,36 +204,12 @@ public class DataMap extends CaseInsensitiveMap<Object>{
 				return (Long)v;
 			}else if(v instanceof Double){
 				return ((Double)v).longValue();
-			}else if(v.getClass().isArray()){
-				return Long.parseLong( ((Object[])v)[0].toString());
 			}else{
 				return Long.parseLong(""+v);
 			}
 		}
 	}
-	
-	/**
-	 * 
-	 * @param index  The first key is 0.
-	 * @return long result
-	 */
-	public Long getLong(int index){
-		Object v=(Object)get(index);
-		if(v==null){
-			return null;
-		}else{
-			if(v instanceof Long){
-				return (Long)v;
-			}else if(v instanceof Double){
-				return ((Double)v).longValue();
-			}else if(v.getClass().isArray()){
-				return Long.parseLong( ((Object[])v)[0].toString());
-			}else{
-				return Long.parseLong(""+v);
-			}
-		}
-	}
-	
+	 
 	
 	public float getFloat(String key, float defaultValue){
 		Float v=getFloat(key);
@@ -339,23 +219,10 @@ public class DataMap extends CaseInsensitiveMap<Object>{
 		return v;
 	}
 	
-	
-	/**
-	 * 
-	 * @param index  The first key is 0.
-	 * @param defaultValue if null, return defaultValue
-	 * @return float result
-	 */
-	public float getFloat(int index, float defaultValue){
-		Float v=getFloat(index);
-		if(v==null){
-			v=defaultValue;
-		}
-		return v;
-	}
+	 
 	
 	public Float getFloat(String key){
-		Object v=(Object)get(key);
+		Object v=getOne(key);
 		if(v==null){
 			return null;
 		}else{
@@ -363,49 +230,12 @@ public class DataMap extends CaseInsensitiveMap<Object>{
 				return (Float)v;
 			}else if(v instanceof Double){
 				return ((Double)v).floatValue();
-			}else if(v.getClass().isArray()){
-				return Float.parseFloat( ((Object[])v)[0].toString());
 			}else{
 				return Float.parseFloat(""+v);
 			}
 		}
 	}
-	
-	/**
-	 * 
-	 * @param index  The first key is 0.
-	 * @return float result
-	 */
-	public Float getFloat(int index){
-		Object v=(Object)get(index);
-		if(v==null){
-			return null;
-		}else{
-			if(v instanceof Float){
-				return (Float)v;
-			}else if(v instanceof Double){
-				return ((Double)v).floatValue();
-			}else if(v.getClass().isArray()){
-				return Float.parseFloat( ((Object[])v)[0].toString());
-			}else{
-				return Float.parseFloat(""+v);
-			}
-		}
-	}
-	
-	/**
-	 * 
-	 * @param index  The first key is 0.
-	 * @param defaultValue if null, return defaultValue
-	 * @return double result
-	 */
-	public double getDouble(int index, double defaultValue){
-		Double v=getDouble(index);
-		if(v==null){
-			v=defaultValue;
-		}
-		return v;
-	}
+	  
 	
 	public double getDouble(String key, double defaultValue){
 		Double v=getDouble(key);
@@ -416,60 +246,18 @@ public class DataMap extends CaseInsensitiveMap<Object>{
 	}
 	
 	public Double getDouble(String key){
-		Object v=(Object)get(key);
+		Object v=getOne(key);
 		if(v==null){
 			return null;
 		}else{
 			if(v instanceof Double){
 				return (Double)v;
-			}else if(v.getClass().isArray()){
-				return Double.parseDouble( ((Object[])v)[0].toString());
 			}else{
 				return Double.parseDouble(""+v);
 			}
 		}
 	}
-	
-	
-	/**
-	 * 
-	 * @param index  The first key is 0.
-	 * @return double result
-	 */
-	public Double getDouble(int index){
-		Object v=(Object)get(index);
-		if(v==null){
-			return null;
-		}else{
-			if(v instanceof Double){
-				return (Double)v;
-			}else if(v.getClass().isArray()){
-				return Double.parseDouble( ((Object[])v)[0].toString());
-			}else{
-				return Double.parseDouble(""+v);
-			}
-		}
-	}
-
-	/**
-	 * 
-	 * @param index  The first key is 0.
-	 * @return date value
-	 */	
-	public Date getDate(int index){
-		return Helper.toDate(get(index), null, null);
-	}
-	
-	/**
-	 * 
-	 * @param index  The first key is 0.
-	 * @param format  new SimpleDateFormat(format): auto detect date format if null or ''
-	 * @param defaultValue return this value if null
-	 * @return date value
-	 */
-	public Date getDate(int index,String format,Date defaultValue){		 
-		return Helper.toDate(get(index), format, defaultValue);
-	}
+	   
 	
 	/**
 	 * Auto detect the date format:<br>
@@ -507,6 +295,6 @@ public class DataMap extends CaseInsensitiveMap<Object>{
 	 * @see #getDate(String)
 	 */
 	public Date getDate(String key,String format,Date defaultValue){
-		return Helper.toDate(get(key), format, defaultValue); 
+		return Helper.toDate(getOne(key), format, defaultValue); 
 	}
 }

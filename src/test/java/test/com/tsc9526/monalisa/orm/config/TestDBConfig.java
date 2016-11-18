@@ -57,4 +57,14 @@ public class TestDBConfig {
 		long c= record.SELECT().count();
 		Assert.assertTrue(c>=0);	
 	}
+	
+	public void testFromJdbcUrl(){
+		DBConfig db=DBConfig.fromJdbcUrl(TestConstants.url, TestConstants.username, TestConstants.password);
+		
+		Record record=new Record("test_table_1");
+		record.use(db);
+		
+		long c= record.SELECT().count();
+		Assert.assertTrue(c>=0);
+	}
 }

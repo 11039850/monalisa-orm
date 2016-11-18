@@ -17,7 +17,6 @@
 package com.tsc9526.monalisa.orm.tools.helper;
 
 import java.io.ByteArrayOutputStream;
-import java.io.DataInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;

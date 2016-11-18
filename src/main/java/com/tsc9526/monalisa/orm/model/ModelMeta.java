@@ -403,8 +403,8 @@ public class ModelMeta{
 				Object value=fgs.getObject(model);
 				fgs.setObject(x, value);
 			}
-			x.holder().changedFields.clear();
-			x.holder().changedFields.addAll(model.holder().changedFields);
+//			x.holder().changedFields.clear();
+//			x.holder().changedFields.addAll(model.holder().changedFields);
  			
 			return x;
 		}catch(Exception e){

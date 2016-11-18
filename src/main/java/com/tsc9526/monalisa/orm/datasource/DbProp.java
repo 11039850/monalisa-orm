@@ -302,11 +302,15 @@ public class DbProp {
 	
 
 	public int getIntValue(DBConfig db,String tableName, int defaultValue){
-		String v=getValue(db, tableName);
-		if(v!=null && v.trim().length()>0){
-			return Integer.parseInt(v);
+		if(tableName==null || tableName.length()==0){
+			return getIntValue(db,defaultValue);
 		}else{
-			return defaultValue;
+			String v=getValue(db, tableName);
+			if(v!=null && v.trim().length()>0){
+				return Integer.parseInt(v);
+			}else{
+				return defaultValue;
+			}
 		}
 	}
 }

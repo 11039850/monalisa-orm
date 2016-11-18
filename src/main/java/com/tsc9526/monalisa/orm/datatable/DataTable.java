@@ -48,9 +48,7 @@ public class DataTable<E> extends ArrayList<E> {
 	}
 	
 	protected List<DataColumn> headers=new ArrayList<DataColumn>();
-	
-	protected String name="_THIS_TABLE";
-	
+	 
 	public DataTable() {		
 	}
 	
@@ -117,7 +115,7 @@ public class DataTable<E> extends ArrayList<E> {
 			columns="*";
 		}
 		
-		String sql="SELECT "+columns+" FROM "+name;
+		String sql="SELECT "+columns+" FROM _THIS_TABLE";
 		
 		if(where!=null && where.trim().length()>0){
 			if(SQLHelper.isStartByKeyWord(where,"WHERE")){
@@ -206,13 +204,13 @@ public class DataTable<E> extends ArrayList<E> {
 	 
 	
 	public Page<E> getPage(int limit,int offset){
-		DataTable<E> list=new DataTable<E>();
+		DataTable<E> rows=new DataTable<E>();
 		
-		for(int i=offset;list.size()<limit && i<size();i++){
-			list.add(get(i));
+		for(int i=offset;rows.size()<limit && i<size();i++){
+			rows.add(get(i));
 		}
 		
-		return new Page<E>(list,size(),limit,offset);
+		return new Page<E>(rows,size(),limit,offset);
 	}
 	
 	@SuppressWarnings("unchecked")

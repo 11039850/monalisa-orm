@@ -21,14 +21,17 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.lang.annotation.Annotation;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 import javax.sql.DataSource;
@@ -366,19 +369,33 @@ public class DBConfig implements Closeable{
 		return rs;
 	}
 	
-	public List<String> getTables(){
+	public boolean tableExist(String name){
+		return tableExist(name, false);
+	}
+	
+	public boolean tableExist(String name,boolean includeView){
+		return getDialect().tableExist(this, name, includeView);
+	}
+	
+	public Set<String> getTables(){
+		return getTables(false);
+	}
+	
+	public Set<String> getTables(boolean includeView){
+		String[] types=includeView? new String[]{"TABLE","VIEW"}  : new String[]{"TABLE"};
 		try{
 			Connection conn=getDataSource().getConnection();
 			 
-			List<String> tables=new ArrayList<String>();
+			Set<String> tables=new LinkedHashSet<String>();
 			 
 			DatabaseMetaData dbm=conn.getMetaData();
-			ResultSet rs=dbm.getTables("", "","%", new String[]{"TABLE"});
+			ResultSet rs=dbm.getTables("", "","%",types );
 			while(rs.next()){
 				String table=rs.getString("TABLE_NAME");
+				table=Dialect.getRealname(table);
+				
 				tables.add(table);
 			}
-			
 			CloseQuietly.close(rs,conn);
 			
 			return tables;
@@ -387,13 +404,95 @@ public class DBConfig implements Closeable{
 		}
 	}
 	
+	public static enum Level{
+		ONLY_READ, ONLY_WRITE, READ_AND_WRITE
+	}
+	
 	public static DBConfig fromClass(Class<?> clazzWithDBAnnotation){
 		return DataSourceManager.getInstance().getDBConfig(clazzWithDBAnnotation);
 	}
 	 
-	public static enum Level{
-		ONLY_READ, ONLY_WRITE, READ_AND_WRITE
-	}	
+	public static DBConfig fromJdbcUrl(String jdbcUrl,String username,String password){
+		final String dbKey=jdbcUrl+"&username="+username+"&password="+password;
+		DB db=createDB(jdbcUrl,username,password);
+		return DataSourceManager.getInstance().getDBConfig(dbKey, db);
+	}
+	
+	public static DB createDB(final String jdbcUrl,final String username,final String password){
+		final String dbKey=jdbcUrl+"&username="+username+"&password="+password;
+		final String driverClass=DataSourceManager.getInstance().getDialect(jdbcUrl).getDriver();
+		
+		return new DB(){
+			public Class<? extends Annotation> annotationType() {
+				return DB.class;
+			}
+			 
+			public String url() {
+				return jdbcUrl;
+			}
+	 	 
+			public String driver() {
+				return driverClass;
+			}
+			 
+			public String catalog() {
+				return "";
+			}
+	
+			public String schema() {
+				return "";
+			}
+	
+			public String username() {
+				return username;
+			}
+	
+			public String password() {
+				return password;
+			}
+	
+			public String tables() {
+				return "%";
+			}
+	
+			public String partitions() {
+				return null;
+			}
+	
+			public String mapping() {
+				return null;
+			}
+	
+			public String modelClass() {
+				return null;
+			}
+	
+			public String modelListener() {
+				return null;
+			}
+	
+			public String datasourceClass() {
+				return null;
+			}
+	
+			public String key() {
+				return dbKey;
+			}
+	 	 
+			public String configName() {
+				return null;
+			}
+			 
+			public String configFile() {
+				return null;
+			}
+	
+			 
+			public Class<? extends ConfigClass> configClass() {
+				return null;
+			}
+		};
+	}
 	
 	public class Host{
 		public String   NAME;

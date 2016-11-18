@@ -29,6 +29,7 @@ import java.util.Map;
 import com.tsc9526.monalisa.orm.datatable.DataColumn;
 import com.tsc9526.monalisa.orm.datatable.DataTable;
 import com.tsc9526.monalisa.orm.tools.helper.CloseQuietly;
+import com.tsc9526.monalisa.orm.tools.helper.TypeHelper;
 
 /**
  * 
@@ -66,7 +67,9 @@ public class ResultSetExecutor<T>  extends RelationExecutor implements Execute<D
 		
 		Map<String, Integer> xs = new HashMap<String, Integer>();
 		for (int i = 1; i <= rsmd.getColumnCount(); i++) {
-			String name = rsmd.getColumnLabel(i);
+			String label=rsmd.getColumnLabel(i);
+			
+			String name = label;
 			if (name == null || name.trim().length() < 1) {
 				name = rsmd.getColumnName(i);
 			}
@@ -80,9 +83,13 @@ public class ResultSetExecutor<T>  extends RelationExecutor implements Execute<D
 				xs.put(name, 1);
 			}
 			
+			DataColumn dc=new DataColumn(name);
+			int jdbcType=rsmd.getColumnType(i);
+			dc.setJdbcType(jdbcType);
+			dc.setTypeString(TypeHelper.getJavaType(jdbcType));
+			dc.setLabel(label==null?name:label);
 			
-			ls.add(new DataColumn(name));
-			 
+			ls.add(dc);
 		}
 		
 		return ls;

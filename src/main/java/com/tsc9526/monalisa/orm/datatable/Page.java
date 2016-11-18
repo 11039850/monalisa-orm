@@ -33,12 +33,30 @@ import com.tsc9526.monalisa.orm.tools.helper.JsonHelper;
 public class Page<T> implements Serializable {
 	private static final long serialVersionUID = -33321L;
 	
-	private DataTable<T> list=new DataTable<T>();	
-	 
-	private long pageNo   = 1;				 
-	private long pageSize = 10;				 
-	private long totalPage= 0;				 
-	private long totalRow = 0;				 
+	/**
+	 * Total pages
+	 */
+	private long total  = 0;
+	
+	/**
+	 * Current page no.  first is 1
+	 */
+	private long page   = 1;		
+	
+	/**
+	 * Total records 
+	 */
+	private long records= 0;
+	
+	/**
+	 * Page size
+	 */
+	private long size   = 10;	
+	
+	/**
+	 * Page data
+	 */
+	private DataTable<T> rows=new DataTable<T>();
  
 	public Page(){
 	}
@@ -46,30 +64,30 @@ public class Page<T> implements Serializable {
 	/**
 	 * Constructor of the page
 	 * 
-	 * @param list    records in this page
-	 * @param total   total records
-	 * @param limit   size of page
-	 * @param offset  position of the first record. first is 0.
+	 * @param rows      records in this page
+	 * @param records   total records
+	 * @param limit     size of page
+	 * @param offset    position of the first record. first is 0.
 	 */
-	public Page(List<T> list,long total, long limit , long offset) {
-		if(list!=null){
-			if(list instanceof DataTable){
-				this.list = (DataTable<T>)list;
+	public Page(List<T> rows,long records, long limit , long offset) {
+		if(rows!=null){
+			if(rows instanceof DataTable){
+				this.rows = (DataTable<T>)rows;
 			}else{
-				this.list = new DataTable<T>(list);
+				this.rows = new DataTable<T>(rows);
 			}
 		}else {
-			this.list=null;
+			this.rows=null;
 		}
 		
-		this.totalRow   = total;
-		this.pageSize   = limit;
+		this.records= records;
+		this.size   = limit;
 		
-		this.pageNo = 1 + offset/limit;
+		this.page   = 1 + offset/limit;
 		
-		this.totalPage = (int) (this.totalRow / this.pageSize);
-		if (this.totalRow % this.pageSize != 0) {
-			this.totalPage++;
+		this.total = (int) (this.records / this.size);
+		if (this.records % this.size != 0) {
+			this.total++;
 		}
 	}
 	
@@ -77,8 +95,51 @@ public class Page<T> implements Serializable {
 	 * 
 	 * @return rows in this page
 	 */
-	public int getRows(){
-		return list==null?0:list.size();
+	public int rows(){
+		return rows==null?0:rows.size();
+	}
+	
+	
+	
+	/**
+	 *  
+	 * @return non null data list
+	 */
+	public DataTable<T> getRows() {
+		return rows;
+	}	
+	 
+	/**
+	 * 
+	 * @return first page: 1, the second is 2 ...
+	 */
+	public long getPage() {
+		return page;
+	}
+	
+ 
+	/**
+	 * 
+	 * @return size of page
+	 */
+	public long getSize() {
+		return size;
+	}
+	 
+	/**
+	 * 
+	 * @return total pages
+	 */
+	public long getTotal() {
+		return total;
+	}
+		 
+	/**
+	 * 
+	 * @return total records
+	 */
+	public long getRecords() {
+		return records;
 	}
 	
 	
@@ -92,59 +153,18 @@ public class Page<T> implements Serializable {
 	public <X> Page<X> as(Class<X> toClass){
 		Page<X> page=new Page<X>();
 		
-		page.pageNo    = pageNo;
-		page.pageSize  = pageSize;
-		page.totalPage = totalPage;
-		page.totalRow  = totalRow;
+		page.page      = this.page;
+		page.size  = this.size;
+		page.total = this.total;
+		page.records  = this.records;
 		
-		if(list!=null){
-			page.list=list.as(toClass);
+		if(rows!=null){
+			page.rows=this.rows.as(toClass);
 		}
 		
 		return page;
 	}
 	 
-	/**
-	 *  
-	 * @return non null data list
-	 */
-	public DataTable<T> getList() {
-		return list;
-	}	
-	 
-	/**
-	 * 
-	 * @return first page: 1, the second is 2 ...
-	 */
-	public long getPageNo() {
-		return pageNo;
-	}
-	
- 
-	/**
-	 * 
-	 * @return size of page
-	 */
-	public long getPageSize() {
-		return pageSize;
-	}
-	 
-	/**
-	 * 
-	 * @return total pages
-	 */
-	public long getTotalPage() {
-		return totalPage;
-	}
-		 
-	/**
-	 * 
-	 * @return total records
-	 */
-	public long getTotalRow() {
-		return totalRow;
-	}
-	
 	
 	public String toJson(){
 		try{
@@ -153,13 +173,12 @@ public class Page<T> implements Serializable {
 			w.setSerializeNulls(true);
 			w.beginObject();
 			
-			w.name("pageNo").value(pageNo);
-			w.name("pageSize").value(pageSize);
-			w.name("totalPage").value(totalPage);
-			w.name("totalRow").value(totalRow);
-			
-			w.name("list");
-			JsonHelper.writeJson(w,list,false);
+			w.name("page").value(page);
+			w.name("total").value(total);
+			w.name("size").value(size);
+			w.name("records").value(records);
+			w.name("rows");
+			JsonHelper.writeJson(w,rows,false);
 			 
 			w.endObject();
 			w.close();
@@ -168,6 +187,26 @@ public class Page<T> implements Serializable {
 		}catch(IOException e){
 			throw new RuntimeException(e);
 		}
+	}
+
+	public void setTotal(long total) {
+		this.total = total;
+	}
+
+	public void setPage(long page) {
+		this.page = page;
+	}
+
+	public void setRecords(long records) {
+		this.records = records;
+	}
+
+	public void setSize(long size) {
+		this.size = size;
+	}
+
+	public void setRows(DataTable<T> rows) {
+		this.rows = rows;
 	}
 }
 

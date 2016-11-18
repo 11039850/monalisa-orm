@@ -87,16 +87,13 @@ public class DataTableTest {
 
 		
 		DataTable<DataMap> rs=table.select("count(*) as cnt", "a>0", null, null);
-		Assert.assertEquals(rs.get(0).getInteger(0).intValue(),2);
+		Assert.assertEquals(rs.get(0).getInteger("cnt").intValue(),2);
 		
 		rs=table.select("b as b0, c c1", "a=1", null, null);
 		Assert.assertEquals(rs.get(0).getString("b0"),"bstring");
 		Assert.assertEquals(rs.get(0).getInt("c1",0),9526);
 		
 		Assert.assertEquals(rs.get(0).getString("c1"),"9526");
-		
-		Assert.assertEquals(rs.get(0).getString(0),"bstring");
-		Assert.assertEquals(rs.get(0).getString(1),"9526");
 	}
 	
 	public void testDataTableBean(){

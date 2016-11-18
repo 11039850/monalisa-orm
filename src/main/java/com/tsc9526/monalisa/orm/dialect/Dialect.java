@@ -19,6 +19,7 @@ package com.tsc9526.monalisa.orm.dialect;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 import com.google.gson.JsonArray;
@@ -32,11 +33,11 @@ import com.tsc9526.monalisa.orm.meta.MetaTable.CreateTable;
 import com.tsc9526.monalisa.orm.model.Model;
 import com.tsc9526.monalisa.orm.model.ModelIndex;
 import com.tsc9526.monalisa.orm.tools.converters.impl.ArrayTypeConversion;
+import com.tsc9526.monalisa.orm.tools.helper.ClassHelper.FGS;
 import com.tsc9526.monalisa.orm.tools.helper.EnumHelper;
 import com.tsc9526.monalisa.orm.tools.helper.JsonHelper;
 import com.tsc9526.monalisa.orm.tools.helper.SQLHelper;
 import com.tsc9526.monalisa.orm.tools.helper.TypeHelper;
-import com.tsc9526.monalisa.orm.tools.helper.ClassHelper.FGS;
 import com.tsc9526.monalisa.orm.tools.logger.Logger;
  
 /**
@@ -64,6 +65,14 @@ public abstract class Dialect{
 	public abstract Query getLimitQuery(Query origin,int limit ,int offset);
 	 
 	public abstract CreateTable getCreateTable(DBConfig db,String tableName);
+	
+	public boolean tableExist(DBConfig db,String name,boolean includeView){
+		name=getRealname(name);
+		
+		Set<String> names=db.getTables(includeView);
+		
+		return names.contains(name);
+	}
 	
 	/**
 	 * 实现该接口用于保持连接，在连接空闲时将执行该SQL语句。 <br>

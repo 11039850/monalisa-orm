@@ -146,6 +146,14 @@ public class DataSourceManager {
 		}
 		  
 		String jdbcUrl=db.getCfg().getUrl();
+
+		return getDialect(jdbcUrl);
+	}
+	
+	public Dialect getDialect(String jdbcUrl){
+		if(jdbcUrl==null){
+			return null;
+		}
 		
 		for(String key:dialects.keySet()){
 			if(jdbcUrl.startsWith(key)){
