@@ -115,18 +115,25 @@ public class FileHelper {
 		return dir;
 	}
 	
+	/**
+	 * 
+	 * @param f  the file/dir to be deleted
+	 * @param delete true if delete the root dir, otherwise false.
+	 */
   	public static void delete(File f,boolean delete){
 		if(f.isFile()){
 			f.delete();
-		}else{
+		}else if(f.isDirectory()){
 			File[] fs=f.listFiles();
+			
 			if(fs!=null && fs.length>0){
 				for(File i:f.listFiles()){
 					delete(i,true);
 				}
-				if(delete){
-					f.delete();
-				}
+			}
+			
+			if(delete){
+				f.delete();
 			}
 		}
 	}
