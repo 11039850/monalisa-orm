@@ -114,6 +114,27 @@ public class ClassHelper {
 		return a;
 	}
 	
+	public static Method[] findDeclaredMethods(Class<?> theClass, Class<?> baseClass) {
+		Class<?> clazz = theClass;
+		Method[] allMethods = null;
+
+		while (!clazz.equals(baseClass)) {
+			Method[] thisMethods = clazz.getDeclaredMethods();
+			if (allMethods != null && allMethods.length > 0) {
+				Method[] subClassMethods = allMethods;
+				allMethods = new Method[thisMethods.length + subClassMethods.length];
+				System.arraycopy(thisMethods, 0, allMethods, 0, thisMethods.length);
+				System.arraycopy(subClassMethods, 0, allMethods, thisMethods.length, subClassMethods.length);
+			} else {
+				allMethods = thisMethods;
+			}
+
+			clazz = clazz.getSuperclass();
+		}
+
+		return ((allMethods != null) ? allMethods : new Method[0]);
+	}
+	
 	public static <T extends Annotation> Class<?> findClassWithAnnotation(Class<?> clazz, Class<T> annotationClass) {
 		T a=null;
 				 
