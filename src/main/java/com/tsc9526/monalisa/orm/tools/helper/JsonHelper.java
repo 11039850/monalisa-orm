@@ -18,6 +18,7 @@ package com.tsc9526.monalisa.orm.tools.helper;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -27,15 +28,13 @@ import com.google.gson.FieldAttributes;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
-import com.google.gson.JsonDeserializationContext;
-import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
+import com.google.gson.JsonParser;
 import com.google.gson.JsonPrimitive;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
-import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonWriter;
 import com.tsc9526.monalisa.orm.datatable.DataColumn;
 import com.tsc9526.monalisa.orm.datatable.DataMap;
@@ -144,32 +143,55 @@ public class JsonHelper {
 		return r;
 	}	
 	
-	public static DataMap parseToDataMap(JsonObject json){
-		Gson gson = createGsonBuilder()
-				.registerTypeAdapter(new TypeToken<DataMap>(){}.getType(),new JsonDeserializer<DataMap>() {
-					public DataMap deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
-						DataMap map = new DataMap();
-		                JsonObject jsonObject = json.getAsJsonObject();
-		                Set<Map.Entry<String, JsonElement>> entrySet = jsonObject.entrySet();
-		                for (Map.Entry<String, JsonElement> entry : entrySet) {
-		                	JsonElement e=entry.getValue();
-		                	if(e.isJsonPrimitive()){
-		                		JsonPrimitive p=(JsonPrimitive)e;
-		                		if(p.isString()){
-		                			map.put(entry.getKey(), p.getAsString());
-		                		}else{
-		                			map.put(entry.getKey(), p);
-		                		}
-		                	}else{
-		                		map.put(entry.getKey(), entry.getValue());
-		                	}
-		                }
-		                return map;
-		            }
-		        }).create();
-		
-		DataMap data = gson.fromJson(json, new TypeToken<DataMap>(){}.getType());
-		return data;
+	public static DataMap parseToDataMap(String json){
+		JsonElement je=new JsonParser().parse(json);
+		if(je.isJsonObject()){
+			return parseToDataMap(je.getAsJsonObject());
+		}else{
+			return null;
+		}
+	}
+ 	
+	public static DataMap parseToDataMap(JsonObject jsonObject) throws JsonParseException {
+		DataMap map = new DataMap();
+       
+        Set<Map.Entry<String, JsonElement>> entrySet = jsonObject.entrySet();
+        for (Map.Entry<String, JsonElement> entry : entrySet) {
+        	JsonElement e=entry.getValue();
+        	Object v=toObject(e);
+        	map.put(entry.getKey(),v);
+        }
+        return map;
+    }
+	
+	private static Object toObject(JsonElement e){
+		if(e==null || e.isJsonNull()){
+			return null;
+		}else if(e.isJsonPrimitive()){
+			JsonPrimitive x=(JsonPrimitive)e;
+			
+			if(x.isNumber()){
+				return e.getAsNumber();
+			}else{
+				return e.getAsString();
+			}
+		}else if(e.isJsonObject()){
+			return parseToDataMap(e.getAsJsonObject());
+		}else if(e.isJsonArray()){
+			List<Object> list=new ArrayList<Object>();
+			
+			JsonArray array=(JsonArray)e;
+    		for(int i=0;i<array.size();i++){
+    			JsonElement je=array.get(i);
+    			
+    			Object v=toObject(je);
+    			
+    			list.add(v);
+    		}
+    		return list;
+		}else{
+			return e;
+		}   
 	}
 	
 	public static void writeJson(JsonWriter w,DataTable<?> table,boolean close){

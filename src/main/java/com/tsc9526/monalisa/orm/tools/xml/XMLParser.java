@@ -16,6 +16,7 @@
  *******************************************************************************************/
 package com.tsc9526.monalisa.orm.tools.xml;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -30,9 +31,13 @@ import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 
 import org.w3c.dom.Document;
+import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
+
+import com.tsc9526.monalisa.orm.datatable.DataMap;
 
 /**
  * 
@@ -42,12 +47,16 @@ public class XMLParser {
 	private DocumentBuilder builder;
 	private XPath xpath;
 	 
-	public XMLParser() throws ParserConfigurationException {
-		DocumentBuilderFactory domfactory = DocumentBuilderFactory.newInstance();
-		builder = domfactory.newDocumentBuilder();
-
-		XPathFactory xpfactory = XPathFactory.newInstance();
-		xpath = xpfactory.newXPath();
+	public XMLParser() {
+		try{
+			DocumentBuilderFactory domfactory = DocumentBuilderFactory.newInstance();
+			builder = domfactory.newDocumentBuilder();
+	
+			XPathFactory xpfactory = XPathFactory.newInstance();
+			xpath = xpfactory.newXPath();
+		}catch(ParserConfigurationException e){
+			throw new RuntimeException(e);
+		}
 	}
  
 	public Document parseDocument(String path) throws IOException, SAXException {
@@ -63,7 +72,83 @@ public class XMLParser {
 	public Document parseDocument(InputStream is) throws IOException, SAXException {
 		return builder.parse(is);
 	}
+	
+	public DataMap parseToDataMap(Document doc){
+		return parseToDataMap(doc.getChildNodes().item(0)); 
+	}
 
+	public DataMap parseToDataMap(String xml){
+		xml=xml.trim();
+		
+		//check xml tag
+		int p1=xml.indexOf("<xml>");
+		int p2=xml.indexOf("</xml>");
+		if(p2>=p1 && p1>0){
+			xml="<root>"+xml.substring(p1+"<xml>".length(),p2)+"</root>";
+		}
+		
+		//check xml header
+		if(!xml.startsWith("<?xml")){
+			xml="<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n"+xml;
+		}
+		
+		try{
+			DocumentBuilderFactory domfactory = DocumentBuilderFactory.newInstance();
+			DocumentBuilder builder = domfactory.newDocumentBuilder();
+		 
+			Document doc= builder.parse(new InputSource(new ByteArrayInputStream(xml.getBytes("utf-8"))));
+			
+			return parseToDataMap(doc.getChildNodes().item(0)); 
+			 
+		}catch(Exception e){
+			throw new RuntimeException(e);
+		}
+	}
+	
+	 
+	public DataMap parseToDataMap(Node root){
+		DataMap m=new DataMap();
+		
+	 	NodeList  nodes=root.getChildNodes();
+	 	
+		for(int i=0;i<nodes.getLength();i++){
+			Node node=nodes.item(i);
+			int type=node.getNodeType();
+			if(type==Node.ELEMENT_NODE){
+				String name=node.getNodeName();
+				
+				NamedNodeMap attrs=node.getAttributes();
+				if(attrs!=null && attrs.getLength()>0){
+					for(int k=0;k<attrs.getLength();k++){
+						Node item=attrs.item(k);
+						m.put(name+"."+item.getNodeName(),item.getNodeValue());
+					}
+				}
+				
+				if(hasSubNodes(node)){
+					DataMap value=parseToDataMap(node);
+					m.put(name,value);
+				}else{
+					String value=node.getTextContent();
+					m.put(name,value);
+				}
+			}
+		}
+		
+		return m;
+	}
+	
+	private boolean hasSubNodes(Node node){
+		NodeList  nodes=node.getChildNodes();
+		for(int i=0;i<nodes.getLength();i++){
+			int type=nodes.item(i).getNodeType();
+			if(type==Node.ELEMENT_NODE){
+				return true;
+			}
+		}
+		return false;
+	}
+	
 	 
 	public NodeList selectNodes(Node node, String expression) throws XPathExpressionException {
 		// XPath对象编译XPath表达式

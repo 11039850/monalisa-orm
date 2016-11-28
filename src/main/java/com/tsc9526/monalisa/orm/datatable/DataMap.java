@@ -24,6 +24,8 @@ import com.tsc9526.monalisa.orm.tools.helper.ClassHelper;
 import com.tsc9526.monalisa.orm.tools.helper.ClassHelper.FGS;
 import com.tsc9526.monalisa.orm.tools.helper.ClassHelper.MetaClass;
 import com.tsc9526.monalisa.orm.tools.helper.Helper;
+import com.tsc9526.monalisa.orm.tools.helper.JsonHelper;
+import com.tsc9526.monalisa.orm.tools.xml.XMLParser;
 
 /**
  * 
@@ -33,6 +35,15 @@ import com.tsc9526.monalisa.orm.tools.helper.Helper;
 public class DataMap extends CaseInsensitiveMap<Object>{ 
 	private static final long serialVersionUID = -8132926422921115814L;	
 	 
+	public static DataMap fromXml(String xml){
+		XMLParser parser=new XMLParser();
+		return parser.parseToDataMap(xml);
+	}
+	
+	public static DataMap fromJson(String json){
+		return JsonHelper.parseToDataMap(json);
+	}
+	
  	public <T> T as(Class<T> toClass){
 		try {
 			if(toClass.isAssignableFrom(DataMap.class)){
@@ -59,7 +70,7 @@ public class DataMap extends CaseInsensitiveMap<Object>{
 		}
 		
 	}
-	 
+	 	
 	
 	/**
 	 * 
@@ -72,7 +83,38 @@ public class DataMap extends CaseInsensitiveMap<Object>{
 		Object v=entry.getValue();
 		return v;
 	}
-	  
+	
+	/**
+	 * 
+	 * @param paths split by /
+	 * @return the object value
+	 */
+	public <T> T getByPath(String paths){
+		if(paths.startsWith("/")){
+			paths=paths.substring(1);
+		}
+		
+		String sv[]=paths.split("/");
+		
+		Object ret=null;
+		
+		Map<?,?> m=this;
+		for(int i=0;i<sv.length;i++){
+			Object v=m.get(sv[i]);
+			
+			if(i==(sv.length-1)){
+				ret=v;
+				break;
+			}else if(v instanceof Map){
+				m=(Map<?,?>)v;
+			}else{
+				break;
+			}
+		}
+		
+		return (T)ret;
+	}
+	
 	
 	protected Object getOne(String key) {
 		Object v=get(key);

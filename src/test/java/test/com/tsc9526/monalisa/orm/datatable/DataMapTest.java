@@ -151,4 +151,124 @@ public class DataMapTest {
 		Assert.assertEquals(key, "AbC");
 		
 	}
+	
+	public void testFromXml()throws Exception{
+		String xml=""+/**~!{*/""
+			+ "<xml>"
+			+ "\r\n	<first-name>zzg</first-name>"
+			+ "\r\n	<last-name>zhou</last-name>"
+			+ "\r\n	<obj1 name=\"zzg\">"
+			+ "\r\n		<a1>xxa</a1>"
+			+ "\r\n		<b1>xxb</b1>"
+			+ "\r\n		<oc title=\"xyz\">"
+			+ "\r\n			<xx1>yes</xx1>"
+			+ "\r\n			<xx2 label=\"no\"/>"
+			+ "\r\n		</oc>"
+			+ "\r\n	</obj1>"
+			+ "\r\n</xml>"
+		+ "\r\n"/**}*/;
+		
+		DataMap m=DataMap.fromXml(xml);
+		
+		Assert.assertEquals(m.getString("first-name"),"zzg");
+		Assert.assertEquals(m.getString("last-name"),"zhou");
+		Assert.assertEquals(m.getString("obj1.name"),"zzg");
+		
+		DataMap m1=(DataMap)m.get("obj1");
+		Assert.assertEquals(m1.getString("a1"),"xxa");
+		Assert.assertEquals(m1.getString("b1"),"xxb");
+		Assert.assertEquals(m1.getString("oc.title"),"xyz");
+		
+		DataMap m2=(DataMap)m1.get("oc");
+		Assert.assertEquals(m2.getString("xx1"),"yes");
+		Assert.assertEquals(m2.getString("xx2"),"");
+		Assert.assertEquals(m2.getString("xx2.label"),"no");
+		
+		Assert.assertEquals(m.getByPath("first-name"),"zzg");
+		Assert.assertEquals(m.getByPath("/first-name"),"zzg");
+		
+		Assert.assertEquals(m.getByPath("/obj1/oc/xx1"),"yes");
+		Assert.assertEquals(m.getByPath("/obj1/oc/xx2"),"");
+		Assert.assertEquals(m.getByPath("/obj1/oc/xx2.label"),"no");
+	}
+	
+	public void testFromJson()throws Exception{
+		String json=""+/**~!{*/""
+			+ "{"
+			+ "\r\n	\"first-name\":\"zzg\","
+			+ "\r\n	\"last-name\":\"zhou\","
+			+ "\r\n	\"obj1.name\":\"zzg\","
+			+ "\r\n	\"obj1\":{"
+			+ "\r\n	 	\"obj1.name\":\"zzg\","
+			+ "\r\n		\"a1\":\"xxa\","
+			+ "\r\n		\"b1\":\"xxb\","
+			+ "\r\n		\"oc.title\":\"xyz\","
+			+ "\r\n		\"oc\":{"
+			+ "\r\n			\"xx1\":\"yes\","
+			+ "\r\n			\"xx2\":\"\","
+			+ "\r\n			\"xx2.label\":\"no\""
+			+ "\r\n		}"
+			+ "\r\n	}"
+			+ "\r\n}"
+		+ "\r\n"/**}*/;
+		
+		DataMap m=DataMap.fromJson(json);
+		
+		Assert.assertEquals(m.getString("first-name"),"zzg");
+		Assert.assertEquals(m.getString("last-name"),"zhou");
+		Assert.assertEquals(m.getString("obj1.name"),"zzg");
+		
+		DataMap m1=(DataMap)m.get("obj1");
+		Assert.assertEquals(m1.getString("a1"),"xxa");
+		Assert.assertEquals(m1.getString("b1"),"xxb");
+		Assert.assertEquals(m1.getString("oc.title"),"xyz");
+		
+		DataMap m2=(DataMap)m1.get("oc");
+		Assert.assertEquals(m2.getString("xx1"),"yes");
+		Assert.assertEquals(m2.getString("xx2"),"");
+		Assert.assertEquals(m2.getString("xx2.label"),"no");
+		
+		Assert.assertEquals(m.getByPath("first-name"),"zzg");
+		Assert.assertEquals(m.getByPath("/first-name"),"zzg");
+		
+		Assert.assertEquals(m.getByPath("/obj1/oc/xx1"),"yes");
+		Assert.assertEquals(m.getByPath("/obj1/oc/xx2"),"");
+		Assert.assertEquals(m.getByPath("/obj1/oc/xx2.label"),"no");
+	}
+	
+	
+	public void testFromJson2()throws Exception{
+		String json=""+/**~!{*/""
+			+ "{"
+			+ "\r\n	\"f0\":1,"
+			+ "\r\n	\"f1\":1.5,"
+			+ "\r\n	\"f2\":\"ss\","
+			+ "\r\n	\"f3\":true,"
+			+ "\r\n	\"f4\":null,"
+			+ "\r\n	\"f5\":{"
+			+ "\r\n	 	\"x1\":13012345678,"
+			+ "\r\n		\"x2\":\"xx\","
+			+ "\r\n		\"x3\":1234567812345678"
+			+ "\r\n	}"
+			+ "\r\n}"
+		+ "\r\n"/**}*/;
+		
+		DataMap m=DataMap.fromJson(json);
+		
+		Assert.assertEquals(m.getString("f0"),"1");
+		Assert.assertEquals(m.getString("f1"),"1.5");
+		Assert.assertEquals(m.getFloat("f1"),new Float(1.5));
+		
+		Assert.assertEquals(m.getBoolean("f3"),Boolean.TRUE);
+		Assert.assertNull(m.get("f4"));
+		
+		Assert.assertEquals( ((Number)m.getByPath("f5/x1")).longValue(),13012345678L);
+	
+		Assert.assertEquals(m.getByPath("f5/x2"),"xx");
+		Assert.assertEquals(((Number)m.getByPath("f5/x3")).longValue(),1234567812345678L);
+		 
+		DataMap m1=(DataMap)m.get("f5");
+		Assert.assertEquals(m1.getLong("x3")   ,new Long(1234567812345678L));
+		Assert.assertEquals(m1.getString("x3") ,"1234567812345678");
+	}
 }
