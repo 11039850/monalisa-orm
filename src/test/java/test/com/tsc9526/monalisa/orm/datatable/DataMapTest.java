@@ -21,6 +21,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Map;
 
 import org.testng.Assert;
@@ -152,6 +153,24 @@ public class DataMapTest {
 		
 	}
 	
+	public void testPathObject()throws Exception{
+		DataMap m=DataMap.fromJson("{'f1':{'f2':'yes'}}");
+		 
+		Assert.assertEquals(m.getPath("f1/f2"), "yes");
+	}
+	
+	
+	public void testPathObject2()throws Exception{
+		Date time=new Date();
+		
+		DataMap m=DataMap.fromJson("{'f1':{'f2':'yes'}}");
+		
+		m.put("f3", new TestSimpleModel().setDateField1(time));
+		
+		Assert.assertEquals(m.getPath("f1/f2"), "yes");
+		Assert.assertEquals(m.getPath("f3/dateField1"), time);
+	}
+	
 	public void testFromXml()throws Exception{
 		String xml=""+/**~!{*/""
 			+ "<xml>"
@@ -184,12 +203,12 @@ public class DataMapTest {
 		Assert.assertEquals(m2.getString("xx2"),"");
 		Assert.assertEquals(m2.getString("xx2.label"),"no");
 		
-		Assert.assertEquals(m.getByPath("first-name"),"zzg");
-		Assert.assertEquals(m.getByPath("/first-name"),"zzg");
+		Assert.assertEquals(m.getPath("first-name"),"zzg");
+		Assert.assertEquals(m.getPath("/first-name"),"zzg");
 		
-		Assert.assertEquals(m.getByPath("/obj1/oc/xx1"),"yes");
-		Assert.assertEquals(m.getByPath("/obj1/oc/xx2"),"");
-		Assert.assertEquals(m.getByPath("/obj1/oc/xx2.label"),"no");
+		Assert.assertEquals(m.getPath("/obj1/oc/xx1"),"yes");
+		Assert.assertEquals(m.getPath("/obj1/oc/xx2"),"");
+		Assert.assertEquals(m.getPath("/obj1/oc/xx2.label"),"no");
 	}
 	
 	public void testFromJson()throws Exception{
@@ -228,12 +247,12 @@ public class DataMapTest {
 		Assert.assertEquals(m2.getString("xx2"),"");
 		Assert.assertEquals(m2.getString("xx2.label"),"no");
 		
-		Assert.assertEquals(m.getByPath("first-name"),"zzg");
-		Assert.assertEquals(m.getByPath("/first-name"),"zzg");
+		Assert.assertEquals(m.getPath("first-name"),"zzg");
+		Assert.assertEquals(m.getPath("/first-name"),"zzg");
 		
-		Assert.assertEquals(m.getByPath("/obj1/oc/xx1"),"yes");
-		Assert.assertEquals(m.getByPath("/obj1/oc/xx2"),"");
-		Assert.assertEquals(m.getByPath("/obj1/oc/xx2.label"),"no");
+		Assert.assertEquals(m.getPath("/obj1/oc/xx1"),"yes");
+		Assert.assertEquals(m.getPath("/obj1/oc/xx2"),"");
+		Assert.assertEquals(m.getPath("/obj1/oc/xx2.label"),"no");
 	}
 	
 	
@@ -262,10 +281,10 @@ public class DataMapTest {
 		Assert.assertEquals(m.getBoolean("f3"),Boolean.TRUE);
 		Assert.assertNull(m.get("f4"));
 		
-		Assert.assertEquals( ((Number)m.getByPath("f5/x1")).longValue(),13012345678L);
+		Assert.assertEquals( ((Number)m.getPath("f5/x1")).longValue(),13012345678L);
 	
-		Assert.assertEquals(m.getByPath("f5/x2"),"xx");
-		Assert.assertEquals(((Number)m.getByPath("f5/x3")).longValue(),1234567812345678L);
+		Assert.assertEquals(m.getPath("f5/x2"),"xx");
+		Assert.assertEquals(((Number)m.getPath("f5/x3")).longValue(),1234567812345678L);
 		 
 		DataMap m1=(DataMap)m.get("f5");
 		Assert.assertEquals(m1.getLong("x3")   ,new Long(1234567812345678L));

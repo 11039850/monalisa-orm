@@ -19,6 +19,7 @@ package com.tsc9526.monalisa.orm.datatable;
 import java.util.Date;
 import java.util.Map;
 
+import com.google.gson.JsonObject;
 import com.tsc9526.monalisa.orm.tools.helper.CaseInsensitiveMap;
 import com.tsc9526.monalisa.orm.tools.helper.ClassHelper;
 import com.tsc9526.monalisa.orm.tools.helper.ClassHelper.FGS;
@@ -89,11 +90,18 @@ public class DataMap extends CaseInsensitiveMap<Object>{
 	}
 	
 	/**
+	 * Map example: <br> 
+	 * <code>
+	 * DataMap m=DataMap.fromJson("{'f1':{'f2':'yes'}}");
+	 * <br>
+	 * m.getPath("f1/f2") will be return string: "yes"
+	 * 
+	 * </code>
 	 * 
 	 * @param paths split by /
 	 * @return the object value
 	 */
-	public <T> T getByPath(String paths){
+	public <T> T getPath(String paths){
 		if(paths.startsWith("/")){
 			paths=paths.substring(1);
 		}
@@ -102,21 +110,38 @@ public class DataMap extends CaseInsensitiveMap<Object>{
 		
 		Object ret=null;
 		
-		Map<?,?> m=this;
+		Object m=this;
 		for(int i=0;i<sv.length;i++){
-			Object v=m.get(sv[i]);
+			Object v=getValue(m,sv[i]);
 			
 			if(i==(sv.length-1)){
 				ret=v;
-				break;
-			}else if(v instanceof Map){
-				m=(Map<?,?>)v;
+			}
+			
+			if(v!=null){
+				m=v;
 			}else{
 				break;
 			}
 		}
 		
 		return (T)ret;
+	}
+	
+	private Object getValue(Object v,String name){
+		if(v instanceof Map){
+			return ((Map<?,?>)v).get(name);
+		}else if(v instanceof JsonObject){
+			return ((JsonObject)v).get("name");
+		}else{
+			MetaClass mc=ClassHelper.getMetaClass(v);
+			FGS fgs=mc.getField(name);
+			if(fgs!=null){
+				return fgs.getObject(v);
+			}else{
+				return null;
+			}
+		}
 	}
 	
 	

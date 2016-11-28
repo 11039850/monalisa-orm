@@ -73,6 +73,7 @@ public class CaseInsensitiveMap<T> extends LinkedHashMap<String, T> {
 	}
 	
 	protected Map<String,String> getKeys(){
+		// keys may be null if deserialize object, so reconstruct it
 		if(keys==null){
 			keys=new HashMap<String,String>();
 			for(String origin:keySet()){
