@@ -99,6 +99,7 @@ public class DataMap extends CaseInsensitiveMap<Object>{
 	 * </code>
 	 * 
 	 * @param paths split by /
+	 * @param <T> result type
 	 * @return the object value
 	 */
 	public <T> T getPath(String paths){
