@@ -240,15 +240,7 @@ public class Helper {
 		}
 		return stringBuilder.toString();
 	}
-
-	public static void throwRuntimeException(Exception e) {
-		if (e instanceof RuntimeException) {
-			throw (RuntimeException) e;
-		} else {
-			throw new RuntimeException(e);
-		}
-	}
-	
+ 
 	public static Map<String, String> parseRemarks(String remark) {
 		CaseInsensitiveMap<String> map = new CaseInsensitiveMap<String>();
 

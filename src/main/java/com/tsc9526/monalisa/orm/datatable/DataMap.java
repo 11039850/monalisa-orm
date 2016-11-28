@@ -23,6 +23,7 @@ import com.tsc9526.monalisa.orm.tools.helper.CaseInsensitiveMap;
 import com.tsc9526.monalisa.orm.tools.helper.ClassHelper;
 import com.tsc9526.monalisa.orm.tools.helper.ClassHelper.FGS;
 import com.tsc9526.monalisa.orm.tools.helper.ClassHelper.MetaClass;
+import com.tsc9526.monalisa.orm.tools.helper.ExceptionHelper;
 import com.tsc9526.monalisa.orm.tools.helper.Helper;
 import com.tsc9526.monalisa.orm.tools.helper.JsonHelper;
 import com.tsc9526.monalisa.orm.tools.xml.XMLParser;
@@ -67,16 +68,11 @@ public class DataMap extends CaseInsensitiveMap<Object>{
 					fgs.setObject(r, get(name));
 				}
 			} 
-			
+			 
 			return r;
-		} catch (Exception e) {
-			if(e instanceof RuntimeException){
-				throw (RuntimeException)e;
-			}else{
-				throw new RuntimeException(e);
-			}
+		}catch(Exception e) {
+			return ExceptionHelper.throwRuntimeException(e);
 		}
-		
 	}
 	 	
 	

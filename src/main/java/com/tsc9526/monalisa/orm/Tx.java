@@ -22,11 +22,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-import javax.management.RuntimeErrorException;
-
 import com.tsc9526.monalisa.orm.cache.TransactionalCacheManager;
 import com.tsc9526.monalisa.orm.datasource.DBConfig;
 import com.tsc9526.monalisa.orm.datatable.DataMap;
+import com.tsc9526.monalisa.orm.tools.helper.ExceptionHelper;
 
 /**
  * 
@@ -168,19 +167,14 @@ public class Tx {
 			if(tx!=null){
 				commit();
 			}
+			
 			return r;
 		}catch(Throwable e){
 			if(tx!=null){
 				rollback();
 			}
 			
-			if(e instanceof Error){
-				throw new RuntimeErrorException((Error)e);
-			}else if(e instanceof RuntimeException){
-				throw (RuntimeException)e;
-			}else{
-				throw new RuntimeException(e);
-			}
+			return ExceptionHelper.throwRuntimeException(e);
 		}finally{
 			if(tx!=null){
 				close();

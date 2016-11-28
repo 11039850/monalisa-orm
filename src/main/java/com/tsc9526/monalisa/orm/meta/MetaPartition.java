@@ -29,6 +29,7 @@ import com.tsc9526.monalisa.orm.model.Model;
 import com.tsc9526.monalisa.orm.partition.DatePartitionTable;
 import com.tsc9526.monalisa.orm.partition.Partition;
 import com.tsc9526.monalisa.orm.tools.helper.ClassHelper;
+import com.tsc9526.monalisa.orm.tools.helper.ExceptionHelper;
 
 /**
  * 
@@ -149,11 +150,7 @@ public class MetaPartition implements java.io.Serializable {
 			}
 			return partition;
 		}catch(Exception e){
-			if(e instanceof RuntimeException){
-				throw (RuntimeException)e;
-			}else{
-				throw new RuntimeException(e);
-			}
+			return ExceptionHelper.throwRuntimeException(e);
 		}		
 	}
 	
