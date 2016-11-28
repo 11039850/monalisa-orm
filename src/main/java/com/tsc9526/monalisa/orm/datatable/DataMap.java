@@ -44,6 +44,14 @@ public class DataMap extends CaseInsensitiveMap<Object>{
 		return JsonHelper.parseToDataMap(json);
 	}
 	
+	public DataMap(){
+		
+	}
+	
+	public DataMap(Map<String, Object> m){
+		putAll(m);
+	}
+	
  	public <T> T as(Class<T> toClass){
 		try {
 			if(toClass.isAssignableFrom(DataMap.class)){
