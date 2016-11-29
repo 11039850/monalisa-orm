@@ -20,6 +20,7 @@ import java.util.Date;
 import java.util.Map;
 
 import com.google.gson.JsonObject;
+import com.tsc9526.monalisa.orm.model.Model;
 import com.tsc9526.monalisa.orm.tools.helper.CaseInsensitiveMap;
 import com.tsc9526.monalisa.orm.tools.helper.ClassHelper;
 import com.tsc9526.monalisa.orm.tools.helper.ClassHelper.FGS;
@@ -117,12 +118,13 @@ public class DataMap extends CaseInsensitiveMap<Object>{
 			
 			if(i==(sv.length-1)){
 				ret=v;
-			}
-			
-			if(v!=null){
-				m=v;
-			}else{
 				break;
+			}else{
+				if(v!=null){
+					m=v;
+				}else{
+					break;
+				}
 			}
 		}
 		
@@ -133,7 +135,9 @@ public class DataMap extends CaseInsensitiveMap<Object>{
 		if(v instanceof Map){
 			return ((Map<?,?>)v).get(name);
 		}else if(v instanceof JsonObject){
-			return ((JsonObject)v).get("name");
+			return ((JsonObject)v).get(name);
+		}else if(v instanceof Model){
+			return ((Model<?>)v).get(name);
 		}else{
 			MetaClass mc=ClassHelper.getMetaClass(v);
 			FGS fgs=mc.getField(name);

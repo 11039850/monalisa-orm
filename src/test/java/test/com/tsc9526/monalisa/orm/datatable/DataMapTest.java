@@ -168,7 +168,12 @@ public class DataMapTest {
 		m.put("f3", new TestSimpleModel().setDateField1(time));
 		
 		Assert.assertEquals(m.getPath("f1/f2"), "yes");
+		
+		//Test get model's field by field name
 		Assert.assertEquals(m.getPath("f3/dateField1"), time);
+		
+		//Test get model's field by column name
+		Assert.assertEquals(m.getPath("f3/date_field1"), time);
 	}
 	
 	public void testFromXml()throws Exception{

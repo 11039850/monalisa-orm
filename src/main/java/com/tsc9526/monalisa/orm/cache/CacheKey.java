@@ -27,29 +27,33 @@ public class CacheKey {
 	private static final int DEFAULT_MULTIPLYER = 37;
 	private static final int DEFAULT_HASHCODE = 17;
 
-	private int multiplier;
-	private int hashcode;
+	private int multiplier=DEFAULT_MULTIPLYER;
+	private int hashcode=DEFAULT_HASHCODE;
+	private int  count=0;
 	private long checksum;
-	private int count;
-	private List<Object> updateList;
+	
+	private List<Object> updateList=new ArrayList<Object>();
 
+	private Object tag;
+	
 	public CacheKey() {
-		this.hashcode = DEFAULT_HASHCODE;
-		this.multiplier = DEFAULT_MULTIPLYER;
-		this.count = 0;
-		this.updateList = new ArrayList<Object>();
 	}
 
-	public CacheKey(Object[] objects) {
-		this();
-		updateAll(objects);
+	public CacheKey(Object... objects) {
+		update(objects);
 	}
 
 	public int getUpdateCount() {
 		return updateList.size();
 	}
 
-	public void update(Object object) {
+	public void update(Object... objects) {
+		for (Object o : objects) {
+			updateKey(o);
+		}
+	}
+
+	private void updateKey(Object object) {
 		int baseHashCode = object == null ? 1 : object.hashCode();
 
 		count++;
@@ -61,12 +65,7 @@ public class CacheKey {
 		updateList.add(object);
 	}
 
-	public void updateAll(Object[] objects) {
-		for (Object o : objects) {
-			update(o);
-		}
-	}
-
+	
 	public boolean equals(Object object) {
 		if (this == object)
 			return true;
@@ -96,6 +95,16 @@ public class CacheKey {
 		return true;
 	}
 
+	@SuppressWarnings("unchecked")
+	public <T> T getTag() {
+		return (T)tag;
+	}
+
+	public void setTag(Object tag) {
+		this.tag = tag;
+	}
+
+	
 	public int hashCode() {
 		return hashcode;
 	}
@@ -108,5 +117,5 @@ public class CacheKey {
 
 		return returnValue.toString();
 	}
-
+ 	
 }
