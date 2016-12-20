@@ -16,8 +16,6 @@
  *******************************************************************************************/
 package com.tsc9526.monalisa.orm.tools.logger;
 
-import java.net.URL;
-
 import org.slf4j.spi.LocationAwareLogger;
 
 /**

@@ -66,10 +66,10 @@ public class Page<T> implements Serializable {
 	 * 
 	 * @param rows      records in this page
 	 * @param records   total records
-	 * @param limit     size of page
+	 * @param size      size of page
 	 * @param offset    position of the first record. first is 0.
 	 */
-	public Page(List<T> rows,long records, long limit , long offset) {
+	public Page(List<T> rows,long records, long size , long offset) {
 		if(rows!=null){
 			if(rows instanceof DataTable){
 				this.rows = (DataTable<T>)rows;
@@ -81,9 +81,9 @@ public class Page<T> implements Serializable {
 		}
 		
 		this.records= records;
-		this.size   = limit;
+		this.size   = size;
 		
-		this.page   = 1 + offset/limit;
+		this.page   = 1 + offset/size;
 		
 		this.total = (int) (this.records / this.size);
 		if (this.records % this.size != 0) {
@@ -98,9 +98,7 @@ public class Page<T> implements Serializable {
 	public int rows(){
 		return rows==null?0:rows.size();
 	}
-	
-	
-	
+ 	
 	/**
 	 *  
 	 * @return non null data list
