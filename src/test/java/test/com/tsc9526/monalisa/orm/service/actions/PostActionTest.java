@@ -22,7 +22,6 @@ import org.testng.annotations.Test;
 
 import test.com.tsc9526.monalisa.orm.mysql.mysqldb.TestRecordV2;
 
-import com.google.gson.JsonObject;
 import com.tsc9526.monalisa.orm.datatable.DataMap;
 import com.tsc9526.monalisa.orm.datatable.DataTable;
 import com.tsc9526.monalisa.orm.service.Response;
@@ -80,8 +79,8 @@ public class PostActionTest extends AbstractActionTest {
 		DataMap data=resp.getData();
 		Assert.assertEquals(data.getInt("rows",0),1);
 		
-		JsonObject entity=(JsonObject)data.get("entity");
-		Assert.assertEquals(entity.get("record_id").getAsInt(),base.getRecordId()+1);
+		DataMap entity=(DataMap)data.get("entity");
+		Assert.assertEquals(entity.getInt("record_id",0),base.getRecordId()+1);
  	}
 	
 	public void testPostDbTableRow2()throws Exception{
@@ -102,8 +101,8 @@ public class PostActionTest extends AbstractActionTest {
 		int rid=base.getRecordId()+1;
 		for(DataMap data:table){
 			Assert.assertEquals(data.getInt("rows",0),1);
-			JsonObject entity=(JsonObject)data.get("entity");
-			Assert.assertEquals(entity.get("record_id").getAsInt(),rid++);
+			DataMap entity=(DataMap)data.get("entity");
+			Assert.assertEquals(entity.getInt("record_id",0),rid++);
 		}
 		
 		TestRecordV2 c1=TestRecordV2.SELECT().selectByPrimaryKey(base.getRecordId()+1);

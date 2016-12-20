@@ -31,7 +31,7 @@ import com.tsc9526.monalisa.orm.tools.helper.ServletHelper;
 /**
  * <b>URI</b>
  * <ul>
- * <li><b>/{Database}/{your.query.class.name#method}</b> <br>
+ * <li><b>/{Database}/{your.query.class.name$method}</b> <br>
  * <font style='color:red'>GET/POST</font>: customize query<br>
  * 
  * <li><b>/{Database}/{Table}</b> <br>
@@ -64,19 +64,19 @@ import com.tsc9526.monalisa.orm.tools.helper.ServletHelper;
  * <b>Query String</b>
  * <ul>
  * <li><b>_columns</b><br>
- * _columns=c1,c2,c3...   means: include column(c1,c2,c3) <br>
- * _columns-=c1,c2 means: exclude column(c1,c2)
+ * column=c1,c2,c3...   means: include column(c1,c2,c3) <br>
+ * -column=c1,c2 means: exclude column(c1,c2)
  * <li><b>_order</b><br>
- * _order=+c1,-c2  means: ORDER BY c1 ASC, c2 DESC
+ * order=+c1,-c2  means: ORDER BY c1 ASC, c2 DESC
  * <li><b>_limit</b><br>
- * _limit=10
+ * limit=10
  * <li><b>_offset</b><br>
- * _offset=0
+ * offset=0
  * <li><b>_paging</b><br>
- * _paging=true means: get one page records, response header: 'X-Total-Count' indicate the total number of records.
+ * page=1 means: get one page records, response header: 'X-Total-Count' indicate the total number of records.
  * <li>Other query parameters are considered as filter conditions<br>
  * c1=a&amp;c2=(1,2,3)&amp;c3&gt;=10&amp;c4&lt;10&amp;c5~p*&amp;c6!=7&amp;c7=[1,10] <br>
- * SQL: where c1='a' AND c2 in (1,2,3) AND c3 >= 10 AND c4 < 10 AND c5 like 'p%' AND c6 != 7 AND c7 BETWEEN 1 AND 10
+ * SQL: where c1='a' AND c2 in (1,2,3) AND c3 &gt;= 10 AND c4 &lt; 10 AND c5 like 'p%' AND c6 != 7 AND c7 BETWEEN 1 AND 10
  * </ul>
  * @author zzg.zhou(11039850@qq.com)
  */

@@ -88,10 +88,12 @@ public class GetAction extends Action{
 	 * @return rows
 	 */
 	public Response getTablesRows(){
+		List<String> ics=args.getIncludeColumns();
+		
 		Query query=createQuery();
 		
 		query.add("SELECT ");
-		List<String> ics=args.getIncludeColumns();
+		
 		if(ics.size()>0){
 			for(int i=0;i<ics.size();i++){
 				String c=ics.get(i);

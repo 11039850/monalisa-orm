@@ -56,7 +56,7 @@ public class GetActionTest extends AbstractActionTest {
 		req.addHeader("DEV_TEST", "true"); 	
 	
 		Response resp=getRespone(req);
-		Assert.assertEquals(resp.getStatus(),500);
+		Assert.assertTrue(resp.getStatus()!=200);
  	}
 	 
 	
@@ -64,13 +64,13 @@ public class GetActionTest extends AbstractActionTest {
 		MockHttpServletRequest       req=createRequest("/db1/test_%20");
 		
 		Response resp=getRespone(req);
-		Assert.assertEquals(resp.getStatus(),400);
+		Assert.assertTrue(resp.getStatus()!=200);
  	}
 	
 	public void testGetDbTable1()throws Exception{
 		MockHttpServletRequest       req=createRequest("/db1/test_record_v2");
-		req.addParameter(filterless+"columns-","record_id,name");
-		req.addParameter(filterless+"page","1");
+		req.addParameter("-column","record_id,name");
+		req.addParameter("page","1");
 		
 		Response resp=getRespone(req);
 		Assert.assertEquals(resp.getStatus(),200);
@@ -89,7 +89,7 @@ public class GetActionTest extends AbstractActionTest {
 	
 	public void testGetDbTable2()throws Exception{
 		MockHttpServletRequest       req=createRequest("/db1/test_record_v2");
-		req.addParameter(filterless+"columns","record_id,name");
+		req.addParameter("column","record_id,name");
 		
 		Response resp=getRespone(req);
 		Assert.assertEquals(resp.getStatus(),200);
@@ -107,7 +107,7 @@ public class GetActionTest extends AbstractActionTest {
 	
 	public void testGetDbTableFilter01()throws Exception{
 		MockHttpServletRequest       req=createRequest("/db1/test_record_v2");
-		req.addParameter(filterless+"columns","record_id,name");
+		req.addParameter("column","record_id,name");
 		req.addParameter("record_id>1","");
 		
 		Response resp=getRespone(req);
@@ -125,7 +125,7 @@ public class GetActionTest extends AbstractActionTest {
 	
 	public void testGetDbTableFilter02()throws Exception{
 		MockHttpServletRequest       req=createRequest("/db1/test_record_v2");
-		req.addParameter(filterless+"columns","record_id,name");
+		req.addParameter("column","record_id,name");
 		req.addParameter("record_id>","1");
 		
 		Response resp=getRespone(req);
@@ -143,7 +143,7 @@ public class GetActionTest extends AbstractActionTest {
 	
 	public void testGetDbTableFilter03()throws Exception{
 		MockHttpServletRequest       req=createRequest("/db1/test_record_v2");
-		req.addParameter(filterless+"columns","record_id,name");
+		req.addParameter("column","record_id,name");
 		req.addParameter("record_id<>1","");
 		
 		Response resp=getRespone(req);
@@ -161,7 +161,7 @@ public class GetActionTest extends AbstractActionTest {
 	
 	public void testGetDbTableFilter04()throws Exception{
 		MockHttpServletRequest       req=createRequest("/db1/test_record_v2");
-		req.addParameter(filterless+"columns","record_id,name");
+		req.addParameter("column","record_id,name");
 		req.addParameter("name~ns*","");
 		
 		Response resp=getRespone(req);
@@ -179,7 +179,7 @@ public class GetActionTest extends AbstractActionTest {
 	
 	public void testGetDbTablePk1()throws Exception{
 		MockHttpServletRequest       req=createRequest("/db1/test_record_v2/1");
-		req.addParameter(filterless+"columns-","record_id,name");
+		req.addParameter("-column","record_id,name");
 		
 		Response resp=getRespone(req);
 		Assert.assertEquals(resp.getStatus(),200);
@@ -193,7 +193,7 @@ public class GetActionTest extends AbstractActionTest {
 	
 	public void testGetDbTablePkWithJavaName()throws Exception{
 		MockHttpServletRequest       req=createRequest("/db1/test_record_v2/recordId=1");
-		req.addParameter(filterless+"columns","record_id,name");
+		req.addParameter("column","record_id,name");
 		
 		Response resp=getRespone(req);
 		Assert.assertEquals(resp.getStatus(),200);
@@ -206,7 +206,7 @@ public class GetActionTest extends AbstractActionTest {
 	
 	public void testGetDbTablePkWithColumnName()throws Exception{
 		MockHttpServletRequest       req=createRequest("/db1/test_record_v2/record_Id=1");
-		req.addParameter(filterless+"columns","record_id,name");
+		req.addParameter("column","record_id,name");
 		
 		Response resp=getRespone(req);
 		Assert.assertEquals(resp.getStatus(),200);
@@ -219,7 +219,7 @@ public class GetActionTest extends AbstractActionTest {
 	
 	public void testGetDbTableWithuQalifier()throws Exception{
 		MockHttpServletRequest       req=createRequest("/db1/test_record_v2/`recordId`=1");
-		req.addParameter(filterless+"columns","record_id,name");
+		req.addParameter("column","record_id,name");
 		
 		Response resp=getRespone(req);
 		Assert.assertEquals(resp.getStatus(),200);

@@ -33,8 +33,6 @@ import com.tsc9526.monalisa.orm.service.servlet.DbQueryHttpServlet;
  * @author zzg.zhou(11039850@qq.com)
  */
 public abstract class AbstractActionTest {
-	protected String filterless="_";
-	
 	@BeforeClass
 	public void setup(){
 		//MysqlDB.DB.getCfg().setProperty(DbProp.PROP_DB_SQL_DEBUG.getFullKey(), "true");
