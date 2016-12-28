@@ -51,6 +51,6 @@ public class Log4jCfg {
 				org.apache.log4j.xml.DOMConfigurator.configure(log4jCfg);
 			}
 			
-		}catch(ClassNotFoundException e){}
+		}catch(Exception e){}
 	}
 }
