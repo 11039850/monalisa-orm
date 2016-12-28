@@ -39,14 +39,14 @@ public class ServletHelper {
 	 * @param req HttpServletRequest
 	 * @return path without servlet content path.
 	 */
-	public static String getRequestPath(HttpServletRequest req){
-		String uri = req.getRequestURI();
+	public static String getRequestPath(HttpServletRequest request){
+		String uri = request.getRequestURI();
 
-		String prefix = req.getContextPath();
+		String prefix = request.getContextPath();
 		if(prefix==null){
 			prefix="";
 		}
-		prefix += req.getServletPath();
+		prefix += request.getServletPath();
 
 		String pathRequest = uri.substring(prefix.length());
 		if (pathRequest.endsWith("/") && pathRequest.length() > 1) {
@@ -64,9 +64,9 @@ public class ServletHelper {
 		}
 	}
 	
-	public static DataMap toDataMap(HttpServletRequest req){
+	public static DataMap toDataMap(HttpServletRequest request){
 		DataMap requestMap=new DataMap();
-		Map<String, String[]> rs = req.getParameterMap();
+		Map<String, String[]> rs = request.getParameterMap();
 		for (String name : rs.keySet()) {
 			requestMap.put(name, rs.get(name));
 		}
@@ -74,7 +74,7 @@ public class ServletHelper {
 	}
 	
 
-	public static String getRequestRealIp(HttpServletRequest req) {
+	public static String getRequestRealIp(HttpServletRequest request) {
 		String ip = null;
 		String[] ip_headers = new String[] { 
 				"x-forwarded-for", 
@@ -84,7 +84,7 @@ public class ServletHelper {
 				"WL-Proxy-Client-IP",
 				"HTTP_CLIENT_IP" };
 		for (String ih : ip_headers) {
-			String ips = req.getHeader(ih);
+			String ips = request.getHeader(ih);
 
 			if (ips != null && ips.length() > 0 && ("unknown".equalsIgnoreCase(ips) == false)) {
 				String[] vs = ips.split(",");
@@ -103,7 +103,7 @@ public class ServletHelper {
 		}
 
 		if (ip == null) {
-			ip = req.getRemoteAddr();
+			ip = request.getRemoteAddr();
 		}
 
 		int p = ip.indexOf(":");

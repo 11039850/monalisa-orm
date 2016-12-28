@@ -449,7 +449,7 @@ public class ClassHelper {
 					}
 				}
 			} catch (Exception e) {
-				throw new RuntimeException("Field type: "+type.getName()+", value type: "+v.getClass().getName(),e);
+				throw new RuntimeException("Field: "+this.fieldName+", type: "+type.getName()+", value type: "+v.getClass().getName(),e);
 			}
 		}
 	 	
