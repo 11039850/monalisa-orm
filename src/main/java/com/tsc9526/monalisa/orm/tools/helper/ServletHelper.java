@@ -36,7 +36,7 @@ public class ServletHelper {
 	 * 
 	 * return: xxx/yyy...  <br>
 	 * 
-	 * @param req HttpServletRequest
+	 * @param request HttpServletRequest
 	 * @return path without servlet content path.
 	 */
 	public static String getRequestPath(HttpServletRequest request){
