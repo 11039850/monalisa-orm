@@ -55,6 +55,21 @@ public class FileHelper {
 		return bos.toByteArray();
 	}
 	
+	public static byte[] readBytes(InputStream is, int length)throws IOException {
+		int readLen = 0;
+		int readLengthThisTime = 0;
+		byte[] message = new byte[length];
+		  
+		while (readLen != length) {
+			readLengthThisTime = is.read(message, readLen, length - readLen);
+			if (readLengthThisTime == -1) {// Should not happen.
+				break;
+			}
+			readLen += readLengthThisTime;
+		}
+		return message;	 
+	}
+	
 	public static String combinePath(String... paths){
 		StringBuffer sb=new StringBuffer();
 		for(String x:paths){

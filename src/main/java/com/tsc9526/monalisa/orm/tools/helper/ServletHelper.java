@@ -16,9 +16,14 @@
  *******************************************************************************************/
 package com.tsc9526.monalisa.orm.tools.helper;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.Map;
+import java.util.zip.GZIPInputStream;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -73,6 +78,42 @@ public class ServletHelper {
 		return requestMap;
 	}
 	
+	public static String getBodyString(HttpServletRequest request,String ...charset)throws IOException{
+		byte[] bytes=getBodyBytes(request);
+		
+		String cs= charset.length>0 ?charset[0] : "utf-8";
+		
+		return new String(bytes,cs);
+	}
+	
+	public static byte[] getBodyBytes(HttpServletRequest request)throws IOException{
+		int size = request.getContentLength();
+		if(size<=0){
+			return null;
+		}
+		
+		InputStream is = request.getInputStream(); 
+ 
+		byte[] reqBodyBytes = FileHelper.readBytes(is, size);
+		
+		String encoding=request.getHeader("Content-Encoding");
+		if(encoding!=null && encoding.indexOf("gzip")>=0){
+			GZIPInputStream gzip=new GZIPInputStream(new ByteArrayInputStream(reqBodyBytes));
+			
+			ByteArrayOutputStream bos=new ByteArrayOutputStream();
+			byte[] buf=new byte[64*1024];
+			int len=gzip.read(buf);
+			while(len>0){
+				bos.write(buf,0,len);
+				
+				len=gzip.read(buf);
+			}
+			
+			return bos.toByteArray();
+		}else{
+			return reqBodyBytes;
+		}
+	}
 
 	public static String getRequestRealIp(HttpServletRequest request) {
 		String ip = null;
