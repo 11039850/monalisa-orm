@@ -62,6 +62,7 @@ public abstract class AbstractActionTest {
 	
 	protected Response getRespone(MockHttpServletRequest req)throws Exception{
 		MockHttpServletResponse resp=new MockHttpServletResponse(); 
+		req.addHeader("DEV_TEST","true");
 		
 		DbQueryHttpServlet ms=new DbQueryHttpServlet();
 		ms.service(req, resp);

@@ -17,8 +17,8 @@
 package test.com.tsc9526.monalisa.orm.tools;
 
 import java.lang.reflect.Method;
-import java.util.Arrays;
 
+import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import com.tsc9526.monalisa.orm.Query;
@@ -33,10 +33,10 @@ public class AsmHelperTest {
 	
 	public void testGetParameter()throws Exception{
 		for(Method m:Query.class.getClass().getMethods()){
-				
-		String[] ns=AsmHelper.getMethodParamNames(m);
-		
-		System.out.println(""+m.getName()+": "+Arrays.toString(ns));
+			String[] ns=AsmHelper.getMethodParamNames(m);
+			Assert.assertNotNull(ns);
+			
+			//System.out.println(""+m.getName()+": "+Arrays.toString(ns));
 		}
 	}
 }

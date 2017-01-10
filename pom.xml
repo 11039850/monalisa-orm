@@ -192,7 +192,7 @@
 					<!-- Disable annotation processing for ourselves. -->
 					<compilerArgument>-proc:none</compilerArgument>
 					<compilerArguments>
-						<extdirs>libs</extdirs>
+						<extdirs>${basedir}/libs</extdirs>
 					</compilerArguments>
 				</configuration>
 			</plugin>

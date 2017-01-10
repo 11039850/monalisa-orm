@@ -52,9 +52,7 @@ public class GetActionTest extends AbstractActionTest {
 	
 	public void testGetDbTableNotExist()throws Exception{
 		MockHttpServletRequest       req=createRequest("/db1/test_record_v2_not_exists");
-
-		req.addHeader("DEV_TEST", "true"); 	
-	
+ 
 		Response resp=getRespone(req);
 		Assert.assertTrue(resp.getStatus()!=200);
  	}
