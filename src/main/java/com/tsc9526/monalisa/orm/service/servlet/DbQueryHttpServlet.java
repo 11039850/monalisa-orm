@@ -17,6 +17,8 @@
 package com.tsc9526.monalisa.orm.service.servlet;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
@@ -28,6 +30,9 @@ import javax.servlet.http.HttpServletResponse;
 import com.tsc9526.monalisa.orm.datasource.DBConfig;
 import com.tsc9526.monalisa.orm.service.DBS;
 import com.tsc9526.monalisa.orm.service.Dispatcher;
+import com.tsc9526.monalisa.orm.service.actions.ActionLocator;
+import com.tsc9526.monalisa.orm.service.actions.ActionLocator.METHOD;
+import com.tsc9526.monalisa.orm.tools.helper.Helper;
 
 /**
  * 
@@ -35,7 +40,9 @@ import com.tsc9526.monalisa.orm.service.Dispatcher;
  */
 public class DbQueryHttpServlet extends HttpServlet{
 	private static final long serialVersionUID = -3809556004137368401L;
-	 
+	
+	public final static String DB_CFG_PREFIX="DB";
+	
 	protected Dispatcher dispatcher=new Dispatcher();
 	
 	public void init(ServletConfig config) throws ServletException {
@@ -43,10 +50,10 @@ public class DbQueryHttpServlet extends HttpServlet{
 		
 		ServletContext sc=config.getServletContext();
 	
-		initDBS(sc,"DB");
+		initDBS(sc,DB_CFG_PREFIX);
 		
 		int i=1;
-		while(initDBS(sc,"DB"+i)){
+		while(initDBS(sc,DB_CFG_PREFIX+i)){
 			i++;
 		}
 	}
@@ -68,7 +75,13 @@ public class DbQueryHttpServlet extends HttpServlet{
 				throw new RuntimeException(msg.toString());
 			}else{
 				if(DBS.getDB(name)==null){
-					DBS.add(name,DBConfig.fromJdbcUrl(url, username, password)); 
+					METHOD[] ms=getMethods(sc,prefix);
+					
+					DBConfig db=DBConfig.fromJdbcUrl(url, username, password);
+					ActionLocator locator=new ActionLocator();
+					locator.setMethods(ms);
+					
+					DBS.add(name,db,locator); 
 				}else{
 					throw new RuntimeException("DBS init error: "+prefix+".name existed: "+name);
 				}
@@ -76,6 +89,25 @@ public class DbQueryHttpServlet extends HttpServlet{
 			return true;
 		}else{
 			return false;
+		}
+	}
+	
+	protected METHOD[] getMethods(ServletContext sc,String prefix) {
+		String ms=sc.getInitParameter(prefix+".methods");
+		if(ms!=null){
+			ms=sc.getInitParameter(DB_CFG_PREFIX+".methods");
+		}
+		
+		if(ms==null){
+			return new METHOD[]{ METHOD.GET, METHOD.DELETE, METHOD.POST, METHOD.PUT, METHOD.HEAD};
+		}else{
+			List<METHOD> xs=new ArrayList<METHOD>();
+			for(String m:Helper.splits(ms)){
+				METHOD x=METHOD.valueOf( m.trim().toUpperCase() );
+				xs.add(x);
+			}
+			
+			return xs.toArray(new  METHOD[0]);
 		}
 	}
 	
