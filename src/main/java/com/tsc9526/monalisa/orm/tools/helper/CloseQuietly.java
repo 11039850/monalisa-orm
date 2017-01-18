@@ -33,8 +33,11 @@ public class CloseQuietly {
 		
 		timer.schedule(new TimerTask() {
 			public void run() {
-				close(x);
-				timer.cancel();
+				try{
+					close(x);
+				}finally{
+					timer.cancel();
+				}
 			}
 		}, delay*1000);
 	}

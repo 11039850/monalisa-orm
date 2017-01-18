@@ -21,6 +21,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
+import java.lang.reflect.Method;
 import java.net.URLDecoder;
 import java.util.Map;
 import java.util.zip.GZIPInputStream;
@@ -155,4 +156,15 @@ public class ServletHelper {
 		return ip;
 	}
 
+	public static String getContextName(){
+		ClassLoader loader=ServletHelper.class.getClassLoader();
+		try{
+			//org.apache.catalina.loader.WebappClassLoader
+			Method gcn=loader.getClass().getMethod("getContextName");
+		 	 
+			return (String)gcn.invoke(loader);
+		}catch(Exception e){
+			return null;
+		}
+	}
 }

@@ -314,7 +314,7 @@ public abstract class Model<T extends Model> implements Serializable {
 		DBConfig historyDB = db;
 		String hdb = DbProp.PROP_DB_HISTORY_DB.getValue(db);
 		if (hdb != null && hdb.length() > 0) {
-			historyDB = dsm.getDBConfig(hdb, null);
+			historyDB = dsm.getDBConfig(hdb, null,null);
 			if(historyDB==null){
 				historyDB = db.getByConfigName(hdb);
 			}							

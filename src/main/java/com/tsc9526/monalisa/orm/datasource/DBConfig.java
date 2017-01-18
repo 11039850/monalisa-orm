@@ -32,6 +32,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
+import java.util.TreeMap;
 import java.util.concurrent.ConcurrentHashMap;
 
 import javax.sql.DataSource;
@@ -53,11 +54,13 @@ import com.tsc9526.monalisa.orm.tools.generator.DBGeneratorProcessing;
 import com.tsc9526.monalisa.orm.tools.helper.ClassHelper;
 import com.tsc9526.monalisa.orm.tools.helper.CloseQuietly;
 import com.tsc9526.monalisa.orm.tools.helper.DynamicLibHelper;
+import com.tsc9526.monalisa.orm.tools.helper.EclipseHelper;
+import com.tsc9526.monalisa.orm.tools.helper.FileHelper;
 import com.tsc9526.monalisa.orm.tools.helper.Helper;
 import com.tsc9526.monalisa.orm.tools.logger.Logger;
 import com.tsc9526.monalisa.orm.tools.resources.PkgNames;
 
-/**
+/** 
  * 
  * @author zzg.zhou(11039850@qq.com)
  */
@@ -71,18 +74,21 @@ public class DBConfig implements Closeable{
 	
 	private CFG _cfg=new CFG();
 	 
-	private DataSource ds;
+	private DSI dsi;
 	
 	private DBConfig owner;
 	
 	private boolean initialized=false;
 	
+	private String   cfgBasePath       =null;
+		
 	private DBConfig(){
 	}
 	
-	DBConfig(String key,DB db){	 
+	DBConfig(String key,DB db,Class<?> cfgAnnotationClass){	 
 		this._cfg.db=db;
-		this._cfg.key=key;				 
+		this._cfg.key=key;	
+		this._cfg.annotationClass=cfgAnnotationClass;
 	}
 	
 	public CFG getCfg(){
@@ -91,16 +97,21 @@ public class DBConfig implements Closeable{
 		}
 		return _cfg;
 	}
+ 
+	public synchronized DBConfig setCfgBasePath(String basepath){
+		cfgBasePath=basepath;
+		return this;
+	}
 	
 	public synchronized DBConfig getByConfigName(String configName){
 		DataSourceManager dsm=DataSourceManager.getInstance();
 		
 		String dbKey=this._cfg.key+"#"+configName;		 
-		DBConfig r=dsm.getDBConfig(dbKey, null);
+		DBConfig r=dsm.getDBConfig(dbKey, null,null);
 		if(r==null){
 			String cfgDBUrl=getCfg().p.getProperty(PREFIX_DB+"."+configName+".url");
 			if(cfgDBUrl!=null){
-				r=new DBConfig(dbKey, getCfg().db);
+				r=new DBConfig(dbKey, getCfg().db,getCfg().annotationClass);
 				r._cfg.configName=configName;
 				r.init();
 				
@@ -168,73 +179,27 @@ public class DBConfig implements Closeable{
 		if(cfg.isCfgFileChanged()){
 			init(cfg.db);
 			
-			if(ds!=null){
-				int delay=DbProp.PROP_DB_DATASOURCE_DELAY_CLOSE.getIntValue(this, 30);
-				delayClose(ds,delay);
-				ds=null;
+			if(dsi!=null){
+				DSI other=new DSI();
+			
+				if(!dsi.equals(other)){
+					if(dsi.ds!=null){
+						int delay=DbProp.PROP_DB_DATASOURCE_DELAY_CLOSE.getIntValue(this, 30);
+						logger.info("DBCfg:" +cfg.key+" changed, delay "+delay+"s close exists datasouce: "+dsi.url);
+						delayClose(dsi.ds,delay);
+					}
+					dsi=other;
+				}
 			}
 		}
  	
-		if(ds==null){
-			if(!DbProp.ProcessingEnvironment){
-				ds=getDataSourceFromConfigClass();
-			}
-			
-			if(ds==null){			
-				ds=new SimpleDataSource(this);
-			}		
-		}		
-		return ds;
-	}
-	
-	private DataSource getDataSourceFromConfigClass(){
-		CFG cfg=getCfg();
+		if(dsi==null){
+			dsi=new DSI();
+		}
 		
-		String cc=cfg.getDatasourceClass();
-		if(cc!=null && cc.trim().length()>0){	
-			cc=cc.trim();
-			
-			if(cc.indexOf(".")<0){
-				cc=PkgNames.ORM_DATASOURCE+"."+cc;
-			}
-		 	
-			try{	
-				Object obj=instanceDataSource(cc); 	
-				if(obj instanceof PooledDataSource){
-					PooledDataSource pds=(PooledDataSource)obj;
-					
-					String validationgQuery=getDialect().getIdleValidationQuery();
-					if(validationgQuery!=null && validationgQuery.trim().length()>0){
-						pds.setIdleValidationQuery(DbProp.CFG_CONNECT_IDLE_INTERVALS,validationgQuery.trim());
-					}
-					
-					pds.setProperties(getPoolProperties());
-					
-					pds.setDriver(cfg.getDriver());
-					pds.setPassword(cfg.getPassword());
-					pds.setUrl(cfg.getUrl());
-					pds.setUsername(cfg.getUsername());
-					 
-					return pds;
-				}else if(obj instanceof DataSource){				 
-					return(DataSource)obj;
-				}
-			}catch(Exception e){
-				throw new RuntimeException("Create datasource exception: "+e,e);
-			}
-		}
-		return null;
+		return dsi.getDataSource();
 	}
 	
-	protected Object instanceDataSource(String clazz)throws Exception{
-		if(clazz.equals(PkgNames.ORM_DS_C3p0)){
-			return DynamicLibHelper.createC3p0DataSource();
-		}else if(clazz.equals(PkgNames.ORM_DS_Durid)){
-			return DynamicLibHelper.createDruidDataSource();
-		}else{
-			return ClassHelper.forClassName(clazz).newInstance();	
-		}
-	}
 	
 	protected Properties getPoolProperties(){
 		Properties dbps=new Properties();
@@ -261,11 +226,13 @@ public class DBConfig implements Closeable{
 	}
 	
 	public synchronized void close(){		
-		if(ds!=null){
+		if(dsi!=null){
 			try{
-				CloseQuietly.close(ds);	
+				if(dsi.ds!=null){
+					CloseQuietly.close(dsi.ds);	
+				}
 			}finally{			
-				ds=null;
+				dsi=null;
 			}
 			
 			for(Host host: getCfg().getDbHosts()){
@@ -415,7 +382,7 @@ public class DBConfig implements Closeable{
 	public static DBConfig fromJdbcUrl(String jdbcUrl,String username,String password){
 		final String dbKey=jdbcUrl+"&username="+username+"&password="+password;
 		DB db=createDB(jdbcUrl,username,password);
-		return DataSourceManager.getInstance().getDBConfig(dbKey, db);
+		return DataSourceManager.getInstance().getDBConfig(dbKey, db,null);
 	}
 	
 	public static DB createDB(final String jdbcUrl,final String username,final String password){
@@ -560,6 +527,7 @@ public class DBConfig implements Closeable{
 	
 	
 	public class CFG{
+		private Class<?> annotationClass;
 		private DB     db;
 		private String key;
 		
@@ -622,6 +590,18 @@ public class DBConfig implements Closeable{
 			 	
 			this.cacheTables	 = getValue(p,DbProp.PROP_DB_CACHE_TABLES.getKey(), "",  prefixs);
 			 
+			if(this.url==null || this.url.trim().length()<1){
+				if(cfgFile!=null || cfgFileLocal!=null){
+					
+					throw new RuntimeException("DBCfg: "+key+", missing property: "+prefixs[0]+".url, annotationClass: "+annotationClass
+							+ ( cfgFile!=null     ?("\r\nfile: "+cfgFile.cfgFile.getAbsolutePath()): "") 
+							+ ( cfgFileLocal!=null?("\r\nfile: "+cfgFileLocal.cfgFile.getAbsolutePath()): "") 
+							);
+				}else{
+					throw new RuntimeException("DBCfg: "+key+", missing property: url, annotationClass: "+annotationClass);
+				}
+			}
+			
 			processUrlHosts();
 		}
 		
@@ -630,17 +610,21 @@ public class DBConfig implements Closeable{
 		}
 		
 		private void loadProperties(){
-			Class<? extends ConfigClass> clazz=DBGeneratorProcessing.getDBConfigClass(db); 
-			
-			if(clazz!=null && clazz != ConfigClass.class){
-				try{
-					configClass=clazz.newInstance();
-					this.p=configClass.getConfigProperties();
-				}catch(Exception e){
-					throw new RuntimeException("Load config exception, class: "+clazz.getName()+", "+e, e);
-				}
-			}else{
+			if(cfgBasePath!=null){
 				loadCfgFromFile();
+			}else{
+				Class<? extends ConfigClass> clazz=DBGeneratorProcessing.getDBConfigClass(db); 
+				
+				if(clazz!=null && clazz != ConfigClass.class){
+					try{
+						configClass=clazz.newInstance();
+						this.p=configClass.getConfigProperties();
+					}catch(Exception e){
+						throw new RuntimeException("Load config exception, class: "+clazz.getName()+", "+e, e);
+					}
+				}else{
+					loadCfgFromFile();
+				}
 			}
 		}
 		
@@ -674,15 +658,8 @@ public class DBConfig implements Closeable{
 				configFile=key;
 			}
 				 
-			
-			if(configFile.startsWith("/")==false){
-				if(configFile.length()>1 && configFile.charAt(1)==':'){
-					//Windows ROOT C: D: E: ...
-				}else{
-					configFile=System.getProperty("DB@"+key,DbProp.CFG_ROOT_PATH)+"/"+configFile;
-				}				
-			}
-			
+			configFile=findConfigFile(configFile);
+			 	
 			Properties prop=new Properties();
 			
 			cfgFile=new CfgFile(configFile);
@@ -701,6 +678,54 @@ public class DBConfig implements Closeable{
 			
 			this.p=prop;
 		}
+		
+		protected String findConfigFile(String configFile){	
+			if(cfgBasePath!=null){
+				configFile=FileHelper.combinePath(cfgBasePath,configFile);
+				
+				logger.info("find("+key+") cfg base path by cfgBasePath: "+cfgBasePath+", file: "+configFile);
+			}else{
+				if(configFile.startsWith("/")==false){
+					if(configFile.length()>1 && configFile.charAt(1)==':'){
+						//Windows ROOT C: D: E: ...
+						logger.info("find("+key+") cfg base path by win-root config file: "+configFile); 
+					}else{
+						configFile=FileHelper.combinePath(findCfgBasePath(),configFile);
+					}				
+				}else{
+					logger.info("find("+key+") cfg base path by root config file: "+configFile); 
+				}
+			}
+			
+			return configFile;
+		}
+		
+		protected String findCfgBasePath(){
+			String basepath=System.getProperty("DB@"+key);
+			if(basepath==null){
+				String defpath=FileHelper.combinePath(DbProp.CFG_ROOT_PATH,configFile);
+				if(new File(defpath).exists()==false && annotationClass!=null){
+					basepath=EclipseHelper.findCfgBasePathByClass(annotationClass);
+					if(basepath!=null){
+						logger.info("find("+key+") cfg base path from class: "+annotationClass.getName()+", path: "+basepath+", file: "+configFile);
+						
+						return basepath;
+					}else{
+						logger.info("find("+key+") cfg base path use default path: "+DbProp.CFG_ROOT_PATH+", file: "+configFile);
+						
+						return DbProp.CFG_ROOT_PATH;
+					}
+				}else{
+					logger.info("find("+key+") cfg base path by default path: "+DbProp.CFG_ROOT_PATH+", file: "+configFile);
+					
+					return DbProp.CFG_ROOT_PATH;
+				}
+			}else{
+				logger.info("find("+key+") cfg base path by system property: DB@"+key+", path: "+basepath+", file: "+configFile);
+				
+				return basepath;
+			}
+		} 
 		
 		protected boolean loadCfg(CfgFile cf,Properties prop){
 			if(cf.cfgFile.exists()){
@@ -923,6 +948,131 @@ public class DBConfig implements Closeable{
 		}
 	}
 	
+	class DSI{
+		private DataSource ds=null;
+		
+		private String     datasourceClass;
+		private String     validationgQuery;
+		
+		private String     driver;
+		private String     password;
+		private String     url;
+		private String     username;
+		
+		private Properties poolProps=new Properties();
+		 
+		
+		public DSI(){
+			CFG cfg=getCfg();
+			
+			datasourceClass=cfg.getDatasourceClass();
+			if(datasourceClass!=null && datasourceClass.trim().length()>0){	
+				datasourceClass=datasourceClass.trim();
+				
+				if(datasourceClass.indexOf(".")<0){
+					datasourceClass=PkgNames.ORM_DATASOURCE+"."+datasourceClass;
+				}
+			}
+			 
+			validationgQuery=getDialect().getIdleValidationQuery();
+			 
+			driver   = cfg.getDriver();
+			password = cfg.getPassword();
+			url      = cfg.getUrl();
+			username = cfg.getUsername();
+			
+			poolProps.putAll(getPoolProperties());
+		}
+		
+		public boolean equals(Object other){
+			return toString().equals(other.toString());
+		}
+		
+		public String toString(){
+			StringBuffer sb=new StringBuffer();
+			
+			sb.append("datasourceClass:").append(datasourceClass);
+			sb.append(",validationgQuery:").append(validationgQuery);
+	
+			sb.append(",driver:").append(driver);
+			sb.append(",password:").append(password);
+			sb.append(",url:").append(url);
+			sb.append(",username:").append(username);
+			
+			TreeMap<Object, Object> tree=new TreeMap<Object, Object>();
+			for(Object key:poolProps.keySet()){
+				tree.put(key, poolProps.get(key));
+			}
+			
+			for(Object key:tree.keySet()){
+				sb.append(","+key+":").append(tree.get(key));
+			}
+			
+			return sb.toString();
+		}
+		
+		
+		public DataSource getDataSource(){
+			if(ds==null){
+				if(!DbProp.ProcessingEnvironment){
+					ds=getDataSourceFromConfigClass();
+				}
+				
+				if(ds==null){
+					ds=new SimpleDataSource(DBConfig.this);
+				}
+			}
+			
+			return ds;
+		}
+		
+		private DataSource getDataSourceFromConfigClass(){
+			String cc=datasourceClass;
+			if(cc!=null && cc.trim().length()>0){	
+				cc=cc.trim();
+				
+				if(cc.indexOf(".")<0){
+					cc=PkgNames.ORM_DATASOURCE+"."+cc;
+				}
+			 	
+				try{	
+					Object obj=instanceDataSource(cc); 	
+					if(obj instanceof PooledDataSource){
+						PooledDataSource pds=(PooledDataSource)obj;
+						
+						if(validationgQuery!=null && validationgQuery.trim().length()>0){
+							pds.setIdleValidationQuery(DbProp.CFG_CONNECT_IDLE_INTERVALS,validationgQuery.trim());
+						}
+						
+						pds.setProperties(poolProps);
+						
+						pds.setDriver(driver);
+						pds.setPassword(password);
+						pds.setUrl(url);
+						pds.setUsername(username);
+						 
+						return pds;
+					}else if(obj instanceof DataSource){				 
+						return(DataSource)obj;
+					}
+				}catch(Exception e){
+					throw new RuntimeException("Create datasource exception: "+e,e);
+				}
+			}
+			return null;
+		}
+		
+		protected Object instanceDataSource(String clazz)throws Exception{
+			if(clazz.equals(PkgNames.ORM_DS_C3p0)){
+				return DynamicLibHelper.createC3p0DataSource();
+			}else if(clazz.equals(PkgNames.ORM_DS_Durid)){
+				return DynamicLibHelper.createDruidDataSource();
+			}else{
+				return ClassHelper.forClassName(clazz).newInstance();	
+			}
+		}
+		
+	}
 	
 	private static class CfgFile{
 		private File cfgFile;

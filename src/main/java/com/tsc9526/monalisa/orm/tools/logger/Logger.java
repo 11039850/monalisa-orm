@@ -21,6 +21,7 @@ import java.util.Map;
 
 import javax.annotation.processing.Messager;
 
+import com.tsc9526.monalisa.orm.tools.helper.ClassHelper;
 import com.tsc9526.monalisa.orm.tools.resources.PkgNames;
 
 /**
@@ -145,9 +146,9 @@ public abstract class Logger {
 		String factoryType     = LIBRARY[index][1];
 
 		try {
-			Class.forName(loggerClassName);
-			 
-			return (LoggerFactory) Class.forName(PkgNames.ORM_LOGGER_PKG+"." + factoryType + "LoggerFactory").newInstance();
+			ClassHelper.forClassName(loggerClassName);
+			  
+			return (LoggerFactory) ClassHelper.forClassName(PkgNames.ORM_LOGGER_PKG+"." + factoryType + "LoggerFactory").newInstance();
 		} catch (IllegalAccessException e) {			 
 			throw new IllegalAccessError(e.getMessage());
 		} catch (InstantiationException e) {			 

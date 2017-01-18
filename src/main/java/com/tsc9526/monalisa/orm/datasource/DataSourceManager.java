@@ -103,13 +103,13 @@ public class DataSourceManager {
 			dbKey=clazzWithDBAnnotation.getName();
 		}
 		
-		return getDBConfig(dbKey,db);
+		return getDBConfig(dbKey,db,clazzWithDBAnnotation);
 	}
 	
 	public DBConfig getDBConfig(String dbKey,DB db,boolean reInit) {		  		
 		DBConfig cfg=dss.get(dbKey);
 		if(cfg==null){			
-			cfg=getDBConfig(dbKey,db);
+			cfg=getDBConfig(dbKey,db,null);
 		}else if(reInit){
 			cfg.init(db);			
 		}
@@ -117,11 +117,11 @@ public class DataSourceManager {
 	}
  
 	
-	public synchronized DBConfig getDBConfig(String dbKey,DB db){
+	public synchronized DBConfig getDBConfig(String dbKey,DB db,Class<?> clazzWithDBAnnotation){
 		DBConfig cfg=dss.get(dbKey);
 		
 		if(cfg==null && db!=null){
-			cfg=new DBConfig(dbKey,db);
+			cfg=new DBConfig(dbKey,db,clazzWithDBAnnotation);
 			putDBConfig(dbKey, cfg);
 		}
 		

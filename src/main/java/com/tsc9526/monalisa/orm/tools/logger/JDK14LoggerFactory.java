@@ -30,10 +30,12 @@ public class JDK14LoggerFactory implements LoggerFactory {
 			String fname = System.getProperty("java.util.logging.config.file");
 	        if (fname == null) {
 	        	InputStream is  = LoggerFactory.class.getClass().getResourceAsStream("/logger/jdklog.properties");
-				LogManager lm=LogManager.getLogManager();
-				lm.readConfiguration(is);
-				
-				is.close();
+				if(is!=null){
+					LogManager lm=LogManager.getLogManager();
+					lm.readConfiguration(is);
+					
+					is.close();
+				}
 	        } 
 		}catch(Exception e){
 			throw new RuntimeException(e);
