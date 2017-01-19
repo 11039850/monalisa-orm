@@ -153,16 +153,16 @@ public class EclipseHelper {
 			DataInputStream dataIn = new DataInputStream(input);
 			
 			String location = dataIn.readUTF();
-			if (location.length() > 0) {
-				// location format < 3.2 was a local file system OS path
-				// location format >= 3.2 is: URI_PREFIX + uri.toString()
-				if (location.startsWith(URI_PREFIX)) {
-					URI uri=new URI(location.substring(URI_PREFIX.length()));
-					location=uri.getPath(); 
-				} 
-			}else{
-				location=null;
+			
+			// location format < 3.2 was a local file system OS path
+			// location format >= 3.2 is: URI_PREFIX + uri.toString()
+			if (location.startsWith(URI_PREFIX)) {
+				URI uri=new URI(location.substring(URI_PREFIX.length()));
+				location=uri.getPath(); 
+			}else if(location.length()==0){
+				location= FileHelper.combinePath(eclipseWorkspaceDir,projectName);
 			}
+			
 			dataIn.close();
 			
 			return location;
