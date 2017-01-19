@@ -21,7 +21,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.ServletConfig;
-import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -32,6 +31,7 @@ import com.tsc9526.monalisa.orm.service.DBS;
 import com.tsc9526.monalisa.orm.service.Dispatcher;
 import com.tsc9526.monalisa.orm.service.actions.ActionLocator;
 import com.tsc9526.monalisa.orm.service.actions.ActionLocator.METHOD;
+import com.tsc9526.monalisa.orm.tools.helper.ClassHelper;
 import com.tsc9526.monalisa.orm.tools.helper.Helper;
 
 /**
@@ -48,51 +48,70 @@ public class DbQueryHttpServlet extends HttpServlet{
 	public void init(ServletConfig config) throws ServletException {
 		super.init(config);
 		
-		ServletContext sc=config.getServletContext();
-	
-		initDBS(sc,DB_CFG_PREFIX);
+	 
+		initDBS(config,DB_CFG_PREFIX);
 		
 		int i=1;
-		while(initDBS(sc,DB_CFG_PREFIX+i)){
+		while(initDBS(config,DB_CFG_PREFIX+i)){
 			i++;
 		}
 	}
 	
-	protected boolean initDBS(ServletContext sc,String prefix){
+	protected boolean initDBS(ServletConfig sc,String prefix){
 		String name    =sc.getInitParameter(prefix+".name");
-		String url     =sc.getInitParameter(prefix+".url");
-		String username=sc.getInitParameter(prefix+".username");
-		String password=sc.getInitParameter(prefix+".password");
-		
 		if(name!=null){
-			if(url==null || username==null || password==null){
-				StringBuffer msg=new StringBuffer("DBS init error: missing some parameters("+prefix+".url/username/password): {");
-				msg.append(prefix+".name ="+name+", ");
-				msg.append(prefix+".url ="+url+", ");
-				msg.append(prefix+".username ="+username+", ");
-				msg.append(prefix+".password ="+password+"}");
+			DBConfig db=getDbConfig(sc,prefix);
+			 
+			if(DBS.getDB(name)==null){
+				METHOD[] ms=getMethods(sc,prefix);
+				 
+				ActionLocator locator=new ActionLocator();
+				locator.setMethods(ms);
 				
-				throw new RuntimeException(msg.toString());
+				DBS.add(name,db,locator); 
 			}else{
-				if(DBS.getDB(name)==null){
-					METHOD[] ms=getMethods(sc,prefix);
-					
-					DBConfig db=DBConfig.fromJdbcUrl(url, username, password);
-					ActionLocator locator=new ActionLocator();
-					locator.setMethods(ms);
-					
-					DBS.add(name,db,locator); 
-				}else{
-					throw new RuntimeException("DBS init error: "+prefix+".name existed: "+name);
-				}
+				throw new RuntimeException("DBS init error: "+prefix+".name existed: "+name+", please check web.xml");
 			}
+			
 			return true;
 		}else{
 			return false;
 		}
 	}
 	
-	protected METHOD[] getMethods(ServletContext sc,String prefix) {
+	protected DBConfig getDbConfig(ServletConfig sc,String prefix){
+		String name    =sc.getInitParameter(prefix+".name");
+		String clazz   =sc.getInitParameter(prefix+".class");
+		
+		String url     =sc.getInitParameter(prefix+".url");
+		String username=sc.getInitParameter(prefix+".username");
+		String password=sc.getInitParameter(prefix+".password");
+		
+		DBConfig db=null;
+		if(name!=null){
+			if(clazz!=null){
+				try{
+					db=DBConfig.fromClass(ClassHelper.forClassName(clazz));
+				}catch(ClassNotFoundException e){
+					throw new RuntimeException(e);
+				}
+			}else if(url!=null && username!=null && password!=null){
+				db=DBConfig.fromJdbcUrl(url, username, password);
+			}else{
+				StringBuffer msg=new StringBuffer("DBS init error, check web.xml: missing some parameters("+prefix+".url/username/password): {");
+				msg.append(prefix+".name ="+name+", ");
+				msg.append(prefix+".class ="+clazz+", ");
+				msg.append(prefix+".url ="+url+", ");
+				msg.append(prefix+".username ="+username+", ");
+				msg.append(prefix+".password ="+password+"}");
+				 
+				throw new RuntimeException(msg.toString());
+			}
+		}
+		return db;
+	}
+	
+	protected METHOD[] getMethods(ServletConfig sc,String prefix) {
 		String ms=sc.getInitParameter(prefix+".methods");
 		if(ms!=null){
 			ms=sc.getInitParameter(DB_CFG_PREFIX+".methods");
