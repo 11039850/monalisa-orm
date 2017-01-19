@@ -17,7 +17,11 @@
 package com.tsc9526.monalisa.orm.datasource;
 
 import java.lang.reflect.Method;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.util.LinkedHashSet;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 import javax.sql.DataSource;
@@ -42,20 +46,41 @@ public class DataSourceManager {
 	}	
 	
 	public static void shutdown(){
-		try{
-			DBTasks.shutdown();
-			
-			for(DBConfig cfg:dm.dss.values()){
-				cfg.close();
-			}
-			
-			shutdownMysqlThreads();
-		}finally{
-			dm.dss.clear();
-		}
+		DBTasks.shutdown();
 	}
+	 
+	private Map<String, DBConfig> dss=new ConcurrentHashMap<String,DBConfig>();
 	
-	private static void shutdownMysqlThreads(){
+	private Map<String, Dialect> dialects=new ConcurrentHashMap<String,Dialect>();
+	
+	
+	private DataSourceManager(){	
+		DBTasks.addShutdown(new Runnable() {
+			public void run(){
+				Set<String> jdbsURLs=new LinkedHashSet<String>();
+				jdbsURLs.add("jdbc:relique:csv:monalisa-memory");
+				
+				for(DBConfig cfg:dss.values()){
+					String url=cfg.getCfg().getUrl();
+					jdbsURLs.add(url);
+					
+					cfg.close();
+				}
+				
+				for(String url:jdbsURLs){
+					try{
+						DriverManager.deregisterDriver(DriverManager.getDriver(url));
+					}catch(SQLException e){}
+				}
+				 
+				shutdownMysqlThreads();
+			}
+		});
+		
+		registerDialect(new MysqlDialect());
+	}	
+	
+	private void shutdownMysqlThreads(){
 		try {
 		    Class<?> cls=ClassHelper.forClassName("com.mysql.jdbc.AbandonedConnectionCleanupThread");
 		    Method   mth=(cls==null ? null : cls.getMethod("shutdown"));
@@ -68,15 +93,6 @@ public class DataSourceManager {
 			logger.error(""+t,t);
 		}
 	}
-	
-	private Map<String, DBConfig> dss=new ConcurrentHashMap<String,DBConfig>();
-	
-	private Map<String, Dialect> dialects=new ConcurrentHashMap<String,Dialect>();
-	
-	
-	private DataSourceManager(){		
-		registerDialect(new MysqlDialect());
-	}	
 	
 	@SuppressWarnings("unchecked")
 	public void registerDialect(String dialectClass)throws Exception{

@@ -16,28 +16,96 @@
  *******************************************************************************************/
 package com.tsc9526.monalisa.orm.datasource;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
+
+import com.tsc9526.monalisa.orm.tools.logger.Logger;
+ 
 
 /**
  * 
  * @author zzg.zhou(11039850@qq.com)
  */
-public class DBTasks {
-	private static Map<String,Timer> timers=new LinkedHashMap<String,Timer>(); 
+public class DBTasks extends Thread{
+	static Logger logger=Logger.getLogger(DBTasks.class);
 	
+	private static DBTasks instance=new DBTasks();
+ 
 	public  static void schedule(String taskName,TimerTask task,long delay,long period){
-		if(!timers.containsKey(taskName)){
-			addSchedule(taskName,task,delay,period);
+		instance.addSchedule(taskName, task, delay, period);
+	}
+	 
+	public static void addShutdown(Runnable c){
+		instance.addRunnable(c);
+	}
+	
+	public static void shutdown(){
+		instance.destory();
+	}
+ 
+	protected long    ts        = System.currentTimeMillis();
+	protected boolean running   = false;
+	protected boolean destoried =false;
+	protected boolean terminated=false;
+	protected Timer   timer   = new Timer("Monalisa-DBTask-Timer",true);
+	
+	protected List<Runnable> cls   = new ArrayList<Runnable>();
+	
+	protected Set<String> timeTasks = new HashSet<String>();
+	
+	private DBTasks(){
+		setName("Monalisa-DBTask-Daemon");
+		setDaemon(true);
+		
+		start();
+	}
+	
+	public void interrupt(){
+		super.interrupt();
+		
+		running=false;
+	}
+	
+	public void run(){
+		running=true;
+	 
+		try{
+			while(running){
+				delay(200);
+			}
+		}finally{
+			terminated=true;
+			
+			destory();
 		}
 	}
 	
-	private synchronized static void addSchedule(String taskName,TimerTask task,long delay,long period){
-		if(!timers.containsKey(taskName)){
-			Timer timer=new Timer(taskName,true);
-			timers.put(taskName,timer);
+	public void destory(){
+		running=false;
+		if(!destoried){
+			destoried=true;
+			
+			timer.cancel();
+			
+			for(Runnable c:cls){
+				c.run();
+			}
+			
+			if(!terminated){
+				interrupt();
+			}
+			
+			logger.info("Exit: "+this.getClass().getSimpleName());
+		}
+	}
+	
+	public synchronized void addSchedule(String taskName,TimerTask task,long delay,long period){
+		if(!timeTasks.contains(taskName)){
+			timeTasks.add(taskName);
 			
 			if(delay<=0){
 				task.run();
@@ -48,9 +116,20 @@ public class DBTasks {
 		}
 	}
 	
-	static void shutdown(){
-		 for(Timer timer:timers.values()){
-			 timer.cancel();
-		 }
+	public void addRunnable(Runnable c){
+		cls.add(c);
 	}
+	 
+	protected void delay(int millis){
+		int count=millis/100;
+		
+		for(int i=0;running && i<count;i++){
+			try{
+				Thread.sleep(100);
+			}catch(InterruptedException ex){
+				running=false;
+				break;
+			}
+		}
+	}	
 }
