@@ -45,6 +45,9 @@ public class DataSourceManager {
 		return dm;
 	}	
 	
+	/**
+	 * close data source, daemon thread ...
+	 */
 	public static void shutdown(){
 		DBTasks.shutdown();
 	}

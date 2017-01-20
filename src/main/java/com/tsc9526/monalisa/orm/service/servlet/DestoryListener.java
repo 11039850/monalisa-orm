@@ -22,7 +22,14 @@ import javax.servlet.ServletContextListener;
 import com.tsc9526.monalisa.orm.datasource.DataSourceManager;
 
 /**
- * 
+ * web.xml
+   <pre>
+   &lt;listener&gt;
+	&lt;listener-class&gt;com.tsc9526.monalisa.orm.service.servlet.DestoryListener&lt;/listener-class&gt;
+   &lt;/listener&gt;
+   </pre>
+   
+ * Call com.tsc9526.monalisa.orm.datasource.DataSourceManager.shutdown() close data source, daemon thread ...
  * @author zzg.zhou(11039850@qq.com)
  */
 public class DestoryListener implements ServletContextListener {

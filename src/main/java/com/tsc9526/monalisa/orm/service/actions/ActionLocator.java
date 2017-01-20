@@ -31,7 +31,20 @@ public class ActionLocator{
 	static Logger logger=Logger.getLogger(ActionLocator.class);
 	
 	public static enum METHOD{
-		GET,DELETE,POST,PUT,HEAD;
+		/**SELECT*/
+		GET,
+		
+		/**DELETE*/
+		DELETE,
+		
+		/**UPDATE*/
+		POST,
+		
+		/**UPDATE*/
+		PUT,
+		
+		/**DESCRIBE TABLE, SHOW DATABASE ...*/
+		HEAD;
 	}
 	 
 	private List<METHOD> methods=new ArrayList<METHOD>(){
