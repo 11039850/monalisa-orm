@@ -25,13 +25,17 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+ 
 
 import com.tsc9526.monalisa.orm.datasource.DBConfig;
 import com.tsc9526.monalisa.orm.service.DBS;
 import com.tsc9526.monalisa.orm.service.Dispatcher;
+import com.tsc9526.monalisa.orm.service.actions.ActionFilter;
 import com.tsc9526.monalisa.orm.service.actions.ActionLocator;
 import com.tsc9526.monalisa.orm.service.args.MethodHttp;
+import com.tsc9526.monalisa.orm.service.args.MethodSQL;
 import com.tsc9526.monalisa.orm.tools.helper.ClassHelper;
+import com.tsc9526.monalisa.orm.tools.helper.ExceptionHelper;
 import com.tsc9526.monalisa.orm.tools.helper.Helper;
 
 /**
@@ -63,12 +67,8 @@ public class DbQueryHttpServlet extends HttpServlet{
 			DBConfig db=getDbConfig(sc,prefix);
 			 
 			if(DBS.getDB(name)==null){
-				MethodHttp[] ms=getHttpMethods(sc,prefix);
-				 
-				ActionLocator locator=new ActionLocator();
-				locator.setHttpMethods(ms);
-				
-				DBS.add(name,db,locator); 
+				ActionLocator locator=getActionLocator(sc,prefix);
+			 	DBS.add(name,db,locator); 
 			}else{
 				throw new RuntimeException("DBS init error: "+prefix+".name existed: "+name+", please check web.xml");
 			}
@@ -78,6 +78,8 @@ public class DbQueryHttpServlet extends HttpServlet{
 			return false;
 		}
 	}
+	
+	
 	
 	protected DBConfig getDbConfig(ServletConfig sc,String prefix){
 		String name    =sc.getInitParameter(prefix+".name");
@@ -112,13 +114,10 @@ public class DbQueryHttpServlet extends HttpServlet{
 	}
 	
 	protected MethodHttp[] getHttpMethods(ServletConfig sc,String prefix) {
-		String ms=sc.getInitParameter(prefix+".methods");
-		if(ms!=null){
-			ms=sc.getInitParameter(DB_CFG_PREFIX+".methods");
-		}
-		
+		String ms=sc.getInitParameter(prefix+".method.http");
+		 
 		if(ms==null){
-			return new MethodHttp[]{ MethodHttp.GET, MethodHttp.DELETE, MethodHttp.POST, MethodHttp.PUT, MethodHttp.HEAD};
+			return MethodHttp.values();
 		}else{
 			List<MethodHttp> xs=new ArrayList<MethodHttp>();
 			for(String m:Helper.splits(ms)){
@@ -130,6 +129,65 @@ public class DbQueryHttpServlet extends HttpServlet{
 		}
 	}
 	
+	protected MethodSQL[] getSQLMethods(ServletConfig sc,String prefix) {
+		String ms=sc.getInitParameter(prefix+".method.sql");
+		 
+		if(ms==null){
+			return MethodSQL.values();
+		}else{
+			List<MethodSQL> xs=new ArrayList<MethodSQL>();
+			for(String m:Helper.splits(ms)){
+				MethodSQL x=MethodSQL.valueOf( m.trim().toUpperCase() );
+				xs.add(x);
+			}
+			
+			return xs.toArray(new  MethodSQL[0]);
+		}
+	}
+	
+	
+	protected ActionLocator getActionLocator(ServletConfig sc,String prefix){
+		String locatorClass=sc.getInitParameter(prefix+".locator");
+		 
+		ActionLocator locator=new ActionLocator();
+		if(locatorClass!=null && locatorClass.trim().length()>0){
+			try {
+				locator=(ActionLocator)ClassHelper.forClassName(locatorClass.trim()).newInstance();
+		 	} catch (Exception e) {
+				ExceptionHelper.throwRuntimeException(e);			
+			}
+		}
+		 
+		setupMethods(locator,sc,prefix);
+		
+		setupFilters(locator,sc,prefix);
+		
+		return locator;
+	}
+	
+	protected void setupMethods(ActionLocator locator,ServletConfig sc,String prefix){
+		MethodHttp[] ms=getHttpMethods(sc,prefix);
+		MethodSQL[]  mq=getSQLMethods(sc,prefix);
+	
+		locator.setHttpMethods(ms);
+		locator.setSQLMethods(mq);
+	}
+	
+	protected void setupFilters(ActionLocator locator,ServletConfig sc,String prefix){
+		String filters=sc.getInitParameter(prefix+".filters");
+		if(filters!=null && filters.trim().length()>0){
+			try{
+				for(String f:Helper.splits(filters)){
+					ActionFilter af=(ActionFilter)ClassHelper.forClassName(f.trim()).newInstance();
+					
+					locator.addFilter(af);
+				}
+			} catch (Exception e) {
+				ExceptionHelper.throwRuntimeException(e);			
+			}
+		}
+	}
+	 
 	//GET: get data
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		doDispatch(req, resp);
