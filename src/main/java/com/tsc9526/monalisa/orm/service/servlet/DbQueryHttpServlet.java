@@ -30,7 +30,7 @@ import com.tsc9526.monalisa.orm.datasource.DBConfig;
 import com.tsc9526.monalisa.orm.service.DBS;
 import com.tsc9526.monalisa.orm.service.Dispatcher;
 import com.tsc9526.monalisa.orm.service.actions.ActionLocator;
-import com.tsc9526.monalisa.orm.service.actions.ActionLocator.METHOD;
+import com.tsc9526.monalisa.orm.service.args.MethodHttp;
 import com.tsc9526.monalisa.orm.tools.helper.ClassHelper;
 import com.tsc9526.monalisa.orm.tools.helper.Helper;
 
@@ -63,10 +63,10 @@ public class DbQueryHttpServlet extends HttpServlet{
 			DBConfig db=getDbConfig(sc,prefix);
 			 
 			if(DBS.getDB(name)==null){
-				METHOD[] ms=getMethods(sc,prefix);
+				MethodHttp[] ms=getHttpMethods(sc,prefix);
 				 
 				ActionLocator locator=new ActionLocator();
-				locator.setMethods(ms);
+				locator.setHttpMethods(ms);
 				
 				DBS.add(name,db,locator); 
 			}else{
@@ -111,22 +111,22 @@ public class DbQueryHttpServlet extends HttpServlet{
 		return db;
 	}
 	
-	protected METHOD[] getMethods(ServletConfig sc,String prefix) {
+	protected MethodHttp[] getHttpMethods(ServletConfig sc,String prefix) {
 		String ms=sc.getInitParameter(prefix+".methods");
 		if(ms!=null){
 			ms=sc.getInitParameter(DB_CFG_PREFIX+".methods");
 		}
 		
 		if(ms==null){
-			return new METHOD[]{ METHOD.GET, METHOD.DELETE, METHOD.POST, METHOD.PUT, METHOD.HEAD};
+			return new MethodHttp[]{ MethodHttp.GET, MethodHttp.DELETE, MethodHttp.POST, MethodHttp.PUT, MethodHttp.HEAD};
 		}else{
-			List<METHOD> xs=new ArrayList<METHOD>();
+			List<MethodHttp> xs=new ArrayList<MethodHttp>();
 			for(String m:Helper.splits(ms)){
-				METHOD x=METHOD.valueOf( m.trim().toUpperCase() );
+				MethodHttp x=MethodHttp.valueOf( m.trim().toUpperCase() );
 				xs.add(x);
 			}
 			
-			return xs.toArray(new  METHOD[0]);
+			return xs.toArray(new  MethodHttp[0]);
 		}
 	}
 	

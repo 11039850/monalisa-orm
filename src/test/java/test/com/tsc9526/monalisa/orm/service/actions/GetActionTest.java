@@ -40,14 +40,7 @@ public class GetActionTest extends AbstractActionTest {
 		MockHttpServletRequest       req=createRequest("/db1");
 		 	
 		Response resp=getRespone(req);
-		Assert.assertEquals(resp.getStatus(),200);
-		 
-		DataTable<DataMap> table=resp.getData();
-		
-		Assert.assertTrue(table.size()>1);
-		
-		DataMap data=table.get(0);
-		Assert.assertNotNull(data.getString("table_name"));
+		Assert.assertEquals(resp.getStatus(),400);
  	}
 	
 	public void testGetDbTableNotExist()throws Exception{

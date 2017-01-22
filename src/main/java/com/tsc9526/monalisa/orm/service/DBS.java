@@ -44,7 +44,7 @@ public class DBS {
 		if (!dbs.containsKey(dbName)) {
 			DBS s = new DBS(dbName, db, locator);
 
-			logger.info("Add DB service" + locator.getMethods() + ": /" + dbName + ", dbkey: " + db.getKey());
+			logger.info("Add DB service, HTTP: " + locator.getHttpMethods() + ", SQL: "+locator.getSQLMethods()+" : /" + dbName + ", dbkey: " + db.getKey());
 			dbs.put(dbName, s);
 		} else {
 			logger.info("Database service existed: /" + dbName + ", dbkey: " + db.getKey());
@@ -71,7 +71,7 @@ public class DBS {
 
 		DBS s = (DBS) dbs.remove(dbName);
 		if (s != null) {
-			logger.info("Removed DB service" + s.locator.getMethods()+ ": /" + dbName);
+			logger.info("Removed DB service, HTTP: " + s.locator.getHttpMethods()+ ", SQL: "+s.locator.getSQLMethods()+" : /" + dbName);
 		}
 	}
 

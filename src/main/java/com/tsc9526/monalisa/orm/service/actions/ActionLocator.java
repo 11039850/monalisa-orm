@@ -20,6 +20,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.tsc9526.monalisa.orm.service.Response;
+import com.tsc9526.monalisa.orm.service.args.MethodHttp;
+import com.tsc9526.monalisa.orm.service.args.MethodSQL;
 import com.tsc9526.monalisa.orm.service.args.ModelArgs;
 import com.tsc9526.monalisa.orm.tools.logger.Logger;
 
@@ -29,76 +31,104 @@ import com.tsc9526.monalisa.orm.tools.logger.Logger;
  */
 public class ActionLocator{
 	static Logger logger=Logger.getLogger(ActionLocator.class);
-	
-	public static enum METHOD{
-		/**SELECT*/
-		GET,
-		
-		/**DELETE*/
-		DELETE,
-		
-		/**UPDATE*/
-		POST,
-		
-		/**UPDATE*/
-		PUT,
-		
-		/**DESCRIBE TABLE, SHOW DATABASE ...*/
-		HEAD;
-	}
 	 
-	private List<METHOD> methods=new ArrayList<METHOD>(){
+	protected List<MethodHttp> httpMethods=new ArrayList<MethodHttp>(){
 		private static final long serialVersionUID = 1L;
 		{
-			for(METHOD m:METHOD.values()){
+			for(MethodHttp m:MethodHttp.values()){
+				add(m);
+			}
+		}
+	};
+	
+	protected List<MethodSQL>  sqlMethods=new ArrayList<MethodSQL>(){
+		private static final long serialVersionUID = 1L;
+		{
+			for(MethodSQL m:MethodSQL.values()){
 				add(m);
 			}
 		}
 	};
 
+	protected List<ActionFilter> filters=new ArrayList<ActionFilter>();
+	
 	public ActionLocator(){
 		 
 	}
 	
-	public void setMethods(METHOD ... methods){
-		this.methods.clear();
+	public void setHttpMethods(MethodHttp ... methods){
+		this.httpMethods.clear();
 		
-		for(METHOD m:methods){
-			this.methods.add(m);
+		for(MethodHttp m:methods){
+			this.httpMethods.add(m);
 		}
 	}
 	
+	public void setSQLMethods(MethodSQL ... methods){
+		this.sqlMethods.clear();
+		
+		for(MethodSQL m:methods){
+			this.sqlMethods.add(m);
+		}
+	}
+	 
 	public Action getAction(ModelArgs args) {
 		Response response=verify(args);
 		if(response!=null){
 			return new ResponseAction(response);
 		}
+		 
+		MethodHttp httpMethod=args.getHttpMethod(); 
+		if(!httpMethods.contains(httpMethod) || httpMethod==null){
+			return new ResponseAction(Response.REQUEST_METHOD_NOT_ALLOWED,"Illegal http method: "+args.getActionName());
+		}
+		
+		MethodSQL sqlMethod=httpMethod.toSQLMethod(args);
+		if(!sqlMethods.contains(sqlMethod) || sqlMethod==null){
+			return new ResponseAction(Response.REQUEST_METHOD_NOT_ALLOWED,"Illegal sql method: "+sqlMethod.name());
+		}
 		
 		try{
-			return getActionByMethod(args);
+			Action action= getActionByHttpMethod(httpMethod,args);
+			
+			Response r=doFilter(action);
+			if(r==null){
+				return action;
+			}else{
+				return new ResponseAction(r);
+			}
 		}catch(IllegalArgumentException  e){
-			return new ResponseAction(new Response(Response.REQUEST_METHOD_NOT_ALLOWED, "Access forbidden, method: "+args.getActionName()+" not found in the class: "+this.getClass().getName()));
+			return new ResponseAction(Response.REQUEST_METHOD_NOT_ALLOWED, "Access forbidden, method: "+args.getActionName()+" not found in the class: "+this.getClass().getName());
 		}catch(Exception e){
 			throw new RuntimeException(e.getMessage(),e);
 		}
 	}
 	
-	protected Action getActionByMethod(ModelArgs args) throws  IllegalArgumentException{
-		String name=args.getActionName().toUpperCase();
-		
-		METHOD method=METHOD.valueOf(name);
-		
-		if(!methods.contains(method) || method==null){
-			throw new IllegalArgumentException(name);
+	protected Response doFilter(Action action){
+		for(ActionFilter f:filters){
+			if(f.accept(action)){
+				Response r=f.doFilter(action);
+				if(r!=null){
+					return r;
+				}
+			}
 		}
-		
-		switch(method){
+		return null; 
+	}
+	
+	public ActionLocator addFilter(ActionFilter filter){
+		filters.add(filter); 
+		return this;
+	}
+	 
+	protected Action getActionByHttpMethod(MethodHttp httpMethod,ModelArgs args) throws  IllegalArgumentException{
+		switch(httpMethod){
 			case GET:    return doGetAction(args);
 			case DELETE: return doDeleteAction(args);
 			case PUT:    return doPutAction(args);
 			case POST:   return doPostAction(args);
 			case HEAD:	 return doHeadAction(args);
-			default:     throw new IllegalArgumentException(name);
+			default:     throw new IllegalArgumentException(httpMethod.name());
 		}
 	}
     
@@ -140,8 +170,11 @@ public class ActionLocator{
 		return new ResponseAction(new Response(Response.REQUEST_METHOD_NOT_ALLOWED, "Method not allowed: "+method));
 	}
 	
-	public List<METHOD> getMethods(){
-		return methods;
+	public List<MethodHttp> getHttpMethods(){
+		return httpMethods;
 	}
-  
+   
+	public List<MethodSQL> getSQLMethods(){
+		return sqlMethods;
+	}
 }

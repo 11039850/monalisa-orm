@@ -18,25 +18,24 @@ package com.tsc9526.monalisa.orm.service.actions;
 
 import com.tsc9526.monalisa.orm.service.Response;
 
-
 /**
  * 
  * @author zzg.zhou(11039850@qq.com)
  */
-public class ResponseAction extends Action{
-	private Response response;
+public interface ActionFilter {
+	/**
+	 * 
+	 * @param action the action object
+	 * @return true if need do filter, otherwise false 
+	 */
+	public boolean accept(Action action);
 	
-	public ResponseAction(Response response) {
-		super(null);
-		
-		this.response=response;
-	}
 	
-	public ResponseAction(int status,String message) {
-		this(new Response(status,message));
-	}
-
-	public Response getResponse() {
-		return response;
-	}	
+	/**
+	 * Filter action's response
+	 * 
+	 * @param action the action object
+	 * @return null if do not filter, otherwise return the response object
+	 */
+	public Response doFilter(Action action);
 }

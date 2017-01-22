@@ -21,6 +21,8 @@ import com.tsc9526.monalisa.orm.datasource.DBConfig;
 import com.tsc9526.monalisa.orm.model.Record;
 import com.tsc9526.monalisa.orm.service.DBS;
 import com.tsc9526.monalisa.orm.service.Response;
+import com.tsc9526.monalisa.orm.service.args.MethodHttp;
+import com.tsc9526.monalisa.orm.service.args.MethodSQL;
 import com.tsc9526.monalisa.orm.service.args.ModelArgs;
 import com.tsc9526.monalisa.orm.tools.logger.Logger;
 
@@ -49,6 +51,18 @@ public abstract class Action {
 		return this.args;
 	}
 	 
+	
+	public MethodHttp getMethodHttp(){
+		return args.getHttpMethod();
+	}
+	
+	protected MethodSQL getMethodSQL(){
+		MethodHttp method=getMethodHttp();
+		
+		return method.toSQLMethod(this.args);
+	}
+	
+	
 	protected Query createQuery(){
 		return db.createQuery();
 	}

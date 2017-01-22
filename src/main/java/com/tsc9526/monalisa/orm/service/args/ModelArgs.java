@@ -95,6 +95,12 @@ public class ModelArgs extends QueryArgs{
 		}
 	}
 	 
+	public MethodHttp getHttpMethod(){
+		String name=getActionName().toUpperCase();
+		MethodHttp method=MethodHttp.valueOf(name);
+		return method;
+	}
+	
 	private void unnecessaryPath(String[] vs, int from) {
 		StringBuilder sb = new StringBuilder();
 		for (int i = from; i < vs.length; i++) {

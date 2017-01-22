@@ -22,6 +22,7 @@ import java.util.List;
 
 import com.tsc9526.monalisa.orm.annotation.Column;
 import com.tsc9526.monalisa.orm.datatable.DataMap;
+import com.tsc9526.monalisa.orm.datatable.DataTable;
 import com.tsc9526.monalisa.orm.model.Record;
 import com.tsc9526.monalisa.orm.service.Response;
 import com.tsc9526.monalisa.orm.service.args.ModelArgs;
@@ -41,14 +42,57 @@ public class HeadAction extends Action{
 	public Response getResponse(){
 		if(args.getTable()!=null){
 			return getTableModel();
+		}else if(args.getTable()!=null){
+			return getTablesModel();
 		}else{		
-			return new Response(Response.REQUEST_BAD_PARAMETER,"Head error, missing table, using: /"+args.getPathDatabases()+"/your_table_name");
+			return getAllTables();
 		}	 
 	}
 	
+	/**
+	 * Get the database tables
+	 * 
+	 * @return list tables of the database 
+	 */
+	public Response getAllTables(){
+		DataTable<DataMap> table=new DataTable<DataMap>();
+		for(String t:db.getTables()){
+			DataMap m=new DataMap();
+			
+			m.put("table_name",t);
+			
+			table.add(m);
+		}
+		return doGetTable(table );
+	}
+	
+	protected Response doGetTable(DataTable<DataMap> table){
+		return new Response(table).setDetail(""+table.size());
+	}
+	
 	protected Response getTableModel(){
-		Record record=createRecord();
+		DataMap data=getTableModel(args.getTable()); 
 		
+		Response response=new Response(data);
+		return response;
+	}
+	
+	protected Response getTablesModel(){
+		List<DataMap> ds=new ArrayList<DataMap>();
+		
+		for(String table:args.getTables()){
+			DataMap data=getTableModel(table); 
+			
+			ds.add(data);
+		}
+		
+		Response response=new Response(ds);
+		return response;
+	}
+	
+	protected DataMap getTableModel(String tableName){
+		Record record=db.createRecord(tableName);
+				
 		List<String>  colNames =new ArrayList<String>();
 		List<DataMap> colModel=new ArrayList<DataMap>();
 		for(FGS fgs:record.fields()){
@@ -81,8 +125,7 @@ public class HeadAction extends Action{
 		data.put("colNames", colNames);
 		data.put("colModel", colModel);
 		
-		Response response=new Response(data);
-		return response;
+		return data;
 	}
   
 }

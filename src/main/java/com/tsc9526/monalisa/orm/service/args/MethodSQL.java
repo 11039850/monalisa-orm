@@ -14,29 +14,35 @@
  *	You should have received a copy of the GNU Lesser General Public License
  *	along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************************/
-package com.tsc9526.monalisa.orm.service.actions;
-
-import com.tsc9526.monalisa.orm.service.Response;
-
+package com.tsc9526.monalisa.orm.service.args;
 
 /**
  * 
  * @author zzg.zhou(11039850@qq.com)
  */
-public class ResponseAction extends Action{
-	private Response response;
+public enum MethodSQL {
+	/**
+	 * HTTP: POST
+	 */
+	INSERT,
 	
-	public ResponseAction(Response response) {
-		super(null);
-		
-		this.response=response;
-	}
+	/**
+	 * HTTP: POST/PUT
+	 */
+	UPDATE,
 	
-	public ResponseAction(int status,String message) {
-		this(new Response(status,message));
-	}
-
-	public Response getResponse() {
-		return response;
-	}	
+	/**
+	 * HTTP: DELETE
+	 */
+	DELETE,
+	
+	/**
+	 * HTTP: GET
+	 */
+	SELECT,
+	
+	/**
+	 * HTTP: HEAD
+	 */
+	DESCRIBE;
 }

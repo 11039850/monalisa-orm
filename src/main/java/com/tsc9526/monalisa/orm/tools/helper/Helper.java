@@ -311,7 +311,7 @@ public class Helper {
 	
 	public static String join(String[] vs,int from,int len,String joinString){
 		StringBuffer sb=new StringBuffer();
-		for(int i=from; i<(from+len); i++){
+		for(int i=from; i<(from+len) && i< vs.length; i++){
 			if(sb.length()>0){
 				sb.append(joinString);
 			}
@@ -320,6 +320,17 @@ public class Helper {
 		return sb.toString();	
 	}
 	
+	
+	public static String join(List<String> vs,int from,int len,String joinString){
+		StringBuffer sb=new StringBuffer();
+		for(int i=from; i<(from+len) && i<vs.size() ; i++){
+			if(sb.length()>0){
+				sb.append(joinString);
+			}
+			sb.append(vs.get(i));
+		}
+		return sb.toString();
+	}
 	
 	public static String[] shiftLeft(String[] vs,int len){
 		if(vs.length>len){

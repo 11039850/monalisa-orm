@@ -26,6 +26,7 @@ import test.com.tsc9526.monalisa.orm.mysql.MysqlDB;
 import com.tsc9526.monalisa.orm.service.DBS;
 import com.tsc9526.monalisa.orm.service.Response;
 import com.tsc9526.monalisa.orm.service.actions.ActionLocator;
+import com.tsc9526.monalisa.orm.service.args.MethodHttp;
 
 /**
  * 
@@ -42,13 +43,13 @@ public class OnlyActionTest extends AbstractActionTest{
 		DBS.remove("db1");
 		DBS.add("db1",MysqlDB.DB,new ActionLocator() {
 			{
-				this.setMethods(METHOD.GET,METHOD.DELETE);
+				this.setHttpMethods(MethodHttp.GET,MethodHttp.DELETE,MethodHttp.HEAD);
 			}
 		});
 	}
 	
 	public void testGet()throws Exception{
-		MockHttpServletRequest       req=createRequest("GET","/`db1`");
+		MockHttpServletRequest       req=createRequest("HEAD","/`db1`");
 	 	
 		Response resp=getRespone(req);
 		Assert.assertEquals(resp.getStatus(),200);

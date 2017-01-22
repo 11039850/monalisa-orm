@@ -49,9 +49,7 @@ public class GetAction extends Action{
 		if(args.getTables()!=null){
 			return getTablesRows();
 		}else{
-			if(args.getTable()==null){
-				return getTables();
-			}else{
+			if(args.getTable()!=null){
 				String table=args.getTable();
 				int p=table.indexOf(RequestParameter.MS);
 				if(p>0){
@@ -65,6 +63,8 @@ public class GetAction extends Action{
 						return getTableRows();
 					}
 				}
+			}else{
+				return new Response(Response.REQUEST_BAD_PARAMETER,"Missing table, using HEAD OR: /"+args.getPathDatabases()+"/your_table_name");
 			}
 		}
 	}
@@ -139,25 +139,7 @@ public class GetAction extends Action{
 		
 		return createQueryResponse(query,null);
 	}
-	
-
-	/**
-	 * Get the database tables
-	 * 
-	 * @return list tables of the database 
-	 */
-	public Response getTables(){
-		DataTable<DataMap> table=new DataTable<DataMap>();
-		for(String t:db.getTables()){
-			DataMap m=new DataMap();
-			
-			m.put("table_name",t);
-			
-			table.add(m);
-		}
-		return doGetTable(table );
-	}
-	  
+	   
 	/**
 	 * Get the table rows
 	 * 

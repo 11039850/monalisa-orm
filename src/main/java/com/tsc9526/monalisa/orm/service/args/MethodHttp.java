@@ -14,29 +14,56 @@
  *	You should have received a copy of the GNU Lesser General Public License
  *	along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************************/
-package com.tsc9526.monalisa.orm.service.actions;
-
-import com.tsc9526.monalisa.orm.service.Response;
+package com.tsc9526.monalisa.orm.service.args;
 
 
 /**
  * 
  * @author zzg.zhou(11039850@qq.com)
  */
-public class ResponseAction extends Action{
-	private Response response;
+public enum MethodHttp {
+	/**
+	 * SQL: SELECT 
+	 */
+	GET,
 	
-	public ResponseAction(Response response) {
-		super(null);
-		
-		this.response=response;
-	}
+	/**
+	 * SQL: DELETE
+	 */
+	DELETE,
 	
-	public ResponseAction(int status,String message) {
-		this(new Response(status,message));
+	/** 
+	 * SQL: INSERT OR UPDATE
+	 */
+	POST,
+	
+	/**
+	 * SQL: UPDATE
+	 */
+	PUT,
+	
+	/**
+	 * SQL: DESCRIBE TABLE, SHOW DATABASE ...
+	 */
+	HEAD;
+	
+	public MethodSQL toSQLMethod(ModelArgs args){
+		switch(this){
+			case GET:    return MethodSQL.SELECT;
+			case DELETE: return MethodSQL.DELETE;
+			case PUT:    return MethodSQL.UPDATE;
+			case POST:   
+						 if(args.getTables()!=null){
+							 return MethodSQL.INSERT;
+						 }else if(args.getTable()!=null){
+							 if(args.getSinglePK()!=null || args.getMultiKeys()!=null){
+								 return MethodSQL.INSERT;
+							 }
+						 }
+						 return MethodSQL.UPDATE;
+						 
+			case HEAD:	 return MethodSQL.DESCRIBE;
+			default:     throw new IllegalArgumentException(this.name());
+		}
 	}
-
-	public Response getResponse() {
-		return response;
-	}	
 }

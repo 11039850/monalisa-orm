@@ -40,7 +40,7 @@ public class PostAction extends PutAction{
 		super(args);
 	} 
 	 
-	public Response updateTablesRows(){
+	public Response insertTablesRows(){
 		List<Record> all=new ArrayList<Record>();
 		
 		for(String table:args.getTables()){
@@ -50,7 +50,7 @@ public class PostAction extends PutAction{
 			List<Record> records=ModelHelper.ServletRequestModelParser.parseModels(tpl, args.getReq(),getTableMapping(tb));
 			
 			if(records.size()==0){
-				return updateTableNoData(table);
+				return insertTableNoData(table);
 			}
 			
 			all.addAll(records);
@@ -91,20 +91,20 @@ public class PostAction extends PutAction{
 		return r;
 	}
 	
-	public Response updateTableRows(){
+	public Response insertTableRows(){
 		Record tpl=createRecord();
 		
 		List<Record> records=ModelHelper.ServletRequestModelParser.parseModels(tpl, args.getReq());
 		if(records.size()==1){
-			return updateTableRow(records.get(0));
+			return insertTableRow(records.get(0));
 		}else if(records.size()>1){
-			return updateTableRows(records);
+			return insertTableRows(records);
 		}else{
-			return updateTableNoData(args.getTable());
+			return insertTableNoData(args.getTable());
 		}
 	}
 	
-	public Response updateTableRow(Record m){
+	public Response insertTableRow(Record m){
 		int n=doInsertRecord(m);
 		 
 		Response r=new Response();
@@ -127,7 +127,7 @@ public class PostAction extends PutAction{
 		return r;
 	}
 	
-	public Response updateTableRows(List<Record> records){
+	public Response insertTableRows(List<Record> records){
 		int[] rs= doBatchRecordInsert(records);
 		
 		int n=0;
@@ -172,7 +172,7 @@ public class PostAction extends PutAction{
 	}
 	
 	
-	protected Response updateTableNoData(String table){
+	protected Response insertTableNoData(String table){
 		return new Response(Response.REQUEST_BAD_PARAMETER, "No post data found for table: "+table);
 	}
 	

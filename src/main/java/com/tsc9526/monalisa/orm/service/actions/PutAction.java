@@ -37,7 +37,7 @@ public class PutAction extends Action{
 
 	public Response getResponse() {
 		if(args.getTables()!=null){
-			return updateTablesRows();
+			return insertTablesRows();
 		}else if(args.getTable()!=null){
 			String table=args.getTable();
 			int p=table.indexOf(RequestParameter.MS);
@@ -49,7 +49,7 @@ public class PutAction extends Action{
 				}else if(args.getMultiKeys()!=null){
 					return updateTableRowByMultiKeys();
 				}else{
-					return updateTableRows();
+					return insertTableRows();
 				}
 			}
 		}else{		
@@ -116,11 +116,11 @@ public class PutAction extends Action{
 		} 
 	}
 	
-	protected Response updateTableRows(){
+	protected Response insertTableRows(){
 		return new Response(Response.REQUEST_FORBIDDEN,"Access forbidden: PUT, using POST instead.");
 	} 
 	
-	protected Response updateTablesRows(){
+	protected Response insertTablesRows(){
 		return new Response(Response.REQUEST_FORBIDDEN,"Access forbidden: PUT, using POST instead.");
 	}
 	
