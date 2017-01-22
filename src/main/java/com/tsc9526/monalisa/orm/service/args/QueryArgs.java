@@ -81,6 +81,9 @@ import com.tsc9526.monalisa.orm.tools.helper.ServletHelper;
  * @author zzg.zhou(11039850@qq.com)
  */
 public class QueryArgs {	
+	protected String     authType;
+	protected String     authUsername;
+	
 	protected String     dbname;
 	protected String[]   dbnames;
 	
@@ -505,5 +508,21 @@ public class QueryArgs {
 	
 	public int getOffset() {
 		return (page-1)*rows;
+	}
+
+	public String getAuthType() {
+		return authType;
+	}
+
+	public void setAuthType(String authType) {
+		this.authType = authType;
+	}
+
+	public String getAuthUsername() {
+		return authUsername;
+	}
+
+	public void setAuthUsername(String authUsername) {
+		this.authUsername = authUsername;
 	}
 }

@@ -27,6 +27,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
  
 
+
+
+
 import com.tsc9526.monalisa.orm.datasource.DBConfig;
 import com.tsc9526.monalisa.orm.service.DBS;
 import com.tsc9526.monalisa.orm.service.Dispatcher;
@@ -34,9 +37,11 @@ import com.tsc9526.monalisa.orm.service.actions.ActionFilter;
 import com.tsc9526.monalisa.orm.service.actions.ActionLocator;
 import com.tsc9526.monalisa.orm.service.args.MethodHttp;
 import com.tsc9526.monalisa.orm.service.args.MethodSQL;
+import com.tsc9526.monalisa.orm.service.auth.DigestAuth;
 import com.tsc9526.monalisa.orm.tools.helper.ClassHelper;
 import com.tsc9526.monalisa.orm.tools.helper.ExceptionHelper;
 import com.tsc9526.monalisa.orm.tools.helper.Helper;
+import com.tsc9526.monalisa.orm.tools.logger.Logger;
 
 /**
  * 
@@ -44,6 +49,8 @@ import com.tsc9526.monalisa.orm.tools.helper.Helper;
  */
 public class DbQueryHttpServlet extends HttpServlet{
 	private static final long serialVersionUID = -3809556004137368401L;
+	
+	static Logger logger=Logger.getLogger(DbQueryHttpServlet.class);
 	
 	public final static String DB_CFG_PREFIX="DB";
 	
@@ -157,12 +164,52 @@ public class DbQueryHttpServlet extends HttpServlet{
 				ExceptionHelper.throwRuntimeException(e);			
 			}
 		}
-		 
+		
+		setupAuth(locator,sc,prefix);
+		
 		setupMethods(locator,sc,prefix);
 		
 		setupFilters(locator,sc,prefix);
 		
 		return locator;
+	}
+	
+	protected void setupAuth(ActionLocator locator,ServletConfig sc,String prefix){
+		String auth=sc.getInitParameter(prefix+".auth.class");
+		if(auth!=null && auth.trim().length()>0){
+			try{
+				ActionFilter af=(ActionFilter)ClassHelper.forClassName(auth.trim()).newInstance();
+					
+				locator.addFilter(af);
+			} catch (Exception e) {
+				ExceptionHelper.throwRuntimeException(e);			
+			}
+		}else{
+			String authUsers=sc.getInitParameter(prefix+".auth.users");
+			if(authUsers==null || authUsers.trim().length()<1){
+				authUsers="monalisa:monalisa";
+				
+				logger.warn("Missing auth parameter\r\n"+/**~!{*/""
+					+ "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+					+ "\r\n!!! Missing servlet init parameter: " +((prefix))+ ".auth.users in web.xml, "
+					+ "\r\n!!! use default authorization user/password: monalisa/monalisa!"
+					+ "\r\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+				+ "\r\n"/**}*/.trim());
+			}
+			 
+			List<String[]> userpwds=new ArrayList<String[]>();
+			for(String uv:Helper.splits(authUsers)){
+				uv=uv.trim();
+				
+				int p=uv.indexOf(":");
+				String username=uv.substring(0,p).trim();
+				String password=uv.substring(p+1).trim();
+				
+				userpwds.add(new String[]{username,password});
+			}
+			
+			locator.addFilter(new DigestAuth(userpwds));
+		}
 	}
 	
 	protected void setupMethods(ActionLocator locator,ServletConfig sc,String prefix){

@@ -24,6 +24,7 @@ import java.io.StringWriter;
 import java.lang.management.ManagementFactory;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.security.MessageDigest;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -37,22 +38,24 @@ import java.util.Map;
  * @author zzg.zhou(11039850@qq.com)
  */
 public class Helper {
-	 
+
 	/**
-	 * 分隔字符串， 可能的分隔符号有3个：   逗号(,) 分号(;) 竖号(|)
-	 * @param m 待分隔的字符串
+	 * 分隔字符串， 可能的分隔符号有3个： 逗号(,) 分号(;) 竖号(|)
+	 * 
+	 * @param m
+	 *            待分隔的字符串
 	 * @return 分隔后的数组
 	 */
-	public static String[] splits(String m){
-		if(m==null){
+	public static String[] splits(String m) {
+		if (m == null) {
 			return null;
 		}
-		
-		String[] xs=m.trim().split(",|;|\\|");
-		
+
+		String[] xs = m.trim().split(",|;|\\|");
+
 		return xs;
 	}
-	
+
 	public static boolean isEmpty(String s) {
 		return s == null || s.length() == 0;
 	}
@@ -75,14 +78,14 @@ public class Helper {
 		return cause;
 	}
 
-	public static String toString(Throwable t){
-		StringWriter w=new StringWriter();
-				
+	public static String toString(Throwable t) {
+		StringWriter w = new StringWriter();
+
 		t.printStackTrace(new PrintWriter(w));
-		
+
 		return w.toString();
 	}
-	
+
 	public static boolean inEclipseIDE() {
 		try {
 			Class.forName("org.eclipse.jdt.internal.apt.pluggable.core.dispatch.IdeProcessingEnvImpl");
@@ -91,7 +94,7 @@ public class Helper {
 			return false;
 		}
 	}
-	
+
 	public static byte[] toByteArray(InputStream input) throws IOException {
 		byte[] buffer = new byte[Math.max(1024, input.available())];
 		int offset = 0;
@@ -103,7 +106,7 @@ public class Helper {
 		}
 		return (offset == buffer.length) ? buffer : Arrays.copyOf(buffer, offset);
 	}
- 
+
 	public static String[] fieldsToArrays(String... fields) {
 		List<String> xs = new ArrayList<String>();
 		for (String s : fields) {
@@ -133,10 +136,10 @@ public class Helper {
 		}
 		return r.toString();
 	}
-	
+
 	public static String toDateString(long v, String format) {
-		SimpleDateFormat sdf=new SimpleDateFormat(format);
-		
+		SimpleDateFormat sdf = new SimpleDateFormat(format);
+
 		return sdf.format(new Date(v));
 	}
 
@@ -146,8 +149,8 @@ public class Helper {
 		} else {
 			if (v instanceof Date) {
 				return (Date) v;
-			}else if (v.getClass()==Long.class || v.getClass()==long.class) {
-				return new Date( (Long)v);
+			} else if (v.getClass() == Long.class || v.getClass() == long.class) {
+				return new Date((Long) v);
 			} else {
 				String x = "" + v;
 
@@ -180,7 +183,7 @@ public class Helper {
 				}
 			}
 		}
-	} 
+	}
 
 	public static byte[] hexStringToBytes(String hexString) {
 		if (hexString == null || hexString.equals("")) {
@@ -217,21 +220,21 @@ public class Helper {
 	}
 
 	public static String bytesToHexString(byte[] src) {
-		return bytesToHexString(src,null);
+		return bytesToHexString(src, null);
 	}
-	
-	public static String bytesToHexString(byte[] src,String bytePrefix) {
+
+	public static String bytesToHexString(byte[] src, String bytePrefix) {
 		StringBuilder stringBuilder = new StringBuilder("");
 		if (src == null || src.length <= 0) {
 			return null;
 		}
 		for (int i = 0; i < src.length; i++) {
 			int v = src[i] & 0xFF;
-			
-			if(bytePrefix!=null && bytePrefix.length()>0){
+
+			if (bytePrefix != null && bytePrefix.length() > 0) {
 				stringBuilder.append(bytePrefix);
 			}
-			
+
 			String hv = Integer.toHexString(v).toUpperCase();
 			if (hv.length() < 2) {
 				stringBuilder.append(0);
@@ -240,7 +243,7 @@ public class Helper {
 		}
 		return stringBuilder.toString();
 	}
- 
+
 	public static Map<String, String> parseRemarks(String remark) {
 		CaseInsensitiveMap<String> map = new CaseInsensitiveMap<String>();
 
@@ -297,66 +300,62 @@ public class Helper {
 
 	}
 
-	
 	public static Class<?> forName(String className) throws ClassNotFoundException {
 		try {
 			return Class.forName(className, true, Thread.currentThread().getContextClassLoader());
-		} catch (ClassNotFoundException e) {			 
-		} catch (SecurityException e) {			 
+		} catch (ClassNotFoundException e) {
+		} catch (SecurityException e) {
 		}
-		 
+
 		return Class.forName(className);
 	}
-	
-	
-	public static String join(String[] vs,int from,int len,String joinString){
-		StringBuffer sb=new StringBuffer();
-		for(int i=from; i<(from+len) && i< vs.length; i++){
-			if(sb.length()>0){
+
+	public static String join(String[] vs, int from, int len, String joinString) {
+		StringBuffer sb = new StringBuffer();
+		for (int i = from; i < (from + len) && i < vs.length; i++) {
+			if (sb.length() > 0) {
 				sb.append(joinString);
 			}
 			sb.append(vs[i]);
 		}
-		return sb.toString();	
+		return sb.toString();
 	}
-	
-	
-	public static String join(List<String> vs,int from,int len,String joinString){
-		StringBuffer sb=new StringBuffer();
-		for(int i=from; i<(from+len) && i<vs.size() ; i++){
-			if(sb.length()>0){
+
+	public static String join(List<String> vs, int from, int len, String joinString) {
+		StringBuffer sb = new StringBuffer();
+		for (int i = from; i < (from + len) && i < vs.size(); i++) {
+			if (sb.length() > 0) {
 				sb.append(joinString);
 			}
 			sb.append(vs.get(i));
 		}
 		return sb.toString();
 	}
-	
-	public static String[] shiftLeft(String[] vs,int len){
-		if(vs.length>len){
-			return Arrays.copyOfRange(vs, len, vs.length-1);
-		}else{
+
+	public static String[] shiftLeft(String[] vs, int len) {
+		if (vs.length > len) {
+			return Arrays.copyOfRange(vs, len, vs.length - 1);
+		} else {
 			return null;
 		}
 	}
-	
-	
-	public static URL[] toURLs(String[] classPath){
+
+	public static URL[] toURLs(String[] classPath) {
 		List<URL> urls = new ArrayList<URL>();
-		try{ 
+		try {
 			for (String x : classPath) {
 				File file = new File(x);
-				if(file.exists()){
+				if (file.exists()) {
 					urls.add(file.toURI().toURL());
 				}
 			}
-			
+
 			return urls.toArray(new URL[0]);
-		}catch(MalformedURLException e){
+		} catch (MalformedURLException e) {
 			throw new RuntimeException(e);
 		}
 	}
-	
+
 	public static String getPid() {
 		String vmName = ManagementFactory.getRuntimeMXBean().getName();
 		int p = vmName.indexOf('@');
@@ -372,5 +371,35 @@ public class Helper {
 			}
 		}
 		return false;
+	}
+	
+	/**
+	 * 
+	 * @param source bytes to UTF-8
+	 * 
+	 * @return the MD5 value, lower case hex string 
+	 */
+	public static String MD5(String source){
+		try {
+			return MD5(source.getBytes("utf-8"));
+		} catch (Exception e) {
+			return ExceptionHelper.throwRuntimeException(e);
+		}
+	}
+
+	/**
+	 * @param bytes bytes to md5
+	 * @return the MD5 value, lower case hex string 
+	 */
+	public static String MD5(byte[] bytes){
+		try {
+			MessageDigest md5 = MessageDigest.getInstance("MD5");
+			
+			byte[] md5Bytes = md5.digest(bytes);
+			
+			return bytesToHexString(md5Bytes).toLowerCase();
+		} catch (Exception e) {
+			return ExceptionHelper.throwRuntimeException(e);
+		}
 	}
 }

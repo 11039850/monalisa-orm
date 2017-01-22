@@ -93,7 +93,13 @@ public class Dispatcher {
 		}
 		
 		if(r.getStatus()!=Response.OK){
-			logger.error("["+r.getStatus()+"] " +req_msg+"\r\n"+r.getMessage()+" "+ r.getData());
+			Object data=r.getData();
+			
+			logger.error(
+					"["+r.getStatus()+"] " +req_msg
+					+"\r\nmessage: "+r.getMessage()
+					+(data==null?"": ("\r\ndata: "+data))
+			);
 		}
 	 	 	 
 		resp.addHeader("X-Cost-Time",""+(System.currentTimeMillis()-tm));

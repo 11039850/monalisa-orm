@@ -35,7 +35,7 @@ public interface ActionFilter {
 	 * Filter action's response
 	 * 
 	 * @param action the action object
-	 * @return null if do not filter, otherwise return the response object
+	 * @return null if do not filter, otherwise return the response object and skip call the action
 	 */
 	public Response doFilter(Action action);
 }

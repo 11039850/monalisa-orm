@@ -116,14 +116,18 @@ public class Response implements Serializable{
 		return r;
 	}
 	
-	private int status=OK;
+	protected int    status=OK;
 	
-	private String message="OK";
+	protected String message="OK";
 	 
-	private String detail;
+	protected String detail;
 	
-	private Object data;
-	 
+	protected Object data;
+	
+	protected transient List<String[]> headers=new ArrayList<String[]>();
+	
+	protected transient String contentType="application/json;charset=utf-8";
+	
 	public Response(){
 		this(OK,"OK");
 	}
@@ -132,8 +136,7 @@ public class Response implements Serializable{
 		this.status=status;
 		this.message=message;
 	}
-	
-	
+	 
 	public Response(Object data){
 		this(OK,"OK");
 		setData(data);
@@ -178,6 +181,10 @@ public class Response implements Serializable{
 	public <T> T getData() {
 		return (T)data;
 	}
+	
+	public void addHeader(String name,String value){
+		headers.add(new String[]{name,value});
+	}
   	
 	public Response setData(Object data) {	
 		if(data instanceof Model){	
@@ -201,7 +208,14 @@ public class Response implements Serializable{
 		return this;
 	}	 
  	  
+	public String getContentType() {
+		return contentType;
+	}
 
+	public void setContentType(String contentType) {
+		this.contentType = contentType;
+	}
+	
 	public String getDetail() {
 		return detail;
 	}
@@ -212,7 +226,11 @@ public class Response implements Serializable{
 	}
 	
 	public void writeResponse(HttpServletRequest req,HttpServletResponse resp)throws ServletException, IOException {
-		resp.setContentType("application/json;charset=utf-8");
+		resp.setContentType(getContentType());
+		
+		for(String[] hv:headers){
+			resp.addHeader(hv[0],hv[1]);
+		}
 		 
 		Gson gson=JsonHelper.createGsonBuilder().disableHtmlEscaping().setPrettyPrinting().create();
 		
@@ -221,6 +239,5 @@ public class Response implements Serializable{
 		PrintWriter w=resp.getWriter();
 		w.write(body);
 		w.close(); 	 
-	}
-  	
+	} 	
 }
