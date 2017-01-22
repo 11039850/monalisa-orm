@@ -41,8 +41,8 @@ import com.tsc9526.monalisa.orm.tools.logger.Logger;
 public class DigestAuth implements ActionFilter {
 	static Logger logger=Logger.getLogger(DigestAuth.class);
 	
-	public final static String SESSION_KEY_AUTH_USERNAME ="monalisa.auth.username";
-	public final static String SESSION_KEY_AUTH_NONCE    ="monalisa.auth.nonce";
+	public final static String SESSION_KEY_AUTH_USER ="monalisa.auth.user"; 
+	public final static String SESSION_KEY_AUTH_NONCE="monalisa.auth.nonce";
 	
 	protected DataMap userAuths=new DataMap();
 	
@@ -61,12 +61,15 @@ public class DigestAuth implements ActionFilter {
 		
 		String dbname=args.getDBS().getDbName();
 		
-		String keyAuthUsername=SESSION_KEY_AUTH_USERNAME+":"+dbname;
-		String keyAuthNonce   =SESSION_KEY_AUTH_NONCE   +":"+dbname;
+		String keyAuthUser  =SESSION_KEY_AUTH_USER+":"+dbname;
+		String keyAuthNonce =SESSION_KEY_AUTH_NONCE   +":"+dbname;
 		
 		HttpSession session=args.getReq().getSession();
-		String authUsername=(String)session.getAttribute(keyAuthUsername);
-		if(authUsername==null){
+		AuthUser authUser=(AuthUser)session.getAttribute(keyAuthUser);
+		if(authUser!=null && userAuths.getString(authUser.username,"").equals(authUser.password)){
+			args.setAuthUsername(authUser.username);
+			return null;
+		}else{
 			String authrization=args.getReq().getHeader("Authorization");
 			String nonce       =(String)session.getAttribute(keyAuthNonce);
 			GigestAuthrization ga=new GigestAuthrization(args.getReq().getMethod(),authrization);
@@ -74,7 +77,8 @@ public class DigestAuth implements ActionFilter {
 			if(isAuthOk(ga,nonce)){
 				logger.info("Auth ok: "+ga.username+", dbname: "+dbname);
 				
-				session.setAttribute(keyAuthUsername, ga.username);
+				authUser=new AuthUser(ga.username,userAuths.getString(ga.username));
+				session.setAttribute(keyAuthUser,authUser);
 				session.removeAttribute(keyAuthNonce);
 				
 				args.setAuthType(this.getClass().getName());
@@ -90,10 +94,6 @@ public class DigestAuth implements ActionFilter {
 				
 				return new AuthResponse(nonce); 
 			}
-		}else{
-			args.setAuthUsername(authUsername);
-			
-			return null;
 		}
 	}
 
@@ -118,7 +118,17 @@ public class DigestAuth implements ActionFilter {
 		 
 		return false;
 	}
+	
+	class AuthUser{
+		String username;
+		String password;
 		
+		AuthUser(String username,String password){
+			this.username=username;
+			this.password=password;
+		}
+	}
+	
 	
 	class GigestAuthrization{
 		boolean digest  =false;

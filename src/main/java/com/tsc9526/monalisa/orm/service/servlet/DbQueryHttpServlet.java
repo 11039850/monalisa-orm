@@ -192,7 +192,7 @@ public class DbQueryHttpServlet extends HttpServlet{
 				logger.warn("Missing auth parameter\r\n"+/**~!{*/""
 					+ "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
 					+ "\r\n!!! Missing servlet init parameter: " +((prefix))+ ".auth.users in web.xml, "
-					+ "\r\n!!! use default authorization user/password: monalisa/monalisa!"
+					+ "\r\n!!! default authorization(user:password,user2:password2 ...) is monalisa:monalisa"
 					+ "\r\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
 				+ "\r\n"/**}*/.trim());
 			}
