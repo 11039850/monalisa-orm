@@ -20,6 +20,8 @@ import java.io.IOException;
 import java.util.Base64;
 import java.util.List;
 import java.util.Random;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -43,7 +45,11 @@ public class DigestAuth implements ActionFilter {
 	
 	public final static String SESSION_KEY_AUTH_USER ="monalisa.auth.user"; 
 	public final static String SESSION_KEY_AUTH_NONCE="monalisa.auth.nonce";
-	
+	 	
+	public static Pattern authrizationPattern=Pattern.compile(""+/**~!{*/""
+			+ "[0-9a-zA-Z_]+\\s*=\\s*((\"[^\"]*\")|([0-9a-zA-Z_]+))"
+	+ "\r\n"/**}*/.trim());
+		
 	protected DataMap userAuths=new DataMap();
 	
 	public DigestAuth(List<String[]> userpwds){
@@ -130,39 +136,40 @@ public class DigestAuth implements ActionFilter {
 	}
 	
 	
-	class GigestAuthrization{
-		boolean digest  =false;
-		String method;
-		String username ;
-		String realm    ;
-		String nonce    ;
-		String uri      ;
-		String cnonce   ;
-		String nc       ;
-		String qop      ;
-		String response ;
+	public static class GigestAuthrization{
+		private boolean digest  =false;
+		private String method;
+		private String username ;
+		private String realm    ;
+		private String nonce    ;
+		private String uri      ;
+		private String cnonce   ;
+		private String nc       ;
+		private String qop      ;
+		private String response ;
 		
 		private DataMap as=new DataMap();
 		
-		GigestAuthrization(String method,String authrization){
+		public GigestAuthrization(String method,String authrization){
 			this.method=method;
 			
 			if(authrization!=null && authrization.startsWith("Digest")){
 				digest=true;
 				
 				authrization=authrization.substring("Digest".length()).trim();
-				for(String x:authrization.split(",")){
-					x=x.trim();
+				 
+				Matcher m=authrizationPattern.matcher(authrization);
+				while(m.find()){
+					String g=m.group();
+					int p=g.indexOf("=");
 					
-					int p=x.indexOf("=");
-					if(p>0){
-						String name =x.substring(0,p).trim();
-						String value=x.substring(p+1).trim();
-						if(value.startsWith("\"")){
-							value=value.substring(1,value.length()-1);
-						}
-						as.put(name, value);
+					String name =g.substring(0,p).trim();
+					String value=g.substring(p+1).trim();
+					if(value.startsWith("\"")){
+						value=value.substring(1,value.length()-1);
 					}
+					
+					as.put(name, value);
 				}
 				
 				username=as.getString("username");
@@ -174,6 +181,94 @@ public class DigestAuth implements ActionFilter {
 				qop     =as.getString("qop");
 				response=as.getString("response");
 			}
+		}
+
+		public boolean isDigest() {
+			return digest;
+		}
+
+		public void setDigest(boolean digest) {
+			this.digest = digest;
+		}
+
+		public String getMethod() {
+			return method;
+		}
+
+		public void setMethod(String method) {
+			this.method = method;
+		}
+
+		public String getUsername() {
+			return username;
+		}
+
+		public void setUsername(String username) {
+			this.username = username;
+		}
+
+		public String getRealm() {
+			return realm;
+		}
+
+		public void setRealm(String realm) {
+			this.realm = realm;
+		}
+
+		public String getNonce() {
+			return nonce;
+		}
+
+		public void setNonce(String nonce) {
+			this.nonce = nonce;
+		}
+
+		public String getUri() {
+			return uri;
+		}
+
+		public void setUri(String uri) {
+			this.uri = uri;
+		}
+
+		public String getCnonce() {
+			return cnonce;
+		}
+
+		public void setCnonce(String cnonce) {
+			this.cnonce = cnonce;
+		}
+
+		public String getNc() {
+			return nc;
+		}
+
+		public void setNc(String nc) {
+			this.nc = nc;
+		}
+
+		public String getQop() {
+			return qop;
+		}
+
+		public void setQop(String qop) {
+			this.qop = qop;
+		}
+
+		public String getResponse() {
+			return response;
+		}
+
+		public void setResponse(String response) {
+			this.response = response;
+		}
+
+		public DataMap getAs() {
+			return as;
+		}
+
+		public void setAs(DataMap as) {
+			this.as = as;
 		}
 	}
 	
