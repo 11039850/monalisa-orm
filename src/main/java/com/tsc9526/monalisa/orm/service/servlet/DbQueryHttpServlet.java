@@ -53,12 +53,16 @@ public class DbQueryHttpServlet extends HttpServlet{
 	static Logger logger=Logger.getLogger(DbQueryHttpServlet.class);
 	
 	public final static String DB_CFG_PREFIX="DB";
-	
+	  
 	protected Dispatcher dispatcher=new Dispatcher();
 	
 	public void init(ServletConfig config) throws ServletException {
 		super.init(config);
 		
+		String contentType=config.getInitParameter("Content-Type");
+		if(contentType!=null && contentType.length()>0){
+			dispatcher.setContentType(contentType);
+		}
 	 
 		initDBS(config,DB_CFG_PREFIX);
 		

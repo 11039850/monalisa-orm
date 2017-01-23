@@ -39,6 +39,7 @@ import com.tsc9526.monalisa.orm.tools.logger.Logger;
 public class Dispatcher {
 	static Logger logger=Logger.getLogger(Dispatcher.class);
 	  
+	protected String contentType = "text/json; charset=utf-8";
 	
 	public void doDispatch(HttpServletRequest req,HttpServletResponse resp)throws ServletException, IOException {
 		if("/favicon.ico".equalsIgnoreCase( req.getRequestURI() )){
@@ -101,7 +102,8 @@ public class Dispatcher {
 					+(data==null?"": ("\r\ndata: "+data))
 			);
 		}
-	 	 	 
+	 	
+		resp.setContentType(contentType);
 		resp.addHeader("X-Cost-Time",""+(System.currentTimeMillis()-tm));
 		 
 		r.writeResponse(req,resp);
@@ -117,6 +119,14 @@ public class Dispatcher {
 		}
 	}
 	 
+	public String getContentType() {
+		return contentType;
+	}
+
+	public void setContentType(String contentType) {
+		this.contentType = contentType;
+	}
+	
 	protected void doResource(HttpServletRequest req, HttpServletResponse resp,String resPath)throws ServletException, IOException {
 		int p=resPath.lastIndexOf(".");
 		String ext=null;

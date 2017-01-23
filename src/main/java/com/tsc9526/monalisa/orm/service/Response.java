@@ -123,11 +123,7 @@ public class Response implements Serializable{
 	protected String detail;
 	
 	protected Object data;
-	
-	protected transient List<String[]> headers=new ArrayList<String[]>();
-	
-	protected transient String contentType="application/json;charset=utf-8";
-	
+	 	 
 	public Response(){
 		this(OK,"OK");
 	}
@@ -181,11 +177,7 @@ public class Response implements Serializable{
 	public <T> T getData() {
 		return (T)data;
 	}
-	
-	public void addHeader(String name,String value){
-		headers.add(new String[]{name,value});
-	}
-  	
+ 
 	public Response setData(Object data) {	
 		if(data instanceof Model){	
 			this.data=((Model<?>)data).toMap(false);
@@ -208,14 +200,7 @@ public class Response implements Serializable{
 		return this;
 	}	 
  	  
-	public String getContentType() {
-		return contentType;
-	}
-
-	public void setContentType(String contentType) {
-		this.contentType = contentType;
-	}
-	
+	 
 	public String getDetail() {
 		return detail;
 	}
@@ -226,12 +211,6 @@ public class Response implements Serializable{
 	}
 	
 	public void writeResponse(HttpServletRequest req,HttpServletResponse resp)throws ServletException, IOException {
-		resp.setContentType(getContentType());
-		
-		for(String[] hv:headers){
-			resp.addHeader(hv[0],hv[1]);
-		}
-		 
 		Gson gson=JsonHelper.createGsonBuilder().disableHtmlEscaping().setPrettyPrinting().create();
 		
 		String body=gson.toJson(this);

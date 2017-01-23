@@ -47,7 +47,7 @@ public class DigestAuth implements ActionFilter {
 	public final static String SESSION_KEY_AUTH_NONCE="monalisa.auth.nonce";
 	 	
 	public static Pattern authrizationPattern=Pattern.compile(""+/**~!{*/""
-			+ "[0-9a-zA-Z_]+\\s*=\\s*((\"[^\"]*\")|([0-9a-zA-Z_]+))"
+		+ "[0-9a-zA-Z_]+\\s*=\\s*((\"[^\"]*\")|([0-9a-zA-Z_]+))"
 	+ "\r\n"/**}*/.trim());
 		
 	protected DataMap userAuths=new DataMap();
@@ -92,15 +92,20 @@ public class DigestAuth implements ActionFilter {
 				
 				return null;
 			}else{
-				byte[] bytes=new byte[8];
-				new Random().nextBytes(bytes);
-				nonce=Base64.getUrlEncoder().encodeToString(bytes);
+				AuthResponse r= getAuthResponse(); 
+				nonce=r.nonce;
 				
 				session.setAttribute(keyAuthNonce, nonce);
-				
-				return new AuthResponse(nonce); 
+				return r;
 			}
 		}
+	}
+	
+	protected AuthResponse getAuthResponse(){
+		byte[] bytes=new byte[8];
+		new Random().nextBytes(bytes);
+		String nonce=Base64.getUrlEncoder().encodeToString(bytes);
+	  	return new AuthResponse(nonce); 
 	}
 
 	protected boolean isAuthOk(GigestAuthrization ga,String nonce){
@@ -278,7 +283,7 @@ public class DigestAuth implements ActionFilter {
 		String nonce;
 		
 		AuthResponse(String nonce){
-			super(Response.REQUEST_UNAUTHORIZED, "Full authentication is required to access this resource.");
+			super(Response.REQUEST_UNAUTHORIZED, "Authentication is required to access this resource, see system console for detail message!");
 			this.nonce=nonce;
 		}
 		

@@ -28,14 +28,33 @@ import com.tsc9526.monalisa.orm.service.auth.DigestAuth.GigestAuthrization;
 @Test
 public class AuthorizationTest {
 
-	public void testParser(){
+	public void testParser1(){
 		String auth=""+/**~!{*/""
 			+ "Digest username=\"zzg\", realm=\"Realm\", nc=000001, algorithm=MD5"
 		+ "\r\n"/**}*/.trim();
 		GigestAuthrization ga=new GigestAuthrization("GET",auth);
-		 
+		
+		Assert.assertTrue(ga.isDigest());
+		
 		Assert.assertEquals(ga.getUsername(), "zzg");
 		Assert.assertEquals(ga.getRealm(), "Realm");
 		Assert.assertEquals(ga.getNc(), "000001");
 	}
-}
+	
+	public void testParser2(){
+		String auth=""+/**~!{*/""
+			+ "Digest username=\"monalisa\", realm=\"Realm\", nonce=\"y73-IY8ihMw=\", uri=\"/monalisa-web/dbs/db1/user,blog/user.id=blog.user_id?page=1\", algorithm=MD5, response=\"a3c7b21d5f3e3c25c3dab02be6422844\", qop=auth, nc=00000001, cnonce=\"96a42609bd561e34\""
+		+ "\r\n"/**}*/.trim();
+		GigestAuthrization ga=new GigestAuthrization("GET",auth);
+		 
+		Assert.assertTrue(ga.isDigest());
+		
+		Assert.assertEquals(ga.getUsername(), "monalisa");
+		Assert.assertEquals(ga.getRealm(), "Realm");
+		Assert.assertEquals(ga.getNc(), "00000001");
+		Assert.assertEquals(ga.getCnonce(), "96a42609bd561e34");
+		Assert.assertEquals(ga.getQop(), "auth");
+		Assert.assertEquals(ga.getUri(), "/monalisa-web/dbs/db1/user,blog/user.id=blog.user_id?page=1");
+	}
+	
+	}
