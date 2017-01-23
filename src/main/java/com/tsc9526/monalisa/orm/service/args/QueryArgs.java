@@ -73,7 +73,7 @@ import com.tsc9526.monalisa.orm.tools.helper.ServletHelper;
  * <li><b>offset</b><br>
  * offset=0
  * <li><b>paging</b><br>
- * paging=true response header: 'X-Total-Count' & 'X-Total-Page' indicate the total number of records & pages.
+ * paging=true, response header: 'X-Total-Count' &amp; 'X-Total-Page' indicate the total number of records &amp; pages.
  * <li>Other query parameters are considered as filter conditions<br>
  * c1=a&amp;c2=(1,2,3)&amp;c3&gt;=10&amp;c4&lt;10&amp;c5~p*&amp;c6!=7&amp;c7=[1,10] <br>
  * SQL: where c1='a' AND c2 in (1,2,3) AND c3 &gt;= 10 AND c4 &lt; 10 AND c5 like 'p%' AND c6 != 7 AND c7 BETWEEN 1 AND 10
