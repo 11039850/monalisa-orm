@@ -14,29 +14,32 @@ import com.tsc9526.monalisa.orm.tools.helper.ExceptionHelper;
  */
 public class RequestParameter {
 	/**
-	 * pkg.a_class$method
-	 */
-	public static String MS       = "$";
-	
-	/**
 	 * Ignore request parameters with prefix: _
 	 */
 	public static String PREFIX   = "_";
 	
 	/**
-	 * GET,POST,HEAD,PUT,DELETE ...
+	 * xml/json, default is json
 	 */
-	public static String METHOD   = "method";
+	public static String FORMAT   = "_format";
 	
 	/**
-	 * xml, json, jsonp
+	 * jsonp callback function name
 	 */
-	public static String FORMAT   = "format";
+	public static String CALLBACK = "_callback";  
 	
-	public static String CALLBACK = "callback";  
 	
-	public static String AND      = "and";
-	public static String OR       = "or";
+	/**
+	 * $: Call class method: a.b.c$function_name
+	 */
+	public static String MS       = "$";
+	
+	
+	/**
+	 * Replace HTTP method: GET,POST,HEAD,PUT,DELETE ...
+	 */
+	public static String METHOD   = "method";
+  
 	
 	/**
 	 * Include/Exclude columns
@@ -44,14 +47,19 @@ public class RequestParameter {
 	public static String COLUMN   = "column";
 	
 	/**
-	 * Page size
+	 * Page 
 	 */
-	public static String ROWS     = "rows";
+	public static String PAGING    = "paging";
 	
 	/**
-	 * Page number: 1,2,3 ...
+	 * Page limit
 	 */
-	public static String PAGE     = "page";
+	public static String LIMIT    = "limit";
+	
+	/**
+	 * Page offset
+	 */
+	public static String OFFSET   = "offset";
 	
 	/**
 	 * Order by 

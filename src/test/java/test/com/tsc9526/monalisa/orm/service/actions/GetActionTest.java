@@ -61,7 +61,7 @@ public class GetActionTest extends AbstractActionTest {
 	public void testGetDbTable1()throws Exception{
 		MockHttpServletRequest       req=createRequest("/db1/test_record_v2");
 		req.addParameter("-column","record_id,name");
-		req.addParameter("page","1");
+		req.addParameter("paging","true");
 		
 		Response resp=getRespone(req);
 		Assert.assertEquals(resp.getStatus(),200);

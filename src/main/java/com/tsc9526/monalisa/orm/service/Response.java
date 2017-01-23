@@ -33,6 +33,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.tsc9526.monalisa.orm.datatable.DataMap;
 import com.tsc9526.monalisa.orm.datatable.DataTable;
+import com.tsc9526.monalisa.orm.datatable.Page;
 import com.tsc9526.monalisa.orm.model.Model;
 import com.tsc9526.monalisa.orm.tools.helper.JsonHelper;
 
@@ -89,8 +90,7 @@ public class Response implements Serializable{
 		Response r=new Response();
 		r.setStatus(json.get("status").getAsInt());
 		r.setMessage(JsonHelper.getString(json,"message"));
-		r.setDetail(JsonHelper.getString(json,"detail"));
-		
+	 	
 		JsonElement jd=json.get("data");
 		if(jd!=null && !jd.isJsonNull()){
 			if(jd.isJsonArray()){
@@ -120,8 +120,6 @@ public class Response implements Serializable{
 	
 	protected String message="OK";
 	 
-	protected String detail;
-	
 	protected Object data;
 	 	 
 	public Response(){
@@ -199,22 +197,23 @@ public class Response implements Serializable{
 		
 		return this;
 	}	 
- 	  
-	 
-	public String getDetail() {
-		return detail;
-	}
-
-	public Response setDetail(String detail) {
-		this.detail = detail;
-		return this;
-	}
-	
+  	
 	public void writeResponse(HttpServletRequest req,HttpServletResponse resp)throws ServletException, IOException {
 		Gson gson=JsonHelper.createGsonBuilder().disableHtmlEscaping().setPrettyPrinting().create();
 		
+		if(this.data instanceof Page<?>){
+			Page<?> page=(Page<?>)this.data;
+			resp.addIntHeader("X-Total-Page", (int)page.getTotal());
+			resp.addIntHeader("X-Total-Count",(int)page.getRecords());
+		}
+		
 		String body=gson.toJson(this);
-		  
+		
+		String jsonpCallback=req.getParameter(RequestParameter.CALLBACK);
+		if(jsonpCallback!=null){
+			body=jsonpCallback+"("+body+");";
+		}
+		
 		PrintWriter w=resp.getWriter();
 		w.write(body);
 		w.close(); 	 

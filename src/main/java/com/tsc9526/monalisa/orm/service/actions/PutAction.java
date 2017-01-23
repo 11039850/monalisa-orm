@@ -83,7 +83,7 @@ public class PutAction extends Action{
 			
 			record.set(pks.get(0).getFieldName(),args.getSinglePK());
 			int n=doUpdateRecord(record);
-			return new Response(Response.OK,"Insert table: "+args.getTable()+" ok: "+n).setData(n); 
+			return new Response(Response.OK,"Update table: "+args.getTable()+" ok: "+n).setData(n); 
 		}else{
 			StringBuilder sb=new StringBuilder();
 			sb.append(args.getActionName()+" error, table: "+args.getTable()+" primary key has more than one columns");
@@ -112,7 +112,7 @@ public class PutAction extends Action{
 			}
 			
 			int n=doUpdateRecord(record);
-			return new Response(Response.OK,"Insert table: "+args.getTable()+" ok: "+n).setData(n); 
+			return new Response(Response.OK,"Update table: "+args.getTable()+" ok: "+n).setData(n); 
 		} 
 	}
 	

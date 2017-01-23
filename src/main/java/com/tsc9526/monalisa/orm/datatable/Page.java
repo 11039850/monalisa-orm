@@ -93,7 +93,7 @@ public class Page<T> implements Serializable {
 	
 	/**
 	 * 
-	 * @return rows in this page
+	 * @return the row count in this page
 	 */
 	public int rows(){
 		return rows==null?0:rows.size();
@@ -101,7 +101,7 @@ public class Page<T> implements Serializable {
  	
 	/**
 	 *  
-	 * @return non null data list
+	 * @return the page data or empty list if no data.
 	 */
 	public DataTable<T> getRows() {
 		return rows;
@@ -185,26 +185,6 @@ public class Page<T> implements Serializable {
 		}catch(IOException e){
 			throw new RuntimeException(e);
 		}
-	}
-
-	public void setTotal(long total) {
-		this.total = total;
-	}
-
-	public void setPage(long page) {
-		this.page = page;
-	}
-
-	public void setRecords(long records) {
-		this.records = records;
-	}
-
-	public void setSize(long size) {
-		this.size = size;
-	}
-
-	public void setRows(DataTable<T> rows) {
-		this.rows = rows;
 	}
 }
 

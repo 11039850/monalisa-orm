@@ -67,7 +67,7 @@ public class HeadAction extends Action{
 	}
 	
 	protected Response doGetTable(DataTable<DataMap> table){
-		return new Response(table).setDetail(""+table.size());
+		return new Response(table).setMessage("OK: "+table.size());
 	}
 	
 	protected Response getTableModel(){

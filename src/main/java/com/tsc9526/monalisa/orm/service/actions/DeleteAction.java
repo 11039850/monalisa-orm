@@ -66,7 +66,7 @@ public class DeleteAction extends Action{
 		if(isAllowDeleteAll()){
 			int n=doDeleteAll();
 			
-			return new Response(200,"Delete all from table "+args.getTable()+" success: "+n).setDetail(""+n);
+			return new Response(200,"Delete all from table "+args.getTable()+" success: "+n).setData(n);
 		}else{
 			return new Response(Response.REQUEST_FORBIDDEN,"Access forbidden, delete all from table disabled: "+args.getTable());
 		}

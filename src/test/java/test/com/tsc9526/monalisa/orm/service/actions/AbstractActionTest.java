@@ -41,7 +41,7 @@ public abstract class AbstractActionTest {
 		DBS.add("db1",MysqlDB.DB);
 		
 		//clear data
-		TestRecordV2.DELETE().truncate(); 
+		TestRecordV2.DELETE().truncate();  
 		
 		for(int i=1;i<=10;i++){
 			new TestRecordV2().parse("{recordId: "+i+", name: 'ns0"+i+"', title: 'title"+i+"'}").save();
@@ -52,7 +52,7 @@ public abstract class AbstractActionTest {
 	
 	protected MockHttpServletRequest createRequest(String requestURI){
 		return createRequest(getRequestMethod(),requestURI);
-	}
+	} 
 	
 	protected MockHttpServletRequest createRequest(String method,String requestURI){
 		MockHttpServletRequest       req=new MockHttpServletRequest(method,requestURI);
@@ -67,15 +67,16 @@ public abstract class AbstractActionTest {
 		DbQueryHttpServlet ms=new DbQueryHttpServlet();
 		ms.service(req, resp);
 		 
-		Assert.assertEquals(resp.getContentType(),"application/json;charset=utf-8");
+		String type=resp.getContentType();
+		Assert.assertTrue(type.indexOf("json")>0 && type.indexOf("utf-8")>0);
 		
 		String body=resp.getContentAsString();
 		 
 		Response r= Response.fromJson(body); 
 		
-		if("true".equalsIgnoreCase( req.getParameter("paging")) && r.getStatus()==200){
-			Assert.assertTrue(Integer.parseInt( r.getDetail() )>=0);
-			Assert.assertEquals( r.getDetail(), resp.getHeader("X-Total-Count"));
+		if(req.getParameter("page")!=null && r.getStatus()==200){
+			int total=Integer.parseInt(resp.getHeader("X-Total-Page"));
+			Assert.assertTrue(total>=0);
 		}
 		
 		

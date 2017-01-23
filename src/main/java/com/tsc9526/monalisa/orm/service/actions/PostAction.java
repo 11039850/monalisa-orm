@@ -65,8 +65,7 @@ public class PostAction extends PutAction{
 		
 		Response r=new Response();
 		r.setMessage("Insert tables: "+Arrays.toString(args.getTables())+" ok: "+n);
-		r.setDetail(""+n);
-		
+	 	
 		DataTable<DataMap> data=new DataTable<DataMap>();
 		for(int i=0;i<rs.length;i++){
 			DataMap map=new DataMap();
@@ -109,8 +108,7 @@ public class PostAction extends PutAction{
 		 
 		Response r=new Response();
 		r.setMessage("Insert table: "+args.getTable()+" ok: "+n);
-		r.setDetail(""+n);
-		
+	 	
 		DataMap map=new DataMap();
 		map.put("rows",n);
 		

@@ -199,7 +199,7 @@ public class GetAction extends Action{
 	private Response createQueryResponse(Query query,String tableName){
 		int maxRows=getMaxRows(tableName);
 		
-		int pageSize = args.getRows();
+		int pageSize = args.getLimit();
 		int offset   = args.getOffset();
 		if(pageSize>maxRows){
 			return new Response(Response.REQUEST_BAD_PARAMETER, "Error: rows = "+pageSize+", it is too bigger than the max value: "+maxRows+". (OR increase the max value: \"DB.cfg.dbs.max.rows\")");
@@ -287,10 +287,10 @@ public class GetAction extends Action{
 	}
 	
 	protected Response doGetTable(DataTable<DataMap> table){
-		return new Response(table).setDetail(""+table.size());
+		return new Response(table).setMessage("OK: "+table.size());
 	}
 	
 	protected Response doGetPage(Page<DataMap> page){
-		return new Response(page).setDetail(""+page.getRecords());
+		return new Response(page).setMessage("OK: "+page.getRecords());
 	}
 }

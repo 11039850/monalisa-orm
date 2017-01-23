@@ -63,17 +63,17 @@ import com.tsc9526.monalisa.orm.tools.helper.ServletHelper;
  *
  * <b>Query String</b>
  * <ul>
- * <li><b>_columns</b><br>
+ * <li><b>column</b><br>
  * column=c1,c2,c3...   means: include column(c1,c2,c3) <br>
  * -column=c1,c2 means: exclude column(c1,c2)
  * <li><b>_order</b><br>
  * order=+c1,-c2  means: ORDER BY c1 ASC, c2 DESC
- * <li><b>_limit</b><br>
- * limit=10
- * <li><b>_offset</b><br>
+ * <li><b>limit</b><br>
+ * limit=30
+ * <li><b>offset</b><br>
  * offset=0
- * <li><b>_paging</b><br>
- * page=1 means: get one page records, response header: 'X-Total-Count' indicate the total number of records.
+ * <li><b>paging</b><br>
+ * paging=true response header: 'X-Total-Count' & 'X-Total-Page' indicate the total number of records & pages.
  * <li>Other query parameters are considered as filter conditions<br>
  * c1=a&amp;c2=(1,2,3)&amp;c3&gt;=10&amp;c4&lt;10&amp;c5~p*&amp;c6!=7&amp;c7=[1,10] <br>
  * SQL: where c1='a' AND c2 in (1,2,3) AND c3 &gt;= 10 AND c4 &lt; 10 AND c5 like 'p%' AND c6 != 7 AND c7 BETWEEN 1 AND 10
@@ -90,15 +90,15 @@ public class QueryArgs {
 	protected boolean    paging = false;
 	
 	/**
-	 * Page size
+	 * Page size, default value is 30
 	 */
-	protected int        rows   = 30;
+	protected int        limit   = 30;
 	
 	/**
-	 * Page no, the first page is 1
+	 * The first record, offset is 0
 	 */
-	protected int        page   = 1;
- 	
+	protected int        offset  = 0;
+	 
 	protected List<String> includeColumns = new ArrayList<String>();
 	protected List<String> excludeColumns = new ArrayList<String>();
 	protected List<String[]> orders       = new ArrayList<String[]>();
@@ -166,7 +166,7 @@ public class QueryArgs {
 		parseParameterOrder();
 		parseParameterFilters();
 		
-		paging = requestDataMap.getString(RequestParameter.PAGE)!=null;
+		paging = requestDataMap.getBool(RequestParameter.PAGING, false);
 	}
  
 	private void parseDatabases(String[] vs) {
@@ -190,17 +190,14 @@ public class QueryArgs {
 	 
 
 	protected void parseParameterLimit() {
-		rows = requestDataMap.getInt(RequestParameter.ROWS, rows);
-		if (rows < 1) {
-			rows = 1;
+		limit = requestDataMap.getInt(RequestParameter.LIMIT, limit);
+		if (limit < 1) {
+			limit = 1;
 		}
 	}
 
 	protected void parseParameterOffset() {
-		page = requestDataMap.getInt(RequestParameter.PAGE, 1);
-		if (page < 1) {
-			errors.add("Parameter: page = " + page + ", the first page is 1.");
-		}
+		offset = requestDataMap.getInt(RequestParameter.OFFSET, 0);
 	}
 
 	protected void parseParameterOrder() {
@@ -478,36 +475,25 @@ public class QueryArgs {
 	 * 
 	 * @return the rows in one page(page size)
 	 */
-	public int getRows() {
-		return rows;
+	public int getLimit() {
+		return limit;
 	}
 
 	/**
 	 * 
-	 * @param rows : page size
+	 * @param limit : page size
 	 */
-	public void setRows(int rows) {
-		this.rows = rows;
+	public void setLimit(int limit) {
+		this.limit = limit;
 	}
-
-	/**
-	 * 
-	 * @return Page no, the first page is 1
-	 */
-	public int getPage() {
-		return page;
-	}
-
-	/**
-	 * 
-	 * @param page: the first page is 1
-	 */
-	public void setPage(int page) {
-		this.page = page;
-	}
+ 
 	
 	public int getOffset() {
-		return (page-1)*rows;
+		return offset;
+	}
+	
+	public void setOffset(int offset) {
+		this.offset=offset;
 	}
 
 	public String getAuthType() {

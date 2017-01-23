@@ -130,15 +130,9 @@ public class JsonHelper {
 		long records=json.get("records").getAsLong();
 		long size   =json.get("size").getAsLong();
 		long page   =json.get("page").getAsLong();
-		long total  =json.get("total").getAsLong();
 	 
-				 
-		Page<DataMap> r= new Page<DataMap>();
-		r.setRecords(records);
-		r.setSize(size);
-		r.setPage(page);
-		r.setTotal(total);
-		r.setRows(rows); 
+		long offset=(page-1)*size;
+		Page<DataMap> r= new Page<DataMap>(rows,records,size,offset);
 		
 		return r;
 	}	
