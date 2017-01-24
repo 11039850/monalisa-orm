@@ -50,8 +50,9 @@ public class DataColumn {
 		return name;
 	}
 
-	public void setName(String name) {
+	public DataColumn setName(String name) {
 		this.name = name;
+		return this;
 	}
 
 
@@ -60,8 +61,9 @@ public class DataColumn {
 	}
 
 
-	public void setLabel(String label) {
+	public DataColumn setLabel(String label) {
 		this.label = label;
+		return this;
 	}
 
 
@@ -70,8 +72,9 @@ public class DataColumn {
 	}
 
 
-	public void setType(Class<?> type) {
+	public DataColumn setType(Class<?> type) {
 		this.type = type;
+		return this;
 	}
 
 
@@ -80,16 +83,18 @@ public class DataColumn {
 	}
 
 
-	public void setIndex(int index) {
+	public DataColumn setIndex(int index) {
 		this.index = index;
+		return this;
 	}
 
 	public String getTypeString() {
 		return typeString;
 	}
 
-	public void setTypeString(String typeString) {
+	public DataColumn setTypeString(String typeString) {
 		this.typeString = typeString;
+		return this;
 	}
 
 	public String toString(){
@@ -100,7 +105,8 @@ public class DataColumn {
 		return jdbcType;
 	}
 
-	public void setJdbcType(int jdbcType) {
+	public DataColumn setJdbcType(int jdbcType) {
 		this.jdbcType = jdbcType;
+		return this;
 	}
 }

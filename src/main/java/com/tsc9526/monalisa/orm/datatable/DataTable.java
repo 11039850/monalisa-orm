@@ -253,21 +253,23 @@ public class DataTable<E> extends ArrayList<E> {
 			Object v=this.get(0);
 			if(v!=null){
 				if(v instanceof Map){
+					int index=0;
 					for(Object key:((Map<?,?>)v).keySet()){
-					 	headers.add(new DataColumn(""+key));
+					 	headers.add(new DataColumn(""+key).setIndex(index++));
 					}
 				}else{
+					int index=0;
 					if(v.getClass().isPrimitive() || v.getClass().getName().startsWith("java.")){
-						headers.add(new DataColumn("c0"));
+						headers.add(new DataColumn("c0").setIndex(index++));
 					}else if(v.getClass().isArray()){
 						Object[] xs=(Object[])v;
 						for(int k=0;k<xs.length;k++){
-							headers.add(new DataColumn("c"+k));
+							headers.add(new DataColumn("c"+k).setIndex(index++));
 						}
 					}else{					
 						MetaClass mc=ClassHelper.getMetaClass(v.getClass());
 						for(FGS fgs:mc.getFields()){
-							headers.add(new DataColumn(fgs.getFieldName()));
+							headers.add(new DataColumn(fgs.getFieldName()).setIndex(index++));
 						}
 					}
 				}
