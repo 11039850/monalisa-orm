@@ -63,6 +63,8 @@ import com.tsc9526.monalisa.orm.tools.helper.ServletHelper;
  *
  * <b>Query String</b>
  * <ul>
+ * <li><b>method</b><br>
+ * GET/POST/PUT/DELETE/HEAD: replace HTTP request's method. 
  * <li><b>column</b><br>
  * column=c1,c2,c3...   means: include column(c1,c2,c3) <br>
  * -column=c1,c2 means: exclude column(c1,c2)
