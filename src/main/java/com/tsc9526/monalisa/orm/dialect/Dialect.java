@@ -32,13 +32,13 @@ import com.tsc9526.monalisa.orm.datasource.DBConfig;
 import com.tsc9526.monalisa.orm.meta.MetaTable.CreateTable;
 import com.tsc9526.monalisa.orm.model.Model;
 import com.tsc9526.monalisa.orm.model.ModelIndex;
-import com.tsc9526.monalisa.orm.tools.converters.impl.ArrayTypeConversion;
-import com.tsc9526.monalisa.orm.tools.helper.ClassHelper.FGS;
-import com.tsc9526.monalisa.orm.tools.helper.EnumHelper;
-import com.tsc9526.monalisa.orm.tools.helper.JsonHelper;
-import com.tsc9526.monalisa.orm.tools.helper.SQLHelper;
-import com.tsc9526.monalisa.orm.tools.helper.TypeHelper;
-import com.tsc9526.monalisa.orm.tools.logger.Logger;
+import com.tsc9526.monalisa.tools.clazz.MelpEnum;
+import com.tsc9526.monalisa.tools.clazz.MelpClass.FGS;
+import com.tsc9526.monalisa.tools.converters.impl.ArrayTypeConversion;
+import com.tsc9526.monalisa.tools.logger.Logger;
+import com.tsc9526.monalisa.tools.string.MelpJson;
+import com.tsc9526.monalisa.tools.string.MelpSQL;
+import com.tsc9526.monalisa.tools.string.MelpTypes;
  
 /**
  * 
@@ -206,7 +206,7 @@ public abstract class Dialect{
 		}		
 		query.add(" ");
 		
-		List<String> kws=SQLHelper.splitKeyWords(whereStatement);
+		List<String> kws=MelpSQL.splitKeyWords(whereStatement);
 		String w=kws.get(0);
 		if(w.equalsIgnoreCase("WHERE")){
 			query.add(whereStatement, args);
@@ -268,7 +268,7 @@ public abstract class Dialect{
 				if(whereStatement.length()>0){
 					query.add(" ");
 					
-					List<String> kws=SQLHelper.splitKeyWords(whereStatement);
+					List<String> kws=MelpSQL.splitKeyWords(whereStatement);
 					String w=kws.get(0);
 					if(w.equalsIgnoreCase("WHERE") || w.equalsIgnoreCase("ORDER")){
 						query.add(whereStatement, args);
@@ -296,7 +296,7 @@ public abstract class Dialect{
 				if(whereStatement.length()>0){
 					query.add(" ");
 					
-					List<String> kws=SQLHelper.splitKeyWords(whereStatement);
+					List<String> kws=MelpSQL.splitKeyWords(whereStatement);
 					String w=kws.get(0);
 					if(w.equalsIgnoreCase("WHERE") || w.equalsIgnoreCase("ORDER")){
 						query.add(whereStatement, args);
@@ -431,13 +431,13 @@ public abstract class Dialect{
 		Object v=fgs.getObject(model);
 		if(v!=null){
 			Column c=fgs.getAnnotation(Column.class);			
-			String type=TypeHelper.getJavaType(c.jdbcType());
+			String type=MelpTypes.getJavaType(c.jdbcType());
 			
 			if(v.getClass().isEnum()){
 				if(type.equals("String")){
-					 return EnumHelper.getStringValue((Enum<?>)v);
+					 return MelpEnum.getStringValue((Enum<?>)v);
 				}else{
-					return EnumHelper.getIntValue((Enum<?>)v);
+					return MelpEnum.getIntValue((Enum<?>)v);
 				}
 			}else if(v.getClass() == Boolean.class || v.getClass()==boolean.class){				 
 				if( (Boolean)v ){
@@ -480,7 +480,7 @@ public abstract class Dialect{
 			}else if(v.getClass().isPrimitive() || v.getClass().getName().startsWith("java.")){				
 				return v;
 			}else if(type.equals("String")){
-				return JsonHelper.getGson().toJson(v);
+				return MelpJson.getGson().toJson(v);
 			}
 		}
 		
@@ -516,7 +516,7 @@ public abstract class Dialect{
 			return true; 
 		}
 		
-		List kws=SQLHelper.splitKeyWords(whereStatement);
+		List kws=MelpSQL.splitKeyWords(whereStatement);
 		if(kws.contains("JOIN")){
 			return true;
 		}

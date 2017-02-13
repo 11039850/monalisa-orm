@@ -19,7 +19,7 @@ package test.com.tsc9526.monalisa.orm.service.auth;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import com.tsc9526.monalisa.orm.service.auth.DigestAuth.GigestAuthrization;
+import com.tsc9526.monalisa.service.auth.DigestAuth.GigestAuthrization;
 
 /**
  * 

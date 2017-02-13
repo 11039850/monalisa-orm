@@ -21,7 +21,7 @@ import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.Test;
 
-import com.tsc9526.monalisa.orm.service.Response;
+import com.tsc9526.monalisa.service.Response;
 
 /** 
  * 

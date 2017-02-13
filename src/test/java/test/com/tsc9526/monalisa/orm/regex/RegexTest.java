@@ -22,7 +22,7 @@ import java.util.regex.Pattern;
 import org.junit.Assert;
 import org.testng.annotations.Test;
 
-import com.tsc9526.monalisa.orm.parser.java.Java;
+import com.tsc9526.monalisa.tools.io.JavaFile;
 
 /**
  * 
@@ -30,10 +30,10 @@ import com.tsc9526.monalisa.orm.parser.java.Java;
  */
 @Test
 public class RegexTest {
-	public final static long $VERSION$ = 4L;
+	public final static long $VERSION$ = 10L;
 	
 	public void testRegexVersion(){
-		Pattern p=Pattern.compile(Java.REGX_VERSION);
+		Pattern p=Pattern.compile(JavaFile.REGX_VERSION);
 		       
 		Matcher m=p.matcher(""+/**~{*/""
 			+ "public class a{"

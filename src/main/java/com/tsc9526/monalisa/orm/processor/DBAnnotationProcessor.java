@@ -31,12 +31,13 @@ import javax.tools.Diagnostic.Kind;
 
 import com.tsc9526.monalisa.orm.annotation.DB;
 import com.tsc9526.monalisa.orm.datasource.DbProp;
-import com.tsc9526.monalisa.orm.tools.generator.DBGenerator;
-import com.tsc9526.monalisa.orm.tools.generator.DBGeneratorProcessing;
-import com.tsc9526.monalisa.orm.tools.generator.DBGeneratorProcessingInEclipse;
-import com.tsc9526.monalisa.orm.tools.helper.Helper;
-import com.tsc9526.monalisa.orm.tools.logger.Logger;
-import com.tsc9526.monalisa.orm.tools.resources.PkgNames;
+import com.tsc9526.monalisa.orm.generator.DBGenerator;
+import com.tsc9526.monalisa.orm.generator.DBGeneratorProcessing;
+import com.tsc9526.monalisa.orm.generator.DBGeneratorProcessingInEclipse;
+import com.tsc9526.monalisa.orm.resources.PkgNames;
+import com.tsc9526.monalisa.tools.logger.Logger;
+import com.tsc9526.monalisa.tools.misc.MelpEclipse;
+import com.tsc9526.monalisa.tools.string.MelpString;
 
 /**
  * 
@@ -48,7 +49,7 @@ public class DBAnnotationProcessor extends AbstractProcessor {
 	public synchronized void init(ProcessingEnvironment processingEnv) {
 		super.init(processingEnv);			 		 
 		 
-		if(Helper.inEclipseIDE()){
+		if(MelpEclipse.inEclipseIDE()){
 			//Eclipse环境,设置日志输出
 			Logger.setMessager(processingEnv.getMessager());
 		}
@@ -72,14 +73,14 @@ public class DBAnnotationProcessor extends AbstractProcessor {
 					}catch(Throwable e){
 						DBGenerator.plogger.error(""+e,e);
 						
-						if(Helper.inEclipseIDE()){
-							processingEnv.getMessager().printMessage(Kind.ERROR,e.getClass().getName()+":\r\n"+Helper.toString(e), element);
+						if(MelpEclipse.inEclipseIDE()){
+							processingEnv.getMessager().printMessage(Kind.ERROR,e.getClass().getName()+":\r\n"+MelpString.toString(e), element);
 						}
 					}
 				}else{
 					DBGenerator.plogger.warn("@DB should used for interface: "+element.getQualifiedName().toString());
 					
-					if(Helper.inEclipseIDE()){
+					if(MelpEclipse.inEclipseIDE()){
 						processingEnv.getMessager().printMessage(Kind.WARNING,"@DB should used for interface: "+element.getQualifiedName().toString(), element);
 					}					
 				}
@@ -93,7 +94,7 @@ public class DBAnnotationProcessor extends AbstractProcessor {
 		long tm=System.currentTimeMillis();
 		DBGenerator.plogger.info("****** Starting generate model classes ******");
 		
-		if(Helper.inEclipseIDE()){
+		if(MelpEclipse.inEclipseIDE()){
 			DBGeneratorProcessingInEclipse g=new DBGeneratorProcessingInEclipse(processingEnv,element);
 			g.generateFiles();
 		}else{

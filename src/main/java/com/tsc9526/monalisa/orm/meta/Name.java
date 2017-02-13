@@ -18,7 +18,7 @@ package com.tsc9526.monalisa.orm.meta;
 
 import java.io.Serializable;
 
-import com.tsc9526.monalisa.orm.tools.helper.JavaBeansHelper;
+import com.tsc9526.monalisa.tools.clazz.MelpJavaBeans;
 
 /**
  * 
@@ -51,13 +51,13 @@ public class Name implements Serializable{
 	
 	public String getJavaName(){
 		if(javaName==null){			 
-			javaName=JavaBeansHelper.getJavaName(getName(),firstCharacterUppercase);			 
+			javaName=MelpJavaBeans.getJavaName(getName(),firstCharacterUppercase);			 
 		}
 		return javaName;
 	}
    
 	public String nameToJava(){
-		return JavaBeansHelper.getJavaName(getName(),firstCharacterUppercase);
+		return MelpJavaBeans.getJavaName(getName(),firstCharacterUppercase);
 	}
 
 	public String getName() {

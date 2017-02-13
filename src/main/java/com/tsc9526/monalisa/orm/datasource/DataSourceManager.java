@@ -29,8 +29,8 @@ import javax.sql.DataSource;
 import com.tsc9526.monalisa.orm.annotation.DB;
 import com.tsc9526.monalisa.orm.dialect.Dialect;
 import com.tsc9526.monalisa.orm.dialect.MysqlDialect;
-import com.tsc9526.monalisa.orm.tools.helper.ClassHelper;
-import com.tsc9526.monalisa.orm.tools.logger.Logger;
+import com.tsc9526.monalisa.tools.clazz.MelpClass;
+import com.tsc9526.monalisa.tools.logger.Logger;
 
 /**
  * 
@@ -85,7 +85,7 @@ public class DataSourceManager {
 	
 	private void shutdownMysqlThreads(){
 		try {
-		    Class<?> cls=ClassHelper.forClassName("com.mysql.jdbc.AbandonedConnectionCleanupThread");
+		    Class<?> cls=MelpClass.forName("com.mysql.jdbc.AbandonedConnectionCleanupThread");
 		    Method   mth=(cls==null ? null : cls.getMethod("shutdown"));
 		    if(mth!=null) {
 		        mth.invoke(null);
@@ -99,7 +99,7 @@ public class DataSourceManager {
 	
 	@SuppressWarnings("unchecked")
 	public void registerDialect(String dialectClass)throws Exception{
-		Class<Dialect> cd=(Class<Dialect>)ClassHelper.forClassName(dialectClass);
+		Class<Dialect> cd=(Class<Dialect>)MelpClass.forName(dialectClass);
 		registerDialect(cd.newInstance());
 	}
 	

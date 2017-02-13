@@ -22,8 +22,8 @@ import java.util.List;
 
 import com.tsc9526.monalisa.orm.Query;
 import com.tsc9526.monalisa.orm.datasource.DataSourceManager;
-import com.tsc9526.monalisa.orm.tools.helper.EnumHelper;
-import com.tsc9526.monalisa.orm.tools.helper.TypeHelper;
+import com.tsc9526.monalisa.tools.clazz.MelpEnum;
+import com.tsc9526.monalisa.tools.string.MelpTypes;
 
 /**
  * 
@@ -50,7 +50,7 @@ public class Field<X,Y extends Criteria<?>>{
 		this.criteria=criteria;	
 		this.q=criteria.q;
 		
-		this.type=TypeHelper.getJavaType(jdbcType);		
+		this.type=MelpTypes.getJavaType(jdbcType);		
 	}	
 		 
 	/**
@@ -291,9 +291,9 @@ public class Field<X,Y extends Criteria<?>>{
 			List<Object> vs=new ArrayList<Object>();
 			for(int i=0;i<values.size();i++){
 				if("String".equals(type)){
-					vs.add(EnumHelper.getStringValue((Enum<?>)values.get(i)));
+					vs.add(MelpEnum.getStringValue((Enum<?>)values.get(i)));
 				}else{
-					vs.add(EnumHelper.getIntValue((Enum<?>)values.get(i)));
+					vs.add(MelpEnum.getIntValue((Enum<?>)values.get(i)));
 				}					
 			}
 			return vs;
@@ -309,9 +309,9 @@ public class Field<X,Y extends Criteria<?>>{
 		}else{
 			if(value.getClass().isEnum()){
 				if("String".equals(type)){
-					vs.add( EnumHelper.getStringValue((Enum<?>)value) );
+					vs.add( MelpEnum.getStringValue((Enum<?>)value) );
 				}else{
-					vs.add( EnumHelper.getIntValue((Enum<?>)value) );
+					vs.add( MelpEnum.getIntValue((Enum<?>)value) );
 				}	
 			}else{
 				vs.add(value);
@@ -322,9 +322,9 @@ public class Field<X,Y extends Criteria<?>>{
 			if(values[0].getClass().isEnum()){
 				for(int i=0;i<values.length;i++){ 
 					if("String".equals(type)){
-						vs.add( EnumHelper.getStringValue((Enum<?>)values[i]) );
+						vs.add( MelpEnum.getStringValue((Enum<?>)values[i]) );
 					}else{
-						vs.add( EnumHelper.getIntValue((Enum<?>)values[i]) );
+						vs.add( MelpEnum.getIntValue((Enum<?>)values[i]) );
 					}					
 				}
 			}else{

@@ -19,7 +19,7 @@ package test.com.tsc9526.monalisa.orm.tools;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import com.tsc9526.monalisa.orm.tools.helper.Version;
+import com.tsc9526.monalisa.orm.Version;
 
 /**
  * 

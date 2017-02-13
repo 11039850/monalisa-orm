@@ -19,8 +19,8 @@ package test.com.tsc9526.monalisa.orm.query;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import com.tsc9526.monalisa.orm.tools.helper.ClassHelper;
-import com.tsc9526.monalisa.orm.tools.helper.ClassHelper.MetaClass;
+import com.tsc9526.monalisa.tools.clazz.MelpClass;
+import com.tsc9526.monalisa.tools.clazz.MelpClass.ClassAssist;
 
 /**
  * 
@@ -31,7 +31,7 @@ public class ModelEnumTest {
   
   public void testParseRemark()throws Exception {
 	  TestSimpleModel model=new TestSimpleModel();
-	  MetaClass mc= ClassHelper.getMetaClass(model.getClass());
+	  ClassAssist mc= MelpClass.getMetaClass(model.getClass());
 	  mc.getField("status").setObject(model, StatusA.ERROR);
 	  
 	  Assert.assertEquals(model.getStatus(),StatusA.ERROR);

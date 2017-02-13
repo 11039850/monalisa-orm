@@ -22,9 +22,9 @@ import java.sql.SQLException;
 
 import com.tsc9526.monalisa.orm.Query;
 import com.tsc9526.monalisa.orm.Tx;
-import com.tsc9526.monalisa.orm.cache.Cache;
-import com.tsc9526.monalisa.orm.cache.CacheKey;
-import com.tsc9526.monalisa.orm.cache.TransactionalCacheManager;
+import com.tsc9526.monalisa.tools.cache.Cache;
+import com.tsc9526.monalisa.tools.cache.CacheKey;
+import com.tsc9526.monalisa.tools.cache.TransactionalCacheManager;
 
 /**
  * 

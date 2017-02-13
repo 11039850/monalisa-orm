@@ -26,8 +26,8 @@ import test.com.tsc9526.monalisa.orm.TestConstants;
 import com.tsc9526.monalisa.orm.annotation.DB;
 import com.tsc9526.monalisa.orm.datasource.ConfigClass;
 import com.tsc9526.monalisa.orm.datasource.DBConfig;
-import com.tsc9526.monalisa.orm.datatable.DataMap;
-import com.tsc9526.monalisa.orm.datatable.DataTable;
+import com.tsc9526.monalisa.tools.datatable.DataMap;
+import com.tsc9526.monalisa.tools.datatable.DataTable;
 
 /**
  * 

@@ -27,7 +27,7 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import com.tsc9526.monalisa.orm.Query;
-import com.tsc9526.monalisa.orm.tools.helper.ClassPathHelper;
+import com.tsc9526.monalisa.tools.clazz.MelpClasspath;
 
 /**
  * 
@@ -37,35 +37,35 @@ import com.tsc9526.monalisa.orm.tools.helper.ClassPathHelper;
 public class ClassPathHelperTest {
 
 	public void testSplitClassPaths(){
-		List<String> rs=ClassPathHelper.splitClassPaths("c:\\a\\a.jar;c:\\b\\b.jar");
+		List<String> rs=MelpClasspath.splitClassPaths("c:\\a\\a.jar;c:\\b\\b.jar");
 		Assert.assertEquals(rs.size(), 2);
 		Assert.assertEquals(rs.get(0), "c:\\a\\a.jar");
 		Assert.assertEquals(rs.get(1), "c:\\b\\b.jar");
 		
 		
-		rs=ClassPathHelper.splitClassPaths("c:\\a\\a.jar");
+		rs=MelpClasspath.splitClassPaths("c:\\a\\a.jar");
 		Assert.assertEquals(rs.size(), 1);
 		Assert.assertEquals(rs.get(0), "c:\\a\\a.jar");
 		
-		rs=ClassPathHelper.splitClassPaths("/tmp/a/a.jar:/tmp/b/b.jar");
+		rs=MelpClasspath.splitClassPaths("/tmp/a/a.jar:/tmp/b/b.jar");
 		Assert.assertEquals(rs.size(), 2);
 		Assert.assertEquals(rs.get(0), "/tmp/a/a.jar");
 		Assert.assertEquals(rs.get(1), "/tmp/b/b.jar");
 		
-		rs=ClassPathHelper.splitClassPaths("/tmp/a/a.jar");
+		rs=MelpClasspath.splitClassPaths("/tmp/a/a.jar");
 		Assert.assertEquals(rs.size(), 1);
 		Assert.assertEquals(rs.get(0), "/tmp/a/a.jar");
 	}
 	
 	public void testJarClass()throws Exception {
-		File f=ClassPathHelper.getClassOrJarFile(Mockito.class);
+		File f=MelpClasspath.getClassOrJarFile(Mockito.class);
 		
 		assertTrue(f.getName().endsWith(".jar"));
 		assertTrue(f.exists());
 	}
 	
 	public void testFileClass()throws Exception {
-		File f=ClassPathHelper.getClassOrJarFile(Query.class);
+		File f=MelpClasspath.getClassOrJarFile(Query.class);
 		
 		assertTrue(f.getName().endsWith(".class"));
 		assertTrue(f.exists());
@@ -74,21 +74,21 @@ public class ClassPathHelperTest {
 	public void testLinuxUrl()throws Exception{
 		URL url=new URL("jar:file:/root/demo/lib/Simple-0.0.1-SNAPSHOT.jar!/example/monalisa/SqlResult.class");
 		
-		String path=ClassPathHelper.getFilePathfromResourceUrl(url);
+		String path=MelpClasspath.getFilePathfromResourceUrl(url);
 		Assert.assertEquals(path, "/root/demo/lib/Simple-0.0.1-SNAPSHOT.jar");
 	}
 	
 	public void testWindowsUrl()throws Exception{
 		URL url=new URL("jar:file:/D:/root/demo/lib/Simple-0.0.1-SNAPSHOT.jar!/example/monalisa/SqlResult.class");
 		
-		String path=ClassPathHelper.getFilePathfromResourceUrl(url);
+		String path=MelpClasspath.getFilePathfromResourceUrl(url);
 		Assert.assertEquals(path, "D:/root/demo/lib/Simple-0.0.1-SNAPSHOT.jar");
 	}
 	
 	public void testFolderUrl()throws Exception{
 		File f=new File("src/test/resources/lab/demo.java");
 		 
-		String path=ClassPathHelper.getFilePathfromResourceUrl(f.toURI().toURL());
+		String path=MelpClasspath.getFilePathfromResourceUrl(f.toURI().toURL());
 		
 		String expect=f.getAbsolutePath().replace("\\","/");
 		 

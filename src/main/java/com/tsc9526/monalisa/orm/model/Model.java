@@ -34,18 +34,21 @@ import com.tsc9526.monalisa.orm.dao.Update;
 import com.tsc9526.monalisa.orm.datasource.DBConfig;
 import com.tsc9526.monalisa.orm.datasource.DataSourceManager;
 import com.tsc9526.monalisa.orm.datasource.DbProp;
-import com.tsc9526.monalisa.orm.datatable.DataMap;
 import com.tsc9526.monalisa.orm.dialect.Dialect;
+import com.tsc9526.monalisa.orm.generator.DBMetadata;
 import com.tsc9526.monalisa.orm.meta.MetaPartition;
 import com.tsc9526.monalisa.orm.meta.MetaTable;
 import com.tsc9526.monalisa.orm.meta.MetaTable.CreateTable;
 import com.tsc9526.monalisa.orm.meta.MetaTable.TableType;
 import com.tsc9526.monalisa.orm.partition.Partition;
-import com.tsc9526.monalisa.orm.tools.generator.DBMetadata;
-import com.tsc9526.monalisa.orm.tools.helper.ClassHelper.FGS;
-import com.tsc9526.monalisa.orm.tools.helper.JavaBeansHelper;
-import com.tsc9526.monalisa.orm.tools.helper.ModelHelper;
-import com.tsc9526.monalisa.orm.tools.logger.Logger;
+import com.tsc9526.monalisa.tools.clazz.MelpClass;
+import com.tsc9526.monalisa.tools.clazz.MelpClass.FGS;
+import com.tsc9526.monalisa.tools.clazz.MelpJavaBeans;
+import com.tsc9526.monalisa.tools.clazz.Shallowable;
+import com.tsc9526.monalisa.tools.datatable.DataMap;
+import com.tsc9526.monalisa.tools.logger.Logger;
+import com.tsc9526.monalisa.tools.misc.MelpException;
+import com.tsc9526.monalisa.tools.string.MelpString;
 
 
 
@@ -57,7 +60,7 @@ import com.tsc9526.monalisa.orm.tools.logger.Logger;
  * 
  */
 @SuppressWarnings({ "rawtypes", "unchecked" })
-public abstract class Model<T extends Model> implements Serializable {
+public abstract class Model<T extends Model> implements Serializable ,Shallowable<T>{
 	static Logger logger=Logger.getLogger(Model.class);
 
 	private static final long serialVersionUID = 703976566431364670L;
@@ -81,6 +84,21 @@ public abstract class Model<T extends Model> implements Serializable {
 		this.$primaryKeys = primaryKeys;
 	}
 
+	
+	public T shallow(){
+		try{
+			T x=(T)this.getClass().newInstance();
+			
+			x.$tableName   = $tableName;
+			x.$primaryKeys = $primaryKeys;
+			x.$db          = $db;
+	
+			return x;
+		} catch (Exception e) {
+			return MelpException.throwRuntimeException(e);
+		}
+	}
+	
 	protected ModelMeta mm() {
 		if ($modelMeta == null) {
 			$modelMeta = ModelMeta.getModelMeta(this);
@@ -156,6 +174,8 @@ public abstract class Model<T extends Model> implements Serializable {
 	}
 
 	/**
+	 * Parse dataObject to this model
+	 * 
 	 * @param dataObject
 	 *            HttpServletRequest, Map, JsonObject, String(json/xml),
 	 *            JavaBean
@@ -168,10 +188,10 @@ public abstract class Model<T extends Model> implements Serializable {
 	 *            
 	 * @return this
 	 * 
-	 * @see com.tsc9526.monalisa.orm.tools.helper.ModelHelper#parse(Model, Object, String...)
+	 * @see com.tsc9526.monalisa.tools.parser.MelpParser#parse(Object, Object, String...)
 	 */
 	public T parse(Object dataObject, String... mappings) {
-		ModelHelper.parse(this, dataObject, mappings);
+		MelpClass.parse(this, dataObject, mappings);
 
 		return (T) this;
 	}
@@ -338,7 +358,7 @@ public abstract class Model<T extends Model> implements Serializable {
 		history.use(historyDB);
 		
 		
-		Model m=MMH.createFrom(this);
+		Model m=shallow();
 		for(FGS fgs:pks){			 
 			Column c=fgs.getAnnotation(Column.class);
 			if(c.key()){
@@ -498,7 +518,7 @@ public abstract class Model<T extends Model> implements Serializable {
 				String v = c.value();
 				if ("NULL".equalsIgnoreCase(v)) {
 					if (c.notnull()) {
-						Object x = JavaBeansHelper.getDefaultValue(c.jdbcType(), fgs.getType());
+						Object x = MelpJavaBeans.getDefaultValue(c.jdbcType(), fgs.getType());
 						if(x!=null){
 							fgs.setObject(this, x);
 						}
@@ -769,11 +789,11 @@ public abstract class Model<T extends Model> implements Serializable {
 	}
 
 	public String toString() {
-		return ModelHelper.toString(this);
+		return MelpString.toString(this);
 	}
 
 	public String toJson() {
-		return ModelHelper.toJson(this);
+		return MelpString.toJson(this);
 	}
 
 	public String toXml() {
@@ -781,7 +801,7 @@ public abstract class Model<T extends Model> implements Serializable {
 	}
 
 	public String toXml(boolean withXmlHeader, boolean ignoreNullFields) {
-		return ModelHelper.toXml(this, withXmlHeader, ignoreNullFields);
+		return MelpString.toXml(this, withXmlHeader, ignoreNullFields);
 	}
 	 
 	public DataMap toMap(boolean usingFieldName){

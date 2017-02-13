@@ -23,7 +23,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 import com.tsc9526.monalisa.orm.model.Model;
-import com.tsc9526.monalisa.orm.tools.helper.ClassHelper.FGS;
+import com.tsc9526.monalisa.tools.clazz.MelpClass.FGS;
 
 /**
  * 

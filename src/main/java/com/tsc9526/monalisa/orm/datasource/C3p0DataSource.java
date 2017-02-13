@@ -27,7 +27,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
-import com.tsc9526.monalisa.orm.tools.helper.ClassHelper;
+import com.tsc9526.monalisa.tools.clazz.MelpClass;
 
 /**
  *  
@@ -55,7 +55,7 @@ public class C3p0DataSource implements PooledDataSource {
 				Method m=hPropertyMethods.get(set);
 				if(m!=null){
 					Object v=properties.get(key);
-					v=ClassHelper.convert(v, m.getParameterTypes()[0]);
+					v=MelpClass.convert(v, m.getParameterTypes()[0]);
 					if(v!=null){
 						m.invoke(cpds, v);
 					}

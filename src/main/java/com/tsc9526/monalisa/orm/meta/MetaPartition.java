@@ -28,8 +28,8 @@ import com.google.gson.JsonParser;
 import com.tsc9526.monalisa.orm.model.Model;
 import com.tsc9526.monalisa.orm.partition.DatePartitionTable;
 import com.tsc9526.monalisa.orm.partition.Partition;
-import com.tsc9526.monalisa.orm.tools.helper.ClassHelper;
-import com.tsc9526.monalisa.orm.tools.helper.ExceptionHelper;
+import com.tsc9526.monalisa.tools.clazz.MelpClass;
+import com.tsc9526.monalisa.tools.misc.MelpException;
 
 /**
  * 
@@ -146,11 +146,11 @@ public class MetaPartition implements java.io.Serializable {
 	public Partition<Model<?>> getPartition(){
 		try{
 			if(partition==null){
-				partition=(Partition<Model<?>>)ClassHelper.forClassName(getClazz()).newInstance();
+				partition=(Partition<Model<?>>)MelpClass.forName(getClazz()).newInstance();
 			}
 			return partition;
 		}catch(Exception e){
-			return ExceptionHelper.throwRuntimeException(e);
+			return MelpException.throwRuntimeException(e);
 		}		
 	}
 	

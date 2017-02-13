@@ -32,10 +32,10 @@ import test.com.tsc9526.monalisa.orm.sqlfiles.Q5;
 
 import com.tsc9526.monalisa.orm.Query;
 import com.tsc9526.monalisa.orm.datasource.DbProp;
-import com.tsc9526.monalisa.orm.parser.java.Java;
-import com.tsc9526.monalisa.orm.tools.agent.AgentClass;
-import com.tsc9526.monalisa.orm.tools.helper.FileHelper;
-import com.tsc9526.monalisa.orm.tools.logger.Logger;
+import com.tsc9526.monalisa.tools.agent.AgentClass;
+import com.tsc9526.monalisa.tools.io.JavaFile;
+import com.tsc9526.monalisa.tools.io.MelpFile;
+import com.tsc9526.monalisa.tools.logger.Logger;
  
 
 /**
@@ -51,7 +51,7 @@ public class QueryTest {
 			for(File src:dir.listFiles()){
 				if(src.isFile() && src.getName().endsWith(".java")){
 					File target=new File(DbProp.CFG_SQL_PATH+"/"+src.getName());
-					FileHelper.copy(src, target);
+					MelpFile.copy(src, target);
 					target.setLastModified(src.lastModified());
 				}
 			}
@@ -65,12 +65,12 @@ public class QueryTest {
 	}
 	
 	static void initJavaSources(String name,int value)throws Exception{
-		Java java=new Java("src/test/java/test/com/tsc9526/monalisa/orm/sqlfiles/"+name+".java");
+		JavaFile java=new JavaFile("src/test/java/test/com/tsc9526/monalisa/orm/sqlfiles/"+name+".java");
 		
 		java.increaseVersion();
 		String r=java.replace("return 1;", "return "+value+";");
 		
-		FileHelper.write(new File(DbProp.CFG_SQL_PATH+"/"+name+".java"), r.getBytes("utf-8"));
+		MelpFile.write(new File(DbProp.CFG_SQL_PATH+"/"+name+".java"), r.getBytes("utf-8"));
 	}
 	
 	private Q4 q4;
@@ -97,7 +97,7 @@ public class QueryTest {
 	
 	@Test
 	public void testQuery01()throws Exception {
-		Java java=new Java(DbProp.CFG_SQL_PATH+"/Q1.java");
+		JavaFile java=new JavaFile(DbProp.CFG_SQL_PATH+"/Q1.java");
 		  
 		java.replaceAndSave("return 1;", "return 2;");
 		AgentClass.reloadClasses(); 
@@ -113,7 +113,7 @@ public class QueryTest {
 	
 	@Test
 	public void testQueryWithVersion()throws Exception {
-		Java java=new Java(DbProp.CFG_SQL_PATH+"/Q2.java");
+		JavaFile java=new JavaFile(DbProp.CFG_SQL_PATH+"/Q2.java");
 		 
 		java.replaceAndSave("return 1;", "return 2;");
 		AgentClass.reloadClasses(); 

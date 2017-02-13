@@ -183,7 +183,9 @@ public class DbProp {
 	public final static DbProp PROP_TABLE_DBS_MAX_ROWS  =new DbProp("dbs.max.rows",10000);
 	
 	public static String CFG_FIELD_VERSION        ="$VERSION";
-	 
+	
+	public static String CFG_DATATABLE_KEY_SPLIT  ="&";   
+	
 	/**
 	 * <code>CFG_PATH= ".";</code> <br>
 	 * The file path for DB.configFile() is :<br>

@@ -33,21 +33,21 @@ import java.util.Set;
 import com.tsc9526.monalisa.orm.Query;
 import com.tsc9526.monalisa.orm.annotation.DB;
 import com.tsc9526.monalisa.orm.datasource.DataSourceManager;
-import com.tsc9526.monalisa.orm.datatable.DataMap;
+import com.tsc9526.monalisa.orm.generator.DBExchange;
+import com.tsc9526.monalisa.orm.generator.DBMetadata;
 import com.tsc9526.monalisa.orm.meta.MetaColumn;
 import com.tsc9526.monalisa.orm.meta.MetaTable;
 import com.tsc9526.monalisa.orm.meta.Name;
 import com.tsc9526.monalisa.orm.model.Model;
 import com.tsc9526.monalisa.orm.model.ModelEvent;
-import com.tsc9526.monalisa.orm.tools.generator.DBExchange;
-import com.tsc9526.monalisa.orm.tools.generator.DBMetadata;
-import com.tsc9526.monalisa.orm.tools.helper.ClassHelper;
-import com.tsc9526.monalisa.orm.tools.helper.CloseQuietly;
-import com.tsc9526.monalisa.orm.tools.helper.JavaBeansHelper;
-import com.tsc9526.monalisa.orm.tools.helper.SQLHelper;
-import com.tsc9526.monalisa.orm.tools.helper.TypeHelper;
-import com.tsc9526.monalisa.orm.tools.helper.ClassHelper.FGS;
-import com.tsc9526.monalisa.orm.tools.helper.ClassHelper.MetaClass;
+import com.tsc9526.monalisa.tools.clazz.MelpClass;
+import com.tsc9526.monalisa.tools.clazz.MelpJavaBeans;
+import com.tsc9526.monalisa.tools.clazz.MelpClass.FGS;
+import com.tsc9526.monalisa.tools.clazz.MelpClass.ClassAssist;
+import com.tsc9526.monalisa.tools.datatable.DataMap;
+import com.tsc9526.monalisa.tools.io.MelpClose;
+import com.tsc9526.monalisa.tools.string.MelpSQL;
+import com.tsc9526.monalisa.tools.string.MelpTypes;
 
 /**
  * 
@@ -137,7 +137,7 @@ public class ResultHandler<T> {
 	}
 
 	protected void loadModel(ResultSet rs, Model<?> model) throws SQLException {
-		Class<?> clazz = ClassHelper.findClassWithAnnotation(model.getClass(), DB.class);
+		Class<?> clazz = MelpClass.findClassWithAnnotation(model.getClass(), DB.class);
 		if (clazz == null && model.use() == null) {
 			model.use(query.getDb());
 		}
@@ -165,7 +165,7 @@ public class ResultHandler<T> {
 	}
 
 	protected T loadResult(ResultSet rs, T result) throws SQLException {
-		MetaClass metaClass = ClassHelper.getMetaClass(result.getClass());
+		ClassAssist metaClass = MelpClass.getMetaClass(result.getClass());
 
 		ResultSetMetaData rsmd = rs.getMetaData();
 
@@ -204,14 +204,14 @@ public class ResultHandler<T> {
 			
 			conn = dsm.getDataSource(query.getDb()).getConnection();
 			PreparedStatement pst = conn.prepareStatement(query.getSql());
-			SQLHelper.setPreparedParameters(pst, query.getParameters());
+			MelpSQL.setPreparedParameters(pst, query.getParameters());
 
 			ResultSet rs = pst.executeQuery();
 			ResultSetMetaData rsmd = rs.getMetaData();
 			MetaTable table = new MetaTable();
 			int cc = rsmd.getColumnCount();
 			for (int i = 1; i <= cc; i++) {
-				String type = TypeHelper.getJavaType(rsmd.getColumnType(i));
+				String type = MelpTypes.getJavaType(rsmd.getColumnType(i));
 				String name = rsmd.getColumnName(i);
 				String label = rsmd.getColumnLabel(i);
 
@@ -222,7 +222,7 @@ public class ResultHandler<T> {
 				column.setName(name);
 
 				if (label != null && label.trim().length() > 0) {
-					column.setJavaName(JavaBeansHelper.getJavaName(label, false));
+					column.setJavaName(MelpJavaBeans.getJavaName(label, false));
 				}
 
 				column.setJavaType(type);
@@ -243,7 +243,7 @@ public class ResultHandler<T> {
 			e.printStackTrace(new PrintWriter(s));
 			exchange.setErrorString(s.toString());
 		} finally {
-			CloseQuietly.close(conn);
+			MelpClose.close(conn);
 		}
 	}
 	

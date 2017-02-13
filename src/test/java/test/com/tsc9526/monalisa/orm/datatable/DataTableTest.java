@@ -15,11 +15,11 @@ import test.com.tsc9526.monalisa.orm.query.TestSimpleModel;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import com.tsc9526.monalisa.orm.datatable.DataColumn;
-import com.tsc9526.monalisa.orm.datatable.DataMap;
-import com.tsc9526.monalisa.orm.datatable.DataTable;
-import com.tsc9526.monalisa.orm.tools.helper.ClassHelper;
-import com.tsc9526.monalisa.orm.tools.helper.ClassHelper.MetaClass;
+import com.tsc9526.monalisa.tools.clazz.MelpClass;
+import com.tsc9526.monalisa.tools.clazz.MelpClass.ClassAssist;
+import com.tsc9526.monalisa.tools.datatable.DataColumn;
+import com.tsc9526.monalisa.tools.datatable.DataMap;
+import com.tsc9526.monalisa.tools.datatable.DataTable;
 
 /**
  * 
@@ -362,7 +362,7 @@ public class DataTableTest {
 		DataTable<Object> table = new DataTable<Object>();
 		 
 		//创建测试数据
-		MetaClass mc=ClassHelper.getMetaClass(TestUserAreaRank.class);
+		ClassAssist mc=MelpClass.getMetaClass(TestUserAreaRank.class);
 		for(int userId=1;userId<=6;userId++){
 			Object row=new TestUserAreaRank();
 
@@ -376,6 +376,65 @@ public class DataTableTest {
 		}
 		
 		checkTableResults(table,new String[]{"user","area","rank"});
+	}
+	
+	public void testObjectToDataMap(){
+		DataTable<Object> table = new DataTable<Object>();
+		 
+		//创建测试数据
+		ClassAssist mc=MelpClass.getMetaClass(TestUserAreaRank.class);
+		for(int userId=1;userId<=6;userId++){
+			Object row=new TestUserAreaRank();
+
+			mc.getField("user").setObject(row, userId);
+			mc.getField("area").setObject(row,"guangdong-"+(userId%2));
+		  	
+			table.add(row);
+		}
+		
+		DataMap m=table.toDataMap("user");
+		Assert.assertEquals(m.size(),6);
+		Assert.assertEquals(m.get(0),m.get("1"));
+		Assert.assertEquals(m.get(5),m.get("6"));
+	}
+	
+	public void testArrayToDataMapObject(){
+		DataTable<Object> table = new DataTable<Object>();
+		 
+ 		table.add(new String[]{"A1","B1","C1","D1"});
+ 		table.add(new String[]{"A1","B2","C2","D2"});
+ 		table.add(new String[]{"A1","B3","C3","D3"});
+ 		table.add(new String[]{"A2","B1","C4","D4"});
+ 		table.add(new String[]{"A2","B2","C5","D5"});
+ 		table.add(new String[]{"A2","B3","C6","D6"});
+		
+		
+		DataMap m=table.toDataMap("c0","c1");
+		Assert.assertEquals(m.size(),6);
+		Assert.assertEquals(m.get(0),m.get("A1&B1"));
+		Assert.assertEquals(m.get(5),m.get("A2&B3"));
+		
+		m=table.toDataMap("0","1");
+		Assert.assertEquals(m.size(),6);
+		Assert.assertEquals(m.get(0),m.get("A1&B1"));
+		Assert.assertEquals(m.get(5),m.get("A2&B3"));
+	}
+	
+	
+	public void testPrimitiveToDataMapObject(){
+		DataTable<Object> table = new DataTable<Object>();
+		 
+ 		table.add("A1");
+ 		table.add("A2");
+ 		table.add("A3");
+ 		table.add("A4");
+ 		table.add("A5");
+ 		table.add("A6");
+	 	
+		DataMap m=table.toDataMap();
+		Assert.assertEquals(m.size(),6);
+		Assert.assertEquals(m.get(0),m.get("A1"));
+		Assert.assertEquals(m.get(5),m.get("A6"));
 	}
 	
 	private void checkTableResults(DataTable<?> table,String[] hs){
@@ -405,6 +464,7 @@ public class DataTableTest {
 			} 
 		}
 	}
+
 	
 	static class TestUserAreaRank{
 		int user;

@@ -18,7 +18,7 @@ package com.tsc9526.monalisa.orm.model;
 
 import java.util.List;
 
-import com.tsc9526.monalisa.orm.tools.helper.ClassHelper.FGS;
+import com.tsc9526.monalisa.tools.clazz.MelpClass.FGS;
 
 /**
  * 

@@ -27,14 +27,9 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
-import com.tsc9526.monalisa.orm.cache.Cache;
-import com.tsc9526.monalisa.orm.cache.CacheKey;
 import com.tsc9526.monalisa.orm.datasource.DBConfig;
 import com.tsc9526.monalisa.orm.datasource.DataSourceManager;
 import com.tsc9526.monalisa.orm.datasource.DbProp;
-import com.tsc9526.monalisa.orm.datatable.DataMap;
-import com.tsc9526.monalisa.orm.datatable.DataTable;
-import com.tsc9526.monalisa.orm.datatable.Page;
 import com.tsc9526.monalisa.orm.dialect.Dialect;
 import com.tsc9526.monalisa.orm.executor.CacheExecutor;
 import com.tsc9526.monalisa.orm.executor.Execute;
@@ -44,11 +39,16 @@ import com.tsc9526.monalisa.orm.executor.ResultLoadExecutor;
 import com.tsc9526.monalisa.orm.executor.ResultSetExecutor;
 import com.tsc9526.monalisa.orm.executor.ResultSetsExecutor;
 import com.tsc9526.monalisa.orm.executor.UpdateExecutor;
-import com.tsc9526.monalisa.orm.tools.agent.AgentClass;
-import com.tsc9526.monalisa.orm.tools.generator.DBExchange;
-import com.tsc9526.monalisa.orm.tools.helper.CloseQuietly;
-import com.tsc9526.monalisa.orm.tools.helper.SQLHelper;
-import com.tsc9526.monalisa.orm.tools.logger.Logger;
+import com.tsc9526.monalisa.orm.generator.DBExchange;
+import com.tsc9526.monalisa.tools.agent.AgentClass;
+import com.tsc9526.monalisa.tools.cache.Cache;
+import com.tsc9526.monalisa.tools.cache.CacheKey;
+import com.tsc9526.monalisa.tools.datatable.DataMap;
+import com.tsc9526.monalisa.tools.datatable.DataTable;
+import com.tsc9526.monalisa.tools.datatable.Page;
+import com.tsc9526.monalisa.tools.io.MelpClose;
+import com.tsc9526.monalisa.tools.logger.Logger;
+import com.tsc9526.monalisa.tools.string.MelpSQL;
  
 
 /**
@@ -230,7 +230,7 @@ public class Query {
 	 * @return the executable SQL
 	 */
 	public String getExecutableSQL() {
-		 return SQLHelper.getExecutableSQL(getSql(), parameters);
+		 return MelpSQL.getExecutableSQL(getSql(), parameters);
 	}
 
 	/**
@@ -310,7 +310,7 @@ public class Query {
 			
 			pst=conn.prepareStatement(getSql());
 			for(List<Object> p:batchParameters){
-				SQLHelper.setPreparedParameters(pst, p);
+				MelpSQL.setPreparedParameters(pst, p);
 				pst.addBatch();
 			}
 			
@@ -329,10 +329,10 @@ public class Query {
 			}
 			throw new RuntimeException(e);
 		}finally{
-			CloseQuietly.close(pst);
+			MelpClose.close(pst);
 			
 			if(tx==null){
-				CloseQuietly.close(conn);
+				MelpClose.close(conn);
 			}
 		}
 	}
@@ -350,7 +350,7 @@ public class Query {
 			 
 			pst=x.preparedStatement(conn,getSql());
 			 
-			SQLHelper.setPreparedParameters(pst, parameters);
+			MelpSQL.setPreparedParameters(pst, parameters);
 			
 			logSql();
 			
@@ -364,10 +364,10 @@ public class Query {
 			throw new RuntimeException("ERROR: "+e.getMessage()+"\r\nERROR SQL: \r\n========================================================================\r\n"
 					                  +executeSQL+"\r\n========================================================================",e);
 		}finally{
-			CloseQuietly.close(pst);
+			MelpClose.close(pst);
 			
 			if(tx==null){
-				CloseQuietly.close(conn);
+				MelpClose.close(conn);
 			}
 		}
 	}

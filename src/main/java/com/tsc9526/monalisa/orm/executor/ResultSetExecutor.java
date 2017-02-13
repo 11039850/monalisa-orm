@@ -26,10 +26,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.tsc9526.monalisa.orm.datatable.DataColumn;
-import com.tsc9526.monalisa.orm.datatable.DataTable;
-import com.tsc9526.monalisa.orm.tools.helper.CloseQuietly;
-import com.tsc9526.monalisa.orm.tools.helper.TypeHelper;
+import com.tsc9526.monalisa.tools.datatable.DataColumn;
+import com.tsc9526.monalisa.tools.datatable.DataTable;
+import com.tsc9526.monalisa.tools.io.MelpClose;
+import com.tsc9526.monalisa.tools.string.MelpTypes;
 
 /**
  * 
@@ -56,7 +56,7 @@ public class ResultSetExecutor<T>  extends RelationExecutor implements Execute<D
 			}
 			return result;
 		}finally{
-			CloseQuietly.close(rs);
+			MelpClose.close(rs);
 		}
 	} 
 	
@@ -86,7 +86,7 @@ public class ResultSetExecutor<T>  extends RelationExecutor implements Execute<D
 			DataColumn dc=new DataColumn(name);
 			int jdbcType=rsmd.getColumnType(i);
 			dc.setJdbcType(jdbcType);
-			dc.setTypeString(TypeHelper.getJavaType(jdbcType));
+			dc.setTypeString(MelpTypes.getJavaType(jdbcType));
 			dc.setLabel(label==null?name:label);
 			
 			ls.add(dc);

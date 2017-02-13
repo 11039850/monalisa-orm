@@ -26,10 +26,10 @@ import org.testng.annotations.Test;
 
 import test.com.tsc9526.monalisa.orm.mysql.MysqlDB;
 
-import com.tsc9526.monalisa.orm.datatable.DataMap;
-import com.tsc9526.monalisa.orm.datatable.DataTable;
 import com.tsc9526.monalisa.orm.model.Model;
 import com.tsc9526.monalisa.orm.model.Record;
+import com.tsc9526.monalisa.tools.datatable.DataMap;
+import com.tsc9526.monalisa.tools.datatable.DataTable;
 
 /**
  * 

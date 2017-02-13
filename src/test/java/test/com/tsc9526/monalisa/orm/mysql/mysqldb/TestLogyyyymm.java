@@ -4,7 +4,8 @@ package test.com.tsc9526.monalisa.orm.mysql.mysqldb;
 import com.tsc9526.monalisa.orm.annotation.DB; 
 import com.tsc9526.monalisa.orm.annotation.Table; 
 import com.tsc9526.monalisa.orm.annotation.Column; 
-import com.tsc9526.monalisa.orm.tools.helper.ClassHelper; 
+import com.tsc9526.monalisa.tools.annotation.Alias; 
+import com.tsc9526.monalisa.tools.clazz.MelpClass; 
 import java.util.List; 
 import java.util.Map; 
 import java.util.LinkedHashMap; 
@@ -70,83 +71,92 @@ public class TestLogyyyymm extends com.tsc9526.monalisa.orm.model.Model<TestLogy
 	
 	/**
 	* @Column
-	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201603&nbsp;<B>name:</B> id &nbsp;[<font color=red>KEY</font>|<font color=red>AUTO</font>|<font color=red>NOTNULL</font>]
+	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201601&nbsp;<B>name:</B> id &nbsp;[<font color=red>KEY</font>|<font color=red>AUTO</font>|<font color=red>NOTNULL</font>]
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 10<br>
 	* <li><B>remarks:</B> primary key
 	*/
 	@Column(table=M.TABLE, jdbcType=4, name=M.id$name, key=M.id$key, auto=M.id$auto, notnull=M.id$notnull, length=M.id$length, value=M.id$value, remarks=M.id$remarks)
+	@Alias("id")
 	private Integer id;	
 	
 	/**
 	* @Column
-	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201603&nbsp;<B>name:</B> log_time &nbsp;[<font color=red>NOTNULL</font>]
+	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201601&nbsp;<B>name:</B> log_time &nbsp;[<font color=red>NOTNULL</font>]
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 19<br>
 	* <li><B>remarks:</B> 
 	*/
 	@Column(table=M.TABLE, jdbcType=93, name=M.logTime$name, key=M.logTime$key, auto=M.logTime$auto, notnull=M.logTime$notnull, length=M.logTime$length, value=M.logTime$value, remarks=M.logTime$remarks)
+	@Alias("log_time")
 	private java.util.Date logTime;	
 	
 	/**
 	* @Column
-	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201603&nbsp;<B>name:</B> name
+	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201601&nbsp;<B>name:</B> name
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 128<br>
 	* <li><B>remarks:</B> the name
 	*/
 	@Column(table=M.TABLE, jdbcType=12, name=M.name$name, key=M.name$key, auto=M.name$auto, notnull=M.name$notnull, length=M.name$length, value=M.name$value, remarks=M.name$remarks)
+	@Alias("name")
 	private String name;	
 	
 	/**
 	* @Column
-	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201603&nbsp;<B>name:</B> enum_int_a &nbsp;[<font color=red>ENUM</font>]
+	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201601&nbsp;<B>name:</B> enum_int_a &nbsp;[<font color=red>ENUM</font>]
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 10<br>
 	* <li><B>remarks:</B> enum field a.  #enum{{V0,V1}}
 	*/
 	@Column(table=M.TABLE, jdbcType=4, name=M.enumIntA$name, key=M.enumIntA$key, auto=M.enumIntA$auto, notnull=M.enumIntA$notnull, length=M.enumIntA$length, value=M.enumIntA$value, remarks=M.enumIntA$remarks)
+	@Alias("enum_int_a")
 	private EnumIntA enumIntA;	
 	
 	/**
 	* @Column
-	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201603&nbsp;<B>name:</B> enum_string_a &nbsp;[<font color=red>ENUM</font>]
+	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201601&nbsp;<B>name:</B> enum_string_a &nbsp;[<font color=red>ENUM</font>]
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 64<br>
 	* <li><B>remarks:</B> enum field string. #enum{{ TRUE, FALSE}}
 	*/
 	@Column(table=M.TABLE, jdbcType=12, name=M.enumStringA$name, key=M.enumStringA$key, auto=M.enumStringA$auto, notnull=M.enumStringA$notnull, length=M.enumStringA$length, value=M.enumStringA$value, remarks=M.enumStringA$remarks)
+	@Alias("enum_string_a")
 	private EnumStringA enumStringA;	
 	
 	/**
 	* @Column
-	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201603&nbsp;<B>name:</B> create_time
+	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201601&nbsp;<B>name:</B> create_time
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 19<br>
 	* <li><B>remarks:</B> 
 	*/
 	@Column(table=M.TABLE, jdbcType=93, name=M.createTime$name, key=M.createTime$key, auto=M.createTime$auto, notnull=M.createTime$notnull, length=M.createTime$length, value=M.createTime$value, remarks=M.createTime$remarks)
+	@Alias("create_time")
 	private java.util.Date createTime;	
 	
 	/**
 	* @Column
-	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201603&nbsp;<B>name:</B> create_by
+	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201601&nbsp;<B>name:</B> create_by
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 64<br>
 	* <li><B>remarks:</B> 
 	*/
 	@Column(table=M.TABLE, jdbcType=12, name=M.createBy$name, key=M.createBy$key, auto=M.createBy$auto, notnull=M.createBy$notnull, length=M.createBy$length, value=M.createBy$value, remarks=M.createBy$remarks)
+	@Alias("create_by")
 	private String createBy;	
 	
 	/**
 	* @Column
-	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201603&nbsp;<B>name:</B> update_time
+	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201601&nbsp;<B>name:</B> update_time
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 19<br>
 	* <li><B>remarks:</B> 
 	*/
 	@Column(table=M.TABLE, jdbcType=93, name=M.updateTime$name, key=M.updateTime$key, auto=M.updateTime$auto, notnull=M.updateTime$notnull, length=M.updateTime$length, value=M.updateTime$value, remarks=M.updateTime$remarks)
+	@Alias("update_time")
 	private java.util.Date updateTime;	
 	
 	/**
 	* @Column
-	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201603&nbsp;<B>name:</B> update_by
+	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201601&nbsp;<B>name:</B> update_by
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 64<br>
 	* <li><B>remarks:</B> 
 	*/
 	@Column(table=M.TABLE, jdbcType=12, name=M.updateBy$name, key=M.updateBy$key, auto=M.updateBy$auto, notnull=M.updateBy$notnull, length=M.updateBy$length, value=M.updateBy$value, remarks=M.updateBy$remarks)
+	@Alias("update_by")
 	private String updateBy;	
 	
 	
@@ -154,11 +164,12 @@ public class TestLogyyyymm extends com.tsc9526.monalisa.orm.model.Model<TestLogy
 	
 	/**
 	* @Column
-	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201603&nbsp;<B>name:</B> id &nbsp;[<font color=red>KEY</font>|<font color=red>AUTO</font>|<font color=red>NOTNULL</font>]
+	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201601&nbsp;<B>name:</B> id &nbsp;[<font color=red>KEY</font>|<font color=red>AUTO</font>|<font color=red>NOTNULL</font>]
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 10<br>
 	* <li><B>remarks:</B> primary key
 	*/
-	@Column(table=M.TABLE, jdbcType=4, name=M.id$name, key=M.id$key, auto=M.id$auto, notnull=M.id$notnull, length=M.id$length, value=M.id$value, remarks=M.id$remarks) 
+	@Column(table=M.TABLE, jdbcType=4, name=M.id$name, key=M.id$key, auto=M.id$auto, notnull=M.id$notnull, length=M.id$length, value=M.id$value, remarks=M.id$remarks)
+	@Alias("id") 
 	public TestLogyyyymm setId(Integer id){
 		this.id = id;  
 		
@@ -170,11 +181,12 @@ public class TestLogyyyymm extends com.tsc9526.monalisa.orm.model.Model<TestLogy
 	
 	/**
 	* @Column
-	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201603&nbsp;<B>name:</B> log_time &nbsp;[<font color=red>NOTNULL</font>]
+	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201601&nbsp;<B>name:</B> log_time &nbsp;[<font color=red>NOTNULL</font>]
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 19<br>
 	* <li><B>remarks:</B> 
 	*/
-	@Column(table=M.TABLE, jdbcType=93, name=M.logTime$name, key=M.logTime$key, auto=M.logTime$auto, notnull=M.logTime$notnull, length=M.logTime$length, value=M.logTime$value, remarks=M.logTime$remarks) 
+	@Column(table=M.TABLE, jdbcType=93, name=M.logTime$name, key=M.logTime$key, auto=M.logTime$auto, notnull=M.logTime$notnull, length=M.logTime$length, value=M.logTime$value, remarks=M.logTime$remarks)
+	@Alias("log_time") 
 	public TestLogyyyymm setLogTime(java.util.Date logTime){
 		this.logTime = logTime;  
 		
@@ -186,11 +198,12 @@ public class TestLogyyyymm extends com.tsc9526.monalisa.orm.model.Model<TestLogy
 	
 	/**
 	* @Column
-	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201603&nbsp;<B>name:</B> name
+	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201601&nbsp;<B>name:</B> name
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 128<br>
 	* <li><B>remarks:</B> the name
 	*/
-	@Column(table=M.TABLE, jdbcType=12, name=M.name$name, key=M.name$key, auto=M.name$auto, notnull=M.name$notnull, length=M.name$length, value=M.name$value, remarks=M.name$remarks) 
+	@Column(table=M.TABLE, jdbcType=12, name=M.name$name, key=M.name$key, auto=M.name$auto, notnull=M.name$notnull, length=M.name$length, value=M.name$value, remarks=M.name$remarks)
+	@Alias("name") 
 	public TestLogyyyymm setName(String name){
 		this.name = name;  
 		
@@ -202,11 +215,12 @@ public class TestLogyyyymm extends com.tsc9526.monalisa.orm.model.Model<TestLogy
 	
 	/**
 	* @Column
-	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201603&nbsp;<B>name:</B> enum_int_a &nbsp;[<font color=red>ENUM</font>]
+	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201601&nbsp;<B>name:</B> enum_int_a &nbsp;[<font color=red>ENUM</font>]
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 10<br>
 	* <li><B>remarks:</B> enum field a.  #enum{{V0,V1}}
 	*/
-	@Column(table=M.TABLE, jdbcType=4, name=M.enumIntA$name, key=M.enumIntA$key, auto=M.enumIntA$auto, notnull=M.enumIntA$notnull, length=M.enumIntA$length, value=M.enumIntA$value, remarks=M.enumIntA$remarks) 
+	@Column(table=M.TABLE, jdbcType=4, name=M.enumIntA$name, key=M.enumIntA$key, auto=M.enumIntA$auto, notnull=M.enumIntA$notnull, length=M.enumIntA$length, value=M.enumIntA$value, remarks=M.enumIntA$remarks)
+	@Alias("enum_int_a") 
 	public TestLogyyyymm setEnumIntA(EnumIntA enumIntA){
 		this.enumIntA = enumIntA;  
 		
@@ -218,11 +232,12 @@ public class TestLogyyyymm extends com.tsc9526.monalisa.orm.model.Model<TestLogy
 	
 	/**
 	* @Column
-	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201603&nbsp;<B>name:</B> enum_string_a &nbsp;[<font color=red>ENUM</font>]
+	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201601&nbsp;<B>name:</B> enum_string_a &nbsp;[<font color=red>ENUM</font>]
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 64<br>
 	* <li><B>remarks:</B> enum field string. #enum{{ TRUE, FALSE}}
 	*/
-	@Column(table=M.TABLE, jdbcType=12, name=M.enumStringA$name, key=M.enumStringA$key, auto=M.enumStringA$auto, notnull=M.enumStringA$notnull, length=M.enumStringA$length, value=M.enumStringA$value, remarks=M.enumStringA$remarks) 
+	@Column(table=M.TABLE, jdbcType=12, name=M.enumStringA$name, key=M.enumStringA$key, auto=M.enumStringA$auto, notnull=M.enumStringA$notnull, length=M.enumStringA$length, value=M.enumStringA$value, remarks=M.enumStringA$remarks)
+	@Alias("enum_string_a") 
 	public TestLogyyyymm setEnumStringA(EnumStringA enumStringA){
 		this.enumStringA = enumStringA;  
 		
@@ -234,11 +249,12 @@ public class TestLogyyyymm extends com.tsc9526.monalisa.orm.model.Model<TestLogy
 	
 	/**
 	* @Column
-	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201603&nbsp;<B>name:</B> create_time
+	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201601&nbsp;<B>name:</B> create_time
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 19<br>
 	* <li><B>remarks:</B> 
 	*/
-	@Column(table=M.TABLE, jdbcType=93, name=M.createTime$name, key=M.createTime$key, auto=M.createTime$auto, notnull=M.createTime$notnull, length=M.createTime$length, value=M.createTime$value, remarks=M.createTime$remarks) 
+	@Column(table=M.TABLE, jdbcType=93, name=M.createTime$name, key=M.createTime$key, auto=M.createTime$auto, notnull=M.createTime$notnull, length=M.createTime$length, value=M.createTime$value, remarks=M.createTime$remarks)
+	@Alias("create_time") 
 	public TestLogyyyymm setCreateTime(java.util.Date createTime){
 		this.createTime = createTime;  
 		
@@ -250,11 +266,12 @@ public class TestLogyyyymm extends com.tsc9526.monalisa.orm.model.Model<TestLogy
 	
 	/**
 	* @Column
-	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201603&nbsp;<B>name:</B> create_by
+	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201601&nbsp;<B>name:</B> create_by
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 64<br>
 	* <li><B>remarks:</B> 
 	*/
-	@Column(table=M.TABLE, jdbcType=12, name=M.createBy$name, key=M.createBy$key, auto=M.createBy$auto, notnull=M.createBy$notnull, length=M.createBy$length, value=M.createBy$value, remarks=M.createBy$remarks) 
+	@Column(table=M.TABLE, jdbcType=12, name=M.createBy$name, key=M.createBy$key, auto=M.createBy$auto, notnull=M.createBy$notnull, length=M.createBy$length, value=M.createBy$value, remarks=M.createBy$remarks)
+	@Alias("create_by") 
 	public TestLogyyyymm setCreateBy(String createBy){
 		this.createBy = createBy;  
 		
@@ -266,11 +283,12 @@ public class TestLogyyyymm extends com.tsc9526.monalisa.orm.model.Model<TestLogy
 	
 	/**
 	* @Column
-	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201603&nbsp;<B>name:</B> update_time
+	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201601&nbsp;<B>name:</B> update_time
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 19<br>
 	* <li><B>remarks:</B> 
 	*/
-	@Column(table=M.TABLE, jdbcType=93, name=M.updateTime$name, key=M.updateTime$key, auto=M.updateTime$auto, notnull=M.updateTime$notnull, length=M.updateTime$length, value=M.updateTime$value, remarks=M.updateTime$remarks) 
+	@Column(table=M.TABLE, jdbcType=93, name=M.updateTime$name, key=M.updateTime$key, auto=M.updateTime$auto, notnull=M.updateTime$notnull, length=M.updateTime$length, value=M.updateTime$value, remarks=M.updateTime$remarks)
+	@Alias("update_time") 
 	public TestLogyyyymm setUpdateTime(java.util.Date updateTime){
 		this.updateTime = updateTime;  
 		
@@ -282,11 +300,12 @@ public class TestLogyyyymm extends com.tsc9526.monalisa.orm.model.Model<TestLogy
 	
 	/**
 	* @Column
-	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201603&nbsp;<B>name:</B> update_by
+	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201601&nbsp;<B>name:</B> update_by
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 64<br>
 	* <li><B>remarks:</B> 
 	*/
-	@Column(table=M.TABLE, jdbcType=12, name=M.updateBy$name, key=M.updateBy$key, auto=M.updateBy$auto, notnull=M.updateBy$notnull, length=M.updateBy$length, value=M.updateBy$value, remarks=M.updateBy$remarks) 
+	@Column(table=M.TABLE, jdbcType=12, name=M.updateBy$name, key=M.updateBy$key, auto=M.updateBy$auto, notnull=M.updateBy$notnull, length=M.updateBy$length, value=M.updateBy$value, remarks=M.updateBy$remarks)
+	@Alias("update_by") 
 	public TestLogyyyymm setUpdateBy(String updateBy){
 		this.updateBy = updateBy;  
 		
@@ -299,11 +318,12 @@ public class TestLogyyyymm extends com.tsc9526.monalisa.orm.model.Model<TestLogy
 	
 	/**
 	* @Column
-	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201603&nbsp;<B>name:</B> id &nbsp;[<font color=red>KEY</font>|<font color=red>AUTO</font>|<font color=red>NOTNULL</font>]
+	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201601&nbsp;<B>name:</B> id &nbsp;[<font color=red>KEY</font>|<font color=red>AUTO</font>|<font color=red>NOTNULL</font>]
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 10<br>
 	* <li><B>remarks:</B> primary key
 	*/
-	@Column(table=M.TABLE, jdbcType=4, name=M.id$name, key=M.id$key, auto=M.id$auto, notnull=M.id$notnull, length=M.id$length, value=M.id$value, remarks=M.id$remarks) 
+	@Column(table=M.TABLE, jdbcType=4, name=M.id$name, key=M.id$key, auto=M.id$auto, notnull=M.id$notnull, length=M.id$length, value=M.id$value, remarks=M.id$remarks)
+	@Alias("id") 
 	public Integer getId(){
 		return this.id;
  
@@ -311,12 +331,13 @@ public class TestLogyyyymm extends com.tsc9526.monalisa.orm.model.Model<TestLogy
 	
 	/**
 	* @Column
-	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201603&nbsp;<B>name:</B> id &nbsp;[<font color=red>KEY</font>|<font color=red>AUTO</font>|<font color=red>NOTNULL</font>]
+	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201601&nbsp;<B>name:</B> id &nbsp;[<font color=red>KEY</font>|<font color=red>AUTO</font>|<font color=red>NOTNULL</font>]
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 10<br>
 	* <li><B>remarks:</B> primary key
 	* @param defaultValue  Return the default value if id is null.
 	*/
-	@Column(table=M.TABLE, jdbcType=4, name=M.id$name, key=M.id$key, auto=M.id$auto, notnull=M.id$notnull, length=M.id$length, value=M.id$value, remarks=M.id$remarks) 
+	@Column(table=M.TABLE, jdbcType=4, name=M.id$name, key=M.id$key, auto=M.id$auto, notnull=M.id$notnull, length=M.id$length, value=M.id$value, remarks=M.id$remarks)
+	@Alias("id") 
 	public Integer getId(Integer defaultValue){
 		Integer r=this.getId();
 		
@@ -330,11 +351,12 @@ public class TestLogyyyymm extends com.tsc9526.monalisa.orm.model.Model<TestLogy
 	
 	/**
 	* @Column
-	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201603&nbsp;<B>name:</B> log_time &nbsp;[<font color=red>NOTNULL</font>]
+	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201601&nbsp;<B>name:</B> log_time &nbsp;[<font color=red>NOTNULL</font>]
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 19<br>
 	* <li><B>remarks:</B> 
 	*/
-	@Column(table=M.TABLE, jdbcType=93, name=M.logTime$name, key=M.logTime$key, auto=M.logTime$auto, notnull=M.logTime$notnull, length=M.logTime$length, value=M.logTime$value, remarks=M.logTime$remarks) 
+	@Column(table=M.TABLE, jdbcType=93, name=M.logTime$name, key=M.logTime$key, auto=M.logTime$auto, notnull=M.logTime$notnull, length=M.logTime$length, value=M.logTime$value, remarks=M.logTime$remarks)
+	@Alias("log_time") 
 	public java.util.Date getLogTime(){
 		return this.logTime;
  
@@ -342,12 +364,13 @@ public class TestLogyyyymm extends com.tsc9526.monalisa.orm.model.Model<TestLogy
 	
 	/**
 	* @Column
-	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201603&nbsp;<B>name:</B> log_time &nbsp;[<font color=red>NOTNULL</font>]
+	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201601&nbsp;<B>name:</B> log_time &nbsp;[<font color=red>NOTNULL</font>]
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 19<br>
 	* <li><B>remarks:</B> 
 	* @param defaultValue  Return the default value if logTime is null.
 	*/
-	@Column(table=M.TABLE, jdbcType=93, name=M.logTime$name, key=M.logTime$key, auto=M.logTime$auto, notnull=M.logTime$notnull, length=M.logTime$length, value=M.logTime$value, remarks=M.logTime$remarks) 
+	@Column(table=M.TABLE, jdbcType=93, name=M.logTime$name, key=M.logTime$key, auto=M.logTime$auto, notnull=M.logTime$notnull, length=M.logTime$length, value=M.logTime$value, remarks=M.logTime$remarks)
+	@Alias("log_time") 
 	public java.util.Date getLogTime(java.util.Date defaultValue){
 		java.util.Date r=this.getLogTime();
 		
@@ -361,11 +384,12 @@ public class TestLogyyyymm extends com.tsc9526.monalisa.orm.model.Model<TestLogy
 	
 	/**
 	* @Column
-	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201603&nbsp;<B>name:</B> name
+	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201601&nbsp;<B>name:</B> name
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 128<br>
 	* <li><B>remarks:</B> the name
 	*/
-	@Column(table=M.TABLE, jdbcType=12, name=M.name$name, key=M.name$key, auto=M.name$auto, notnull=M.name$notnull, length=M.name$length, value=M.name$value, remarks=M.name$remarks) 
+	@Column(table=M.TABLE, jdbcType=12, name=M.name$name, key=M.name$key, auto=M.name$auto, notnull=M.name$notnull, length=M.name$length, value=M.name$value, remarks=M.name$remarks)
+	@Alias("name") 
 	public String getName(){
 		return this.name;
  
@@ -373,12 +397,13 @@ public class TestLogyyyymm extends com.tsc9526.monalisa.orm.model.Model<TestLogy
 	
 	/**
 	* @Column
-	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201603&nbsp;<B>name:</B> name
+	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201601&nbsp;<B>name:</B> name
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 128<br>
 	* <li><B>remarks:</B> the name
 	* @param defaultValue  Return the default value if name is null.
 	*/
-	@Column(table=M.TABLE, jdbcType=12, name=M.name$name, key=M.name$key, auto=M.name$auto, notnull=M.name$notnull, length=M.name$length, value=M.name$value, remarks=M.name$remarks) 
+	@Column(table=M.TABLE, jdbcType=12, name=M.name$name, key=M.name$key, auto=M.name$auto, notnull=M.name$notnull, length=M.name$length, value=M.name$value, remarks=M.name$remarks)
+	@Alias("name") 
 	public String getName(String defaultValue){
 		String r=this.getName();
 		
@@ -392,11 +417,12 @@ public class TestLogyyyymm extends com.tsc9526.monalisa.orm.model.Model<TestLogy
 	
 	/**
 	* @Column
-	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201603&nbsp;<B>name:</B> enum_int_a &nbsp;[<font color=red>ENUM</font>]
+	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201601&nbsp;<B>name:</B> enum_int_a &nbsp;[<font color=red>ENUM</font>]
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 10<br>
 	* <li><B>remarks:</B> enum field a.  #enum{{V0,V1}}
 	*/
-	@Column(table=M.TABLE, jdbcType=4, name=M.enumIntA$name, key=M.enumIntA$key, auto=M.enumIntA$auto, notnull=M.enumIntA$notnull, length=M.enumIntA$length, value=M.enumIntA$value, remarks=M.enumIntA$remarks) 
+	@Column(table=M.TABLE, jdbcType=4, name=M.enumIntA$name, key=M.enumIntA$key, auto=M.enumIntA$auto, notnull=M.enumIntA$notnull, length=M.enumIntA$length, value=M.enumIntA$value, remarks=M.enumIntA$remarks)
+	@Alias("enum_int_a") 
 	public EnumIntA getEnumIntA(){
 		return this.enumIntA;
  
@@ -404,12 +430,13 @@ public class TestLogyyyymm extends com.tsc9526.monalisa.orm.model.Model<TestLogy
 	
 	/**
 	* @Column
-	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201603&nbsp;<B>name:</B> enum_int_a &nbsp;[<font color=red>ENUM</font>]
+	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201601&nbsp;<B>name:</B> enum_int_a &nbsp;[<font color=red>ENUM</font>]
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 10<br>
 	* <li><B>remarks:</B> enum field a.  #enum{{V0,V1}}
 	* @param defaultValue  Return the default value if enumIntA is null.
 	*/
-	@Column(table=M.TABLE, jdbcType=4, name=M.enumIntA$name, key=M.enumIntA$key, auto=M.enumIntA$auto, notnull=M.enumIntA$notnull, length=M.enumIntA$length, value=M.enumIntA$value, remarks=M.enumIntA$remarks) 
+	@Column(table=M.TABLE, jdbcType=4, name=M.enumIntA$name, key=M.enumIntA$key, auto=M.enumIntA$auto, notnull=M.enumIntA$notnull, length=M.enumIntA$length, value=M.enumIntA$value, remarks=M.enumIntA$remarks)
+	@Alias("enum_int_a") 
 	public EnumIntA getEnumIntA(EnumIntA defaultValue){
 		EnumIntA r=this.getEnumIntA();
 		
@@ -423,11 +450,12 @@ public class TestLogyyyymm extends com.tsc9526.monalisa.orm.model.Model<TestLogy
 	
 	/**
 	* @Column
-	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201603&nbsp;<B>name:</B> enum_string_a &nbsp;[<font color=red>ENUM</font>]
+	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201601&nbsp;<B>name:</B> enum_string_a &nbsp;[<font color=red>ENUM</font>]
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 64<br>
 	* <li><B>remarks:</B> enum field string. #enum{{ TRUE, FALSE}}
 	*/
-	@Column(table=M.TABLE, jdbcType=12, name=M.enumStringA$name, key=M.enumStringA$key, auto=M.enumStringA$auto, notnull=M.enumStringA$notnull, length=M.enumStringA$length, value=M.enumStringA$value, remarks=M.enumStringA$remarks) 
+	@Column(table=M.TABLE, jdbcType=12, name=M.enumStringA$name, key=M.enumStringA$key, auto=M.enumStringA$auto, notnull=M.enumStringA$notnull, length=M.enumStringA$length, value=M.enumStringA$value, remarks=M.enumStringA$remarks)
+	@Alias("enum_string_a") 
 	public EnumStringA getEnumStringA(){
 		return this.enumStringA;
  
@@ -435,12 +463,13 @@ public class TestLogyyyymm extends com.tsc9526.monalisa.orm.model.Model<TestLogy
 	
 	/**
 	* @Column
-	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201603&nbsp;<B>name:</B> enum_string_a &nbsp;[<font color=red>ENUM</font>]
+	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201601&nbsp;<B>name:</B> enum_string_a &nbsp;[<font color=red>ENUM</font>]
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 64<br>
 	* <li><B>remarks:</B> enum field string. #enum{{ TRUE, FALSE}}
 	* @param defaultValue  Return the default value if enumStringA is null.
 	*/
-	@Column(table=M.TABLE, jdbcType=12, name=M.enumStringA$name, key=M.enumStringA$key, auto=M.enumStringA$auto, notnull=M.enumStringA$notnull, length=M.enumStringA$length, value=M.enumStringA$value, remarks=M.enumStringA$remarks) 
+	@Column(table=M.TABLE, jdbcType=12, name=M.enumStringA$name, key=M.enumStringA$key, auto=M.enumStringA$auto, notnull=M.enumStringA$notnull, length=M.enumStringA$length, value=M.enumStringA$value, remarks=M.enumStringA$remarks)
+	@Alias("enum_string_a") 
 	public EnumStringA getEnumStringA(EnumStringA defaultValue){
 		EnumStringA r=this.getEnumStringA();
 		
@@ -454,11 +483,12 @@ public class TestLogyyyymm extends com.tsc9526.monalisa.orm.model.Model<TestLogy
 	
 	/**
 	* @Column
-	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201603&nbsp;<B>name:</B> create_time
+	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201601&nbsp;<B>name:</B> create_time
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 19<br>
 	* <li><B>remarks:</B> 
 	*/
-	@Column(table=M.TABLE, jdbcType=93, name=M.createTime$name, key=M.createTime$key, auto=M.createTime$auto, notnull=M.createTime$notnull, length=M.createTime$length, value=M.createTime$value, remarks=M.createTime$remarks) 
+	@Column(table=M.TABLE, jdbcType=93, name=M.createTime$name, key=M.createTime$key, auto=M.createTime$auto, notnull=M.createTime$notnull, length=M.createTime$length, value=M.createTime$value, remarks=M.createTime$remarks)
+	@Alias("create_time") 
 	public java.util.Date getCreateTime(){
 		return this.createTime;
  
@@ -466,12 +496,13 @@ public class TestLogyyyymm extends com.tsc9526.monalisa.orm.model.Model<TestLogy
 	
 	/**
 	* @Column
-	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201603&nbsp;<B>name:</B> create_time
+	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201601&nbsp;<B>name:</B> create_time
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 19<br>
 	* <li><B>remarks:</B> 
 	* @param defaultValue  Return the default value if createTime is null.
 	*/
-	@Column(table=M.TABLE, jdbcType=93, name=M.createTime$name, key=M.createTime$key, auto=M.createTime$auto, notnull=M.createTime$notnull, length=M.createTime$length, value=M.createTime$value, remarks=M.createTime$remarks) 
+	@Column(table=M.TABLE, jdbcType=93, name=M.createTime$name, key=M.createTime$key, auto=M.createTime$auto, notnull=M.createTime$notnull, length=M.createTime$length, value=M.createTime$value, remarks=M.createTime$remarks)
+	@Alias("create_time") 
 	public java.util.Date getCreateTime(java.util.Date defaultValue){
 		java.util.Date r=this.getCreateTime();
 		
@@ -485,11 +516,12 @@ public class TestLogyyyymm extends com.tsc9526.monalisa.orm.model.Model<TestLogy
 	
 	/**
 	* @Column
-	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201603&nbsp;<B>name:</B> create_by
+	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201601&nbsp;<B>name:</B> create_by
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 64<br>
 	* <li><B>remarks:</B> 
 	*/
-	@Column(table=M.TABLE, jdbcType=12, name=M.createBy$name, key=M.createBy$key, auto=M.createBy$auto, notnull=M.createBy$notnull, length=M.createBy$length, value=M.createBy$value, remarks=M.createBy$remarks) 
+	@Column(table=M.TABLE, jdbcType=12, name=M.createBy$name, key=M.createBy$key, auto=M.createBy$auto, notnull=M.createBy$notnull, length=M.createBy$length, value=M.createBy$value, remarks=M.createBy$remarks)
+	@Alias("create_by") 
 	public String getCreateBy(){
 		return this.createBy;
  
@@ -497,12 +529,13 @@ public class TestLogyyyymm extends com.tsc9526.monalisa.orm.model.Model<TestLogy
 	
 	/**
 	* @Column
-	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201603&nbsp;<B>name:</B> create_by
+	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201601&nbsp;<B>name:</B> create_by
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 64<br>
 	* <li><B>remarks:</B> 
 	* @param defaultValue  Return the default value if createBy is null.
 	*/
-	@Column(table=M.TABLE, jdbcType=12, name=M.createBy$name, key=M.createBy$key, auto=M.createBy$auto, notnull=M.createBy$notnull, length=M.createBy$length, value=M.createBy$value, remarks=M.createBy$remarks) 
+	@Column(table=M.TABLE, jdbcType=12, name=M.createBy$name, key=M.createBy$key, auto=M.createBy$auto, notnull=M.createBy$notnull, length=M.createBy$length, value=M.createBy$value, remarks=M.createBy$remarks)
+	@Alias("create_by") 
 	public String getCreateBy(String defaultValue){
 		String r=this.getCreateBy();
 		
@@ -516,11 +549,12 @@ public class TestLogyyyymm extends com.tsc9526.monalisa.orm.model.Model<TestLogy
 	
 	/**
 	* @Column
-	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201603&nbsp;<B>name:</B> update_time
+	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201601&nbsp;<B>name:</B> update_time
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 19<br>
 	* <li><B>remarks:</B> 
 	*/
-	@Column(table=M.TABLE, jdbcType=93, name=M.updateTime$name, key=M.updateTime$key, auto=M.updateTime$auto, notnull=M.updateTime$notnull, length=M.updateTime$length, value=M.updateTime$value, remarks=M.updateTime$remarks) 
+	@Column(table=M.TABLE, jdbcType=93, name=M.updateTime$name, key=M.updateTime$key, auto=M.updateTime$auto, notnull=M.updateTime$notnull, length=M.updateTime$length, value=M.updateTime$value, remarks=M.updateTime$remarks)
+	@Alias("update_time") 
 	public java.util.Date getUpdateTime(){
 		return this.updateTime;
  
@@ -528,12 +562,13 @@ public class TestLogyyyymm extends com.tsc9526.monalisa.orm.model.Model<TestLogy
 	
 	/**
 	* @Column
-	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201603&nbsp;<B>name:</B> update_time
+	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201601&nbsp;<B>name:</B> update_time
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 19<br>
 	* <li><B>remarks:</B> 
 	* @param defaultValue  Return the default value if updateTime is null.
 	*/
-	@Column(table=M.TABLE, jdbcType=93, name=M.updateTime$name, key=M.updateTime$key, auto=M.updateTime$auto, notnull=M.updateTime$notnull, length=M.updateTime$length, value=M.updateTime$value, remarks=M.updateTime$remarks) 
+	@Column(table=M.TABLE, jdbcType=93, name=M.updateTime$name, key=M.updateTime$key, auto=M.updateTime$auto, notnull=M.updateTime$notnull, length=M.updateTime$length, value=M.updateTime$value, remarks=M.updateTime$remarks)
+	@Alias("update_time") 
 	public java.util.Date getUpdateTime(java.util.Date defaultValue){
 		java.util.Date r=this.getUpdateTime();
 		
@@ -547,11 +582,12 @@ public class TestLogyyyymm extends com.tsc9526.monalisa.orm.model.Model<TestLogy
 	
 	/**
 	* @Column
-	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201603&nbsp;<B>name:</B> update_by
+	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201601&nbsp;<B>name:</B> update_by
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 64<br>
 	* <li><B>remarks:</B> 
 	*/
-	@Column(table=M.TABLE, jdbcType=12, name=M.updateBy$name, key=M.updateBy$key, auto=M.updateBy$auto, notnull=M.updateBy$notnull, length=M.updateBy$length, value=M.updateBy$value, remarks=M.updateBy$remarks) 
+	@Column(table=M.TABLE, jdbcType=12, name=M.updateBy$name, key=M.updateBy$key, auto=M.updateBy$auto, notnull=M.updateBy$notnull, length=M.updateBy$length, value=M.updateBy$value, remarks=M.updateBy$remarks)
+	@Alias("update_by") 
 	public String getUpdateBy(){
 		return this.updateBy;
  
@@ -559,12 +595,13 @@ public class TestLogyyyymm extends com.tsc9526.monalisa.orm.model.Model<TestLogy
 	
 	/**
 	* @Column
-	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201603&nbsp;<B>name:</B> update_by
+	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201601&nbsp;<B>name:</B> update_by
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 64<br>
 	* <li><B>remarks:</B> 
 	* @param defaultValue  Return the default value if updateBy is null.
 	*/
-	@Column(table=M.TABLE, jdbcType=12, name=M.updateBy$name, key=M.updateBy$key, auto=M.updateBy$auto, notnull=M.updateBy$notnull, length=M.updateBy$length, value=M.updateBy$value, remarks=M.updateBy$remarks) 
+	@Column(table=M.TABLE, jdbcType=12, name=M.updateBy$name, key=M.updateBy$key, auto=M.updateBy$auto, notnull=M.updateBy$notnull, length=M.updateBy$length, value=M.updateBy$value, remarks=M.updateBy$remarks)
+	@Alias("update_by") 
 	public String getUpdateBy(String defaultValue){
 		String r=this.getUpdateBy();
 		
@@ -693,7 +730,7 @@ public class TestLogyyyymm extends com.tsc9526.monalisa.orm.model.Model<TestLogy
 			Criteria x= new Criteria(this);
 			
 			@SuppressWarnings("rawtypes")
-			Class clazz=ClassHelper.findClassWithAnnotation(TestLogyyyymm.class,DB.class);	  			
+			Class clazz=MelpClass.findClassWithAnnotation(TestLogyyyymm.class,DB.class);	  			
 			com.tsc9526.monalisa.orm.criteria.QEH.getQuery(x).use(dsm.getDBConfig(clazz));
 			
 			return x;
@@ -754,83 +791,92 @@ public class TestLogyyyymm extends com.tsc9526.monalisa.orm.model.Model<TestLogy
 		
 		/**
 		* @Column
-		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201603&nbsp;<B>name:</B> id &nbsp;[<font color=red>KEY</font>|<font color=red>AUTO</font>|<font color=red>NOTNULL</font>]
+		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201601&nbsp;<B>name:</B> id &nbsp;[<font color=red>KEY</font>|<font color=red>AUTO</font>|<font color=red>NOTNULL</font>]
 		* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 10<br>
 		* <li><B>remarks:</B> primary key
 		*/
 		@Column(table=M.TABLE, jdbcType=4, name=M.id$name, key=M.id$key, auto=M.id$auto, notnull=M.id$notnull, length=M.id$length, value=M.id$value, remarks=M.id$remarks)
+		@Alias("id")
 		public com.tsc9526.monalisa.orm.criteria.Field.FieldInteger<Criteria> id = new com.tsc9526.monalisa.orm.criteria.Field.FieldInteger<Criteria>("id", this);
 			
 		/**
 		* @Column
-		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201603&nbsp;<B>name:</B> log_time &nbsp;[<font color=red>NOTNULL</font>]
+		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201601&nbsp;<B>name:</B> log_time &nbsp;[<font color=red>NOTNULL</font>]
 		* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 19<br>
 		* <li><B>remarks:</B> 
 		*/
 		@Column(table=M.TABLE, jdbcType=93, name=M.logTime$name, key=M.logTime$key, auto=M.logTime$auto, notnull=M.logTime$notnull, length=M.logTime$length, value=M.logTime$value, remarks=M.logTime$remarks)
+		@Alias("log_time")
 		public com.tsc9526.monalisa.orm.criteria.Field<java.util.Date,Criteria> logTime = new com.tsc9526.monalisa.orm.criteria.Field<java.util.Date,Criteria>("log_time", this, 93);		 
 			
 		/**
 		* @Column
-		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201603&nbsp;<B>name:</B> name
+		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201601&nbsp;<B>name:</B> name
 		* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 128<br>
 		* <li><B>remarks:</B> the name
 		*/
 		@Column(table=M.TABLE, jdbcType=12, name=M.name$name, key=M.name$key, auto=M.name$auto, notnull=M.name$notnull, length=M.name$length, value=M.name$value, remarks=M.name$remarks)
+		@Alias("name")
 		public com.tsc9526.monalisa.orm.criteria.Field.FieldString<Criteria> name = new com.tsc9526.monalisa.orm.criteria.Field.FieldString<Criteria>("name", this);
 			
 		/**
 		* @Column
-		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201603&nbsp;<B>name:</B> enum_int_a &nbsp;[<font color=red>ENUM</font>]
+		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201601&nbsp;<B>name:</B> enum_int_a &nbsp;[<font color=red>ENUM</font>]
 		* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 10<br>
 		* <li><B>remarks:</B> enum field a.  #enum{{V0,V1}}
 		*/
 		@Column(table=M.TABLE, jdbcType=4, name=M.enumIntA$name, key=M.enumIntA$key, auto=M.enumIntA$auto, notnull=M.enumIntA$notnull, length=M.enumIntA$length, value=M.enumIntA$value, remarks=M.enumIntA$remarks)
+		@Alias("enum_int_a")
 		public com.tsc9526.monalisa.orm.criteria.Field<EnumIntA,Criteria> enumIntA = new com.tsc9526.monalisa.orm.criteria.Field<EnumIntA,Criteria>("enum_int_a", this, 4);		 
 			
 		/**
 		* @Column
-		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201603&nbsp;<B>name:</B> enum_string_a &nbsp;[<font color=red>ENUM</font>]
+		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201601&nbsp;<B>name:</B> enum_string_a &nbsp;[<font color=red>ENUM</font>]
 		* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 64<br>
 		* <li><B>remarks:</B> enum field string. #enum{{ TRUE, FALSE}}
 		*/
 		@Column(table=M.TABLE, jdbcType=12, name=M.enumStringA$name, key=M.enumStringA$key, auto=M.enumStringA$auto, notnull=M.enumStringA$notnull, length=M.enumStringA$length, value=M.enumStringA$value, remarks=M.enumStringA$remarks)
+		@Alias("enum_string_a")
 		public com.tsc9526.monalisa.orm.criteria.Field<EnumStringA,Criteria> enumStringA = new com.tsc9526.monalisa.orm.criteria.Field<EnumStringA,Criteria>("enum_string_a", this, 12);		 
 			
 		/**
 		* @Column
-		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201603&nbsp;<B>name:</B> create_time
+		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201601&nbsp;<B>name:</B> create_time
 		* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 19<br>
 		* <li><B>remarks:</B> 
 		*/
 		@Column(table=M.TABLE, jdbcType=93, name=M.createTime$name, key=M.createTime$key, auto=M.createTime$auto, notnull=M.createTime$notnull, length=M.createTime$length, value=M.createTime$value, remarks=M.createTime$remarks)
+		@Alias("create_time")
 		public com.tsc9526.monalisa.orm.criteria.Field<java.util.Date,Criteria> createTime = new com.tsc9526.monalisa.orm.criteria.Field<java.util.Date,Criteria>("create_time", this, 93);		 
 			
 		/**
 		* @Column
-		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201603&nbsp;<B>name:</B> create_by
+		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201601&nbsp;<B>name:</B> create_by
 		* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 64<br>
 		* <li><B>remarks:</B> 
 		*/
 		@Column(table=M.TABLE, jdbcType=12, name=M.createBy$name, key=M.createBy$key, auto=M.createBy$auto, notnull=M.createBy$notnull, length=M.createBy$length, value=M.createBy$value, remarks=M.createBy$remarks)
+		@Alias("create_by")
 		public com.tsc9526.monalisa.orm.criteria.Field.FieldString<Criteria> createBy = new com.tsc9526.monalisa.orm.criteria.Field.FieldString<Criteria>("create_by", this);
 			
 		/**
 		* @Column
-		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201603&nbsp;<B>name:</B> update_time
+		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201601&nbsp;<B>name:</B> update_time
 		* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 19<br>
 		* <li><B>remarks:</B> 
 		*/
 		@Column(table=M.TABLE, jdbcType=93, name=M.updateTime$name, key=M.updateTime$key, auto=M.updateTime$auto, notnull=M.updateTime$notnull, length=M.updateTime$length, value=M.updateTime$value, remarks=M.updateTime$remarks)
+		@Alias("update_time")
 		public com.tsc9526.monalisa.orm.criteria.Field<java.util.Date,Criteria> updateTime = new com.tsc9526.monalisa.orm.criteria.Field<java.util.Date,Criteria>("update_time", this, 93);		 
 			
 		/**
 		* @Column
-		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201603&nbsp;<B>name:</B> update_by
+		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201601&nbsp;<B>name:</B> update_by
 		* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 64<br>
 		* <li><B>remarks:</B> 
 		*/
 		@Column(table=M.TABLE, jdbcType=12, name=M.updateBy$name, key=M.updateBy$key, auto=M.updateBy$auto, notnull=M.updateBy$notnull, length=M.updateBy$length, value=M.updateBy$value, remarks=M.updateBy$remarks)
+		@Alias("update_by")
 		public com.tsc9526.monalisa.orm.criteria.Field.FieldString<Criteria> updateBy = new com.tsc9526.monalisa.orm.criteria.Field.FieldString<Criteria>("update_by", this);
 			
 	}
@@ -850,83 +896,92 @@ public class TestLogyyyymm extends com.tsc9526.monalisa.orm.model.Model<TestLogy
 		
 		/**
 		* @Column
-		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201603&nbsp;<B>name:</B> id &nbsp;[<font color=red>KEY</font>|<font color=red>AUTO</font>|<font color=red>NOTNULL</font>]
+		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201601&nbsp;<B>name:</B> id &nbsp;[<font color=red>KEY</font>|<font color=red>AUTO</font>|<font color=red>NOTNULL</font>]
 		* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 10<br>
 		* <li><B>remarks:</B> primary key
 		*/
 		@Column(table=M.TABLE, jdbcType=4, name=M.id$name, key=M.id$key, auto=M.id$auto, notnull=M.id$notnull, length=M.id$length, value=M.id$value, remarks=M.id$remarks)
+		@Alias("id")
 		public final static String  id         = "id";
 		
 		/**
 		* @Column
-		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201603&nbsp;<B>name:</B> log_time &nbsp;[<font color=red>NOTNULL</font>]
+		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201601&nbsp;<B>name:</B> log_time &nbsp;[<font color=red>NOTNULL</font>]
 		* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 19<br>
 		* <li><B>remarks:</B> 
 		*/
 		@Column(table=M.TABLE, jdbcType=93, name=M.logTime$name, key=M.logTime$key, auto=M.logTime$auto, notnull=M.logTime$notnull, length=M.logTime$length, value=M.logTime$value, remarks=M.logTime$remarks)
+		@Alias("log_time")
 		public final static String  logTime         = "log_time";
 		
 		/**
 		* @Column
-		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201603&nbsp;<B>name:</B> name
+		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201601&nbsp;<B>name:</B> name
 		* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 128<br>
 		* <li><B>remarks:</B> the name
 		*/
 		@Column(table=M.TABLE, jdbcType=12, name=M.name$name, key=M.name$key, auto=M.name$auto, notnull=M.name$notnull, length=M.name$length, value=M.name$value, remarks=M.name$remarks)
+		@Alias("name")
 		public final static String  name         = "name";
 		
 		/**
 		* @Column
-		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201603&nbsp;<B>name:</B> enum_int_a &nbsp;[<font color=red>ENUM</font>]
+		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201601&nbsp;<B>name:</B> enum_int_a &nbsp;[<font color=red>ENUM</font>]
 		* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 10<br>
 		* <li><B>remarks:</B> enum field a.  #enum{{V0,V1}}
 		*/
 		@Column(table=M.TABLE, jdbcType=4, name=M.enumIntA$name, key=M.enumIntA$key, auto=M.enumIntA$auto, notnull=M.enumIntA$notnull, length=M.enumIntA$length, value=M.enumIntA$value, remarks=M.enumIntA$remarks)
+		@Alias("enum_int_a")
 		public final static String  enumIntA         = "enum_int_a";
 		
 		/**
 		* @Column
-		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201603&nbsp;<B>name:</B> enum_string_a &nbsp;[<font color=red>ENUM</font>]
+		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201601&nbsp;<B>name:</B> enum_string_a &nbsp;[<font color=red>ENUM</font>]
 		* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 64<br>
 		* <li><B>remarks:</B> enum field string. #enum{{ TRUE, FALSE}}
 		*/
 		@Column(table=M.TABLE, jdbcType=12, name=M.enumStringA$name, key=M.enumStringA$key, auto=M.enumStringA$auto, notnull=M.enumStringA$notnull, length=M.enumStringA$length, value=M.enumStringA$value, remarks=M.enumStringA$remarks)
+		@Alias("enum_string_a")
 		public final static String  enumStringA         = "enum_string_a";
 		
 		/**
 		* @Column
-		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201603&nbsp;<B>name:</B> create_time
+		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201601&nbsp;<B>name:</B> create_time
 		* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 19<br>
 		* <li><B>remarks:</B> 
 		*/
 		@Column(table=M.TABLE, jdbcType=93, name=M.createTime$name, key=M.createTime$key, auto=M.createTime$auto, notnull=M.createTime$notnull, length=M.createTime$length, value=M.createTime$value, remarks=M.createTime$remarks)
+		@Alias("create_time")
 		public final static String  createTime         = "create_time";
 		
 		/**
 		* @Column
-		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201603&nbsp;<B>name:</B> create_by
+		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201601&nbsp;<B>name:</B> create_by
 		* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 64<br>
 		* <li><B>remarks:</B> 
 		*/
 		@Column(table=M.TABLE, jdbcType=12, name=M.createBy$name, key=M.createBy$key, auto=M.createBy$auto, notnull=M.createBy$notnull, length=M.createBy$length, value=M.createBy$value, remarks=M.createBy$remarks)
+		@Alias("create_by")
 		public final static String  createBy         = "create_by";
 		
 		/**
 		* @Column
-		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201603&nbsp;<B>name:</B> update_time
+		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201601&nbsp;<B>name:</B> update_time
 		* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 19<br>
 		* <li><B>remarks:</B> 
 		*/
 		@Column(table=M.TABLE, jdbcType=93, name=M.updateTime$name, key=M.updateTime$key, auto=M.updateTime$auto, notnull=M.updateTime$notnull, length=M.updateTime$length, value=M.updateTime$value, remarks=M.updateTime$remarks)
+		@Alias("update_time")
 		public final static String  updateTime         = "update_time";
 		
 		/**
 		* @Column
-		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201603&nbsp;<B>name:</B> update_by
+		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201601&nbsp;<B>name:</B> update_by
 		* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 64<br>
 		* <li><B>remarks:</B> 
 		*/
 		@Column(table=M.TABLE, jdbcType=12, name=M.updateBy$name, key=M.updateBy$key, auto=M.updateBy$auto, notnull=M.updateBy$notnull, length=M.updateBy$length, value=M.updateBy$value, remarks=M.updateBy$remarks)
+		@Alias("update_by")
 		public final static String  updateBy         = "update_by";
 		
 	}

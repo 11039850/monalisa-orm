@@ -23,10 +23,10 @@ import org.testng.annotations.Test;
 
 import test.com.tsc9526.monalisa.orm.mysql.MysqlDB;
 
-import com.tsc9526.monalisa.orm.service.DBS;
-import com.tsc9526.monalisa.orm.service.Response;
-import com.tsc9526.monalisa.orm.service.actions.ActionLocator;
-import com.tsc9526.monalisa.orm.service.args.MethodHttp;
+import com.tsc9526.monalisa.service.DBS;
+import com.tsc9526.monalisa.service.Response;
+import com.tsc9526.monalisa.service.actions.ActionLocator;
+import com.tsc9526.monalisa.service.args.MethodHttp;
 
 /**
  * 

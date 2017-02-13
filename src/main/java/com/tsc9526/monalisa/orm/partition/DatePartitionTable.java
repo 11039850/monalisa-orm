@@ -23,10 +23,10 @@ import com.tsc9526.monalisa.orm.meta.MetaColumn;
 import com.tsc9526.monalisa.orm.meta.MetaPartition;
 import com.tsc9526.monalisa.orm.meta.MetaTable;
 import com.tsc9526.monalisa.orm.model.Model;
-import com.tsc9526.monalisa.orm.tools.helper.ClassHelper;
-import com.tsc9526.monalisa.orm.tools.helper.JavaBeansHelper;
-import com.tsc9526.monalisa.orm.tools.helper.ClassHelper.FGS;
-import com.tsc9526.monalisa.orm.tools.helper.ClassHelper.MetaClass;
+import com.tsc9526.monalisa.tools.clazz.MelpClass;
+import com.tsc9526.monalisa.tools.clazz.MelpJavaBeans;
+import com.tsc9526.monalisa.tools.clazz.MelpClass.FGS;
+import com.tsc9526.monalisa.tools.clazz.MelpClass.ClassAssist;
 
 /**
  * 
@@ -67,12 +67,12 @@ public class DatePartitionTable implements Partition<Model>{
 		String[] args=mp.getArgs();
 		
 		String ymd=args[0];
-		String dateField =JavaBeansHelper.getJavaName(args[1],false);
+		String dateField =MelpJavaBeans.getJavaName(args[1],false);
 		if(dateField.length()==args[1].length()){
 			dateField=args[1];
 		}
 		
-		MetaClass mc=ClassHelper.getMetaClass(model.getClass());
+		ClassAssist mc=MelpClass.getMetaClass(model.getClass());
 		FGS fgs=mc.getField(dateField);
 		if(fgs==null){
 			throw new RuntimeException("DateTime field: "+dateField+" not found in modelClass: "+model.getClass().getName());

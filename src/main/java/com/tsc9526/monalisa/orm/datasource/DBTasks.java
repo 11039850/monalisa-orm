@@ -23,7 +23,7 @@ import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import com.tsc9526.monalisa.orm.tools.logger.Logger;
+import com.tsc9526.monalisa.tools.logger.Logger;
  
 
 /**

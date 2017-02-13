@@ -40,25 +40,25 @@ import javax.sql.DataSource;
 import com.tsc9526.monalisa.orm.Query;
 import com.tsc9526.monalisa.orm.annotation.DB;
 import com.tsc9526.monalisa.orm.annotation.Table;
-import com.tsc9526.monalisa.orm.cache.Cache;
-import com.tsc9526.monalisa.orm.cache.CacheManager;
-import com.tsc9526.monalisa.orm.datatable.DataMap;
-import com.tsc9526.monalisa.orm.datatable.DataTable;
-import com.tsc9526.monalisa.orm.datatable.Page;
 import com.tsc9526.monalisa.orm.dialect.Dialect;
+import com.tsc9526.monalisa.orm.generator.DBGeneratorProcessing;
 import com.tsc9526.monalisa.orm.meta.MetaPartition;
 import com.tsc9526.monalisa.orm.model.Model;
 import com.tsc9526.monalisa.orm.model.ModelEvent;
 import com.tsc9526.monalisa.orm.model.Record;
-import com.tsc9526.monalisa.orm.tools.generator.DBGeneratorProcessing;
-import com.tsc9526.monalisa.orm.tools.helper.ClassHelper;
-import com.tsc9526.monalisa.orm.tools.helper.CloseQuietly;
-import com.tsc9526.monalisa.orm.tools.helper.DynamicLibHelper;
-import com.tsc9526.monalisa.orm.tools.helper.EclipseHelper;
-import com.tsc9526.monalisa.orm.tools.helper.FileHelper;
-import com.tsc9526.monalisa.orm.tools.helper.Helper;
-import com.tsc9526.monalisa.orm.tools.logger.Logger;
-import com.tsc9526.monalisa.orm.tools.resources.PkgNames;
+import com.tsc9526.monalisa.orm.resources.PkgNames;
+import com.tsc9526.monalisa.tools.cache.Cache;
+import com.tsc9526.monalisa.tools.cache.CacheManager;
+import com.tsc9526.monalisa.tools.clazz.MelpClass;
+import com.tsc9526.monalisa.tools.clazz.MelpLib;
+import com.tsc9526.monalisa.tools.datatable.DataMap;
+import com.tsc9526.monalisa.tools.datatable.DataTable;
+import com.tsc9526.monalisa.tools.datatable.Page;
+import com.tsc9526.monalisa.tools.io.MelpClose;
+import com.tsc9526.monalisa.tools.io.MelpFile;
+import com.tsc9526.monalisa.tools.logger.Logger;
+import com.tsc9526.monalisa.tools.misc.MelpEclipse;
+import com.tsc9526.monalisa.tools.string.MelpString;
 
 /** 
  * 
@@ -164,7 +164,7 @@ public class DBConfig implements Closeable{
 	}
 	
 	protected synchronized void delayClose(final DataSource ds,int delay){
-		CloseQuietly.delayClose(ds,delay);
+		MelpClose.delayClose(ds,delay);
 	}
 	 		
 	public synchronized DataSource getDataSource(){
@@ -172,8 +172,8 @@ public class DBConfig implements Closeable{
 		
 		String driverClass=cfg.getDriver();
 		
-		if(DynamicLibHelper.hLibClasses.containsKey(driverClass)){
-			DynamicLibHelper.loadClass(driverClass);
+		if(MelpLib.hLibClasses.containsKey(driverClass)){
+			MelpLib.loadClass(driverClass);
 		}
 		
 		if(cfg.isCfgFileChanged()){
@@ -229,7 +229,7 @@ public class DBConfig implements Closeable{
 		if(dsi!=null){
 			try{
 				if(dsi.ds!=null){
-					CloseQuietly.close(dsi.ds);	
+					MelpClose.close(dsi.ds);	
 				}
 			}finally{			
 				dsi=null;
@@ -363,7 +363,7 @@ public class DBConfig implements Closeable{
 				
 				tables.add(table);
 			}
-			CloseQuietly.close(rs,conn);
+			MelpClose.close(rs,conn);
 			
 			return tables;
 		}catch(SQLException e){
@@ -418,6 +418,10 @@ public class DBConfig implements Closeable{
 				return password;
 			}
 	
+			public String dbs(){
+				return "";
+			}
+			
 			public String tables() {
 				return "%";
 			}
@@ -498,7 +502,7 @@ public class DBConfig implements Closeable{
 		private void initDBConfig(){
 			dbcfg=new DBConfig();
 			
-			ClassHelper.copy(DBConfig.this._cfg, dbcfg._cfg);
+			MelpClass.copy(DBConfig.this._cfg, dbcfg._cfg);
 			 
 			dbcfg.owner=DBConfig.this;
 			dbcfg._cfg.url=URL;			
@@ -655,7 +659,7 @@ public class DBConfig implements Closeable{
 			if(definedCfgFile){
 				configFile=configFile.trim();
 			}else{
-				configFile=key;
+				configFile=key+".cfg";
 			}
 				 
 			configFile=findConfigFile(configFile);
@@ -681,7 +685,7 @@ public class DBConfig implements Closeable{
 		
 		protected String findConfigFile(String configFile){	
 			if(cfgBasePath!=null){
-				configFile=FileHelper.combinePath(cfgBasePath,configFile);
+				configFile=MelpFile.combinePath(cfgBasePath,configFile);
 				
 				logger.info("find("+key+") cfg base path by cfgBasePath: "+cfgBasePath+", file: "+configFile);
 			}else{
@@ -690,7 +694,7 @@ public class DBConfig implements Closeable{
 						//Windows ROOT C: D: E: ...
 						logger.info("find("+key+") cfg base path by win-root config file: "+configFile); 
 					}else{
-						configFile=FileHelper.combinePath(findCfgBasePath(),configFile);
+						configFile=MelpFile.combinePath(findCfgBasePath(),configFile);
 					}				
 				}else{
 					logger.info("find("+key+") cfg base path by root config file: "+configFile); 
@@ -703,9 +707,9 @@ public class DBConfig implements Closeable{
 		protected String findCfgBasePath(){
 			String basepath=System.getProperty("DB@"+key);
 			if(basepath==null){
-				String defpath=FileHelper.combinePath(DbProp.CFG_ROOT_PATH,configFile);
+				String defpath=MelpFile.combinePath(DbProp.CFG_ROOT_PATH,configFile);
 				if(new File(defpath).exists()==false && annotationClass!=null){
-					basepath=EclipseHelper.findCfgBasePathByClass(annotationClass);
+					basepath=MelpEclipse.findCfgBasePathByClass(annotationClass);
 					if(basepath!=null){
 						logger.info("find("+key+") cfg base path from class: "+annotationClass.getName()+", path: "+basepath+", file: "+configFile);
 						
@@ -839,7 +843,7 @@ public class DBConfig implements Closeable{
 		
 		public Cache getCache(Model<?> m){
 			if(cacheTables!=null && cacheTables.trim().length()>0 && cacheModels.size()==0){
-				for(String name:Helper.splits(cacheTables)){
+				for(String name:MelpString.splits(cacheTables)){
 					String ckey=name.trim();
 					String cname=DbProp.PROP_TABLE_CACHE_NAME.getValue(DBConfig.this, ckey);
 					 
@@ -1064,11 +1068,11 @@ public class DBConfig implements Closeable{
 		
 		protected Object instanceDataSource(String clazz)throws Exception{
 			if(clazz.equals(PkgNames.ORM_DS_C3p0)){
-				return DynamicLibHelper.createC3p0DataSource();
+				return MelpLib.createC3p0DataSource();
 			}else if(clazz.equals(PkgNames.ORM_DS_Durid)){
-				return DynamicLibHelper.createDruidDataSource();
+				return MelpLib.createDruidDataSource();
 			}else{
-				return ClassHelper.forClassName(clazz).newInstance();	
+				return MelpClass.forName(clazz).newInstance();	
 			}
 		}
 		

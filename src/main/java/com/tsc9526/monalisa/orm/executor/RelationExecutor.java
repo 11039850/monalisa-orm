@@ -22,7 +22,7 @@ import java.sql.SQLException;
 import java.util.HashSet;
 import java.util.Set;
 
-import com.tsc9526.monalisa.orm.cache.CacheTableRow;
+import com.tsc9526.monalisa.tools.cache.CacheTableRow;
 
 /**
  * 

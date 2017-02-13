@@ -25,9 +25,9 @@ import java.util.List;
 import java.util.Set;
 
 import com.tsc9526.monalisa.orm.annotation.Column;
-import com.tsc9526.monalisa.orm.tools.helper.CaseInsensitiveMap;
-import com.tsc9526.monalisa.orm.tools.helper.Helper;
-import com.tsc9526.monalisa.orm.tools.helper.ClassHelper.FGS;
+import com.tsc9526.monalisa.tools.clazz.MelpClass.FGS;
+import com.tsc9526.monalisa.tools.datatable.CaseInsensitiveMap;
+import com.tsc9526.monalisa.tools.string.MelpString;
 
 /**
  * 
@@ -156,7 +156,7 @@ public class ModelHolder implements Serializable {
 		if(fields==null || fields.length==0){
 			fieldFilterSets.clear();
 		}else{
-			for(String f:Helper.fieldsToArrays(fields)){				 
+			for(String f:MelpString.splits(fields)){				 
 				fieldFilterSets.add(model.dialect().getColumnName(f.toLowerCase()));
 			}
 		}		 
@@ -200,7 +200,7 @@ public class ModelHolder implements Serializable {
 		if(fields==null || fields.length==0){
 			fieldFilterSets.clear();
 		}else{
-			for(String f:Helper.fieldsToArrays(fields)){
+			for(String f:MelpString.splits(fields)){
 				fieldFilterSets.add(model.dialect().getColumnName(f.toLowerCase()));
 			}
 		}

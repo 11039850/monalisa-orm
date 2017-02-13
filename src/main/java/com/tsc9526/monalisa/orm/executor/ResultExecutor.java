@@ -21,7 +21,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import com.tsc9526.monalisa.orm.tools.helper.CloseQuietly;
+import com.tsc9526.monalisa.tools.io.MelpClose;
 
 /**
  * 
@@ -45,7 +45,7 @@ public class ResultExecutor<T> extends RelationExecutor implements Execute<T>,Ca
 			}	
 			return result;
 		}finally{
-			CloseQuietly.close(rs);
+			MelpClose.close(rs);
 		}
 	}
  

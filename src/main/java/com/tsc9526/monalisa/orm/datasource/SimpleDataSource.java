@@ -33,7 +33,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.Semaphore;
 
-import com.tsc9526.monalisa.orm.tools.helper.ClassHelper;
+import com.tsc9526.monalisa.tools.clazz.MelpClass;
 
 /**
  *  
@@ -160,7 +160,7 @@ public class SimpleDataSource implements PooledDataSource {
 
 	private Connection getRealConnection(String username, String password) throws SQLException {
 		try {
-			ClassHelper.forClassName(driver);
+			MelpClass.forName(driver);
 			 
 			return DriverManager.getConnection(url, username, password);
 		} catch (ClassNotFoundException e) {

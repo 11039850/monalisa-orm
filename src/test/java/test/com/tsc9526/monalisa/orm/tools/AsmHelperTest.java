@@ -22,7 +22,7 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import com.tsc9526.monalisa.orm.Query;
-import com.tsc9526.monalisa.orm.tools.helper.AsmHelper;
+import com.tsc9526.monalisa.tools.clazz.MelpAsm;
 
 /**
  * 
@@ -33,7 +33,7 @@ public class AsmHelperTest {
 	
 	public void testGetParameter()throws Exception{
 		for(Method m:Query.class.getClass().getMethods()){
-			String[] ns=AsmHelper.getMethodParamNames(m);
+			String[] ns=MelpAsm.getMethodParamNames(m);
 			Assert.assertNotNull(ns);
 			
 			//System.out.println(""+m.getName()+": "+Arrays.toString(ns));

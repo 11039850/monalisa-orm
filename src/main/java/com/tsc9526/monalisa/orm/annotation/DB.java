@@ -37,7 +37,7 @@ import com.tsc9526.monalisa.orm.datasource.ConfigClass;
  * <br><br>
  * More properties setup, see：  {@link #configFile}  
  * 
- * @see com.tsc9526.monalisa.orm.tools.generator.DBGeneratorMain
+ * @see com.tsc9526.monalisa.orm.generator.DBGeneratorMain
  * 
  * @author zzg.zhou(11039850@qq.com)
  *
@@ -83,6 +83,13 @@ public @interface DB{
 	 */
 	String password() default "";
 	 
+	/**
+	 * default is "", means: disable database service <br>
+	 * if set,you can access database via url: $web_app_uri/dbs/$this_dbs_name/$your_table_name
+	 * @return name of the database service. 
+	 */
+	String dbs() default "";
+	
 	/**
 	 * Indicates the table name to generate the model class, default is "%" (means is all tables). <br>
 	 * For example: pre_%: all tables with the prefix: "pre_"

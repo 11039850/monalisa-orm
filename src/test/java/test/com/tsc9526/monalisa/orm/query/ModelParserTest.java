@@ -24,8 +24,8 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import com.tsc9526.monalisa.orm.Query;
-import com.tsc9526.monalisa.orm.tools.helper.JsonHelper;
-import com.tsc9526.monalisa.orm.tools.helper.ClassHelper.FGS;
+import com.tsc9526.monalisa.tools.clazz.MelpClass.FGS;
+import com.tsc9526.monalisa.tools.string.MelpJson;
 
 /**
  * 
@@ -204,7 +204,7 @@ public class ModelParserTest {
 		TestSimpleObjectTwo objectTwo=new TestSimpleObjectTwo();
 		objectTwo.setObj(objectOne);
 		objectTwo.setFs("fx");
-		String jsonTwo=JsonHelper.getGson().toJson(objectTwo);
+		String jsonTwo=MelpJson.getGson().toJson(objectTwo);
 		
 		SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		FGS fgs=model.field("object_two");

@@ -18,7 +18,7 @@ package test.com.tsc9526.monalisa.orm.data;
 
 import java.util.Date;
 
-import com.tsc9526.monalisa.orm.tools.helper.JsonHelper;
+import com.tsc9526.monalisa.tools.string.MelpJson;
 
 /**
  * 
@@ -30,7 +30,7 @@ public class ColumnData {
 	private Date ts=new Date();
 	
 	public String toString(){
-		return JsonHelper.getGson().toJson(this);
+		return MelpJson.getGson().toJson(this);
 	}
 	
 	public int getId() {

@@ -1,5 +1,5 @@
 <%@page import="java.util.Date"%>
-<%@page import="com.tsc9526.monalisa.orm.parser.Args"%>
+<%@page import="com.tsc9526.monalisa.tools.template.Args"%>
 <%@ page import="com.tsc9526.monalisa.orm.meta.MetaTable"%>
 <%@ page import="test.com.tsc9526.monalisa.orm.mysql.MysqlDB,com.tsc9526.monalisa.orm.Query"%>
 <%@ page language="java" pageEncoding="utf-8"%>

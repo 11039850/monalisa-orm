@@ -25,11 +25,11 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import com.tsc9526.monalisa.orm.datatable.DataTable;
-import com.tsc9526.monalisa.orm.datatable.Page;
-import com.tsc9526.monalisa.orm.tools.helper.ClassHelper;
-import com.tsc9526.monalisa.orm.tools.helper.JsonHelper;
-import com.tsc9526.monalisa.orm.tools.helper.ClassHelper.MetaClass;
+import com.tsc9526.monalisa.tools.clazz.MelpClass;
+import com.tsc9526.monalisa.tools.clazz.MelpClass.ClassAssist;
+import com.tsc9526.monalisa.tools.datatable.DataTable;
+import com.tsc9526.monalisa.tools.datatable.Page;
+import com.tsc9526.monalisa.tools.string.MelpJson;
 
 /**
  * 
@@ -41,7 +41,7 @@ public class PageTest {
 		DataTable<Object> table = new DataTable<Object>();
 		 
 		//创建测试数据
-		MetaClass mc=ClassHelper.getMetaClass(TestUserAreaRank.class);
+		ClassAssist mc=MelpClass.getMetaClass(TestUserAreaRank.class);
 		for(int userId=1;userId<=6;userId++){
 			Object row=new TestUserAreaRank();
 
@@ -74,7 +74,7 @@ public class PageTest {
 		DataTable<Object> table = new DataTable<Object>();
 		 
 		//创建测试数据
-		MetaClass mc=ClassHelper.getMetaClass(TestUserAreaRank.class);
+		ClassAssist mc=MelpClass.getMetaClass(TestUserAreaRank.class);
 		for(int userId=1;userId<=6;userId++){
 			Object row=new TestUserAreaRank();
 
@@ -107,7 +107,7 @@ public class PageTest {
 		String target=new GsonBuilder().serializeNulls().create().toJson(list);
 		Assert.assertEquals(target,table.toJson());
 		
-		System.out.println(JsonHelper.getGson().toJson(page));
+		System.out.println(MelpJson.getGson().toJson(page));
 		 
 	}
 	

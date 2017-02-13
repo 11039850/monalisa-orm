@@ -24,12 +24,12 @@ import java.util.Map;
 import java.util.Set;
 
 import com.google.gson.JsonObject;
-import com.tsc9526.monalisa.orm.model.validator.Max;
-import com.tsc9526.monalisa.orm.model.validator.Min;
-import com.tsc9526.monalisa.orm.model.validator.Regex;
-import com.tsc9526.monalisa.orm.tools.helper.Helper;
-import com.tsc9526.monalisa.orm.tools.helper.JavaBeansHelper;
-import com.tsc9526.monalisa.orm.tools.helper.TypeHelper;
+import com.tsc9526.monalisa.tools.clazz.MelpJavaBeans;
+import com.tsc9526.monalisa.tools.datatable.CaseInsensitiveMap;
+import com.tsc9526.monalisa.tools.string.MelpTypes;
+import com.tsc9526.monalisa.tools.validator.Max;
+import com.tsc9526.monalisa.tools.validator.Min;
+import com.tsc9526.monalisa.tools.validator.Regex;
 
 /**
  * 
@@ -82,12 +82,12 @@ public class MetaColumn extends Name{
 	}	
 
 	public String getJavaNameGet(){
-		String get=JavaBeansHelper.getGetterMethodName(getJavaName(), getJavaType());
+		String get=MelpJavaBeans.getGetterMethodName(getJavaName(), getJavaType());
 		return get;
 	}
 	
 	public String getJavaNameSet(){
-		String set=JavaBeansHelper.getSetterMethodName(getJavaName());
+		String set=MelpJavaBeans.getSetterMethodName(getJavaName());
 		return set;
 	}
 	
@@ -129,7 +129,7 @@ public class MetaColumn extends Name{
 	 
 	public String getJavaType(){
 		if(javaType==null){
-			return TypeHelper.getJavaType(jdbcType);
+			return MelpTypes.getJavaType(jdbcType);
 		}else{
 			return javaType;
 		}
@@ -222,7 +222,7 @@ public class MetaColumn extends Name{
 			int x=enumClass.indexOf("{");
 			if(x>=0){
 				if(x==0){
-					String jtype=JavaBeansHelper.getJavaName(getName(),true);
+					String jtype=MelpJavaBeans.getJavaName(getName(),true);
 					setJavaType(jtype);
 					code.put("enum",jtype+enumClass);
 				}else{
@@ -311,18 +311,75 @@ public class MetaColumn extends Name{
 	public Name setRemarks(String remarks) {
 		if(remarks!=null){
 			//#annotation{...}
-			this.code=Helper.parseRemarks(remarks);
+			this.code=parseRemarks(remarks);
 			
 			processRemarks();			 
 		}
 		return super.setRemarks(remarks);
 	}
 	
+
+	protected Map<String, String> parseRemarks(String remark) {
+		CaseInsensitiveMap<String> map = new CaseInsensitiveMap<String>();
+
+		int len = remark.length();
+		for (int i = 0; i < len; i++) {
+			char c = remark.charAt(i);
+			if (c == '#') {
+				StringBuffer n = new StringBuffer();
+				StringBuffer v = new StringBuffer();
+
+				while (++i < len) {
+					c = remark.charAt(i);
+
+					if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z')) {
+						n.append(c);
+					} else if (c == ' ' || c == '\r' || c == '\n' || c == '\t' || c == '{') {
+						if (c == '{') {
+							while (++i < len) {
+								c = remark.charAt(i);
+								if (c == '}') {
+									break;
+								} else {
+									v.append(c);
+									if (c == '{') {
+										while (++i < len) {
+											c = remark.charAt(i);
+											v.append(c);
+											if (c == '}') {
+												break;
+											}
+										}
+									}
+								}
+							}
+							break;
+						} else {
+							n.append(" ");
+						}
+					} else {
+						n.delete(0, n.length());
+						i--;
+						break;
+					}
+				}
+
+				String name = n.toString().trim();
+				if (name.length() > 0) {
+					map.put(name.toLowerCase(), v.toString().trim());
+				}
+			}
+		}
+
+		return map;
+
+	}
+	
 	public String toString(){
 		StringBuffer sb=new StringBuffer();
 		sb.append("NAME: ").append(name)
 		  .append(", KEY: ").append(key)
-		  .append(", TYPE: ").append(TypeHelper.getTypeName(jdbcType))
+		  .append(", TYPE: ").append(MelpTypes.getTypeName(jdbcType))
 		  .append(", LENGTH: ").append(length)
 		  .append(", NOTNULL: ").append(notnull)		  
 		  .append(", AUTO: ").append(auto)

@@ -21,9 +21,9 @@ import java.io.ByteArrayOutputStream;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import com.tsc9526.monalisa.orm.generator.DBTableGenerator;
 import com.tsc9526.monalisa.orm.meta.MetaTable;
 import com.tsc9526.monalisa.orm.model.Model;
-import com.tsc9526.monalisa.orm.tools.generator.DBTableGenerator;
 
 /**
  * 

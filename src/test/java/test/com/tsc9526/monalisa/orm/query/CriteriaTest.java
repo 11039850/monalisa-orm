@@ -27,7 +27,7 @@ import org.testng.annotations.Test;
 import com.tsc9526.monalisa.orm.Query;
 import com.tsc9526.monalisa.orm.criteria.QEH;
 import com.tsc9526.monalisa.orm.datasource.DataSourceManager;
-import com.tsc9526.monalisa.orm.tools.helper.ModelHelper;
+import com.tsc9526.monalisa.tools.clazz.MelpClass;
 
 /**
  * 
@@ -126,7 +126,7 @@ public class CriteriaTest {
 		h.put("INTField2", 2);
 		
 		TestSimpleModel model=new TestSimpleModel();
-		model.parse(h,ModelHelper.OPTIONS_NAME_CASE_SENSITIVE);
+		model.parse(h,MelpClass.OPTIONS_NAME_CASE_SENSITIVE);
 		
 		Assert.assertEquals(model.getIntField1().intValue(),1);
 	 

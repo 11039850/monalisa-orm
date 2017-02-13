@@ -67,7 +67,7 @@ public class Update<T extends Model>{
 	 * @param args args
 	 * @return number of rows affected
 	 * 
-	 * @see com.tsc9526.monalisa.orm.tools.resources.HelpDoc#helpQuery(int,int,Example,String, Object...)
+	 * @see com.tsc9526.monalisa.orm.resources.HelpDoc#helpQuery(int,int,Example,String, Object...)
 	 */
 	public int update(String whereStatement,Object ... args){
 		Query query=model.dialect().update(model,whereStatement,args);
@@ -80,7 +80,7 @@ public class Update<T extends Model>{
 	 * @param example Example
 	 * @return number of rows affected
 	 * 
-	 * @see com.tsc9526.monalisa.orm.tools.resources.HelpDoc#helpQuery(int,int,Example,String, Object...)
+	 * @see com.tsc9526.monalisa.orm.resources.HelpDoc#helpQuery(int,int,Example,String, Object...)
 	 */
 	public int updateByExample(Example example){
 		Query w=QEH.getQuery(example);

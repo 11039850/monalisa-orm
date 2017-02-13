@@ -40,12 +40,13 @@ import com.tsc9526.monalisa.orm.dialect.Dialect;
 import com.tsc9526.monalisa.orm.meta.MetaColumn;
 import com.tsc9526.monalisa.orm.meta.MetaPartition;
 import com.tsc9526.monalisa.orm.meta.MetaTable;
-import com.tsc9526.monalisa.orm.model.validator.Validator;
-import com.tsc9526.monalisa.orm.tools.helper.ClassHelper;
-import com.tsc9526.monalisa.orm.tools.helper.TableHelper;
-import com.tsc9526.monalisa.orm.tools.helper.ClassHelper.FGS;
-import com.tsc9526.monalisa.orm.tools.helper.ClassHelper.MetaClass;
-import com.tsc9526.monalisa.orm.tools.logger.Logger;
+import com.tsc9526.monalisa.orm.utils.TableHelper;
+import com.tsc9526.monalisa.tools.clazz.MelpClass;
+import com.tsc9526.monalisa.tools.clazz.MelpClass.FGS;
+import com.tsc9526.monalisa.tools.clazz.MelpClass.ClassAssist;
+import com.tsc9526.monalisa.tools.logger.Logger;
+import com.tsc9526.monalisa.tools.string.MelpString;
+import com.tsc9526.monalisa.tools.validator.Validator;
  
 /**
  * 
@@ -95,7 +96,7 @@ public class ModelMeta{
 	private static String getModelKey(Model<?> model){
 		String key=model.getClass().getName();
 		
-		Class<?> clazz=ClassHelper.findClassWithAnnotation(model.getClass(),DB.class);
+		Class<?> clazz=MelpClass.findClassWithAnnotation(model.getClass(),DB.class);
 		if(clazz==null){
 			if(model.$db==null){
 				throw new RuntimeException("Dynamic model can not found DB, call model.use(DB) first!");
@@ -138,8 +139,8 @@ public class ModelMeta{
 	protected ModelListener    listener;
 	protected List<ModelIndex> indexes=new ArrayList<ModelIndex>();
 	
-	protected Map<String,FGS> hFieldsByColumnName=new LinkedHashMap<String, ClassHelper.FGS>();
-	protected Map<String,FGS> hFieldsByJavaName  =new LinkedHashMap<String, ClassHelper.FGS>();
+	protected Map<String,FGS> hFieldsByColumnName=new LinkedHashMap<String, MelpClass.FGS>();
+	protected Map<String,FGS> hFieldsByJavaName  =new LinkedHashMap<String, MelpClass.FGS>();
 	
 	protected boolean record=false;
 	protected boolean changed=false;
@@ -167,7 +168,7 @@ public class ModelMeta{
 	}
 	
 	protected void initDB(Model<?> model) {
-		Class<?> clazz=ClassHelper.findClassWithAnnotation(model.getClass(),DB.class);
+		Class<?> clazz=MelpClass.findClassWithAnnotation(model.getClass(),DB.class);
 		if(clazz!=null){
 			db=Model.dsm.getDBConfig(clazz);
 		}else{
@@ -226,7 +227,7 @@ public class ModelMeta{
 				mIndex.setType(index.type());
 				mIndex.setUnique(index.unique());
 				
-				List<FGS> fs=new ArrayList<ClassHelper.FGS>();
+				List<FGS> fs=new ArrayList<MelpClass.FGS>();
 				for(String f:index.fields()){
 					FGS x=findFieldByName(f);
 					
@@ -250,7 +251,7 @@ public class ModelMeta{
 		
 		if(ls!=null && ls.trim().length()>0){
 			try{
-				listener=(ModelListener)ClassHelper.forClassName(ls.trim()).newInstance();
+				listener=(ModelListener)MelpClass.forName(ls.trim()).newInstance();
 			}catch(Exception e){
 				throw new RuntimeException("Invalid model listener class: "+ls.trim()+", "+e,e);
 			}
@@ -262,7 +263,7 @@ public class ModelMeta{
 	}
 	
 	protected List<FGS> loadModelFields(Model<?> model){
-		MetaClass metaClass=ClassHelper.getMetaClass(model.getClass());
+		ClassAssist metaClass=MelpClass.getMetaClass(model.getClass());
 		List<FGS> fields=metaClass.getFieldsWithAnnotation(Column.class);						
 		if(fields.size()==0){
 			record=true;
@@ -327,7 +328,7 @@ public class ModelMeta{
 	
 	
 	private MetaTable mTable;
-	protected List<FGS> loadFieldsFromDB(MetaClass metaClass) {
+	protected List<FGS> loadFieldsFromDB(ClassAssist metaClass) {
 		try{
 			mTable=TableHelper.getMetaTable(db, tableName);
 			if(mTable!=null){				 
@@ -434,11 +435,11 @@ public class ModelMeta{
 		if(validator==null){
 			String clazz=DbProp.PROP_TABLE_VALIDATOR.getValue(db,tableName);
 			
-			if(clazz==null || clazz.trim().length()==0){
+			if(MelpString.isEmpty(clazz)){
 				validator=new Validator();
 			}else{
 				try{
-					validator=(Validator)ClassHelper.forClassName(clazz.trim()).newInstance();
+					validator=(Validator)MelpClass.forName(clazz.trim()).newInstance();
 				}catch(Exception e){
 					throw new RuntimeException(e);
 				}
@@ -467,8 +468,7 @@ public class ModelMeta{
 
 	protected static FGS createFGS(final MetaColumn c,final FGS mfd){	
 		
-		
-		FGS fgs=new FGS(c.getJavaName(), mfd==null?null:mfd.getType()){
+		FGS fgs=new FGS(mfd==null?null:mfd.getType(),c.getJavaName(),c.getName()){
 			
 			public void setObject(Object bean,Object v){
 				if(mfd!=null){
@@ -478,7 +478,7 @@ public class ModelMeta{
 						Model<?> m=(Model<?>)bean;
 						
 						if(Date.class.getName().equals(c.getJavaType())){
-							v=ClassHelper.converter.convert(v, Date.class);
+							v=MelpClass.converter.convert(v, Date.class);
 						}
 						
 						m.holder().set(c.getName(), v);							

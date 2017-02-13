@@ -19,10 +19,10 @@ package test.com.tsc9526.monalisa.orm;
 import test.com.tsc9526.monalisa.orm.mysql.MysqlDB;
 import test.com.tsc9526.monalisa.orm.mysql.TestGenterator;
 
-import com.tsc9526.monalisa.orm.parser.executor.SQLGenerator;
-import com.tsc9526.monalisa.orm.tools.generator.DBGeneratorLocal;
-import com.tsc9526.monalisa.orm.tools.helper.FileHelper;
-import com.tsc9526.monalisa.orm.tools.logger.Logger;
+import com.tsc9526.monalisa.orm.compiler.SQLGenerator;
+import com.tsc9526.monalisa.orm.generator.DBGeneratorLocal;
+import com.tsc9526.monalisa.tools.io.MelpFile;
+import com.tsc9526.monalisa.tools.logger.Logger;
 
 /**
  * 
@@ -45,7 +45,7 @@ public class InitTestDatabase {
 			}
 		}
 	 	 
-		String sql=FileHelper.readToString(TestGenterator.class.getResourceAsStream("/mysql-create.sql"),"utf-8");
+		String sql=MelpFile.readToString(TestGenterator.class.getResourceAsStream("/mysql-create.sql"),"utf-8");
 		for(String x:sql.split(";")){
 			x=x.trim();
 			if(x.length()>0){

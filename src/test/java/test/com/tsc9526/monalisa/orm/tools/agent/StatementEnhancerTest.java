@@ -30,8 +30,8 @@ import net.sf.cglib.proxy.Factory;
 
 import org.testng.annotations.Test;
 
-import com.tsc9526.monalisa.orm.tools.agent.StatementEnhancer;
-import com.tsc9526.monalisa.orm.tools.helper.ClassHelper;
+import com.tsc9526.monalisa.tools.agent.StatementEnhancer;
+import com.tsc9526.monalisa.tools.clazz.MelpClass;
 
 /**
  * 
@@ -74,7 +74,7 @@ public class StatementEnhancerTest {
 			return (ResultSet)Proxy.newProxyInstance(this.getClass().getClassLoader(), new Class<?>[]{ResultSet.class},
 				new InvocationHandler(){
 					public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-						if(ClassHelper.OBJECT_METHODS.contains(method.getName())){
+						if(MelpClass.OBJECT_METHODS.contains(method.getName())){
 							return method.invoke(this, args);
 						}else{
 							return null;

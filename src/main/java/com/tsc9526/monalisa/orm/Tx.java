@@ -22,10 +22,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-import com.tsc9526.monalisa.orm.cache.TransactionalCacheManager;
 import com.tsc9526.monalisa.orm.datasource.DBConfig;
-import com.tsc9526.monalisa.orm.datatable.DataMap;
-import com.tsc9526.monalisa.orm.tools.helper.ExceptionHelper;
+import com.tsc9526.monalisa.tools.cache.TransactionalCacheManager;
+import com.tsc9526.monalisa.tools.datatable.DataMap;
+import com.tsc9526.monalisa.tools.misc.MelpException;
 
 /**
  * 
@@ -174,7 +174,7 @@ public class Tx {
 				rollback();
 			}
 			
-			return ExceptionHelper.throwRuntimeException(e);
+			return MelpException.throwRuntimeException(e);
 		}finally{
 			if(tx!=null){
 				close();

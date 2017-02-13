@@ -31,11 +31,11 @@ import test.com.tsc9526.monalisa.orm.mysql.mysqldb.TestTable1;
 import test.com.tsc9526.monalisa.orm.mysql.mysqldb.TestTable2;
 
 import com.tsc9526.monalisa.orm.Tx;
+import com.tsc9526.monalisa.orm.generator.DBGeneratorLocal;
+import com.tsc9526.monalisa.orm.generator.DBGeneratorProcessing;
 import com.tsc9526.monalisa.orm.meta.MetaTable.CreateTable;
-import com.tsc9526.monalisa.orm.tools.generator.DBGeneratorLocal;
-import com.tsc9526.monalisa.orm.tools.generator.DBGeneratorProcessing;
-import com.tsc9526.monalisa.orm.tools.helper.FileHelper;
-import com.tsc9526.monalisa.orm.tools.logger.Logger;
+import com.tsc9526.monalisa.tools.io.MelpFile;
+import com.tsc9526.monalisa.tools.logger.Logger;
  
 /**
  * 
@@ -53,8 +53,8 @@ public class TestGenterator {
 		String outputJavaDir="src/test/java";
 		String outputResourceDir="src/test/resources";
 	  
-		FileHelper.delete(new File(outputJavaDir+"/"+pkg), true);
-		FileHelper.delete(new File(outputResourceDir+"/resources/"+pkg), true); 
+		MelpFile.delete(new File(outputJavaDir+"/"+pkg), true);
+		MelpFile.delete(new File(outputResourceDir+"/resources/"+pkg), true); 
 	
 		Assert.assertTrue(new File(outputResourceDir+"/resources/"+pkg+"/"+CreateTable.FILE_NAME).exists()==false);
 		
@@ -75,8 +75,8 @@ public class TestGenterator {
 		String outputJavaDir="src/test/java";
 		String outputResourceDir="src/test/resources";
 	  
-		FileHelper.delete(new File(outputJavaDir+"/"+pkg), true);
-		FileHelper.delete(new File(outputResourceDir+"/resources/"+pkg), true); 
+		MelpFile.delete(new File(outputJavaDir+"/"+pkg), true);
+		MelpFile.delete(new File(outputResourceDir+"/resources/"+pkg), true); 
 	
 		Assert.assertTrue(new File(outputResourceDir+"/resources/"+pkg+"/"+CreateTable.FILE_NAME).exists()==false);
 		

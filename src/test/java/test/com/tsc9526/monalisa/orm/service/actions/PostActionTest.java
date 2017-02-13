@@ -22,9 +22,9 @@ import org.testng.annotations.Test;
 
 import test.com.tsc9526.monalisa.orm.mysql.mysqldb.TestRecordV2;
 
-import com.tsc9526.monalisa.orm.datatable.DataMap;
-import com.tsc9526.monalisa.orm.datatable.DataTable;
-import com.tsc9526.monalisa.orm.service.Response;
+import com.tsc9526.monalisa.service.Response;
+import com.tsc9526.monalisa.tools.datatable.DataMap;
+import com.tsc9526.monalisa.tools.datatable.DataTable;
 
 /**
  * 

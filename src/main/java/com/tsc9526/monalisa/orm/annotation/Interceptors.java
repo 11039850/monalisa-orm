@@ -21,7 +21,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import com.tsc9526.monalisa.orm.tools.agent.Interceptor;
+import com.tsc9526.monalisa.tools.agent.Interceptor;
 
 /**
   *

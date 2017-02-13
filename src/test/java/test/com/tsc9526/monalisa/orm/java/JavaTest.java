@@ -22,7 +22,7 @@ import junit.framework.Assert;
 
 import org.testng.annotations.Test;
 
-import com.tsc9526.monalisa.orm.parser.java.Java;
+import com.tsc9526.monalisa.tools.io.JavaFile;
 
 /**
  * 
@@ -31,10 +31,10 @@ import com.tsc9526.monalisa.orm.parser.java.Java;
  */
 @Test
 public class JavaTest {
-	static final long $VERSION = 2016072517021200L;
+	static final long $VERSION = 2017021014042000L;
 	
 	public void testParse()throws Exception{
-		Java java=new Java(new File("src/test/resources/lab/Demo.java"));
+		JavaFile java=new JavaFile(new File("src/test/resources/lab/Demo.java"));
 	 
 		
 		Assert.assertEquals("test.com.tsc9526.monalisa.orm.sql.java",java.getPackageName());
@@ -49,7 +49,7 @@ public class JavaTest {
 	}
 	
 	public void testVersioIncreasing()throws Exception{
-		Java java=new Java(""+/**~{*/""
+		JavaFile java=new JavaFile(""+/**~{*/""
 			+ "package test.version ;"
 			+ "\r\npublic class Demo{"
 			+ "\r\n	public static final long $VERSION = 1;"
@@ -70,9 +70,9 @@ public class JavaTest {
 	}
 	 
 	public void testVersionNaturalIncreasing()throws Exception{
-		Java java=new Java(""+/**~{*/""
-			+ "package test.version ;"
-			+ "\r\npublic class Demo{"
+		JavaFile java=new JavaFile(""+/**~{*/""
+			+ "package test.JavaFileion ;"
+			+ "\r\nJavaFileic class Demo{"
 			+ "\r\n	public static final long $VERSION$ = 1;"
 			+ "\r\n}"
 		+ "\r\n"/**}*/);

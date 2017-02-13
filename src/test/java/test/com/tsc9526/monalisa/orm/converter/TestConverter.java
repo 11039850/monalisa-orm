@@ -27,7 +27,7 @@ import org.testng.annotations.Test;
 import test.com.tsc9526.monalisa.orm.query.TestSimpleModel;
 
 import com.google.gson.JsonPrimitive;
-import com.tsc9526.monalisa.orm.tools.converters.TypeConverter;
+import com.tsc9526.monalisa.tools.converters.TypeConverter;
 
 /**
  * 

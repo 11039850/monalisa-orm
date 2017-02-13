@@ -24,7 +24,7 @@ import org.testng.annotations.Test;
 import test.com.tsc9526.monalisa.orm.query.TestSimpleModel;
 
 import com.tsc9526.monalisa.orm.Query;
-import com.tsc9526.monalisa.orm.tools.helper.ClassHelper.FGS;
+import com.tsc9526.monalisa.tools.clazz.MelpClass.FGS;
 
 /**
  * 

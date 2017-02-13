@@ -96,7 +96,7 @@ public class Delete<T extends Model> {
 	 * 
 	 * @return number of rows affected
 	 * 
-	 * @see com.tsc9526.monalisa.orm.tools.resources.HelpDoc#helpQuery(int,int,Example,String, Object...)
+	 * @see com.tsc9526.monalisa.orm.resources.HelpDoc#helpQuery(int,int,Example,String, Object...)
 	 */
 	public int delete(String whereStatement,Object ... args){
 		Query query=model.dialect().delete(model,whereStatement,args);
@@ -109,7 +109,7 @@ public class Delete<T extends Model> {
 	 * @param example Example
 	 * @return number of rows affected
 	 * 
-	 * @see com.tsc9526.monalisa.orm.tools.resources.HelpDoc#helpQuery(int,int,Example,String, Object...)
+	 * @see com.tsc9526.monalisa.orm.resources.HelpDoc#helpQuery(int,int,Example,String, Object...)
 	 */
 	public int deleteByExample(Example example){
 		Query w=QEH.getQuery(example);

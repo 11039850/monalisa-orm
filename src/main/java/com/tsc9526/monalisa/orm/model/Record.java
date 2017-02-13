@@ -26,8 +26,8 @@ import com.tsc9526.monalisa.orm.dao.Delete;
 import com.tsc9526.monalisa.orm.dao.Insert;
 import com.tsc9526.monalisa.orm.dao.Select;
 import com.tsc9526.monalisa.orm.dao.Update;
-import com.tsc9526.monalisa.orm.tools.helper.Helper;
-import com.tsc9526.monalisa.orm.tools.helper.ClassHelper.FGS;
+import com.tsc9526.monalisa.tools.clazz.MelpClass.FGS;
+import com.tsc9526.monalisa.tools.string.MelpDate;
 
 /**
  * Simple model with getString, getDate, getInt ...
@@ -260,6 +260,7 @@ public class Record extends Model<Record>{
 	 * yyyy-MM-dd HH<br>
 	 * yyyy-MM-dd HH:mm<br>
 	 * yyyy-MM-dd HH:mm:ss<br>
+	 * yyyy-MM-dd HH:mm:ss.SSS<br>
 	 *   
 	 * @param key name of the column
 	 * 
@@ -290,7 +291,7 @@ public class Record extends Model<Record>{
 	 * @see #getDate(String)
 	 */
 	public Date getDate(String key,String format,Date defaultValue){		 
-		return Helper.toDate(get(key), format, defaultValue); 
+		return MelpDate.getDate(get(key), format, defaultValue); 
 	}
 
 }

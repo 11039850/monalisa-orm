@@ -27,7 +27,7 @@ import com.tsc9526.monalisa.orm.annotation.Table;
 import com.tsc9526.monalisa.orm.criteria.QEH;
 import com.tsc9526.monalisa.orm.datasource.DBConfig;
 import com.tsc9526.monalisa.orm.model.Model;
-import com.tsc9526.monalisa.orm.tools.helper.ClassHelper;
+import com.tsc9526.monalisa.tools.clazz.MelpClass;
 
 /**
  * 
@@ -91,7 +91,7 @@ public class TestSimpleModel extends Model<TestSimpleModel> implements TestSimpl
 		protected Criteria createInternal(){
 			Criteria x= new Criteria(this);
 			
-			Class<?> clazz=ClassHelper.findClassWithAnnotation(TestSimpleModel.class,DB.class);
+			Class<?> clazz=MelpClass.findClassWithAnnotation(TestSimpleModel.class,DB.class);
 			DBConfig db=dsm.getDBConfig(clazz);
 			   
 			QEH.getQuery(x).use(db);

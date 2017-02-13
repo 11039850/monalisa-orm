@@ -24,9 +24,9 @@ import org.testng.annotations.BeforeClass;
 import test.com.tsc9526.monalisa.orm.mysql.MysqlDB;
 import test.com.tsc9526.monalisa.orm.mysql.mysqldb.TestRecordV2;
 
-import com.tsc9526.monalisa.orm.service.DBS;
-import com.tsc9526.monalisa.orm.service.Response;
-import com.tsc9526.monalisa.orm.service.servlet.DbQueryHttpServlet;
+import com.tsc9526.monalisa.service.DBS;
+import com.tsc9526.monalisa.service.Response;
+import com.tsc9526.monalisa.service.servlet.DbQueryHttpServlet;
 
 /**
  * 
