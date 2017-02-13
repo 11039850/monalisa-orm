@@ -189,6 +189,18 @@ public class ModelParserTest {
 		Assert.assertEquals(model.getStringField2(),"123");
 	}
 	
+	public void testSubJson(){
+		TestSimpleModel model=new TestSimpleModel();
+		
+		String json="{ \"sub_obj\": {\"array_1\":[{a:1},\"b\"], \"string_field2\":\"123\" } }";		
+		model.parse(json,"@sub_obj");
+		
+		Assert.assertTrue(model.getArray1().length==2);
+		Assert.assertEquals(model.getArray1()[0],"{\"a\":1}");
+		Assert.assertEquals(model.getArray1()[1],"b");
+		Assert.assertEquals(model.getStringField2(),"123");
+	}
+	
 	public void testParseObjectOne(){
 		Date now=new Date();
 		TestSimpleModel model=new TestSimpleModel();

@@ -315,7 +315,7 @@ public class MelpClass {
 			
 			for(Field f : fields) {
 				int modifiers = f.getModifiers();				 
-				if (!Modifier.isStatic(modifiers)) {
+				if (!Modifier.isStatic(modifiers) && !Modifier.isTransient(modifiers)) {
 					FGS fgs = new FGS(clazz,f);
 					
 					if(!hFields.containsKey(fgs.getFieldName())){

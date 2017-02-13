@@ -10,7 +10,7 @@ import com.tsc9526.monalisa.orm.annotation.Column;
 import com.tsc9526.monalisa.tools.annotation.Alias;
  
 /**
- * Auto generated code by monalisa 1.8.0
+ * Auto generated code by monalisa 2.0.0
  *
  * @see 
  */

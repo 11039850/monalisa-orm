@@ -41,12 +41,12 @@ public class ServletRequestParser implements Parser<javax.servlet.ServletRequest
 	}
 	
 	@SuppressWarnings("unchecked")
-	public static <T> List<T> parseArrays(T target, javax.servlet.ServletRequest data, String... mappings) {
+	public static <T> List<T> parseArrays(T targetTemplate, javax.servlet.ServletRequest data, String... mappings) {
 		KeyMapping map = new KeyMapping(data.getParameterMap(), mappings);
 		List<T> rs=new ArrayList<T>();
 		
 		int size=0;
-		for (FGS fgs : MelpClass.getFields(target)) {
+		for (FGS fgs : MelpClass.getFields(targetTemplate)) {
 			String key=fgs.findKey(map);
 			if(key!=null){
 				String[] value = (String[])map.get(key);
@@ -61,21 +61,21 @@ public class ServletRequestParser implements Parser<javax.servlet.ServletRequest
 		}
 		
 		try{
-			if(target instanceof Shallowable<?>){
+			if(targetTemplate instanceof Shallowable<?>){
 				for(int i=0;i<size;i++){
-					Object x=((Shallowable<?>)target).shallow();
+					Object x=((Shallowable<?>)targetTemplate).shallow();
 					rs.add((T)x);
 				}
 			}else{
 				for(int i=0;i<size;i++){
-					rs.add((T)target.getClass().newInstance());
+					rs.add((T)targetTemplate.getClass().newInstance());
 				}
 			}
 		}catch(Exception e){
 			return MelpException.throwRuntimeException(e);
 		}
 		
-		for (FGS fgs : MelpClass.getFields(target)) {
+		for (FGS fgs : MelpClass.getFields(targetTemplate)) {
 			String key=fgs.findKey(map);
 			if(key!=null){
 				String[] value = (String[])map.get(key);

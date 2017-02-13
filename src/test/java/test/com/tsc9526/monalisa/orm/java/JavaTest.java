@@ -31,7 +31,7 @@ import com.tsc9526.monalisa.tools.io.JavaFile;
  */
 @Test
 public class JavaTest {
-	static final long $VERSION = 2017021014042000L;
+	static final long $VERSION = 2017021318385700L;
 	
 	public void testParse()throws Exception{
 		JavaFile java=new JavaFile(new File("src/test/resources/lab/Demo.java"));
@@ -71,7 +71,7 @@ public class JavaTest {
 	 
 	public void testVersionNaturalIncreasing()throws Exception{
 		JavaFile java=new JavaFile(""+/**~{*/""
-			+ "package test.JavaFileion ;"
+			+ "package test.version ;"
 			+ "\r\nJavaFileic class Demo{"
 			+ "\r\n	public static final long $VERSION$ = 1;"
 			+ "\r\n}"

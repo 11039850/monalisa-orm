@@ -206,10 +206,6 @@ public class MelpString {
 	 * @return 分隔后的数组
 	 */
 	public static String[] splits(String... ms) {
-		if(ms.length==0 || (ms.length==1 && ms[0]==null)){
-			return null;
-		}
-		
 		List<String> xs = new ArrayList<String>();
 		for (String s : ms) {
 			if(s!=null){

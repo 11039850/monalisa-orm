@@ -27,6 +27,7 @@ import com.tsc9526.monalisa.orm.annotation.Table;
 import com.tsc9526.monalisa.orm.criteria.QEH;
 import com.tsc9526.monalisa.orm.datasource.DBConfig;
 import com.tsc9526.monalisa.orm.model.Model;
+import com.tsc9526.monalisa.tools.annotation.Alias;
 import com.tsc9526.monalisa.tools.clazz.MelpClass;
 
 /**
@@ -41,43 +42,55 @@ public class TestSimpleModel extends Model<TestSimpleModel> implements TestSimpl
 	private Integer auto;
 	
 	@Column(name="int_field1")
+	@Alias("int_field1")
 	private Integer intField1;
 	
 	@Column(name="int_field2")
+	@Alias("int_field2")
 	private Integer intField2;
 	
 	@Column(name="string_field1")
+	@Alias("string_field1")
 	private String stringField1;
 	
 	@Column(name="string_field2")
+	@Alias("string_field2")
 	private String stringField2;
 	
 	@Column(name="date_field1")
+	@Alias("date_field1")
 	private Date dateField1;
 	
 	@Column(name="date_field2")
+	@Alias("date_field2")
 	private Date dateField2;
 	
 	@Column(name="status")
 	private StatusA status;
 	
 	@Column(name="status_b")
+	@Alias("status_b")
 	private StatusB statusB;
 	
 	@Column(name="status_c",jdbcType=Types.VARCHAR)
+	@Alias("status_c")
 	private StatusC statusC;
 	
 	
 	@Column(name="array_1",jdbcType=Types.VARCHAR)
+	@Alias("array_1")
 	private String[] array1;
 	 
 	@Column(name="json_1",jdbcType=Types.VARCHAR)
+	@Alias("json_1")
 	private JsonObject json1;
 	
 	@Column(name="object_one",jdbcType=Types.VARCHAR)
+	@Alias("object_one")
 	private TestSimpleObject objectOne;
 	
 	@Column(name="object_two",jdbcType=Types.VARCHAR)
+	@Alias("object_two")
 	private TestSimpleObjectTwo objectTwo;
 	
 	public static Criteria createCriteria(){
