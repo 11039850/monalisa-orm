@@ -551,7 +551,7 @@ public class MelpClass {
 					setMapObject((Map)target,value);				
 				}else{
 					Class<?> type=getType();
-					Object theValue=convert(target, type);
+					Object theValue=convert(value, type);
 					
 					if(setMethod!=null){
 						setMethod.invoke(target, theValue);
