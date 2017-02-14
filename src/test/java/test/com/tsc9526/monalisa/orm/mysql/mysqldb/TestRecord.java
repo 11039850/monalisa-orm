@@ -12,7 +12,7 @@ import java.util.LinkedHashMap;
  
 /**
  *
- * Auto generated code by monalisa 2.0.0
+ * Auto generated code by monalisa 2.0.0-SNAPSHOT
  *
  */
 @Table(
@@ -58,7 +58,7 @@ public class TestRecord extends com.tsc9526.monalisa.orm.model.Model<TestRecord>
 	/**
 	 * Constructor use primary keys.
 	 *
-	 * @param recordId  唯一主键	 
+	 * @param recordId  primary key	 
 	 */
 	public TestRecord(Integer recordId){
 		super("test_record", "record_id");
@@ -73,7 +73,7 @@ public class TestRecord extends com.tsc9526.monalisa.orm.model.Model<TestRecord>
 	* @Column
 	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record&nbsp;<B>name:</B> record_id &nbsp;[<font color=red>KEY</font>|<font color=red>AUTO</font>|<font color=red>NOTNULL</font>]
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 10<br>
-	* <li><B>remarks:</B> 唯一主键
+	* <li><B>remarks:</B> primary key
 	*/
 	@Column(table=M.TABLE, jdbcType=4, name=M.recordId$name, key=M.recordId$key, auto=M.recordId$auto, notnull=M.recordId$notnull, length=M.recordId$length, value=M.recordId$value, remarks=M.recordId$remarks)
 	@Alias("record_id")
@@ -83,7 +83,7 @@ public class TestRecord extends com.tsc9526.monalisa.orm.model.Model<TestRecord>
 	* @Column
 	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record&nbsp;<B>name:</B> name &nbsp;[<font color=red>NOTNULL</font>]
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 128 &nbsp;<B>value:</B> N0001<br>
-	* <li><B>remarks:</B> 名称
+	* <li><B>remarks:</B> the name
 	*/
 	@Column(table=M.TABLE, jdbcType=12, name=M.name$name, key=M.name$key, auto=M.name$auto, notnull=M.name$notnull, length=M.name$length, value=M.name$value, remarks=M.name$remarks)
 	@Alias("name")
@@ -93,7 +93,7 @@ public class TestRecord extends com.tsc9526.monalisa.orm.model.Model<TestRecord>
 	* @Column
 	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record&nbsp;<B>name:</B> title
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 128<br>
-	* <li><B>remarks:</B> 标题
+	* <li><B>remarks:</B> the title
 	*/
 	@Column(table=M.TABLE, jdbcType=12, name=M.title$name, key=M.title$key, auto=M.title$auto, notnull=M.title$notnull, length=M.title$length, value=M.title$value, remarks=M.title$remarks)
 	@Alias("title")
@@ -103,7 +103,7 @@ public class TestRecord extends com.tsc9526.monalisa.orm.model.Model<TestRecord>
 	* @Column
 	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record&nbsp;<B>name:</B> ts_a
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 19<br>
-	* <li><B>remarks:</B> 
+	* <li><B>remarks:</B> date time field
 	*/
 	@Column(table=M.TABLE, jdbcType=93, name=M.tsA$name, key=M.tsA$key, auto=M.tsA$auto, notnull=M.tsA$notnull, length=M.tsA$length, value=M.tsA$value, remarks=M.tsA$remarks)
 	@Alias("ts_a")
@@ -156,7 +156,7 @@ public class TestRecord extends com.tsc9526.monalisa.orm.model.Model<TestRecord>
 	* @Column
 	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record&nbsp;<B>name:</B> record_id &nbsp;[<font color=red>KEY</font>|<font color=red>AUTO</font>|<font color=red>NOTNULL</font>]
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 10<br>
-	* <li><B>remarks:</B> 唯一主键
+	* <li><B>remarks:</B> primary key
 	*/
 	@Column(table=M.TABLE, jdbcType=4, name=M.recordId$name, key=M.recordId$key, auto=M.recordId$auto, notnull=M.recordId$notnull, length=M.recordId$length, value=M.recordId$value, remarks=M.recordId$remarks)
 	@Alias("record_id") 
@@ -173,7 +173,7 @@ public class TestRecord extends com.tsc9526.monalisa.orm.model.Model<TestRecord>
 	* @Column
 	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record&nbsp;<B>name:</B> name &nbsp;[<font color=red>NOTNULL</font>]
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 128 &nbsp;<B>value:</B> N0001<br>
-	* <li><B>remarks:</B> 名称
+	* <li><B>remarks:</B> the name
 	*/
 	@Column(table=M.TABLE, jdbcType=12, name=M.name$name, key=M.name$key, auto=M.name$auto, notnull=M.name$notnull, length=M.name$length, value=M.name$value, remarks=M.name$remarks)
 	@Alias("name") 
@@ -190,7 +190,7 @@ public class TestRecord extends com.tsc9526.monalisa.orm.model.Model<TestRecord>
 	* @Column
 	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record&nbsp;<B>name:</B> title
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 128<br>
-	* <li><B>remarks:</B> 标题
+	* <li><B>remarks:</B> the title
 	*/
 	@Column(table=M.TABLE, jdbcType=12, name=M.title$name, key=M.title$key, auto=M.title$auto, notnull=M.title$notnull, length=M.title$length, value=M.title$value, remarks=M.title$remarks)
 	@Alias("title") 
@@ -207,7 +207,7 @@ public class TestRecord extends com.tsc9526.monalisa.orm.model.Model<TestRecord>
 	* @Column
 	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record&nbsp;<B>name:</B> ts_a
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 19<br>
-	* <li><B>remarks:</B> 
+	* <li><B>remarks:</B> date time field
 	*/
 	@Column(table=M.TABLE, jdbcType=93, name=M.tsA$name, key=M.tsA$key, auto=M.tsA$auto, notnull=M.tsA$notnull, length=M.tsA$length, value=M.tsA$value, remarks=M.tsA$remarks)
 	@Alias("ts_a") 
@@ -293,7 +293,7 @@ public class TestRecord extends com.tsc9526.monalisa.orm.model.Model<TestRecord>
 	* @Column
 	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record&nbsp;<B>name:</B> record_id &nbsp;[<font color=red>KEY</font>|<font color=red>AUTO</font>|<font color=red>NOTNULL</font>]
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 10<br>
-	* <li><B>remarks:</B> 唯一主键
+	* <li><B>remarks:</B> primary key
 	*/
 	@Column(table=M.TABLE, jdbcType=4, name=M.recordId$name, key=M.recordId$key, auto=M.recordId$auto, notnull=M.recordId$notnull, length=M.recordId$length, value=M.recordId$value, remarks=M.recordId$remarks)
 	@Alias("record_id") 
@@ -306,7 +306,7 @@ public class TestRecord extends com.tsc9526.monalisa.orm.model.Model<TestRecord>
 	* @Column
 	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record&nbsp;<B>name:</B> record_id &nbsp;[<font color=red>KEY</font>|<font color=red>AUTO</font>|<font color=red>NOTNULL</font>]
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 10<br>
-	* <li><B>remarks:</B> 唯一主键
+	* <li><B>remarks:</B> primary key
 	* @param defaultValue  Return the default value if recordId is null.
 	*/
 	@Column(table=M.TABLE, jdbcType=4, name=M.recordId$name, key=M.recordId$key, auto=M.recordId$auto, notnull=M.recordId$notnull, length=M.recordId$length, value=M.recordId$value, remarks=M.recordId$remarks)
@@ -326,7 +326,7 @@ public class TestRecord extends com.tsc9526.monalisa.orm.model.Model<TestRecord>
 	* @Column
 	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record&nbsp;<B>name:</B> name &nbsp;[<font color=red>NOTNULL</font>]
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 128 &nbsp;<B>value:</B> N0001<br>
-	* <li><B>remarks:</B> 名称
+	* <li><B>remarks:</B> the name
 	*/
 	@Column(table=M.TABLE, jdbcType=12, name=M.name$name, key=M.name$key, auto=M.name$auto, notnull=M.name$notnull, length=M.name$length, value=M.name$value, remarks=M.name$remarks)
 	@Alias("name") 
@@ -339,7 +339,7 @@ public class TestRecord extends com.tsc9526.monalisa.orm.model.Model<TestRecord>
 	* @Column
 	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record&nbsp;<B>name:</B> name &nbsp;[<font color=red>NOTNULL</font>]
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 128 &nbsp;<B>value:</B> N0001<br>
-	* <li><B>remarks:</B> 名称
+	* <li><B>remarks:</B> the name
 	* @param defaultValue  Return the default value if name is null.
 	*/
 	@Column(table=M.TABLE, jdbcType=12, name=M.name$name, key=M.name$key, auto=M.name$auto, notnull=M.name$notnull, length=M.name$length, value=M.name$value, remarks=M.name$remarks)
@@ -359,7 +359,7 @@ public class TestRecord extends com.tsc9526.monalisa.orm.model.Model<TestRecord>
 	* @Column
 	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record&nbsp;<B>name:</B> title
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 128<br>
-	* <li><B>remarks:</B> 标题
+	* <li><B>remarks:</B> the title
 	*/
 	@Column(table=M.TABLE, jdbcType=12, name=M.title$name, key=M.title$key, auto=M.title$auto, notnull=M.title$notnull, length=M.title$length, value=M.title$value, remarks=M.title$remarks)
 	@Alias("title") 
@@ -372,7 +372,7 @@ public class TestRecord extends com.tsc9526.monalisa.orm.model.Model<TestRecord>
 	* @Column
 	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record&nbsp;<B>name:</B> title
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 128<br>
-	* <li><B>remarks:</B> 标题
+	* <li><B>remarks:</B> the title
 	* @param defaultValue  Return the default value if title is null.
 	*/
 	@Column(table=M.TABLE, jdbcType=12, name=M.title$name, key=M.title$key, auto=M.title$auto, notnull=M.title$notnull, length=M.title$length, value=M.title$value, remarks=M.title$remarks)
@@ -392,7 +392,7 @@ public class TestRecord extends com.tsc9526.monalisa.orm.model.Model<TestRecord>
 	* @Column
 	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record&nbsp;<B>name:</B> ts_a
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 19<br>
-	* <li><B>remarks:</B> 
+	* <li><B>remarks:</B> date time field
 	*/
 	@Column(table=M.TABLE, jdbcType=93, name=M.tsA$name, key=M.tsA$key, auto=M.tsA$auto, notnull=M.tsA$notnull, length=M.tsA$length, value=M.tsA$value, remarks=M.tsA$remarks)
 	@Alias("ts_a") 
@@ -405,7 +405,7 @@ public class TestRecord extends com.tsc9526.monalisa.orm.model.Model<TestRecord>
 	* @Column
 	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record&nbsp;<B>name:</B> ts_a
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 19<br>
-	* <li><B>remarks:</B> 
+	* <li><B>remarks:</B> date time field
 	* @param defaultValue  Return the default value if tsA is null.
 	*/
 	@Column(table=M.TABLE, jdbcType=93, name=M.tsA$name, key=M.tsA$key, auto=M.tsA$auto, notnull=M.tsA$notnull, length=M.tsA$length, value=M.tsA$value, remarks=M.tsA$remarks)
@@ -733,7 +733,7 @@ public class TestRecord extends com.tsc9526.monalisa.orm.model.Model<TestRecord>
 		* @Column
 		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record&nbsp;<B>name:</B> record_id &nbsp;[<font color=red>KEY</font>|<font color=red>AUTO</font>|<font color=red>NOTNULL</font>]
 		* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 10<br>
-		* <li><B>remarks:</B> 唯一主键
+		* <li><B>remarks:</B> primary key
 		*/
 		@Column(table=M.TABLE, jdbcType=4, name=M.recordId$name, key=M.recordId$key, auto=M.recordId$auto, notnull=M.recordId$notnull, length=M.recordId$length, value=M.recordId$value, remarks=M.recordId$remarks)
 		@Alias("record_id")
@@ -743,7 +743,7 @@ public class TestRecord extends com.tsc9526.monalisa.orm.model.Model<TestRecord>
 		* @Column
 		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record&nbsp;<B>name:</B> name &nbsp;[<font color=red>NOTNULL</font>]
 		* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 128 &nbsp;<B>value:</B> N0001<br>
-		* <li><B>remarks:</B> 名称
+		* <li><B>remarks:</B> the name
 		*/
 		@Column(table=M.TABLE, jdbcType=12, name=M.name$name, key=M.name$key, auto=M.name$auto, notnull=M.name$notnull, length=M.name$length, value=M.name$value, remarks=M.name$remarks)
 		@Alias("name")
@@ -753,7 +753,7 @@ public class TestRecord extends com.tsc9526.monalisa.orm.model.Model<TestRecord>
 		* @Column
 		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record&nbsp;<B>name:</B> title
 		* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 128<br>
-		* <li><B>remarks:</B> 标题
+		* <li><B>remarks:</B> the title
 		*/
 		@Column(table=M.TABLE, jdbcType=12, name=M.title$name, key=M.title$key, auto=M.title$auto, notnull=M.title$notnull, length=M.title$length, value=M.title$value, remarks=M.title$remarks)
 		@Alias("title")
@@ -763,7 +763,7 @@ public class TestRecord extends com.tsc9526.monalisa.orm.model.Model<TestRecord>
 		* @Column
 		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record&nbsp;<B>name:</B> ts_a
 		* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 19<br>
-		* <li><B>remarks:</B> 
+		* <li><B>remarks:</B> date time field
 		*/
 		@Column(table=M.TABLE, jdbcType=93, name=M.tsA$name, key=M.tsA$key, auto=M.tsA$auto, notnull=M.tsA$notnull, length=M.tsA$length, value=M.tsA$value, remarks=M.tsA$remarks)
 		@Alias("ts_a")
@@ -824,7 +824,7 @@ public class TestRecord extends com.tsc9526.monalisa.orm.model.Model<TestRecord>
 		* @Column
 		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record&nbsp;<B>name:</B> record_id &nbsp;[<font color=red>KEY</font>|<font color=red>AUTO</font>|<font color=red>NOTNULL</font>]
 		* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 10<br>
-		* <li><B>remarks:</B> 唯一主键
+		* <li><B>remarks:</B> primary key
 		*/
 		@Column(table=M.TABLE, jdbcType=4, name=M.recordId$name, key=M.recordId$key, auto=M.recordId$auto, notnull=M.recordId$notnull, length=M.recordId$length, value=M.recordId$value, remarks=M.recordId$remarks)
 		@Alias("record_id")
@@ -834,7 +834,7 @@ public class TestRecord extends com.tsc9526.monalisa.orm.model.Model<TestRecord>
 		* @Column
 		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record&nbsp;<B>name:</B> name &nbsp;[<font color=red>NOTNULL</font>]
 		* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 128 &nbsp;<B>value:</B> N0001<br>
-		* <li><B>remarks:</B> 名称
+		* <li><B>remarks:</B> the name
 		*/
 		@Column(table=M.TABLE, jdbcType=12, name=M.name$name, key=M.name$key, auto=M.name$auto, notnull=M.name$notnull, length=M.name$length, value=M.name$value, remarks=M.name$remarks)
 		@Alias("name")
@@ -844,7 +844,7 @@ public class TestRecord extends com.tsc9526.monalisa.orm.model.Model<TestRecord>
 		* @Column
 		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record&nbsp;<B>name:</B> title
 		* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 128<br>
-		* <li><B>remarks:</B> 标题
+		* <li><B>remarks:</B> the title
 		*/
 		@Column(table=M.TABLE, jdbcType=12, name=M.title$name, key=M.title$key, auto=M.title$auto, notnull=M.title$notnull, length=M.title$length, value=M.title$value, remarks=M.title$remarks)
 		@Alias("title")
@@ -854,7 +854,7 @@ public class TestRecord extends com.tsc9526.monalisa.orm.model.Model<TestRecord>
 		* @Column
 		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record&nbsp;<B>name:</B> ts_a
 		* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 19<br>
-		* <li><B>remarks:</B> 
+		* <li><B>remarks:</B> date time field
 		*/
 		@Column(table=M.TABLE, jdbcType=93, name=M.tsA$name, key=M.tsA$key, auto=M.tsA$auto, notnull=M.tsA$notnull, length=M.tsA$length, value=M.tsA$value, remarks=M.tsA$remarks)
 		@Alias("ts_a")
@@ -914,7 +914,7 @@ public class TestRecord extends com.tsc9526.monalisa.orm.model.Model<TestRecord>
 		public final static boolean recordId$key     = true;
 		public final static int     recordId$length  = 10;
 		public final static String  recordId$value   = "NULL";
-		public final static String  recordId$remarks = "唯一主键";
+		public final static String  recordId$remarks = "primary key";
 		public final static boolean recordId$auto    = true;
 		public final static boolean recordId$notnull = true;
 		
@@ -923,7 +923,7 @@ public class TestRecord extends com.tsc9526.monalisa.orm.model.Model<TestRecord>
 		public final static boolean name$key     = false;
 		public final static int     name$length  = 128;
 		public final static String  name$value   = "N0001";
-		public final static String  name$remarks = "名称";
+		public final static String  name$remarks = "the name";
 		public final static boolean name$auto    = false;
 		public final static boolean name$notnull = true;
 		
@@ -932,7 +932,7 @@ public class TestRecord extends com.tsc9526.monalisa.orm.model.Model<TestRecord>
 		public final static boolean title$key     = false;
 		public final static int     title$length  = 128;
 		public final static String  title$value   = "NULL";
-		public final static String  title$remarks = "标题";
+		public final static String  title$remarks = "the title";
 		public final static boolean title$auto    = false;
 		public final static boolean title$notnull = false;
 		
@@ -941,7 +941,7 @@ public class TestRecord extends com.tsc9526.monalisa.orm.model.Model<TestRecord>
 		public final static boolean tsA$key     = false;
 		public final static int     tsA$length  = 19;
 		public final static String  tsA$value   = "NULL";
-		public final static String  tsA$remarks = "";
+		public final static String  tsA$remarks = "date time field";
 		public final static boolean tsA$auto    = false;
 		public final static boolean tsA$notnull = false;
 		

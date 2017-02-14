@@ -323,7 +323,7 @@ public class QueryPackage {
 		} 
 	 	
 		String x=xml.substring(x1,x2+1);
-		//System.out.println(x);
+		 
 		return x;
 	}
 	

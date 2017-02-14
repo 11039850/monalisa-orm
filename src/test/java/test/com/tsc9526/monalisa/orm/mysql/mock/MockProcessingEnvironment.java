@@ -52,10 +52,18 @@ import com.tsc9526.monalisa.orm.datasource.DBConfig;
 public class MockProcessingEnvironment {
 	private DB db;
 	private String dbClassName;
+	private Class<?> clazzWithDBAnnotation;
 	
-	public MockProcessingEnvironment(Class<?> clazzWithDBAnnotation){
+	private String outputJavaDir    ;
+	private String outputResourceDir;
+
+	public MockProcessingEnvironment(Class<?> clazzWithDBAnnotation,String outputJavaDir,String outputResourceDir){
+		this.clazzWithDBAnnotation=clazzWithDBAnnotation;
 		db=DBConfig.fromClass(clazzWithDBAnnotation).getDb();
 		dbClassName=clazzWithDBAnnotation.getName();
+		 
+		this.outputJavaDir=outputJavaDir;
+		this.outputResourceDir=outputResourceDir;
 	}
 	
 	public  ProcessingEnvironment  createProcessingEnvironment()throws IOException{
@@ -68,7 +76,7 @@ public class MockProcessingEnvironment {
 		        Object[] args = invocation.getArguments(); 
 		        CharSequence name=(CharSequence)args[0];
 		        
-		        String path="src/test/java/"+name.toString().replace(".","/")+".java";
+		        String path=outputJavaDir+"/"+name.toString().replace(".","/")+".java";
 				final File file=new File(path);
 				
 				File dir=file.getParentFile();
@@ -91,9 +99,9 @@ public class MockProcessingEnvironment {
 		    	Object[] args = invocation.getArguments(); 
 		    	CharSequence pkg=(CharSequence)args[1];
 		    	CharSequence relativeName=(CharSequence)args[2];
-		    	String path="src/test/resources/"+pkg.toString().replace(".","/")+"/"+relativeName.toString();
+		    	String path=outputResourceDir+"/"+pkg.toString().replace(".","/")+"/"+relativeName.toString();
 				final File file=new File(path);
-				
+			 	
 				File dir=file.getParentFile();
 				if(!dir.exists()){
 					dir.mkdirs();
@@ -119,7 +127,8 @@ public class MockProcessingEnvironment {
 		TypeElement mock = mock(TypeElement.class);
 	 
 		when(mock.getAnnotation(DB.class)).thenReturn(db);	
-		  
+		when(mock.toString()).thenReturn(DBConfig.fromClass(clazzWithDBAnnotation).getKey());
+		
 		doAnswer(new Answer<Name>() {
 			 public Name answer(InvocationOnMock invocation) {  
 				 return new Name() {

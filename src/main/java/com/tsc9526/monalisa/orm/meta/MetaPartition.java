@@ -154,6 +154,9 @@ public class MetaPartition implements java.io.Serializable {
 		}		
 	}
 	
+	public void clearTable(){
+		tables.clear();
+	}
 	
 	public void addTable(MetaTable table){
 		tables.add(table);

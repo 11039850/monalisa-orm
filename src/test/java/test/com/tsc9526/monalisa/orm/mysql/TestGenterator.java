@@ -18,19 +18,14 @@ package test.com.tsc9526.monalisa.orm.mysql;
 
  
 import java.io.File;
-import java.text.SimpleDateFormat;
-import java.util.Map;
 
 import org.testng.Assert;
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-import test.com.tsc9526.monalisa.orm.data.ColumnData;
+import test.com.tsc9526.monalisa.orm.InitTestDatabase;
 import test.com.tsc9526.monalisa.orm.mysql.mock.MockProcessingEnvironment;
-import test.com.tsc9526.monalisa.orm.mysql.mysqldb.TestLogyyyymm;
-import test.com.tsc9526.monalisa.orm.mysql.mysqldb.TestTable1;
-import test.com.tsc9526.monalisa.orm.mysql.mysqldb.TestTable2;
 
-import com.tsc9526.monalisa.orm.Tx;
 import com.tsc9526.monalisa.orm.generator.DBGeneratorLocal;
 import com.tsc9526.monalisa.orm.generator.DBGeneratorProcessing;
 import com.tsc9526.monalisa.orm.meta.MetaTable.CreateTable;
@@ -45,14 +40,17 @@ import com.tsc9526.monalisa.tools.logger.Logger;
 public class TestGenterator {
 	static Logger logger=Logger.getLogger(TestGenterator.class.getSimpleName());
 	 
+	private String outputJavaDir    ="target/monalisa/_gen/src/test/java";
+	private String outputResourceDir="target/monalisa/_gen/src/test/resources";
+	
+	private String pkg=MysqlDB.class.getName().toLowerCase().replace(".","/");
+	
+	@BeforeClass
+	public void before()throws Exception{
+		InitTestDatabase.initDatebase();
+	}
 	
 	public void testGenteratorLocal()throws Exception{
-		String pkg=MysqlDB.class.getPackage().getName()+"."+MysqlDB.class.getSimpleName().toLowerCase();
-		pkg=pkg.replace(".","/");
-		
-		String outputJavaDir="src/test/java";
-		String outputResourceDir="src/test/resources";
-	  
 		MelpFile.delete(new File(outputJavaDir+"/"+pkg), true);
 		MelpFile.delete(new File(outputResourceDir+"/resources/"+pkg), true); 
 	
@@ -63,78 +61,39 @@ public class TestGenterator {
 		
 		Assert.assertTrue(new File(outputResourceDir+"/resources/"+pkg+"/"+CreateTable.FILE_NAME).exists());
 		
-		TestLogyyyymm log=new TestLogyyyymm();
-		log.setLogTime(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse("2016-02-01 01:01:01"));
-		log.save();
+		checkJavaCode();
 	}
 	
 	public void testGenteratorProcessing()throws Exception{
-		String pkg=MysqlDB.class.getPackage().getName()+"."+MysqlDB.class.getSimpleName().toLowerCase();
-		pkg=pkg.replace(".","/");
-		
-		String outputJavaDir="src/test/java";
-		String outputResourceDir="src/test/resources";
-	  
 		MelpFile.delete(new File(outputJavaDir+"/"+pkg), true);
 		MelpFile.delete(new File(outputResourceDir+"/resources/"+pkg), true); 
-	
 		Assert.assertTrue(new File(outputResourceDir+"/resources/"+pkg+"/"+CreateTable.FILE_NAME).exists()==false);
 		
-		MockProcessingEnvironment mpe=new MockProcessingEnvironment(MysqlDB.class);
+		MockProcessingEnvironment mpe=new MockProcessingEnvironment(MysqlDB.class,outputJavaDir,outputResourceDir);
 		 
 		DBGeneratorProcessing g=new DBGeneratorProcessing(mpe.createProcessingEnvironment(),mpe.createTypeElement());
 		g.generateFiles();
-		 
-		TestLogyyyymm log=new TestLogyyyymm();
-		log.setLogTime(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse("2016-03-01 01:01:01"));
-		log.save();
-		
-		int maxId=MysqlDB.DB.selectOne("select max(id) as x from test_table_1").getInt("x",0); 
-		
-		Tx.putContext(Tx.CONTEXT_CURRENT_USERID,"zzg.zhou");
-		TestTable1 t1=new TestTable1();
-		t1.defaults();	
-		t1.save();
-		
-		Assert.assertEquals(t1.getId().intValue(), maxId+1);
-		Assert.assertEquals(t1.getCreateBy(),"zzg.zhou");
-		
-		t1=new TestTable1(maxId+1);
-		Assert.assertTrue(!t1.entity());
-		t1=new TestTable1(maxId+1).load();
-		Assert.assertNotNull(t1.load());
-		Assert.assertTrue(t1.entity());
-		
-		TestTable1 t2=new TestTable1(maxId+2);
-		Assert.assertTrue(!t2.entity());
-		Assert.assertNull(t2.load());
-		Assert.assertTrue(!t2.entity());
-		
-		Map<Integer,TestTable1> ms=TestTable1.WHERE().id.ge(0).SELECT().selectToMap();
-		Assert.assertTrue(ms.size()>0);
-		
+		  
+		checkJavaCode();
 	}
 	
-	
-	public void testInsertArrays()throws Exception{
-		int[] i1=new int[]{3,2,1};
-		String[] s1=new String[]{"3","2"};
+	private void checkJavaCode(){
+		String sourceDir=outputJavaDir+"/"+pkg;
+		String expectDir="src/test/java/"+pkg;
 		
-		TestTable2 t2=new TestTable2();
-		t2.defaults();
-		t2.setObj(new ColumnData());
-		t2.setArrayInt(i1);
-		t2.setArrayString(s1);
-		t2.save();
-		
-		TestTable2 t2x=TestTable2.SELECT().selectByPrimaryKey(t2.getId());
-		Assert.assertEquals(t2x.getObj(),t2.getObj());
-		
-		for(int i=0;i<i1.length;i++){
-			Assert.assertEquals(t2x.getArrayInt()[i], i1[i]);
+		File dirSource=new File(sourceDir);
+		for(File fs:dirSource.listFiles()){
+			File fe=new File(expectDir,fs.getName());
+			
+			String ss=MelpFile.readToString(fs, "utf-8");
+			String se=MelpFile.readToString(fe, "utf-8");
+			if(ss.equals(se)){
+				logger.info("Check[OK] generate java file: "+fs.getName()+", expect: "+expectDir+"/"+fs.getName());
+			}else{
+				logger.error("Check[FAIL] generate java file: "+fs.getName()+", expect: "+expectDir+"/"+fs.getName());
+			}
+			Assert.assertTrue(ss.equals(se));
 		}
-		for(int i=0;i<s1.length;i++){
-			Assert.assertEquals(t2x.getArrayString()[i], s1[i]);
-		}
+		
 	}
 }

@@ -190,7 +190,7 @@ public abstract class Model<T extends Model> implements Serializable ,Shallowabl
 	 *            
 	 * @return this
 	 * 
-	 * @see com.tsc9526.monalisa.tools.parser.MelpParser#parse(Object, Object, String...)
+	 * @see com.tsc9526.monalisa.tools.clazz.MelpClass#parse(Object, Object, String...)
 	 */
 	public T parse(Object dataObject, String... mappings) {
 		MelpClass.parse(this, dataObject, mappings);

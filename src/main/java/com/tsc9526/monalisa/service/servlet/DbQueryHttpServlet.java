@@ -51,7 +51,7 @@ public class DbQueryHttpServlet extends HttpServlet{
 	public final static String DB_CFG_PREFIX="DB";
 	  
 	protected Dispatcher dispatcher=new Dispatcher();
-	
+ 	
 	public void init(ServletConfig config) throws ServletException {
 		super.init(config);
 		
@@ -189,12 +189,7 @@ public class DbQueryHttpServlet extends HttpServlet{
 			if(authUsers==null || authUsers.trim().length()<1){
 				authUsers="monalisa:monalisa";
 				
-				logger.warn("Missing auth parameter\r\n"+/**~!{*/""
-					+ "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
-					+ "\r\n!!! Missing servlet init parameter: " +((prefix))+ ".auth.users in web.xml, "
-					+ "\r\n!!! default authorization(user:password,user2:password2 ...) is monalisa:monalisa"
-					+ "\r\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
-				+ "\r\n"/**}*/.trim());
+				printAuthWarn(prefix); 
 			}
 			 
 			List<String[]> userpwds=new ArrayList<String[]>();
@@ -210,6 +205,15 @@ public class DbQueryHttpServlet extends HttpServlet{
 			
 			locator.addFilter(new DigestAuth(userpwds));
 		}
+	}
+	
+	protected void printAuthWarn(String prefix){
+		logger.warn("Missing auth config\r\n"+/**~!{*/""
+				+ "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+				+ "\r\n!!! Missing servlet init parameter: " +((prefix))+ ".auth.users in web.xml, "
+				+ "\r\n!!! default authorization(user:password,user2:password2 ...) is monalisa:monalisa"
+				+ "\r\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+			+ "\r\n"/**}*/.trim());
 	}
 	
 	protected void setupMethods(ActionLocator locator,ServletConfig sc,String prefix){

@@ -653,4 +653,8 @@ public class Query {
 		this.enableCache = enableCache;
 		return this;
 	}
+	
+	public String toString(){
+		return "SQL: "+getSql();
+	}
 }

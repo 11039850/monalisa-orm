@@ -98,20 +98,16 @@ public class DBMetadata {
 			}
 		}
 	}
-	 
-	private static Map<String,MetaTable> hRuntimeTables=null;
-	private static Object lock=new Object();
-	public static MetaTable getMetaTable(String dbKey,String theTableName) {
+ 
+	private static Map<String,Map<String,MetaTable>> hRuntimeTables=new HashMap<String, Map<String,MetaTable>>();
+	public synchronized static MetaTable getMetaTable(String dbKey,String theTableName) {
 		try{
-			if(hRuntimeTables == null){
-				synchronized (lock) {
-					if(hRuntimeTables == null){
-						hRuntimeTables=loadMetaTables(dbKey);
-					}
-				}				
+			Map<String,MetaTable> hmt=hRuntimeTables.get(dbKey);
+			if(hmt == null){
+				hmt=loadMetaTables(dbKey);
+				hRuntimeTables.put(dbKey, hmt);	 			
 			}
-			
-			return hRuntimeTables.get(theTableName);			 		
+			return hmt.get(theTableName);			 		
 		}catch(Exception e){
 			throw new RuntimeException("MetaTable not found: "+theTableName+", dbKey: "+dbKey,e);
 		}
@@ -266,6 +262,9 @@ public class DBMetadata {
 	
 	protected List<MetaTable> getTables(DatabaseMetaData metadata)throws SQLException{
 		List<MetaPartition> partitions=dbcfg.getCfg().getMetaPartitions();
+		for(MetaPartition p:partitions){
+			p.clearTable();
+		}
 		
 		List<MetaTable> tables=new ArrayList<MetaTable>();
 		ResultSet rs=metadata.getTables(catalog, schema, tableName, new String[]{"TABLE"});			 

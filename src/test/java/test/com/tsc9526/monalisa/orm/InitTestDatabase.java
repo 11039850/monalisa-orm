@@ -36,7 +36,7 @@ public class InitTestDatabase {
 		generateModels();  
 	}
 	
-	private static void initDatebase()throws Exception{
+	public static void initDatebase()throws Exception{
 		logger.info("Init test database ...");
 	 	for(String table:MysqlDB.DB.getTables()){
 			if(table.toLowerCase().startsWith("test_")){

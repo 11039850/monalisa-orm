@@ -111,7 +111,7 @@ public class TableHelper {
 	    	column.setKey(true);
 	    	keyColumns.put(keyseq, column);
 	    }
-	    
+	  
 	    for(MetaColumn c:keyColumns.values()){
 	    	table.addKeyColumn(c);
 	    }

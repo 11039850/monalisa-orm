@@ -65,7 +65,7 @@ public class Compiler {
 				File dir=new File(libpath);
 				if(dir.exists() && dir.isDirectory()){
 					for(File lib:dir.listFiles()){
-						if(lib.getName().endsWith(".jar") || lib.getName().endsWith(".zip")){
+						if(lib.getName().endsWith(".jar")){
 							hClassPath.add(libpath+"/"+lib.getName());
 						}
 					}

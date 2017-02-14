@@ -199,26 +199,8 @@ public class DBConfig implements Closeable{
 		
 		return dsi.getDataSource();
 	}
-	
-	
-	protected Properties getPoolProperties(){
-		Properties dbps=new Properties();
-		
-		CFG cfg=getCfg();
-		for(Object o:cfg.p.keySet()){
-			String key=o.toString();
-			
-			for(String px:prefixs){
-				String flag=px+".pool.";
-				if(key.startsWith(flag)){
-					dbps.put(key.substring(flag.length()), cfg.p.get(key));
-				}
-			}
-		}
-		
-		return dbps;
-	}
-	
+	 
+	 
 	protected void finalize()throws Throwable{
 		close();
 		
@@ -377,6 +359,10 @@ public class DBConfig implements Closeable{
 	
 	public static DBConfig fromClass(Class<?> clazzWithDBAnnotation){
 		return DataSourceManager.getInstance().getDBConfig(clazzWithDBAnnotation);
+	}
+	
+	public DBConfig fromDB(String dbKey,DB db){
+		return DataSourceManager.getInstance().getDBConfig(dbKey,db,false);
 	}
 	 
 	public static DBConfig fromJdbcUrl(String jdbcUrl,String username,String password){
@@ -543,6 +529,7 @@ public class DBConfig implements Closeable{
 		private String schema;
 		private String username;
 		private String password;
+		private String dbs;
 		private String tables;
 		private String partitions;
 		private String modelListener;
@@ -584,6 +571,8 @@ public class DBConfig implements Closeable{
 			this.schema          = getValue(p,DbProp.PROP_DB_SCHEMA.getKey(),            db.schema(),         prefixs);
 			this.username        = getValue(p,DbProp.PROP_DB_USERNAME.getKey(),          db.username(),       prefixs);
 			this.password        = getValue(p,DbProp.PROP_DB_PASSWORD.getKey(),          db.password(),       prefixs);
+			this.dbs             = getValue(p,DbProp.PROP_DB_DBS.getKey(),               db.dbs(),            prefixs);
+			
 			this.tables          = getValue(p,DbProp.PROP_DB_TABLES.getKey(),            db.tables(),         prefixs);
 			this.partitions      = getValue(p,DbProp.PROP_DB_PARTITIONS.getKey(),        db.partitions(),     prefixs);			
 			this.mapping         = getValue(p,DbProp.PROP_DB_MAPPING.getKey(),           db.mapping(),        prefixs);
@@ -789,6 +778,60 @@ public class DBConfig implements Closeable{
 			}
 		}
 		
+		public String getPropertyOfDB(String key){				
+			return this.getValue(p, key, null, prefixs.length>1?new String[]{prefixs[0]}:prefixs);		
+		}
+		
+		public String getPropertyOfDB(String key,String defaultValue){		 
+			return this.getValue(p, key, defaultValue, prefixs.length>1?new String[]{prefixs[0]}:prefixs);
+		}
+		
+		public int getPropertyOfDB(String key,int defaultValue){		 		
+			String v=getPropertyOfDB(key);
+			if(v==null || v.trim().length()==0){
+				return defaultValue;
+			}else{
+				return Integer.parseInt(v.trim());
+			}
+		}
+		
+		protected Properties getPoolProperties(){
+			Properties dbps=new Properties();
+		 
+			for(Object o:p.keySet()){
+				String key=o.toString();
+				
+				for(String px:prefixs){
+					String flag=px+".pool.";
+					if(key.startsWith(flag)){
+						dbps.put(key.substring(flag.length()), p.get(key));
+					}
+				}
+			}
+			
+			return dbps;
+		}
+		
+		public Properties getDbsProperties(){
+			Properties dbps=new Properties();
+			  
+			if(!MelpString.isEmpty(dbs)){
+				dbps.put("name", dbs);
+				
+				for(Object o:p.keySet()){
+					String key=o.toString();
+				 	
+					for(String px:prefixs){
+						String flag=px+".dbs.";
+						if(key.startsWith(flag)){
+							dbps.put(key.substring(flag.length()), p.get(key));
+						}
+					}
+				}
+			}
+			return dbps;
+		}
+		
 		public boolean isCfgFileChanged(){
 			if(configClass!=null){
 				return configClass.isCfgChanged();
@@ -886,54 +929,75 @@ public class DBConfig implements Closeable{
 		public DB getDb() {
 			return db;
 		}
+		
 		public String getKey() {
 			return key;
 		}
+		
 		public String getModelClass() {
 			return modelClass;
 		}
+		
 		public String getDatasourceClass() {
 			return datasourceClass;
 		}
+		
 		public String getUrl() {
 			return url;
 		}
+		
 		public String getDriver() {
 			return driver;
 		}
+		
 		public String getCatalog() {
 			return catalog;
 		}
+		
 		public String getSchema() {
 			return schema;
 		}
+		
 		public String getUsername() {
 			return username;
 		}
+		
 		public String getPassword() {
 			return password;
 		}
+		
+		public String getDbs(){
+			return dbs;
+		}
+		
 		public String getTables() {
 			return tables;
 		}
+		
 		public String getPartitions() {
 			return partitions;
 		}
+		
 		public String getModelListener() {
 			return modelListener;
 		}
+		
 		public String getMapping() {
 			return mapping;
 		}
+		
 		public String getConfigFile() {
 			return configFile;
 		}
+		
 		public String getConfigName() {
 			return configName;
 		}
+		
 		public Properties getProperties() {
 			return p;
 		}
+		
 		public List<Host> getDbHosts() {
 			return dbHosts;
 		}
@@ -985,7 +1049,7 @@ public class DBConfig implements Closeable{
 			url      = cfg.getUrl();
 			username = cfg.getUsername();
 			
-			poolProps.putAll(getPoolProperties());
+			poolProps.putAll(cfg.getPoolProperties());
 		}
 		
 		public boolean equals(Object other){
