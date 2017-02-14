@@ -18,7 +18,7 @@ package com.tsc9526.monalisa.orm.generator;
 
 import java.io.File;
 
-import com.tsc9526.monalisa.orm.compiler.SQLGenerator;
+import com.tsc9526.monalisa.orm.mqs.SQLGenerator;
 import com.tsc9526.monalisa.tools.logger.Logger;
 
 /**

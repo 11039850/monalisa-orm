@@ -42,9 +42,11 @@ public class ResultLoadExecutor<T>  extends RelationExecutor implements Execute<
 			rs=setupRelationTables(pst.executeQuery());	
 			
 			if(rs.next()){
-				resultHandler.load(rs, result);							 				
+				resultHandler.load(rs, result);	
+				return result;
+			}else{
+				return null;
 			}
-			return result;
 		}finally{
 			MelpClose.close(rs);
 		}

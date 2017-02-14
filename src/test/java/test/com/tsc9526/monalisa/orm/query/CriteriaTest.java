@@ -27,7 +27,6 @@ import org.testng.annotations.Test;
 import com.tsc9526.monalisa.orm.Query;
 import com.tsc9526.monalisa.orm.criteria.QEH;
 import com.tsc9526.monalisa.orm.datasource.DataSourceManager;
-import com.tsc9526.monalisa.tools.clazz.MelpClass;
 
 /**
  * 
@@ -104,21 +103,7 @@ public class CriteriaTest {
 		
 		Assert.assertEquals(model.getStringField1(), "xxx");
 		Assert.assertEquals(model.getStringField2(), "123");
-		
-		 
-	}
-	
-	public void testParseNameCaseInsensitive()throws Exception{		 
-		Map<String, Object> h=new HashMap<String, Object>();
-		h.put("intField1", 1);
-		h.put("INTField2", 2);
-		
-		TestSimpleModel model=new TestSimpleModel();
-		model.parse(h);
-		
-		Assert.assertEquals(model.getIntField1().intValue(),1);	 
-		Assert.assertEquals(model.getIntField2().intValue(),2);
-	}
+	} 
 	
 	public void testParseNameCaseSensitive()throws Exception{		 
 		Map<String, Object> h=new HashMap<String, Object>();
@@ -126,7 +111,7 @@ public class CriteriaTest {
 		h.put("INTField2", 2);
 		
 		TestSimpleModel model=new TestSimpleModel();
-		model.parse(h,MelpClass.OPTIONS_NAME_CASE_SENSITIVE);
+		model.parse(h);
 		
 		Assert.assertEquals(model.getIntField1().intValue(),1);
 	 

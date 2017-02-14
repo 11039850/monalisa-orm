@@ -29,10 +29,12 @@ import com.tsc9526.monalisa.tools.string.MelpDate;
 import com.tsc9526.monalisa.tools.string.MelpString;
 
 /**
+ *  
+ * case insensitive map
  * 
  * @author zzg.zhou(11039850@qq.com)
  */
-@SuppressWarnings("unchecked")
+
 public class DataMap extends CaseInsensitiveMap<Object>{ 
 	private static final long serialVersionUID = -8132926422921115814L;	
 	 
@@ -52,6 +54,7 @@ public class DataMap extends CaseInsensitiveMap<Object>{
 		putAll(m);
 	}
 	
+	@SuppressWarnings("unchecked")
  	public <T> T as(Class<T> toClass){
 		try {
 			if(toClass.isAssignableFrom(DataMap.class)){
@@ -60,7 +63,7 @@ public class DataMap extends CaseInsensitiveMap<Object>{
 			
 			T r = toClass.newInstance();
 			
-			ClassAssist mc=MelpClass.getMetaClass(toClass);
+			ClassAssist mc=MelpClass.getClassAssist(toClass);
 			for(FGS fgs:mc.getFields()){
 				String name=fgs.getFieldName();
 				if(containsKey(name)){
@@ -80,6 +83,7 @@ public class DataMap extends CaseInsensitiveMap<Object>{
 	 * @param index  The first key is 0.
 	 * @return Object value
 	 */
+	@SuppressWarnings("unchecked")
 	public Object get(int index){
 		Map.Entry<String,Object> entry=(Map.Entry<String,Object>)this.entrySet().toArray()[index];
 		
@@ -100,7 +104,8 @@ public class DataMap extends CaseInsensitiveMap<Object>{
 	 * @param <T> result type
 	 * @return the object value
 	 */
-	public <T> T getPath(String paths){
+	@SuppressWarnings("unchecked")
+	public <T> T getByPath(String paths){
 		if(paths.startsWith("/")){
 			paths=paths.substring(1);
 		}
@@ -136,7 +141,7 @@ public class DataMap extends CaseInsensitiveMap<Object>{
 		}else if(v instanceof Model){
 			return ((Model<?>)v).get(name);
 		}else{
-			ClassAssist mc=MelpClass.getMetaClass(v);
+			ClassAssist mc=MelpClass.getClassAssist(v);
 			FGS fgs=mc.getField(name);
 			if(fgs!=null){
 				return fgs.getObject(v);

@@ -31,7 +31,7 @@ public class ModelEnumTest {
   
   public void testParseRemark()throws Exception {
 	  TestSimpleModel model=new TestSimpleModel();
-	  ClassAssist mc= MelpClass.getMetaClass(model.getClass());
+	  ClassAssist mc= MelpClass.getClassAssist(model.getClass());
 	  mc.getField("status").setObject(model, StatusA.ERROR);
 	  
 	  Assert.assertEquals(model.getStatus(),StatusA.ERROR);

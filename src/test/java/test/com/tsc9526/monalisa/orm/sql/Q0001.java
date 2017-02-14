@@ -2,7 +2,7 @@ package test.com.tsc9526.monalisa.orm.sql;
 
 import com.tsc9526.monalisa.orm.Query;
 
-import com.tsc9526.monalisa.orm.compiler.SQLResourceManager;
+import com.tsc9526.monalisa.orm.mqs.SQLResourceManager;
 
 public class Q0001{
 	private static SQLResourceManager SQLRM=SQLResourceManager.getInstance();

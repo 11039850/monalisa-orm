@@ -45,6 +45,7 @@ import com.tsc9526.monalisa.tools.clazz.MelpClass;
 import com.tsc9526.monalisa.tools.clazz.MelpClass.FGS;
 import com.tsc9526.monalisa.tools.clazz.MelpJavaBeans;
 import com.tsc9526.monalisa.tools.clazz.Shallowable;
+import com.tsc9526.monalisa.tools.clazz.Specifiable;
 import com.tsc9526.monalisa.tools.datatable.DataMap;
 import com.tsc9526.monalisa.tools.logger.Logger;
 import com.tsc9526.monalisa.tools.misc.MelpException;
@@ -60,7 +61,7 @@ import com.tsc9526.monalisa.tools.string.MelpString;
  * 
  */
 @SuppressWarnings({ "rawtypes", "unchecked" })
-public abstract class Model<T extends Model> implements Serializable ,Shallowable<T>{
+public abstract class Model<T extends Model> implements Serializable ,Shallowable<T>,Specifiable{
 	static Logger logger=Logger.getLogger(Model.class);
 
 	private static final long serialVersionUID = 703976566431364670L;
@@ -69,12 +70,13 @@ public abstract class Model<T extends Model> implements Serializable ,Shallowabl
 	private   static Map<String, Table>  hCachePartitionTables = new ConcurrentHashMap<String, Table>();
 	private   static Map<String, String> hCacheHistoryTables   = new ConcurrentHashMap<String, String>();
 
-	protected transient ModelMeta $modelMeta;
+	protected transient ModelMeta   $modelMeta;
 	protected transient ModelHolder $modelHolder;
-	protected transient DBConfig $db;
+	
+	protected transient DBConfig    $db;
 
-	protected String   $tableName;
-	protected String[] $primaryKeys;
+	protected transient String      $tableName;
+	protected transient String[]    $primaryKeys;
 
 	public Model() {
 	}
@@ -199,14 +201,19 @@ public abstract class Model<T extends Model> implements Serializable ,Shallowabl
 	/**
 	 * Load by primary keys
 	 * 
-	 * @return this;
+	 * @return this model if load success, otherwise null;
 	 */
 	public T load() {
 		Query query = dialect().load(this);
 
 		query.use(db());
 
+		before(ModelEvent.LOAD);
+		
 		Object r = query.load(this);
+		
+		after(ModelEvent.LOAD, r!=null?1:-1);
+		
 		return (T) r;
 	}
 
@@ -405,7 +412,7 @@ public abstract class Model<T extends Model> implements Serializable ,Shallowabl
 		return false;
 	}
 
-	public void before(ModelEvent event) {
+	protected void before(ModelEvent event) {
 		if (event == ModelEvent.INSERT || event == ModelEvent.UPDATE || event==ModelEvent.REPLACE) {
 			Date now = new Date();
 
@@ -452,6 +459,8 @@ public abstract class Model<T extends Model> implements Serializable ,Shallowabl
 					}
 				}
 			}
+		}else if(event==ModelEvent.LOAD){
+			entity(false);
 		}
 
 		if (mm().listener != null) {
@@ -459,7 +468,7 @@ public abstract class Model<T extends Model> implements Serializable ,Shallowabl
 		}
 	}
 
-	public void after(ModelEvent event, int r) {
+	protected void after(ModelEvent event, int r) {
 		if (r >= 0) {
 			dirty(false);
 
@@ -481,9 +490,7 @@ public abstract class Model<T extends Model> implements Serializable ,Shallowabl
 				break;
 			}
 		}
-
-		holder().clearChanges();
-		
+ 
 		if (mm().listener != null) {
 			mm().listener.after(event, this, r);
 		}

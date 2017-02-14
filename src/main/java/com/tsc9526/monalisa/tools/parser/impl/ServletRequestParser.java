@@ -17,7 +17,10 @@
 package com.tsc9526.monalisa.tools.parser.impl;
 
 import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.tsc9526.monalisa.tools.clazz.Shallowable;
 import com.tsc9526.monalisa.tools.clazz.MelpClass;
@@ -32,7 +35,14 @@ import com.tsc9526.monalisa.tools.parser.Parser;
 public class ServletRequestParser implements Parser<javax.servlet.ServletRequest>{
 	
 	public boolean parse(Object target, javax.servlet.ServletRequest data, String... mappings) {
-		KeyMapping map=new KeyMapping(data.getParameterMap(),mappings);
+		Map<String,String> pm=new LinkedHashMap<String, String>();
+		Enumeration<String> e=data.getParameterNames();
+		while(e.hasMoreElements()){
+			String name=e.nextElement();
+			pm.put(name,data.getParameter(name));
+		}
+				
+		KeyMapping map=new KeyMapping(pm,mappings);
 		
 		for(FGS fgs:MelpClass.getFields(target)){
 			fgs.mapto(map, target);

@@ -118,7 +118,7 @@ public class Csv{
 					if(row.getClass().isPrimitive() || row.getClass().getName().startsWith("java.")){
 						vs[i++]=row;
 					}else{					
-						ClassAssist mc=MelpClass.getMetaClass(row.getClass());
+						ClassAssist mc=MelpClass.getClassAssist(row.getClass());
 						for(DataColumn column:headers){
 							FGS fgs=mc.getField(column.getName());
 							Object v=null;

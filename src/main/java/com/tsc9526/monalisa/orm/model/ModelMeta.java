@@ -263,7 +263,7 @@ public class ModelMeta{
 	}
 	
 	protected List<FGS> loadModelFields(Model<?> model){
-		ClassAssist metaClass=MelpClass.getMetaClass(model.getClass());
+		ClassAssist metaClass=MelpClass.getClassAssist(model.getClass());
 		List<FGS> fields=metaClass.getFieldsWithAnnotation(Column.class);						
 		if(fields.size()==0){
 			record=true;
@@ -390,7 +390,7 @@ public class ModelMeta{
 	 */
 	public Model<?> copyModel(Model<?> model){
 		try{
-			Model<?> x=model.getClass().newInstance();
+			Model<?> x=model.shallow();
   
 			x.holder().updateKey  = model.holder().updateKey;			
 			x.holder().readonly   = model.holder().readonly;
@@ -399,14 +399,12 @@ public class ModelMeta{
 			 
 			x.holder().fieldFilterExcludeMode=model.holder().fieldFilterExcludeMode;
 			x.holder().fieldFilterSets.addAll(model.holder().fieldFilterSets);
-			 
+		 	
 			for(FGS fgs:model.fields()){				
 				Object value=fgs.getObject(model);
 				fgs.setObject(x, value);
 			}
-//			x.holder().changedFields.clear();
-//			x.holder().changedFields.addAll(model.holder().changedFields);
- 			
+ 			 	
 			return x;
 		}catch(Exception e){
 			throw new RuntimeException(e);

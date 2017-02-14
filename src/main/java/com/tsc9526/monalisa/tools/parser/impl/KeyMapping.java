@@ -20,19 +20,15 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.tsc9526.monalisa.tools.clazz.MelpClass;
-import com.tsc9526.monalisa.tools.datatable.CaseInsensitiveMap;
-
 /**
  * 
  * @author zzg.zhou(11039850@qq.com)
  */
 public class KeyMapping extends HashMap<Object,Object> implements Serializable, Cloneable {
     private static final long serialVersionUID = -1074655917369299456L;
-
-    private boolean caseSensitive = false;
+ 
     private String  prefix=null; 
-    private Map<String, String> hNameMapping=new CaseInsensitiveMap<String>();
+    private Map<String, String> hNameMapping=new HashMap<String,String>();
     
     public KeyMapping(Map<String,?> data, String... mappings){
     	super();
@@ -45,9 +41,7 @@ public class KeyMapping extends HashMap<Object,Object> implements Serializable, 
     	if(mappings!=null){
         	for(String m:mappings){
         		if(m.indexOf("=")<0){
-        			if(m.indexOf(MelpClass.OPTIONS_NAME_CASE_SENSITIVE)>=0){
-        				caseSensitive=true;
-        			}else if(m.startsWith("~")){
+        			if(m.startsWith("~")){
         				prefix=m.substring(1);							 
 					}	        			 
         		}
@@ -106,14 +100,6 @@ public class KeyMapping extends HashMap<Object,Object> implements Serializable, 
     }
     
     protected Object convertKey(Object key) {
-        if (key != null) {
-        	if(caseSensitive){
-	    		return key.toString();
-	    	}else{
-	    		return key.toString().toLowerCase();
-        	}	
-        } else {
-            return null;
-        }
+        return key;
     } 
 }

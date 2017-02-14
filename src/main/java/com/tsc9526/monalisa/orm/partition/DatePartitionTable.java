@@ -72,7 +72,7 @@ public class DatePartitionTable implements Partition<Model>{
 			dateField=args[1];
 		}
 		
-		ClassAssist mc=MelpClass.getMetaClass(model.getClass());
+		ClassAssist mc=MelpClass.getClassAssist(model.getClass());
 		FGS fgs=mc.getField(dateField);
 		if(fgs==null){
 			throw new RuntimeException("DateTime field: "+dateField+" not found in modelClass: "+model.getClass().getName());

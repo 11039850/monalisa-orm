@@ -39,11 +39,10 @@ import com.tsc9526.monalisa.orm.meta.MetaColumn;
 import com.tsc9526.monalisa.orm.meta.MetaTable;
 import com.tsc9526.monalisa.orm.meta.Name;
 import com.tsc9526.monalisa.orm.model.Model;
-import com.tsc9526.monalisa.orm.model.ModelEvent;
 import com.tsc9526.monalisa.tools.clazz.MelpClass;
-import com.tsc9526.monalisa.tools.clazz.MelpJavaBeans;
-import com.tsc9526.monalisa.tools.clazz.MelpClass.FGS;
 import com.tsc9526.monalisa.tools.clazz.MelpClass.ClassAssist;
+import com.tsc9526.monalisa.tools.clazz.MelpClass.FGS;
+import com.tsc9526.monalisa.tools.clazz.MelpJavaBeans;
 import com.tsc9526.monalisa.tools.datatable.DataMap;
 import com.tsc9526.monalisa.tools.io.MelpClose;
 import com.tsc9526.monalisa.tools.string.MelpSQL;
@@ -141,9 +140,7 @@ public class ResultHandler<T> {
 		if (clazz == null && model.use() == null) {
 			model.use(query.getDb());
 		}
-
-		model.before(ModelEvent.LOAD);
-
+ 
 		ResultSetMetaData rsmd = rs.getMetaData();
 
 		for (int i = 1; i <= rsmd.getColumnCount(); i++) {
@@ -160,12 +157,10 @@ public class ResultHandler<T> {
 				fgs.setObject(model, v);
 			}
 		}
-
-		model.after(ModelEvent.LOAD, 0);
 	}
 
 	protected T loadResult(ResultSet rs, T result) throws SQLException {
-		ClassAssist metaClass = MelpClass.getMetaClass(result.getClass());
+		ClassAssist metaClass = MelpClass.getClassAssist(result.getClass());
 
 		ResultSetMetaData rsmd = rs.getMetaData();
 

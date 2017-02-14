@@ -30,7 +30,7 @@ import com.tsc9526.monalisa.tools.parser.Parser;
  */
 public class BeanParser implements Parser<Object>{
 	public boolean parse(Object target,Object data,String... mappings){
-		ClassAssist source=MelpClass.getMetaClass(data);
+		ClassAssist source=MelpClass.getClassAssist(data);
 		
 		Map<String, String> hNameMapping=new HashMap<String, String>();
 		if(mappings!=null){

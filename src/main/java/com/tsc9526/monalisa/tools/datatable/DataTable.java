@@ -269,7 +269,7 @@ public class DataTable<E> extends ArrayList<E> {
 							headers.add(new DataColumn("c"+k).setIndex(index++));
 						}
 					}else{					
-						ClassAssist mc=MelpClass.getMetaClass(v.getClass());
+						ClassAssist mc=MelpClass.getClassAssist(v.getClass());
 						for(FGS fgs:mc.getFields()){
 							String fname=fgs.getFieldName();
 							String cname=null;
@@ -351,7 +351,7 @@ public class DataTable<E> extends ArrayList<E> {
 							}
 						}
 					}else{					
-						ClassAssist mc=MelpClass.getMetaClass(v.getClass());
+						ClassAssist mc=MelpClass.getClassAssist(v.getClass());
 						for(FGS fgs:mc.getFields()){
 							String fname=fgs.getFieldName();
 							String cname=null;

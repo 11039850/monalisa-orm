@@ -85,7 +85,7 @@ public class MelpClass {
 	}
 	 
 	
-	public static ClassAssist getMetaClass(Class<?> clazz) {
+	public static ClassAssist getClassAssist(Class<?> clazz) {
 		if(clazz==null){
 			return null;
 		}
@@ -98,17 +98,21 @@ public class MelpClass {
 		return mc;
 	}
 	 
-	public static ClassAssist getMetaClass(Object bean) {
-		return getMetaClass(bean.getClass());
+	public static ClassAssist getClassAssist(Object bean) {
+		return getClassAssist(bean.getClass());
 	}
 	 
 	
 	public static Collection<FGS> getFields(Class<?> clazz){
-		return getMetaClass(clazz).getFields();	
+		return getClassAssist(clazz).getFields();	
 	}
 	
 	public static Collection<FGS> getFields(Object bean){
-		return getMetaClass(bean).getFields();	
+		if(bean instanceof Specifiable){
+			return ((Specifiable)bean).fields();
+		}else{
+			return getClassAssist(bean).getFields();
+		}
 	}
 	
 	public static Class<?> forName(String className)throws ClassNotFoundException{
@@ -184,8 +188,8 @@ public class MelpClass {
 	 * @return The to Object
 	 */
 	public static <T> T copy(Object from,T to){
-		ClassAssist fm=getMetaClass(from);
-		ClassAssist ft=getMetaClass(to);
+		ClassAssist fm=getClassAssist(from);
+		ClassAssist ft=getClassAssist(to);
 		
 		for(FGS fgs:fm.getFields()){
 			FGS x=ft.getField(fgs.getFieldName());
@@ -234,12 +238,7 @@ public class MelpClass {
 	
 	
 	private static Map<Class<?>,Parser<?>> parsers=new LinkedHashMap<Class<?>,Parser<?>>();
-	 
-	/**
-	 * 区分参数名的大小写, 默认: false
-	 */
-	public final static String OPTIONS_NAME_CASE_SENSITIVE  = "[NAME_CASE_SENSITIVE]";
-	 
+	   
 	static{
 		MelpLib.tryLoadGson();
 		 
@@ -297,7 +296,20 @@ public class MelpClass {
 		return false;
 	}
 	
-
+	/**
+	 * Parse multi-objects from ServletRequest
+	 * 
+	 * @param targetTemplate one target object template
+	 * @param data ServletRequest data
+	 * @param mappings see #parse(Object,Object,String...)
+	 * @return
+	 * 
+	 * @see #parse(Object,Object,String...)
+	 */
+	public static <T> List<T> parseArrays(T targetTemplate, javax.servlet.ServletRequest data, String... mappings) {
+		return ServletRequestParser.parseArrays(targetTemplate, data, mappings);
+	}
+ 
 	public static class ClassAssist {
 		private Class<?> clazz;
 		private Map<String, FGS> hFields = new LinkedHashMap<String, FGS>();

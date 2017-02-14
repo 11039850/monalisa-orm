@@ -101,12 +101,14 @@ public class TestGenterator {
 		
 		t1=new TestTable1(maxId+1);
 		Assert.assertTrue(!t1.entity());
-		
 		t1=new TestTable1(maxId+1).load();
+		Assert.assertNotNull(t1.load());
 		Assert.assertTrue(t1.entity());
 		
-		t1=new TestTable1(maxId+2).load();
-		Assert.assertTrue(!t1.entity());
+		TestTable1 t2=new TestTable1(maxId+2);
+		Assert.assertTrue(!t2.entity());
+		Assert.assertNull(t2.load());
+		Assert.assertTrue(!t2.entity());
 		
 		Map<Integer,TestTable1> ms=TestTable1.WHERE().id.ge(0).SELECT().selectToMap();
 		Assert.assertTrue(ms.size()>0);

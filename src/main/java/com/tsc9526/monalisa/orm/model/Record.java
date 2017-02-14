@@ -57,6 +57,7 @@ public class Record extends Model<Record>{
 		return new Example().createCriteria();
 	}
 	  
+	
 	public class Example extends com.tsc9526.monalisa.orm.criteria.Example<Criteria, Model<Record>>{
  
 		protected Criteria createInternal() {
@@ -140,6 +141,20 @@ public class Record extends Model<Record>{
 		super(tableName,primaryKeys);
 	}
 
+	protected ModelMeta mm(){
+		ModelMeta m=super.mm();
+		
+		if($tableName == null){
+			$tableName=m.tableName;
+		}
+		
+		if($primaryKeys == null || $primaryKeys.length==0){
+			$primaryKeys=m.primaryKeys;
+		}
+		
+		return m;
+	}
+	
 	public String getString(String key,String defaultValue){
 		String v=getString(key);
 		if(v==null){
