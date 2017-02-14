@@ -30,7 +30,7 @@ import org.eclipse.jdt.launching.JavaRuntime;
 
 import com.tsc9526.monalisa.orm.datasource.DataSourceManager;
 import com.tsc9526.monalisa.orm.datasource.DbProp;
-import com.tsc9526.monalisa.orm.resources.PkgNames;
+import com.tsc9526.monalisa.tools.clazz.PkgNames;
 import com.tsc9526.monalisa.tools.io.MelpClose;
 import com.tsc9526.monalisa.tools.string.MelpString;
 

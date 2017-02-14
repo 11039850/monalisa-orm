@@ -34,7 +34,7 @@ import com.tsc9526.monalisa.orm.datasource.DbProp;
 import com.tsc9526.monalisa.orm.generator.DBGenerator;
 import com.tsc9526.monalisa.orm.generator.DBGeneratorProcessing;
 import com.tsc9526.monalisa.orm.generator.DBGeneratorProcessingInEclipse;
-import com.tsc9526.monalisa.orm.resources.PkgNames;
+import com.tsc9526.monalisa.tools.clazz.PkgNames;
 import com.tsc9526.monalisa.tools.logger.Logger;
 import com.tsc9526.monalisa.tools.misc.MelpEclipse;
 import com.tsc9526.monalisa.tools.string.MelpString;

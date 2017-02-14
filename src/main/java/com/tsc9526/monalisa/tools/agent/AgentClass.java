@@ -30,12 +30,12 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import com.tsc9526.monalisa.orm.datasource.DBTasks;
 import com.tsc9526.monalisa.orm.datasource.DbProp;
-import com.tsc9526.monalisa.orm.resources.PkgNames;
 import com.tsc9526.monalisa.tools.clazz.CompilePackage;
 import com.tsc9526.monalisa.tools.clazz.Compiler;
 import com.tsc9526.monalisa.tools.clazz.MelpClass;
 import com.tsc9526.monalisa.tools.clazz.MelpClasspath;
 import com.tsc9526.monalisa.tools.clazz.MelpLib;
+import com.tsc9526.monalisa.tools.clazz.PkgNames;
 import com.tsc9526.monalisa.tools.io.MelpFile;
 import com.tsc9526.monalisa.tools.logger.Logger;
 import com.tsc9526.monalisa.tools.misc.MelpException;
