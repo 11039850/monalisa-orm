@@ -64,7 +64,7 @@ public class GetAction extends Action{
 					}
 				}
 			}else{
-				return new Response(Response.REQUEST_BAD_PARAMETER,"Missing table, using HEAD OR: /"+args.getPathDatabases()+"/your_table_name");
+				return new Response(Response.REQUEST_BAD_PARAMETER,"Missing table, add request parameter: method=HEAD OR: /"+args.getPathDatabases()+"/your_table_name");
 			}
 		}
 	}

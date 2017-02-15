@@ -191,19 +191,24 @@ public class DbQueryHttpServlet extends HttpServlet{
 				
 				printAuthWarn(prefix); 
 			}
-			 
-			List<String[]> userpwds=new ArrayList<String[]>();
-			for(String uv:MelpString.splits(authUsers)){
-				uv=uv.trim();
-				
-				int p=uv.indexOf(":");
-				String username=uv.substring(0,p).trim();
-				String password=uv.substring(p+1).trim();
-				
-				userpwds.add(new String[]{username,password});
-			}
 			
-			locator.addFilter(new DigestAuth(userpwds));
+			if(authUsers.equalsIgnoreCase("none") || authUsers.equalsIgnoreCase("false")){
+				String name    =sc.getInitParameter(prefix+".name");
+				logger.info("DBService: /"+name+" auth: none");
+			}else{
+				List<String[]> userpwds=new ArrayList<String[]>();
+				for(String uv:MelpString.splits(authUsers)){
+					uv=uv.trim();
+					
+					int p=uv.indexOf(":");
+					String username=uv.substring(0,p).trim();
+					String password=uv.substring(p+1).trim();
+					
+					userpwds.add(new String[]{username,password});
+				}
+				
+				locator.addFilter(new DigestAuth(userpwds));
+			}
 		}
 	}
 	
@@ -211,7 +216,8 @@ public class DbQueryHttpServlet extends HttpServlet{
 		logger.warn("Missing auth config\r\n"+/**~!{*/""
 				+ "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
 				+ "\r\n!!! Missing servlet init parameter: " +((prefix))+ ".auth.users in web.xml, "
-				+ "\r\n!!! default authorization(user:password,user2:password2 ...) is monalisa:monalisa"
+				+ "\r\n!!! default authorization is monalisa:monalisa (user:password,user2:password2 ...) "
+				+ "\r\n!!! set to \"none\" means disable auth"
 				+ "\r\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
 			+ "\r\n"/**}*/.trim());
 	}

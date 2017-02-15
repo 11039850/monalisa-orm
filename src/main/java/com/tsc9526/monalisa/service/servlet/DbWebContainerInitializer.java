@@ -42,13 +42,10 @@ import com.tsc9526.monalisa.tools.string.MelpString;
 @HandlesTypes(DB.class)
 public class DbWebContainerInitializer implements ServletContainerInitializer {
 	static Logger logger=Logger.getLogger(DbWebContainerInitializer.class);
-	
+	 
 	public void onStartup(Set<Class<?>> dbAnnotationClasses, ServletContext servletContext)throws ServletException {
-		String path=servletContext.getContextPath();
-		if(path.length()==0){
-			path="[ROOT]";
-		}
-		logger.info("Startup web: "+path);
+		String webroot=servletContext.getContextPath();
+		logger.info("Startup web: "+ (webroot.length()==0?"/":webroot) );
 	
 		servletContext.addListener(DestoryListener.class);
 		
@@ -63,7 +60,6 @@ public class DbWebContainerInitializer implements ServletContainerInitializer {
 		if(dbsc.size()>0){
 			startDBService(servletContext,dbsc);
 		}
-		
 	}
 	
 	protected void startDBService(ServletContext servletContext,List<Class<?>> dbAnnotationClasses){
@@ -73,7 +69,7 @@ public class DbWebContainerInitializer implements ServletContainerInitializer {
 			DBConfig db=DBConfig.fromClass(clazz);
 			
 			String configfile=db.getCfg().getConfigFile();
-			String prefix=DbQueryHttpServlet.DB_CFG_PREFIX+(i+1)+".";
+			String prefix=DbQueryHttpServlet.DB_CFG_PREFIX+(i+1);
 			
 			String cfgname=db.getCfg().getConfigName();
 			if(MelpString.isEmpty(cfgname)){
@@ -92,7 +88,8 @@ public class DbWebContainerInitializer implements ServletContainerInitializer {
 				logger.warn("Missing auth config\r\n"+/**~!{*/""
 						+ "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
 						+ "\r\n!!! Missing auth config: " +((cfgfile[0]))+ ".dbs.auth.users in " +((cfgfile[1]))+ ", "
-						+ "\r\n!!! default authorization(user:password,user2:password2 ...) is monalisa:monalisa"
+						+ "\r\n!!! default authorization is monalisa:monalisa (user:password,user2:password2 ...) "
+						+ "\r\n!!! set to \"none\" means disable auth"
 						+ "\r\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
 					+ "\r\n"/**}*/.trim());
 			}
@@ -103,9 +100,12 @@ public class DbWebContainerInitializer implements ServletContainerInitializer {
 		for(int i=0;i<dbAnnotationClasses.size();i++){
 			Class<?> clazz=dbAnnotationClasses.get(i);
 			DBConfig db=DBConfig.fromClass(clazz);
-		 	
 			Properties dbsp=db.getCfg().getDbsProperties();
-			    
+			
+			String name=dbsp.getProperty("name");
+			String spath=servletContext.getContextPath()+"/dbs/"+name;
+			logger.info("Add db service context: "+spath);
+			     
 			String prefix=DbQueryHttpServlet.DB_CFG_PREFIX+(i+1)+".";
 			
 			Map<String, String> initParameters=new LinkedHashMap<String, String>();
