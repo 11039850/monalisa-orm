@@ -332,24 +332,27 @@ public class DBConfig implements Closeable{
 	
 	public Set<String> getTables(boolean includeView){
 		String[] types=includeView? new String[]{"TABLE","VIEW"}  : new String[]{"TABLE"};
+		
+		Connection conn=null;
+		ResultSet rs=null;
 		try{
-			Connection conn=getDataSource().getConnection();
+			conn=getDataSource().getConnection();
 			 
 			Set<String> tables=new LinkedHashSet<String>();
 			 
 			DatabaseMetaData dbm=conn.getMetaData();
-			ResultSet rs=dbm.getTables("", "","%",types );
+			rs=dbm.getTables("", "","%",types );
 			while(rs.next()){
 				String table=rs.getString("TABLE_NAME");
 				table=Dialect.getRealname(table);
 				
 				tables.add(table);
 			}
-			MelpClose.close(rs,conn);
-			
 			return tables;
 		}catch(SQLException e){
 			throw new RuntimeException(e);
+		}finally{
+			MelpClose.close(rs,conn);
 		}
 	}
 	
@@ -700,21 +703,21 @@ public class DBConfig implements Closeable{
 				if(new File(defpath).exists()==false && annotationClass!=null){
 					basepath=MelpEclipse.findCfgBasePathByClass(annotationClass);
 					if(basepath!=null){
-						logger.info("find("+key+") cfg base path from class: "+annotationClass.getName()+", path: "+basepath+", file: "+configFile);
+						logger.info("Search("+key+") base path from class: "+annotationClass.getName()+", path: "+basepath+", file: "+configFile);
 						
 						return basepath;
 					}else{
-						logger.info("find("+key+") cfg base path use default path: "+DbProp.CFG_ROOT_PATH+", file: "+configFile);
+						logger.info("Search("+key+") base path use default path: "+DbProp.CFG_ROOT_PATH+", file: "+configFile);
 						
 						return DbProp.CFG_ROOT_PATH;
 					}
 				}else{
-					logger.info("find("+key+") cfg base path by default path: "+DbProp.CFG_ROOT_PATH+", file: "+configFile);
+					logger.info("Search("+key+") base path by default path: "+DbProp.CFG_ROOT_PATH+", file: "+configFile);
 					
 					return DbProp.CFG_ROOT_PATH;
 				}
 			}else{
-				logger.info("find("+key+") cfg base path by system property: DB@"+key+", path: "+basepath+", file: "+configFile);
+				logger.info("Search("+key+") base path by system property: DB@"+key+", path: "+basepath+", file: "+configFile);
 				
 				return basepath;
 			}
@@ -722,7 +725,7 @@ public class DBConfig implements Closeable{
 		
 		protected boolean loadCfg(CfgFile cf,Properties prop){
 			if(cf.cfgFile.exists()){
-				logger.info("Load DB("+key+") config from: "+cf.cfgFile.getAbsolutePath());				
+				logger.info("Load ("+key+") base path from: "+cf.cfgFile.getAbsolutePath());				
 				try{
 					cf.lastModified=cf.cfgFile.lastModified();
 					 
