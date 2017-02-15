@@ -19,7 +19,6 @@ package com.tsc9526.monalisa.orm.generator;
 
 import java.io.PrintWriter;
 import com.tsc9526.monalisa.tools.template.jsp.JspContext;
-import com.tsc9526.monalisa.tools.annotation.Alias;
 import com.tsc9526.monalisa.orm.Version;
 import com.tsc9526.monalisa.orm.meta.MetaTable;
 import com.tsc9526.monalisa.orm.meta.MetaColumn;
@@ -42,18 +41,7 @@ public class DBWriterSelect{
 		
 		return s.trim().replace("\"","\\\"").replace("\r","\\r").replace("\n","\\n");
 	}
-
-	String getImportAlias(MetaTable table){
-		for(MetaColumn f:table.getColumns()){ 
-			String cname=f.getName();
-			
-			if(cname!=null && cname.length()>0 && f.getTable()!=null){	
-				return "import "+Alias.class.getName()+";";
-			}
-		}
-		return "";
-	}
-	
+ 
 	String getComments(MetaTable table,MetaColumn c,String params,String leftPadding){
 		String cname=c.getName();
 		
@@ -129,10 +117,7 @@ public class DBWriterSelect{
 				r+=", "+n+"="+f+colname+"$"+n;
 			}
 			r+=")";
-			
-			r+="\r\n"+leftPadding;
-			r+="@Alias(\""+cname+"\")";
-			
+			 
 			return r;
 		}else{
 			return "";
@@ -165,10 +150,7 @@ String   see        =(String)request.getAttribute("see");
 			out.print(i);
 			out.print(";");
 			} 		out.println("");
-			out.println("");
-			out.print(getImportAlias(table));
-			out.println("");
-			out.println(" ");
+			out.println("  ");
 			out.println("/**");
 			out.print(" * Auto generated code by monalisa ");
 			out.print(Version.getVersion());

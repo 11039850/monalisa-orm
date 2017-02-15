@@ -1,5 +1,4 @@
-<%@page import="com.tsc9526.monalisa.tools.annotation.Alias"
-%><%@page import="com.tsc9526.monalisa.orm.Version"
+<%@page import="com.tsc9526.monalisa.orm.Version"
 %><%@page import="com.tsc9526.monalisa.orm.meta.MetaTable"
 %><%@page import="com.tsc9526.monalisa.orm.meta.MetaColumn"
 %><%@page import="java.util.Set"%><%
@@ -11,9 +10,7 @@ String   see        =(String)request.getAttribute("see");
  
 <%for(Object i:imports){ %>
 import <%=i%>;<%} %>
-
-<%=getImportAlias(table)%>
- 
+  
 /**
  * Auto generated code by monalisa <%=Version.getVersion()%>
  *
@@ -71,18 +68,7 @@ public class <%=table.getJavaName()%> implements java.io.Serializable{
 		
 		return s.trim().replace("\"","\\\"").replace("\r","\\r").replace("\n","\\n");
 	}
-
-	String getImportAlias(MetaTable table){
-		for(MetaColumn f:table.getColumns()){ 
-			String cname=f.getName();
-			
-			if(cname!=null && cname.length()>0 && f.getTable()!=null){	
-				return "import "+Alias.class.getName()+";";
-			}
-		}
-		return "";
-	}
-	
+ 
 	String getComments(MetaTable table,MetaColumn c,String params,String leftPadding){
 		String cname=c.getName();
 		
@@ -158,10 +144,7 @@ public class <%=table.getJavaName()%> implements java.io.Serializable{
 				r+=", "+n+"="+f+colname+"$"+n;
 			}
 			r+=")";
-			
-			r+="\r\n"+leftPadding;
-			r+="@Alias(\""+cname+"\")";
-			
+			 
 			return r;
 		}else{
 			return "";

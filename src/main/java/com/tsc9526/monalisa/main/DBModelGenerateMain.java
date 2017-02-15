@@ -33,13 +33,13 @@ import com.tsc9526.monalisa.tools.logger.Logger;
  * <br>
  * @author zzg.zhou(11039850@qq.com)
  */
-public class ModelGenerateMain {
-	static Logger logger=Logger.getLogger(ModelGenerateMain.class.getName());
+public class DBModelGenerateMain {
+	static Logger logger=Logger.getLogger(DBModelGenerateMain.class.getName());
 	
 	public static void main(String[] args) throws Exception{
 		if(args.length<2){			
 			String usage="Usage: \r\n"
-					+ModelGenerateMain.class.getName()+" <class_with_db_annotation> <output_java_path> [out_resource_path = output_java_path]";
+					+DBModelGenerateMain.class.getName()+" <class_with_db_annotation> <output_java_path> [out_resource_path = output_java_path]";
 			System.out.println(usage);
 		}else{
 			generateModelClass(Class.forName(args[0]),args[1],args.length>2?args[2]:args[1]);	

@@ -37,7 +37,7 @@ import com.tsc9526.monalisa.orm.datasource.ConfigClass;
  * <br><br>
  * More properties setup, see：  {@link #configFile}  
  * 
- * @see com.tsc9526.monalisa.main.ModelGenerateMain
+ * @see com.tsc9526.monalisa.main.DBModelGenerateMain
  * 
  * @author zzg.zhou(11039850@qq.com)
  *

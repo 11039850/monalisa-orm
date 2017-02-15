@@ -35,29 +35,37 @@ import com.tsc9526.monalisa.tools.template.jsp.JspText;
  * 
  * @author zzg.zhou(11039850@qq.com)
  */ 
-public class CodeAssistMain {
+public class MSWriteMain {
 	public static void main(String[] args)throws Exception{
-		CodeAssistMain jwc=new CodeAssistMain();
+		MSWriteMain jwc=new MSWriteMain();
 		jwc.createDBModelWriter();
 		jwc.createDBSelectWriter();
 		
 	}
 	public void createDBModelWriter()throws Exception{
-		File jspFile=new File("./src/main/resources/com/tsc9526/monalisa/orm/resources/template/model.jsp");
+		String pathTpl  ="src/main/resources/com/tsc9526/monalisa/orm/resources/template/model.jsp";
+		String pathJava ="src/main/java/com/tsc9526/monalisa/orm/generator/DBWriterModel.java";
+		
+		File jspFile=new File(pathTpl);
 		Jsp jsp=new Jsp(jspFile);
 		
-		FileOutputStream fos=new FileOutputStream("src/main/java/com/tsc9526/monalisa/orm/generator/DBWriterModel.java");
+		FileOutputStream fos=new FileOutputStream(pathJava);
 		writeToJava(jsp,new JavaWriter(fos), "com.tsc9526.monalisa.orm.generator", "DBWriterModel");
 		
+		System.out.println("Generate java file: "+pathJava+", template: "+pathTpl);
 	}
 	
 	public void createDBSelectWriter()throws Exception{
-		File jspFile=new File("./src/main/resources/com/tsc9526/monalisa/orm/resources/template/select.jsp");
+		String pathTpl  ="src/main/resources/com/tsc9526/monalisa/orm/resources/template/select.jsp";
+		String pathJava ="src/main/java/com/tsc9526/monalisa/orm/generator/DBWriterSelect.java";
+		
+		File jspFile=new File(pathTpl);
 		Jsp jsp=new Jsp(jspFile);
 		
-		FileOutputStream fos=new FileOutputStream("src/main/java/com/tsc9526/monalisa/orm/generator/DBWriterSelect.java");
+		FileOutputStream fos=new FileOutputStream(pathJava);
 		writeToJava(jsp,new JavaWriter(fos), "com.tsc9526.monalisa.orm.generator", "DBWriterSelect");
 		
+		System.out.println("Generate java file: "+pathJava+", template: "+pathTpl);
 	}
 	
 	public void writeToJava(Jsp jsp,PrintWriter w,String packageName,String javaName)throws IOException{
@@ -92,7 +100,7 @@ public class CodeAssistMain {
 			}
 		}
 		
-		String basepath=new File(".").getAbsolutePath();
+		String basepath=new File("").getAbsolutePath();
 		basepath=jsp.getFilePath().substring(basepath.length()+1);
 		
 		w.println("");
