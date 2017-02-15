@@ -14,10 +14,11 @@
  *	You should have received a copy of the GNU Lesser General Public License
  *	along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************************/
-package com.tsc9526.monalisa.orm.generator;
+package com.tsc9526.monalisa.main;
 
 import java.io.File;
 
+import com.tsc9526.monalisa.orm.generator.DBGeneratorLocal;
 import com.tsc9526.monalisa.orm.mqs.SQLGenerator;
 import com.tsc9526.monalisa.tools.logger.Logger;
 
@@ -32,13 +33,13 @@ import com.tsc9526.monalisa.tools.logger.Logger;
  * <br>
  * @author zzg.zhou(11039850@qq.com)
  */
-public class DBGeneratorMain {
-	static Logger logger=Logger.getLogger(DBGeneratorMain.class.getName());
+public class ModelGenerateMain {
+	static Logger logger=Logger.getLogger(ModelGenerateMain.class.getName());
 	
 	public static void main(String[] args) throws Exception{
 		if(args.length<2){			
 			String usage="Usage: \r\n"
-					+DBGeneratorMain.class.getName()+" <class_with_db_annotation> <output_java_path> [out_resource_path = output_java_path]";
+					+ModelGenerateMain.class.getName()+" <class_with_db_annotation> <output_java_path> [out_resource_path = output_java_path]";
 			System.out.println(usage);
 		}else{
 			generateModelClass(Class.forName(args[0]),args[1],args.length>2?args[2]:args[1]);	

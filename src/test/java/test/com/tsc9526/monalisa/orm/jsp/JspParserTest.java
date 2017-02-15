@@ -21,8 +21,8 @@ import org.testng.annotations.Test;
 
 import test.com.tsc9526.monalisa.orm.sql.Q0001;
 
+import com.tsc9526.monalisa.main.ModelGenerateMain;
 import com.tsc9526.monalisa.orm.Query;
-import com.tsc9526.monalisa.orm.generator.DBGeneratorMain;
 import com.tsc9526.monalisa.orm.mqs.SQLResourceManager;
 import com.tsc9526.monalisa.tools.datatable.DataMap;
 import com.tsc9526.monalisa.tools.datatable.DataTable;
@@ -36,7 +36,7 @@ import com.tsc9526.monalisa.tools.template.jsp.JspPage;
 public class JspParserTest {
 	
 	public void testGenerate(){
-		DBGeneratorMain.generateSqlQueryClass("src/test/java");
+		ModelGenerateMain.generateSqlQueryClass("src/test/java");
 	}
 	
 	public void testQueryByQueryId()throws Exception{

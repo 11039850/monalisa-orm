@@ -14,7 +14,7 @@
  *	You should have received a copy of the GNU Lesser General Public License
  *	along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************************/
-package com.tsc9526.monalisa.orm.utils;
+package com.tsc9526.monalisa.main;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -35,9 +35,9 @@ import com.tsc9526.monalisa.tools.template.jsp.JspText;
  * 
  * @author zzg.zhou(11039850@qq.com)
  */ 
-public class SimpleCodeGen {
+public class CodeAssistMain {
 	public static void main(String[] args)throws Exception{
-		SimpleCodeGen jwc=new SimpleCodeGen();
+		CodeAssistMain jwc=new CodeAssistMain();
 		jwc.createDBModelWriter();
 		jwc.createDBSelectWriter();
 		

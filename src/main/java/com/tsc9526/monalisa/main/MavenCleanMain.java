@@ -14,20 +14,21 @@
  *	You should have received a copy of the GNU Lesser General Public License
  *	along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************************/
-package com.tsc9526.monalisa.tools.maven;
+package com.tsc9526.monalisa.main;
 
 import java.io.File;
 import java.io.FileFilter;
 
 import com.tsc9526.monalisa.tools.io.MelpFile;
 import com.tsc9526.monalisa.tools.logger.Logger;
+import com.tsc9526.monalisa.tools.maven.Repository;
  
 /**
  * 
  * @author zzg.zhou(11039850@qq.com)
  */
-public class RepositoryClean {
-	static Logger logger=Logger.getLogger(RepositoryClean.class);
+public class MavenCleanMain {
+	static Logger logger=Logger.getLogger(MavenCleanMain.class);
 	
 	public static void main(String[] args) {
 		boolean remove=true;
@@ -36,14 +37,14 @@ public class RepositoryClean {
 			remove="true".equalsIgnoreCase(args[0]);
 		}
 		
-		RepositoryClean clean=new RepositoryClean(remove);
+		MavenCleanMain clean=new MavenCleanMain(remove);
 		clean.clean();
 	}
 	
 	private int     removeCount=0;
 	private boolean remove=true;
 	
-	public RepositoryClean(boolean remove){
+	public MavenCleanMain(boolean remove){
 		this.remove=remove;
 	}
 	
