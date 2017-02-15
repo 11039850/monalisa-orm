@@ -21,6 +21,7 @@ import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.io.Writer;
 
+import com.tsc9526.monalisa.orm.Version;
 import com.tsc9526.monalisa.orm.datasource.DBConfig;
 import com.tsc9526.monalisa.orm.meta.MetaTable;
 import com.tsc9526.monalisa.tools.io.JavaWriter;
@@ -47,7 +48,7 @@ public class DBGeneratorLocal extends DBGenerator{
 			throw new RuntimeException("Class: "+clazzWithDBAnnotation.getName()+" must be interface!");
 		}
 		
-		logger.info("Generate files, DB-CLASS: "+clazzWithDBAnnotation.getName()+", SOURCE-DIR: "+outputJavaDir+", RESOURCE-DIR: "+outputResourceDir);
+		logger.info("Generate("+Version.getVersion()+") files from local: DB-CLASS: "+clazzWithDBAnnotation.getName()+", SOURCE-DIR: "+outputJavaDir+", RESOURCE-DIR: "+outputResourceDir);
 		
 		String projectPath=".";
 		 		

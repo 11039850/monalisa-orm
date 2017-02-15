@@ -43,6 +43,15 @@ public class DBWriterModel{
 		return s.trim().replace("\"","\\\"").replace("\r","\\r").replace("\n","\\n");
 	}
 
+	String getAlias(MetaTable table,MetaColumn c,String leftPadding){
+		String cname=c.getName();
+		String jname=c.getJavaName();
+		
+		if(cname!=null && cname.length()>0 && !cname.equals(jname) && c.getTable()!=null){	
+			return leftPadding+"@Alias(\""+cname+"\")\r\n";
+		}
+		return "";
+	}
 	
 	String getComments(MetaTable table,MetaColumn c,String params,String leftPadding){
 		String cname=c.getName();
@@ -119,11 +128,7 @@ public class DBWriterModel{
 				r+=", "+n+"="+f+colname+"$"+n;
 			}
 			r+=")";
-			
-			
-			r+="\r\n"+leftPadding;	
-			r+="@Alias(\""+cname+"\")";
-			
+		 	
 			return r;
 		}else{
 			return "";
@@ -143,10 +148,10 @@ public class DBWriterModel{
 	}
 	public void service(JspContext request,PrintWriter out){
 		
-MetaTable    table =(MetaTable)request.getAttribute("table");
-Set<?>     imports =(Set<?>)request.getAttribute("imports");
-String   modelClass=(String)request.getAttribute("modelClass");
-String   dbi       =(String)request.getAttribute("dbi");
+	MetaTable    table =(MetaTable)request.getAttribute("table");
+	Set<?>     imports =(Set<?>)request.getAttribute("imports");
+	String   modelClass=(String)request.getAttribute("modelClass");
+	String   dbi       =(String)request.getAttribute("dbi");
 		out.print("package ");
 			out.print(table.getJavaPackage());
 			out.println(";");
@@ -306,7 +311,8 @@ String   dbi       =(String)request.getAttribute("dbi");
 		for(String a:annotation.split("\n")){
 			out.println("\t"+a+"\r\n");
 		}
-	}		out.println("");
+	}		out.print(getAlias(table, f, "\t"));
+			out.println("");
 			out.print("	private ");
 			out.print(f.getJavaType() );
 			out.print(" ");

@@ -79,7 +79,6 @@ public class TestTable1 extends com.tsc9526.monalisa.orm.model.Model<TestTable1>
 	* <li><B>remarks:</B> primary key
 	*/
 	@Column(table=M.TABLE, jdbcType=4, name=M.id$name, key=M.id$key, auto=M.id$auto, notnull=M.id$notnull, length=M.id$length, value=M.id$value, remarks=M.id$remarks)
-	@Alias("id")
 	private Integer id;	
 	
 	/**
@@ -89,7 +88,6 @@ public class TestTable1 extends com.tsc9526.monalisa.orm.model.Model<TestTable1>
 	* <li><B>remarks:</B> the name
 	*/
 	@Column(table=M.TABLE, jdbcType=12, name=M.name$name, key=M.name$key, auto=M.name$auto, notnull=M.name$notnull, length=M.name$length, value=M.name$value, remarks=M.name$remarks)
-	@Alias("name")
 	private String name;	
 	
 	/**
@@ -99,7 +97,6 @@ public class TestTable1 extends com.tsc9526.monalisa.orm.model.Model<TestTable1>
 	* <li><B>remarks:</B> the title
 	*/
 	@Column(table=M.TABLE, jdbcType=12, name=M.title$name, key=M.title$key, auto=M.title$auto, notnull=M.title$notnull, length=M.title$length, value=M.title$value, remarks=M.title$remarks)
-	@Alias("title")
 	private String title;	
 	
 	/**
@@ -108,8 +105,8 @@ public class TestTable1 extends com.tsc9526.monalisa.orm.model.Model<TestTable1>
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 10 &nbsp;<B>value:</B> 0<br>
 	* <li><B>remarks:</B> enum fields A  #enum{{V0,V1}}
 	*/
-	@Column(table=M.TABLE, jdbcType=4, name=M.enumIntA$name, key=M.enumIntA$key, auto=M.enumIntA$auto, notnull=M.enumIntA$notnull, length=M.enumIntA$length, value=M.enumIntA$value, remarks=M.enumIntA$remarks)
-	@Alias("enum_int_a")
+	@Column(table=M.TABLE, jdbcType=4, name=M.enumIntA$name, key=M.enumIntA$key, auto=M.enumIntA$auto, notnull=M.enumIntA$notnull, length=M.enumIntA$length, value=M.enumIntA$value, remarks=M.enumIntA$remarks)	@Alias("enum_int_a")
+
 	private EnumIntA enumIntA;	
 	
 	/**
@@ -118,8 +115,8 @@ public class TestTable1 extends com.tsc9526.monalisa.orm.model.Model<TestTable1>
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 64 &nbsp;<B>value:</B> TRUE<br>
 	* <li><B>remarks:</B> #enum{{ TRUE, FALSE}}
 	*/
-	@Column(table=M.TABLE, jdbcType=12, name=M.enumStringA$name, key=M.enumStringA$key, auto=M.enumStringA$auto, notnull=M.enumStringA$notnull, length=M.enumStringA$length, value=M.enumStringA$value, remarks=M.enumStringA$remarks)
-	@Alias("enum_string_a")
+	@Column(table=M.TABLE, jdbcType=12, name=M.enumStringA$name, key=M.enumStringA$key, auto=M.enumStringA$auto, notnull=M.enumStringA$notnull, length=M.enumStringA$length, value=M.enumStringA$value, remarks=M.enumStringA$remarks)	@Alias("enum_string_a")
+
 	private EnumStringA enumStringA;	
 	
 	/**
@@ -128,8 +125,8 @@ public class TestTable1 extends com.tsc9526.monalisa.orm.model.Model<TestTable1>
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 19<br>
 	* <li><B>remarks:</B> 
 	*/
-	@Column(table=M.TABLE, jdbcType=93, name=M.tsA$name, key=M.tsA$key, auto=M.tsA$auto, notnull=M.tsA$notnull, length=M.tsA$length, value=M.tsA$value, remarks=M.tsA$remarks)
-	@Alias("ts_a")
+	@Column(table=M.TABLE, jdbcType=93, name=M.tsA$name, key=M.tsA$key, auto=M.tsA$auto, notnull=M.tsA$notnull, length=M.tsA$length, value=M.tsA$value, remarks=M.tsA$remarks)	@Alias("ts_a")
+
 	private java.util.Date tsA;	
 	
 	/**
@@ -138,8 +135,8 @@ public class TestTable1 extends com.tsc9526.monalisa.orm.model.Model<TestTable1>
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 19<br>
 	* <li><B>remarks:</B> 
 	*/
-	@Column(table=M.TABLE, jdbcType=93, name=M.createTime$name, key=M.createTime$key, auto=M.createTime$auto, notnull=M.createTime$notnull, length=M.createTime$length, value=M.createTime$value, remarks=M.createTime$remarks)
-	@Alias("create_time")
+	@Column(table=M.TABLE, jdbcType=93, name=M.createTime$name, key=M.createTime$key, auto=M.createTime$auto, notnull=M.createTime$notnull, length=M.createTime$length, value=M.createTime$value, remarks=M.createTime$remarks)	@Alias("create_time")
+
 	private java.util.Date createTime;	
 	
 	/**
@@ -148,8 +145,8 @@ public class TestTable1 extends com.tsc9526.monalisa.orm.model.Model<TestTable1>
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 64<br>
 	* <li><B>remarks:</B> 
 	*/
-	@Column(table=M.TABLE, jdbcType=12, name=M.createBy$name, key=M.createBy$key, auto=M.createBy$auto, notnull=M.createBy$notnull, length=M.createBy$length, value=M.createBy$value, remarks=M.createBy$remarks)
-	@Alias("create_by")
+	@Column(table=M.TABLE, jdbcType=12, name=M.createBy$name, key=M.createBy$key, auto=M.createBy$auto, notnull=M.createBy$notnull, length=M.createBy$length, value=M.createBy$value, remarks=M.createBy$remarks)	@Alias("create_by")
+
 	private String createBy;	
 	
 	/**
@@ -158,8 +155,8 @@ public class TestTable1 extends com.tsc9526.monalisa.orm.model.Model<TestTable1>
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 19<br>
 	* <li><B>remarks:</B> 
 	*/
-	@Column(table=M.TABLE, jdbcType=93, name=M.updateTime$name, key=M.updateTime$key, auto=M.updateTime$auto, notnull=M.updateTime$notnull, length=M.updateTime$length, value=M.updateTime$value, remarks=M.updateTime$remarks)
-	@Alias("update_time")
+	@Column(table=M.TABLE, jdbcType=93, name=M.updateTime$name, key=M.updateTime$key, auto=M.updateTime$auto, notnull=M.updateTime$notnull, length=M.updateTime$length, value=M.updateTime$value, remarks=M.updateTime$remarks)	@Alias("update_time")
+
 	private java.util.Date updateTime;	
 	
 	/**
@@ -168,8 +165,8 @@ public class TestTable1 extends com.tsc9526.monalisa.orm.model.Model<TestTable1>
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 64<br>
 	* <li><B>remarks:</B> 
 	*/
-	@Column(table=M.TABLE, jdbcType=12, name=M.updateBy$name, key=M.updateBy$key, auto=M.updateBy$auto, notnull=M.updateBy$notnull, length=M.updateBy$length, value=M.updateBy$value, remarks=M.updateBy$remarks)
-	@Alias("update_by")
+	@Column(table=M.TABLE, jdbcType=12, name=M.updateBy$name, key=M.updateBy$key, auto=M.updateBy$auto, notnull=M.updateBy$notnull, length=M.updateBy$length, value=M.updateBy$value, remarks=M.updateBy$remarks)	@Alias("update_by")
+
 	private String updateBy;	
 	
 	
@@ -181,8 +178,7 @@ public class TestTable1 extends com.tsc9526.monalisa.orm.model.Model<TestTable1>
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 10<br>
 	* <li><B>remarks:</B> primary key
 	*/
-	@Column(table=M.TABLE, jdbcType=4, name=M.id$name, key=M.id$key, auto=M.id$auto, notnull=M.id$notnull, length=M.id$length, value=M.id$value, remarks=M.id$remarks)
-	@Alias("id") 
+	@Column(table=M.TABLE, jdbcType=4, name=M.id$name, key=M.id$key, auto=M.id$auto, notnull=M.id$notnull, length=M.id$length, value=M.id$value, remarks=M.id$remarks) 
 	public TestTable1 setId(Integer id){
 		this.id = id;  
 		
@@ -198,8 +194,7 @@ public class TestTable1 extends com.tsc9526.monalisa.orm.model.Model<TestTable1>
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 128 &nbsp;<B>value:</B> N0001<br>
 	* <li><B>remarks:</B> the name
 	*/
-	@Column(table=M.TABLE, jdbcType=12, name=M.name$name, key=M.name$key, auto=M.name$auto, notnull=M.name$notnull, length=M.name$length, value=M.name$value, remarks=M.name$remarks)
-	@Alias("name") 
+	@Column(table=M.TABLE, jdbcType=12, name=M.name$name, key=M.name$key, auto=M.name$auto, notnull=M.name$notnull, length=M.name$length, value=M.name$value, remarks=M.name$remarks) 
 	public TestTable1 setName(String name){
 		this.name = name;  
 		
@@ -215,8 +210,7 @@ public class TestTable1 extends com.tsc9526.monalisa.orm.model.Model<TestTable1>
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 128<br>
 	* <li><B>remarks:</B> the title
 	*/
-	@Column(table=M.TABLE, jdbcType=12, name=M.title$name, key=M.title$key, auto=M.title$auto, notnull=M.title$notnull, length=M.title$length, value=M.title$value, remarks=M.title$remarks)
-	@Alias("title") 
+	@Column(table=M.TABLE, jdbcType=12, name=M.title$name, key=M.title$key, auto=M.title$auto, notnull=M.title$notnull, length=M.title$length, value=M.title$value, remarks=M.title$remarks) 
 	public TestTable1 setTitle(String title){
 		this.title = title;  
 		
@@ -232,8 +226,7 @@ public class TestTable1 extends com.tsc9526.monalisa.orm.model.Model<TestTable1>
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 10 &nbsp;<B>value:</B> 0<br>
 	* <li><B>remarks:</B> enum fields A  #enum{{V0,V1}}
 	*/
-	@Column(table=M.TABLE, jdbcType=4, name=M.enumIntA$name, key=M.enumIntA$key, auto=M.enumIntA$auto, notnull=M.enumIntA$notnull, length=M.enumIntA$length, value=M.enumIntA$value, remarks=M.enumIntA$remarks)
-	@Alias("enum_int_a") 
+	@Column(table=M.TABLE, jdbcType=4, name=M.enumIntA$name, key=M.enumIntA$key, auto=M.enumIntA$auto, notnull=M.enumIntA$notnull, length=M.enumIntA$length, value=M.enumIntA$value, remarks=M.enumIntA$remarks) 
 	public TestTable1 setEnumIntA(EnumIntA enumIntA){
 		this.enumIntA = enumIntA;  
 		
@@ -249,8 +242,7 @@ public class TestTable1 extends com.tsc9526.monalisa.orm.model.Model<TestTable1>
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 64 &nbsp;<B>value:</B> TRUE<br>
 	* <li><B>remarks:</B> #enum{{ TRUE, FALSE}}
 	*/
-	@Column(table=M.TABLE, jdbcType=12, name=M.enumStringA$name, key=M.enumStringA$key, auto=M.enumStringA$auto, notnull=M.enumStringA$notnull, length=M.enumStringA$length, value=M.enumStringA$value, remarks=M.enumStringA$remarks)
-	@Alias("enum_string_a") 
+	@Column(table=M.TABLE, jdbcType=12, name=M.enumStringA$name, key=M.enumStringA$key, auto=M.enumStringA$auto, notnull=M.enumStringA$notnull, length=M.enumStringA$length, value=M.enumStringA$value, remarks=M.enumStringA$remarks) 
 	public TestTable1 setEnumStringA(EnumStringA enumStringA){
 		this.enumStringA = enumStringA;  
 		
@@ -266,8 +258,7 @@ public class TestTable1 extends com.tsc9526.monalisa.orm.model.Model<TestTable1>
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 19<br>
 	* <li><B>remarks:</B> 
 	*/
-	@Column(table=M.TABLE, jdbcType=93, name=M.tsA$name, key=M.tsA$key, auto=M.tsA$auto, notnull=M.tsA$notnull, length=M.tsA$length, value=M.tsA$value, remarks=M.tsA$remarks)
-	@Alias("ts_a") 
+	@Column(table=M.TABLE, jdbcType=93, name=M.tsA$name, key=M.tsA$key, auto=M.tsA$auto, notnull=M.tsA$notnull, length=M.tsA$length, value=M.tsA$value, remarks=M.tsA$remarks) 
 	public TestTable1 setTsA(java.util.Date tsA){
 		this.tsA = tsA;  
 		
@@ -283,8 +274,7 @@ public class TestTable1 extends com.tsc9526.monalisa.orm.model.Model<TestTable1>
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 19<br>
 	* <li><B>remarks:</B> 
 	*/
-	@Column(table=M.TABLE, jdbcType=93, name=M.createTime$name, key=M.createTime$key, auto=M.createTime$auto, notnull=M.createTime$notnull, length=M.createTime$length, value=M.createTime$value, remarks=M.createTime$remarks)
-	@Alias("create_time") 
+	@Column(table=M.TABLE, jdbcType=93, name=M.createTime$name, key=M.createTime$key, auto=M.createTime$auto, notnull=M.createTime$notnull, length=M.createTime$length, value=M.createTime$value, remarks=M.createTime$remarks) 
 	public TestTable1 setCreateTime(java.util.Date createTime){
 		this.createTime = createTime;  
 		
@@ -300,8 +290,7 @@ public class TestTable1 extends com.tsc9526.monalisa.orm.model.Model<TestTable1>
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 64<br>
 	* <li><B>remarks:</B> 
 	*/
-	@Column(table=M.TABLE, jdbcType=12, name=M.createBy$name, key=M.createBy$key, auto=M.createBy$auto, notnull=M.createBy$notnull, length=M.createBy$length, value=M.createBy$value, remarks=M.createBy$remarks)
-	@Alias("create_by") 
+	@Column(table=M.TABLE, jdbcType=12, name=M.createBy$name, key=M.createBy$key, auto=M.createBy$auto, notnull=M.createBy$notnull, length=M.createBy$length, value=M.createBy$value, remarks=M.createBy$remarks) 
 	public TestTable1 setCreateBy(String createBy){
 		this.createBy = createBy;  
 		
@@ -317,8 +306,7 @@ public class TestTable1 extends com.tsc9526.monalisa.orm.model.Model<TestTable1>
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 19<br>
 	* <li><B>remarks:</B> 
 	*/
-	@Column(table=M.TABLE, jdbcType=93, name=M.updateTime$name, key=M.updateTime$key, auto=M.updateTime$auto, notnull=M.updateTime$notnull, length=M.updateTime$length, value=M.updateTime$value, remarks=M.updateTime$remarks)
-	@Alias("update_time") 
+	@Column(table=M.TABLE, jdbcType=93, name=M.updateTime$name, key=M.updateTime$key, auto=M.updateTime$auto, notnull=M.updateTime$notnull, length=M.updateTime$length, value=M.updateTime$value, remarks=M.updateTime$remarks) 
 	public TestTable1 setUpdateTime(java.util.Date updateTime){
 		this.updateTime = updateTime;  
 		
@@ -334,8 +322,7 @@ public class TestTable1 extends com.tsc9526.monalisa.orm.model.Model<TestTable1>
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 64<br>
 	* <li><B>remarks:</B> 
 	*/
-	@Column(table=M.TABLE, jdbcType=12, name=M.updateBy$name, key=M.updateBy$key, auto=M.updateBy$auto, notnull=M.updateBy$notnull, length=M.updateBy$length, value=M.updateBy$value, remarks=M.updateBy$remarks)
-	@Alias("update_by") 
+	@Column(table=M.TABLE, jdbcType=12, name=M.updateBy$name, key=M.updateBy$key, auto=M.updateBy$auto, notnull=M.updateBy$notnull, length=M.updateBy$length, value=M.updateBy$value, remarks=M.updateBy$remarks) 
 	public TestTable1 setUpdateBy(String updateBy){
 		this.updateBy = updateBy;  
 		
@@ -352,8 +339,7 @@ public class TestTable1 extends com.tsc9526.monalisa.orm.model.Model<TestTable1>
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 10<br>
 	* <li><B>remarks:</B> primary key
 	*/
-	@Column(table=M.TABLE, jdbcType=4, name=M.id$name, key=M.id$key, auto=M.id$auto, notnull=M.id$notnull, length=M.id$length, value=M.id$value, remarks=M.id$remarks)
-	@Alias("id") 
+	@Column(table=M.TABLE, jdbcType=4, name=M.id$name, key=M.id$key, auto=M.id$auto, notnull=M.id$notnull, length=M.id$length, value=M.id$value, remarks=M.id$remarks) 
 	public Integer getId(){
 		return this.id;
  
@@ -366,8 +352,7 @@ public class TestTable1 extends com.tsc9526.monalisa.orm.model.Model<TestTable1>
 	* <li><B>remarks:</B> primary key
 	* @param defaultValue  Return the default value if id is null.
 	*/
-	@Column(table=M.TABLE, jdbcType=4, name=M.id$name, key=M.id$key, auto=M.id$auto, notnull=M.id$notnull, length=M.id$length, value=M.id$value, remarks=M.id$remarks)
-	@Alias("id") 
+	@Column(table=M.TABLE, jdbcType=4, name=M.id$name, key=M.id$key, auto=M.id$auto, notnull=M.id$notnull, length=M.id$length, value=M.id$value, remarks=M.id$remarks) 
 	public Integer getId(Integer defaultValue){
 		Integer r=this.getId();
 		
@@ -385,8 +370,7 @@ public class TestTable1 extends com.tsc9526.monalisa.orm.model.Model<TestTable1>
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 128 &nbsp;<B>value:</B> N0001<br>
 	* <li><B>remarks:</B> the name
 	*/
-	@Column(table=M.TABLE, jdbcType=12, name=M.name$name, key=M.name$key, auto=M.name$auto, notnull=M.name$notnull, length=M.name$length, value=M.name$value, remarks=M.name$remarks)
-	@Alias("name") 
+	@Column(table=M.TABLE, jdbcType=12, name=M.name$name, key=M.name$key, auto=M.name$auto, notnull=M.name$notnull, length=M.name$length, value=M.name$value, remarks=M.name$remarks) 
 	public String getName(){
 		return this.name;
  
@@ -399,8 +383,7 @@ public class TestTable1 extends com.tsc9526.monalisa.orm.model.Model<TestTable1>
 	* <li><B>remarks:</B> the name
 	* @param defaultValue  Return the default value if name is null.
 	*/
-	@Column(table=M.TABLE, jdbcType=12, name=M.name$name, key=M.name$key, auto=M.name$auto, notnull=M.name$notnull, length=M.name$length, value=M.name$value, remarks=M.name$remarks)
-	@Alias("name") 
+	@Column(table=M.TABLE, jdbcType=12, name=M.name$name, key=M.name$key, auto=M.name$auto, notnull=M.name$notnull, length=M.name$length, value=M.name$value, remarks=M.name$remarks) 
 	public String getName(String defaultValue){
 		String r=this.getName();
 		
@@ -418,8 +401,7 @@ public class TestTable1 extends com.tsc9526.monalisa.orm.model.Model<TestTable1>
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 128<br>
 	* <li><B>remarks:</B> the title
 	*/
-	@Column(table=M.TABLE, jdbcType=12, name=M.title$name, key=M.title$key, auto=M.title$auto, notnull=M.title$notnull, length=M.title$length, value=M.title$value, remarks=M.title$remarks)
-	@Alias("title") 
+	@Column(table=M.TABLE, jdbcType=12, name=M.title$name, key=M.title$key, auto=M.title$auto, notnull=M.title$notnull, length=M.title$length, value=M.title$value, remarks=M.title$remarks) 
 	public String getTitle(){
 		return this.title;
  
@@ -432,8 +414,7 @@ public class TestTable1 extends com.tsc9526.monalisa.orm.model.Model<TestTable1>
 	* <li><B>remarks:</B> the title
 	* @param defaultValue  Return the default value if title is null.
 	*/
-	@Column(table=M.TABLE, jdbcType=12, name=M.title$name, key=M.title$key, auto=M.title$auto, notnull=M.title$notnull, length=M.title$length, value=M.title$value, remarks=M.title$remarks)
-	@Alias("title") 
+	@Column(table=M.TABLE, jdbcType=12, name=M.title$name, key=M.title$key, auto=M.title$auto, notnull=M.title$notnull, length=M.title$length, value=M.title$value, remarks=M.title$remarks) 
 	public String getTitle(String defaultValue){
 		String r=this.getTitle();
 		
@@ -451,8 +432,7 @@ public class TestTable1 extends com.tsc9526.monalisa.orm.model.Model<TestTable1>
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 10 &nbsp;<B>value:</B> 0<br>
 	* <li><B>remarks:</B> enum fields A  #enum{{V0,V1}}
 	*/
-	@Column(table=M.TABLE, jdbcType=4, name=M.enumIntA$name, key=M.enumIntA$key, auto=M.enumIntA$auto, notnull=M.enumIntA$notnull, length=M.enumIntA$length, value=M.enumIntA$value, remarks=M.enumIntA$remarks)
-	@Alias("enum_int_a") 
+	@Column(table=M.TABLE, jdbcType=4, name=M.enumIntA$name, key=M.enumIntA$key, auto=M.enumIntA$auto, notnull=M.enumIntA$notnull, length=M.enumIntA$length, value=M.enumIntA$value, remarks=M.enumIntA$remarks) 
 	public EnumIntA getEnumIntA(){
 		return this.enumIntA;
  
@@ -465,8 +445,7 @@ public class TestTable1 extends com.tsc9526.monalisa.orm.model.Model<TestTable1>
 	* <li><B>remarks:</B> enum fields A  #enum{{V0,V1}}
 	* @param defaultValue  Return the default value if enumIntA is null.
 	*/
-	@Column(table=M.TABLE, jdbcType=4, name=M.enumIntA$name, key=M.enumIntA$key, auto=M.enumIntA$auto, notnull=M.enumIntA$notnull, length=M.enumIntA$length, value=M.enumIntA$value, remarks=M.enumIntA$remarks)
-	@Alias("enum_int_a") 
+	@Column(table=M.TABLE, jdbcType=4, name=M.enumIntA$name, key=M.enumIntA$key, auto=M.enumIntA$auto, notnull=M.enumIntA$notnull, length=M.enumIntA$length, value=M.enumIntA$value, remarks=M.enumIntA$remarks) 
 	public EnumIntA getEnumIntA(EnumIntA defaultValue){
 		EnumIntA r=this.getEnumIntA();
 		
@@ -484,8 +463,7 @@ public class TestTable1 extends com.tsc9526.monalisa.orm.model.Model<TestTable1>
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 64 &nbsp;<B>value:</B> TRUE<br>
 	* <li><B>remarks:</B> #enum{{ TRUE, FALSE}}
 	*/
-	@Column(table=M.TABLE, jdbcType=12, name=M.enumStringA$name, key=M.enumStringA$key, auto=M.enumStringA$auto, notnull=M.enumStringA$notnull, length=M.enumStringA$length, value=M.enumStringA$value, remarks=M.enumStringA$remarks)
-	@Alias("enum_string_a") 
+	@Column(table=M.TABLE, jdbcType=12, name=M.enumStringA$name, key=M.enumStringA$key, auto=M.enumStringA$auto, notnull=M.enumStringA$notnull, length=M.enumStringA$length, value=M.enumStringA$value, remarks=M.enumStringA$remarks) 
 	public EnumStringA getEnumStringA(){
 		return this.enumStringA;
  
@@ -498,8 +476,7 @@ public class TestTable1 extends com.tsc9526.monalisa.orm.model.Model<TestTable1>
 	* <li><B>remarks:</B> #enum{{ TRUE, FALSE}}
 	* @param defaultValue  Return the default value if enumStringA is null.
 	*/
-	@Column(table=M.TABLE, jdbcType=12, name=M.enumStringA$name, key=M.enumStringA$key, auto=M.enumStringA$auto, notnull=M.enumStringA$notnull, length=M.enumStringA$length, value=M.enumStringA$value, remarks=M.enumStringA$remarks)
-	@Alias("enum_string_a") 
+	@Column(table=M.TABLE, jdbcType=12, name=M.enumStringA$name, key=M.enumStringA$key, auto=M.enumStringA$auto, notnull=M.enumStringA$notnull, length=M.enumStringA$length, value=M.enumStringA$value, remarks=M.enumStringA$remarks) 
 	public EnumStringA getEnumStringA(EnumStringA defaultValue){
 		EnumStringA r=this.getEnumStringA();
 		
@@ -517,8 +494,7 @@ public class TestTable1 extends com.tsc9526.monalisa.orm.model.Model<TestTable1>
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 19<br>
 	* <li><B>remarks:</B> 
 	*/
-	@Column(table=M.TABLE, jdbcType=93, name=M.tsA$name, key=M.tsA$key, auto=M.tsA$auto, notnull=M.tsA$notnull, length=M.tsA$length, value=M.tsA$value, remarks=M.tsA$remarks)
-	@Alias("ts_a") 
+	@Column(table=M.TABLE, jdbcType=93, name=M.tsA$name, key=M.tsA$key, auto=M.tsA$auto, notnull=M.tsA$notnull, length=M.tsA$length, value=M.tsA$value, remarks=M.tsA$remarks) 
 	public java.util.Date getTsA(){
 		return this.tsA;
  
@@ -531,8 +507,7 @@ public class TestTable1 extends com.tsc9526.monalisa.orm.model.Model<TestTable1>
 	* <li><B>remarks:</B> 
 	* @param defaultValue  Return the default value if tsA is null.
 	*/
-	@Column(table=M.TABLE, jdbcType=93, name=M.tsA$name, key=M.tsA$key, auto=M.tsA$auto, notnull=M.tsA$notnull, length=M.tsA$length, value=M.tsA$value, remarks=M.tsA$remarks)
-	@Alias("ts_a") 
+	@Column(table=M.TABLE, jdbcType=93, name=M.tsA$name, key=M.tsA$key, auto=M.tsA$auto, notnull=M.tsA$notnull, length=M.tsA$length, value=M.tsA$value, remarks=M.tsA$remarks) 
 	public java.util.Date getTsA(java.util.Date defaultValue){
 		java.util.Date r=this.getTsA();
 		
@@ -550,8 +525,7 @@ public class TestTable1 extends com.tsc9526.monalisa.orm.model.Model<TestTable1>
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 19<br>
 	* <li><B>remarks:</B> 
 	*/
-	@Column(table=M.TABLE, jdbcType=93, name=M.createTime$name, key=M.createTime$key, auto=M.createTime$auto, notnull=M.createTime$notnull, length=M.createTime$length, value=M.createTime$value, remarks=M.createTime$remarks)
-	@Alias("create_time") 
+	@Column(table=M.TABLE, jdbcType=93, name=M.createTime$name, key=M.createTime$key, auto=M.createTime$auto, notnull=M.createTime$notnull, length=M.createTime$length, value=M.createTime$value, remarks=M.createTime$remarks) 
 	public java.util.Date getCreateTime(){
 		return this.createTime;
  
@@ -564,8 +538,7 @@ public class TestTable1 extends com.tsc9526.monalisa.orm.model.Model<TestTable1>
 	* <li><B>remarks:</B> 
 	* @param defaultValue  Return the default value if createTime is null.
 	*/
-	@Column(table=M.TABLE, jdbcType=93, name=M.createTime$name, key=M.createTime$key, auto=M.createTime$auto, notnull=M.createTime$notnull, length=M.createTime$length, value=M.createTime$value, remarks=M.createTime$remarks)
-	@Alias("create_time") 
+	@Column(table=M.TABLE, jdbcType=93, name=M.createTime$name, key=M.createTime$key, auto=M.createTime$auto, notnull=M.createTime$notnull, length=M.createTime$length, value=M.createTime$value, remarks=M.createTime$remarks) 
 	public java.util.Date getCreateTime(java.util.Date defaultValue){
 		java.util.Date r=this.getCreateTime();
 		
@@ -583,8 +556,7 @@ public class TestTable1 extends com.tsc9526.monalisa.orm.model.Model<TestTable1>
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 64<br>
 	* <li><B>remarks:</B> 
 	*/
-	@Column(table=M.TABLE, jdbcType=12, name=M.createBy$name, key=M.createBy$key, auto=M.createBy$auto, notnull=M.createBy$notnull, length=M.createBy$length, value=M.createBy$value, remarks=M.createBy$remarks)
-	@Alias("create_by") 
+	@Column(table=M.TABLE, jdbcType=12, name=M.createBy$name, key=M.createBy$key, auto=M.createBy$auto, notnull=M.createBy$notnull, length=M.createBy$length, value=M.createBy$value, remarks=M.createBy$remarks) 
 	public String getCreateBy(){
 		return this.createBy;
  
@@ -597,8 +569,7 @@ public class TestTable1 extends com.tsc9526.monalisa.orm.model.Model<TestTable1>
 	* <li><B>remarks:</B> 
 	* @param defaultValue  Return the default value if createBy is null.
 	*/
-	@Column(table=M.TABLE, jdbcType=12, name=M.createBy$name, key=M.createBy$key, auto=M.createBy$auto, notnull=M.createBy$notnull, length=M.createBy$length, value=M.createBy$value, remarks=M.createBy$remarks)
-	@Alias("create_by") 
+	@Column(table=M.TABLE, jdbcType=12, name=M.createBy$name, key=M.createBy$key, auto=M.createBy$auto, notnull=M.createBy$notnull, length=M.createBy$length, value=M.createBy$value, remarks=M.createBy$remarks) 
 	public String getCreateBy(String defaultValue){
 		String r=this.getCreateBy();
 		
@@ -616,8 +587,7 @@ public class TestTable1 extends com.tsc9526.monalisa.orm.model.Model<TestTable1>
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 19<br>
 	* <li><B>remarks:</B> 
 	*/
-	@Column(table=M.TABLE, jdbcType=93, name=M.updateTime$name, key=M.updateTime$key, auto=M.updateTime$auto, notnull=M.updateTime$notnull, length=M.updateTime$length, value=M.updateTime$value, remarks=M.updateTime$remarks)
-	@Alias("update_time") 
+	@Column(table=M.TABLE, jdbcType=93, name=M.updateTime$name, key=M.updateTime$key, auto=M.updateTime$auto, notnull=M.updateTime$notnull, length=M.updateTime$length, value=M.updateTime$value, remarks=M.updateTime$remarks) 
 	public java.util.Date getUpdateTime(){
 		return this.updateTime;
  
@@ -630,8 +600,7 @@ public class TestTable1 extends com.tsc9526.monalisa.orm.model.Model<TestTable1>
 	* <li><B>remarks:</B> 
 	* @param defaultValue  Return the default value if updateTime is null.
 	*/
-	@Column(table=M.TABLE, jdbcType=93, name=M.updateTime$name, key=M.updateTime$key, auto=M.updateTime$auto, notnull=M.updateTime$notnull, length=M.updateTime$length, value=M.updateTime$value, remarks=M.updateTime$remarks)
-	@Alias("update_time") 
+	@Column(table=M.TABLE, jdbcType=93, name=M.updateTime$name, key=M.updateTime$key, auto=M.updateTime$auto, notnull=M.updateTime$notnull, length=M.updateTime$length, value=M.updateTime$value, remarks=M.updateTime$remarks) 
 	public java.util.Date getUpdateTime(java.util.Date defaultValue){
 		java.util.Date r=this.getUpdateTime();
 		
@@ -649,8 +618,7 @@ public class TestTable1 extends com.tsc9526.monalisa.orm.model.Model<TestTable1>
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 64<br>
 	* <li><B>remarks:</B> 
 	*/
-	@Column(table=M.TABLE, jdbcType=12, name=M.updateBy$name, key=M.updateBy$key, auto=M.updateBy$auto, notnull=M.updateBy$notnull, length=M.updateBy$length, value=M.updateBy$value, remarks=M.updateBy$remarks)
-	@Alias("update_by") 
+	@Column(table=M.TABLE, jdbcType=12, name=M.updateBy$name, key=M.updateBy$key, auto=M.updateBy$auto, notnull=M.updateBy$notnull, length=M.updateBy$length, value=M.updateBy$value, remarks=M.updateBy$remarks) 
 	public String getUpdateBy(){
 		return this.updateBy;
  
@@ -663,8 +631,7 @@ public class TestTable1 extends com.tsc9526.monalisa.orm.model.Model<TestTable1>
 	* <li><B>remarks:</B> 
 	* @param defaultValue  Return the default value if updateBy is null.
 	*/
-	@Column(table=M.TABLE, jdbcType=12, name=M.updateBy$name, key=M.updateBy$key, auto=M.updateBy$auto, notnull=M.updateBy$notnull, length=M.updateBy$length, value=M.updateBy$value, remarks=M.updateBy$remarks)
-	@Alias("update_by") 
+	@Column(table=M.TABLE, jdbcType=12, name=M.updateBy$name, key=M.updateBy$key, auto=M.updateBy$auto, notnull=M.updateBy$notnull, length=M.updateBy$length, value=M.updateBy$value, remarks=M.updateBy$remarks) 
 	public String getUpdateBy(String defaultValue){
 		String r=this.getUpdateBy();
 		
@@ -890,7 +857,6 @@ public class TestTable1 extends com.tsc9526.monalisa.orm.model.Model<TestTable1>
 		* <li><B>remarks:</B> primary key
 		*/
 		@Column(table=M.TABLE, jdbcType=4, name=M.id$name, key=M.id$key, auto=M.id$auto, notnull=M.id$notnull, length=M.id$length, value=M.id$value, remarks=M.id$remarks)
-		@Alias("id")
 		public com.tsc9526.monalisa.orm.criteria.Field.FieldInteger<Criteria> id = new com.tsc9526.monalisa.orm.criteria.Field.FieldInteger<Criteria>("id", this);
 			
 		/**
@@ -900,7 +866,6 @@ public class TestTable1 extends com.tsc9526.monalisa.orm.model.Model<TestTable1>
 		* <li><B>remarks:</B> the name
 		*/
 		@Column(table=M.TABLE, jdbcType=12, name=M.name$name, key=M.name$key, auto=M.name$auto, notnull=M.name$notnull, length=M.name$length, value=M.name$value, remarks=M.name$remarks)
-		@Alias("name")
 		public com.tsc9526.monalisa.orm.criteria.Field.FieldString<Criteria> name = new com.tsc9526.monalisa.orm.criteria.Field.FieldString<Criteria>("name", this);
 			
 		/**
@@ -910,7 +875,6 @@ public class TestTable1 extends com.tsc9526.monalisa.orm.model.Model<TestTable1>
 		* <li><B>remarks:</B> the title
 		*/
 		@Column(table=M.TABLE, jdbcType=12, name=M.title$name, key=M.title$key, auto=M.title$auto, notnull=M.title$notnull, length=M.title$length, value=M.title$value, remarks=M.title$remarks)
-		@Alias("title")
 		public com.tsc9526.monalisa.orm.criteria.Field.FieldString<Criteria> title = new com.tsc9526.monalisa.orm.criteria.Field.FieldString<Criteria>("title", this);
 			
 		/**
@@ -920,7 +884,6 @@ public class TestTable1 extends com.tsc9526.monalisa.orm.model.Model<TestTable1>
 		* <li><B>remarks:</B> enum fields A  #enum{{V0,V1}}
 		*/
 		@Column(table=M.TABLE, jdbcType=4, name=M.enumIntA$name, key=M.enumIntA$key, auto=M.enumIntA$auto, notnull=M.enumIntA$notnull, length=M.enumIntA$length, value=M.enumIntA$value, remarks=M.enumIntA$remarks)
-		@Alias("enum_int_a")
 		public com.tsc9526.monalisa.orm.criteria.Field<EnumIntA,Criteria> enumIntA = new com.tsc9526.monalisa.orm.criteria.Field<EnumIntA,Criteria>("enum_int_a", this, 4);		 
 			
 		/**
@@ -930,7 +893,6 @@ public class TestTable1 extends com.tsc9526.monalisa.orm.model.Model<TestTable1>
 		* <li><B>remarks:</B> #enum{{ TRUE, FALSE}}
 		*/
 		@Column(table=M.TABLE, jdbcType=12, name=M.enumStringA$name, key=M.enumStringA$key, auto=M.enumStringA$auto, notnull=M.enumStringA$notnull, length=M.enumStringA$length, value=M.enumStringA$value, remarks=M.enumStringA$remarks)
-		@Alias("enum_string_a")
 		public com.tsc9526.monalisa.orm.criteria.Field<EnumStringA,Criteria> enumStringA = new com.tsc9526.monalisa.orm.criteria.Field<EnumStringA,Criteria>("enum_string_a", this, 12);		 
 			
 		/**
@@ -940,7 +902,6 @@ public class TestTable1 extends com.tsc9526.monalisa.orm.model.Model<TestTable1>
 		* <li><B>remarks:</B> 
 		*/
 		@Column(table=M.TABLE, jdbcType=93, name=M.tsA$name, key=M.tsA$key, auto=M.tsA$auto, notnull=M.tsA$notnull, length=M.tsA$length, value=M.tsA$value, remarks=M.tsA$remarks)
-		@Alias("ts_a")
 		public com.tsc9526.monalisa.orm.criteria.Field<java.util.Date,Criteria> tsA = new com.tsc9526.monalisa.orm.criteria.Field<java.util.Date,Criteria>("ts_a", this, 93);		 
 			
 		/**
@@ -950,7 +911,6 @@ public class TestTable1 extends com.tsc9526.monalisa.orm.model.Model<TestTable1>
 		* <li><B>remarks:</B> 
 		*/
 		@Column(table=M.TABLE, jdbcType=93, name=M.createTime$name, key=M.createTime$key, auto=M.createTime$auto, notnull=M.createTime$notnull, length=M.createTime$length, value=M.createTime$value, remarks=M.createTime$remarks)
-		@Alias("create_time")
 		public com.tsc9526.monalisa.orm.criteria.Field<java.util.Date,Criteria> createTime = new com.tsc9526.monalisa.orm.criteria.Field<java.util.Date,Criteria>("create_time", this, 93);		 
 			
 		/**
@@ -960,7 +920,6 @@ public class TestTable1 extends com.tsc9526.monalisa.orm.model.Model<TestTable1>
 		* <li><B>remarks:</B> 
 		*/
 		@Column(table=M.TABLE, jdbcType=12, name=M.createBy$name, key=M.createBy$key, auto=M.createBy$auto, notnull=M.createBy$notnull, length=M.createBy$length, value=M.createBy$value, remarks=M.createBy$remarks)
-		@Alias("create_by")
 		public com.tsc9526.monalisa.orm.criteria.Field.FieldString<Criteria> createBy = new com.tsc9526.monalisa.orm.criteria.Field.FieldString<Criteria>("create_by", this);
 			
 		/**
@@ -970,7 +929,6 @@ public class TestTable1 extends com.tsc9526.monalisa.orm.model.Model<TestTable1>
 		* <li><B>remarks:</B> 
 		*/
 		@Column(table=M.TABLE, jdbcType=93, name=M.updateTime$name, key=M.updateTime$key, auto=M.updateTime$auto, notnull=M.updateTime$notnull, length=M.updateTime$length, value=M.updateTime$value, remarks=M.updateTime$remarks)
-		@Alias("update_time")
 		public com.tsc9526.monalisa.orm.criteria.Field<java.util.Date,Criteria> updateTime = new com.tsc9526.monalisa.orm.criteria.Field<java.util.Date,Criteria>("update_time", this, 93);		 
 			
 		/**
@@ -980,7 +938,6 @@ public class TestTable1 extends com.tsc9526.monalisa.orm.model.Model<TestTable1>
 		* <li><B>remarks:</B> 
 		*/
 		@Column(table=M.TABLE, jdbcType=12, name=M.updateBy$name, key=M.updateBy$key, auto=M.updateBy$auto, notnull=M.updateBy$notnull, length=M.updateBy$length, value=M.updateBy$value, remarks=M.updateBy$remarks)
-		@Alias("update_by")
 		public com.tsc9526.monalisa.orm.criteria.Field.FieldString<Criteria> updateBy = new com.tsc9526.monalisa.orm.criteria.Field.FieldString<Criteria>("update_by", this);
 			
 	}
@@ -1005,7 +962,6 @@ public class TestTable1 extends com.tsc9526.monalisa.orm.model.Model<TestTable1>
 		* <li><B>remarks:</B> primary key
 		*/
 		@Column(table=M.TABLE, jdbcType=4, name=M.id$name, key=M.id$key, auto=M.id$auto, notnull=M.id$notnull, length=M.id$length, value=M.id$value, remarks=M.id$remarks)
-		@Alias("id")
 		public final static String  id         = "id";
 		
 		/**
@@ -1015,7 +971,6 @@ public class TestTable1 extends com.tsc9526.monalisa.orm.model.Model<TestTable1>
 		* <li><B>remarks:</B> the name
 		*/
 		@Column(table=M.TABLE, jdbcType=12, name=M.name$name, key=M.name$key, auto=M.name$auto, notnull=M.name$notnull, length=M.name$length, value=M.name$value, remarks=M.name$remarks)
-		@Alias("name")
 		public final static String  name         = "name";
 		
 		/**
@@ -1025,7 +980,6 @@ public class TestTable1 extends com.tsc9526.monalisa.orm.model.Model<TestTable1>
 		* <li><B>remarks:</B> the title
 		*/
 		@Column(table=M.TABLE, jdbcType=12, name=M.title$name, key=M.title$key, auto=M.title$auto, notnull=M.title$notnull, length=M.title$length, value=M.title$value, remarks=M.title$remarks)
-		@Alias("title")
 		public final static String  title         = "title";
 		
 		/**
@@ -1035,7 +989,6 @@ public class TestTable1 extends com.tsc9526.monalisa.orm.model.Model<TestTable1>
 		* <li><B>remarks:</B> enum fields A  #enum{{V0,V1}}
 		*/
 		@Column(table=M.TABLE, jdbcType=4, name=M.enumIntA$name, key=M.enumIntA$key, auto=M.enumIntA$auto, notnull=M.enumIntA$notnull, length=M.enumIntA$length, value=M.enumIntA$value, remarks=M.enumIntA$remarks)
-		@Alias("enum_int_a")
 		public final static String  enumIntA         = "enum_int_a";
 		
 		/**
@@ -1045,7 +998,6 @@ public class TestTable1 extends com.tsc9526.monalisa.orm.model.Model<TestTable1>
 		* <li><B>remarks:</B> #enum{{ TRUE, FALSE}}
 		*/
 		@Column(table=M.TABLE, jdbcType=12, name=M.enumStringA$name, key=M.enumStringA$key, auto=M.enumStringA$auto, notnull=M.enumStringA$notnull, length=M.enumStringA$length, value=M.enumStringA$value, remarks=M.enumStringA$remarks)
-		@Alias("enum_string_a")
 		public final static String  enumStringA         = "enum_string_a";
 		
 		/**
@@ -1055,7 +1007,6 @@ public class TestTable1 extends com.tsc9526.monalisa.orm.model.Model<TestTable1>
 		* <li><B>remarks:</B> 
 		*/
 		@Column(table=M.TABLE, jdbcType=93, name=M.tsA$name, key=M.tsA$key, auto=M.tsA$auto, notnull=M.tsA$notnull, length=M.tsA$length, value=M.tsA$value, remarks=M.tsA$remarks)
-		@Alias("ts_a")
 		public final static String  tsA         = "ts_a";
 		
 		/**
@@ -1065,7 +1016,6 @@ public class TestTable1 extends com.tsc9526.monalisa.orm.model.Model<TestTable1>
 		* <li><B>remarks:</B> 
 		*/
 		@Column(table=M.TABLE, jdbcType=93, name=M.createTime$name, key=M.createTime$key, auto=M.createTime$auto, notnull=M.createTime$notnull, length=M.createTime$length, value=M.createTime$value, remarks=M.createTime$remarks)
-		@Alias("create_time")
 		public final static String  createTime         = "create_time";
 		
 		/**
@@ -1075,7 +1025,6 @@ public class TestTable1 extends com.tsc9526.monalisa.orm.model.Model<TestTable1>
 		* <li><B>remarks:</B> 
 		*/
 		@Column(table=M.TABLE, jdbcType=12, name=M.createBy$name, key=M.createBy$key, auto=M.createBy$auto, notnull=M.createBy$notnull, length=M.createBy$length, value=M.createBy$value, remarks=M.createBy$remarks)
-		@Alias("create_by")
 		public final static String  createBy         = "create_by";
 		
 		/**
@@ -1085,7 +1034,6 @@ public class TestTable1 extends com.tsc9526.monalisa.orm.model.Model<TestTable1>
 		* <li><B>remarks:</B> 
 		*/
 		@Column(table=M.TABLE, jdbcType=93, name=M.updateTime$name, key=M.updateTime$key, auto=M.updateTime$auto, notnull=M.updateTime$notnull, length=M.updateTime$length, value=M.updateTime$value, remarks=M.updateTime$remarks)
-		@Alias("update_time")
 		public final static String  updateTime         = "update_time";
 		
 		/**
@@ -1095,7 +1043,6 @@ public class TestTable1 extends com.tsc9526.monalisa.orm.model.Model<TestTable1>
 		* <li><B>remarks:</B> 
 		*/
 		@Column(table=M.TABLE, jdbcType=12, name=M.updateBy$name, key=M.updateBy$key, auto=M.updateBy$auto, notnull=M.updateBy$notnull, length=M.updateBy$length, value=M.updateBy$value, remarks=M.updateBy$remarks)
-		@Alias("update_by")
 		public final static String  updateBy         = "update_by";
 		
 	}

@@ -94,7 +94,18 @@ public class DBTableGenerator {
 		imports.add(DB.class.getName());
 		imports.add(Table.class.getName());
 		imports.add(Column.class.getName());
-		imports.add(Alias.class.getName());
+		
+		 
+		for (MetaColumn c : table.getColumns()) {
+			String cname=c.getName();
+			String jname=c.getJavaName();
+			
+			if(cname!=null && cname.length()>0 && !cname.equals(jname) && c.getTable()!=null){	
+				imports.add(Alias.class.getName());
+				break;
+			} 
+		}
+		
 		
 		if(importIndex){
 			imports.add(Index.class.getName());

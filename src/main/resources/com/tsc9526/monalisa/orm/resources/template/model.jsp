@@ -3,10 +3,10 @@
 %><%@page import="com.tsc9526.monalisa.orm.meta.MetaColumn"
 %><%@page import="com.tsc9526.monalisa.orm.meta.MetaTable"
 %><%@page import="java.util.Set"%><%
-MetaTable    table =(MetaTable)request.getAttribute("table");
-Set<?>     imports =(Set<?>)request.getAttribute("imports");
-String   modelClass=(String)request.getAttribute("modelClass");
-String   dbi       =(String)request.getAttribute("dbi");
+	MetaTable    table =(MetaTable)request.getAttribute("table");
+	Set<?>     imports =(Set<?>)request.getAttribute("imports");
+	String   modelClass=(String)request.getAttribute("modelClass");
+	String   dbi       =(String)request.getAttribute("dbi");
 %>package <%=table.getJavaPackage()%>;
  		
 <%for(Object i:imports){%>
@@ -78,7 +78,7 @@ public class <%=table.getJavaName()%> extends <%=modelClass%><<%=table.getJavaNa
 		for(String a:annotation.split("\n")){
 			out.println("\t"+a+"\r\n");
 		}
-	}%>
+	}%><%=getAlias(table, f, "\t")%>
 	private <%=f.getJavaType() %> <%=f.getJavaName()%>;	
 	<%}%>
 	
@@ -460,6 +460,15 @@ public class <%=table.getJavaName()%> extends <%=modelClass%><<%=table.getJavaNa
 		return s.trim().replace("\"","\\\"").replace("\r","\\r").replace("\n","\\n");
 	}
 
+	String getAlias(MetaTable table,MetaColumn c,String leftPadding){
+		String cname=c.getName();
+		String jname=c.getJavaName();
+		
+		if(cname!=null && cname.length()>0 && !cname.equals(jname) && c.getTable()!=null){	
+			return "\r\n"+leftPadding+"@Alias(\""+cname+"\")";
+		}
+		return "";
+	}
 	
 	String getComments(MetaTable table,MetaColumn c,String params,String leftPadding){
 		String cname=c.getName();
@@ -536,11 +545,7 @@ public class <%=table.getJavaName()%> extends <%=modelClass%><<%=table.getJavaNa
 				r+=", "+n+"="+f+colname+"$"+n;
 			}
 			r+=")";
-			
-			
-			r+="\r\n"+leftPadding;	
-			r+="@Alias(\""+cname+"\")";
-			
+		 	
 			return r;
 		}else{
 			return "";

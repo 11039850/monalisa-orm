@@ -30,6 +30,7 @@ import javax.tools.FileObject;
 import javax.tools.JavaFileObject;
 import javax.tools.StandardLocation;
 
+import com.tsc9526.monalisa.orm.Version;
 import com.tsc9526.monalisa.orm.annotation.DB;
 import com.tsc9526.monalisa.orm.datasource.ConfigClass;
 import com.tsc9526.monalisa.orm.datasource.DataSourceManager;
@@ -78,13 +79,13 @@ public class DBGeneratorProcessing extends DBGenerator{
 				
 				DbProp.SET_CFG_ROOT_PATH(projectPath);
 				
-				plogger.info("Building eclipse project: "+projectPath+" ...");
+				plogger.info("Generate("+Version.getVersion()+") files from eclipse project: "+projectPath+" ...");
 				plogger.info("Database "+dbKey+", "+ (db.configFile().length()>0?("Config-file: "+db.configFile()):(db.url()) ));		
 			}
 		}
 		
 		if(!inEclipseIDE){
-			plogger.info("Building "+dbKey+"("+ (db.configFile().length()>0?db.configFile():db.url() )+"): "+new File(DbProp.CFG_ROOT_PATH).getAbsolutePath()+" ...");
+			plogger.info("Generate("+Version.getVersion()+") files from dbkey: "+dbKey+"("+ (db.configFile().length()>0?db.configFile():db.url() )+"): "+new File(DbProp.CFG_ROOT_PATH).getAbsolutePath()+" ...");
 		}
 		
 		System.setProperty("DB@"+dbKey,projectPath);				 

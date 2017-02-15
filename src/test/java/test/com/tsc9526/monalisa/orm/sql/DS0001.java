@@ -6,9 +6,7 @@ import test.com.tsc9526.monalisa.orm.mysql.mysqldb.TestTable2;
 import com.google.gson.JsonObject;
 import test.com.tsc9526.monalisa.orm.data.ColumnData;
 import com.tsc9526.monalisa.orm.annotation.Column;
-
-import com.tsc9526.monalisa.tools.annotation.Alias;
- 
+  
 /**
  * Auto generated code by monalisa 2.0.0-SNAPSHOT
  *
@@ -27,7 +25,6 @@ public class DS0001 implements java.io.Serializable{
 	* <li><B>remarks:</B> primary key
 	*/
 	@Column(table=TestTable1.M.TABLE, jdbcType=4, name=TestTable1.M.id$name, key=TestTable1.M.id$key, auto=TestTable1.M.id$auto, notnull=TestTable1.M.id$notnull, length=TestTable1.M.id$length, value=TestTable1.M.id$value, remarks=TestTable1.M.id$remarks)
-	@Alias("id")
 	private Integer id;	
 	
 	
@@ -38,7 +35,6 @@ public class DS0001 implements java.io.Serializable{
 	* <li><B>remarks:</B> the name
 	*/
 	@Column(table=TestTable1.M.TABLE, jdbcType=12, name=TestTable1.M.name$name, key=TestTable1.M.name$key, auto=TestTable1.M.name$auto, notnull=TestTable1.M.name$notnull, length=TestTable1.M.name$length, value=TestTable1.M.name$value, remarks=TestTable1.M.name$remarks)
-	@Alias("name")
 	private String name;	
 	
 	
@@ -49,7 +45,6 @@ public class DS0001 implements java.io.Serializable{
 	* <li><B>remarks:</B> the title
 	*/
 	@Column(table=TestTable1.M.TABLE, jdbcType=12, name=TestTable1.M.title$name, key=TestTable1.M.title$key, auto=TestTable1.M.title$auto, notnull=TestTable1.M.title$notnull, length=TestTable1.M.title$length, value=TestTable1.M.title$value, remarks=TestTable1.M.title$remarks)
-	@Alias("title")
 	private String title;	
 	
 	
@@ -60,7 +55,6 @@ public class DS0001 implements java.io.Serializable{
 	* <li><B>remarks:</B> enum fields A  #enum{{V0,V1}}
 	*/
 	@Column(table=TestTable1.M.TABLE, jdbcType=4, name=TestTable1.M.enumIntA$name, key=TestTable1.M.enumIntA$key, auto=TestTable1.M.enumIntA$auto, notnull=TestTable1.M.enumIntA$notnull, length=TestTable1.M.enumIntA$length, value=TestTable1.M.enumIntA$value, remarks=TestTable1.M.enumIntA$remarks)
-	@Alias("enum_int_a")
 	private TestTable1.EnumIntA enumIntA;	
 	
 	
@@ -71,7 +65,6 @@ public class DS0001 implements java.io.Serializable{
 	* <li><B>remarks:</B> #enum{{ TRUE, FALSE}}
 	*/
 	@Column(table=TestTable1.M.TABLE, jdbcType=12, name=TestTable1.M.enumStringA$name, key=TestTable1.M.enumStringA$key, auto=TestTable1.M.enumStringA$auto, notnull=TestTable1.M.enumStringA$notnull, length=TestTable1.M.enumStringA$length, value=TestTable1.M.enumStringA$value, remarks=TestTable1.M.enumStringA$remarks)
-	@Alias("enum_string_a")
 	private TestTable1.EnumStringA enumStringA;	
 	
 	
@@ -82,7 +75,6 @@ public class DS0001 implements java.io.Serializable{
 	* <li><B>remarks:</B> 
 	*/
 	@Column(table=TestTable1.M.TABLE, jdbcType=93, name=TestTable1.M.tsA$name, key=TestTable1.M.tsA$key, auto=TestTable1.M.tsA$auto, notnull=TestTable1.M.tsA$notnull, length=TestTable1.M.tsA$length, value=TestTable1.M.tsA$value, remarks=TestTable1.M.tsA$remarks)
-	@Alias("ts_a")
 	private java.util.Date tsA;	
 	
 	
@@ -93,7 +85,6 @@ public class DS0001 implements java.io.Serializable{
 	* <li><B>remarks:</B> 
 	*/
 	@Column(table=TestTable1.M.TABLE, jdbcType=93, name=TestTable1.M.createTime$name, key=TestTable1.M.createTime$key, auto=TestTable1.M.createTime$auto, notnull=TestTable1.M.createTime$notnull, length=TestTable1.M.createTime$length, value=TestTable1.M.createTime$value, remarks=TestTable1.M.createTime$remarks)
-	@Alias("create_time")
 	private java.util.Date createTime;	
 	
 	
@@ -104,7 +95,6 @@ public class DS0001 implements java.io.Serializable{
 	* <li><B>remarks:</B> 
 	*/
 	@Column(table=TestTable1.M.TABLE, jdbcType=12, name=TestTable1.M.createBy$name, key=TestTable1.M.createBy$key, auto=TestTable1.M.createBy$auto, notnull=TestTable1.M.createBy$notnull, length=TestTable1.M.createBy$length, value=TestTable1.M.createBy$value, remarks=TestTable1.M.createBy$remarks)
-	@Alias("create_by")
 	private String createBy;	
 	
 	
@@ -115,7 +105,6 @@ public class DS0001 implements java.io.Serializable{
 	* <li><B>remarks:</B> 
 	*/
 	@Column(table=TestTable1.M.TABLE, jdbcType=93, name=TestTable1.M.updateTime$name, key=TestTable1.M.updateTime$key, auto=TestTable1.M.updateTime$auto, notnull=TestTable1.M.updateTime$notnull, length=TestTable1.M.updateTime$length, value=TestTable1.M.updateTime$value, remarks=TestTable1.M.updateTime$remarks)
-	@Alias("update_time")
 	private java.util.Date updateTime;	
 	
 	
@@ -126,7 +115,6 @@ public class DS0001 implements java.io.Serializable{
 	* <li><B>remarks:</B> 
 	*/
 	@Column(table=TestTable1.M.TABLE, jdbcType=12, name=TestTable1.M.updateBy$name, key=TestTable1.M.updateBy$key, auto=TestTable1.M.updateBy$auto, notnull=TestTable1.M.updateBy$notnull, length=TestTable1.M.updateBy$length, value=TestTable1.M.updateBy$value, remarks=TestTable1.M.updateBy$remarks)
-	@Alias("update_by")
 	private String updateBy;	
 	
 	
@@ -137,7 +125,6 @@ public class DS0001 implements java.io.Serializable{
 	* <li><B>remarks:</B> primary key
 	*/
 	@Column(table=TestTable2.M.TABLE, jdbcType=4, name=TestTable2.M.id$name, key=TestTable2.M.id$key, auto=TestTable2.M.id$auto, notnull=TestTable2.M.id$notnull, length=TestTable2.M.id$length, value=TestTable2.M.id$value, remarks=TestTable2.M.id$remarks)
-	@Alias("id")
 	private Integer id1;	
 	
 	
@@ -148,7 +135,6 @@ public class DS0001 implements java.io.Serializable{
 	* <li><B>remarks:</B> the name
 	*/
 	@Column(table=TestTable2.M.TABLE, jdbcType=12, name=TestTable2.M.name$name, key=TestTable2.M.name$key, auto=TestTable2.M.name$auto, notnull=TestTable2.M.name$notnull, length=TestTable2.M.name$length, value=TestTable2.M.name$value, remarks=TestTable2.M.name$remarks)
-	@Alias("name")
 	private String name1;	
 	
 	
@@ -159,7 +145,6 @@ public class DS0001 implements java.io.Serializable{
 	* <li><B>remarks:</B> the title
 	*/
 	@Column(table=TestTable2.M.TABLE, jdbcType=12, name=TestTable2.M.title$name, key=TestTable2.M.title$key, auto=TestTable2.M.title$auto, notnull=TestTable2.M.title$notnull, length=TestTable2.M.title$length, value=TestTable2.M.title$value, remarks=TestTable2.M.title$remarks)
-	@Alias("title")
 	private String title1;	
 	
 	
@@ -170,7 +155,6 @@ public class DS0001 implements java.io.Serializable{
 	* <li><B>remarks:</B> enum fields A  #enum{{V0,V1}}
 	*/
 	@Column(table=TestTable2.M.TABLE, jdbcType=4, name=TestTable2.M.enumIntA$name, key=TestTable2.M.enumIntA$key, auto=TestTable2.M.enumIntA$auto, notnull=TestTable2.M.enumIntA$notnull, length=TestTable2.M.enumIntA$length, value=TestTable2.M.enumIntA$value, remarks=TestTable2.M.enumIntA$remarks)
-	@Alias("enum_int_a")
 	private TestTable2.EnumIntA enumIntA1;	
 	
 	
@@ -181,7 +165,6 @@ public class DS0001 implements java.io.Serializable{
 	* <li><B>remarks:</B> #enum{{ TRUE, FALSE}}
 	*/
 	@Column(table=TestTable2.M.TABLE, jdbcType=12, name=TestTable2.M.enumStringA$name, key=TestTable2.M.enumStringA$key, auto=TestTable2.M.enumStringA$auto, notnull=TestTable2.M.enumStringA$notnull, length=TestTable2.M.enumStringA$length, value=TestTable2.M.enumStringA$value, remarks=TestTable2.M.enumStringA$remarks)
-	@Alias("enum_string_a")
 	private TestTable2.EnumStringA enumStringA1;	
 	
 	
@@ -192,7 +175,6 @@ public class DS0001 implements java.io.Serializable{
 	* <li><B>remarks:</B> array of int. #array{int}
 	*/
 	@Column(table=TestTable2.M.TABLE, jdbcType=12, name=TestTable2.M.arrayInt$name, key=TestTable2.M.arrayInt$key, auto=TestTable2.M.arrayInt$auto, notnull=TestTable2.M.arrayInt$notnull, length=TestTable2.M.arrayInt$length, value=TestTable2.M.arrayInt$value, remarks=TestTable2.M.arrayInt$remarks)
-	@Alias("array_int")
 	private int[] arrayInt;	
 	
 	
@@ -203,7 +185,6 @@ public class DS0001 implements java.io.Serializable{
 	* <li><B>remarks:</B> array of string. #array{}
 	*/
 	@Column(table=TestTable2.M.TABLE, jdbcType=12, name=TestTable2.M.arrayString$name, key=TestTable2.M.arrayString$key, auto=TestTable2.M.arrayString$auto, notnull=TestTable2.M.arrayString$notnull, length=TestTable2.M.arrayString$length, value=TestTable2.M.arrayString$value, remarks=TestTable2.M.arrayString$remarks)
-	@Alias("array_string")
 	private String[] arrayString;	
 	
 	
@@ -214,7 +195,6 @@ public class DS0001 implements java.io.Serializable{
 	* <li><B>remarks:</B> Json object. #json{}
 	*/
 	@Column(table=TestTable2.M.TABLE, jdbcType=12, name=TestTable2.M.json$name, key=TestTable2.M.json$key, auto=TestTable2.M.json$auto, notnull=TestTable2.M.json$notnull, length=TestTable2.M.json$length, value=TestTable2.M.json$value, remarks=TestTable2.M.json$remarks)
-	@Alias("json")
 	private JsonObject json;	
 	
 	
@@ -225,7 +205,6 @@ public class DS0001 implements java.io.Serializable{
 	* <li><B>remarks:</B> Json object with given class.  #json{test.com.tsc9526.monalisa.orm.data.ColumnData}
 	*/
 	@Column(table=TestTable2.M.TABLE, jdbcType=12, name=TestTable2.M.obj$name, key=TestTable2.M.obj$key, auto=TestTable2.M.obj$auto, notnull=TestTable2.M.obj$notnull, length=TestTable2.M.obj$length, value=TestTable2.M.obj$value, remarks=TestTable2.M.obj$remarks)
-	@Alias("obj")
 	private ColumnData obj;	
 	
 	
@@ -236,7 +215,6 @@ public class DS0001 implements java.io.Serializable{
 	* <li><B>remarks:</B> 
 	*/
 	@Column(table=TestTable2.M.TABLE, jdbcType=93, name=TestTable2.M.tsA$name, key=TestTable2.M.tsA$key, auto=TestTable2.M.tsA$auto, notnull=TestTable2.M.tsA$notnull, length=TestTable2.M.tsA$length, value=TestTable2.M.tsA$value, remarks=TestTable2.M.tsA$remarks)
-	@Alias("ts_a")
 	private java.util.Date tsA1;	
 	
 	
@@ -247,7 +225,6 @@ public class DS0001 implements java.io.Serializable{
 	* <li><B>remarks:</B> 
 	*/
 	@Column(table=TestTable2.M.TABLE, jdbcType=93, name=TestTable2.M.createTime$name, key=TestTable2.M.createTime$key, auto=TestTable2.M.createTime$auto, notnull=TestTable2.M.createTime$notnull, length=TestTable2.M.createTime$length, value=TestTable2.M.createTime$value, remarks=TestTable2.M.createTime$remarks)
-	@Alias("create_time")
 	private java.util.Date createTime1;	
 	
 	
@@ -258,7 +235,6 @@ public class DS0001 implements java.io.Serializable{
 	* <li><B>remarks:</B> 
 	*/
 	@Column(table=TestTable2.M.TABLE, jdbcType=12, name=TestTable2.M.createBy$name, key=TestTable2.M.createBy$key, auto=TestTable2.M.createBy$auto, notnull=TestTable2.M.createBy$notnull, length=TestTable2.M.createBy$length, value=TestTable2.M.createBy$value, remarks=TestTable2.M.createBy$remarks)
-	@Alias("create_by")
 	private String createBy1;	
 	
 	
@@ -269,7 +245,6 @@ public class DS0001 implements java.io.Serializable{
 	* <li><B>remarks:</B> 
 	*/
 	@Column(table=TestTable2.M.TABLE, jdbcType=93, name=TestTable2.M.updateTime$name, key=TestTable2.M.updateTime$key, auto=TestTable2.M.updateTime$auto, notnull=TestTable2.M.updateTime$notnull, length=TestTable2.M.updateTime$length, value=TestTable2.M.updateTime$value, remarks=TestTable2.M.updateTime$remarks)
-	@Alias("update_time")
 	private java.util.Date updateTime1;	
 	
 	
@@ -280,7 +255,6 @@ public class DS0001 implements java.io.Serializable{
 	* <li><B>remarks:</B> 
 	*/
 	@Column(table=TestTable2.M.TABLE, jdbcType=12, name=TestTable2.M.updateBy$name, key=TestTable2.M.updateBy$key, auto=TestTable2.M.updateBy$auto, notnull=TestTable2.M.updateBy$notnull, length=TestTable2.M.updateBy$length, value=TestTable2.M.updateBy$value, remarks=TestTable2.M.updateBy$remarks)
-	@Alias("update_by")
 	private String updateBy1;	
 	
 	
@@ -291,7 +265,6 @@ public class DS0001 implements java.io.Serializable{
 	* <li><B>remarks:</B> primary key
 	*/
 	@Column(table=TestTable2.M.TABLE, jdbcType=4, name=TestTable2.M.id$name, key=TestTable2.M.id$key, auto=TestTable2.M.id$auto, notnull=TestTable2.M.id$notnull, length=TestTable2.M.id$length, value=TestTable2.M.id$value, remarks=TestTable2.M.id$remarks)
-	@Alias("id")
 	private Integer id2;	
 	
 	
@@ -305,7 +278,6 @@ public class DS0001 implements java.io.Serializable{
 	* <li><B>remarks:</B> primary key
 	*/
 	@Column(table=TestTable1.M.TABLE, jdbcType=4, name=TestTable1.M.id$name, key=TestTable1.M.id$key, auto=TestTable1.M.id$auto, notnull=TestTable1.M.id$notnull, length=TestTable1.M.id$length, value=TestTable1.M.id$value, remarks=TestTable1.M.id$remarks)
-	@Alias("id")
 	public DS0001 setId(Integer id){
 		this.id = id;
 		return this;
@@ -319,7 +291,6 @@ public class DS0001 implements java.io.Serializable{
 	* <li><B>remarks:</B> the name
 	*/
 	@Column(table=TestTable1.M.TABLE, jdbcType=12, name=TestTable1.M.name$name, key=TestTable1.M.name$key, auto=TestTable1.M.name$auto, notnull=TestTable1.M.name$notnull, length=TestTable1.M.name$length, value=TestTable1.M.name$value, remarks=TestTable1.M.name$remarks)
-	@Alias("name")
 	public DS0001 setName(String name){
 		this.name = name;
 		return this;
@@ -333,7 +304,6 @@ public class DS0001 implements java.io.Serializable{
 	* <li><B>remarks:</B> the title
 	*/
 	@Column(table=TestTable1.M.TABLE, jdbcType=12, name=TestTable1.M.title$name, key=TestTable1.M.title$key, auto=TestTable1.M.title$auto, notnull=TestTable1.M.title$notnull, length=TestTable1.M.title$length, value=TestTable1.M.title$value, remarks=TestTable1.M.title$remarks)
-	@Alias("title")
 	public DS0001 setTitle(String title){
 		this.title = title;
 		return this;
@@ -347,7 +317,6 @@ public class DS0001 implements java.io.Serializable{
 	* <li><B>remarks:</B> enum fields A  #enum{{V0,V1}}
 	*/
 	@Column(table=TestTable1.M.TABLE, jdbcType=4, name=TestTable1.M.enumIntA$name, key=TestTable1.M.enumIntA$key, auto=TestTable1.M.enumIntA$auto, notnull=TestTable1.M.enumIntA$notnull, length=TestTable1.M.enumIntA$length, value=TestTable1.M.enumIntA$value, remarks=TestTable1.M.enumIntA$remarks)
-	@Alias("enum_int_a")
 	public DS0001 setEnumIntA(TestTable1.EnumIntA enumIntA){
 		this.enumIntA = enumIntA;
 		return this;
@@ -361,7 +330,6 @@ public class DS0001 implements java.io.Serializable{
 	* <li><B>remarks:</B> #enum{{ TRUE, FALSE}}
 	*/
 	@Column(table=TestTable1.M.TABLE, jdbcType=12, name=TestTable1.M.enumStringA$name, key=TestTable1.M.enumStringA$key, auto=TestTable1.M.enumStringA$auto, notnull=TestTable1.M.enumStringA$notnull, length=TestTable1.M.enumStringA$length, value=TestTable1.M.enumStringA$value, remarks=TestTable1.M.enumStringA$remarks)
-	@Alias("enum_string_a")
 	public DS0001 setEnumStringA(TestTable1.EnumStringA enumStringA){
 		this.enumStringA = enumStringA;
 		return this;
@@ -375,7 +343,6 @@ public class DS0001 implements java.io.Serializable{
 	* <li><B>remarks:</B> 
 	*/
 	@Column(table=TestTable1.M.TABLE, jdbcType=93, name=TestTable1.M.tsA$name, key=TestTable1.M.tsA$key, auto=TestTable1.M.tsA$auto, notnull=TestTable1.M.tsA$notnull, length=TestTable1.M.tsA$length, value=TestTable1.M.tsA$value, remarks=TestTable1.M.tsA$remarks)
-	@Alias("ts_a")
 	public DS0001 setTsA(java.util.Date tsA){
 		this.tsA = tsA;
 		return this;
@@ -389,7 +356,6 @@ public class DS0001 implements java.io.Serializable{
 	* <li><B>remarks:</B> 
 	*/
 	@Column(table=TestTable1.M.TABLE, jdbcType=93, name=TestTable1.M.createTime$name, key=TestTable1.M.createTime$key, auto=TestTable1.M.createTime$auto, notnull=TestTable1.M.createTime$notnull, length=TestTable1.M.createTime$length, value=TestTable1.M.createTime$value, remarks=TestTable1.M.createTime$remarks)
-	@Alias("create_time")
 	public DS0001 setCreateTime(java.util.Date createTime){
 		this.createTime = createTime;
 		return this;
@@ -403,7 +369,6 @@ public class DS0001 implements java.io.Serializable{
 	* <li><B>remarks:</B> 
 	*/
 	@Column(table=TestTable1.M.TABLE, jdbcType=12, name=TestTable1.M.createBy$name, key=TestTable1.M.createBy$key, auto=TestTable1.M.createBy$auto, notnull=TestTable1.M.createBy$notnull, length=TestTable1.M.createBy$length, value=TestTable1.M.createBy$value, remarks=TestTable1.M.createBy$remarks)
-	@Alias("create_by")
 	public DS0001 setCreateBy(String createBy){
 		this.createBy = createBy;
 		return this;
@@ -417,7 +382,6 @@ public class DS0001 implements java.io.Serializable{
 	* <li><B>remarks:</B> 
 	*/
 	@Column(table=TestTable1.M.TABLE, jdbcType=93, name=TestTable1.M.updateTime$name, key=TestTable1.M.updateTime$key, auto=TestTable1.M.updateTime$auto, notnull=TestTable1.M.updateTime$notnull, length=TestTable1.M.updateTime$length, value=TestTable1.M.updateTime$value, remarks=TestTable1.M.updateTime$remarks)
-	@Alias("update_time")
 	public DS0001 setUpdateTime(java.util.Date updateTime){
 		this.updateTime = updateTime;
 		return this;
@@ -431,7 +395,6 @@ public class DS0001 implements java.io.Serializable{
 	* <li><B>remarks:</B> 
 	*/
 	@Column(table=TestTable1.M.TABLE, jdbcType=12, name=TestTable1.M.updateBy$name, key=TestTable1.M.updateBy$key, auto=TestTable1.M.updateBy$auto, notnull=TestTable1.M.updateBy$notnull, length=TestTable1.M.updateBy$length, value=TestTable1.M.updateBy$value, remarks=TestTable1.M.updateBy$remarks)
-	@Alias("update_by")
 	public DS0001 setUpdateBy(String updateBy){
 		this.updateBy = updateBy;
 		return this;
@@ -445,7 +408,6 @@ public class DS0001 implements java.io.Serializable{
 	* <li><B>remarks:</B> primary key
 	*/
 	@Column(table=TestTable2.M.TABLE, jdbcType=4, name=TestTable2.M.id$name, key=TestTable2.M.id$key, auto=TestTable2.M.id$auto, notnull=TestTable2.M.id$notnull, length=TestTable2.M.id$length, value=TestTable2.M.id$value, remarks=TestTable2.M.id$remarks)
-	@Alias("id")
 	public DS0001 setId1(Integer id1){
 		this.id1 = id1;
 		return this;
@@ -459,7 +421,6 @@ public class DS0001 implements java.io.Serializable{
 	* <li><B>remarks:</B> the name
 	*/
 	@Column(table=TestTable2.M.TABLE, jdbcType=12, name=TestTable2.M.name$name, key=TestTable2.M.name$key, auto=TestTable2.M.name$auto, notnull=TestTable2.M.name$notnull, length=TestTable2.M.name$length, value=TestTable2.M.name$value, remarks=TestTable2.M.name$remarks)
-	@Alias("name")
 	public DS0001 setName1(String name1){
 		this.name1 = name1;
 		return this;
@@ -473,7 +434,6 @@ public class DS0001 implements java.io.Serializable{
 	* <li><B>remarks:</B> the title
 	*/
 	@Column(table=TestTable2.M.TABLE, jdbcType=12, name=TestTable2.M.title$name, key=TestTable2.M.title$key, auto=TestTable2.M.title$auto, notnull=TestTable2.M.title$notnull, length=TestTable2.M.title$length, value=TestTable2.M.title$value, remarks=TestTable2.M.title$remarks)
-	@Alias("title")
 	public DS0001 setTitle1(String title1){
 		this.title1 = title1;
 		return this;
@@ -487,7 +447,6 @@ public class DS0001 implements java.io.Serializable{
 	* <li><B>remarks:</B> enum fields A  #enum{{V0,V1}}
 	*/
 	@Column(table=TestTable2.M.TABLE, jdbcType=4, name=TestTable2.M.enumIntA$name, key=TestTable2.M.enumIntA$key, auto=TestTable2.M.enumIntA$auto, notnull=TestTable2.M.enumIntA$notnull, length=TestTable2.M.enumIntA$length, value=TestTable2.M.enumIntA$value, remarks=TestTable2.M.enumIntA$remarks)
-	@Alias("enum_int_a")
 	public DS0001 setEnumIntA1(TestTable2.EnumIntA enumIntA1){
 		this.enumIntA1 = enumIntA1;
 		return this;
@@ -501,7 +460,6 @@ public class DS0001 implements java.io.Serializable{
 	* <li><B>remarks:</B> #enum{{ TRUE, FALSE}}
 	*/
 	@Column(table=TestTable2.M.TABLE, jdbcType=12, name=TestTable2.M.enumStringA$name, key=TestTable2.M.enumStringA$key, auto=TestTable2.M.enumStringA$auto, notnull=TestTable2.M.enumStringA$notnull, length=TestTable2.M.enumStringA$length, value=TestTable2.M.enumStringA$value, remarks=TestTable2.M.enumStringA$remarks)
-	@Alias("enum_string_a")
 	public DS0001 setEnumStringA1(TestTable2.EnumStringA enumStringA1){
 		this.enumStringA1 = enumStringA1;
 		return this;
@@ -515,7 +473,6 @@ public class DS0001 implements java.io.Serializable{
 	* <li><B>remarks:</B> array of int. #array{int}
 	*/
 	@Column(table=TestTable2.M.TABLE, jdbcType=12, name=TestTable2.M.arrayInt$name, key=TestTable2.M.arrayInt$key, auto=TestTable2.M.arrayInt$auto, notnull=TestTable2.M.arrayInt$notnull, length=TestTable2.M.arrayInt$length, value=TestTable2.M.arrayInt$value, remarks=TestTable2.M.arrayInt$remarks)
-	@Alias("array_int")
 	public DS0001 setArrayInt(int[] arrayInt){
 		this.arrayInt = arrayInt;
 		return this;
@@ -529,7 +486,6 @@ public class DS0001 implements java.io.Serializable{
 	* <li><B>remarks:</B> array of string. #array{}
 	*/
 	@Column(table=TestTable2.M.TABLE, jdbcType=12, name=TestTable2.M.arrayString$name, key=TestTable2.M.arrayString$key, auto=TestTable2.M.arrayString$auto, notnull=TestTable2.M.arrayString$notnull, length=TestTable2.M.arrayString$length, value=TestTable2.M.arrayString$value, remarks=TestTable2.M.arrayString$remarks)
-	@Alias("array_string")
 	public DS0001 setArrayString(String[] arrayString){
 		this.arrayString = arrayString;
 		return this;
@@ -543,7 +499,6 @@ public class DS0001 implements java.io.Serializable{
 	* <li><B>remarks:</B> Json object. #json{}
 	*/
 	@Column(table=TestTable2.M.TABLE, jdbcType=12, name=TestTable2.M.json$name, key=TestTable2.M.json$key, auto=TestTable2.M.json$auto, notnull=TestTable2.M.json$notnull, length=TestTable2.M.json$length, value=TestTable2.M.json$value, remarks=TestTable2.M.json$remarks)
-	@Alias("json")
 	public DS0001 setJson(JsonObject json){
 		this.json = json;
 		return this;
@@ -557,7 +512,6 @@ public class DS0001 implements java.io.Serializable{
 	* <li><B>remarks:</B> Json object with given class.  #json{test.com.tsc9526.monalisa.orm.data.ColumnData}
 	*/
 	@Column(table=TestTable2.M.TABLE, jdbcType=12, name=TestTable2.M.obj$name, key=TestTable2.M.obj$key, auto=TestTable2.M.obj$auto, notnull=TestTable2.M.obj$notnull, length=TestTable2.M.obj$length, value=TestTable2.M.obj$value, remarks=TestTable2.M.obj$remarks)
-	@Alias("obj")
 	public DS0001 setObj(ColumnData obj){
 		this.obj = obj;
 		return this;
@@ -571,7 +525,6 @@ public class DS0001 implements java.io.Serializable{
 	* <li><B>remarks:</B> 
 	*/
 	@Column(table=TestTable2.M.TABLE, jdbcType=93, name=TestTable2.M.tsA$name, key=TestTable2.M.tsA$key, auto=TestTable2.M.tsA$auto, notnull=TestTable2.M.tsA$notnull, length=TestTable2.M.tsA$length, value=TestTable2.M.tsA$value, remarks=TestTable2.M.tsA$remarks)
-	@Alias("ts_a")
 	public DS0001 setTsA1(java.util.Date tsA1){
 		this.tsA1 = tsA1;
 		return this;
@@ -585,7 +538,6 @@ public class DS0001 implements java.io.Serializable{
 	* <li><B>remarks:</B> 
 	*/
 	@Column(table=TestTable2.M.TABLE, jdbcType=93, name=TestTable2.M.createTime$name, key=TestTable2.M.createTime$key, auto=TestTable2.M.createTime$auto, notnull=TestTable2.M.createTime$notnull, length=TestTable2.M.createTime$length, value=TestTable2.M.createTime$value, remarks=TestTable2.M.createTime$remarks)
-	@Alias("create_time")
 	public DS0001 setCreateTime1(java.util.Date createTime1){
 		this.createTime1 = createTime1;
 		return this;
@@ -599,7 +551,6 @@ public class DS0001 implements java.io.Serializable{
 	* <li><B>remarks:</B> 
 	*/
 	@Column(table=TestTable2.M.TABLE, jdbcType=12, name=TestTable2.M.createBy$name, key=TestTable2.M.createBy$key, auto=TestTable2.M.createBy$auto, notnull=TestTable2.M.createBy$notnull, length=TestTable2.M.createBy$length, value=TestTable2.M.createBy$value, remarks=TestTable2.M.createBy$remarks)
-	@Alias("create_by")
 	public DS0001 setCreateBy1(String createBy1){
 		this.createBy1 = createBy1;
 		return this;
@@ -613,7 +564,6 @@ public class DS0001 implements java.io.Serializable{
 	* <li><B>remarks:</B> 
 	*/
 	@Column(table=TestTable2.M.TABLE, jdbcType=93, name=TestTable2.M.updateTime$name, key=TestTable2.M.updateTime$key, auto=TestTable2.M.updateTime$auto, notnull=TestTable2.M.updateTime$notnull, length=TestTable2.M.updateTime$length, value=TestTable2.M.updateTime$value, remarks=TestTable2.M.updateTime$remarks)
-	@Alias("update_time")
 	public DS0001 setUpdateTime1(java.util.Date updateTime1){
 		this.updateTime1 = updateTime1;
 		return this;
@@ -627,7 +577,6 @@ public class DS0001 implements java.io.Serializable{
 	* <li><B>remarks:</B> 
 	*/
 	@Column(table=TestTable2.M.TABLE, jdbcType=12, name=TestTable2.M.updateBy$name, key=TestTable2.M.updateBy$key, auto=TestTable2.M.updateBy$auto, notnull=TestTable2.M.updateBy$notnull, length=TestTable2.M.updateBy$length, value=TestTable2.M.updateBy$value, remarks=TestTable2.M.updateBy$remarks)
-	@Alias("update_by")
 	public DS0001 setUpdateBy1(String updateBy1){
 		this.updateBy1 = updateBy1;
 		return this;
@@ -641,7 +590,6 @@ public class DS0001 implements java.io.Serializable{
 	* <li><B>remarks:</B> primary key
 	*/
 	@Column(table=TestTable2.M.TABLE, jdbcType=4, name=TestTable2.M.id$name, key=TestTable2.M.id$key, auto=TestTable2.M.id$auto, notnull=TestTable2.M.id$notnull, length=TestTable2.M.id$length, value=TestTable2.M.id$value, remarks=TestTable2.M.id$remarks)
-	@Alias("id")
 	public DS0001 setId2(Integer id2){
 		this.id2 = id2;
 		return this;
@@ -658,7 +606,6 @@ public class DS0001 implements java.io.Serializable{
 	* <li><B>remarks:</B> primary key
 	*/
 	@Column(table=TestTable1.M.TABLE, jdbcType=4, name=TestTable1.M.id$name, key=TestTable1.M.id$key, auto=TestTable1.M.id$auto, notnull=TestTable1.M.id$notnull, length=TestTable1.M.id$length, value=TestTable1.M.id$value, remarks=TestTable1.M.id$remarks)
-	@Alias("id")
 	public Integer getId(){
 		return this.id;		
 	}
@@ -670,7 +617,6 @@ public class DS0001 implements java.io.Serializable{
 	* <li><B>remarks:</B> primary key
 	* @param defaultValue  Return the default value if id is null.*/
 	@Column(table=TestTable1.M.TABLE, jdbcType=4, name=TestTable1.M.id$name, key=TestTable1.M.id$key, auto=TestTable1.M.id$auto, notnull=TestTable1.M.id$notnull, length=TestTable1.M.id$length, value=TestTable1.M.id$value, remarks=TestTable1.M.id$remarks)
-	@Alias("id")
 	public Integer getId(Integer defaultValue){
 		Integer r=this.getId();
 		if(r==null){
@@ -688,7 +634,6 @@ public class DS0001 implements java.io.Serializable{
 	* <li><B>remarks:</B> the name
 	*/
 	@Column(table=TestTable1.M.TABLE, jdbcType=12, name=TestTable1.M.name$name, key=TestTable1.M.name$key, auto=TestTable1.M.name$auto, notnull=TestTable1.M.name$notnull, length=TestTable1.M.name$length, value=TestTable1.M.name$value, remarks=TestTable1.M.name$remarks)
-	@Alias("name")
 	public String getName(){
 		return this.name;		
 	}
@@ -700,7 +645,6 @@ public class DS0001 implements java.io.Serializable{
 	* <li><B>remarks:</B> the name
 	* @param defaultValue  Return the default value if name is null.*/
 	@Column(table=TestTable1.M.TABLE, jdbcType=12, name=TestTable1.M.name$name, key=TestTable1.M.name$key, auto=TestTable1.M.name$auto, notnull=TestTable1.M.name$notnull, length=TestTable1.M.name$length, value=TestTable1.M.name$value, remarks=TestTable1.M.name$remarks)
-	@Alias("name")
 	public String getName(String defaultValue){
 		String r=this.getName();
 		if(r==null){
@@ -718,7 +662,6 @@ public class DS0001 implements java.io.Serializable{
 	* <li><B>remarks:</B> the title
 	*/
 	@Column(table=TestTable1.M.TABLE, jdbcType=12, name=TestTable1.M.title$name, key=TestTable1.M.title$key, auto=TestTable1.M.title$auto, notnull=TestTable1.M.title$notnull, length=TestTable1.M.title$length, value=TestTable1.M.title$value, remarks=TestTable1.M.title$remarks)
-	@Alias("title")
 	public String getTitle(){
 		return this.title;		
 	}
@@ -730,7 +673,6 @@ public class DS0001 implements java.io.Serializable{
 	* <li><B>remarks:</B> the title
 	* @param defaultValue  Return the default value if title is null.*/
 	@Column(table=TestTable1.M.TABLE, jdbcType=12, name=TestTable1.M.title$name, key=TestTable1.M.title$key, auto=TestTable1.M.title$auto, notnull=TestTable1.M.title$notnull, length=TestTable1.M.title$length, value=TestTable1.M.title$value, remarks=TestTable1.M.title$remarks)
-	@Alias("title")
 	public String getTitle(String defaultValue){
 		String r=this.getTitle();
 		if(r==null){
@@ -748,7 +690,6 @@ public class DS0001 implements java.io.Serializable{
 	* <li><B>remarks:</B> enum fields A  #enum{{V0,V1}}
 	*/
 	@Column(table=TestTable1.M.TABLE, jdbcType=4, name=TestTable1.M.enumIntA$name, key=TestTable1.M.enumIntA$key, auto=TestTable1.M.enumIntA$auto, notnull=TestTable1.M.enumIntA$notnull, length=TestTable1.M.enumIntA$length, value=TestTable1.M.enumIntA$value, remarks=TestTable1.M.enumIntA$remarks)
-	@Alias("enum_int_a")
 	public TestTable1.EnumIntA getEnumIntA(){
 		return this.enumIntA;		
 	}
@@ -760,7 +701,6 @@ public class DS0001 implements java.io.Serializable{
 	* <li><B>remarks:</B> enum fields A  #enum{{V0,V1}}
 	* @param defaultValue  Return the default value if enumIntA is null.*/
 	@Column(table=TestTable1.M.TABLE, jdbcType=4, name=TestTable1.M.enumIntA$name, key=TestTable1.M.enumIntA$key, auto=TestTable1.M.enumIntA$auto, notnull=TestTable1.M.enumIntA$notnull, length=TestTable1.M.enumIntA$length, value=TestTable1.M.enumIntA$value, remarks=TestTable1.M.enumIntA$remarks)
-	@Alias("enum_int_a")
 	public TestTable1.EnumIntA getEnumIntA(TestTable1.EnumIntA defaultValue){
 		TestTable1.EnumIntA r=this.getEnumIntA();
 		if(r==null){
@@ -778,7 +718,6 @@ public class DS0001 implements java.io.Serializable{
 	* <li><B>remarks:</B> #enum{{ TRUE, FALSE}}
 	*/
 	@Column(table=TestTable1.M.TABLE, jdbcType=12, name=TestTable1.M.enumStringA$name, key=TestTable1.M.enumStringA$key, auto=TestTable1.M.enumStringA$auto, notnull=TestTable1.M.enumStringA$notnull, length=TestTable1.M.enumStringA$length, value=TestTable1.M.enumStringA$value, remarks=TestTable1.M.enumStringA$remarks)
-	@Alias("enum_string_a")
 	public TestTable1.EnumStringA getEnumStringA(){
 		return this.enumStringA;		
 	}
@@ -790,7 +729,6 @@ public class DS0001 implements java.io.Serializable{
 	* <li><B>remarks:</B> #enum{{ TRUE, FALSE}}
 	* @param defaultValue  Return the default value if enumStringA is null.*/
 	@Column(table=TestTable1.M.TABLE, jdbcType=12, name=TestTable1.M.enumStringA$name, key=TestTable1.M.enumStringA$key, auto=TestTable1.M.enumStringA$auto, notnull=TestTable1.M.enumStringA$notnull, length=TestTable1.M.enumStringA$length, value=TestTable1.M.enumStringA$value, remarks=TestTable1.M.enumStringA$remarks)
-	@Alias("enum_string_a")
 	public TestTable1.EnumStringA getEnumStringA(TestTable1.EnumStringA defaultValue){
 		TestTable1.EnumStringA r=this.getEnumStringA();
 		if(r==null){
@@ -808,7 +746,6 @@ public class DS0001 implements java.io.Serializable{
 	* <li><B>remarks:</B> 
 	*/
 	@Column(table=TestTable1.M.TABLE, jdbcType=93, name=TestTable1.M.tsA$name, key=TestTable1.M.tsA$key, auto=TestTable1.M.tsA$auto, notnull=TestTable1.M.tsA$notnull, length=TestTable1.M.tsA$length, value=TestTable1.M.tsA$value, remarks=TestTable1.M.tsA$remarks)
-	@Alias("ts_a")
 	public java.util.Date getTsA(){
 		return this.tsA;		
 	}
@@ -820,7 +757,6 @@ public class DS0001 implements java.io.Serializable{
 	* <li><B>remarks:</B> 
 	* @param defaultValue  Return the default value if tsA is null.*/
 	@Column(table=TestTable1.M.TABLE, jdbcType=93, name=TestTable1.M.tsA$name, key=TestTable1.M.tsA$key, auto=TestTable1.M.tsA$auto, notnull=TestTable1.M.tsA$notnull, length=TestTable1.M.tsA$length, value=TestTable1.M.tsA$value, remarks=TestTable1.M.tsA$remarks)
-	@Alias("ts_a")
 	public java.util.Date getTsA(java.util.Date defaultValue){
 		java.util.Date r=this.getTsA();
 		if(r==null){
@@ -838,7 +774,6 @@ public class DS0001 implements java.io.Serializable{
 	* <li><B>remarks:</B> 
 	*/
 	@Column(table=TestTable1.M.TABLE, jdbcType=93, name=TestTable1.M.createTime$name, key=TestTable1.M.createTime$key, auto=TestTable1.M.createTime$auto, notnull=TestTable1.M.createTime$notnull, length=TestTable1.M.createTime$length, value=TestTable1.M.createTime$value, remarks=TestTable1.M.createTime$remarks)
-	@Alias("create_time")
 	public java.util.Date getCreateTime(){
 		return this.createTime;		
 	}
@@ -850,7 +785,6 @@ public class DS0001 implements java.io.Serializable{
 	* <li><B>remarks:</B> 
 	* @param defaultValue  Return the default value if createTime is null.*/
 	@Column(table=TestTable1.M.TABLE, jdbcType=93, name=TestTable1.M.createTime$name, key=TestTable1.M.createTime$key, auto=TestTable1.M.createTime$auto, notnull=TestTable1.M.createTime$notnull, length=TestTable1.M.createTime$length, value=TestTable1.M.createTime$value, remarks=TestTable1.M.createTime$remarks)
-	@Alias("create_time")
 	public java.util.Date getCreateTime(java.util.Date defaultValue){
 		java.util.Date r=this.getCreateTime();
 		if(r==null){
@@ -868,7 +802,6 @@ public class DS0001 implements java.io.Serializable{
 	* <li><B>remarks:</B> 
 	*/
 	@Column(table=TestTable1.M.TABLE, jdbcType=12, name=TestTable1.M.createBy$name, key=TestTable1.M.createBy$key, auto=TestTable1.M.createBy$auto, notnull=TestTable1.M.createBy$notnull, length=TestTable1.M.createBy$length, value=TestTable1.M.createBy$value, remarks=TestTable1.M.createBy$remarks)
-	@Alias("create_by")
 	public String getCreateBy(){
 		return this.createBy;		
 	}
@@ -880,7 +813,6 @@ public class DS0001 implements java.io.Serializable{
 	* <li><B>remarks:</B> 
 	* @param defaultValue  Return the default value if createBy is null.*/
 	@Column(table=TestTable1.M.TABLE, jdbcType=12, name=TestTable1.M.createBy$name, key=TestTable1.M.createBy$key, auto=TestTable1.M.createBy$auto, notnull=TestTable1.M.createBy$notnull, length=TestTable1.M.createBy$length, value=TestTable1.M.createBy$value, remarks=TestTable1.M.createBy$remarks)
-	@Alias("create_by")
 	public String getCreateBy(String defaultValue){
 		String r=this.getCreateBy();
 		if(r==null){
@@ -898,7 +830,6 @@ public class DS0001 implements java.io.Serializable{
 	* <li><B>remarks:</B> 
 	*/
 	@Column(table=TestTable1.M.TABLE, jdbcType=93, name=TestTable1.M.updateTime$name, key=TestTable1.M.updateTime$key, auto=TestTable1.M.updateTime$auto, notnull=TestTable1.M.updateTime$notnull, length=TestTable1.M.updateTime$length, value=TestTable1.M.updateTime$value, remarks=TestTable1.M.updateTime$remarks)
-	@Alias("update_time")
 	public java.util.Date getUpdateTime(){
 		return this.updateTime;		
 	}
@@ -910,7 +841,6 @@ public class DS0001 implements java.io.Serializable{
 	* <li><B>remarks:</B> 
 	* @param defaultValue  Return the default value if updateTime is null.*/
 	@Column(table=TestTable1.M.TABLE, jdbcType=93, name=TestTable1.M.updateTime$name, key=TestTable1.M.updateTime$key, auto=TestTable1.M.updateTime$auto, notnull=TestTable1.M.updateTime$notnull, length=TestTable1.M.updateTime$length, value=TestTable1.M.updateTime$value, remarks=TestTable1.M.updateTime$remarks)
-	@Alias("update_time")
 	public java.util.Date getUpdateTime(java.util.Date defaultValue){
 		java.util.Date r=this.getUpdateTime();
 		if(r==null){
@@ -928,7 +858,6 @@ public class DS0001 implements java.io.Serializable{
 	* <li><B>remarks:</B> 
 	*/
 	@Column(table=TestTable1.M.TABLE, jdbcType=12, name=TestTable1.M.updateBy$name, key=TestTable1.M.updateBy$key, auto=TestTable1.M.updateBy$auto, notnull=TestTable1.M.updateBy$notnull, length=TestTable1.M.updateBy$length, value=TestTable1.M.updateBy$value, remarks=TestTable1.M.updateBy$remarks)
-	@Alias("update_by")
 	public String getUpdateBy(){
 		return this.updateBy;		
 	}
@@ -940,7 +869,6 @@ public class DS0001 implements java.io.Serializable{
 	* <li><B>remarks:</B> 
 	* @param defaultValue  Return the default value if updateBy is null.*/
 	@Column(table=TestTable1.M.TABLE, jdbcType=12, name=TestTable1.M.updateBy$name, key=TestTable1.M.updateBy$key, auto=TestTable1.M.updateBy$auto, notnull=TestTable1.M.updateBy$notnull, length=TestTable1.M.updateBy$length, value=TestTable1.M.updateBy$value, remarks=TestTable1.M.updateBy$remarks)
-	@Alias("update_by")
 	public String getUpdateBy(String defaultValue){
 		String r=this.getUpdateBy();
 		if(r==null){
@@ -958,7 +886,6 @@ public class DS0001 implements java.io.Serializable{
 	* <li><B>remarks:</B> primary key
 	*/
 	@Column(table=TestTable2.M.TABLE, jdbcType=4, name=TestTable2.M.id$name, key=TestTable2.M.id$key, auto=TestTable2.M.id$auto, notnull=TestTable2.M.id$notnull, length=TestTable2.M.id$length, value=TestTable2.M.id$value, remarks=TestTable2.M.id$remarks)
-	@Alias("id")
 	public Integer getId1(){
 		return this.id1;		
 	}
@@ -970,7 +897,6 @@ public class DS0001 implements java.io.Serializable{
 	* <li><B>remarks:</B> primary key
 	* @param defaultValue  Return the default value if id1 is null.*/
 	@Column(table=TestTable2.M.TABLE, jdbcType=4, name=TestTable2.M.id$name, key=TestTable2.M.id$key, auto=TestTable2.M.id$auto, notnull=TestTable2.M.id$notnull, length=TestTable2.M.id$length, value=TestTable2.M.id$value, remarks=TestTable2.M.id$remarks)
-	@Alias("id")
 	public Integer getId1(Integer defaultValue){
 		Integer r=this.getId1();
 		if(r==null){
@@ -988,7 +914,6 @@ public class DS0001 implements java.io.Serializable{
 	* <li><B>remarks:</B> the name
 	*/
 	@Column(table=TestTable2.M.TABLE, jdbcType=12, name=TestTable2.M.name$name, key=TestTable2.M.name$key, auto=TestTable2.M.name$auto, notnull=TestTable2.M.name$notnull, length=TestTable2.M.name$length, value=TestTable2.M.name$value, remarks=TestTable2.M.name$remarks)
-	@Alias("name")
 	public String getName1(){
 		return this.name1;		
 	}
@@ -1000,7 +925,6 @@ public class DS0001 implements java.io.Serializable{
 	* <li><B>remarks:</B> the name
 	* @param defaultValue  Return the default value if name1 is null.*/
 	@Column(table=TestTable2.M.TABLE, jdbcType=12, name=TestTable2.M.name$name, key=TestTable2.M.name$key, auto=TestTable2.M.name$auto, notnull=TestTable2.M.name$notnull, length=TestTable2.M.name$length, value=TestTable2.M.name$value, remarks=TestTable2.M.name$remarks)
-	@Alias("name")
 	public String getName1(String defaultValue){
 		String r=this.getName1();
 		if(r==null){
@@ -1018,7 +942,6 @@ public class DS0001 implements java.io.Serializable{
 	* <li><B>remarks:</B> the title
 	*/
 	@Column(table=TestTable2.M.TABLE, jdbcType=12, name=TestTable2.M.title$name, key=TestTable2.M.title$key, auto=TestTable2.M.title$auto, notnull=TestTable2.M.title$notnull, length=TestTable2.M.title$length, value=TestTable2.M.title$value, remarks=TestTable2.M.title$remarks)
-	@Alias("title")
 	public String getTitle1(){
 		return this.title1;		
 	}
@@ -1030,7 +953,6 @@ public class DS0001 implements java.io.Serializable{
 	* <li><B>remarks:</B> the title
 	* @param defaultValue  Return the default value if title1 is null.*/
 	@Column(table=TestTable2.M.TABLE, jdbcType=12, name=TestTable2.M.title$name, key=TestTable2.M.title$key, auto=TestTable2.M.title$auto, notnull=TestTable2.M.title$notnull, length=TestTable2.M.title$length, value=TestTable2.M.title$value, remarks=TestTable2.M.title$remarks)
-	@Alias("title")
 	public String getTitle1(String defaultValue){
 		String r=this.getTitle1();
 		if(r==null){
@@ -1048,7 +970,6 @@ public class DS0001 implements java.io.Serializable{
 	* <li><B>remarks:</B> enum fields A  #enum{{V0,V1}}
 	*/
 	@Column(table=TestTable2.M.TABLE, jdbcType=4, name=TestTable2.M.enumIntA$name, key=TestTable2.M.enumIntA$key, auto=TestTable2.M.enumIntA$auto, notnull=TestTable2.M.enumIntA$notnull, length=TestTable2.M.enumIntA$length, value=TestTable2.M.enumIntA$value, remarks=TestTable2.M.enumIntA$remarks)
-	@Alias("enum_int_a")
 	public TestTable2.EnumIntA getEnumIntA1(){
 		return this.enumIntA1;		
 	}
@@ -1060,7 +981,6 @@ public class DS0001 implements java.io.Serializable{
 	* <li><B>remarks:</B> enum fields A  #enum{{V0,V1}}
 	* @param defaultValue  Return the default value if enumIntA1 is null.*/
 	@Column(table=TestTable2.M.TABLE, jdbcType=4, name=TestTable2.M.enumIntA$name, key=TestTable2.M.enumIntA$key, auto=TestTable2.M.enumIntA$auto, notnull=TestTable2.M.enumIntA$notnull, length=TestTable2.M.enumIntA$length, value=TestTable2.M.enumIntA$value, remarks=TestTable2.M.enumIntA$remarks)
-	@Alias("enum_int_a")
 	public TestTable2.EnumIntA getEnumIntA1(TestTable2.EnumIntA defaultValue){
 		TestTable2.EnumIntA r=this.getEnumIntA1();
 		if(r==null){
@@ -1078,7 +998,6 @@ public class DS0001 implements java.io.Serializable{
 	* <li><B>remarks:</B> #enum{{ TRUE, FALSE}}
 	*/
 	@Column(table=TestTable2.M.TABLE, jdbcType=12, name=TestTable2.M.enumStringA$name, key=TestTable2.M.enumStringA$key, auto=TestTable2.M.enumStringA$auto, notnull=TestTable2.M.enumStringA$notnull, length=TestTable2.M.enumStringA$length, value=TestTable2.M.enumStringA$value, remarks=TestTable2.M.enumStringA$remarks)
-	@Alias("enum_string_a")
 	public TestTable2.EnumStringA getEnumStringA1(){
 		return this.enumStringA1;		
 	}
@@ -1090,7 +1009,6 @@ public class DS0001 implements java.io.Serializable{
 	* <li><B>remarks:</B> #enum{{ TRUE, FALSE}}
 	* @param defaultValue  Return the default value if enumStringA1 is null.*/
 	@Column(table=TestTable2.M.TABLE, jdbcType=12, name=TestTable2.M.enumStringA$name, key=TestTable2.M.enumStringA$key, auto=TestTable2.M.enumStringA$auto, notnull=TestTable2.M.enumStringA$notnull, length=TestTable2.M.enumStringA$length, value=TestTable2.M.enumStringA$value, remarks=TestTable2.M.enumStringA$remarks)
-	@Alias("enum_string_a")
 	public TestTable2.EnumStringA getEnumStringA1(TestTable2.EnumStringA defaultValue){
 		TestTable2.EnumStringA r=this.getEnumStringA1();
 		if(r==null){
@@ -1108,7 +1026,6 @@ public class DS0001 implements java.io.Serializable{
 	* <li><B>remarks:</B> array of int. #array{int}
 	*/
 	@Column(table=TestTable2.M.TABLE, jdbcType=12, name=TestTable2.M.arrayInt$name, key=TestTable2.M.arrayInt$key, auto=TestTable2.M.arrayInt$auto, notnull=TestTable2.M.arrayInt$notnull, length=TestTable2.M.arrayInt$length, value=TestTable2.M.arrayInt$value, remarks=TestTable2.M.arrayInt$remarks)
-	@Alias("array_int")
 	public int[] getArrayInt(){
 		return this.arrayInt;		
 	}
@@ -1120,7 +1037,6 @@ public class DS0001 implements java.io.Serializable{
 	* <li><B>remarks:</B> array of int. #array{int}
 	* @param defaultValue  Return the default value if arrayInt is null.*/
 	@Column(table=TestTable2.M.TABLE, jdbcType=12, name=TestTable2.M.arrayInt$name, key=TestTable2.M.arrayInt$key, auto=TestTable2.M.arrayInt$auto, notnull=TestTable2.M.arrayInt$notnull, length=TestTable2.M.arrayInt$length, value=TestTable2.M.arrayInt$value, remarks=TestTable2.M.arrayInt$remarks)
-	@Alias("array_int")
 	public int[] getArrayInt(int[] defaultValue){
 		int[] r=this.getArrayInt();
 		if(r==null){
@@ -1138,7 +1054,6 @@ public class DS0001 implements java.io.Serializable{
 	* <li><B>remarks:</B> array of string. #array{}
 	*/
 	@Column(table=TestTable2.M.TABLE, jdbcType=12, name=TestTable2.M.arrayString$name, key=TestTable2.M.arrayString$key, auto=TestTable2.M.arrayString$auto, notnull=TestTable2.M.arrayString$notnull, length=TestTable2.M.arrayString$length, value=TestTable2.M.arrayString$value, remarks=TestTable2.M.arrayString$remarks)
-	@Alias("array_string")
 	public String[] getArrayString(){
 		return this.arrayString;		
 	}
@@ -1150,7 +1065,6 @@ public class DS0001 implements java.io.Serializable{
 	* <li><B>remarks:</B> array of string. #array{}
 	* @param defaultValue  Return the default value if arrayString is null.*/
 	@Column(table=TestTable2.M.TABLE, jdbcType=12, name=TestTable2.M.arrayString$name, key=TestTable2.M.arrayString$key, auto=TestTable2.M.arrayString$auto, notnull=TestTable2.M.arrayString$notnull, length=TestTable2.M.arrayString$length, value=TestTable2.M.arrayString$value, remarks=TestTable2.M.arrayString$remarks)
-	@Alias("array_string")
 	public String[] getArrayString(String[] defaultValue){
 		String[] r=this.getArrayString();
 		if(r==null){
@@ -1168,7 +1082,6 @@ public class DS0001 implements java.io.Serializable{
 	* <li><B>remarks:</B> Json object. #json{}
 	*/
 	@Column(table=TestTable2.M.TABLE, jdbcType=12, name=TestTable2.M.json$name, key=TestTable2.M.json$key, auto=TestTable2.M.json$auto, notnull=TestTable2.M.json$notnull, length=TestTable2.M.json$length, value=TestTable2.M.json$value, remarks=TestTable2.M.json$remarks)
-	@Alias("json")
 	public JsonObject getJson(){
 		return this.json;		
 	}
@@ -1180,7 +1093,6 @@ public class DS0001 implements java.io.Serializable{
 	* <li><B>remarks:</B> Json object. #json{}
 	* @param defaultValue  Return the default value if json is null.*/
 	@Column(table=TestTable2.M.TABLE, jdbcType=12, name=TestTable2.M.json$name, key=TestTable2.M.json$key, auto=TestTable2.M.json$auto, notnull=TestTable2.M.json$notnull, length=TestTable2.M.json$length, value=TestTable2.M.json$value, remarks=TestTable2.M.json$remarks)
-	@Alias("json")
 	public JsonObject getJson(JsonObject defaultValue){
 		JsonObject r=this.getJson();
 		if(r==null){
@@ -1198,7 +1110,6 @@ public class DS0001 implements java.io.Serializable{
 	* <li><B>remarks:</B> Json object with given class.  #json{test.com.tsc9526.monalisa.orm.data.ColumnData}
 	*/
 	@Column(table=TestTable2.M.TABLE, jdbcType=12, name=TestTable2.M.obj$name, key=TestTable2.M.obj$key, auto=TestTable2.M.obj$auto, notnull=TestTable2.M.obj$notnull, length=TestTable2.M.obj$length, value=TestTable2.M.obj$value, remarks=TestTable2.M.obj$remarks)
-	@Alias("obj")
 	public ColumnData getObj(){
 		return this.obj;		
 	}
@@ -1210,7 +1121,6 @@ public class DS0001 implements java.io.Serializable{
 	* <li><B>remarks:</B> Json object with given class.  #json{test.com.tsc9526.monalisa.orm.data.ColumnData}
 	* @param defaultValue  Return the default value if obj is null.*/
 	@Column(table=TestTable2.M.TABLE, jdbcType=12, name=TestTable2.M.obj$name, key=TestTable2.M.obj$key, auto=TestTable2.M.obj$auto, notnull=TestTable2.M.obj$notnull, length=TestTable2.M.obj$length, value=TestTable2.M.obj$value, remarks=TestTable2.M.obj$remarks)
-	@Alias("obj")
 	public ColumnData getObj(ColumnData defaultValue){
 		ColumnData r=this.getObj();
 		if(r==null){
@@ -1228,7 +1138,6 @@ public class DS0001 implements java.io.Serializable{
 	* <li><B>remarks:</B> 
 	*/
 	@Column(table=TestTable2.M.TABLE, jdbcType=93, name=TestTable2.M.tsA$name, key=TestTable2.M.tsA$key, auto=TestTable2.M.tsA$auto, notnull=TestTable2.M.tsA$notnull, length=TestTable2.M.tsA$length, value=TestTable2.M.tsA$value, remarks=TestTable2.M.tsA$remarks)
-	@Alias("ts_a")
 	public java.util.Date getTsA1(){
 		return this.tsA1;		
 	}
@@ -1240,7 +1149,6 @@ public class DS0001 implements java.io.Serializable{
 	* <li><B>remarks:</B> 
 	* @param defaultValue  Return the default value if tsA1 is null.*/
 	@Column(table=TestTable2.M.TABLE, jdbcType=93, name=TestTable2.M.tsA$name, key=TestTable2.M.tsA$key, auto=TestTable2.M.tsA$auto, notnull=TestTable2.M.tsA$notnull, length=TestTable2.M.tsA$length, value=TestTable2.M.tsA$value, remarks=TestTable2.M.tsA$remarks)
-	@Alias("ts_a")
 	public java.util.Date getTsA1(java.util.Date defaultValue){
 		java.util.Date r=this.getTsA1();
 		if(r==null){
@@ -1258,7 +1166,6 @@ public class DS0001 implements java.io.Serializable{
 	* <li><B>remarks:</B> 
 	*/
 	@Column(table=TestTable2.M.TABLE, jdbcType=93, name=TestTable2.M.createTime$name, key=TestTable2.M.createTime$key, auto=TestTable2.M.createTime$auto, notnull=TestTable2.M.createTime$notnull, length=TestTable2.M.createTime$length, value=TestTable2.M.createTime$value, remarks=TestTable2.M.createTime$remarks)
-	@Alias("create_time")
 	public java.util.Date getCreateTime1(){
 		return this.createTime1;		
 	}
@@ -1270,7 +1177,6 @@ public class DS0001 implements java.io.Serializable{
 	* <li><B>remarks:</B> 
 	* @param defaultValue  Return the default value if createTime1 is null.*/
 	@Column(table=TestTable2.M.TABLE, jdbcType=93, name=TestTable2.M.createTime$name, key=TestTable2.M.createTime$key, auto=TestTable2.M.createTime$auto, notnull=TestTable2.M.createTime$notnull, length=TestTable2.M.createTime$length, value=TestTable2.M.createTime$value, remarks=TestTable2.M.createTime$remarks)
-	@Alias("create_time")
 	public java.util.Date getCreateTime1(java.util.Date defaultValue){
 		java.util.Date r=this.getCreateTime1();
 		if(r==null){
@@ -1288,7 +1194,6 @@ public class DS0001 implements java.io.Serializable{
 	* <li><B>remarks:</B> 
 	*/
 	@Column(table=TestTable2.M.TABLE, jdbcType=12, name=TestTable2.M.createBy$name, key=TestTable2.M.createBy$key, auto=TestTable2.M.createBy$auto, notnull=TestTable2.M.createBy$notnull, length=TestTable2.M.createBy$length, value=TestTable2.M.createBy$value, remarks=TestTable2.M.createBy$remarks)
-	@Alias("create_by")
 	public String getCreateBy1(){
 		return this.createBy1;		
 	}
@@ -1300,7 +1205,6 @@ public class DS0001 implements java.io.Serializable{
 	* <li><B>remarks:</B> 
 	* @param defaultValue  Return the default value if createBy1 is null.*/
 	@Column(table=TestTable2.M.TABLE, jdbcType=12, name=TestTable2.M.createBy$name, key=TestTable2.M.createBy$key, auto=TestTable2.M.createBy$auto, notnull=TestTable2.M.createBy$notnull, length=TestTable2.M.createBy$length, value=TestTable2.M.createBy$value, remarks=TestTable2.M.createBy$remarks)
-	@Alias("create_by")
 	public String getCreateBy1(String defaultValue){
 		String r=this.getCreateBy1();
 		if(r==null){
@@ -1318,7 +1222,6 @@ public class DS0001 implements java.io.Serializable{
 	* <li><B>remarks:</B> 
 	*/
 	@Column(table=TestTable2.M.TABLE, jdbcType=93, name=TestTable2.M.updateTime$name, key=TestTable2.M.updateTime$key, auto=TestTable2.M.updateTime$auto, notnull=TestTable2.M.updateTime$notnull, length=TestTable2.M.updateTime$length, value=TestTable2.M.updateTime$value, remarks=TestTable2.M.updateTime$remarks)
-	@Alias("update_time")
 	public java.util.Date getUpdateTime1(){
 		return this.updateTime1;		
 	}
@@ -1330,7 +1233,6 @@ public class DS0001 implements java.io.Serializable{
 	* <li><B>remarks:</B> 
 	* @param defaultValue  Return the default value if updateTime1 is null.*/
 	@Column(table=TestTable2.M.TABLE, jdbcType=93, name=TestTable2.M.updateTime$name, key=TestTable2.M.updateTime$key, auto=TestTable2.M.updateTime$auto, notnull=TestTable2.M.updateTime$notnull, length=TestTable2.M.updateTime$length, value=TestTable2.M.updateTime$value, remarks=TestTable2.M.updateTime$remarks)
-	@Alias("update_time")
 	public java.util.Date getUpdateTime1(java.util.Date defaultValue){
 		java.util.Date r=this.getUpdateTime1();
 		if(r==null){
@@ -1348,7 +1250,6 @@ public class DS0001 implements java.io.Serializable{
 	* <li><B>remarks:</B> 
 	*/
 	@Column(table=TestTable2.M.TABLE, jdbcType=12, name=TestTable2.M.updateBy$name, key=TestTable2.M.updateBy$key, auto=TestTable2.M.updateBy$auto, notnull=TestTable2.M.updateBy$notnull, length=TestTable2.M.updateBy$length, value=TestTable2.M.updateBy$value, remarks=TestTable2.M.updateBy$remarks)
-	@Alias("update_by")
 	public String getUpdateBy1(){
 		return this.updateBy1;		
 	}
@@ -1360,7 +1261,6 @@ public class DS0001 implements java.io.Serializable{
 	* <li><B>remarks:</B> 
 	* @param defaultValue  Return the default value if updateBy1 is null.*/
 	@Column(table=TestTable2.M.TABLE, jdbcType=12, name=TestTable2.M.updateBy$name, key=TestTable2.M.updateBy$key, auto=TestTable2.M.updateBy$auto, notnull=TestTable2.M.updateBy$notnull, length=TestTable2.M.updateBy$length, value=TestTable2.M.updateBy$value, remarks=TestTable2.M.updateBy$remarks)
-	@Alias("update_by")
 	public String getUpdateBy1(String defaultValue){
 		String r=this.getUpdateBy1();
 		if(r==null){
@@ -1378,7 +1278,6 @@ public class DS0001 implements java.io.Serializable{
 	* <li><B>remarks:</B> primary key
 	*/
 	@Column(table=TestTable2.M.TABLE, jdbcType=4, name=TestTable2.M.id$name, key=TestTable2.M.id$key, auto=TestTable2.M.id$auto, notnull=TestTable2.M.id$notnull, length=TestTable2.M.id$length, value=TestTable2.M.id$value, remarks=TestTable2.M.id$remarks)
-	@Alias("id")
 	public Integer getId2(){
 		return this.id2;		
 	}
@@ -1390,7 +1289,6 @@ public class DS0001 implements java.io.Serializable{
 	* <li><B>remarks:</B> primary key
 	* @param defaultValue  Return the default value if id2 is null.*/
 	@Column(table=TestTable2.M.TABLE, jdbcType=4, name=TestTable2.M.id$name, key=TestTable2.M.id$key, auto=TestTable2.M.id$auto, notnull=TestTable2.M.id$notnull, length=TestTable2.M.id$length, value=TestTable2.M.id$value, remarks=TestTable2.M.id$remarks)
-	@Alias("id")
 	public Integer getId2(Integer defaultValue){
 		Integer r=this.getId2();
 		if(r==null){
