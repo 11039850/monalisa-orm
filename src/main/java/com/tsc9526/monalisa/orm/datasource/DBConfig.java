@@ -725,7 +725,7 @@ public class DBConfig implements Closeable{
 		
 		protected boolean loadCfg(CfgFile cf,Properties prop){
 			if(cf.cfgFile.exists()){
-				logger.info("Load ("+key+") base path from: "+cf.cfgFile.getAbsolutePath());				
+				logger.info("Found ("+key+") base path from: "+cf.cfgFile.getAbsolutePath());				
 				try{
 					cf.lastModified=cf.cfgFile.lastModified();
 					 

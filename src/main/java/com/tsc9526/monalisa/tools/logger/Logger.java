@@ -65,7 +65,7 @@ public abstract class Logger {
 		{ "org.apache.commons.logging.Log",  "Commons"},
 		{ "org.slf4j.Logger",                "SLF4J"}		
 	};
-	
+	org.slf4j.LoggerFactory aFactory;
 	private static int loggerIndex;
 	private static LoggerFactory factory;
 	private static String categoryPrefix = "";
@@ -134,8 +134,8 @@ public abstract class Logger {
 			for (int i = LIBRARY.length - 1; i > 0; --i) {				 
 				try {
 					return createFactory(i);
-				} catch (ClassNotFoundException e) {
-				}
+				}catch(ClassNotFoundException e){	
+				}catch (NoClassDefFoundError e) {}
 			}
 			System.err.println("!!! WARNING: Monalisa logging suppressed!");
 			return new ConsoleLoggerFactory();
@@ -160,10 +160,6 @@ public abstract class Logger {
 	} 
 	
 	private static Class<?> forName(String className)throws ClassNotFoundException{
-		try{
-			return Class.forName(className);
-		}catch(ClassNotFoundException cnf){
-			return Class.forName(className,true,Thread.currentThread().getContextClassLoader());
-		}
+		return Class.forName(className);
 	}
 }

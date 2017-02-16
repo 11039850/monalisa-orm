@@ -40,7 +40,7 @@ public class DBTasks extends Thread{
 	}
 	 
 	public static void addShutdown(Runnable c){
-		instance.addRunnable(c);
+		instance.addShutdownRun(c);
 	}
 	
 	public static void shutdown(){
@@ -99,7 +99,7 @@ public class DBTasks extends Thread{
 				interrupt();
 			}
 			
-			logger.info("Exit: "+this.getClass().getSimpleName());
+			logger.info("Monalisa task thread destoried!");
 		}
 	}
 	
@@ -116,7 +116,7 @@ public class DBTasks extends Thread{
 		}
 	}
 	
-	public void addRunnable(Runnable c){
+	public void addShutdownRun(Runnable c){
 		cls.add(c);
 	}
 	 

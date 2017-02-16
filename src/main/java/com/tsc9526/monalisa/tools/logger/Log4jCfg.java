@@ -33,24 +33,20 @@ public class Log4jCfg {
 			}
 			
 			if(!cfg){
-				ClassLoader[] loaders=new ClassLoader[]{
-					Thread.currentThread().getContextClassLoader(),
-					LoggerFactory.class.getClassLoader()
-				};
-				 
-				for(ClassLoader loader:loaders){
-					if(loader.getResource("/log4j.xml")!=null ||  loader.getResource("/log4j.properties")!=null){
-						cfg=true;
-						break;
-					}
+				ClassLoader loader=LoggerFactory.class.getClassLoader();
+				if(loader.getResource("/log4j.xml")!=null ||  loader.getResource("/log4j.properties")!=null){
+					cfg=true;
 				}
 			}
 			
 			if(!cfg){
 				URL log4jCfg=LoggerFactory.class.getResource("/logger/log4j.xml");
+				
+				Thread.currentThread().setContextClassLoader(LoggerFactory.class.getClassLoader());
+				
 				org.apache.log4j.xml.DOMConfigurator.configure(log4jCfg);
+				
 			}
-			
 		}catch(Exception e){}
 	}
 }

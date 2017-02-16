@@ -104,7 +104,7 @@ public class DbWebContainerInitializer implements ServletContainerInitializer {
 			
 			String name=dbsp.getProperty("name");
 			String spath=servletContext.getContextPath()+"/dbs/"+name;
-			logger.info("Add db("+db.getKey()+") service context: "+spath);
+			logger.info("Add service("+db.getKey()+") context path: "+spath);
 			     
 			String prefix=DbQueryHttpServlet.DB_CFG_PREFIX+(i+1)+".";
 			
