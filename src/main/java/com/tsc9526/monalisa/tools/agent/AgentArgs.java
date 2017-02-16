@@ -28,12 +28,14 @@ public class AgentArgs {
 	private long id=serial.getAndIncrement();
 	
 	private AgentArgClassInfo[] classes;
+	private String sourceFilePathRoot;
 	private String classFilePathRoot;
 	
 	public AgentArgs(){
 	}
 	
-	public AgentArgs(String classFilePathRoot,AgentArgClassInfo[] classes){
+	public AgentArgs(String sourceFilePathRoot,String classFilePathRoot,AgentArgClassInfo[] classes){
+		this.sourceFilePathRoot=sourceFilePathRoot;
 		this.classFilePathRoot=classFilePathRoot;
 		this.classes=classes;	
 	}
@@ -45,19 +47,7 @@ public class AgentArgs {
 	public void setClassFilePathRoot(String classFilePathRoot) {
 		this.classFilePathRoot = classFilePathRoot;
 	}
-	
-	public static class AgentArgClassInfo{
-		String className;
-		long   version;
-		long   lastModified;
-		
-		public AgentArgClassInfo(String className,long version,long lastModified){
-			this.className=className;
-			this.version=version;
-			this.lastModified=lastModified;
-		}
-	}
-
+	 
 	public AgentArgClassInfo[] getClasses() {
 		return classes;
 	}
@@ -73,5 +63,30 @@ public class AgentArgs {
 	public void setId(long id) {
 		this.id = id;
 	}
+
+	public String getSourceFilePathRoot() {
+		return sourceFilePathRoot;
+	}
+
+	public void setSourceFilePathRoot(String sourceFilePathRoot) {
+		this.sourceFilePathRoot = sourceFilePathRoot;
+	}
 	 
+	public static class AgentArgClassInfo{
+		String javaFilePath;
+		String classFilePath;
+		
+		String className;
+		long   version;
+		long   lastModified;
+		
+		public AgentArgClassInfo(AgentJavaFile ajf){
+			this.javaFilePath =ajf.getJavaFile().getAbsolutePath(); 
+			this.classFilePath=ajf.getClassFile().getAbsolutePath();
+			
+			this.className    =ajf.getClassName();
+			this.version      =ajf.getVersion();
+			this.lastModified =ajf.getLastModified();
+		}
+	}
 }

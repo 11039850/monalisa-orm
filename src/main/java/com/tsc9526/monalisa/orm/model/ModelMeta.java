@@ -34,13 +34,13 @@ import com.tsc9526.monalisa.orm.annotation.DB;
 import com.tsc9526.monalisa.orm.annotation.Index;
 import com.tsc9526.monalisa.orm.annotation.Table;
 import com.tsc9526.monalisa.orm.datasource.DBConfig;
-import com.tsc9526.monalisa.orm.datasource.DBTasks;
 import com.tsc9526.monalisa.orm.datasource.DbProp;
 import com.tsc9526.monalisa.orm.dialect.Dialect;
 import com.tsc9526.monalisa.orm.meta.MetaColumn;
 import com.tsc9526.monalisa.orm.meta.MetaPartition;
 import com.tsc9526.monalisa.orm.meta.MetaTable;
 import com.tsc9526.monalisa.orm.utils.TableHelper;
+import com.tsc9526.monalisa.tools.Tasks;
 import com.tsc9526.monalisa.tools.clazz.MelpClass;
 import com.tsc9526.monalisa.tools.clazz.MelpClass.FGS;
 import com.tsc9526.monalisa.tools.clazz.MelpClass.ClassAssist;
@@ -66,7 +66,7 @@ public class ModelMeta{
 		
 		int interval=DbProp.CFG_RELOAD_MODEL_INTERVAL;
 		if(mm==null && interval>0){
-			DBTasks.schedule("ModelChangeTask", new TimerTask() {
+			Tasks.instance.addSchedule("ModelChangeTask", new TimerTask() {
 				public void run() {
 					reloadModelMetas();
 				}

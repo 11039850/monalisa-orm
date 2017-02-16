@@ -29,6 +29,7 @@ import javax.sql.DataSource;
 import com.tsc9526.monalisa.orm.annotation.DB;
 import com.tsc9526.monalisa.orm.dialect.Dialect;
 import com.tsc9526.monalisa.orm.dialect.MysqlDialect;
+import com.tsc9526.monalisa.tools.Tasks;
 import com.tsc9526.monalisa.tools.clazz.MelpClass;
 import com.tsc9526.monalisa.tools.logger.Logger;
 
@@ -49,7 +50,7 @@ public class DataSourceManager {
 	 * close data source, daemon thread ...
 	 */
 	public static void shutdown(){
-		DBTasks.shutdown();
+		Tasks.instance.destory();
 	}
 	 
 	private Map<String, DBConfig> dss=new ConcurrentHashMap<String,DBConfig>();
@@ -57,8 +58,8 @@ public class DataSourceManager {
 	private Map<String, Dialect> dialects=new ConcurrentHashMap<String,Dialect>();
 	
 	
-	private DataSourceManager(){	
-		DBTasks.addShutdown(new Runnable() {
+	private DataSourceManager(){
+		Tasks.instance.addShutdown(new Runnable() {
 			public void run(){
 				Set<String> jdbsURLs=new LinkedHashSet<String>();
 				jdbsURLs.add("jdbc:relique:csv:monalisa-memory");

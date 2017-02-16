@@ -26,6 +26,7 @@ import net.sf.cglib.proxy.MethodProxy;
 
 import com.tsc9526.monalisa.orm.annotation.Interceptors;
 import com.tsc9526.monalisa.orm.annotation.Tx;
+import com.tsc9526.monalisa.tools.Tasks;
 
 /**
  * 
@@ -67,7 +68,11 @@ public class AgentEnhancer implements MethodInterceptor {
 
 			return r.get(0);
 		} else {
-			return doInterceptors(obj,method,args,proxy);
+			if(method.getName().equals("finalize") && Tasks.instance.isDestoried()){
+				return null;
+			}else{
+				return doInterceptors(obj,method,args,proxy);
+			}
 		}
 	}
 	

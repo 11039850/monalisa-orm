@@ -28,8 +28,8 @@ import java.util.Map;
 import java.util.TimerTask;
 import java.util.concurrent.ConcurrentHashMap;
 
-import com.tsc9526.monalisa.orm.datasource.DBTasks;
 import com.tsc9526.monalisa.orm.datasource.DbProp;
+import com.tsc9526.monalisa.tools.Tasks;
 import com.tsc9526.monalisa.tools.clazz.CompilePackage;
 import com.tsc9526.monalisa.tools.clazz.Compiler;
 import com.tsc9526.monalisa.tools.clazz.MelpClass;
@@ -118,11 +118,11 @@ public class AgentClass {
 			
 			if(old==null){
 				if(ci.version<oldVersion){
-					sb.append("<!Error!> ");
+					sb.append("* <!Error!> ");
 				}else if(ci.lastModified<oldLastModified){
-					sb.append("<Warn!!!> ");
+					sb.append("* <Warn!!!> ");
 				}else{
-					sb.append("<Replace> ");
+					sb.append("* <Replace> ");
 				}
 			}
 			
@@ -132,12 +132,16 @@ public class AgentClass {
 		 	sb.append("class: "+ci.className);
 		 	sb.append(", version: "   +oldVersion+sv+ci.version  );
 			sb.append(", timestamp: "  +oldTs     +st+newTs       );
+			sb.append(", file: "+ci.javaFilePath);
 			   
 			sb.append("\r\n"); 
 		}
 		
-		logger.info("Reload classes("+args.getClasses().length+"), Class-Path: "+new File(args.getClassFilePathRoot()).getAbsolutePath()
+		logger.info("Reload classes: "+args.getClasses().length
 				+"\r\n***************************************************************************************************"
+				+"\r\n* Source root path: "+new File(args.getSourceFilePathRoot()).getAbsolutePath()
+				+"\r\n* Class  root path: "+new File(args.getClassFilePathRoot()).getAbsolutePath()
+				+"\r\n* ================================================================================================="
 				+"\r\n"+sb.toString()
 				+    "***************************************************************************************************");
 	}
@@ -168,7 +172,7 @@ public class AgentClass {
 			reloadClasses();
 			 
 			long delay=DbProp.CFG_RELOAD_CLASS_INTERVAL*1000;
-			DBTasks.schedule("ClassReloadTask", new TimerTask() {
+			Tasks.instance.addSchedule("ClassReloadTask", new TimerTask() {
 				public void run() {
 					reloadClasses();
 				}
@@ -194,12 +198,12 @@ public class AgentClass {
 			List<AgentArgs.AgentArgClassInfo> cis=new ArrayList<AgentArgs.AgentArgClassInfo>();
 			for(AgentJavaFile j:compilePackage.getJavaFiles()){
 				if(j.isReloadRequired()){
-					cis.add(new AgentArgs.AgentArgClassInfo(j.getClassName(),j.getVersion(),j.getLastModified()));
+					cis.add(new AgentArgs.AgentArgClassInfo(j));
 				}
 			} 
 			
 			if(cis.size()>0){
-				AgentArgs args=new AgentArgs(DbProp.TMP_WORK_DIR_JAVA,cis.toArray(new AgentArgs.AgentArgClassInfo[0]));
+				AgentArgs args=new AgentArgs(DbProp.CFG_SQL_PATH,DbProp.TMP_WORK_DIR_JAVA,cis.toArray(new AgentArgs.AgentArgClassInfo[0]));
 				String agentArgs=MelpJson.getGson().toJson(args);
 			    AgentJar.loadAgentClass(AgentClass.class.getName(), agentArgs); 
 			} 
