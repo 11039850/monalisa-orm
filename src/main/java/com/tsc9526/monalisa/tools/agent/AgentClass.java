@@ -84,9 +84,18 @@ public class AgentClass {
 		}
 	}
 	
-	private static void callAgent(final String agentArgs,final Instrumentation inst){
+	private static void callAgent(final String argsReloadFilePath,final Instrumentation inst){
 		try {
-			AgentArgs args=MelpJson.getGson().fromJson(agentArgs, AgentArgs.class);
+			File f=new File(argsReloadFilePath);
+			String json=MelpFile.readToString(f,"utf-8");
+			  
+			File to=new File(argsReloadFilePath+"ed");
+			if(to.exists()){
+				to.delete();
+			}
+			f.renameTo(to);
+			
+			AgentArgs args=MelpJson.getGson().fromJson(json, AgentArgs.class);
   		
 			printAgentInfo(args);
 		 	 
@@ -204,8 +213,12 @@ public class AgentClass {
 			
 			if(cis.size()>0){
 				AgentArgs args=new AgentArgs(DbProp.CFG_SQL_PATH,DbProp.TMP_WORK_DIR_JAVA,cis.toArray(new AgentArgs.AgentArgClassInfo[0]));
-				String agentArgs=MelpJson.getGson().toJson(args);
-			    AgentJar.loadAgentClass(AgentClass.class.getName(), agentArgs); 
+				String agentArgs=MelpJson.createGsonBuilder().setPrettyPrinting().create().toJson(args);
+				
+				File f=new File(DbProp.CFG_SQL_PATH,".load");
+				MelpFile.write(f,agentArgs.getBytes("utf-8") );
+				
+			    AgentJar.loadAgentClass(AgentClass.class.getName(), MelpFile.combinePath(f.getAbsolutePath())); 
 			} 
 			
 		}catch(Exception e){

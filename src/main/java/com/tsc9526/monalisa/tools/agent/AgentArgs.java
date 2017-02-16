@@ -18,6 +18,8 @@ package com.tsc9526.monalisa.tools.agent;
 
 import java.util.concurrent.atomic.AtomicLong;
 
+import com.tsc9526.monalisa.tools.io.MelpFile;
+
 /**
  * 
  * @author zzg.zhou(11039850@qq.com)
@@ -25,11 +27,15 @@ import java.util.concurrent.atomic.AtomicLong;
 public class AgentArgs {
 	private static AtomicLong serial=new AtomicLong(1);
 	
+	public final static String FLAG_LOADING="***LOADING***";
+	
 	private long id=serial.getAndIncrement();
 	
 	private AgentArgClassInfo[] classes;
 	private String sourceFilePathRoot;
 	private String classFilePathRoot;
+	
+	private String reloadFlag=FLAG_LOADING;
 	
 	public AgentArgs(){
 	}
@@ -81,12 +87,20 @@ public class AgentArgs {
 		long   lastModified;
 		
 		public AgentArgClassInfo(AgentJavaFile ajf){
-			this.javaFilePath =ajf.getJavaFile().getAbsolutePath(); 
-			this.classFilePath=ajf.getClassFile().getAbsolutePath();
+			this.javaFilePath =MelpFile.combinePath(ajf.getJavaFile().getAbsolutePath()); 
+			this.classFilePath=MelpFile.combinePath(ajf.getClassFile().getAbsolutePath());
 			
 			this.className    =ajf.getClassName();
 			this.version      =ajf.getVersion();
 			this.lastModified =ajf.getLastModified();
 		}
+	}
+
+	public String getReloadFlag() {
+		return reloadFlag;
+	}
+
+	public void setReloadFlag(String reloadFlag) {
+		this.reloadFlag = reloadFlag;
 	}
 }
