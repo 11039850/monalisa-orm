@@ -74,7 +74,14 @@ public class Tasks {
 		}
 		
 		public void destory(){
-			running=false;
+			if(running){
+				running=false;
+				
+				synchronized(this){
+					notifyAll();
+				}
+			}
+			
 			if(!destoried){
 				destoried=true;
 				
@@ -110,16 +117,13 @@ public class Tasks {
 		}
 		 
 		protected void delay(int millis){
-			int count=millis/100;
-			
-			for(int i=0;running && i<count;i++){
+			synchronized(this){
 				try{
-					Thread.sleep(100);
+					wait(millis);
 				}catch(InterruptedException ex){
 					running=false;
-					break;
 				}
-			}
+			} 		
 		}
 		
 		public boolean isDestoried(){

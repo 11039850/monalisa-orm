@@ -88,21 +88,25 @@ public class MelpEclipse {
 	public static String getEclipseWorkspaceDir(){
 		String ewd=System.getProperty("eclipse.workspace.dir");
 		if(ewd==null){
-			String rb=System.getProperty("catalina.base");
-			if(rb==null){
-				rb=System.getProperty("catalina.home");
-			}
-			
-			if(rb!=null){
-				rb=rb.replace("\\","/");
-				int p=rb.indexOf("/.metadata/.plugins");
-				if(p>0){
-					ewd=rb.substring(0,p);
-				}
-			}
+			ewd=tryGetDirBySystemProperty("wtp.deploy","catalina.base");
 		}
 		
 		return ewd;
+	}
+	
+	
+	private static String tryGetDirBySystemProperty(String... props){
+		for(String s:props){
+			String v=System.getProperty(s);
+			if(v!=null){
+				v=v.replace("\\","/");
+				int p=v.indexOf("/.metadata/.plugins");
+				if(p>0){
+					return v.substring(0,p);
+				}
+			}
+		}
+		return null;
 	}
 	
 	public static String getProjectNameFromClass(Class<?> clazz){

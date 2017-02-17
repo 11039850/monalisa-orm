@@ -48,7 +48,7 @@ public class DBWriterModel{
 		String jname=c.getJavaName();
 		
 		if(cname!=null && cname.length()>0 && !cname.equals(jname) && c.getTable()!=null){	
-			return leftPadding+"@Alias(\""+cname+"\")\r\n";
+			return "\r\n"+leftPadding+"@Alias(\""+cname+"\")";
 		}
 		return "";
 	}
