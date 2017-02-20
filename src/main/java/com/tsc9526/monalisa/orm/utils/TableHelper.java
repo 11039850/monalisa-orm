@@ -82,7 +82,9 @@ public class TableHelper {
 	    		auto=true;
 	    	}			    				    	
 	    	  
-	    	MetaColumn column=new MetaColumn();			    	 
+	    	MetaColumn column=new MetaColumn();		
+	    	column.setTable(table);
+	    	
 	    	column.setName(rs.getString("COLUMN_NAME"));
 	    	column.setValue(rs.getString("COLUMN_DEF"));
 	    	column.setKey(false);
@@ -91,9 +93,7 @@ public class TableHelper {
 	    	column.setNotnull(rs.getInt("NULLABLE") != DatabaseMetaData.columnNullable);
 	    	column.setRemarks(rs.getString("REMARKS"));
 	    	column.setAuto(auto);
-	    	
-	    	column.setTable(table);
-	    	
+	    	 
 	    	table.addColumn(column);
 	    	
 		}

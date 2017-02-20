@@ -148,6 +148,10 @@ public class DataSourceManager {
 		return cfg;
 	}
 	
+	public DBConfig findDbConfig(String dbKey){
+		return dss.get(dbKey);
+	}
+	
 	void putDBConfig(String dbKey,DBConfig cfg){
 		dss.put(dbKey, cfg);
 	}

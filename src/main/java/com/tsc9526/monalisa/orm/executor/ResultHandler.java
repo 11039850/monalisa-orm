@@ -26,9 +26,7 @@ import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.LinkedHashSet;
 import java.util.Map;
-import java.util.Set;
 
 import com.tsc9526.monalisa.orm.Query;
 import com.tsc9526.monalisa.orm.annotation.DB;
@@ -211,11 +209,11 @@ public class ResultHandler<T> {
 				String label = rsmd.getColumnLabel(i);
 
 				MetaColumn column = new MetaColumn();
-				String tableName = rsmd.getTableName(i);
-				column.setTable(new MetaTable(tableName));
-
 				column.setName(name);
 
+				String tableName = rsmd.getTableName(i);
+				column.setTable(new MetaTable(tableName));
+ 				
 				if (label != null && label.trim().length() > 0) {
 					column.setJavaName(MelpJavaBeans.getJavaName(label, false));
 				}
@@ -243,9 +241,7 @@ public class ResultHandler<T> {
 	}
 	
 	private static void processMetaTable(DBExchange exchange){
-		Set<String> imps = new LinkedHashSet<String>();
-		 
-		for (MetaColumn c : exchange.getTable().getColumns()) {
+	 	for (MetaColumn c : exchange.getTable().getColumns()) {
 			String tableName = c.getTable().getName();
 			MetaTable columnTable = DBMetadata.getTable(exchange.getDbKey(), tableName);
 			c.setTable(columnTable);
@@ -260,9 +256,15 @@ public class ResultHandler<T> {
 					c.setNotnull(cd.isNotnull());
 					c.setRemarks(cd.getRemarks());
 					c.setValue(cd.getValue());
-
-					imps.add(columnTable.getJavaPackage() + "." + columnTable.getJavaName());
-					imps.addAll(c.getImports());
+				 	
+					String javaType=cd.getJavaType();
+					if(cd.isEnum()){
+						if(javaType.indexOf(".")<0){
+							javaType=cd.getTable().getJavaName()+"."+javaType;
+						}
+					}
+					c.setJavaType(javaType);
+					 
 				} else {
 					c.setTable(null);
 				}

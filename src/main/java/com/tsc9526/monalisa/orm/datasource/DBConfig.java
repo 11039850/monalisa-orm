@@ -140,7 +140,7 @@ public class DBConfig implements Closeable{
 	public Dialect getDialect(){
 		return DataSourceManager.getInstance().getDialect(this);
 	}
-	
+ 	
 	public DBConfig getOwner(){
 		getCfg();
 		
@@ -927,6 +927,10 @@ public class DBConfig implements Closeable{
 			String eviction  =DbProp.PROP_TABLE_CACHE_EVICTION.getValue(DBConfig.this);
 			 
 			return CacheManager.getInstance().getCache(cacheClass,eviction,name);
+		}
+		
+		public Class<?> getAnnotationClass(){
+			return annotationClass;
 		}
 		
 		public DB getDb() {
