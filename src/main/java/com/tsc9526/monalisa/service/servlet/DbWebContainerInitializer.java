@@ -42,7 +42,9 @@ import com.tsc9526.monalisa.tools.string.MelpString;
 @HandlesTypes(DB.class)
 public class DbWebContainerInitializer implements ServletContainerInitializer {
 	static Logger logger=Logger.getLogger(DbWebContainerInitializer.class);
-	 
+	
+	public final static String DBS_SERVLET_NAME=System.getProperty("com.tsc9526.monalisa.service.servlet.name", "dbs");
+	
 	public void onStartup(Set<Class<?>> dbAnnotationClasses, ServletContext servletContext)throws ServletException {
 		String webroot=servletContext.getContextPath();
 		logger.info("Startup web: "+ (webroot.length()==0?"/":webroot) );
@@ -94,8 +96,8 @@ public class DbWebContainerInitializer implements ServletContainerInitializer {
 					+ "\r\n"/**}*/.trim());
 			}
 		};
-		ServletRegistration regist=servletContext.addServlet("dbs", servlet);
-		regist.addMapping("/dbs/*"); 
+		ServletRegistration regist=servletContext.addServlet(DBS_SERVLET_NAME, servlet);
+		regist.addMapping("/"+DBS_SERVLET_NAME+"/*"); 
 		
 		for(int i=0;i<dbAnnotationClasses.size();i++){
 			Class<?> clazz=dbAnnotationClasses.get(i);
@@ -103,7 +105,7 @@ public class DbWebContainerInitializer implements ServletContainerInitializer {
 			Properties dbsp=db.getCfg().getDbsProperties();
 			
 			String name=dbsp.getProperty("name");
-			String spath=servletContext.getContextPath()+"/dbs/"+name;
+			String spath=servletContext.getContextPath()+"/"+DBS_SERVLET_NAME+"/"+name;
 			logger.info("Add service("+db.getKey()+") context path: "+spath);
 			     
 			String prefix=DbQueryHttpServlet.DB_CFG_PREFIX+(i+1)+".";

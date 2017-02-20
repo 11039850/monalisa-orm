@@ -85,10 +85,17 @@ public @interface DB{
 	 
 	/**
 	 * default is "", means: disable database service <br>
-	 * if set,you can access database via url: $web_app_uri/dbs/$this_dbs_name/$your_table_name
+	 * if set, you can access database via url: $web_app_uri/dbs/$this_dbs_name/$your_table_name
 	 * @return name of the database service. 
 	 */
 	String dbs() default "";
+	
+	/**
+	 * default "monalisa:monalisa", <br>
+	 * if set, you can access database via url: http://username:password@host:port/$web_app_path/dbs/$this_dbs_name/$your_table_name
+	 * @return username:password to access the database service.  set to "none" means no need username and password
+	 */
+	String dbsAuthUsers() default "";
 	
 	/**
 	 * Indicates the table name to generate the model class, default is "%" (means is all tables). <br>

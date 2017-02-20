@@ -411,6 +411,10 @@ public class DBConfig implements Closeable{
 				return "";
 			}
 			
+			public String dbsAuthUsers(){
+				return "";
+			}
+			
 			public String tables() {
 				return "%";
 			}
@@ -533,6 +537,7 @@ public class DBConfig implements Closeable{
 		private String username;
 		private String password;
 		private String dbs;
+		private String dbsAuthUsers;
 		private String tables;
 		private String partitions;
 		private String modelListener;
@@ -575,6 +580,7 @@ public class DBConfig implements Closeable{
 			this.username        = getValue(p,DbProp.PROP_DB_USERNAME.getKey(),          db.username(),       prefixs);
 			this.password        = getValue(p,DbProp.PROP_DB_PASSWORD.getKey(),          db.password(),       prefixs);
 			this.dbs             = getValue(p,DbProp.PROP_DB_DBS.getKey(),               db.dbs(),            prefixs);
+			this.dbsAuthUsers    = getValue(p,DbProp.PROP_DB_DBS_AUTH_USERS.getKey(),    db.dbsAuthUsers(),   prefixs);
 			
 			this.tables          = getValue(p,DbProp.PROP_DB_TABLES.getKey(),            db.tables(),         prefixs);
 			this.partitions      = getValue(p,DbProp.PROP_DB_PARTITIONS.getKey(),        db.partitions(),     prefixs);			
@@ -820,6 +826,7 @@ public class DBConfig implements Closeable{
 			  
 			if(!MelpString.isEmpty(dbs)){
 				dbps.put("name", dbs);
+				dbps.put("auth.users", dbsAuthUsers);
 				
 				for(Object o:p.keySet()){
 					String key=o.toString();
@@ -975,6 +982,10 @@ public class DBConfig implements Closeable{
 		
 		public String getDbs(){
 			return dbs;
+		}
+		
+		public String getDbsAuthUsers(){
+			return dbsAuthUsers;
 		}
 		
 		public String getTables() {

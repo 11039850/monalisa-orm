@@ -147,6 +147,7 @@ public class DbProp {
 	public final static DbProp PROP_DB_USERNAME 		= new DbProp("username");
 	public final static DbProp PROP_DB_PASSWORD 		= new DbProp("password");
 	public final static DbProp PROP_DB_DBS 		        = new DbProp("dbs");
+	public final static DbProp PROP_DB_DBS_AUTH_USERS   = new DbProp("dbs.auth.users");
 	public final static DbProp PROP_DB_TABLES   		= new DbProp("tables");
 	public final static DbProp PROP_DB_MAPPING          = new DbProp("mapping");
 	public final static DbProp PROP_DB_PARTITIONS       = new DbProp("partitions");			

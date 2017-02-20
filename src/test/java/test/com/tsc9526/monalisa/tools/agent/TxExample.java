@@ -35,10 +35,7 @@ public class TxExample {
 		Assert.assertNotNull(x);
 		
 		x=com.tsc9526.monalisa.orm.Tx.begin();
-		Assert.assertNull(x);
-		
-		System.out.println("testWithTx！");
-		
+		Assert.assertNull(x); 
 	}
 	
 	public void withoutTx()throws Throwable{
@@ -48,8 +45,6 @@ public class TxExample {
 		x=com.tsc9526.monalisa.orm.Tx.begin();
 		Assert.assertNotNull(x);
 		x.doClose();
-		
-		System.out.println("testWithoutTx！");
 	}
 	
 	@Tx

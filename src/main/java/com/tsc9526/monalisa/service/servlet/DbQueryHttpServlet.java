@@ -161,7 +161,7 @@ public class DbQueryHttpServlet extends HttpServlet{
 			try {
 				locator=(ActionLocator)MelpClass.forName(locatorClass.trim()).newInstance();
 		 	} catch (Exception e) {
-				MelpException.throwRuntimeException(e);			
+				MelpException.throwRuntimeException(e);	
 			}
 		}
 		
