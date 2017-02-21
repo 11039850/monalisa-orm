@@ -26,6 +26,7 @@ import org.testng.annotations.Test;
 import test.com.tsc9526.monalisa.orm.InitTestDatabase;
 import test.com.tsc9526.monalisa.orm.mysql.mock.MockProcessingEnvironment;
 
+import com.tsc9526.monalisa.orm.datasource.DbProp;
 import com.tsc9526.monalisa.orm.generator.DBGeneratorLocal;
 import com.tsc9526.monalisa.orm.generator.DBGeneratorProcessing;
 import com.tsc9526.monalisa.orm.meta.MetaTable.CreateTable;
@@ -40,8 +41,8 @@ import com.tsc9526.monalisa.tools.logger.Logger;
 public class TestGenterator {
 	static Logger logger=Logger.getLogger(TestGenterator.class.getSimpleName());
 	 
-	private String outputJavaDir    ="target/monalisa/_gen/src/test/java";
-	private String outputResourceDir="target/monalisa/_gen/src/test/resources";
+	private String outputJavaDir    =DbProp.TMP_WORK_DIR_GEN+"/src/test/java";
+	private String outputResourceDir=DbProp.TMP_WORK_DIR_GEN+"/src/test/resources";
 	
 	private String pkg=MysqlDB.class.getName().toLowerCase().replace(".","/");
 	

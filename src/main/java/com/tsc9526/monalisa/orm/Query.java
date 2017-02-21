@@ -22,6 +22,7 @@ import java.io.Writer;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -300,6 +301,41 @@ public class Query {
 		 return doExecute(execute);
 	}	
 	
+	public int[] execute(String[] sqls){
+		Tx tx=Tx.getTx();
+		
+		Connection conn=null;
+		Statement  st=null;
+		try{
+			conn= tx==null?getConnectionFromDB(false):getConnectionFromTx(tx);
+			
+			st=conn.createStatement();
+			
+			int[] result=new int[sqls.length];
+			for(int i=0;i<sqls.length;i++){
+				result[i]=st.executeUpdate(sqls[i]);
+				logSql(sqls[i]);
+			}
+			 
+			if(tx==null){
+				conn.commit();
+			}			
+			
+			return result;
+		}catch(Exception e){
+			if(tx==null && conn!=null){
+				try{ conn.rollback(); }catch(SQLException ex){}
+			}
+			throw new RuntimeException(e);
+		}finally{
+			MelpClose.close(st);
+			
+			if(tx==null){
+				MelpClose.close(conn);
+			}
+		}
+	}
+	
 	public int[] executeBatch(){
 		Tx tx=Tx.getTx();
 		
@@ -314,7 +350,7 @@ public class Query {
 				pst.addBatch();
 			}
 			
-			logSql();
+			logSql(getSql());
 			
 			int[] result=pst.executeBatch();
 			
@@ -352,7 +388,7 @@ public class Query {
 			 
 			MelpSQL.setPreparedParameters(pst, parameters);
 			
-			logSql();
+			logSql(getExecutableSQL());
 			
 			return x.execute(pst);			
 		}catch(SQLException e){
@@ -579,7 +615,7 @@ public class Query {
 		return writer;
 	}
 	
-	protected void logSql(){
+	protected void logSql(String sql){
 		boolean debug=false;
 		if(debugSql==null){
 			debug=  "true".equalsIgnoreCase( DbProp.PROP_DB_SQL_DEBUG.getValue(db));
@@ -588,7 +624,7 @@ public class Query {
 		}
 		
 		if(debug){
-			logger.info(getExecutableSQL());
+			logger.info(sql);
 		}
 	}
 	  

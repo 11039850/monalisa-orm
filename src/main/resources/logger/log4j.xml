@@ -2,7 +2,7 @@
 <!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
  <log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
 	<appender name="logger.file" class="org.apache.log4j.RollingFileAppender">
-		<param name="File" value="logs/monalisa.log" />
+		<param name="File" value="monalisa/logs/monalisa.log" />
 		<param name="Append" value="true" />
 		<param name="MaxBackupIndex" value="10" />
 		<param name="MaxFileSize" value="100MB" />

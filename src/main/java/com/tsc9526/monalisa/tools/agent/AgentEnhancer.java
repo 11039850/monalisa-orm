@@ -68,7 +68,7 @@ public class AgentEnhancer implements MethodInterceptor {
 
 			return r.get(0);
 		} else {
-			if(method.getName().equals("finalize") && Tasks.instance.isDestoried()){
+			if(Tasks.instance.isDestoried() && method.getName().equals("finalize")){
 				return null;
 			}else{
 				return doInterceptors(obj,method,args,proxy);

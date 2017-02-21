@@ -53,6 +53,7 @@ public class MelpClose {
 			}else{		
 				try{
 					Method m=x.getClass().getMethod("close");
+					m.setAccessible(true);
 					m.invoke(x);
 				}catch(NoSuchMethodException e){
 					//do nothing

@@ -202,10 +202,11 @@ public class DbProp {
 	public static String  CFG_SQL_PATH          = CFG_ROOT_PATH+"/monalisa/sql";
 	public static String  CFG_LIB_PATH          = CFG_ROOT_PATH+"/monalisa/lib";
 	 
-	public static String TMP_ROOT_PATH          = CFG_ROOT_PATH+"/target/monalisa";
+	public static String TMP_ROOT_PATH          = CFG_ROOT_PATH+"/monalisa/tmp";
 	public static String TMP_WORK_DIR_JSP       = TMP_ROOT_PATH+"/_jsp";
 	public static String TMP_WORK_DIR_JAVA      = TMP_ROOT_PATH+"/_java";
-	public static String TMP_WORK_DIR_METATABLE = TMP_ROOT_PATH+"/metatable";
+	public static String TMP_WORK_DIR_METATABLE = TMP_ROOT_PATH+"/_meta";
+	public static String TMP_WORK_DIR_GEN       = TMP_ROOT_PATH+"/_gen";
 	
 	public static int   CFG_RELOAD_CLASS_INTERVAL =10; 
 	
@@ -230,7 +231,7 @@ public class DbProp {
 		CFG_SQL_PATH = CFG_ROOT_PATH+"/monalisa/sql";
 		CFG_LIB_PATH = CFG_ROOT_PATH+"/monalisa/lib";
 		
-		SET_TMP_ROOT_PATH(CFG_ROOT_PATH+"/target/monalisa");
+		SET_TMP_ROOT_PATH(CFG_ROOT_PATH+"/monalisa/tmp");
 		
 		return CFG_ROOT_PATH;
 	};
@@ -240,7 +241,8 @@ public class DbProp {
 		
 		TMP_WORK_DIR_JSP       = TMP_ROOT_PATH+"/_jsp";
 		TMP_WORK_DIR_JAVA      = TMP_ROOT_PATH+"/_java";
-		TMP_WORK_DIR_METATABLE = TMP_ROOT_PATH+"/metatable";
+		TMP_WORK_DIR_METATABLE = TMP_ROOT_PATH+"/_meta";
+		TMP_WORK_DIR_GEN       = TMP_ROOT_PATH+"/_gen";
 		
 		return TMP_ROOT_PATH;
 	}
