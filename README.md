@@ -11,13 +11,14 @@
 * Dynamic load jar if needed
 * Easily write multi-line strings in the java code
 
-[Example Project](https://github.com/11039850/monalisa-example)
-
 5 minutes video: [Youtube](http://www.youtube.com/watch?v=3qpr0J7D7cQ) / [YouKu](http://v.youku.com/v_show/id_XMTU0ODk1MzA2MA==.html) 
 
 [For more details](https://github.com/11039850/monalisa-orm/wiki)
 
 # Example
+
+Full example: [Example Project](https://github.com/11039850/monalisa-example)
+
 
 ## Using the database
 ```java  
@@ -33,6 +34,28 @@
 	TestDB.DB.select("SELECT * FROM user WHERE name like ?","zzg%");
 ```	
  
+
+## Auto generate DTOs
+
+```java
+
+	public class UserBlogDao {
+		@Select(name="test.result.UserBlogs")      // <--- Auto create/update: test.result.UserBlogs
+		public List  selectUserBlogs(int user_id){ // <--- Auto replace List to List<UserBlogs>
+			Query q=TestDB.DB.createQuery();
+			            
+			q.add(""/**~{
+					SELECT a.id, a.name, b.title, b.content, b.create_time
+						FROM user a, blog b   
+						WHERE a.id=b.user_id AND a.id=?		
+			}*/, user_id);
+			 
+			return q.getList();                    // <--- Auto replace getList() to getList<UserBlogs>
+		} 
+	}
+```
+
+
 ## Query Example
 ```java
 
@@ -137,26 +160,6 @@
 	
 	//User.DELETE().deleteAll();     
 
-```
-
-## Auto generate DTOs
-
-```java
-
-	public class UserBlogDao {
-		@Select(name="test.result.UserBlogs") //!!! Auto create the class: test.result.UserBlogs
-		public List  selectUserBlogs(int user_id){ //!!! Auto replace List -> List<UserBlogs>
-			Query q=TestDB.DB.createQuery();
-			           
-			q.add(""/**~{
-					SELECT a.id, a.name, b.title, b.content, b.create_time
-						FROM user a, blog b   
-						WHERE a.id=b.user_id AND a.id=?		
-			}*/, user_id);
-			 
-			return q.getList(); //!!! Auto replace getList() -> getList<UserBlogs>
-		} 
-	}
 ```
 
 
