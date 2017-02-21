@@ -72,12 +72,14 @@ public class DbQueryHttpServlet extends HttpServlet{
 		String name    =sc.getInitParameter(prefix+".name");
 		if(name!=null){
 			DBConfig db=getDbConfig(sc,prefix);
-			 
+			
+			String describe=sc.getServletContext().getContextPath()+"/"+sc.getServletName()+"/"+name;
+			
 			if(DBS.getDB(name)==null){
 				ActionLocator locator=getActionLocator(sc,prefix);
-			 	DBS.add(name,db,locator); 
+			 	DBS.add(name,db,locator,describe); 
 			}else{
-				throw new RuntimeException("DBS init error: "+prefix+".name existed: "+name+", please check web.xml");
+				throw new RuntimeException("DB service init error: "+prefix+".name existed: "+name+", please check web.xml");
 			}
 			
 			return true;
@@ -188,15 +190,11 @@ public class DbQueryHttpServlet extends HttpServlet{
 			String authUsers=sc.getInitParameter(prefix+".auth.users");
 			if(authUsers==null || authUsers.trim().length()<1){
 				authUsers="monalisa:monalisa";
-				
 				printAuthWarn(prefix); 
 			}
-			
-			if(authUsers.equalsIgnoreCase("none") || authUsers.equalsIgnoreCase("false")){
-				String name    =sc.getInitParameter(prefix+".name");
-				logger.info("DBService: /"+name+" auth: none");
-			}else{
-				List<String[]> userpwds=new ArrayList<String[]>();
+			 
+			if(!authUsers.equalsIgnoreCase("none")){
+			 	List<String[]> userpwds=new ArrayList<String[]>();
 				for(String uv:MelpString.splits(authUsers)){
 					uv=uv.trim();
 					

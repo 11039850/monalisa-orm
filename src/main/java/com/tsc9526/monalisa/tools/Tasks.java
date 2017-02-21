@@ -73,7 +73,7 @@ public class Tasks {
 			}
 		}
 		
-		public void destory(){
+		public synchronized void destory(){
 			if(running){
 				running=false;
 				

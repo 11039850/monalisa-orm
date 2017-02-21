@@ -47,20 +47,22 @@ public class DbWebContainerInitializer implements ServletContainerInitializer {
 	
 	public void onStartup(Set<Class<?>> dbAnnotationClasses, ServletContext servletContext)throws ServletException {
 		String webroot=servletContext.getContextPath();
-		logger.info("Startup web: "+ (webroot.length()==0?"/":webroot) );
+		logger.info("Startup web: "+ (webroot.length()==0?"/":webroot) +", db annotation classes: "+(dbAnnotationClasses==null?"0":dbAnnotationClasses.size()));
 	
 		servletContext.addListener(DestoryListener.class);
 		
-		List<Class<?>> dbsc=new ArrayList<Class<?>>();
-		for(Class<?> dbclazz:dbAnnotationClasses){
-			DBConfig db=DBConfig.fromClass(dbclazz);
-			if(!MelpString.isEmpty(db.getCfg().getDbs())){
-				dbsc.add(dbclazz);
+		if(dbAnnotationClasses!=null){
+			List<Class<?>> dbsc=new ArrayList<Class<?>>();
+			for(Class<?> dbclazz:dbAnnotationClasses){
+				DBConfig db=DBConfig.fromClass(dbclazz);
+				if(!MelpString.isEmpty(db.getCfg().getDbs())){
+					dbsc.add(dbclazz);
+				}
 			}
-		}
-		
-		if(dbsc.size()>0){
-			startDBService(servletContext,dbsc);
+			
+			if(dbsc.size()>0){
+				startDBService(servletContext,dbsc);
+			}
 		}
 	}
 	
@@ -96,30 +98,35 @@ public class DbWebContainerInitializer implements ServletContainerInitializer {
 					+ "\r\n"/**}*/.trim());
 			}
 		};
+		  
 		ServletRegistration regist=servletContext.addServlet(DBS_SERVLET_NAME, servlet);
-		regist.addMapping("/"+DBS_SERVLET_NAME+"/*"); 
-		
-		for(int i=0;i<dbAnnotationClasses.size();i++){
-			Class<?> clazz=dbAnnotationClasses.get(i);
-			DBConfig db=DBConfig.fromClass(clazz);
-			Properties dbsp=db.getCfg().getDbsProperties();
+		if(regist!=null){	
+			regist.addMapping("/"+DBS_SERVLET_NAME+"/*"); 
 			
-			String name=dbsp.getProperty("name");
-			String spath=servletContext.getContextPath()+"/"+DBS_SERVLET_NAME+"/"+name;
-			logger.info("Add service("+db.getKey()+") context path: "+spath);
-			     
-			String prefix=DbQueryHttpServlet.DB_CFG_PREFIX+(i+1)+".";
-			
-			Map<String, String> initParameters=new LinkedHashMap<String, String>();
-			initParameters.put(prefix+"class", clazz.getName());
-			for(Object key:dbsp.keySet()){
-				initParameters.put(prefix+key, dbsp.getProperty(key.toString()));
+			for(int i=0;i<dbAnnotationClasses.size();i++){
+				Class<?> clazz=dbAnnotationClasses.get(i);
+				DBConfig db=DBConfig.fromClass(clazz);
+				Properties dbsp=db.getCfg().getDbsProperties();
+				
+				String name=dbsp.getProperty("name");
+				String spath=servletContext.getContextPath()+"/"+DBS_SERVLET_NAME+"/"+name;
+				logger.info("Add service("+db.getKey()+") context path: "+spath);
+				     
+				String prefix=DbQueryHttpServlet.DB_CFG_PREFIX+(i+1)+".";
+				
+				Map<String, String> initParameters=new LinkedHashMap<String, String>();
+				initParameters.put(prefix+"class", clazz.getName());
+				for(Object key:dbsp.keySet()){
+					initParameters.put(prefix+key, dbsp.getProperty(key.toString()));
+				}
+				regist.setInitParameters(initParameters);
+				
+				for(String key:initParameters.keySet()){
+					regist.setInitParameter(key,initParameters.get(key));
+				}
 			}
-			regist.setInitParameters(initParameters);
-			
-			for(String key:initParameters.keySet()){
-				regist.setInitParameter(key,initParameters.get(key));
-			}
+		}else{
+			logger.info("DB service loaded already in web.xml: "+DBS_SERVLET_NAME);
 		}
 	}
 

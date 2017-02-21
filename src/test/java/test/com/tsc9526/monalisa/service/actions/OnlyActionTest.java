@@ -45,7 +45,7 @@ public class OnlyActionTest extends AbstractActionTest{
 			{
 				this.setHttpMethods(MethodHttp.GET,MethodHttp.DELETE,MethodHttp.HEAD);
 			}
-		});
+		},"");
 	}
 	
 	public void testGet()throws Exception{

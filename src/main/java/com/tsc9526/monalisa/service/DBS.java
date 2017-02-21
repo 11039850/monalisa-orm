@@ -35,19 +35,19 @@ public class DBS {
 	public static DataMap dbs = new DataMap();
   	 
 	public static void add(String dbName, DBConfig db) {
-		add(dbName, db, new ActionLocator());
+		add(dbName, db, new ActionLocator(),"");
 	}
 
-	public synchronized static void add(String dbName, DBConfig db, ActionLocator locator) {
+	public synchronized static void add(String dbName, DBConfig db, ActionLocator locator,String describe) {
 		dbName = Dialect.getRealname(dbName);
 
 		if (!dbs.containsKey(dbName)) {
 			DBS s = new DBS(dbName, db, locator);
 
-			logger.info("Add DB service, HTTP: " + locator.getHttpMethods() + ", SQL: "+locator.getSQLMethods()+" : /" + dbName + ", dbkey: " + db.getKey());
+			logger.info("Add DB service: "+ dbName+"["+describe+"], HTTP: " + locator.getHttpMethods() + ", SQL: "+locator.getSQLMethods()+", dbkey: " + db.getKey());
 			dbs.put(dbName, s);
 		} else {
-			logger.info("Database service existed: /" + dbName + ", dbkey: " + db.getKey());
+			logger.error("DB service: "+ dbName+"["+describe+"] already exists, dbkey: " + db.getKey());
 		}
 	}
 
