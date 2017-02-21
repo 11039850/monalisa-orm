@@ -23,11 +23,13 @@ import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Method;
 import java.net.URLDecoder;
+import java.util.List;
 import java.util.Map;
 import java.util.zip.GZIPInputStream;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.tsc9526.monalisa.tools.clazz.MelpClass;
 import com.tsc9526.monalisa.tools.datatable.DataMap;
 import com.tsc9526.monalisa.tools.io.MelpFile;
 
@@ -37,16 +39,16 @@ import com.tsc9526.monalisa.tools.io.MelpFile;
  */
 public class MelpServlet {
 	/**
-	 * Web root path       : /example <br>
-	 * Servlet content path: /dbs     <br>
-	 * Request path        : /example/dbs/xxx/yyy... <br>
-	 * 
+	 * Webroot path : /example <br>
+	 * Servlet path : /dbs     <br>
+	 * Request path : /example/dbs/xxx/yyy... <br>
+	 * <br>
 	 * return: xxx/yyy...  <br>
 	 * 
 	 * @param request HttpServletRequest
 	 * @return path without servlet content path.
 	 */
-	public static String getRequestPath(HttpServletRequest request){
+	public static String getActionPath(HttpServletRequest request){
 		String uri = request.getRequestURI();
 
 		String prefix = request.getContextPath();
@@ -78,6 +80,10 @@ public class MelpServlet {
 			requestMap.put(name, rs.get(name));
 		}
 		return requestMap;
+	}
+	 
+	public static <T> List<T> parseArrays(T targetTemplate, javax.servlet.ServletRequest data, String... mappings) {
+		return MelpClass.parseArrays(targetTemplate, data, mappings);
 	}
 	
 	public static String getBodyString(HttpServletRequest request,String ...charset)throws IOException{

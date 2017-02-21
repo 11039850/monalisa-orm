@@ -273,7 +273,7 @@ public class GetAction extends Action{
 		if(x!=null){
 			return doGetRecord(x);
 		}else{
-			return new Response(Response.REQUEST_NOT_FOUND,args.getActionName()+" error, multi keys not found: "+args.getPathRequest());
+			return new Response(Response.REQUEST_NOT_FOUND,args.getActionName()+" error, multi keys not found: "+args.getPathAction());
 		}
 	}
 	

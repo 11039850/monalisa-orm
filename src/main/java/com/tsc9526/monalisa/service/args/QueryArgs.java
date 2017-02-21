@@ -112,7 +112,7 @@ public class QueryArgs {
 	protected HttpServletRequest  req;
 	protected HttpServletResponse resp;
 	 
-	protected String pathRequest;
+	protected String pathAction;
 	protected String pathDatabases;
 	 
 	protected String actionName;
@@ -130,7 +130,7 @@ public class QueryArgs {
 	protected void parse() {
 		requestDataMap=MelpServlet.toDataMap(req);
 		
-		pathRequest=getRequestPath();
+		pathAction=MelpServlet.getActionPath(req);
 
 		actionName = req.getMethod();
 
@@ -146,7 +146,7 @@ public class QueryArgs {
 		 
 		ip=MelpServlet.getRequestRealIp(req);
 		
-		if (pathRequest.length() > 0) {
+		if (pathAction.length() > 0) {
 			parsePathInfo();
 
 			if (errors.size() == 0){
@@ -156,10 +156,7 @@ public class QueryArgs {
 			errors.add("Missing database, using URI: " + req.getRequestURI() + "/your_database");
 		}
 	}
- 	
-	protected String getRequestPath(){
-		return MelpServlet.getRequestPath(req);
-	}
+ 	 
 	
 	private void parseParameters(){
 		parseParameterColumns();
@@ -183,7 +180,7 @@ public class QueryArgs {
 	 
 	
 	protected void parsePathInfo() {
-		vs = pathRequest.split("/");
+		vs = pathAction.split("/");
 
 		if (vs.length > 0) {
 			parseDatabases(vs);	
@@ -376,8 +373,8 @@ public class QueryArgs {
 		return paging;
 	}
  
-	public String getPathRequest() {
-		return pathRequest;
+	public String getPathAction() {
+		return pathAction;
 	}
 
 	public List<String> getIncludeColumns() {
@@ -431,8 +428,8 @@ public class QueryArgs {
 	}
  
 
-	public void setPathRequest(String pathRequest) {
-		this.pathRequest = pathRequest;
+	public void setPathAction(String pathAction) {
+		this.pathAction = pathAction;
 	}
 
 	public void setPathDatabases(String pathDatabases) {
@@ -470,7 +467,7 @@ public class QueryArgs {
  
 	public String toString(){
 		String qs=req.getQueryString();
-		return this.pathRequest+(qs==null?"":"?"+qs);
+		return this.pathAction+(qs==null?"":"?"+qs);
 	}
  
 	/**
