@@ -19,7 +19,7 @@ package test.com.tsc9526.monalisa.service.auth;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import com.tsc9526.monalisa.service.auth.DigestAuth.GigestAuthrization;
+import com.tsc9526.monalisa.service.auth.DigestAuth.DigestAuthrization;
 
 /**
  * 
@@ -32,7 +32,7 @@ public class AuthorizationTest {
 		String auth=""+/**~!{*/""
 			+ "Digest username=\"zzg\", realm=\"Realm\", nc=000001, algorithm=MD5"
 		+ "\r\n"/**}*/.trim();
-		GigestAuthrization ga=new GigestAuthrization("GET",auth);
+		DigestAuthrization ga=new DigestAuthrization("GET",auth);
 		
 		Assert.assertTrue(ga.isDigest());
 		
@@ -45,7 +45,7 @@ public class AuthorizationTest {
 		String auth=""+/**~!{*/""
 			+ "Digest username=\"monalisa\", realm=\"Realm\", nonce=\"y73-IY8ihMw=\", uri=\"/monalisa-web/dbs/db1/user,blog/user.id=blog.user_id?page=1\", algorithm=MD5, response=\"a3c7b21d5f3e3c25c3dab02be6422844\", qop=auth, nc=00000001, cnonce=\"96a42609bd561e34\""
 		+ "\r\n"/**}*/.trim();
-		GigestAuthrization ga=new GigestAuthrization("GET",auth);
+		DigestAuthrization ga=new DigestAuthrization("GET",auth);
 		 
 		Assert.assertTrue(ga.isDigest());
 		

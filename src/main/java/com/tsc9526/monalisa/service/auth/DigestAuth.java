@@ -58,6 +58,10 @@ public class DigestAuth implements ActionFilter {
 		}
 	}
 	
+	public DataMap getUserAuths(){
+		return userAuths;
+	}
+	
 	public boolean accept(Action action){
 		return true;
 	}
@@ -67,8 +71,8 @@ public class DigestAuth implements ActionFilter {
 		
 		String dbname=args.getDBS().getDbName();
 		
-		String keyAuthUser  =SESSION_KEY_AUTH_USER+":"+dbname;
-		String keyAuthNonce =SESSION_KEY_AUTH_NONCE   +":"+dbname;
+		String keyAuthUser  =SESSION_KEY_AUTH_USER  + ":" + dbname;
+		String keyAuthNonce =SESSION_KEY_AUTH_NONCE + ":" + dbname;
 		
 		HttpSession session=args.getReq().getSession();
 		AuthUser authUser=(AuthUser)session.getAttribute(keyAuthUser);
@@ -78,7 +82,7 @@ public class DigestAuth implements ActionFilter {
 		}else{
 			String authrization=args.getReq().getHeader("Authorization");
 			String nonce       =(String)session.getAttribute(keyAuthNonce);
-			GigestAuthrization ga=new GigestAuthrization(args.getReq().getMethod(),authrization);
+			DigestAuthrization ga=new DigestAuthrization(args.getReq().getMethod(),authrization);
 			
 			if(isAuthOk(ga,nonce)){
 				logger.info("Auth ok: "+ga.username+", dbname: "+dbname);
@@ -108,7 +112,7 @@ public class DigestAuth implements ActionFilter {
 	  	return new AuthResponse(nonce); 
 	}
 
-	protected boolean isAuthOk(GigestAuthrization ga,String nonce){
+	protected boolean isAuthOk(DigestAuthrization ga,String nonce){
 		if(nonce!=null && ga.digest){
 			String realm="Realm";
 			String pwd=userAuths.getString(ga.username);
@@ -141,7 +145,7 @@ public class DigestAuth implements ActionFilter {
 	}
 	
 	
-	public static class GigestAuthrization{
+	public static class DigestAuthrization{
 		private boolean digest  =false;
 		private String method;
 		private String username ;
@@ -155,7 +159,7 @@ public class DigestAuth implements ActionFilter {
 		
 		private DataMap as=new DataMap();
 		
-		public GigestAuthrization(String method,String authrization){
+		public DigestAuthrization(String method,String authrization){
 			this.method=method;
 			
 			if(authrization!=null && authrization.startsWith("Digest")){

@@ -44,10 +44,10 @@ public class DBS {
 		if (!dbs.containsKey(dbName)) {
 			DBS s = new DBS(dbName, db, locator);
 
-			logger.info("Add DB service: "+ dbName+"["+describe+"], HTTP: " + locator.getHttpMethods() + ", SQL: "+locator.getSQLMethods()+", dbkey: " + db.getKey());
+			logger.info("Add DB service: "+ dbName+"("+describe+"), HTTP: " + locator.getHttpMethods() + ", SQL: "+locator.getSQLMethods()+", dbkey: " + db.getKey());
 			dbs.put(dbName, s);
 		} else {
-			logger.error("DB service: "+ dbName+"["+describe+"] already exists, dbkey: " + db.getKey());
+			logger.error("DB service: "+ dbName+"("+describe+") already exists, dbkey: " + db.getKey());
 		}
 	}
 

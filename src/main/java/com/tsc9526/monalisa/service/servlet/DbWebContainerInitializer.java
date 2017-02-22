@@ -47,7 +47,18 @@ public class DbWebContainerInitializer implements ServletContainerInitializer {
 	
 	public void onStartup(Set<Class<?>> dbAnnotationClasses, ServletContext servletContext)throws ServletException {
 		String webroot=servletContext.getContextPath();
-		logger.info("Startup web: "+ (webroot.length()==0?"/":webroot) +", db annotation classes: "+(dbAnnotationClasses==null?"0":dbAnnotationClasses.size()));
+		StringBuffer sb=new StringBuffer();
+		if(dbAnnotationClasses!=null){
+			sb.append("[");
+			for(Class<?> c:dbAnnotationClasses){
+				if(sb.length()>1){
+					sb.append(", ");
+				}
+				sb.append(c.getName());
+			}
+			sb.append("]");
+		}
+		logger.info("Startup web: "+ (webroot.length()==0?"/":webroot) +", db classes: "+sb);
 	
 		servletContext.addListener(DestoryListener.class);
 		
@@ -107,11 +118,7 @@ public class DbWebContainerInitializer implements ServletContainerInitializer {
 				Class<?> clazz=dbAnnotationClasses.get(i);
 				DBConfig db=DBConfig.fromClass(clazz);
 				Properties dbsp=db.getCfg().getDbsProperties();
-				
-				String name=dbsp.getProperty("name");
-				String spath=servletContext.getContextPath()+"/"+DBS_SERVLET_NAME+"/"+name;
-				logger.info("Add service("+db.getKey()+") context path: "+spath);
-				     
+				      
 				String prefix=DbQueryHttpServlet.DB_CFG_PREFIX+(i+1)+".";
 				
 				Map<String, String> initParameters=new LinkedHashMap<String, String>();

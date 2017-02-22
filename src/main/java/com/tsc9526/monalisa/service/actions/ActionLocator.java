@@ -56,6 +56,10 @@ public class ActionLocator{
 		 
 	}
 	
+	public List<ActionFilter> getFilters(){
+		return filters;
+	}
+	
 	public void setHttpMethods(MethodHttp ... methods){
 		this.httpMethods.clear();
 		
