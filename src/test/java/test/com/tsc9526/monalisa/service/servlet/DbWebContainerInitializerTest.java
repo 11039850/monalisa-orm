@@ -41,7 +41,7 @@ import test.com.tsc9526.monalisa.orm.TestConstants;
 
 import com.tsc9526.monalisa.orm.annotation.DB;
 import com.tsc9526.monalisa.service.DBS;
-import com.tsc9526.monalisa.service.actions.ActionLocator;
+import com.tsc9526.monalisa.service.actions.ActionExecutor;
 import com.tsc9526.monalisa.service.auth.DigestAuth;
 import com.tsc9526.monalisa.service.servlet.DbWebContainerInitializer;
 import com.tsc9526.monalisa.tools.datatable.DataMap;
@@ -85,8 +85,8 @@ public class DbWebContainerInitializerTest {
 		DBS dbs=DBS.getDB(dbsname);
 		Assert.assertNotNull(dbs);
 		
-		ActionLocator locator=dbs.getLocator();
-		DigestAuth auth=(DigestAuth)locator.getFilters().get(0);
+		ActionExecutor executor=dbs.getExecutor();
+		DigestAuth auth=(DigestAuth)executor.getFilters().get(0);
 		DataMap userAuths=auth.getUserAuths();
 		Assert.assertEquals(userAuths.size(),2);
 		Assert.assertEquals(userAuths.get("name1010"),"pwd1010");
@@ -133,8 +133,8 @@ public class DbWebContainerInitializerTest {
 		DBS dbs1=DBS.getDB(dbsname1);
 		Assert.assertNotNull(dbs1);
 		
-		ActionLocator locator1=dbs1.getLocator();
-		DigestAuth auth1=(DigestAuth)locator1.getFilters().get(0);
+		ActionExecutor executor1=dbs1.getExecutor();
+		DigestAuth auth1=(DigestAuth)executor1.getFilters().get(0);
 		DataMap userAuths1=auth1.getUserAuths();
 		Assert.assertEquals(userAuths1.size(),2);
 		Assert.assertEquals(userAuths1.get("name2010"),"pwd2010");
@@ -144,8 +144,8 @@ public class DbWebContainerInitializerTest {
 		DBS dbs2=DBS.getDB(dbsname2);
 		Assert.assertNotNull(dbs2);
 		
-		ActionLocator locator2=dbs2.getLocator();
-		DigestAuth auth2=(DigestAuth)locator2.getFilters().get(0);
+		ActionExecutor executor2=dbs2.getExecutor();
+		DigestAuth auth2=(DigestAuth)executor2.getFilters().get(0);
 		DataMap userAuths2=auth2.getUserAuths();
 		Assert.assertEquals(userAuths2.size(),2);
 		Assert.assertEquals(userAuths2.get("name2020"),"pwd2020");
@@ -199,11 +199,11 @@ public class DbWebContainerInitializerTest {
 		DBS dbs1=DBS.getDB(dbsname1);
 		Assert.assertNotNull(dbs1);
 		
-		ActionLocator locator1=dbs1.getLocator();
-		Assert.assertEquals(locator1.getFilters().size(),2);
-		Assert.assertEquals(locator1.getFilters().get(1).getClass().getName(),LoggerActionFilter.class.getName());
+		ActionExecutor executor1=dbs1.getExecutor();
+		Assert.assertEquals(executor1.getFilters().size(),2);
+		Assert.assertEquals(executor1.getFilters().get(1).getClass().getName(),LoggerActionFilter.class.getName());
 		
-		DigestAuth auth1=(DigestAuth)locator1.getFilters().get(0);
+		DigestAuth auth1=(DigestAuth)executor1.getFilters().get(0);
 		DataMap userAuths1=auth1.getUserAuths();
 		Assert.assertEquals(userAuths1.size(),2);
 		Assert.assertEquals(userAuths1.get("name3010"),"pwd3010");
@@ -213,9 +213,9 @@ public class DbWebContainerInitializerTest {
 		DBS dbs2=DBS.getDB(dbsname2);
 		Assert.assertNotNull(dbs2);
 		
-		ActionLocator locator2=dbs2.getLocator();
-		Assert.assertEquals(locator2.getFilters().size(),1);
-		Assert.assertEquals(locator2.getFilters().get(0).getClass().getName(),LoggerActionFilter.class.getName());
+		ActionExecutor executor2=dbs2.getExecutor();
+		Assert.assertEquals(executor2.getFilters().size(),1);
+		Assert.assertEquals(executor2.getFilters().get(0).getClass().getName(),LoggerActionFilter.class.getName());
 	}
 	
 	private class MockServletContainer{

@@ -18,19 +18,22 @@ package com.tsc9526.monalisa.service.actions;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import com.tsc9526.monalisa.service.Response;
 import com.tsc9526.monalisa.service.args.MethodHttp;
 import com.tsc9526.monalisa.service.args.MethodSQL;
 import com.tsc9526.monalisa.service.args.ModelArgs;
+import com.tsc9526.monalisa.tools.datatable.CaseInsensitiveMap;
 import com.tsc9526.monalisa.tools.logger.Logger;
+import com.tsc9526.monalisa.tools.misc.MelpException;
 
 /**
  * 
  * @author zzg.zhou(11039850@qq.com)
  */
-public class ActionLocator{
-	static Logger logger=Logger.getLogger(ActionLocator.class);
+public class ActionExecutor{
+	static Logger logger=Logger.getLogger(ActionExecutor.class);
 	 
 	protected List<MethodHttp> httpMethods=new ArrayList<MethodHttp>(){
 		private static final long serialVersionUID = 1L;
@@ -52,8 +55,18 @@ public class ActionLocator{
 
 	protected List<ActionFilter> filters=new ArrayList<ActionFilter>();
 	
-	public ActionLocator(){
+	protected Map<String,Class<? extends DataService>> hDataServices=new CaseInsensitiveMap<Class<? extends DataService>>();
+	
+	public ActionExecutor(){
 		 
+	}
+	
+	public void addDataService(String name,Class<? extends DataService> serviceClass){
+		hDataServices.put(name, serviceClass);
+	}
+	
+	public Class<? extends DataService> getDataService(String name){
+		return (Class<? extends DataService>)hDataServices.get(name);
 	}
 	
 	public List<ActionFilter> getFilters(){
@@ -76,33 +89,19 @@ public class ActionLocator{
 		}
 	}
 	 
-	public Action getAction(ModelArgs args) {
-		Response response=verify(args);
-		if(response!=null){
-			return new ResponseAction(response);
-		}
-		 
-		MethodHttp httpMethod=args.getHttpMethod(); 
-		if(!httpMethods.contains(httpMethod) || httpMethod==null){
-			return new ResponseAction(Response.REQUEST_METHOD_NOT_ALLOWED,"Illegal http method: "+args.getActionName());
-		}
-		
-		MethodSQL sqlMethod=httpMethod.toSQLMethod(args);
-		if(!sqlMethods.contains(sqlMethod) || sqlMethod==null){
-			return new ResponseAction(Response.REQUEST_METHOD_NOT_ALLOWED,"Illegal sql method: "+sqlMethod.name());
-		}
-		
+	public Response doAction(ModelArgs args) {
 		try{
-			Action action= getActionByHttpMethod(httpMethod,args);
-			
-			Response r=doFilter(action);
-			if(r==null){
-				return action;
-			}else{
-				return new ResponseAction(r);
-			}
+			Response response=verify(args);
+			if(response==null){
+				Action action= createAction(args);
+				response=doFilter(action);
+				if(response==null){
+					response=action.getResponse();
+				}
+			}			
+			return response;
 		}catch(IllegalArgumentException  e){
-			return new ResponseAction(Response.REQUEST_METHOD_NOT_ALLOWED, "Access forbidden, method: "+args.getActionName()+" not found in the class: "+this.getClass().getName());
+			return new Response(Response.REQUEST_METHOD_NOT_ALLOWED, "Access forbidden, method: "+args.getActionName()+" not found in the class: "+this.getClass().getName());
 		}catch(Exception e){
 			throw new RuntimeException(e.getMessage(),e);
 		}
@@ -120,18 +119,35 @@ public class ActionLocator{
 		return null; 
 	}
 	
-	public ActionLocator addFilter(ActionFilter filter){
+	public ActionExecutor addFilter(ActionFilter filter){
 		filters.add(filter); 
 		return this;
 	}
 	 
-	protected Action getActionByHttpMethod(MethodHttp httpMethod,ModelArgs args) throws  IllegalArgumentException{
+	protected Action createAction(ModelArgs args) throws  IllegalArgumentException{
+		String table=args.getTable();
+		
+		Class<? extends DataService> ss=hDataServices.get(table);
+		if(ss!=null){
+			return createCallAction(args,ss);
+		}
+		
+		MethodHttp httpMethod=args.getHttpMethod(); 
+		if(!httpMethods.contains(httpMethod) || httpMethod==null){
+			return new ResponseAction(Response.REQUEST_METHOD_NOT_ALLOWED,"Illegal http method: "+args.getActionName());
+		}
+		
+		MethodSQL sqlMethod=httpMethod.toSQLMethod(args);
+		if(!sqlMethods.contains(sqlMethod) || sqlMethod==null){
+			return new ResponseAction(Response.REQUEST_METHOD_NOT_ALLOWED,"Illegal sql method: "+sqlMethod);
+		}
+		
 		switch(httpMethod){
-			case GET:    return doGetAction(args);
-			case DELETE: return doDeleteAction(args);
-			case PUT:    return doPutAction(args);
-			case POST:   return doPostAction(args);
-			case HEAD:	 return doHeadAction(args);
+			case GET:    return createGetAction(args);
+			case DELETE: return createDeleteAction(args);
+			case PUT:    return createPutAction(args);
+			case POST:   return createPostAction(args);
+			case HEAD:	 return createHeadAction(args);
 			default:     throw new IllegalArgumentException(httpMethod.name());
 		}
 	}
@@ -149,24 +165,36 @@ public class ActionLocator{
 			return null;
 		}
 	}
+	
+	protected Action createCallAction(ModelArgs args,Class<? extends DataService> ss){
+		try{
+			DataService s=ss.newInstance();
+			s.args=args;
+			s.ps=args.getRequestDataMap();
+			
+			return new CallAction(args,s);
+		}catch(Exception e){
+			return MelpException.throwRuntimeException(e);
+		}
+	}
   	
-	protected Action doGetAction(ModelArgs args){
+	protected Action createGetAction(ModelArgs args){
 		return new GetAction(args);
 	}
 	
-	protected Action doDeleteAction(ModelArgs args){
+	protected Action createDeleteAction(ModelArgs args){
 		return new DeleteAction(args);
 	}
 	
-	protected Action doPutAction(ModelArgs args){
+	protected Action createPutAction(ModelArgs args){
 		return new PutAction(args);
 	}
 	
-	protected Action doPostAction(ModelArgs args){
+	protected Action createPostAction(ModelArgs args){
 		return new PostAction(args);
 	}
 	 
-	protected Action doHeadAction(ModelArgs args){
+	protected Action createHeadAction(ModelArgs args){
 		return new HeadAction(args);
 	}
 	

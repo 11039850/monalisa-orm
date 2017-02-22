@@ -36,6 +36,7 @@ import com.tsc9526.monalisa.tools.datatable.DataMap;
 import com.tsc9526.monalisa.tools.datatable.DataTable;
 import com.tsc9526.monalisa.tools.datatable.Page;
 import com.tsc9526.monalisa.tools.string.MelpJson;
+import com.tsc9526.monalisa.tools.string.MelpString;
 
 /**
  * @author zzg.zhou(11039850@qq.com)
@@ -199,19 +200,34 @@ public class Response implements Serializable{
 	}	 
   	
 	public void writeResponse(HttpServletRequest req,HttpServletResponse resp)throws ServletException, IOException {
-		Gson gson=MelpJson.createGsonBuilder().disableHtmlEscaping().setPrettyPrinting().create();
-		
 		if(this.data instanceof Page<?>){
 			Page<?> page=(Page<?>)this.data;
 			resp.addIntHeader("X-Total-Page", (int)page.getTotal());
 			resp.addIntHeader("X-Total-Count",(int)page.getRecords());
 		}
+	
+		String respType=resp.getContentType();
 		
-		String body=gson.toJson(this);
+		String body=null;
 		
-		String jsonpCallback=req.getParameter(RequestParameter.CALLBACK);
-		if(jsonpCallback!=null){
-			body=jsonpCallback+"("+body+");";
+		String fmt=req.getParameter(RequestParameter.FORMAT);
+		if("xml".equalsIgnoreCase(fmt)){
+			if(respType==null || respType.indexOf("xml")<0){
+				resp.setContentType("text/xml; charset=utf-8");
+			}
+			body=MelpString.toXml(this);
+		}else{
+			if(respType==null || respType.indexOf("json")<0){
+				resp.setContentType("text/json; charset=utf-8");
+			}
+			
+			Gson gson=MelpJson.createGsonBuilder().disableHtmlEscaping().setPrettyPrinting().create();
+			body=gson.toJson(this);
+			
+			String jsonpCallback=req.getParameter(RequestParameter.CALLBACK);
+			if(jsonpCallback!=null){
+				body=jsonpCallback+"("+body+");";
+			}
 		}
 		
 		PrintWriter w=resp.getWriter();

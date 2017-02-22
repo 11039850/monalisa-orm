@@ -14,35 +14,16 @@
  *	You should have received a copy of the GNU Lesser General Public License
  *	along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************************/
-package test.com.tsc9526.monalisa.orm.query;
-
-import org.testng.Assert;
-import org.testng.annotations.Test;
-
-import com.tsc9526.monalisa.orm.Query;
+package com.tsc9526.monalisa.service.actions;
+  
+import com.tsc9526.monalisa.service.args.ModelArgs;
+import com.tsc9526.monalisa.tools.datatable.DataMap;
 
 /**
  * 
  * @author zzg.zhou(11039850@qq.com)
  */
-@Test
-public class QueryMultiTableTest {
-
-	public void testSelect1() {
-		TestSimpleModel model=new TestSimpleModel();
-		Query query=model.dialect().select(model,",user b on a.id=b.id and a.x=?",1);
-		
-		String expect="SELECT a.* FROM `simple_model` a ,user b on a.id=b.id and a.x=1";
-		Assert.assertEquals(query.getExecutableSQL(),expect);				
-	}
-	
-	public void testSelect2() {
-		TestSimpleModel model=new TestSimpleModel();
-		
-		model.include("int_field1","string_field2");
-		Query query=model.dialect().select(model,"left join user b on a.id=b.id and a.x=?",1);
-		String expect="SELECT a.`auto`, a.`int_field1`, a.`string_field2` FROM `simple_model` a left join user b on a.id=b.id and a.x=1";
-		Assert.assertEquals(query.getExecutableSQL(),expect);
-	}
-
+public abstract class DataService{
+	protected ModelArgs args;
+	protected DataMap   ps;
 }

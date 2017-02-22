@@ -25,8 +25,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.tsc9526.monalisa.service.actions.Action;
-import com.tsc9526.monalisa.service.actions.ResponseAction;
 import com.tsc9526.monalisa.service.args.ModelArgs;
 import com.tsc9526.monalisa.tools.datatable.DataMap;
 import com.tsc9526.monalisa.tools.io.MelpFile;
@@ -71,13 +69,7 @@ public class Dispatcher {
 			if(args.getErrors().size()>0){
 				r=new Response(Response.REQUEST_BAD_PARAMETER,"Request parameter error.").setData(args.getErrors());
 			}else{
-				Action action=getAction(args);
-				
-				r=action.verify();
-				
-				if(r==null){
-					r=action.getResponse();
-				}
+				r=doAction(args);
 			}
 		}catch(Throwable t){
 			logger.error("Error process path: "+req.getRequestURI(),"true".equalsIgnoreCase(req.getHeader("DEV_TEST"))?null:t);
@@ -110,12 +102,12 @@ public class Dispatcher {
 	 	 
 	}
 	
-	protected Action getAction(ModelArgs args){
+	protected Response doAction(ModelArgs args){
 		DBS dbs=args.getDBS();
 		if(dbs==null){
-			return new ResponseAction(new Response(Response.REQUEST_BAD_PARAMETER,"Database not found: "+args.getPathDatabases()));
+			return new Response(Response.REQUEST_BAD_PARAMETER,"Database not found: "+args.getPathDatabases());
 		}else{
-			return dbs.getLocator().getAction(args);
+			return dbs.getExecutor().doAction(args);
 		}
 	}
 	 

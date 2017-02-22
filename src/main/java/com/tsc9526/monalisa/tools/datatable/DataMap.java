@@ -22,8 +22,8 @@ import java.util.Map;
 import com.google.gson.JsonObject;
 import com.tsc9526.monalisa.orm.model.Model;
 import com.tsc9526.monalisa.tools.clazz.MelpClass;
-import com.tsc9526.monalisa.tools.clazz.MelpClass.FGS;
 import com.tsc9526.monalisa.tools.clazz.MelpClass.ClassAssist;
+import com.tsc9526.monalisa.tools.clazz.MelpClass.FGS;
 import com.tsc9526.monalisa.tools.misc.MelpException;
 import com.tsc9526.monalisa.tools.string.MelpDate;
 import com.tsc9526.monalisa.tools.string.MelpString;
@@ -52,6 +52,11 @@ public class DataMap extends CaseInsensitiveMap<Object>{
 	
 	public DataMap(Map<String, Object> m){
 		putAll(m);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public <T> T gets(Object key){
+		return (T)super.get(key);
 	}
 	
 	@SuppressWarnings("unchecked")

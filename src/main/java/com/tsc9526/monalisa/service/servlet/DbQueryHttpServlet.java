@@ -30,7 +30,7 @@ import com.tsc9526.monalisa.orm.datasource.DBConfig;
 import com.tsc9526.monalisa.service.DBS;
 import com.tsc9526.monalisa.service.Dispatcher;
 import com.tsc9526.monalisa.service.actions.ActionFilter;
-import com.tsc9526.monalisa.service.actions.ActionLocator;
+import com.tsc9526.monalisa.service.actions.ActionExecutor;
 import com.tsc9526.monalisa.service.args.MethodHttp;
 import com.tsc9526.monalisa.service.args.MethodSQL;
 import com.tsc9526.monalisa.service.auth.DigestAuth;
@@ -76,8 +76,8 @@ public class DbQueryHttpServlet extends HttpServlet{
 			String describe=sc.getServletContext().getContextPath()+"/"+sc.getServletName()+"/"+name;
 			
 			if(DBS.getDB(name)==null){
-				ActionLocator locator=getActionLocator(sc,prefix);
-			 	DBS.add(name,db,locator,describe); 
+				ActionExecutor executor=getActionLocator(sc,prefix);
+			 	DBS.add(name,db,executor,describe); 
 			}else{
 				throw new RuntimeException("DB service init error: "+prefix+".name existed: "+name+", please check web.xml");
 			}
@@ -155,34 +155,34 @@ public class DbQueryHttpServlet extends HttpServlet{
 	}
 	
 	
-	protected ActionLocator getActionLocator(ServletConfig sc,String prefix){
-		String locatorClass=sc.getInitParameter(prefix+".locator");
+	protected ActionExecutor getActionLocator(ServletConfig sc,String prefix){
+		String executorClass=sc.getInitParameter(prefix+".executor");
 		 
-		ActionLocator locator=new ActionLocator();
-		if(locatorClass!=null && locatorClass.trim().length()>0){
+		ActionExecutor executor=new ActionExecutor();
+		if(executorClass!=null && executorClass.trim().length()>0){
 			try {
-				locator=(ActionLocator)MelpClass.forName(locatorClass.trim()).newInstance();
+				executor=(ActionExecutor)MelpClass.forName(executorClass.trim()).newInstance();
 		 	} catch (Exception e) {
 				MelpException.throwRuntimeException(e);	
 			}
 		}
 		
-		setupAuth(locator,sc,prefix);
+		setupAuth(executor,sc,prefix);
 		
-		setupMethods(locator,sc,prefix);
+		setupMethods(executor,sc,prefix);
 		
-		setupFilters(locator,sc,prefix);
+		setupFilters(executor,sc,prefix);
 		
-		return locator;
+		return executor;
 	}
 	
-	protected void setupAuth(ActionLocator locator,ServletConfig sc,String prefix){
+	protected void setupAuth(ActionExecutor executor,ServletConfig sc,String prefix){
 		String auth=sc.getInitParameter(prefix+".auth.class");
 		if(auth!=null && auth.trim().length()>0){
 			try{
 				ActionFilter af=(ActionFilter)MelpClass.forName(auth.trim()).newInstance();
 					
-				locator.addFilter(af);
+				executor.addFilter(af);
 			} catch (Exception e) {
 				MelpException.throwRuntimeException(e);			
 			}
@@ -205,7 +205,7 @@ public class DbQueryHttpServlet extends HttpServlet{
 					userpwds.add(new String[]{username,password});
 				}
 				
-				locator.addFilter(new DigestAuth(userpwds));
+				executor.addFilter(new DigestAuth(userpwds));
 			}
 		}
 	}
@@ -220,22 +220,22 @@ public class DbQueryHttpServlet extends HttpServlet{
 			+ "\r\n"/**}*/.trim());
 	}
 	
-	protected void setupMethods(ActionLocator locator,ServletConfig sc,String prefix){
+	protected void setupMethods(ActionExecutor executor,ServletConfig sc,String prefix){
 		MethodHttp[] ms=getHttpMethods(sc,prefix);
 		MethodSQL[]  mq=getSQLMethods(sc,prefix);
 	
-		locator.setHttpMethods(ms);
-		locator.setSQLMethods(mq);
+		executor.setHttpMethods(ms);
+		executor.setSQLMethods(mq);
 	}
 	
-	protected void setupFilters(ActionLocator locator,ServletConfig sc,String prefix){
+	protected void setupFilters(ActionExecutor executor,ServletConfig sc,String prefix){
 		String filters=sc.getInitParameter(prefix+".filters");
 		if(filters!=null && filters.trim().length()>0){
 			try{
 				for(String f:MelpString.splits(filters)){
 					ActionFilter af=(ActionFilter)MelpClass.forName(f.trim()).newInstance();
 					
-					locator.addFilter(af);
+					executor.addFilter(af);
 				}
 			} catch (Exception e) {
 				MelpException.throwRuntimeException(e);			

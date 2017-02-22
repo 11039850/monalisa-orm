@@ -25,7 +25,7 @@ import test.com.tsc9526.monalisa.orm.mysql.MysqlDB;
 
 import com.tsc9526.monalisa.service.DBS;
 import com.tsc9526.monalisa.service.Response;
-import com.tsc9526.monalisa.service.actions.ActionLocator;
+import com.tsc9526.monalisa.service.actions.ActionExecutor;
 import com.tsc9526.monalisa.service.args.MethodHttp;
 
 /**
@@ -41,7 +41,7 @@ public class OnlyActionTest extends AbstractActionTest{
 	@BeforeClass
 	public void setup(){
 		DBS.remove("db1");
-		DBS.add("db1",MysqlDB.DB,new ActionLocator() {
+		DBS.add("db1",MysqlDB.DB,new ActionExecutor() {
 			{
 				this.setHttpMethods(MethodHttp.GET,MethodHttp.DELETE,MethodHttp.HEAD);
 			}

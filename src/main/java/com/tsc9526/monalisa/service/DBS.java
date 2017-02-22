@@ -21,7 +21,7 @@ import java.util.List;
 
 import com.tsc9526.monalisa.orm.datasource.DBConfig;
 import com.tsc9526.monalisa.orm.dialect.Dialect;
-import com.tsc9526.monalisa.service.actions.ActionLocator;
+import com.tsc9526.monalisa.service.actions.ActionExecutor;
 import com.tsc9526.monalisa.tools.datatable.DataMap;
 import com.tsc9526.monalisa.tools.logger.Logger;
 
@@ -35,16 +35,16 @@ public class DBS {
 	public static DataMap dbs = new DataMap();
   	 
 	public static void add(String dbName, DBConfig db) {
-		add(dbName, db, new ActionLocator(),"");
+		add(dbName, db, new ActionExecutor(),"");
 	}
 
-	public synchronized static void add(String dbName, DBConfig db, ActionLocator locator,String describe) {
+	public synchronized static void add(String dbName, DBConfig db, ActionExecutor executor,String describe) {
 		dbName = Dialect.getRealname(dbName);
 
 		if (!dbs.containsKey(dbName)) {
-			DBS s = new DBS(dbName, db, locator);
+			DBS s = new DBS(dbName, db, executor);
 
-			logger.info("Add DB service: "+ dbName+"("+describe+"), HTTP: " + locator.getHttpMethods() + ", SQL: "+locator.getSQLMethods()+", dbkey: " + db.getKey());
+			logger.info("Add DB service: "+ dbName+"("+describe+"), HTTP: " + executor.getHttpMethods() + ", SQL: "+executor.getSQLMethods()+", dbkey: " + db.getKey());
 			dbs.put(dbName, s);
 		} else {
 			logger.error("DB service: "+ dbName+"("+describe+") already exists, dbkey: " + db.getKey());
@@ -71,7 +71,7 @@ public class DBS {
 
 		DBS s = (DBS) dbs.remove(dbName);
 		if (s != null) {
-			logger.info("Removed DB service, HTTP: " + s.locator.getHttpMethods()+ ", SQL: "+s.locator.getSQLMethods()+" : /" + dbName);
+			logger.info("Removed DB service, HTTP: " + s.executor.getHttpMethods()+ ", SQL: "+s.executor.getSQLMethods()+" : /" + dbName);
 		}
 	}
 
@@ -84,29 +84,29 @@ public class DBS {
 
 	private DBConfig db;
 
-	private ActionLocator locator;
+	private ActionExecutor executor;
  
-	private DBS(String dbName, DBConfig db, ActionLocator locator) {
+	private DBS(String dbName, DBConfig db, ActionExecutor executor) {
 		this.dbName = dbName;
 
 		this.db = db;
 
-		this.locator = locator;
+		this.executor = executor;
 	}
 
 	public DBConfig getDB() {
 		return this.db;
 	}
 	 
-	public ActionLocator getLocator() {
-		return locator;
+	public ActionExecutor getExecutor() {
+		return executor;
 	}
 
 	public String getDbName() {
 		return dbName;
 	}
 
-	public void setLocator(ActionLocator locator) {
-		this.locator = locator;
+	public void setExecutor(ActionExecutor executor) {
+		this.executor = executor;
 	}
 }

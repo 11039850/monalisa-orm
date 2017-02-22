@@ -16,7 +16,6 @@
  *******************************************************************************************/
 package com.tsc9526.monalisa.service.actions;
 
-import java.lang.reflect.Method;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -26,10 +25,8 @@ import com.tsc9526.monalisa.orm.annotation.Column;
 import com.tsc9526.monalisa.orm.datasource.DbProp;
 import com.tsc9526.monalisa.orm.dialect.Dialect;
 import com.tsc9526.monalisa.orm.model.Record;
-import com.tsc9526.monalisa.service.RequestParameter;
 import com.tsc9526.monalisa.service.Response;
 import com.tsc9526.monalisa.service.args.ModelArgs;
-import com.tsc9526.monalisa.service.args.QueryArgs;
 import com.tsc9526.monalisa.tools.clazz.MelpClass.FGS;
 import com.tsc9526.monalisa.tools.datatable.DataMap;
 import com.tsc9526.monalisa.tools.datatable.DataTable;
@@ -50,36 +47,16 @@ public class GetAction extends Action{
 			return getTablesRows();
 		}else{
 			if(args.getTable()!=null){
-				String table=args.getTable();
-				int p=table.indexOf(RequestParameter.MS);
-				if(p>0){
-					return getTableQuery(table.substring(0,p),table.substring(p+RequestParameter.MS.length()));
+				if(args.getSinglePK()!=null){
+					return getTableRowBySinglePK();
+				}else if(args.getMultiKeys()!=null){
+					return getTableRowByMultiKeys();
 				}else{
-					if(args.getSinglePK()!=null){
-						return getTableRowBySinglePK();
-					}else if(args.getMultiKeys()!=null){
-						return getTableRowByMultiKeys();
-					}else{
-						return getTableRows();
-					}
+					return getTableRows();
 				}
 			}else{
 				return new Response(Response.REQUEST_BAD_PARAMETER,"Missing table, add request parameter: method=HEAD OR: /"+args.getPathDatabases()+"/your_table_name");
 			}
-		}
-	}
-	
-	public Response getTableQuery(String className,String methodName){
-		try{
-			Class<?> clazz=Class.forName(className);
-			
-			Method x=clazz.getMethod(methodName, QueryArgs.class); 
-			  
-			Object r=x.invoke(clazz.newInstance(), args);
-
-			return new Response(r);
-		}catch(Exception e){
-			throw new RuntimeException(e);
 		}
 	}
 	

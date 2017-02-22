@@ -103,4 +103,16 @@ public class ModelHolderTest {
 		sql=query.getExecutableSQL(); 
 		Assert.assertEquals(sql,"UPDATE `simple_model` SET `int_field2`=2, `string_field1`='xstring' WHERE `auto` = 1");
 	}
+	
+	public void testCopy(){
+		TestSimpleModel x1=new TestSimpleModel();
+		x1.setIntField1(1);
+		x1.setIntField2(2);
+		x1.setStringField1("xstring");
+		
+		TestSimpleModel x2=x1.copy();
+		Assert.assertEquals(x1.table().name(), x2.table().name());
+		Assert.assertEquals(x1.getIntField1(), x2.getIntField1());
+		Assert.assertEquals(x1.getStringField1(), x2.getStringField1());
+	}
 }

@@ -27,14 +27,7 @@ public class RequestParameter {
 	 * jsonp callback function name
 	 */
 	public static String CALLBACK = "_callback";  
-	
-	
-	/**
-	 * $: Call class method: a.b.c$function_name
-	 */
-	public static String MS       = "$";
-	
-	
+ 	 
 	/**
 	 * Replace HTTP method: GET,POST,HEAD,PUT,DELETE ...
 	 */

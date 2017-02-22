@@ -14,10 +14,14 @@
  *	You should have received a copy of the GNU Lesser General Public License
  *	along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************************/
-package test.com.tsc9526.monalisa.orm.query;
+package test.com.tsc9526.monalisa.orm.model;
 
 import org.testng.Assert;
 import org.testng.annotations.Test;
+
+import test.com.tsc9526.monalisa.orm.query.StatusA;
+import test.com.tsc9526.monalisa.orm.query.StatusB;
+import test.com.tsc9526.monalisa.orm.query.TestSimpleModel;
 
 import com.tsc9526.monalisa.tools.clazz.MelpClass;
 import com.tsc9526.monalisa.tools.clazz.MelpClass.ClassAssist;

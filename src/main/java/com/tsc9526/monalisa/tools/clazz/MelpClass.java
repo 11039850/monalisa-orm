@@ -304,6 +304,7 @@ public class MelpClass {
 	 * @param mappings see #parse(Object,Object,String...)
 	 * @return list object
 	 * @param <T> T the target type
+	 * 
 	 * @see #parse(Object,Object,String...)
 	 */
 	public static <T> List<T> parseArrays(T targetTemplate, javax.servlet.ServletRequest data, String... mappings) {

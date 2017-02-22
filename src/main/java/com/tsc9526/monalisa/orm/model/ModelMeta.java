@@ -42,8 +42,8 @@ import com.tsc9526.monalisa.orm.meta.MetaTable;
 import com.tsc9526.monalisa.orm.utils.TableHelper;
 import com.tsc9526.monalisa.tools.Tasks;
 import com.tsc9526.monalisa.tools.clazz.MelpClass;
-import com.tsc9526.monalisa.tools.clazz.MelpClass.FGS;
 import com.tsc9526.monalisa.tools.clazz.MelpClass.ClassAssist;
+import com.tsc9526.monalisa.tools.clazz.MelpClass.FGS;
 import com.tsc9526.monalisa.tools.logger.Logger;
 import com.tsc9526.monalisa.tools.string.MelpString;
 import com.tsc9526.monalisa.tools.validator.Validator;
@@ -391,15 +391,21 @@ public class ModelMeta{
 	public Model<?> copyModel(Model<?> model){
 		try{
 			Model<?> x=model.shallow();
-  
-			x.holder().updateKey  = model.holder().updateKey;			
-			x.holder().readonly   = model.holder().readonly;
-			x.holder().dirty      = true;
-			x.holder().entity     = false;
+			
+			ModelHolder f=model.holder();
+			ModelHolder t=x.holder();
 			 
-			x.holder().fieldFilterExcludeMode=model.holder().fieldFilterExcludeMode;
-			x.holder().fieldFilterSets.addAll(model.holder().fieldFilterSets);
-		 	
+			t.updateKey  = model.holder().updateKey;			
+			t.readonly   = model.holder().readonly;
+			t.dirty      = model.holder().dirty;
+			t.entity     = model.holder().entity;
+			  
+			t.fieldFilterExcludeMode=model.holder().fieldFilterExcludeMode;
+			t.fieldFilterSets.addAll(model.holder().fieldFilterSets);
+			if(f.hModelValues!=null){
+				t.getModelValues().putAll(f.hModelValues);
+			}
+			
 			for(FGS fgs:model.fields()){				
 				Object value=fgs.getObject(model);
 				fgs.setObject(x, value);

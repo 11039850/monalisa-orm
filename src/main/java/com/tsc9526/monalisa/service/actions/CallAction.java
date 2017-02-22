@@ -14,15 +14,39 @@
  *	You should have received a copy of the GNU Lesser General Public License
  *	along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************************/
-package test.com.tsc9526.monalisa.orm.query;
+package com.tsc9526.monalisa.service.actions;
 
-import com.tsc9526.monalisa.orm.annotation.DB;
+import java.lang.reflect.Method;
+
+import com.tsc9526.monalisa.service.Response;
+import com.tsc9526.monalisa.service.args.ModelArgs;
 
 /**
  * 
  * @author zzg.zhou(11039850@qq.com)
  */
-@DB(key="test.simple_db", url="jdbc:mysql://x.x.x.x:port/xxx_db")
-public interface TestSimpleDB {
+public class CallAction extends Action{
+	protected DataService service;
+	
+	public CallAction(ModelArgs args,DataService service) {
+		super(args);
+		this.service=service;
+	}
+	 
+	public Response getResponse() {
+		String fname=args.getSinglePK();
+		if(fname==null){
+			fname="index";
+		}
+		 
+		try{
+			Method x=service.getClass().getMethod(fname); 
+			  
+			Object r=x.invoke(service);
 
+			return new Response(r);
+		}catch(Exception e){
+			throw new RuntimeException(e);
+		}
+	}
 }

@@ -16,11 +16,9 @@
  *******************************************************************************************/
 package com.tsc9526.monalisa.service.actions;
 
-import java.lang.reflect.Method;
 import java.util.List;
 
 import com.tsc9526.monalisa.orm.model.Record;
-import com.tsc9526.monalisa.service.RequestParameter;
 import com.tsc9526.monalisa.service.Response;
 import com.tsc9526.monalisa.service.args.ModelArgs;
 import com.tsc9526.monalisa.tools.clazz.MelpClass.FGS;
@@ -39,38 +37,18 @@ public class PutAction extends Action{
 		if(args.getTables()!=null){
 			return insertTablesRows();
 		}else if(args.getTable()!=null){
-			String table=args.getTable();
-			int p=table.indexOf(RequestParameter.MS);
-			if(p>0){
-				return updateTableQuery(table.substring(0,p),table.substring(p+2));
+			if(args.getSinglePK()!=null){
+				return updateTableRowBySinglePk();
+			}else if(args.getMultiKeys()!=null){
+				return updateTableRowByMultiKeys();
 			}else{
-				if(args.getSinglePK()!=null){
-					return updateTableRowBySinglePk();
-				}else if(args.getMultiKeys()!=null){
-					return updateTableRowByMultiKeys();
-				}else{
-					return insertTableRows();
-				}
+				return insertTableRows();
 			}
 		}else{		
 			return new Response(Response.REQUEST_BAD_PARAMETER,args.getActionName()+" error, missing table, using: /"+args.getPathDatabases()+"/your_table_name");
 		}
 	}
 	 
-	protected Response updateTableQuery(String className,String methodName){
-		try{
-			Class<?> clazz=Class.forName(className);
-			
-			Method x=clazz.getMethod(methodName, ModelArgs.class); 
-			  
-			Object r=x.invoke(clazz.newInstance(), args);
-
-			return new Response(r);
-		}catch(Exception e){
-			throw new RuntimeException(e);
-		}
-	}
-	
 	protected Response updateTableRowBySinglePk(){
 		Record record=createRecord();
 		List<FGS> pks=record.pkFields();
