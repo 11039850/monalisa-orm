@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import com.tsc9526.monalisa.orm.datasource.DbProp;
 import com.tsc9526.monalisa.service.Response;
 import com.tsc9526.monalisa.service.args.MethodHttp;
 import com.tsc9526.monalisa.service.args.MethodSQL;
@@ -27,6 +28,7 @@ import com.tsc9526.monalisa.service.args.ModelArgs;
 import com.tsc9526.monalisa.tools.datatable.CaseInsensitiveMap;
 import com.tsc9526.monalisa.tools.logger.Logger;
 import com.tsc9526.monalisa.tools.misc.MelpException;
+import com.tsc9526.monalisa.tools.string.MelpString;
 
 /**
  * 
@@ -103,7 +105,14 @@ public class ActionExecutor{
 		}catch(IllegalArgumentException  e){
 			return new Response(Response.REQUEST_METHOD_NOT_ALLOWED, "Access forbidden, method: "+args.getActionName()+" not found in the class: "+this.getClass().getName());
 		}catch(Exception e){
-			throw new RuntimeException(e.getMessage(),e);
+			String msg=DbProp.PROP_DB_DBS_EXCEPTION.getValue(args.getDBS().getDB()); 
+			if(MelpString.isEmpty(msg)){
+				throw new RuntimeException(e.getMessage(),e);
+			}else{
+				logger.error(""+e,e);
+				
+				return new Response(Response.ERROR_SERVER_ERROR,msg);
+			}
 		}
 	}
 	
