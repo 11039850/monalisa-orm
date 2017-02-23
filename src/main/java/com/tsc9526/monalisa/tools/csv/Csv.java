@@ -35,7 +35,7 @@ import org.relique.jdbc.csv.SqlParser;
 
 import com.tsc9526.monalisa.tools.clazz.MelpClass;
 import com.tsc9526.monalisa.tools.clazz.MelpClass.FGS;
-import com.tsc9526.monalisa.tools.clazz.MelpClass.ClassAssist;
+import com.tsc9526.monalisa.tools.clazz.MelpClass.ClassHelper;
 import com.tsc9526.monalisa.tools.datatable.CsvOptions;
 import com.tsc9526.monalisa.tools.datatable.DataColumn;
 import com.tsc9526.monalisa.tools.datatable.DataMap;
@@ -118,7 +118,7 @@ public class Csv{
 					if(row.getClass().isPrimitive() || row.getClass().getName().startsWith("java.")){
 						vs[i++]=row;
 					}else{					
-						ClassAssist mc=MelpClass.getClassAssist(row.getClass());
+						ClassHelper mc=MelpClass.getClassAssist(row.getClass());
 						for(DataColumn column:headers){
 							FGS fgs=mc.getField(column.getName());
 							Object v=null;

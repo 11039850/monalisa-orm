@@ -30,7 +30,7 @@ import com.tsc9526.monalisa.orm.datasource.DbProp;
 import com.tsc9526.monalisa.tools.clazz.MelpClass;
 import com.tsc9526.monalisa.tools.clazz.MelpLib;
 import com.tsc9526.monalisa.tools.clazz.MelpClass.FGS;
-import com.tsc9526.monalisa.tools.clazz.MelpClass.ClassAssist;
+import com.tsc9526.monalisa.tools.clazz.MelpClass.ClassHelper;
 import com.tsc9526.monalisa.tools.string.MelpJson;
 import com.tsc9526.monalisa.tools.string.MelpSQL;
 
@@ -269,7 +269,7 @@ public class DataTable<E> extends ArrayList<E> {
 							headers.add(new DataColumn("c"+k).setIndex(index++));
 						}
 					}else{					
-						ClassAssist mc=MelpClass.getClassAssist(v.getClass());
+						ClassHelper mc=MelpClass.getClassAssist(v.getClass());
 						for(FGS fgs:mc.getFields()){
 							String fname=fgs.getFieldName();
 							String cname=null;
@@ -351,7 +351,7 @@ public class DataTable<E> extends ArrayList<E> {
 							}
 						}
 					}else{					
-						ClassAssist mc=MelpClass.getClassAssist(v.getClass());
+						ClassHelper mc=MelpClass.getClassAssist(v.getClass());
 						for(FGS fgs:mc.getFields()){
 							String fname=fgs.getFieldName();
 							String cname=null;

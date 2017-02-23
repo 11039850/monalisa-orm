@@ -42,7 +42,7 @@ import com.tsc9526.monalisa.orm.meta.MetaTable;
 import com.tsc9526.monalisa.orm.utils.TableHelper;
 import com.tsc9526.monalisa.tools.Tasks;
 import com.tsc9526.monalisa.tools.clazz.MelpClass;
-import com.tsc9526.monalisa.tools.clazz.MelpClass.ClassAssist;
+import com.tsc9526.monalisa.tools.clazz.MelpClass.ClassHelper;
 import com.tsc9526.monalisa.tools.clazz.MelpClass.FGS;
 import com.tsc9526.monalisa.tools.logger.Logger;
 import com.tsc9526.monalisa.tools.string.MelpString;
@@ -263,7 +263,7 @@ public class ModelMeta{
 	}
 	
 	protected List<FGS> loadModelFields(Model<?> model){
-		ClassAssist metaClass=MelpClass.getClassAssist(model.getClass());
+		ClassHelper metaClass=MelpClass.getClassAssist(model.getClass());
 		List<FGS> fields=metaClass.getFieldsWithAnnotation(Column.class);						
 		if(fields.size()==0){
 			record=true;
@@ -328,7 +328,7 @@ public class ModelMeta{
 	
 	
 	private MetaTable mTable;
-	protected List<FGS> loadFieldsFromDB(ClassAssist metaClass) {
+	protected List<FGS> loadFieldsFromDB(ClassHelper metaClass) {
 		try{
 			mTable=TableHelper.getMetaTable(db, tableName);
 			if(mTable!=null){				 

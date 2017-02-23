@@ -38,7 +38,7 @@ import com.tsc9526.monalisa.orm.meta.MetaTable;
 import com.tsc9526.monalisa.orm.meta.Name;
 import com.tsc9526.monalisa.orm.model.Model;
 import com.tsc9526.monalisa.tools.clazz.MelpClass;
-import com.tsc9526.monalisa.tools.clazz.MelpClass.ClassAssist;
+import com.tsc9526.monalisa.tools.clazz.MelpClass.ClassHelper;
 import com.tsc9526.monalisa.tools.clazz.MelpClass.FGS;
 import com.tsc9526.monalisa.tools.clazz.MelpJavaBeans;
 import com.tsc9526.monalisa.tools.datatable.DataMap;
@@ -158,7 +158,7 @@ public class ResultHandler<T> {
 	}
 
 	protected T loadResult(ResultSet rs, T result) throws SQLException {
-		ClassAssist metaClass = MelpClass.getClassAssist(result.getClass());
+		ClassHelper metaClass = MelpClass.getClassAssist(result.getClass());
 
 		ResultSetMetaData rsmd = rs.getMetaData();
 

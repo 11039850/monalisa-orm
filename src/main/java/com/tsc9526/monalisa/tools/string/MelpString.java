@@ -37,7 +37,7 @@ import org.xml.sax.InputSource;
 import com.google.gson.Gson;
 import com.tsc9526.monalisa.tools.clazz.MelpClass;
 import com.tsc9526.monalisa.tools.clazz.MelpClass.FGS;
-import com.tsc9526.monalisa.tools.clazz.MelpClass.ClassAssist;
+import com.tsc9526.monalisa.tools.clazz.MelpClass.ClassHelper;
 import com.tsc9526.monalisa.tools.datatable.DataMap;
 
 
@@ -68,7 +68,7 @@ public class MelpString {
 				return bean.toString();
 			}else{
 				try{
-					ClassAssist mc=MelpClass.getClassAssist(bean);
+					ClassHelper mc=MelpClass.getClassAssist(bean);
 					
 					StringBuffer sb = new StringBuffer();
 					for (FGS fgs : mc.getFields()) {
@@ -135,7 +135,7 @@ public class MelpString {
 			sb.append(CRLN);
 		}
 		
-		ClassAssist mc=MelpClass.getClassAssist(bean);
+		ClassHelper mc=MelpClass.getClassAssist(bean);
 		for (FGS fgs : mc.getFields()) {
 			String name = fgs.getFieldName();
 

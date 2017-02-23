@@ -22,7 +22,7 @@ import java.util.Map;
 import com.google.gson.JsonObject;
 import com.tsc9526.monalisa.orm.model.Model;
 import com.tsc9526.monalisa.tools.clazz.MelpClass;
-import com.tsc9526.monalisa.tools.clazz.MelpClass.ClassAssist;
+import com.tsc9526.monalisa.tools.clazz.MelpClass.ClassHelper;
 import com.tsc9526.monalisa.tools.clazz.MelpClass.FGS;
 import com.tsc9526.monalisa.tools.misc.MelpException;
 import com.tsc9526.monalisa.tools.string.MelpDate;
@@ -68,7 +68,7 @@ public class DataMap extends CaseInsensitiveMap<Object>{
 			
 			T r = toClass.newInstance();
 			
-			ClassAssist mc=MelpClass.getClassAssist(toClass);
+			ClassHelper mc=MelpClass.getClassAssist(toClass);
 			for(FGS fgs:mc.getFields()){
 				String name=fgs.getFieldName();
 				if(containsKey(name)){
@@ -146,7 +146,7 @@ public class DataMap extends CaseInsensitiveMap<Object>{
 		}else if(v instanceof Model){
 			return ((Model<?>)v).get(name);
 		}else{
-			ClassAssist mc=MelpClass.getClassAssist(v);
+			ClassHelper mc=MelpClass.getClassAssist(v);
 			FGS fgs=mc.getField(name);
 			if(fgs!=null){
 				return fgs.getObject(v);

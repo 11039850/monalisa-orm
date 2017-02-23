@@ -51,7 +51,7 @@ import com.tsc9526.monalisa.tools.string.MelpString;
 public class MelpClass {
 	public static TypeConverter converter=new TypeConverter();	
 	 
-	private static ConcurrentHashMap<String, ClassAssist> hBeanClasses = new ConcurrentHashMap<String, ClassAssist>();
+	private static ConcurrentHashMap<String, ClassHelper> hBeanClasses = new ConcurrentHashMap<String, ClassHelper>();
 	 
 	public static long getVersion(String className){
 		try{
@@ -84,21 +84,28 @@ public class MelpClass {
 		return -1;
 	}
 	 
+	/**
+	 * @param m method. 
+	 * @return parameter name of the method. JRE class method maybe return [null,null...]
+	 */
+	public static String[] getMethodParamNames(Method m) {
+		return MelpAsm.getMethodParamNames(m);
+	}
 	
-	public static ClassAssist getClassAssist(Class<?> clazz) {
+	public static ClassHelper getClassAssist(Class<?> clazz) {
 		if(clazz==null){
 			return null;
 		}
 				
 		String name = clazz.getName();
-		ClassAssist mc = hBeanClasses.get(name);
+		ClassHelper mc = hBeanClasses.get(name);
 		if (mc == null) {
 			mc = loadMetaClass(clazz);
 		}
 		return mc;
 	}
 	 
-	public static ClassAssist getClassAssist(Object bean) {
+	public static ClassHelper getClassAssist(Object bean) {
 		return getClassAssist(bean.getClass());
 	}
 	 
@@ -188,8 +195,8 @@ public class MelpClass {
 	 * @return The to Object
 	 */
 	public static <T> T copy(Object from,T to){
-		ClassAssist fm=getClassAssist(from);
-		ClassAssist ft=getClassAssist(to);
+		ClassHelper fm=getClassAssist(from);
+		ClassHelper ft=getClassAssist(to);
 		
 		for(FGS fgs:fm.getFields()){
 			FGS x=ft.getField(fgs.getFieldName());
@@ -207,12 +214,12 @@ public class MelpClass {
 		return converter.convert(source, type);
 	}
  
-	private synchronized static ClassAssist loadMetaClass(Class<?> clazz) {
+	private synchronized static ClassHelper loadMetaClass(Class<?> clazz) {
 		String name = clazz.getName();
 		if (hBeanClasses.containsKey(name)) {
 			return hBeanClasses.get(name);
 		} else {
-			ClassAssist mc = new ClassAssist(clazz);
+			ClassHelper mc = new ClassHelper(clazz);
 			hBeanClasses.put(name, mc);
 			return mc;
 		}
@@ -311,12 +318,12 @@ public class MelpClass {
 		return ServletRequestParser.parseArrays(targetTemplate, data, mappings);
 	}
  
-	public static class ClassAssist {
+	public static class ClassHelper {
 		private Class<?> clazz;
 		private Map<String, FGS> hFields = new LinkedHashMap<String, FGS>();
 		private ReadWriteLock lock=new ReentrantReadWriteLock(); 
 		
-		public ClassAssist(Class<?> clazz) {
+		public ClassHelper(Class<?> clazz) {
 			this.clazz = clazz;
 			loadClassInfo();
 		}

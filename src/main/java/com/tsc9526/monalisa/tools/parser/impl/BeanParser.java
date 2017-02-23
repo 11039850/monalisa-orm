@@ -21,7 +21,7 @@ import java.util.Map;
 
 import com.tsc9526.monalisa.tools.clazz.MelpClass;
 import com.tsc9526.monalisa.tools.clazz.MelpClass.FGS;
-import com.tsc9526.monalisa.tools.clazz.MelpClass.ClassAssist;
+import com.tsc9526.monalisa.tools.clazz.MelpClass.ClassHelper;
 import com.tsc9526.monalisa.tools.parser.Parser;
 
 /**
@@ -30,7 +30,7 @@ import com.tsc9526.monalisa.tools.parser.Parser;
  */
 public class BeanParser implements Parser<Object>{
 	public boolean parse(Object target,Object data,String... mappings){
-		ClassAssist source=MelpClass.getClassAssist(data);
+		ClassHelper source=MelpClass.getClassAssist(data);
 		
 		Map<String, String> hNameMapping=new HashMap<String, String>();
 		if(mappings!=null){

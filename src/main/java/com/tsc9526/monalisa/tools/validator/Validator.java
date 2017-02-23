@@ -21,7 +21,7 @@ import java.util.List;
 
 import com.tsc9526.monalisa.tools.clazz.MelpClass;
 import com.tsc9526.monalisa.tools.clazz.MelpClass.FGS;
-import com.tsc9526.monalisa.tools.clazz.MelpClass.ClassAssist;
+import com.tsc9526.monalisa.tools.clazz.MelpClass.ClassHelper;
 
 /**
  * 
@@ -37,7 +37,7 @@ public class Validator {
 	public List<String> validate(Object bean){
 		List<String> result=new ArrayList<String>();
 		
-		ClassAssist mc=MelpClass.getClassAssist(bean);
+		ClassHelper mc=MelpClass.getClassAssist(bean);
 	 
 		for(FGS fgs:mc.getFields()){
 			NotNull notnull=fgs.getAnnotation(NotNull.class);

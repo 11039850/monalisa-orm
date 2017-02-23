@@ -39,7 +39,7 @@ import com.google.gson.stream.JsonWriter;
 import com.tsc9526.monalisa.tools.clazz.MelpClass;
 import com.tsc9526.monalisa.tools.clazz.MelpLib;
 import com.tsc9526.monalisa.tools.clazz.MelpClass.FGS;
-import com.tsc9526.monalisa.tools.clazz.MelpClass.ClassAssist;
+import com.tsc9526.monalisa.tools.clazz.MelpClass.ClassHelper;
 import com.tsc9526.monalisa.tools.converters.Conversion;
 import com.tsc9526.monalisa.tools.datatable.DataColumn;
 import com.tsc9526.monalisa.tools.datatable.DataMap;
@@ -86,7 +86,7 @@ public class MelpJson {
 	public static String toJson(Gson gson,Object bean) {
 		JsonObject json=new JsonObject(); 
 		
-		ClassAssist mc=MelpClass.getClassAssist(bean);
+		ClassHelper mc=MelpClass.getClassAssist(bean);
 		
 		for (FGS fgs : mc.getFields()) {
 			String name=fgs.getFieldName();
@@ -259,7 +259,7 @@ public class MelpJson {
 						doWriteValue(w,xs[k]);
 					}
 				}else{	
-					ClassAssist mc=MelpClass.getClassAssist(v.getClass());
+					ClassHelper mc=MelpClass.getClassAssist(v.getClass());
 					for(DataColumn c:headers){
 						FGS fgs=mc.getField(c.getName());
 						Object o=null;

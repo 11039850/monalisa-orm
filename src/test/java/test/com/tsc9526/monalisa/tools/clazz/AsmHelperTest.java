@@ -32,11 +32,15 @@ import com.tsc9526.monalisa.tools.clazz.MelpAsm;
 public class AsmHelperTest {
 	
 	public void testGetParameter()throws Exception{
-		for(Method m:Query.class.getClass().getMethods()){
+		for(Method m:Query.class.getDeclaredMethods()){
 			String[] ns=MelpAsm.getMethodParamNames(m);
-			Assert.assertNotNull(ns);
-			
-			//System.out.println(""+m.getName()+": "+Arrays.toString(ns));
+			if(ns!=null && ns.length>0){
+				for(String n:ns){
+					Assert.assertNotNull(n,"Failed get parameter's name of method: "+m.getName());
+				}
+			}
+			 
 		}
 	}
+	 
 }

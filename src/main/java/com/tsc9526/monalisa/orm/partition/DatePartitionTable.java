@@ -26,7 +26,7 @@ import com.tsc9526.monalisa.orm.model.Model;
 import com.tsc9526.monalisa.tools.clazz.MelpClass;
 import com.tsc9526.monalisa.tools.clazz.MelpJavaBeans;
 import com.tsc9526.monalisa.tools.clazz.MelpClass.FGS;
-import com.tsc9526.monalisa.tools.clazz.MelpClass.ClassAssist;
+import com.tsc9526.monalisa.tools.clazz.MelpClass.ClassHelper;
 
 /**
  * 
@@ -72,7 +72,7 @@ public class DatePartitionTable implements Partition<Model>{
 			dateField=args[1];
 		}
 		
-		ClassAssist mc=MelpClass.getClassAssist(model.getClass());
+		ClassHelper mc=MelpClass.getClassAssist(model.getClass());
 		FGS fgs=mc.getField(dateField);
 		if(fgs==null){
 			throw new RuntimeException("DateTime field: "+dateField+" not found in modelClass: "+model.getClass().getName());

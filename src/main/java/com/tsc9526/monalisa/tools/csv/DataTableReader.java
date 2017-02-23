@@ -27,7 +27,7 @@ import org.relique.io.DataReader;
 
 import com.tsc9526.monalisa.tools.clazz.MelpClass;
 import com.tsc9526.monalisa.tools.clazz.MelpClass.FGS;
-import com.tsc9526.monalisa.tools.clazz.MelpClass.ClassAssist;
+import com.tsc9526.monalisa.tools.clazz.MelpClass.ClassHelper;
 import com.tsc9526.monalisa.tools.datatable.DataColumn;
 import com.tsc9526.monalisa.tools.datatable.DataTable;
 
@@ -72,7 +72,7 @@ class DataTableReader extends DataReader {
 						vs[k]=xs[k];
 					}
 				}else{					
-					ClassAssist mc=MelpClass.getClassAssist(row.getClass());
+					ClassHelper mc=MelpClass.getClassAssist(row.getClass());
 					for(String name:columnNames){
 						FGS fgs=mc.getField(name);
 						Object v=null;

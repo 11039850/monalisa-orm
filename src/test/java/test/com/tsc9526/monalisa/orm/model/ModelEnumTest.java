@@ -24,7 +24,7 @@ import test.com.tsc9526.monalisa.orm.query.StatusB;
 import test.com.tsc9526.monalisa.orm.query.TestSimpleModel;
 
 import com.tsc9526.monalisa.tools.clazz.MelpClass;
-import com.tsc9526.monalisa.tools.clazz.MelpClass.ClassAssist;
+import com.tsc9526.monalisa.tools.clazz.MelpClass.ClassHelper;
 
 /**
  * 
@@ -35,7 +35,7 @@ public class ModelEnumTest {
   
   public void testParseRemark()throws Exception {
 	  TestSimpleModel model=new TestSimpleModel();
-	  ClassAssist mc= MelpClass.getClassAssist(model.getClass());
+	  ClassHelper mc= MelpClass.getClassAssist(model.getClass());
 	  mc.getField("status").setObject(model, StatusA.ERROR);
 	  
 	  Assert.assertEquals(model.getStatus(),StatusA.ERROR);
