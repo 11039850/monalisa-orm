@@ -106,6 +106,17 @@ public class TestConverter {
 		for(int i=0;i<a1.size();i++){
 			Assert.assertEquals(v1[i],Integer.parseInt(a1.get(i)));
 		}
+	}
+	
+	
+	public void testList01(){
+		int[] a1=new int[]{1,2,3};
+		
+		List<?> v1=converter.convert(a1, List.class);
+		
+		for(int i=0;i<a1.length;i++){
+			Assert.assertEquals((int)Double.parseDouble(v1.get(i).toString()),a1[i]);
+		}
 		
 	}
 	
