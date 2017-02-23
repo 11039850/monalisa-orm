@@ -16,7 +16,6 @@
  *******************************************************************************************/
 package com.tsc9526.monalisa.service.actions;
 
-import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,7 +41,7 @@ public class HeadAction extends Action{
 	public Response getResponse(){
 		if(args.getTable()!=null){
 			return getTableModel();
-		}else if(args.getTable()!=null){
+		}else if(args.getTables()!=null){
 			return getTablesModel();
 		}else{		
 			return getAllTables();
@@ -71,61 +70,51 @@ public class HeadAction extends Action{
 	}
 	
 	protected Response getTableModel(){
-		DataMap data=getTableModel(args.getTable()); 
+		List<DataMap> model=getTableModel(args.getTable()); 
 		
-		Response response=new Response(data);
+		Response response=new Response(model);
 		return response;
 	}
 	
 	protected Response getTablesModel(){
-		List<DataMap> ds=new ArrayList<DataMap>();
+		DataMap models=new DataMap();
 		
 		for(String table:args.getTables()){
-			DataMap data=getTableModel(table); 
+			List<DataMap> model=getTableModel(table); 
 			
-			ds.add(data);
+			models.put(table,model);
 		}
 		
-		Response response=new Response(ds);
+		Response response=new Response(models);
 		return response;
 	}
 	
-	protected DataMap getTableModel(String tableName){
+	protected List<DataMap> getTableModel(String tableName){
 		Record record=db.createRecord(tableName);
 				
-		List<String>  colNames =new ArrayList<String>();
-		List<DataMap> colModel=new ArrayList<DataMap>();
+		List<DataMap> cs=new ArrayList<DataMap>();
 		for(FGS fgs:record.fields()){
 			Column c=fgs.getAnnotation(Column.class);
-			colNames.add(c.name());
-			
-			//{ name : 'id', index : 'id', width : 60, sorttype : "int", editable : true }
-			DataMap model=new DataMap();
-			model.put("name", c.name());
-			model.put("id",   c.name());
-			model.put("width",60);
-			model.put("editable", "true");
-			model.put("hidden",   false);
-			
+			 
+			DataMap column=new DataMap();
+			column.put("name", c.name());
+			column.put("auto", c.auto());
+			column.put("key", c.key());
+			column.put("notnull", c.notnull());
+			column.put("length", c.length());
+			column.put("value", "NULL".equals(c.value())?null:c.value());
+			 
 			int jdbcType=c.jdbcType();
-			if(MelpTypes.isNumber(jdbcType)){
-				model.put("sorttype","int");
-			}else if(jdbcType==Types.DATE || jdbcType==Types.TIMESTAMP){
-				model.put("sorttype","date");
-				model.put("unformat","pickDate");
-			}else if(c.length()<Short.MAX_VALUE){
-				model.put("sorttype","text");
-			}
+			column.put("type",jdbcType);
+			column.put("typestring",MelpTypes.getJavaType(jdbcType));
 		 	
-			colModel.add(model);
+			column.put("remarks", c.remarks());
+		 	
+			cs.add(column);
 		}
+		 
 		
-		
-		DataMap data=new DataMap();
-		data.put("colNames", colNames);
-		data.put("colModel", colModel);
-		
-		return data;
+		return cs;
 	}
   
 }

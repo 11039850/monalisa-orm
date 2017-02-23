@@ -41,7 +41,7 @@ public class Dispatcher {
 	
 	public void doDispatch(HttpServletRequest req,HttpServletResponse resp)throws ServletException, IOException {
 		if("/favicon.ico".equalsIgnoreCase( req.getRequestURI() )){
-			doResource(req,resp,"/com/tsc9526/monalisa/http/web/image/monalisa.png");
+			doResource(req,resp,"/com/tsc9526/monalisa/service/resources/monalisa.png");
 		}else{
 			ModelArgs args=createActionArgs(req,resp);
 		 	 
