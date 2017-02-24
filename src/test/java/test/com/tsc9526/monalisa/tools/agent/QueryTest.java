@@ -21,7 +21,7 @@ package test.com.tsc9526.monalisa.tools.agent;
 import java.io.File;
 
 import org.testng.Assert;
-import org.testng.annotations.BeforeTest;
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 import test.com.tsc9526.monalisa.orm.sqlfiles.Q1;
@@ -76,8 +76,8 @@ public class QueryTest {
 	private Q4 q4;
 	private Q5 q5=Query.create(Q5.class);
 	
-	@BeforeTest
-	public void setUp()throws Exception{
+	@BeforeClass
+	public void beforeClass()throws Exception{
 		Assert.assertEquals(q5.findOne(),5);
 		  
 		q4=Query.create(Q4.class);
