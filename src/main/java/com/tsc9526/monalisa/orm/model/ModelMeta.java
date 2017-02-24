@@ -116,7 +116,7 @@ public class ModelMeta{
 		List<String> rms=new ArrayList<String>();
 		for(String key:hMonitorMetas.keySet()){
 			ModelMeta mm=hMonitorMetas.get(key);
-			if(mm.record && dbKey.equals( mm.db.getKey() )){
+			if(dbKey.equals( mm.db.getKey() )){
 				rms.add(key);
 			} 
 		}
@@ -125,6 +125,7 @@ public class ModelMeta{
 			logger.info("Remove dynamic tables: "+rms.toString()+", dbkey: "+dbKey);
 			for(String key:rms){
 				hMonitorMetas.remove(key);
+				hMetas.remove(key);
 			}
 		}
 	}
