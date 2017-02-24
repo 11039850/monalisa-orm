@@ -40,9 +40,9 @@ public class TransactionalCache implements Cache {
 		return delegate.getReadWriteLock();
 	}
 
-	public void putObject(Object key, Object object) {
+	public void putObject(Object key, Object object,long ttlInSeconds) {
 		entriesToRemoveOnCommit.remove(key);
-		entriesToAddOnCommit.put(key, new AddEntry(delegate, key, object));
+		entriesToAddOnCommit.put(key, new AddEntry(delegate, key, object,ttlInSeconds));
 	}
 
 	public Object removeObject(Object key) {
@@ -89,15 +89,17 @@ public class TransactionalCache implements Cache {
 		private Cache cache;
 		private Object key;
 		private Object value;
-
-		public AddEntry(Cache cache, Object key, Object value) {
+		private long ttlInSeconds;
+		
+		public AddEntry(Cache cache, Object key, Object value,long ttlInSeconds) {
 			this.cache = cache;
 			this.key = key;
 			this.value = value;
+			this.ttlInSeconds=ttlInSeconds;
 		}
 
 		public void commit() {
-			cache.putObject(key, value);
+			cache.putObject(key, value,ttlInSeconds);
 		}
 	}
 

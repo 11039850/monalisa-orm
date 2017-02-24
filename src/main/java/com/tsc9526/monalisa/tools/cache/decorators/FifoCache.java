@@ -32,9 +32,9 @@ public class FifoCache implements Cache {
 		this.size = size;
 	}
 
-	public void putObject(Object key, Object value) {
+	public void putObject(Object key, Object value,long ttlInSeconds) {
 		cycleKeyList(key);
-		delegate.putObject(key, value);
+		delegate.putObject(key, value,ttlInSeconds);
 	}
 
 	public Object getObject(Object key) {

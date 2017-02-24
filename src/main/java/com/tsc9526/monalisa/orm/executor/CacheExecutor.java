@@ -51,7 +51,7 @@ public class CacheExecutor<X> implements Execute<X> {
 		TransactionalCacheManager tcm=tx==null?null:tx.getTxCacheManager();
 		
 		Cache cache=query.getCache();
-	 	
+	 	long ttlInSeconds=query.getCacheTime();
 		if (delegate instanceof Cacheable) {
 			if(cache!=null){
 				CacheKey key=query.getCacheKey();
@@ -64,9 +64,9 @@ public class CacheExecutor<X> implements Execute<X> {
 						x=delegate.execute(pst);
 						
 						if(tcm==null){
-							cache.putObject(key, x);
+							cache.putObject(key, x,ttlInSeconds);
 						}else{
-							tcm.putObject(cache, key, x);
+							tcm.putObject(cache, key, x,ttlInSeconds);
 						}
 					}
 					return x;

@@ -13,8 +13,8 @@ public class TransactionalCacheManager {
 		getTransactionalCache(cache).clear();
 	}
 
-	public void putObject(Cache cache, CacheKey key, Object value) {
-		getTransactionalCache(cache).putObject(key, value);
+	public void putObject(Cache cache, CacheKey key, Object value,long ttlInSeconds) {
+		getTransactionalCache(cache).putObject(key, value,ttlInSeconds);
 	}
 	
 	public Object getObject(Cache cache, CacheKey key) {

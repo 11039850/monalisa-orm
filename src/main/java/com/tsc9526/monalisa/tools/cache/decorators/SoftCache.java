@@ -8,8 +8,7 @@ import java.util.concurrent.locks.ReadWriteLock;
 import com.tsc9526.monalisa.tools.cache.Cache;
 
 /**
- * Soft Reference cache decorator Thanks to Dr. Heinz Kabutz for his guidance
- * here.
+ * Soft Reference cache decorator
  */
 @SuppressWarnings({"rawtypes","unchecked"})
 public class SoftCache implements Cache {
@@ -39,9 +38,9 @@ public class SoftCache implements Cache {
 		this.numberOfHardLinks = size;
 	}
 
-	public void putObject(Object key, Object value) {
+	public void putObject(Object key, Object value,long ttlInSeconds) {
 		removeGarbageCollectedItems();
-		delegate.putObject(key, new SoftEntry(key, value, queueOfGarbageCollectedEntries));
+		delegate.putObject(key, new SoftEntry(key, value, queueOfGarbageCollectedEntries), ttlInSeconds);
 	}
  
 	public Object getObject(Object key) {

@@ -72,7 +72,7 @@ class DataTableReader extends DataReader {
 						vs[k]=xs[k];
 					}
 				}else{					
-					ClassHelper mc=MelpClass.getClassAssist(row.getClass());
+					ClassHelper mc=MelpClass.getClassHelper(row.getClass());
 					for(String name:columnNames){
 						FGS fgs=mc.getField(name);
 						Object v=null;

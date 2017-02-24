@@ -43,8 +43,8 @@ import com.tsc9526.monalisa.tools.misc.MelpException;
 public class Tx {
 	public final static String CONTEXT_CURRENT_USERID="CONTEXT_CURRENT_USERID";
 	
-	public static interface Atom{
-		public int execute()throws Throwable;
+	public static interface Atom<T>{
+		public T execute()throws Throwable;
 	}
 	
 	private static class CI{
@@ -142,9 +142,10 @@ public class Tx {
 	 * Execute the run() method in transaction
 	 * 
 	 * @param x Atom
+	 * @param <T> T int / int[]
 	 * @return Number of rows affected 
 	 */
-	public static int execute(Atom x){
+	public static <T> T execute(Atom<T> x){
 		return execute(x,-1);
 	}
 	
@@ -153,16 +154,17 @@ public class Tx {
 	 * 	   
 	 * @param x Atom
 	 * @param level setTransactionIsolation
+	 * @param <T> T int / int[]
 	 * @return Number of rows affected 
 	 */
-	public static int execute(Atom x, int level){
+	public static <T> T execute(Atom<T> x, int level){
 		Tx tx=begin();
 		try{
 			if(tx!=null && level>-1){
 				tx.setTransactionIsolation(level);
 			}
 			
-			int r=x.execute();
+			T r=x.execute();
 			
 			if(tx!=null){
 				commit();

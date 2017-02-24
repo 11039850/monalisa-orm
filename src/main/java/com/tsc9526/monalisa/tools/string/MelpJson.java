@@ -86,7 +86,7 @@ public class MelpJson {
 	public static String toJson(Gson gson,Object bean) {
 		JsonObject json=new JsonObject(); 
 		
-		ClassHelper mc=MelpClass.getClassAssist(bean);
+		ClassHelper mc=MelpClass.getClassHelper(bean);
 		
 		for (FGS fgs : mc.getFields()) {
 			String name=fgs.getFieldName();
@@ -259,7 +259,7 @@ public class MelpJson {
 						doWriteValue(w,xs[k]);
 					}
 				}else{	
-					ClassHelper mc=MelpClass.getClassAssist(v.getClass());
+					ClassHelper mc=MelpClass.getClassHelper(v.getClass());
 					for(DataColumn c:headers){
 						FGS fgs=mc.getField(c.getName());
 						Object o=null;

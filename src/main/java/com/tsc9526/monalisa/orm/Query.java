@@ -22,7 +22,6 @@ import java.io.Writer;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -32,6 +31,8 @@ import com.tsc9526.monalisa.orm.datasource.DBConfig;
 import com.tsc9526.monalisa.orm.datasource.DataSourceManager;
 import com.tsc9526.monalisa.orm.datasource.DbProp;
 import com.tsc9526.monalisa.orm.dialect.Dialect;
+import com.tsc9526.monalisa.orm.executor.BatchSqlExecutor;
+import com.tsc9526.monalisa.orm.executor.BatchStatementExecutor;
 import com.tsc9526.monalisa.orm.executor.CacheExecutor;
 import com.tsc9526.monalisa.orm.executor.Execute;
 import com.tsc9526.monalisa.orm.executor.ResultExecutor;
@@ -102,7 +103,8 @@ public class Query {
  	 
 	protected DBConfig      db;
  	
-	protected boolean enableCache=false;
+	//0: no cache, -1: no expired
+	protected long ttlInSeconds=0;
 	
 	protected Boolean readonly;
  	
@@ -288,6 +290,7 @@ public class Query {
 		return conn;
 	}
 	
+
 	/**
 	 * Execute the SQL
 	 * 
@@ -296,87 +299,44 @@ public class Query {
 	public int execute(){
 		return doExecute(new UpdateExecutor());
 	}
-	
-	public <X> X execute(Execute<X> execute){
-		 return doExecute(execute);
-	}	
-	
-	public int[] execute(String[] sqls){
-		Tx tx=Tx.getTx();
-		
-		Connection conn=null;
-		Statement  st=null;
-		try{
-			conn= tx==null?getConnectionFromDB(false):getConnectionFromTx(tx);
-			
-			st=conn.createStatement();
-			
-			int[] result=new int[sqls.length];
-			for(int i=0;i<sqls.length;i++){
-				result[i]=st.executeUpdate(sqls[i]);
-				logSql(sqls[i]);
+	  
+	/**
+	 * Execute sql statements in transaction
+	 * @param sqls sql statements
+	 * @return each result of sql statements
+	 */
+	public int[] execute(final String[] sqls){
+		return Tx.execute(new Tx.Atom<int[]>() {
+			public int[] execute() throws Throwable {
+				return doExecute(new BatchSqlExecutor(sqls));
 			}
-			 
-			if(tx==null){
-				conn.commit();
-			}			
-			
-			return result;
-		}catch(Exception e){
-			if(tx==null && conn!=null){
-				try{ conn.rollback(); }catch(SQLException ex){}
-			}
-			throw new RuntimeException(e);
-		}finally{
-			MelpClose.close(st);
-			
-			if(tx==null){
-				MelpClose.close(conn);
-			}
-		}
+		});
 	}
 	
+	/**
+	 * Execute in transaction
+	 * 
+	 * @return each result of sql statements
+	 */
 	public int[] executeBatch(){
-		Tx tx=Tx.getTx();
-		
-		Connection conn=null;
-		PreparedStatement pst=null;
-		try{
-			conn= tx==null?getConnectionFromDB(false):getConnectionFromTx(tx);
-			
-			pst=conn.prepareStatement(getSql());
-			for(List<Object> p:batchParameters){
-				MelpSQL.setPreparedParameters(pst, p);
-				pst.addBatch();
+		return Tx.execute(new Tx.Atom<int[]>() {
+			public int[] execute() throws Throwable {
+				return doExecute(new BatchStatementExecutor(batchParameters));
 			}
-			
-			logSql(getSql());
-			
-			int[] result=pst.executeBatch();
-			
-			if(tx==null){
-				conn.commit();
-			}			
-			
-			return result;
-		}catch(Exception e){
-			if(tx==null && conn!=null){
-				try{ conn.rollback(); }catch(SQLException ex){}
-			}
-			throw new RuntimeException(e);
-		}finally{
-			MelpClose.close(pst);
-			
-			if(tx==null){
-				MelpClose.close(conn);
-			}
-		}
+		});
 	}
 	 
+
+	public <X> X execute(Execute<X> execute){
+		return doExecute(execute);
+	}	
+	
+	protected <X> X doCacheExecute(Execute<X> x){
+		CacheExecutor<X> ce=new CacheExecutor<X>(this, x);
+		return doExecute(ce);
+	}
 	
 	protected <X> X doExecute(Execute<X> x){
-		x=new CacheExecutor<X>(this, x);
-		
 		Tx tx=Tx.getTx();
 		
 		Connection conn=null;
@@ -385,12 +345,15 @@ public class Query {
 			conn= tx==null?getConnectionFromDB(true):getConnectionFromTx(tx);
 			 
 			pst=x.preparedStatement(conn,getSql());
-			 
-			MelpSQL.setPreparedParameters(pst, parameters);
-			
-			logSql(getExecutableSQL());
-			
-			return x.execute(pst);			
+			if(pst!=null){ 
+				MelpSQL.setPreparedParameters(pst, parameters);
+				
+				logSql(getExecutableSQL());
+				
+				return x.execute(pst);
+			}else{
+				return x.execute(null);
+			}
 		}catch(SQLException e){
 			String executeSQL=sql.toString();
 			try{
@@ -430,7 +393,7 @@ public class Query {
 		int deepth = DbProp.PROP_DB_MULTI_RESULTSET_DEEPTH.getIntValue(db,100);
 		ResultHandler<DataMap> resultHandler=new ResultHandler<DataMap>(this,DataMap.class);
 		
-		return doExecute(new ResultSetsExecutor<DataMap>(resultHandler,deepth));  
+		return doCacheExecute(new ResultSetsExecutor<DataMap>(resultHandler,deepth));  
 	}
 	 
 	/**
@@ -455,7 +418,7 @@ public class Query {
 		if(!doExchange()){			
 			queryCheck();
 			
-			return doExecute(new ResultExecutor<T>(resultHandler));	 
+			return doCacheExecute(new ResultExecutor<T>(resultHandler));	 
 		}else{
 			return null;
 		}
@@ -521,7 +484,7 @@ public class Query {
 		if(!doExchange()){		 
 			queryCheck();
 			
-			return doExecute(new ResultSetExecutor<T>(resultHandler));
+			return doCacheExecute(new ResultSetExecutor<T>(resultHandler));
 		}else{
 			return new DataTable<T>();
 		}
@@ -578,7 +541,7 @@ public class Query {
 			
 			ResultHandler<T> resultHandler=new ResultHandler<T>(this,(Class<T>)result.getClass());
 			
-			return doExecute(new ResultLoadExecutor<T>(resultHandler, result)); 
+			return doCacheExecute(new ResultLoadExecutor<T>(resultHandler, result)); 
 		}else{
 			return result;
 		}
@@ -645,7 +608,7 @@ public class Query {
 	public Cache getCache(){
 		if(this.cache!=null){
 			return this.cache;
-		}else if(enableCache || DbProp.CFG_CACHE_GLOABLE_ENABLE){
+		}else if(ttlInSeconds!=0 || DbProp.CFG_CACHE_GLOABLE_ENABLE){
 			if(db==null){
 				throw new RuntimeException("Query must use db!");
 			}
@@ -681,12 +644,12 @@ public class Query {
 		this.readonly = readonly;
 	}
 
-	public boolean isEnableCache() {
-		return enableCache;
+	public long getCacheTime() {
+		return ttlInSeconds;
 	}
 
-	public Query setEnableCache(boolean enableCache) {
-		this.enableCache = enableCache;
+	public Query setCacheTime(long ttlInSeconds) {
+		this.ttlInSeconds = ttlInSeconds;
 		return this;
 	}
 	

@@ -41,6 +41,8 @@ public class ModelTest {
 		log.setLogTime(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse("2016-03-01 01:01:01"));
 		log.save();
 		
+		TestTable1.DELETE().deleteAll();
+		new TestTable1().defaults().setName("keep-not-empty").save();
 		int maxId=MysqlDB.DB.selectOne("select max(id) as x from test_table_1").getInt("x",0); 
 		
 		Tx.putContext(Tx.CONTEXT_CURRENT_USERID,"zzg.zhou");

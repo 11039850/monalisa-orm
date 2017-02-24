@@ -92,7 +92,7 @@ public class MelpClass {
 		return MelpAsm.getMethodParamNames(m);
 	}
 	
-	public static ClassHelper getClassAssist(Class<?> clazz) {
+	public static ClassHelper getClassHelper(Class<?> clazz) {
 		if(clazz==null){
 			return null;
 		}
@@ -105,20 +105,20 @@ public class MelpClass {
 		return mc;
 	}
 	 
-	public static ClassHelper getClassAssist(Object bean) {
-		return getClassAssist(bean.getClass());
+	public static ClassHelper getClassHelper(Object bean) {
+		return getClassHelper(bean.getClass());
 	}
 	 
 	
 	public static Collection<FGS> getFields(Class<?> clazz){
-		return getClassAssist(clazz).getFields();	
+		return getClassHelper(clazz).getFields();	
 	}
 	
 	public static Collection<FGS> getFields(Object bean){
 		if(bean instanceof Specifiable){
 			return ((Specifiable)bean).fields();
 		}else{
-			return getClassAssist(bean).getFields();
+			return getClassHelper(bean).getFields();
 		}
 	}
 	
@@ -195,8 +195,8 @@ public class MelpClass {
 	 * @return The to Object
 	 */
 	public static <T> T copy(Object from,T to){
-		ClassHelper fm=getClassAssist(from);
-		ClassHelper ft=getClassAssist(to);
+		ClassHelper fm=getClassHelper(from);
+		ClassHelper ft=getClassHelper(to);
 		
 		for(FGS fgs:fm.getFields()){
 			FGS x=ft.getField(fgs.getFieldName());

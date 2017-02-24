@@ -27,7 +27,7 @@ public class PerpetualCache implements Cache {
 		return cache.size();
 	}
 
-	public void putObject(Object key, Object value) {
+	public void putObject(Object key, Object value,long ttlInSeconds) {
 		cache.put(key, value);
 	}
 

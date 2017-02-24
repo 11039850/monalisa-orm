@@ -224,8 +224,8 @@ public abstract class Model<T extends Model> implements Serializable ,Shallowabl
 	 */
 	public int save() {
 		if (history()) {
-			return Tx.execute(new Atom() {
-				public int execute() {
+			return Tx.execute(new Atom<Integer>() {
+				public Integer execute() {
 					int r=doSave();
 					saveHistory(ModelEvent.INSERT);
 					return r;
@@ -252,8 +252,8 @@ public abstract class Model<T extends Model> implements Serializable ,Shallowabl
 	 */
 	public int saveOrUpdate() {
 		if (history()) {
-			return Tx.execute(new Atom() {
-				public int execute() {
+			return Tx.execute(new Atom<Integer>() {
+				public Integer execute() {
 					int r=doSaveOrUpdate();
 					saveHistory(ModelEvent.REPLACE);
 					return r;
@@ -280,8 +280,8 @@ public abstract class Model<T extends Model> implements Serializable ,Shallowabl
 	 */
 	public int update() {
 		if (history()) {
-			return Tx.execute(new Atom() {
-				public int execute() {
+			return Tx.execute(new Atom<Integer>() {
+				public Integer execute() {
 					int r= doUpdate();
 					saveHistory(ModelEvent.UPDATE);
 					return r;
@@ -308,8 +308,8 @@ public abstract class Model<T extends Model> implements Serializable ,Shallowabl
 	 */
 	public int delete() {
 		if (history()) {
-			return Tx.execute(new Atom() {
-				public int execute() {
+			return Tx.execute(new Atom<Integer>() {
+				public Integer execute() {
 					int r= doDelete();
 					saveHistory(ModelEvent.DELETE);
 					return r;

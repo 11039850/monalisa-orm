@@ -14,28 +14,37 @@
  *	You should have received a copy of the GNU Lesser General Public License
  *	along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************************/
-package com.tsc9526.monalisa.tools.cache;
+package com.tsc9526.monalisa.orm.executor;
 
-import java.util.concurrent.locks.ReadWriteLock;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+import com.tsc9526.monalisa.tools.string.MelpSQL;
 
 /**
  * 
  * @author zzg.zhou(11039850@qq.com)
  */
-public interface Cache {
+public class BatchStatementExecutor extends RelationExecutor implements Execute<int[]>{
+	protected List<List<Object>> batchParameters=new ArrayList<List<Object>>();
+	
+	public BatchStatementExecutor(List<List<Object>> batchParameters){
+		this.batchParameters=batchParameters;
+	}
+	
+	public int[] execute(PreparedStatement pst) throws SQLException {
+		for(List<Object> p:batchParameters){
+			MelpSQL.setPreparedParameters(pst, p);
+			pst.addBatch();
+		}		 
+		int[] result=pst.executeBatch();
+		return result;
+	}
 
-	String getId();
-
-	int getSize();
-
-	void putObject(Object key, Object value,long ttlInSeconds);
-
-	Object getObject(Object key);
-
-	Object removeObject(Object key);
-
-	void clear();
-
-	ReadWriteLock getReadWriteLock();
-
+	public PreparedStatement preparedStatement(Connection conn,String sql)throws SQLException {	
+		return conn.prepareStatement(sql);
+	}	 
 }

@@ -55,18 +55,12 @@ public class AgentEnhancer implements MethodInterceptor {
 	public Object intercept(final Object obj, final Method method, final Object[] args, final MethodProxy proxy) throws Throwable {
 		Tx tx=method.getAnnotation(Tx.class);
 		if (tx!= null) {
-			final List<Object> r = new ArrayList<Object>();
-
-			com.tsc9526.monalisa.orm.Tx.execute(new com.tsc9526.monalisa.orm.Tx.Atom() {
-				public int execute() throws Throwable {
+			return com.tsc9526.monalisa.orm.Tx.execute(new com.tsc9526.monalisa.orm.Tx.Atom<Object>() {
+				public Object execute() throws Throwable {
 					Object v = doInterceptors(obj,method,args,proxy);
-					r.add(v);
-
-					return 0;
+					return v;
 				}
 			},tx.level());
-
-			return r.get(0);
 		} else {
 			if(Tasks.instance.isDestoried() && method.getName().equals("finalize")){
 				return null;

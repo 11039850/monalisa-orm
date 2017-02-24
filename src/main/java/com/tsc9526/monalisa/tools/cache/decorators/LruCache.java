@@ -7,7 +7,7 @@ import java.util.concurrent.locks.ReadWriteLock;
 import com.tsc9526.monalisa.tools.cache.Cache;
 
 /**
- * Lru (first in, first out) cache decorator
+ * Least Recently Used cache decorator
  */
 public class LruCache implements Cache {
 
@@ -42,8 +42,8 @@ public class LruCache implements Cache {
 		};
 	}
 
-	public void putObject(Object key, Object value) {
-		delegate.putObject(key, value);
+	public void putObject(Object key, Object value,long ttlInSeconds) {
+		delegate.putObject(key, value,ttlInSeconds);
 		cycleKeyList(key);
 	}
 

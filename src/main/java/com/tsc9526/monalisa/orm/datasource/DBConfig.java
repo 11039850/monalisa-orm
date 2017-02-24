@@ -295,10 +295,9 @@ public class DBConfig implements Closeable{
 	}
 	
 	protected int[] batchOpModels(final List<? extends Model<?>> models,final ModelEvent op){
-		final int[] rs=new int[models.size()];
-		
-		com.tsc9526.monalisa.orm.Tx.execute(new com.tsc9526.monalisa.orm.Tx.Atom(){
-			public int execute() throws Throwable {
+		return com.tsc9526.monalisa.orm.Tx.execute(new com.tsc9526.monalisa.orm.Tx.Atom<int[]>(){
+			public int[] execute() throws Throwable {
+				int[] rs=new int[models.size()];
 				int i=0;
 				for(Model<?> m:models){
 					int r=0;
@@ -315,12 +314,9 @@ public class DBConfig implements Closeable{
 					
 					rs[i++]=r;
 				}
-				
-				return 0;
+				return rs;
 			}
 		});
-		
-		return rs;
 	}
 	
 	public boolean tableExist(String name){

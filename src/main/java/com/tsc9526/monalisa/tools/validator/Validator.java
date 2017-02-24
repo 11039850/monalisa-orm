@@ -37,7 +37,7 @@ public class Validator {
 	public List<String> validate(Object bean){
 		List<String> result=new ArrayList<String>();
 		
-		ClassHelper mc=MelpClass.getClassAssist(bean);
+		ClassHelper mc=MelpClass.getClassHelper(bean);
 	 
 		for(FGS fgs:mc.getFields()){
 			NotNull notnull=fgs.getAnnotation(NotNull.class);

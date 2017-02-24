@@ -34,7 +34,7 @@ public class CacheTest {
 	
 	
 	public void testLRU(){
-		Query q=MysqlDB.DB.createQuery().setEnableCache(true);
+		Query q=MysqlDB.DB.createQuery().setCacheTime(100);
 		
 		q.add("SELECT * FROM test_table_1");
 		
@@ -51,7 +51,7 @@ public class CacheTest {
 				q.getList();
 			} 
 			
-			Query qx=MysqlDB.DB.createQuery().setEnableCache(true);
+			Query qx=MysqlDB.DB.createQuery().setCacheTime(10);
 			qx.add("SELECT * FROM test_table_1");
 			Assert.assertTrue(rs==qx.getList(),"loop "+i);
 		}

@@ -158,7 +158,7 @@ public class ResultHandler<T> {
 	}
 
 	protected T loadResult(ResultSet rs, T result) throws SQLException {
-		ClassHelper metaClass = MelpClass.getClassAssist(result.getClass());
+		ClassHelper metaClass = MelpClass.getClassHelper(result.getClass());
 
 		ResultSetMetaData rsmd = rs.getMetaData();
 

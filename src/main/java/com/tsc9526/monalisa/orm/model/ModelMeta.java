@@ -86,6 +86,7 @@ public class ModelMeta{
 				startReloadModelMetas();
 			}
 		}
+		hMetas.put(key, mm);
 		return mm;
 	}
 	
@@ -301,7 +302,7 @@ public class ModelMeta{
 	}
 	
 	protected List<FGS> loadModelFields(Model<?> model){
-		ClassHelper metaClass=MelpClass.getClassAssist(model.getClass());
+		ClassHelper metaClass=MelpClass.getClassHelper(model.getClass());
 		List<FGS> fields=metaClass.getFieldsWithAnnotation(Column.class);						
 		if(fields.size()==0){
 			record=true;

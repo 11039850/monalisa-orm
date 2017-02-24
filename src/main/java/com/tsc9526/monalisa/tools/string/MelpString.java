@@ -68,7 +68,7 @@ public class MelpString {
 				return bean.toString();
 			}else{
 				try{
-					ClassHelper mc=MelpClass.getClassAssist(bean);
+					ClassHelper mc=MelpClass.getClassHelper(bean);
 					
 					StringBuffer sb = new StringBuffer();
 					for (FGS fgs : mc.getFields()) {
@@ -135,7 +135,7 @@ public class MelpString {
 			sb.append(CRLN);
 		}
 		
-		ClassHelper mc=MelpClass.getClassAssist(bean);
+		ClassHelper mc=MelpClass.getClassHelper(bean);
 		for (FGS fgs : mc.getFields()) {
 			String name = fgs.getFieldName();
 

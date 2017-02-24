@@ -41,7 +41,7 @@ public class PageTest {
 		DataTable<Object> table = new DataTable<Object>();
 		 
 		//创建测试数据
-		ClassHelper mc=MelpClass.getClassAssist(TestUserAreaRank.class);
+		ClassHelper mc=MelpClass.getClassHelper(TestUserAreaRank.class);
 		for(int userId=1;userId<=6;userId++){
 			Object row=new TestUserAreaRank();
 
@@ -74,7 +74,7 @@ public class PageTest {
 		DataTable<Object> table = new DataTable<Object>();
 		 
 		//创建测试数据
-		ClassHelper mc=MelpClass.getClassAssist(TestUserAreaRank.class);
+		ClassHelper mc=MelpClass.getClassHelper(TestUserAreaRank.class);
 		for(int userId=1;userId<=6;userId++){
 			Object row=new TestUserAreaRank();
 

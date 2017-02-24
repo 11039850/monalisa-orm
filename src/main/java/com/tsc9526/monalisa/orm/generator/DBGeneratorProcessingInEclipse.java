@@ -44,11 +44,9 @@ public class DBGeneratorProcessingInEclipse extends DBGeneratorProcessing{
 	 
 	public DBGeneratorProcessingInEclipse(ProcessingEnvironment processingEnv,TypeElement typeElement) {
 		super();
-		
-		
+	 
 		this.processingEnv = (IdeProcessingEnvImpl)processingEnv;		 
 		this.typeElement = typeElement;
-		 	
 	}
 	
 	public void generateFiles(){

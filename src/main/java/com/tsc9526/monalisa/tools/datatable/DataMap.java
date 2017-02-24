@@ -68,7 +68,7 @@ public class DataMap extends CaseInsensitiveMap<Object>{
 			
 			T r = toClass.newInstance();
 			
-			ClassHelper mc=MelpClass.getClassAssist(toClass);
+			ClassHelper mc=MelpClass.getClassHelper(toClass);
 			for(FGS fgs:mc.getFields()){
 				String name=fgs.getFieldName();
 				if(containsKey(name)){
@@ -146,7 +146,7 @@ public class DataMap extends CaseInsensitiveMap<Object>{
 		}else if(v instanceof Model){
 			return ((Model<?>)v).get(name);
 		}else{
-			ClassHelper mc=MelpClass.getClassAssist(v);
+			ClassHelper mc=MelpClass.getClassHelper(v);
 			FGS fgs=mc.getField(name);
 			if(fgs!=null){
 				return fgs.getObject(v);

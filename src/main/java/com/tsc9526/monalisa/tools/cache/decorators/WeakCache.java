@@ -38,9 +38,9 @@ public class WeakCache implements Cache {
 		this.numberOfHardLinks = size;
 	}
 
-	public void putObject(Object key, Object value) {
+	public void putObject(Object key, Object value,long ttlInSeconds) {
 		removeGarbageCollectedItems();
-		delegate.putObject(key, new WeakEntry(key, value, queueOfGarbageCollectedEntries));
+		delegate.putObject(key, new WeakEntry(key, value, queueOfGarbageCollectedEntries),ttlInSeconds);
 	}
 
 	public Object getObject(Object key) {
