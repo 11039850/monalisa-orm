@@ -22,7 +22,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -55,41 +54,77 @@ import com.tsc9526.monalisa.tools.validator.Validator;
 public class ModelMeta{	
 	static Logger logger=Logger.getLogger(ModelMeta.class.getName());
 	
-	
+	private static boolean modelReloadRunning=false;
 	private static Map<String, ModelMeta> hMonitorMetas=new ConcurrentHashMap<String, ModelMeta>();
-	private static Map<String, ModelMeta> hMetas=new HashMap<String, ModelMeta>();
+	private static Map<String, ModelMeta> hMetas       =new ConcurrentHashMap<String, ModelMeta>();
 	
-	public synchronized static ModelMeta getModelMeta(Model<?> model){
-		String key=getModelKey(model);
+	public static ModelMeta getModelMeta(Model<?> model){
+		synchronized(model){
+			String key=getModelKey(model);
+			
+			ModelMeta mm=hMetas.get(key);
+		 	if(mm==null || mm.iChanged()){
+				mm=createModelMeta(model,key);
+			}
+		 	
+	 	 	return mm;
+		}	
+	}
+	
+	private static ModelMeta createModelMeta(Model<?> model,String key){
+		ModelMeta mm=new ModelMeta(key);
+		mm.init(model);
 		
-		ModelMeta mm=hMetas.get(key);
-		
+		if(mm.record){
+			if(!hMonitorMetas.containsKey(key)){
+				logger.info("Add dynamic table: "+mm.tableName+", dbkey: "+mm.db.getKey());
+			}
+			hMonitorMetas.put(key, mm);
+			
+			if(!modelReloadRunning){
+				modelReloadRunning=true;
+				startReloadModelMetas();
+			}
+		}
+		return mm;
+	}
+	
+	private static void startReloadModelMetas(){
 		int interval=DbProp.CFG_RELOAD_MODEL_INTERVAL;
-		if(mm==null && interval>0){
+		if(interval>0){
 			Tasks.instance.addSchedule("ModelChangeTask", new TimerTask() {
 				public void run() {
 					reloadModelMetas();
 				}
 			}, interval*1000, interval*1000);
 		}
-		
-		
-		if(mm==null || mm.iChanged()){
-			mm=new ModelMeta(key);
-			mm.init(model);
-			
-			if(mm.record){
-				hMonitorMetas.put(key, mm);
-			}
-			
-			hMetas.put(key, mm);
-		}
-		return mm;
 	}
 	 
 	public synchronized static void reloadModelMetas(){
+		//check if data source changed
 		for(ModelMeta mm:hMonitorMetas.values()){
-			 mm.checkChanged();
+			mm.db.getDataSource();
+		}
+		
+		for(ModelMeta mm:hMonitorMetas.values()){
+			mm.checkChanged();
+		} 
+	}
+	
+	public synchronized static void clearReloadModelMetas(String dbKey){
+		List<String> rms=new ArrayList<String>();
+		for(String key:hMonitorMetas.keySet()){
+			ModelMeta mm=hMonitorMetas.get(key);
+			if(mm.record && dbKey.equals( mm.db.getKey() )){
+				rms.add(key);
+			} 
+		}
+		
+		if(rms.size()>0){
+			logger.info("Remove dynamic tables: "+rms.toString()+", dbkey: "+dbKey);
+			for(String key:rms){
+				hMonitorMetas.remove(key);
+			}
 		}
 	}
 	
@@ -190,6 +225,9 @@ public class ModelMeta{
 			}
 			
 			table=createTable(tableName,primaryKeys);
+		}else{
+			tableName=table.name();
+			primaryKeys=table.primaryKeys();
 		}
 	}
 	

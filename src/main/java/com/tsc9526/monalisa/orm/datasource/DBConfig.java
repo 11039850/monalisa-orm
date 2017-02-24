@@ -45,6 +45,7 @@ import com.tsc9526.monalisa.orm.generator.DBGeneratorProcessing;
 import com.tsc9526.monalisa.orm.meta.MetaPartition;
 import com.tsc9526.monalisa.orm.model.Model;
 import com.tsc9526.monalisa.orm.model.ModelEvent;
+import com.tsc9526.monalisa.orm.model.ModelMeta;
 import com.tsc9526.monalisa.orm.model.Record;
 import com.tsc9526.monalisa.tools.cache.Cache;
 import com.tsc9526.monalisa.tools.cache.CacheManager;
@@ -164,17 +165,15 @@ public class DBConfig implements Closeable{
 	}
 	
 	protected synchronized void delayClose(final DataSource ds,int delay){
+		ModelMeta.clearReloadModelMetas(getKey());
+		
 		MelpClose.delayClose(ds,delay);
 	}
 	 		
 	public synchronized DataSource getDataSource(){
 		CFG cfg=getCfg();
 		
-		String driverClass=cfg.getDriver();
-		
-		if(MelpLib.hLibClasses.containsKey(driverClass)){
-			MelpLib.loadClass(driverClass);
-		}
+		tryLoadDriverLib(cfg.getDriver()); 
 		
 		if(cfg.isCfgFileChanged()){
 			init(cfg.db);
@@ -198,6 +197,12 @@ public class DBConfig implements Closeable{
 		}
 		
 		return dsi.getDataSource();
+	}
+	
+	protected void tryLoadDriverLib(String driverClass){		
+		if(MelpLib.hLibClasses.containsKey(driverClass)){
+			MelpLib.loadClass(driverClass);
+		}
 	}
 	 
 	 
