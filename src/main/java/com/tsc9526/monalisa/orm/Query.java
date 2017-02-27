@@ -305,7 +305,7 @@ public class Query {
 	 * @param sqls sql statements
 	 * @return each result of sql statements
 	 */
-	public int[] execute(final String[] sqls){
+	public int[] executeBatch(final String[] sqls){
 		return Tx.execute(new Tx.Atom<int[]>() {
 			public int[] execute() throws Throwable {
 				return doExecute(new BatchSqlExecutor(sqls));
@@ -347,20 +347,16 @@ public class Query {
 			pst=x.preparedStatement(conn,getSql());
 			if(pst!=null){ 
 				MelpSQL.setPreparedParameters(pst, parameters);
-				
 				logSql(getExecutableSQL());
-				
-				return x.execute(pst);
-			}else{
-				return x.execute(null);
 			}
+			return x.execute(conn,pst);
 		}catch(SQLException e){
 			String executeSQL=sql.toString();
 			try{
 				executeSQL=getExecutableSQL();
 			}catch(Exception ex){}
 			
-			throw new RuntimeException("ERROR: "+e.getMessage()+"\r\nERROR SQL: \r\n========================================================================\r\n"
+			throw new RuntimeException("SQL Exception: "+e.getMessage()+"\r\n========================================================================\r\n"
 					                  +executeSQL+"\r\n========================================================================",e);
 		}finally{
 			MelpClose.close(pst);

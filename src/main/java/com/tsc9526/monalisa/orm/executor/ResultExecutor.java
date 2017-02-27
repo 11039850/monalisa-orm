@@ -34,7 +34,7 @@ public class ResultExecutor<T> extends RelationExecutor implements Execute<T>,Ca
 		this.resultHandler=resultHandler;
 	}
 	
-	public T execute(PreparedStatement pst) throws SQLException {				 
+	public T execute(Connection conn,PreparedStatement pst) throws SQLException {				 
 		T result=null;
 		ResultSet rs=null;
 		try{

@@ -16,8 +16,6 @@
  *******************************************************************************************/
 package com.tsc9526.monalisa.orm.executor;
 
-import java.io.PrintWriter;
-import java.io.StringWriter;
 import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -44,6 +42,7 @@ import com.tsc9526.monalisa.tools.clazz.MelpJavaBeans;
 import com.tsc9526.monalisa.tools.datatable.DataMap;
 import com.tsc9526.monalisa.tools.io.MelpClose;
 import com.tsc9526.monalisa.tools.string.MelpSQL;
+import com.tsc9526.monalisa.tools.string.MelpString;
 import com.tsc9526.monalisa.tools.string.MelpTypes;
 
 /**
@@ -75,6 +74,8 @@ public class ResultHandler<T> {
 			return (T) new Byte(rs.getByte(1));
 		} else if (resultClass == Double.class || resultClass == double.class) {
 			return (T) new Double(rs.getDouble(1));
+		} else if (resultClass == Boolean.class || resultClass == boolean.class) {
+			return (T) new Boolean(rs.getBoolean(1));
 		} else if (resultClass == String.class) {
 			return (T) rs.getString(1);
 		} else if (resultClass == BigDecimal.class) {
@@ -232,9 +233,7 @@ public class ResultHandler<T> {
 			rs.close();
 			pst.close();
 		} catch (Exception e) {
-			StringWriter s = new StringWriter();
-			e.printStackTrace(new PrintWriter(s));
-			exchange.setErrorString(s.toString());
+			exchange.setErrorString(MelpString.toString(e));
 		} finally {
 			MelpClose.close(conn);
 		}
@@ -257,10 +256,21 @@ public class ResultHandler<T> {
 					c.setRemarks(cd.getRemarks());
 					c.setValue(cd.getValue());
 				 	
+					c.getImports().addAll(cd.getImports());
+				 	
 					String javaType=cd.getJavaType();
-					if(cd.isEnum()){
-						if(javaType.indexOf(".")<0){
-							javaType=cd.getTable().getJavaName()+"."+javaType;
+					if(cd.isEnum() && javaType.indexOf(".")<0){
+						boolean found=false;
+						for(String x:cd.getImports()){
+							int p=x.lastIndexOf(".");
+							if(p>0){
+								if(x.substring(p+1).equals(javaType)){
+									found=true;
+								}
+							}
+						}
+						if(!found){
+							javaType=cd.getTable().getJavaName()+"."+javaType; 
 						}
 					}
 					c.setJavaType(javaType);

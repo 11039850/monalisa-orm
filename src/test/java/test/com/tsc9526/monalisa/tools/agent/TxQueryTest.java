@@ -16,6 +16,7 @@
  *******************************************************************************************/
 package test.com.tsc9526.monalisa.tools.agent;
 
+import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import com.tsc9526.monalisa.orm.Query;
@@ -26,16 +27,18 @@ import com.tsc9526.monalisa.orm.Query;
  */
 @Test
 public class TxQueryTest{
-	public void testWithTx()throws Throwable{
+	public void testTransaction()throws Throwable{
 		TxExample example= Query.create(TxExample.class);
 		
 		example.withTx();
 		
 		example.withoutTx();
 		
-		example.txNesting();
+		String tx1=example.txNesting();
 		
-		example.txNesting_inner();
+		String tx2=example.txNesting_inner();
+		
+		Assert.assertNotEquals(tx1,tx2,"tx1=tx2="+tx1);
 	}
 	
 	 

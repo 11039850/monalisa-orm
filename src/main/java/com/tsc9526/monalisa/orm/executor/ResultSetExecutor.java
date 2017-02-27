@@ -42,7 +42,7 @@ public class ResultSetExecutor<T>  extends RelationExecutor implements Execute<D
 		this.resultHandler=resultHandler;
 	}
 	
-	public DataTable<T> execute(PreparedStatement pst) throws SQLException {		
+	public DataTable<T> execute(Connection conn,PreparedStatement pst) throws SQLException {		
 		DataTable<T> result=new DataTable<T>();
 		ResultSet rs=null;
 		try{

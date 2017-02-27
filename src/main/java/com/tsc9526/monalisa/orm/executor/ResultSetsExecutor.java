@@ -39,7 +39,7 @@ public class ResultSetsExecutor<T>  extends RelationExecutor implements Execute<
 		this.deepth=deepth;
 	}
 	
-	public List<DataTable<T>>  execute(PreparedStatement pst) throws SQLException {	
+	public List<DataTable<T>>  execute(Connection conn,PreparedStatement pst) throws SQLException {	
 		List<DataTable<T>> result=new ArrayList<DataTable<T>>();
 		
 		boolean x=pst.execute();

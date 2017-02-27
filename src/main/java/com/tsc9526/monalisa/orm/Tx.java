@@ -98,7 +98,7 @@ public class Tx {
 	
 	/**
 	 * 
-	 * @return null if the transaction started by other method. 
+	 * @return Transaction context. Throw RuntimeException if the transaction started by other method. 
 	 */
 	public static Tx begin(){
 		Tx x=tx.get();
@@ -108,7 +108,7 @@ public class Tx {
 			
 			return x;
 		}else{
-			return null;
+			throw new RuntimeException("Begin error, transaction started by other method!");
 		}
 	}
 	
@@ -158,28 +158,32 @@ public class Tx {
 	 * @return Number of rows affected 
 	 */
 	public static <T> T execute(Atom<T> x, int level){
-		Tx tx=begin();
-		try{
-			if(tx!=null && level>-1){
-				tx.setTransactionIsolation(level);
-			}
-			
-			T r=x.execute();
-			
-			if(tx!=null){
+		Tx tx=getTx(); 
+		if(tx==null){
+			tx=begin();
+			try{
+				if(level>-1){
+					tx.setTransactionIsolation(level);
+				}
+				
+				T r=x.execute();
+				
 				commit();
-			}
-			
-			return r;
-		}catch(Throwable e){
-			if(tx!=null){
+				 
+				return r;
+			}catch(Throwable e){
 				rollback();
-			}
-			
-			return MelpException.throwRuntimeException(e);
-		}finally{
-			if(tx!=null){
+				
+				return MelpException.throwRuntimeException(e);
+			}finally{
 				close();
+			}
+		}else{
+			try{
+				T r=x.execute();
+				return r;
+			}catch(Throwable e){
+				return MelpException.throwRuntimeException(e);
 			}
 		}
 	}
@@ -193,7 +197,11 @@ public class Tx {
 	private String txid=UUID.randomUUID().toString().replace("-","").toLowerCase();
 	
 	private TransactionalCacheManager tcm = new TransactionalCacheManager();
-
+	
+	private Tx(){
+		
+	}
+	
 	public String getTxid(){
 		return txid;
 	}

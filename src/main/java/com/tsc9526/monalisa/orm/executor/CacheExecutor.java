@@ -45,7 +45,7 @@ public class CacheExecutor<X> implements Execute<X> {
 	}
 
 	@SuppressWarnings("unchecked")
-	public X execute(PreparedStatement pst) throws SQLException {
+	public X execute(Connection conn,PreparedStatement pst) throws SQLException {
 		Tx tx=Tx.getTx();
 		
 		TransactionalCacheManager tcm=tx==null?null:tx.getTxCacheManager();
@@ -61,7 +61,7 @@ public class CacheExecutor<X> implements Execute<X> {
 					X x=(X)(tcm==null?cache.getObject(key):tcm.getObject(cache, key));
 					
 					if(x==null){
-						x=delegate.execute(pst);
+						x=delegate.execute(conn,pst);
 						
 						if(tcm==null){
 							cache.putObject(key, x,ttlInSeconds);
@@ -80,7 +80,7 @@ public class CacheExecutor<X> implements Execute<X> {
 			}
 		}
 
-		return delegate.execute(pst);
+		return delegate.execute(conn,pst);
 	}
 
 }

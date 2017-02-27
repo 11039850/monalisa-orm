@@ -267,6 +267,11 @@ public class DBConfig implements Closeable{
 		return query.execute();
 	}
 		
+	public int[] executeBatch(String[] sqls){
+		Query query=createQuery();
+		return query.executeBatch(sqls);
+	}
+	
 	public int[] executeBatch(String sql,List<Object[]> args){
 		Query query=createQuery();
 		query.add(sql);

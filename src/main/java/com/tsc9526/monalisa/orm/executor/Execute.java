@@ -26,5 +26,5 @@ import java.sql.SQLException;
  */
 public interface Execute<X>{
 	public PreparedStatement preparedStatement(Connection conn,String sql)throws SQLException;
-	public X execute(PreparedStatement pst)throws SQLException;
+	public X execute(Connection conn,PreparedStatement pst)throws SQLException;
 }

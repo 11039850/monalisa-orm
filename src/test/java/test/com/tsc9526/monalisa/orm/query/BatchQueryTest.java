@@ -47,7 +47,7 @@ public class BatchQueryTest {
 		+ "\r\n"/**}*/).split(";");
 		
 		Query q=MysqlDB.DB.createQuery();
-		int[] rs=q.execute(sqls);
+		int[] rs=q.executeBatch(sqls);
 		Assert.assertEquals(rs.length,3); 
 		for(int i=0;i<3;i++){
 			Assert.assertEquals(rs[i],1);
@@ -63,12 +63,48 @@ public class BatchQueryTest {
 		
 		try{
 			Query q=MysqlDB.DB.createQuery();
-			q.execute(sqls);
+			q.executeBatch(sqls);
 			Assert.fail("Exception not found!");
 		}catch(Exception e){
 			Assert.assertEquals(TestTable1.SELECT().count(),0);
 		}
 	}
+	
+	
+	public void testBatchSQLWithException2(){
+		String[] sqls=(""+/**~!{*/""
+			+ "DROP TABLE IF EXISTS `test_table_x` ;"
+	+ "\r\n"
+			+ "\r\nCREATE TABLE `test_table_x` ("
+			+ "\r\n  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'primary key',"
+			+ "\r\n  `name` varchar(128) NOT NULL default 'N0001' COMMENT 'the name',"
+			+ "\r\n  `title` varchar(128) NULL  COMMENT 'the title',"
+			+ "\r\n  `enum_int_a` int(11) NOT NULL default 0 COMMENT 'enum fields A  #enum{{V0,V1}}',"
+			+ "\r\n  `enum_string_a` varchar(64) NOT NULL default 'TRUE' COMMENT '#enum{{ TRUE, FALSE}}',"
+			+ "\r\n  `ts_a` datetime NOT NULL,"
+			+ "\r\n  `create_time` datetime NOT NULL,"
+			+ "\r\n  `create_by` varchar(64) NULL,"
+			+ "\r\n  `update_time` datetime NULL,"
+			+ "\r\n  `update_by` varchar(64) NULL,"
+			+ "\r\n  PRIMARY KEY (`id`),"
+			+ "\r\n  KEY `ix_name_title`(`name`,`title`),"
+			+ "\r\n  UNIQUE KEY `ux_name_time`(`name`,`create_time`)"
+			+ "\r\n) ENGINE=InnoDB DEFAULT CHARSET=utf8;"
+	+ "\r\n"
+			+ "\r\nINSERT INTO `test_table_x`(`name`, `enum_int_a`, `enum_string_a`, `ts_a`, `create_time`)VALUES('B2', 0, 'TRUE', '2017-02-24 17:32:26', '2017-02-24 17:32:26');"
+			+ "\r\nINSERT INTO `test_table_x`(`name`, `enum_int_a`, `enum_string_a`, `ts_a`, `create_time`)VALUES('C2', 0, 'TRUE', 'xxxx-02-24 17:32:26', '2017-02-24 17:32:26');"
+		+ "\r\n"/**}*/).split(";");
+		
+		try{
+			Query q=MysqlDB.DB.createQuery();
+			q.executeBatch(sqls);
+			Assert.fail("Exception not found!");
+		}catch(Exception e){
+			Assert.assertEquals(TestTable1.SELECT().count(),0);
+		}
+	}
+	
+	
 	
 	public void testBatch(){
 		Query q=MysqlDB.DB.createQuery();

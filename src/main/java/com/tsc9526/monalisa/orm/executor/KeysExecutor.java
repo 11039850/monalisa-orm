@@ -50,7 +50,7 @@ public class KeysExecutor extends RelationExecutor implements Execute<Integer>{
 		}
 	}
 	 
-	public Integer execute(PreparedStatement pst) throws SQLException {
+	public Integer execute(Connection conn,PreparedStatement pst) throws SQLException {
 		int r=pst.executeUpdate();
 	 
 		if(autoKey){

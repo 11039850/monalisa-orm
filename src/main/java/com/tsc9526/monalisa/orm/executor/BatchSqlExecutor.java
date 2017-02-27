@@ -34,8 +34,7 @@ public class BatchSqlExecutor extends RelationExecutor implements Execute<int[]>
 	static Logger logger=Logger.getLogger(BatchSqlExecutor.class);
 	
 	protected List<String> sqls=new ArrayList<String>();
-	protected Connection   conn=null;
-	
+ 	
 	public BatchSqlExecutor(String[] sqls){
 		for(String s:sqls){
 			s=s.trim();
@@ -45,7 +44,7 @@ public class BatchSqlExecutor extends RelationExecutor implements Execute<int[]>
 		}
 	}
 	
-	public int[] execute(PreparedStatement pst) throws SQLException {
+	public int[] execute(Connection conn,PreparedStatement pst) throws SQLException {
 		Statement st=null;
 		try{
 			st=conn.createStatement();
@@ -58,13 +57,11 @@ public class BatchSqlExecutor extends RelationExecutor implements Execute<int[]>
 		}catch(SQLException e){
 			throw new RuntimeException("Execute batch sql exception: "+e+"\r\n SQLs:"+sqls,e);
 		}finally{
-			MelpClose.close(st,conn);
-			conn=null;
+			MelpClose.close(st);
 		}
 	}
 
 	public PreparedStatement preparedStatement(Connection conn,String sql)throws SQLException {	
-		this.conn=conn;
 		return null;
 	}	 
 }

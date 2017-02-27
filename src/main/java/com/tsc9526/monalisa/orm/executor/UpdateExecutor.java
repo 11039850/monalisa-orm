@@ -25,7 +25,7 @@ import java.sql.SQLException;
  * @author zzg.zhou(11039850@qq.com)
  */
 public class UpdateExecutor extends RelationExecutor implements Execute<Integer>{
-	public Integer execute(PreparedStatement pst) throws SQLException {	
+	public Integer execute(Connection conn,PreparedStatement pst) throws SQLException {	
 		return pst.executeUpdate();
 	}
 

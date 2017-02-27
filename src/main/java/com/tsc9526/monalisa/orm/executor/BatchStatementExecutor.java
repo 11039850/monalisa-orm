@@ -35,7 +35,7 @@ public class BatchStatementExecutor extends RelationExecutor implements Execute<
 		this.batchParameters=batchParameters;
 	}
 	
-	public int[] execute(PreparedStatement pst) throws SQLException {
+	public int[] execute(Connection conn,PreparedStatement pst) throws SQLException {
 		for(List<Object> p:batchParameters){
 			MelpSQL.setPreparedParameters(pst, p);
 			pst.addBatch();

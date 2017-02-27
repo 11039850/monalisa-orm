@@ -36,7 +36,7 @@ public class ResultLoadExecutor<T>  extends RelationExecutor implements Execute<
 		this.result=result;
 	}
 	
-	public T execute(PreparedStatement pst) throws SQLException {		
+	public T execute(Connection conn,PreparedStatement pst) throws SQLException {		
 		ResultSet rs=null;
 		try{
 			rs=setupRelationTables(pst.executeQuery());	

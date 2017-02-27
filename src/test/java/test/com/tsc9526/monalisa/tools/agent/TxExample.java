@@ -33,9 +33,14 @@ public class TxExample {
 	public void withTx()throws Throwable{
 		com.tsc9526.monalisa.orm.Tx x=com.tsc9526.monalisa.orm.Tx.getTx();
 		Assert.assertNotNull(x);
+		Assert.assertNotNull(x.getTxid());
 		
-		x=com.tsc9526.monalisa.orm.Tx.begin();
-		Assert.assertNull(x); 
+		try{
+			x=com.tsc9526.monalisa.orm.Tx.begin();
+			Assert.fail("Transaction start error");
+		}catch(Exception e){
+			Assert.assertTrue(e.getMessage().indexOf("error")>0);
+		}
 	}
 	
 	public void withoutTx()throws Throwable{
@@ -44,32 +49,27 @@ public class TxExample {
 		
 		x=com.tsc9526.monalisa.orm.Tx.begin();
 		Assert.assertNotNull(x);
-		x.doClose();
+		com.tsc9526.monalisa.orm.Tx.close();
+		
+		Assert.assertNull(com.tsc9526.monalisa.orm.Tx.getTx());
 	}
 	
 	@Tx
-	public int txNesting(){
+	public String txNesting(){
 		com.tsc9526.monalisa.orm.Tx x1=com.tsc9526.monalisa.orm.Tx.getTx();
 		Assert.assertNotNull(x1);
-		
-		com.tsc9526.monalisa.orm.Tx x2=com.tsc9526.monalisa.orm.Tx.begin();
-		Assert.assertNull(x2);
-		
+	 	 
 		String txid=txNesting_inner();
-		
 		Assert.assertEquals(x1.getTxid(),txid);
 		 
-		return 1;
+		return txid;
 	}
 	
 	@Tx
 	public String txNesting_inner(){
-		com.tsc9526.monalisa.orm.Tx x1=com.tsc9526.monalisa.orm.Tx.getTx();
-		Assert.assertNotNull(x1);
-		
-		com.tsc9526.monalisa.orm.Tx x2=com.tsc9526.monalisa.orm.Tx.begin();
-		Assert.assertNull(x2);
-		
-		return x1.getTxid();
+		com.tsc9526.monalisa.orm.Tx tx=com.tsc9526.monalisa.orm.Tx.getTx();
+		Assert.assertNotNull(tx);
+		 
+		return tx.getTxid();
 	}
 }
