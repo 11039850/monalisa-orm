@@ -92,7 +92,9 @@ public class XMLObject {
 				for (FGS fgs : mc.getFields()) {
 					String fn = fgs.getFieldName();
 					Object fv = fgs.getObject(v);
-					add(sb, indent+1, fn, fv); 
+					if(!fn.startsWith("$")){
+						add(sb, indent+1, fn, fv);
+					}
 				}
 			}
 			

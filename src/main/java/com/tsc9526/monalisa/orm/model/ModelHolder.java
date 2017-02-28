@@ -49,7 +49,7 @@ public class ModelHolder implements Serializable {
 	//javaName
 	protected Set<String> 		 changedFields=new LinkedHashSet<String>();
  
-	protected Model<?> model;
+	protected transient Model<?> model;
 	
 	public ModelHolder(Model<?> model){
 		this.model=model;
