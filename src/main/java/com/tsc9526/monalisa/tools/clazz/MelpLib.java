@@ -137,7 +137,7 @@ public class MelpLib {
 		
 		String[] GAV_URL=hLibClasses.get(clazz);
 		if(GAV_URL==null){
-			throw new RuntimeException("Can't locate class: "+clazz+", add the jar to classpath OR setup DynmicLibHelper.hLibClasses",e);
+			throw new RuntimeException("Can't locate class: "+clazz+", add the jar to classpath OR setup MelpLib.hLibClasses",e);
 		}
 		
 		JarLocation location=new JarLocation(GAV_URL[0]);
