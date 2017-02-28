@@ -14,7 +14,7 @@
  *	You should have received a copy of the GNU Lesser General Public License
  *	along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************************/
-package com.tsc9526.monalisa.tools.clazz;
+package com.tsc9526.monalisa.tools;
 
 
 
@@ -34,7 +34,7 @@ public class PkgNames {
 	public final static String ORM_TOOLS         = "com.tsc9526.monalisa.tools";
 	
 	public final static String ORM_LOGGER_PKG    = ORM_TOOLS+".logger";
-	public final static String ORM_JSONHELPER    = ORM_TOOLS+".string.MelpJson";
+	public final static String ORM_JSONHELPER    = ORM_TOOLS+".json.MelpJson";
 	public final static String ORM_LOADERCLASS   = ORM_TOOLS+".clazz.MelpLib"; 
 	public final static String ORM_AGENTCLASS    = ORM_TOOLS+".agent.AgentClass";
 	public final static String ORM_AgentHotSpotVM= ORM_TOOLS+".agent.AgentHotSpotVM";

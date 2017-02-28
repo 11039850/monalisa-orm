@@ -33,9 +33,11 @@ public class JsonObjectParser implements Parser<JsonObject>{
 	public boolean parse(Object target, JsonObject json, String... mappings) {
 		Map<String, Object> data = new HashMap<String, Object>();
 		
-		if(mappings.length>0 && mappings[0].startsWith("@")){
+		if(mappings.length>0 && mappings[0].startsWith("/")){
 			String name=mappings[0].substring(1);
-			json=json.get(name).getAsJsonObject();
+			for(String n:name.split("/")){
+				json=json.get(n).getAsJsonObject();
+			}
 		}
 		
 		Iterator<Map.Entry<String, JsonElement>> es=json.entrySet().iterator();

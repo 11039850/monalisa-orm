@@ -25,7 +25,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.tsc9526.monalisa.tools.converters.Conversion;
 import com.tsc9526.monalisa.tools.io.MelpClose;
-import com.tsc9526.monalisa.tools.string.MelpJson;
+import com.tsc9526.monalisa.tools.json.MelpJson;
 /**
  * 
  * @author zzg.zhou(11039850@qq.com)

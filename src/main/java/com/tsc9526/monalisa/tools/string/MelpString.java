@@ -36,9 +36,12 @@ import org.xml.sax.InputSource;
 
 import com.google.gson.Gson;
 import com.tsc9526.monalisa.tools.clazz.MelpClass;
-import com.tsc9526.monalisa.tools.clazz.MelpClass.FGS;
 import com.tsc9526.monalisa.tools.clazz.MelpClass.ClassHelper;
+import com.tsc9526.monalisa.tools.clazz.MelpClass.FGS;
 import com.tsc9526.monalisa.tools.datatable.DataMap;
+import com.tsc9526.monalisa.tools.json.MelpJson;
+import com.tsc9526.monalisa.tools.xml.XMLObject;
+import com.tsc9526.monalisa.tools.xml.XMLParser;
 
 
 /**
@@ -106,67 +109,25 @@ public class MelpString {
 		return MelpJson.toJson(gson,bean); 
 	}
 	 
+	public static String repeat(String x,int times){
+		StringBuffer sb=new StringBuffer();
+		for(int i=0;i<times;i++){
+			sb.append(x);
+		}
+		return sb.toString();
+	}
  
 	public static String toXml(Object bean){
-		return toXml(bean,true,true);
+		return new XMLObject(bean).toString();
 	}
 	
 	public static String toXml(Object bean,boolean withXmlHeader, boolean ignoreNullFields) {
-		StringBuilder sb = new StringBuilder();
-
-		boolean pretty = true;
-		String CRLN = "\r\n";
-
-		if (withXmlHeader) {
-			sb.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
-			if (pretty) {
-				sb.append(CRLN);
-			}
-		}
-
-		String indent = "";
-
-		String topTag = bean.getClass().getSimpleName();
-		if (pretty) {
-			sb.append(indent);
-		}
-		sb.append('<').append(topTag).append('>');
-		if (pretty) {
-			sb.append(CRLN);
-		}
-		
-		ClassHelper mc=MelpClass.getClassHelper(bean);
-		for (FGS fgs : mc.getFields()) {
-			String name = fgs.getFieldName();
-
-			Object v = fgs.getObject(bean);
-			if (v != null) {
-				String value = (String) MelpClass.convert(v, String.class);
-
-				if (pretty) {
-					sb.append("  ").append(indent);
-				}
-				sb.append('<').append(name).append('>');
-				 
-				sb.append(value.replace("&","&amp;").replaceAll("<", "&lt;").replaceAll(">","&gt;"));
-
-				sb.append("</").append(name).append('>');
-				if (pretty) {
-					sb.append(CRLN);
-				}
-			} else if (!ignoreNullFields) {
-				sb.append('<').append(name).append("/>");
-			}
-		}
-
-		if (pretty) {
-			sb.append(indent);
-		}
-		sb.append("</").append(topTag).append('>');
-
-		return sb.toString();
+		return new XMLObject(bean)
+			.setWithXmlHeader(withXmlHeader)
+			.setIgnoreNullFields(ignoreNullFields)
+			.toString();	
 	}	
-	
+	 
 	public static DataMap json2Map(String json){
 		return MelpJson.parseToDataMap(json);
 	}

@@ -21,7 +21,7 @@ import java.util.Map;
 
 import javax.annotation.processing.Messager;
 
-import com.tsc9526.monalisa.tools.clazz.PkgNames;
+import com.tsc9526.monalisa.tools.PkgNames;
 
 /**
  * 

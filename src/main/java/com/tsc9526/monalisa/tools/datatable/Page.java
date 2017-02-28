@@ -22,7 +22,7 @@ import java.io.StringWriter;
 import java.util.List;
 
 import com.google.gson.stream.JsonWriter;
-import com.tsc9526.monalisa.tools.string.MelpJson;
+import com.tsc9526.monalisa.tools.json.MelpJson;
 
 
 /**

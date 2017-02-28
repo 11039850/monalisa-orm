@@ -23,7 +23,7 @@ import java.util.Map;
 import com.google.gson.Gson;
 import com.google.gson.JsonPrimitive;
 import com.tsc9526.monalisa.tools.converters.Conversion;
-import com.tsc9526.monalisa.tools.string.MelpJson;
+import com.tsc9526.monalisa.tools.json.MelpJson;
 
 /**
  * 

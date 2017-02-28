@@ -17,14 +17,14 @@
 package com.tsc9526.monalisa.tools.parser.impl;
 
 import java.io.StringReader;
-import java.util.HashMap;
-import java.util.Map;
 
-import javax.xml.stream.XMLInputFactory;
-import javax.xml.stream.XMLStreamConstants;
-import javax.xml.stream.XMLStreamReader;
+import org.w3c.dom.Document;
+import org.w3c.dom.Node;
+import org.xml.sax.InputSource;
 
+import com.tsc9526.monalisa.tools.datatable.DataMap;
 import com.tsc9526.monalisa.tools.parser.Parser;
+import com.tsc9526.monalisa.tools.xml.XMLParser;
 
 /**
  * 
@@ -32,28 +32,21 @@ import com.tsc9526.monalisa.tools.parser.Parser;
  */
 public class XmlParser implements Parser<String>{			 
 	public boolean parse(Object target, String xml, String... mappings) {
+		String xpath=null;
+		if(mappings.length>0 && mappings[0].startsWith("/")){
+			xpath=mappings[0];
+		}
+		
 		try {
-            XMLStreamReader reader = XMLInputFactory.newInstance().createXMLStreamReader(new StringReader(xml));
-            String attr = null;
-            String chars = null;
-            Map<String, Object> data = new HashMap<String, Object>();
-            while (reader.hasNext()) {
-                int event = reader.next();
-                switch (event) {
-                    case XMLStreamConstants.START_ELEMENT:
-                        attr = reader.getLocalName();
-                        break;
-                    case XMLStreamConstants.CHARACTERS:
-                        chars = reader.getText().trim();
-                        break;
-                    case XMLStreamConstants.END_ELEMENT:
-                        if (attr != null && chars!=null) {
-                            data.put(attr, chars);
-                        }
-                        attr = chars = null;
-                        break;
-                }
+			XMLParser parser=new XMLParser();
+            Document doc=parser.parseDocument(new InputSource(new StringReader(xml)));
+            
+            Node root=doc;
+            if(xpath!=null){
+            	root=parser.selectSingleNode(doc,xpath);
             }
+            
+            DataMap data=parser.toMap(root);
             
             return new MapParser().parse(target, data, mappings);
         }catch(Exception e) {

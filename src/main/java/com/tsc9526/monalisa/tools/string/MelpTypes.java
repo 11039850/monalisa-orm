@@ -29,12 +29,28 @@ import java.util.Set;
  * @author zzg.zhou(11039850@qq.com)
  */
 public class MelpTypes {
+	private static final Class<?>[] PRIMITIVE_TYPES = { int.class, long.class, short.class, float.class, double.class, byte.class, boolean.class, char.class,
+		Integer.class, Long.class, Short.class, Float.class, Double.class, Byte.class, Boolean.class, Character.class };
+
+	public static boolean isPrimitiveOrString(Object target) {
+		if (target instanceof String) {
+			return true;
+		}
+	
+		Class<?> classOfPrimitive = target.getClass();
+		for (Class<?> standardPrimitive : PRIMITIVE_TYPES) {
+			if (standardPrimitive.isAssignableFrom(classOfPrimitive)) {
+				return true;
+			}
+		}
+		return false;
+	}
 
 	private static Map<Integer, String> typeToName;
 	private static Map<String, Integer> nameToType;
 	private static Map<Integer, String> typeToJava;
 	private static Set<String> javaKeywords=new HashSet<String>();
-	
+ 	 	
 	static {
 		typeToName = new HashMap<Integer, String>();
 		typeToName.put(Types.ARRAY, "ARRAY"); //$NON-NLS-1$

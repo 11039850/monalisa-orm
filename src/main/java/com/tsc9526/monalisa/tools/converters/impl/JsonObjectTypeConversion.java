@@ -19,7 +19,7 @@ package com.tsc9526.monalisa.tools.converters.impl;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.tsc9526.monalisa.tools.converters.Conversion;
-import com.tsc9526.monalisa.tools.string.MelpJson;
+import com.tsc9526.monalisa.tools.json.MelpJson;
 
 /**
  * 

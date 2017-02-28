@@ -18,7 +18,7 @@ package test.com.tsc9526.monalisa.orm.data;
 
 import java.util.Date;
 
-import com.tsc9526.monalisa.tools.string.MelpJson;
+import com.tsc9526.monalisa.tools.json.MelpJson;
 
 /**
  * 

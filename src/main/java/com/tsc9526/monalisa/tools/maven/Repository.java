@@ -28,7 +28,7 @@ import org.w3c.dom.NodeList;
 
 import com.tsc9526.monalisa.tools.datatable.CaseInsensitiveMap;
 import com.tsc9526.monalisa.tools.logger.Logger;
-import com.tsc9526.monalisa.tools.string.XMLParser;
+import com.tsc9526.monalisa.tools.xml.XMLParser;
 
 /**
  * 

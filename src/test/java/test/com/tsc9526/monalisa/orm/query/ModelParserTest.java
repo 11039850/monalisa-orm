@@ -25,7 +25,7 @@ import org.testng.annotations.Test;
 
 import com.tsc9526.monalisa.orm.Query;
 import com.tsc9526.monalisa.tools.clazz.MelpClass.FGS;
-import com.tsc9526.monalisa.tools.string.MelpJson;
+import com.tsc9526.monalisa.tools.json.MelpJson;
 
 /**
  * 
@@ -117,8 +117,8 @@ public class ModelParserTest {
 		
 		String xmlString="<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n";
 		xmlString+="<TestSimpleModel>\r\n";
-		xmlString+="  <dateField1>"+sdf.format(new Date(t1))+"</dateField1>\r\n";
-		xmlString+="  <dateField2>"+sdf.format(model.getDateField2())+"</dateField2>\r\n";
+		xmlString+="\t<dateField1>"+sdf.format(new Date(t1))+"</dateField1>\r\n";
+		xmlString+="\t<dateField2>"+sdf.format(model.getDateField2())+"</dateField2>\r\n";
 		xmlString+="</TestSimpleModel>";
 		Assert.assertEquals(model.toXml(), xmlString);
 		
@@ -193,7 +193,7 @@ public class ModelParserTest {
 		TestSimpleModel model=new TestSimpleModel();
 		
 		String json="{ \"sub_obj\": {\"array_1\":[{a:1},\"b\"], \"string_field2\":\"123\" } }";		
-		model.parse(json,"@sub_obj");
+		model.parse(json,"/sub_obj");
 		
 		Assert.assertTrue(model.getArray1().length==2);
 		Assert.assertEquals(model.getArray1()[0],"{\"a\":1}");

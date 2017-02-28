@@ -14,7 +14,7 @@
  *	You should have received a copy of the GNU Lesser General Public License
  *	along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************************/
-package com.tsc9526.monalisa.tools.string;
+package com.tsc9526.monalisa.tools.xml;
 
 import java.io.File;
 import java.io.IOException;
@@ -33,6 +33,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 import com.tsc9526.monalisa.tools.datatable.DataMap;
@@ -68,6 +69,10 @@ public class XMLParser {
 
 	 
 	public Document parseDocument(InputStream is) throws IOException, SAXException {
+		return builder.parse(is);
+	}
+	
+	public Document parseDocument(InputSource is) throws IOException, SAXException {
 		return builder.parse(is);
 	}
 	
