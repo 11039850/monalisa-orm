@@ -61,8 +61,8 @@ public class XMLObject {
 		 
 		return sb.toString();
 	}
-	
-	private void add(StringBuilder sb,int indent,String name,Object v){
+ 	
+	protected void add(StringBuilder sb,int indent,String name,Object v){
 		if(v==null){
 			if (!ignoreNullFields) {
 				if (pretty) {
@@ -88,14 +88,7 @@ public class XMLObject {
 			if(isset(v)){
 				addSet(sb,indent+1,v);
 			}else{
-				ClassHelper mc=MelpClass.getClassHelper(v);
-				for (FGS fgs : mc.getFields()) {
-					String fn = fgs.getFieldName();
-					Object fv = fgs.getObject(v);
-					if(!fn.startsWith("$")){
-						add(sb, indent+1, fn, fv);
-					}
-				}
+				addObject(sb,indent+1,v);
 			}
 			
 			if (pretty) {
@@ -110,7 +103,7 @@ public class XMLObject {
 		}
 	}
 	
-	private void addSet(StringBuilder sb,int indent,Object v){
+	protected void addSet(StringBuilder sb,int indent,Object v){
 		if(v.getClass().isArray()){
 			for(Object x: (Object[])v){
 				add(sb, indent, "item",x);
@@ -127,15 +120,31 @@ public class XMLObject {
 		}
 	}
 	
-	private boolean isset(Object v){
+	protected void addObject(StringBuilder sb,int indent,Object obj){
+		ClassHelper mc=MelpClass.getClassHelper(obj);
+		for (FGS fgs : mc.getFields()) {
+			String fn = fgs.getFieldName();
+			Object fv = fgs.getObject(obj);
+			
+			if(!ignore(fn,fv)){
+				add(sb, indent, fn, fv);
+			}
+		}
+	}
+	
+	protected boolean ignore(String name,Object v){
+		return name.startsWith("$");
+	}
+	
+	protected boolean isset(Object v){
 		return v.getClass().isArray()|| v instanceof Map<?,?> || v instanceof Collection<?>;
 	}
 	
-	private boolean isPrimitive(Object v){
+	protected boolean isPrimitive(Object v){
 		return MelpTypes.isPrimitiveOrString(v) || v instanceof Date || v.getClass().isEnum();
 	}
 	
-	private void addString(StringBuilder sb,int indent,String name,String value){
+	protected void addString(StringBuilder sb,int indent,String name,String value){
 		if (pretty) {
 			sb.append(padding(indent));
 		}
@@ -151,7 +160,7 @@ public class XMLObject {
 	}
 	
 	
-	private String padding(int indent){
+	protected String padding(int indent){
 		return MelpString.repeat(TAB, indent);
 	}
 
