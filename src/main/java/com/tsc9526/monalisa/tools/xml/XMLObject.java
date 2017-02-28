@@ -130,7 +130,7 @@ public class XMLObject {
 	}
 	
 	private boolean isPrimitive(Object v){
-		return MelpTypes.isPrimitiveOrString(v) || v instanceof Date;
+		return MelpTypes.isPrimitiveOrString(v) || v instanceof Date || v.getClass().isEnum();
 	}
 	
 	private void addString(StringBuilder sb,int indent,String name,String value){

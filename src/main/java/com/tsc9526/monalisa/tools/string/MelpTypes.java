@@ -38,6 +38,10 @@ public class MelpTypes {
 		}
 	
 		Class<?> classOfPrimitive = target.getClass();
+		if(classOfPrimitive.isPrimitive()){
+			return true;
+		}
+		
 		for (Class<?> standardPrimitive : PRIMITIVE_TYPES) {
 			if (standardPrimitive.isAssignableFrom(classOfPrimitive)) {
 				return true;

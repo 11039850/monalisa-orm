@@ -23,6 +23,7 @@ import java.util.Date;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import test.com.tsc9526.monalisa.orm.query.StatusA;
 import test.com.tsc9526.monalisa.orm.query.TestSimpleModel;
 import test.com.tsc9526.monalisa.orm.query.TestSimpleObject;
 import test.com.tsc9526.monalisa.orm.query.TestSimpleObjectTwo;
@@ -118,11 +119,13 @@ public class ModelParserTest {
 			
 		String json="{\"dateField1\":"+t1+", \"date_field2\":\""+sdf.format(now)+"\" }";		
 		model.parse(json);
+		model.setStatus(StatusA.ERROR);
 		
 		String xmlString="<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n";
 		xmlString+="<TestSimpleModel>\r\n";
 		xmlString+="\t<dateField1>"+sdf.format(new Date(t1))+"</dateField1>\r\n";
 		xmlString+="\t<dateField2>"+sdf.format(model.getDateField2())+"</dateField2>\r\n";
+		xmlString+="\t<status>ERROR</status>\r\n";
 		xmlString+="</TestSimpleModel>";
 		Assert.assertEquals(model.toXml(), xmlString);
 		
