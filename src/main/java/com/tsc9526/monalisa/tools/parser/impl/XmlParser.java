@@ -24,7 +24,8 @@ import org.xml.sax.InputSource;
 
 import com.tsc9526.monalisa.tools.datatable.DataMap;
 import com.tsc9526.monalisa.tools.parser.Parser;
-import com.tsc9526.monalisa.tools.xml.XMLParser;
+import com.tsc9526.monalisa.tools.string.MelpString;
+import com.tsc9526.monalisa.tools.xml.XMLDocument;
 
 /**
  * 
@@ -32,13 +33,20 @@ import com.tsc9526.monalisa.tools.xml.XMLParser;
  */
 public class XmlParser implements Parser<String>{			 
 	public boolean parse(Object target, String xml, String... mappings) {
+		xml=xml.trim();
+		
 		String xpath=null;
 		if(mappings.length>0 && mappings[0].startsWith("/")){
 			xpath=mappings[0];
+		}else if(!xml.startsWith("<?xml")){
+			xpath="/root";
+			
+			xml="<root>"+xml+"</root>";
 		}
 		
+		xml=MelpString.normalizeXml(xml);
 		try {
-			XMLParser parser=new XMLParser();
+			XMLDocument parser=new XMLDocument();
             Document doc=parser.parseDocument(new InputSource(new StringReader(xml)));
             
             Node root=doc;

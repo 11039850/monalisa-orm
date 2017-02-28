@@ -14,7 +14,7 @@
  *	You should have received a copy of the GNU Lesser General Public License
  *	along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************************/
-package test.com.tsc9526.monalisa.orm.query;
+package test.com.tsc9526.monalisa.tools.parser;
 
 
 import java.text.SimpleDateFormat;
@@ -22,6 +22,10 @@ import java.util.Date;
 
 import org.testng.Assert;
 import org.testng.annotations.Test;
+
+import test.com.tsc9526.monalisa.orm.query.TestSimpleModel;
+import test.com.tsc9526.monalisa.orm.query.TestSimpleObject;
+import test.com.tsc9526.monalisa.orm.query.TestSimpleObjectTwo;
 
 import com.tsc9526.monalisa.orm.Query;
 import com.tsc9526.monalisa.tools.clazz.MelpClass.FGS;
@@ -199,6 +203,33 @@ public class ModelParserTest {
 		Assert.assertEquals(model.getArray1()[0],"{\"a\":1}");
 		Assert.assertEquals(model.getArray1()[1],"b");
 		Assert.assertEquals(model.getStringField2(),"123");
+	}
+	
+	public void testParseXml(){
+		TestSimpleModel model=new TestSimpleModel();
+		
+		String json="<string_field1>s1</string_field1><string_field2>s2</string_field2>";		
+		model.parse(json);
+		Assert.assertEquals(model.getStringField1(),"s1");
+	 	Assert.assertEquals(model.getStringField2(),"s2");
+	}
+	
+	public void testSubXml(){
+		TestSimpleModel model=new TestSimpleModel();
+		
+		String json="<root><string_field1>s1</string_field1><string_field2>s2</string_field2></root>";		
+		model.parse(json,"/root");
+		Assert.assertEquals(model.getStringField1(),"s1");
+	 	Assert.assertEquals(model.getStringField2(),"s2");
+	}
+	
+	public void testSubXml2(){
+		TestSimpleModel model=new TestSimpleModel();
+		
+		String json="<a><b><string_field1>s1</string_field1><string_field2>s2</string_field2></b></a>";		
+		model.parse(json,"/a/b");
+		Assert.assertEquals(model.getStringField1(),"s1");
+	 	Assert.assertEquals(model.getStringField2(),"s2");
 	}
 	
 	public void testParseObjectOne(){

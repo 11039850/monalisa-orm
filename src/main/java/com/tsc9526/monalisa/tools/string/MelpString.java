@@ -16,20 +16,17 @@
  *******************************************************************************************/
 package com.tsc9526.monalisa.tools.string;
 
-import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
+import java.io.StringReader;
 import java.io.StringWriter;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
@@ -41,7 +38,7 @@ import com.tsc9526.monalisa.tools.clazz.MelpClass.FGS;
 import com.tsc9526.monalisa.tools.datatable.DataMap;
 import com.tsc9526.monalisa.tools.json.MelpJson;
 import com.tsc9526.monalisa.tools.xml.XMLObject;
-import com.tsc9526.monalisa.tools.xml.XMLParser;
+import com.tsc9526.monalisa.tools.xml.XMLDocument;
 
 
 /**
@@ -132,7 +129,7 @@ public class MelpString {
 		return MelpJson.parseToDataMap(json);
 	}
 	
-	public static DataMap xml2Map(String xml){
+	public static String normalizeXml(String xml){
 		xml=xml.trim();
 		
 		//check xml tag
@@ -146,15 +143,16 @@ public class MelpString {
 		if(!xml.startsWith("<?xml")){
 			xml="<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n"+xml;
 		}
+		return xml;
+	}
+	
+	public static DataMap xml2Map(String xml){
+		xml=normalizeXml(xml); 
 		
 		try{
-			DocumentBuilderFactory domfactory = DocumentBuilderFactory.newInstance();
-			DocumentBuilder builder = domfactory.newDocumentBuilder();
-		 
-			Document doc= builder.parse(new InputSource(new ByteArrayInputStream(xml.getBytes("utf-8"))));
-			
-			return new XMLParser().toMap(doc.getChildNodes().item(0)); 
-			 
+			XMLDocument p= new XMLDocument(); 
+			Document doc=p.parseDocument(new InputSource(new StringReader(xml)));
+			return p.toMap(doc.getChildNodes().item(0));  
 		}catch(Exception e){
 			throw new RuntimeException(e);
 		}

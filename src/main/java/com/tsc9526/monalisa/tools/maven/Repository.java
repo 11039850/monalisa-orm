@@ -28,7 +28,7 @@ import org.w3c.dom.NodeList;
 
 import com.tsc9526.monalisa.tools.datatable.CaseInsensitiveMap;
 import com.tsc9526.monalisa.tools.logger.Logger;
-import com.tsc9526.monalisa.tools.xml.XMLParser;
+import com.tsc9526.monalisa.tools.xml.XMLDocument;
 
 /**
  * 
@@ -47,7 +47,7 @@ public class Repository {
 	
 	private CaseInsensitiveMap<Profile> profiles = new CaseInsensitiveMap<Profile>();
 	
-	private XMLParser parser;
+	private XMLDocument parser;
 	private Document document;
 	
 	public Repository(){
@@ -83,7 +83,7 @@ public class Repository {
 		File fs=new File(settings);
 		if (fs.exists()){
 			try{
-				parser = new XMLParser();
+				parser = new XMLDocument();
 				document = parser.parseDocument(fs);
 				
 				parseSettings(); 

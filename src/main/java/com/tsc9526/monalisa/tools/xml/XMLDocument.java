@@ -42,11 +42,11 @@ import com.tsc9526.monalisa.tools.datatable.DataMap;
  * 
  * @author zzg.zhou(11039850@qq.com)
  */
-public class XMLParser {
+public class XMLDocument {
 	private DocumentBuilder builder;
 	private XPath xpath;
 	 
-	public XMLParser() {
+	public XMLDocument() {
 		try{
 			DocumentBuilderFactory domfactory = DocumentBuilderFactory.newInstance();
 			builder = domfactory.newDocumentBuilder();
