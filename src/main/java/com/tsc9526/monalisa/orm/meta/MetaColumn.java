@@ -16,6 +16,7 @@
  *******************************************************************************************/
 package com.tsc9526.monalisa.orm.meta;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -26,6 +27,7 @@ import java.util.Set;
 import com.google.gson.JsonObject;
 import com.tsc9526.monalisa.tools.clazz.MelpJavaBeans;
 import com.tsc9526.monalisa.tools.datatable.CaseInsensitiveMap;
+import com.tsc9526.monalisa.tools.io.MelpFile;
 import com.tsc9526.monalisa.tools.string.MelpTypes;
 import com.tsc9526.monalisa.tools.validator.Max;
 import com.tsc9526.monalisa.tools.validator.Min;
@@ -298,6 +300,14 @@ public class MetaColumn extends Name{
 		}		
 	}
 	
+	protected void processRemarkFile() {
+		String file=getCode("file");
+		if(file!=null){
+			imports.add(File.class.getName());
+			imports.add(MelpFile.class.getName());
+		}
+	}
+	
 	protected void processRemarks(){
 		processRemarkBoolean();
 		processRemarkEnum();
@@ -305,6 +315,7 @@ public class MetaColumn extends Name{
 		processRemarkArray();
 		processRemarkList();
 		processRemarkJson();
+		processRemarkFile();
 	}
 	 
 	

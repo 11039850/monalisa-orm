@@ -54,6 +54,50 @@ public class <%=table.getJavaName()%> implements java.io.Serializable{
 		return r;
 	}
 	
+	<%String file=f.getCode("file"); if(file!=null){%>
+	<%=getComments(table,f,"@param charset  read file content using this charset.","\t")%> 
+	public String <%=f.getJavaNameGet()%>AsString(String charset){
+		<%=f.getJavaType()%> r=this.<%=f.getJavaNameGet()%>();
+		
+		if(r==null){
+			return null;
+		}
+		
+		String filepath=MelpFile.combinePath(file,r);
+		filepath=db().getCfg().getPath(filepath);
+		return MelpFile.readToString(new File(filepath),charset);
+	}
+	
+	<%=getComments(table,f,"	","\t")%> 
+	public String <%=f.getJavaNameGet()%>AsStringUTF8(){
+		return <%=f.getJavaNameGet()%>AsString("utf-8");
+	}
+	
+	<%=getComments(table,f,"	","\t")%> 
+	public byte[] <%=f.getJavaNameGet()%>AsBytes(){
+		<%=f.getJavaType()%> r=this.<%=f.getJavaNameGet()%>();
+		
+		if(r==null){
+			return null;
+		}
+		
+		String filepath=MelpFile.combinePath(file,r);
+		filepath=db().getCfg().getPath(filepath);
+		return MelpFile.readFile(new File(filepath));
+	}
+	
+	public File <%=f.getJavaNameGet()%>AsFile(){
+		<%=f.getJavaType()%> r=this.<%=f.getJavaNameGet()%>();
+		
+		if(r==null){
+			return null;
+		}
+		
+		String filepath=MelpFile.combinePath(file,r);
+		filepath=db().getCfg().getPath(filepath);
+		return new File(filepath);
+	}
+	<%}%>
 	<%}%>
 		 
 }

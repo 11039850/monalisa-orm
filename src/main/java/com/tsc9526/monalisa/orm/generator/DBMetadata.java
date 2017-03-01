@@ -245,7 +245,7 @@ public class DBMetadata {
 		outputStream.flush();
 		
 		 
-		MelpFile.write(new ByteArrayInputStream(buf.toByteArray()),out);  
+		MelpFile.copy(new ByteArrayInputStream(buf.toByteArray()),out);  
 	}
 	
 	private MetaPartition findPartition(List<MetaPartition> partitions,MetaTable table){

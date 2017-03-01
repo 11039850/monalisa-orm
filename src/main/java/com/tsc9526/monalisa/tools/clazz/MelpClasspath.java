@@ -144,7 +144,7 @@ public class MelpClasspath {
  
 
 	public static <T> Class<T> defineClass(ClassLoader loader, InputStream input)throws IOException {
-		byte[] bytes = MelpFile.toBytes(input);
+		byte[] bytes = MelpFile.readBytes(input);
 		return defineClass(loader, bytes);
 	}
 

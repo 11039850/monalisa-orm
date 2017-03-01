@@ -627,6 +627,7 @@ public class DS0001 implements java.io.Serializable{
 	}
 	
 	
+	
 	/**
 	* @Column
 	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_1&nbsp;<B>name:</B> name &nbsp;[<font color=red>NOTNULL</font>]
@@ -653,6 +654,7 @@ public class DS0001 implements java.io.Serializable{
 		
 		return r;
 	}
+	
 	
 	
 	/**
@@ -683,6 +685,7 @@ public class DS0001 implements java.io.Serializable{
 	}
 	
 	
+	
 	/**
 	* @Column
 	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_1&nbsp;<B>name:</B> enum_int_a &nbsp;[<font color=red>NOTNULL</font>|<font color=red>ENUM</font>]
@@ -709,6 +712,7 @@ public class DS0001 implements java.io.Serializable{
 		
 		return r;
 	}
+	
 	
 	
 	/**
@@ -739,6 +743,7 @@ public class DS0001 implements java.io.Serializable{
 	}
 	
 	
+	
 	/**
 	* @Column
 	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_1&nbsp;<B>name:</B> ts_a &nbsp;[<font color=red>NOTNULL</font>]
@@ -765,6 +770,7 @@ public class DS0001 implements java.io.Serializable{
 		
 		return r;
 	}
+	
 	
 	
 	/**
@@ -795,6 +801,7 @@ public class DS0001 implements java.io.Serializable{
 	}
 	
 	
+	
 	/**
 	* @Column
 	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_1&nbsp;<B>name:</B> create_by
@@ -821,6 +828,7 @@ public class DS0001 implements java.io.Serializable{
 		
 		return r;
 	}
+	
 	
 	
 	/**
@@ -851,6 +859,7 @@ public class DS0001 implements java.io.Serializable{
 	}
 	
 	
+	
 	/**
 	* @Column
 	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_1&nbsp;<B>name:</B> update_by
@@ -877,6 +886,7 @@ public class DS0001 implements java.io.Serializable{
 		
 		return r;
 	}
+	
 	
 	
 	/**
@@ -907,6 +917,7 @@ public class DS0001 implements java.io.Serializable{
 	}
 	
 	
+	
 	/**
 	* @Column
 	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_2&nbsp;<B>name:</B> name &nbsp;[<font color=red>NOTNULL</font>]
@@ -933,6 +944,7 @@ public class DS0001 implements java.io.Serializable{
 		
 		return r;
 	}
+	
 	
 	
 	/**
@@ -963,6 +975,7 @@ public class DS0001 implements java.io.Serializable{
 	}
 	
 	
+	
 	/**
 	* @Column
 	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_2&nbsp;<B>name:</B> enum_int_a &nbsp;[<font color=red>NOTNULL</font>|<font color=red>ENUM</font>]
@@ -989,6 +1002,7 @@ public class DS0001 implements java.io.Serializable{
 		
 		return r;
 	}
+	
 	
 	
 	/**
@@ -1019,6 +1033,7 @@ public class DS0001 implements java.io.Serializable{
 	}
 	
 	
+	
 	/**
 	* @Column
 	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_2&nbsp;<B>name:</B> array_int
@@ -1045,6 +1060,7 @@ public class DS0001 implements java.io.Serializable{
 		
 		return r;
 	}
+	
 	
 	
 	/**
@@ -1075,6 +1091,7 @@ public class DS0001 implements java.io.Serializable{
 	}
 	
 	
+	
 	/**
 	* @Column
 	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_2&nbsp;<B>name:</B> json
@@ -1101,6 +1118,7 @@ public class DS0001 implements java.io.Serializable{
 		
 		return r;
 	}
+	
 	
 	
 	/**
@@ -1131,6 +1149,7 @@ public class DS0001 implements java.io.Serializable{
 	}
 	
 	
+	
 	/**
 	* @Column
 	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_2&nbsp;<B>name:</B> ts_a &nbsp;[<font color=red>NOTNULL</font>]
@@ -1157,6 +1176,7 @@ public class DS0001 implements java.io.Serializable{
 		
 		return r;
 	}
+	
 	
 	
 	/**
@@ -1187,6 +1207,7 @@ public class DS0001 implements java.io.Serializable{
 	}
 	
 	
+	
 	/**
 	* @Column
 	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_2&nbsp;<B>name:</B> create_by
@@ -1213,6 +1234,7 @@ public class DS0001 implements java.io.Serializable{
 		
 		return r;
 	}
+	
 	
 	
 	/**
@@ -1243,6 +1265,7 @@ public class DS0001 implements java.io.Serializable{
 	}
 	
 	
+	
 	/**
 	* @Column
 	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_2&nbsp;<B>name:</B> update_by
@@ -1271,6 +1294,7 @@ public class DS0001 implements java.io.Serializable{
 	}
 	
 	
+	
 	/**
 	* @Column
 	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_2&nbsp;<B>name:</B> id &nbsp;[<font color=red>KEY</font>|<font color=red>AUTO</font>|<font color=red>NOTNULL</font>]
@@ -1297,6 +1321,7 @@ public class DS0001 implements java.io.Serializable{
 		
 		return r;
 	}
+	
 	
 	
 		 

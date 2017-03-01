@@ -17,11 +17,10 @@
 package com.tsc9526.monalisa.tools.string;
 
 import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
 import java.io.PrintWriter;
 import java.io.StringReader;
 import java.io.StringWriter;
+import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -32,13 +31,10 @@ import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
 
 import com.google.gson.Gson;
-import com.tsc9526.monalisa.tools.clazz.MelpClass;
-import com.tsc9526.monalisa.tools.clazz.MelpClass.ClassHelper;
-import com.tsc9526.monalisa.tools.clazz.MelpClass.FGS;
 import com.tsc9526.monalisa.tools.datatable.DataMap;
 import com.tsc9526.monalisa.tools.json.MelpJson;
-import com.tsc9526.monalisa.tools.xml.XMLObject;
 import com.tsc9526.monalisa.tools.xml.XMLDocument;
+import com.tsc9526.monalisa.tools.xml.XMLObject;
 
 
 /**
@@ -53,7 +49,7 @@ public class MelpString {
 	
 	public static String toString(Object bean){
 		if(bean==null){
-			return "null";
+			return "<NULL>";
 		}
 		
 		if(bean instanceof Throwable){
@@ -62,40 +58,10 @@ public class MelpString {
 			((Throwable)bean).printStackTrace(new PrintWriter(w));
 	
 			return w.toString();
+		}else if(MelpTypes.isPrimitiveOrString(bean) || bean.getClass().isEnum()){
+			return bean.toString();
 		}else{
-			String cn=bean.getClass().getName();
-			if(cn.startsWith("java.") || cn.startsWith("javax.")){
-				return bean.toString();
-			}else{
-				try{
-					ClassHelper mc=MelpClass.getClassHelper(bean);
-					
-					StringBuffer sb = new StringBuffer();
-					for (FGS fgs : mc.getFields()) {
-						Object v = fgs.getObject(bean);
-						if (v != null) {
-							if (sb.length() > 0) {
-								sb.append(", ");
-							}
-							sb.append(fgs.getFieldName() + ": ");
-							
-							if(v.getClass() == byte[].class || v.getClass() == Byte[].class){
-								MelpSQL.appendBytes(sb,(byte[])v);
-							}else if(v instanceof InputStream){
-								MelpSQL.appendStream(sb,(InputStream)v);
-							}else{
-								String s = "" + MelpClass.convert(v, String.class);
-								sb.append(s);
-							}
-						}
-					}
-					sb.append("}");
-					sb.insert(0, bean.getClass().getName()+":{");
-					return sb.toString();
-				}catch(IOException e){
-					throw new RuntimeException(e);
-				}
-			}
+			return MelpJson.getGson().toJson(bean);
 		}
 	}
 	 
@@ -255,13 +221,13 @@ public class MelpString {
 		byte[] d = new byte[length];
 		for (int i = 0; i < length; i++) {
 			int pos = i * 2;
-			d[i] = (byte) (charToByte(hexChars[pos]) << 4 | charToByte(hexChars[pos + 1]));
+			d[i] = (byte) (hexCharToByte(hexChars[pos]) << 4 | hexCharToByte(hexChars[pos + 1]));
 
 		}
 		return d;
 	}
-
-	private static byte charToByte(char c) {
+ 	
+	public static byte hexCharToByte(char c) {
 		return (byte) "0123456789ABCDEF".indexOf(c);
 	}
 
@@ -304,4 +270,21 @@ public class MelpString {
 		return stringBuilder.toString();
 	}
 	
+	public static byte[] toBytesUtf8(String data){
+		return toBytes(data, "utf-8");
+	}
+	
+	public static byte[] toBytes(String data,String charset){
+		if(data==null){
+			return null;
+		}else if(data.length()==0){
+			return new byte[0];
+		}else{
+			try{
+				return data.getBytes(charset);
+			}catch(UnsupportedEncodingException e){
+				throw new RuntimeException(e);
+			}
+		}
+	}
 }

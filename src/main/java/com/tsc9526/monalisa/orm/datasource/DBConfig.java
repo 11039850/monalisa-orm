@@ -60,6 +60,7 @@ import com.tsc9526.monalisa.tools.io.MelpFile;
 import com.tsc9526.monalisa.tools.logger.Logger;
 import com.tsc9526.monalisa.tools.misc.MelpEclipse;
 import com.tsc9526.monalisa.tools.string.MelpString;
+import com.tsc9526.monalisa.tools.template.VarTemplate;
 
 /** 
  * 
@@ -780,6 +781,12 @@ public class DBConfig implements Closeable{
 			return this.getValue(p, key, null, prefixs);		
 		}
 		
+		public String parseFilePath(String path){
+			VarTemplate vt=new VarTemplate(getVarProperties());
+			vt.setThrowExceptionOnVarNotFound(true);
+			return vt.getValue(path);
+		}
+		
 		public String getProperty(String key,String defaultValue){		 
 			return this.getValue(p, key, defaultValue, prefixs);
 		}
@@ -810,14 +817,22 @@ public class DBConfig implements Closeable{
 			}
 		}
 		
-		protected Properties getPoolProperties(){
+		public Properties getPoolProperties(){
+			return getPropertiesByPrefix("pool");
+		}
+		
+		public Properties getVarProperties(){
+			return getPropertiesByPrefix("var");
+		}
+		
+		public Properties getPropertiesByPrefix(String prefix){
 			Properties dbps=new Properties();
 		 
 			for(Object o:p.keySet()){
 				String key=o.toString();
 				
 				for(String px:prefixs){
-					String flag=px+".pool.";
+					String flag=px+"."+prefix+".";
 					if(key.startsWith(flag)){
 						dbps.put(key.substring(flag.length()), p.get(key));
 					}

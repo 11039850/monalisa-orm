@@ -166,6 +166,8 @@ public class TestRecord extends com.tsc9526.monalisa.orm.model.Model<TestRecord>
 	}
 	
 	
+	
+	
 	/**
 	* @Column
 	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record&nbsp;<B>name:</B> name &nbsp;[<font color=red>NOTNULL</font>]
@@ -180,6 +182,8 @@ public class TestRecord extends com.tsc9526.monalisa.orm.model.Model<TestRecord>
 		
 		return this;
 	}
+	
+	
 	
 	
 	/**
@@ -198,6 +202,8 @@ public class TestRecord extends com.tsc9526.monalisa.orm.model.Model<TestRecord>
 	}
 	
 	
+	
+	
 	/**
 	* @Column
 	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record&nbsp;<B>name:</B> ts_a
@@ -212,6 +218,8 @@ public class TestRecord extends com.tsc9526.monalisa.orm.model.Model<TestRecord>
 		
 		return this;
 	}
+	
+	
 	
 	
 	/**
@@ -230,6 +238,8 @@ public class TestRecord extends com.tsc9526.monalisa.orm.model.Model<TestRecord>
 	}
 	
 	
+	
+	
 	/**
 	* @Column
 	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record&nbsp;<B>name:</B> create_by
@@ -244,6 +254,8 @@ public class TestRecord extends com.tsc9526.monalisa.orm.model.Model<TestRecord>
 		
 		return this;
 	}
+	
+	
 	
 	
 	/**
@@ -262,6 +274,8 @@ public class TestRecord extends com.tsc9526.monalisa.orm.model.Model<TestRecord>
 	}
 	
 	
+	
+	
 	/**
 	* @Column
 	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record&nbsp;<B>name:</B> update_by
@@ -276,6 +290,8 @@ public class TestRecord extends com.tsc9526.monalisa.orm.model.Model<TestRecord>
 		
 		return this;
 	}
+	
+	
 	
 	
 	
@@ -308,6 +324,8 @@ public class TestRecord extends com.tsc9526.monalisa.orm.model.Model<TestRecord>
 		
 		return r;
 	}
+	 	
+	
 	
 	
 	/**
@@ -339,6 +357,8 @@ public class TestRecord extends com.tsc9526.monalisa.orm.model.Model<TestRecord>
 		
 		return r;
 	}
+	 	
+	
 	
 	
 	/**
@@ -370,6 +390,8 @@ public class TestRecord extends com.tsc9526.monalisa.orm.model.Model<TestRecord>
 		
 		return r;
 	}
+	 	
+	
 	
 	
 	/**
@@ -401,6 +423,8 @@ public class TestRecord extends com.tsc9526.monalisa.orm.model.Model<TestRecord>
 		
 		return r;
 	}
+	 	
+	
 	
 	
 	/**
@@ -432,6 +456,8 @@ public class TestRecord extends com.tsc9526.monalisa.orm.model.Model<TestRecord>
 		
 		return r;
 	}
+	 	
+	
 	
 	
 	/**
@@ -463,6 +489,8 @@ public class TestRecord extends com.tsc9526.monalisa.orm.model.Model<TestRecord>
 		
 		return r;
 	}
+	 	
+	
 	
 	
 	/**
@@ -494,6 +522,8 @@ public class TestRecord extends com.tsc9526.monalisa.orm.model.Model<TestRecord>
 		
 		return r;
 	}
+	 	
+	
 	
 	
 	/**
@@ -525,6 +555,8 @@ public class TestRecord extends com.tsc9526.monalisa.orm.model.Model<TestRecord>
 		
 		return r;
 	}
+	 	
+	
 	
 	
 	

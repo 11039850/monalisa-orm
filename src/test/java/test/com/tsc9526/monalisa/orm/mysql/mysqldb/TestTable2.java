@@ -225,6 +225,8 @@ public class TestTable2 extends com.tsc9526.monalisa.orm.model.Model<TestTable2>
 	}
 	
 	
+	
+	
 	/**
 	* @Column
 	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_2&nbsp;<B>name:</B> name &nbsp;[<font color=red>NOTNULL</font>]
@@ -239,6 +241,8 @@ public class TestTable2 extends com.tsc9526.monalisa.orm.model.Model<TestTable2>
 		
 		return this;
 	}
+	
+	
 	
 	
 	/**
@@ -257,6 +261,8 @@ public class TestTable2 extends com.tsc9526.monalisa.orm.model.Model<TestTable2>
 	}
 	
 	
+	
+	
 	/**
 	* @Column
 	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_2&nbsp;<B>name:</B> enum_int_a &nbsp;[<font color=red>NOTNULL</font>|<font color=red>ENUM</font>]
@@ -271,6 +277,8 @@ public class TestTable2 extends com.tsc9526.monalisa.orm.model.Model<TestTable2>
 		
 		return this;
 	}
+	
+	
 	
 	
 	/**
@@ -289,6 +297,8 @@ public class TestTable2 extends com.tsc9526.monalisa.orm.model.Model<TestTable2>
 	}
 	
 	
+	
+	
 	/**
 	* @Column
 	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_2&nbsp;<B>name:</B> array_int
@@ -303,6 +313,8 @@ public class TestTable2 extends com.tsc9526.monalisa.orm.model.Model<TestTable2>
 		
 		return this;
 	}
+	
+	
 	
 	
 	/**
@@ -321,6 +333,8 @@ public class TestTable2 extends com.tsc9526.monalisa.orm.model.Model<TestTable2>
 	}
 	
 	
+	
+	
 	/**
 	* @Column
 	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_2&nbsp;<B>name:</B> json
@@ -335,6 +349,8 @@ public class TestTable2 extends com.tsc9526.monalisa.orm.model.Model<TestTable2>
 		
 		return this;
 	}
+	
+	
 	
 	
 	/**
@@ -353,6 +369,8 @@ public class TestTable2 extends com.tsc9526.monalisa.orm.model.Model<TestTable2>
 	}
 	
 	
+	
+	
 	/**
 	* @Column
 	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_2&nbsp;<B>name:</B> ts_a &nbsp;[<font color=red>NOTNULL</font>]
@@ -367,6 +385,8 @@ public class TestTable2 extends com.tsc9526.monalisa.orm.model.Model<TestTable2>
 		
 		return this;
 	}
+	
+	
 	
 	
 	/**
@@ -385,6 +405,8 @@ public class TestTable2 extends com.tsc9526.monalisa.orm.model.Model<TestTable2>
 	}
 	
 	
+	
+	
 	/**
 	* @Column
 	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_2&nbsp;<B>name:</B> create_by
@@ -399,6 +421,8 @@ public class TestTable2 extends com.tsc9526.monalisa.orm.model.Model<TestTable2>
 		
 		return this;
 	}
+	
+	
 	
 	
 	/**
@@ -417,6 +441,8 @@ public class TestTable2 extends com.tsc9526.monalisa.orm.model.Model<TestTable2>
 	}
 	
 	
+	
+	
 	/**
 	* @Column
 	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_2&nbsp;<B>name:</B> update_by
@@ -431,6 +457,8 @@ public class TestTable2 extends com.tsc9526.monalisa.orm.model.Model<TestTable2>
 		
 		return this;
 	}
+	
+	
 	
 	
 	
@@ -463,6 +491,8 @@ public class TestTable2 extends com.tsc9526.monalisa.orm.model.Model<TestTable2>
 		
 		return r;
 	}
+	 	
+	
 	
 	
 	/**
@@ -494,6 +524,8 @@ public class TestTable2 extends com.tsc9526.monalisa.orm.model.Model<TestTable2>
 		
 		return r;
 	}
+	 	
+	
 	
 	
 	/**
@@ -525,6 +557,8 @@ public class TestTable2 extends com.tsc9526.monalisa.orm.model.Model<TestTable2>
 		
 		return r;
 	}
+	 	
+	
 	
 	
 	/**
@@ -556,6 +590,8 @@ public class TestTable2 extends com.tsc9526.monalisa.orm.model.Model<TestTable2>
 		
 		return r;
 	}
+	 	
+	
 	
 	
 	/**
@@ -587,6 +623,8 @@ public class TestTable2 extends com.tsc9526.monalisa.orm.model.Model<TestTable2>
 		
 		return r;
 	}
+	 	
+	
 	
 	
 	/**
@@ -618,6 +656,8 @@ public class TestTable2 extends com.tsc9526.monalisa.orm.model.Model<TestTable2>
 		
 		return r;
 	}
+	 	
+	
 	
 	
 	/**
@@ -649,6 +689,8 @@ public class TestTable2 extends com.tsc9526.monalisa.orm.model.Model<TestTable2>
 		
 		return r;
 	}
+	 	
+	
 	
 	
 	/**
@@ -680,6 +722,8 @@ public class TestTable2 extends com.tsc9526.monalisa.orm.model.Model<TestTable2>
 		
 		return r;
 	}
+	 	
+	
 	
 	
 	/**
@@ -711,6 +755,8 @@ public class TestTable2 extends com.tsc9526.monalisa.orm.model.Model<TestTable2>
 		
 		return r;
 	}
+	 	
+	
 	
 	
 	/**
@@ -742,6 +788,8 @@ public class TestTable2 extends com.tsc9526.monalisa.orm.model.Model<TestTable2>
 		
 		return r;
 	}
+	 	
+	
 	
 	
 	/**
@@ -773,6 +821,8 @@ public class TestTable2 extends com.tsc9526.monalisa.orm.model.Model<TestTable2>
 		
 		return r;
 	}
+	 	
+	
 	
 	
 	/**
@@ -804,6 +854,8 @@ public class TestTable2 extends com.tsc9526.monalisa.orm.model.Model<TestTable2>
 		
 		return r;
 	}
+	 	
+	
 	
 	
 	/**
@@ -835,6 +887,8 @@ public class TestTable2 extends com.tsc9526.monalisa.orm.model.Model<TestTable2>
 		
 		return r;
 	}
+	 	
+	
 	
 	
 	/**
@@ -866,6 +920,8 @@ public class TestTable2 extends com.tsc9526.monalisa.orm.model.Model<TestTable2>
 		
 		return r;
 	}
+	 	
+	
 	
 	
 	

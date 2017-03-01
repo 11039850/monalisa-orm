@@ -19,13 +19,13 @@ package com.tsc9526.monalisa.tools.io;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -33,54 +33,53 @@ import java.util.List;
  * @author zzg.zhou(11039850@qq.com)
  */
 public class MelpFile {
+	public static byte[] readFile(String filePath){
+		return readFile(new File(filePath));
+	}
 	
-	public static byte[] toBytes(InputStream input) throws IOException {
-		byte[] buffer = new byte[Math.max(1024, input.available())];
-		int offset = 0;
-		for (int bytesRead; -1 != (bytesRead = input.read(buffer, offset, buffer.length - offset));) {
-			offset += bytesRead;
-			if (offset == buffer.length) {
-				buffer = Arrays.copyOf(buffer, buffer.length + Math.max(input.available(), buffer.length >> 1));
-			}
+	public static byte[] readFile(File file){
+		try{
+			return readBytes(new FileInputStream(file));
+		}catch(FileNotFoundException e){
+			throw new RuntimeException("File not found: "+file.getAbsolutePath(),e);
 		}
-		return (offset == buffer.length) ? buffer : Arrays.copyOf(buffer, offset);
 	}
 	
-	public static byte[] readFile(String filePath)throws IOException{
-		return readBytes(new FileInputStream(filePath));
-	}
-	
-	public static byte[] readFile(File file)throws IOException{
-		return readBytes(new FileInputStream(file));
-	}
-	
-	public static byte[] readBytes(InputStream in)throws IOException{
-		ByteArrayOutputStream bos=new ByteArrayOutputStream();
-		byte[] buf=new byte[16*1024];
-		int len=in.read(buf);
-		while(len>0){
-			bos.write(buf,0, len);
+	public static byte[] readBytes(InputStream in){
+		try{
+			ByteArrayOutputStream bos=new ByteArrayOutputStream();
+			byte[] buf=new byte[16*1024];
+			int len=in.read(buf);
+			while(len>0){
+				bos.write(buf,0, len);
+				
+				len=in.read(buf);
+			}
+			in.close();
 			
-			len=in.read(buf);
+			return bos.toByteArray();
+		}catch(IOException e){
+			throw new RuntimeException(e);
 		}
-		in.close();
-		
-		return bos.toByteArray();
 	}
 	
-	public static byte[] readBytes(InputStream is, int length)throws IOException {
-		int readLen = 0;
-		int readLengthThisTime = 0;
-		byte[] message = new byte[length];
-		  
-		while (readLen != length) {
-			readLengthThisTime = is.read(message, readLen, length - readLen);
-			if (readLengthThisTime == -1) {// Should not happen.
-				break;
+	public static byte[] readBytes(InputStream is, int length){
+		try{
+			int readLen = 0;
+			int readLengthThisTime = 0;
+			byte[] message = new byte[length];
+			  
+			while (readLen != length) {
+				readLengthThisTime = is.read(message, readLen, length - readLen);
+				if (readLengthThisTime == -1) {// Should not happen.
+					break;
+				}
+				readLen += readLengthThisTime;
 			}
-			readLen += readLengthThisTime;
+			return message;
+		}catch(IOException e){
+			throw new RuntimeException(e);
 		}
-		return message;	 
 	}
 	
 	public static String combinePath(String... paths){
@@ -178,14 +177,19 @@ public class MelpFile {
 		}
   	}
   	
+  	public static boolean createFileDirectories(File target){
+  		String path=target.getAbsolutePath().replaceAll("\\\\", "/");
+		int p=path.lastIndexOf("/");
+		File dir=new File(path.substring(0,p));
+		if(dir.exists()==false){
+			return dir.mkdirs();
+		}
+		return true;
+  	}
+  	
 	public static void write(File target, byte[] data) {
 		try{
-			String path=target.getAbsolutePath().replaceAll("\\\\", "/");
-			int p=path.lastIndexOf("/");
-			File dir=new File(path.substring(0,p));
-			if(dir.exists()==false){
-				dir.mkdirs();
-			}
+			createFileDirectories(target);
 			
 			FileOutputStream fos = new FileOutputStream(target);
 			fos.write(data);
@@ -195,8 +199,18 @@ public class MelpFile {
 		}
 	}
 	
+	public static void write(File target, InputStream data) {
+		try{
+			createFileDirectories(target);
+			
+			FileOutputStream fos = new FileOutputStream(target);
+			copy(data,fos);
+		}catch(IOException e){
+			throw new RuntimeException(e);
+		}
+	}
 	
-	public static void write(InputStream from,OutputStream to)throws IOException {
+	public static void copy(InputStream from,OutputStream to){
 		try{
 			byte[] buf=new byte[64*1024];
 			
@@ -205,6 +219,8 @@ public class MelpFile {
 				to.write(buf,0,len);
 				len=from.read(buf);
 			}
+		}catch(IOException e){
+			throw new RuntimeException(e);	
 		}finally{
 			MelpClose.close(from,to);
 		}
@@ -214,18 +230,14 @@ public class MelpFile {
 		byte[] data=readFile(src);
 		write(target, data);
 	}
-	
-	@SuppressWarnings("unchecked")
-	public static <T> T readToObject(File f){
+	 
+	public static <T> T readToObject(File file){
 		FileInputStream fin=null;
 		try{
-			fin=new FileInputStream(f);
-			ObjectInputStream inputStream=new ObjectInputStream(fin);
-			T r=(T)inputStream.readObject();
-			inputStream.close();
-			return r;
-		}catch(Exception e){
-			throw new RuntimeException(e);
+			fin=new FileInputStream(file);
+			return readToObject(fin);
+		}catch(FileNotFoundException e){
+			throw new RuntimeException("File not found: "+file.getAbsolutePath(),e);
 		}finally{
 			MelpClose.close(fin);
 		}
@@ -245,12 +257,12 @@ public class MelpFile {
 		}
 	}
 	
-	public static String readToString(File f,String charset){
+	public static String readToString(File file,String charset){
 		try{
-			return readToString(new FileInputStream(f),charset);
-		}catch(IOException e){    		
-    		throw new RuntimeException(e);
-    	}
+			return readToString(new FileInputStream(file),charset);
+		}catch(FileNotFoundException e){
+			throw new RuntimeException("File not found: "+file.getAbsolutePath(),e);
+		}
 	}
 	
 	public static String readToString(InputStream in,String charset){

@@ -97,6 +97,34 @@ public class <%=table.getJavaName()%> extends <%=modelClass%><<%=table.getJavaNa
 		return this;
 	}
 	
+	<%String file=f.getCode("file"); if(file!=null){%>
+	<%=getComments(table,f,"@param "+f.getJavaName()+" the relative path. \r\n\t* @param data the file data bytes","\t")%> 
+	public <%=table.getJavaName()%> <%=f.getJavaNameSet()%>(<%=f.getJavaType()%> <%=f.getJavaName()%>,byte[] data){
+		this.<%=f.getJavaName()%> = <%=f.getJavaName()%>;
+		
+		fieldChanged("<%=f.getJavaName()%>");
+		
+		String filepath=MelpFile.combinePath("<%=file%>",<%=f.getJavaName()%>);
+		filepath=db().getCfg().parseFilePath(filepath);
+		MelpFile.write(new File(filepath),data);
+		
+		return this;
+	}	
+	
+	<%=getComments(table,f,"@param "+f.getJavaName()+" the relative path. \r\n\t* @param data the file data inputstream","\t")%> 
+	public <%=table.getJavaName()%> <%=f.getJavaNameSet()%>(<%=f.getJavaType()%> <%=f.getJavaName()%>,java.io.InputStream data){
+		this.<%=f.getJavaName()%> = <%=f.getJavaName()%>;
+		
+		fieldChanged("<%=f.getJavaName()%>");
+		
+		String filepath=MelpFile.combinePath("<%=file%>",<%=f.getJavaName()%>);
+		filepath=db().getCfg().parseFilePath(filepath);
+		MelpFile.write(new File(filepath),data);
+		
+		return this;
+	}
+	<%}%>
+	
 	<%} %>
 	<%for(MetaColumn f:table.getColumns()){ %>
 	<%=getComments(table,f,"	","\t")%> 
@@ -123,6 +151,52 @@ public class <%=table.getJavaName()%> extends <%=modelClass%><<%=table.getJavaNa
 		
 		return r;
 	}
+	 	
+	<%String file=f.getCode("file"); if(file!=null){%>
+	<%=getComments(table,f,"@param charset  read file content using this charset.","\t")%> 
+	public String <%=f.getJavaNameGet()%>AsString(String charset){
+		<%=f.getJavaType()%> r=this.<%=f.getJavaNameGet()%>();
+		
+		if(r==null){
+			return null;
+		}
+		
+		String filepath=MelpFile.combinePath("<%=file%>",r);
+		filepath=db().getCfg().parseFilePath(filepath);
+		return MelpFile.readToString(new File(filepath),charset);
+	}
+	
+	<%=getComments(table,f,"	","\t")%> 
+	public String <%=f.getJavaNameGet()%>AsStringUTF8(){
+		return <%=f.getJavaNameGet()%>AsString("utf-8");
+	}
+	
+	<%=getComments(table,f,"	","\t")%> 
+	public byte[] <%=f.getJavaNameGet()%>AsBytes(){
+		<%=f.getJavaType()%> r=this.<%=f.getJavaNameGet()%>();
+		
+		if(r==null){
+			return null;
+		}
+		
+		String filepath=MelpFile.combinePath("<%=file%>",r);
+		filepath=db().getCfg().parseFilePath(filepath);
+		return MelpFile.readFile(new File(filepath));
+	}
+	
+	<%=getComments(table,f,"	","\t")%> 
+	public File <%=f.getJavaNameGet()%>AsFile(){
+		<%=f.getJavaType()%> r=this.<%=f.getJavaNameGet()%>();
+		
+		if(r==null){
+			return null;
+		}
+		
+		String filepath=MelpFile.combinePath("<%=file%>",r);
+		filepath=db().getCfg().parseFilePath(filepath);
+		return new File(filepath);
+	}
+	<%}%>
 	
 	<%} %>
 	

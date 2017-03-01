@@ -176,6 +176,8 @@ public class TestLogyyyymm extends com.tsc9526.monalisa.orm.model.Model<TestLogy
 	}
 	
 	
+	
+	
 	/**
 	* @Column
 	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201601&nbsp;<B>name:</B> log_time &nbsp;[<font color=red>NOTNULL</font>]
@@ -190,6 +192,8 @@ public class TestLogyyyymm extends com.tsc9526.monalisa.orm.model.Model<TestLogy
 		
 		return this;
 	}
+	
+	
 	
 	
 	/**
@@ -208,6 +212,8 @@ public class TestLogyyyymm extends com.tsc9526.monalisa.orm.model.Model<TestLogy
 	}
 	
 	
+	
+	
 	/**
 	* @Column
 	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201601&nbsp;<B>name:</B> enum_int_a &nbsp;[<font color=red>ENUM</font>]
@@ -222,6 +228,8 @@ public class TestLogyyyymm extends com.tsc9526.monalisa.orm.model.Model<TestLogy
 		
 		return this;
 	}
+	
+	
 	
 	
 	/**
@@ -240,6 +248,8 @@ public class TestLogyyyymm extends com.tsc9526.monalisa.orm.model.Model<TestLogy
 	}
 	
 	
+	
+	
 	/**
 	* @Column
 	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201601&nbsp;<B>name:</B> create_time
@@ -254,6 +264,8 @@ public class TestLogyyyymm extends com.tsc9526.monalisa.orm.model.Model<TestLogy
 		
 		return this;
 	}
+	
+	
 	
 	
 	/**
@@ -272,6 +284,8 @@ public class TestLogyyyymm extends com.tsc9526.monalisa.orm.model.Model<TestLogy
 	}
 	
 	
+	
+	
 	/**
 	* @Column
 	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201601&nbsp;<B>name:</B> update_time
@@ -288,6 +302,8 @@ public class TestLogyyyymm extends com.tsc9526.monalisa.orm.model.Model<TestLogy
 	}
 	
 	
+	
+	
 	/**
 	* @Column
 	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201601&nbsp;<B>name:</B> update_by
@@ -302,6 +318,8 @@ public class TestLogyyyymm extends com.tsc9526.monalisa.orm.model.Model<TestLogy
 		
 		return this;
 	}
+	
+	
 	
 	
 	
@@ -334,6 +352,8 @@ public class TestLogyyyymm extends com.tsc9526.monalisa.orm.model.Model<TestLogy
 		
 		return r;
 	}
+	 	
+	
 	
 	
 	/**
@@ -365,6 +385,8 @@ public class TestLogyyyymm extends com.tsc9526.monalisa.orm.model.Model<TestLogy
 		
 		return r;
 	}
+	 	
+	
 	
 	
 	/**
@@ -396,6 +418,8 @@ public class TestLogyyyymm extends com.tsc9526.monalisa.orm.model.Model<TestLogy
 		
 		return r;
 	}
+	 	
+	
 	
 	
 	/**
@@ -427,6 +451,8 @@ public class TestLogyyyymm extends com.tsc9526.monalisa.orm.model.Model<TestLogy
 		
 		return r;
 	}
+	 	
+	
 	
 	
 	/**
@@ -458,6 +484,8 @@ public class TestLogyyyymm extends com.tsc9526.monalisa.orm.model.Model<TestLogy
 		
 		return r;
 	}
+	 	
+	
 	
 	
 	/**
@@ -489,6 +517,8 @@ public class TestLogyyyymm extends com.tsc9526.monalisa.orm.model.Model<TestLogy
 		
 		return r;
 	}
+	 	
+	
 	
 	
 	/**
@@ -520,6 +550,8 @@ public class TestLogyyyymm extends com.tsc9526.monalisa.orm.model.Model<TestLogy
 		
 		return r;
 	}
+	 	
+	
 	
 	
 	/**
@@ -551,6 +583,8 @@ public class TestLogyyyymm extends com.tsc9526.monalisa.orm.model.Model<TestLogy
 		
 		return r;
 	}
+	 	
+	
 	
 	
 	/**
@@ -582,6 +616,8 @@ public class TestLogyyyymm extends com.tsc9526.monalisa.orm.model.Model<TestLogy
 		
 		return r;
 	}
+	 	
+	
 	
 	
 	
