@@ -16,7 +16,7 @@
  *******************************************************************************************/
 package test.com.tsc9526.monalisa.orm.mysql;
 
-import test.com.tsc9526.monalisa.orm.TestConstants;
+import test.com.tsc9526.monalisa.TestConstants;
 
 import com.tsc9526.monalisa.orm.annotation.DB;
 import com.tsc9526.monalisa.orm.datasource.DBConfig;

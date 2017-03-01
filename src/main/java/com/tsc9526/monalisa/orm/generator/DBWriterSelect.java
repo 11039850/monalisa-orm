@@ -137,15 +137,27 @@ public class DBWriterSelect{
 	}
 	public void service(JspContext request,PrintWriter out){
 		
-MetaTable    table =(MetaTable)request.getAttribute("table");
-Set<?>     imports =(Set<?>)request.getAttribute("imports");
+MetaTable    table  =(MetaTable)request.getAttribute("table");
+@SuppressWarnings("unchecked")
+Set<String> imports =(Set<String>)request.getAttribute("imports");
 String   fingerprint=(String)request.getAttribute("fingerprint");
 String   see        =(String)request.getAttribute("see");
 		out.print("package ");
 			out.print(table.getJavaPackage());
 			out.println(";");
-			out.println(" ");
-			for(Object i:imports){ 		out.println("");
+			
+	for(MetaColumn c:table.getColumns()){
+		if(c.getTable()!=null && c.getCode("file")!=null){
+			imports.add("java.io.File");
+			imports.add("com.tsc9526.monalisa.tools.io.MelpFile");
+			imports.add("com.tsc9526.monalisa.orm.datasource.DBConfig");
+			
+			break;
+		}
+	}
+		
+		out.println(" ");
+			for(String i:imports){ 		out.println("");
 			out.print("import ");
 			out.print(i);
 			out.print(";");
@@ -250,7 +262,7 @@ String   see        =(String)request.getAttribute("see");
 			out.println("	}");
 			out.println("	");
 			out.print("	");
-			String file=f.getCode("file"); if(file!=null){		out.println("");
+			String file=f.getCode("file"); if(f.getTable()!=null && file!=null){		out.println("");
 			out.print("	");
 			out.print(getComments(table,f,"@param charset  read file content using this charset.","\t"));
 			out.println(" ");
@@ -267,8 +279,13 @@ String   see        =(String)request.getAttribute("see");
 			out.println("			return null;");
 			out.println("		}");
 			out.println("		");
-			out.println("		String filepath=MelpFile.combinePath(file,r);");
-			out.println("		filepath=db().getCfg().getPath(filepath);");
+			out.print("		DBConfig db=DBConfig.fromClass(");
+			out.print(f.getTable().getJavaName());
+			out.println(".class);");
+			out.print("		String filepath=MelpFile.combinePath(\"");
+			out.print(file);
+			out.println("\",r);");
+			out.println("		filepath=db.getCfg().parseFilePath(filepath);");
 			out.println("		return MelpFile.readToString(new File(filepath),charset);");
 			out.println("	}");
 			out.println("	");
@@ -299,8 +316,13 @@ String   see        =(String)request.getAttribute("see");
 			out.println("			return null;");
 			out.println("		}");
 			out.println("		");
-			out.println("		String filepath=MelpFile.combinePath(file,r);");
-			out.println("		filepath=db().getCfg().getPath(filepath);");
+			out.print("		DBConfig db=DBConfig.fromClass(");
+			out.print(f.getTable().getJavaName());
+			out.println(".class);");
+			out.print("		String filepath=MelpFile.combinePath(\"");
+			out.print(file);
+			out.println("\",r);");
+			out.println("		filepath=db.getCfg().parseFilePath(filepath);");
 			out.println("		return MelpFile.readFile(new File(filepath));");
 			out.println("	}");
 			out.println("	");
@@ -317,8 +339,13 @@ String   see        =(String)request.getAttribute("see");
 			out.println("			return null;");
 			out.println("		}");
 			out.println("		");
-			out.println("		String filepath=MelpFile.combinePath(file,r);");
-			out.println("		filepath=db().getCfg().getPath(filepath);");
+			out.print("		DBConfig db=DBConfig.fromClass(");
+			out.print(f.getTable().getJavaName());
+			out.println(".class);");
+			out.print("		String filepath=MelpFile.combinePath(\"");
+			out.print(file);
+			out.println("\",r);");
+			out.println("		filepath=db.getCfg().parseFilePath(filepath);");
 			out.println("		return new File(filepath);");
 			out.println("	}");
 			out.print("	");

@@ -27,7 +27,7 @@ import com.tsc9526.monalisa.tools.json.MelpJson;
 public class ColumnData {
 	private int id=0;
 	private String name="def";
-	private Date ts=new Date();
+	private Date ts=new Date(); 
 	
 	public String toString(){
 		return MelpJson.getGson().toJson(this);

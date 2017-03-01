@@ -54,7 +54,7 @@ public class MockProcessingEnvironment {
 	private String dbClassName;
 	private Class<?> clazzWithDBAnnotation;
 	
-	private String outputJavaDir    ;
+	private String outputJavaDir    ; 
 	private String outputResourceDir;
 
 	public MockProcessingEnvironment(Class<?> clazzWithDBAnnotation,String outputJavaDir,String outputResourceDir){

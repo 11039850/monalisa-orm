@@ -1,8 +1,8 @@
 How to run test cases:
 
 1. Create mysql database: test_monalisa, username: monalisa, password: monalisa
-   OR setup: test.com.tsc9526.monalisa.orm.TestConstants
+   OR setup: test.com.tsc9526.monalisa.TestConstants
 
-2. Run: java test.com.tsc9526.monalisa.orm.InitTestDatabase
+2. Run: java test.com.tsc9526.monalisa.InitTestDatabase
 
 3. Run: mvn test

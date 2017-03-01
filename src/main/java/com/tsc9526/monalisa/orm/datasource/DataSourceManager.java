@@ -115,6 +115,10 @@ public class DataSourceManager {
 	public  DBConfig getDBConfig(Class<?> clazzWithDBAnnotation) {
 		DB db=clazzWithDBAnnotation.getAnnotation(DB.class);
 		if(db==null){
+			db=MelpClass.findAnnotation(clazzWithDBAnnotation, DB.class);
+		}
+		
+		if(db==null){
 			throw new RuntimeException("Class without @DB: "+clazzWithDBAnnotation);
 		}
 		

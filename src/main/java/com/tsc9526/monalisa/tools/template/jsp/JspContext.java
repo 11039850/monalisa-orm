@@ -26,8 +26,9 @@ import java.util.Map;
 public class JspContext {
 	private Map<String, Object> context = new HashMap<String, Object>();
 
-	public Object getAttribute(String name) {
-		return context.get(name);
+	@SuppressWarnings("unchecked")
+	public <T> T getAttribute(String name) {
+		return (T)context.get(name);
 	}
 
 	public String getParameter(String name) {

@@ -2,13 +2,25 @@
 %><%@page import="com.tsc9526.monalisa.orm.meta.MetaTable"
 %><%@page import="com.tsc9526.monalisa.orm.meta.MetaColumn"
 %><%@page import="java.util.Set"%><%
-MetaTable    table =(MetaTable)request.getAttribute("table");
-Set<?>     imports =(Set<?>)request.getAttribute("imports");
+MetaTable    table  =(MetaTable)request.getAttribute("table");
+@SuppressWarnings("unchecked")
+Set<String> imports =(Set<String>)request.getAttribute("imports");
 String   fingerprint=(String)request.getAttribute("fingerprint");
 String   see        =(String)request.getAttribute("see");
 %>package <%=table.getJavaPackage()%>;
- 
-<%for(Object i:imports){ %>
+<%
+	for(MetaColumn c:table.getColumns()){
+		if(c.getTable()!=null && c.getCode("file")!=null){
+			imports.add("java.io.File");
+			imports.add("com.tsc9526.monalisa.tools.io.MelpFile");
+			imports.add("com.tsc9526.monalisa.orm.datasource.DBConfig");
+			
+			break;
+		}
+	}
+		
+%> 
+<%for(String i:imports){ %>
 import <%=i%>;<%} %>
   
 /**
@@ -54,7 +66,7 @@ public class <%=table.getJavaName()%> implements java.io.Serializable{
 		return r;
 	}
 	
-	<%String file=f.getCode("file"); if(file!=null){%>
+	<%String file=f.getCode("file"); if(f.getTable()!=null && file!=null){%>
 	<%=getComments(table,f,"@param charset  read file content using this charset.","\t")%> 
 	public String <%=f.getJavaNameGet()%>AsString(String charset){
 		<%=f.getJavaType()%> r=this.<%=f.getJavaNameGet()%>();
@@ -63,8 +75,9 @@ public class <%=table.getJavaName()%> implements java.io.Serializable{
 			return null;
 		}
 		
-		String filepath=MelpFile.combinePath(file,r);
-		filepath=db().getCfg().getPath(filepath);
+		DBConfig db=DBConfig.fromClass(<%=f.getTable().getJavaName()%>.class);
+		String filepath=MelpFile.combinePath("<%=file%>",r);
+		filepath=db.getCfg().parseFilePath(filepath);
 		return MelpFile.readToString(new File(filepath),charset);
 	}
 	
@@ -81,8 +94,9 @@ public class <%=table.getJavaName()%> implements java.io.Serializable{
 			return null;
 		}
 		
-		String filepath=MelpFile.combinePath(file,r);
-		filepath=db().getCfg().getPath(filepath);
+		DBConfig db=DBConfig.fromClass(<%=f.getTable().getJavaName()%>.class);
+		String filepath=MelpFile.combinePath("<%=file%>",r);
+		filepath=db.getCfg().parseFilePath(filepath);
 		return MelpFile.readFile(new File(filepath));
 	}
 	
@@ -93,8 +107,9 @@ public class <%=table.getJavaName()%> implements java.io.Serializable{
 			return null;
 		}
 		
-		String filepath=MelpFile.combinePath(file,r);
-		filepath=db().getCfg().getPath(filepath);
+		DBConfig db=DBConfig.fromClass(<%=f.getTable().getJavaName()%>.class);
+		String filepath=MelpFile.combinePath("<%=file%>",r);
+		filepath=db.getCfg().parseFilePath(filepath);
 		return new File(filepath);
 	}
 	<%}%>

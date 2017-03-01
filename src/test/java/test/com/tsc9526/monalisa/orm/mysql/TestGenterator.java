@@ -23,7 +23,7 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-import test.com.tsc9526.monalisa.orm.InitTestDatabase;
+import test.com.tsc9526.monalisa.InitTestDatabase;
 import test.com.tsc9526.monalisa.orm.mysql.mock.MockProcessingEnvironment;
 
 import com.tsc9526.monalisa.orm.datasource.DbProp;

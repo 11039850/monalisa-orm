@@ -37,7 +37,7 @@ import org.springframework.mock.web.MockServletContext;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import test.com.tsc9526.monalisa.orm.TestConstants;
+import test.com.tsc9526.monalisa.TestConstants;
 
 import com.tsc9526.monalisa.orm.annotation.DB;
 import com.tsc9526.monalisa.service.DBS;
