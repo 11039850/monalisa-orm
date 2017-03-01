@@ -554,6 +554,7 @@ public class MelpClass {
 					return getMapObject((Map)bean);
 				}else{			
 					if(getMethod!=null){
+						getMethod.setAccessible(true);
 						return getMethod.invoke(bean);				
 					}else{
 						field.setAccessible(true);

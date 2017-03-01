@@ -513,7 +513,7 @@ public class ModelMeta{
 	protected static FGS createFGS(final MetaColumn c,final FGS mfd){	
 		
 		FGS fgs=new FGS(mfd==null?null:mfd.getType(),c.getJavaName(),c.getName()){
-			
+			private Column columnAnnotation;
 			public void setObject(Object bean,Object v){
 				if(mfd!=null){
 					mfd.setObject(bean, v);
@@ -550,7 +550,10 @@ public class ModelMeta{
 			@SuppressWarnings("unchecked")
 			public <T extends Annotation> T getAnnotation(Class<T> annotationClass) {				
 				if(annotationClass==Column.class){
-					return (T)createColumn(c);
+					if(columnAnnotation==null){
+						columnAnnotation=createColumn(c);
+					}
+					return (T)columnAnnotation;
 				}else{
 					return null;
 				}
