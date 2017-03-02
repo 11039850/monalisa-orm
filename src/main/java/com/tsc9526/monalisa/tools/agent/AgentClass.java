@@ -194,7 +194,7 @@ public class AgentClass {
 	private static CompilePackage compilePackage; 
 	public synchronized static void reloadClasses(){
 		if(compilePackage==null){
-			compilePackage=new CompilePackage(DbProp.CFG_SQL_PATH,DbProp.TMP_WORK_DIR_JAVA);
+			compilePackage=new CompilePackage(DbProp.CFG_AGENT_PATH,DbProp.TMP_WORK_DIR_JAVA);
 			
 			if (ClassLoader.getSystemClassLoader() != AgentClass.class.getClassLoader()){
 	            MelpClasspath.appendToSystemPath(AgentClass.class);
@@ -212,10 +212,10 @@ public class AgentClass {
 			} 
 			
 			if(cis.size()>0){
-				AgentArgs args=new AgentArgs(DbProp.CFG_SQL_PATH,DbProp.TMP_WORK_DIR_JAVA,cis.toArray(new AgentArgs.AgentArgClassInfo[0]));
+				AgentArgs args=new AgentArgs(DbProp.CFG_AGENT_PATH,DbProp.TMP_WORK_DIR_JAVA,cis.toArray(new AgentArgs.AgentArgClassInfo[0]));
 				String agentArgs=MelpJson.createGsonBuilder().setPrettyPrinting().create().toJson(args);
 				
-				File f=new File(DbProp.CFG_SQL_PATH,".load");
+				File f=new File(DbProp.CFG_AGENT_PATH,".load");
 				MelpFile.write(f,agentArgs.getBytes("utf-8") );
 				
 			    AgentJar.loadAgentClass(AgentClass.class.getName(), MelpFile.combinePath(f.getAbsolutePath())); 

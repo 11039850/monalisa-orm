@@ -40,7 +40,7 @@ public class SQLResourceManager {
 	public static synchronized SQLResourceManager getInstance(){
 		if(instance==null){
 			instance=new SQLResourceManager();
-			instance.loadSqlFiles(new File(DbProp.CFG_SQL_PATH) ,".jsp", true);
+			instance.loadSqlFiles(new File(DbProp.CFG_AGENT_PATH) ,".jsp", true);
 		}
 		return instance;
 	}

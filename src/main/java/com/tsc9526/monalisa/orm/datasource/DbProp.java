@@ -198,9 +198,9 @@ public class DbProp {
 	
 	
 	/**
-	 * SQL资源文件缺省放置目录(*.java, *.jsp) 
+	 * Reloadable java directory
 	 */
-	public static String  CFG_SQL_PATH          = CFG_ROOT_PATH+"/monalisa/sql";
+	public static String  CFG_AGENT_PATH        = CFG_ROOT_PATH+"/monalisa/agent";
 	public static String  CFG_LIB_PATH          = CFG_ROOT_PATH+"/monalisa/lib";
 	 
 	public static String TMP_ROOT_PATH          = CFG_ROOT_PATH+"/monalisa/tmp";
@@ -229,8 +229,8 @@ public class DbProp {
 	public static String SET_CFG_ROOT_PATH(String cfgRootPath) {
 		CFG_ROOT_PATH=cfgRootPath;
 		
-		CFG_SQL_PATH = CFG_ROOT_PATH+"/monalisa/sql";
-		CFG_LIB_PATH = CFG_ROOT_PATH+"/monalisa/lib";
+		CFG_AGENT_PATH  = CFG_ROOT_PATH+"/monalisa/agent";
+		CFG_LIB_PATH    = CFG_ROOT_PATH+"/monalisa/lib";
 		
 		SET_TMP_ROOT_PATH(CFG_ROOT_PATH+"/monalisa/tmp");
 		

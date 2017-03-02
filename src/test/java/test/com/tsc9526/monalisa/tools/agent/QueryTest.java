@@ -50,7 +50,7 @@ public class QueryTest {
 			File dir=new File("src/test/java/test/com/tsc9526/monalisa/orm/sqlfiles");
 			for(File src:dir.listFiles()){
 				if(src.isFile() && src.getName().endsWith(".java")){
-					File target=new File(DbProp.CFG_SQL_PATH+"/"+src.getName());
+					File target=new File(DbProp.CFG_AGENT_PATH+"/"+src.getName());
 					MelpFile.copy(src, target);
 					target.setLastModified(src.lastModified());
 				}
@@ -70,7 +70,7 @@ public class QueryTest {
 		java.increaseVersion();
 		String r=java.replace("return 1;", "return "+value+";");
 		
-		MelpFile.write(new File(DbProp.CFG_SQL_PATH+"/"+name+".java"), r.getBytes("utf-8"));
+		MelpFile.write(new File(DbProp.CFG_AGENT_PATH+"/"+name+".java"), r.getBytes("utf-8"));
 	}
 	
 	private Q4 q4;
@@ -97,7 +97,7 @@ public class QueryTest {
 	
 	@Test
 	public void testQuery01()throws Exception {
-		JavaFile java=new JavaFile(DbProp.CFG_SQL_PATH+"/Q1.java");
+		JavaFile java=new JavaFile(DbProp.CFG_AGENT_PATH+"/Q1.java");
 		  
 		java.replaceAndSave("return 1;", "return 2;");
 		AgentClass.reloadClasses(); 
@@ -113,7 +113,7 @@ public class QueryTest {
 	
 	@Test
 	public void testQueryWithVersion()throws Exception {
-		JavaFile java=new JavaFile(DbProp.CFG_SQL_PATH+"/Q2.java");
+		JavaFile java=new JavaFile(DbProp.CFG_AGENT_PATH+"/Q2.java");
 		 
 		java.replaceAndSave("return 1;", "return 2;");
 		AgentClass.reloadClasses(); 
