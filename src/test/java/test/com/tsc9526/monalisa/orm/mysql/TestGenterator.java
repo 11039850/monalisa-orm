@@ -41,8 +41,8 @@ import com.tsc9526.monalisa.tools.logger.Logger;
 public class TestGenterator {
 	static Logger logger=Logger.getLogger(TestGenterator.class.getSimpleName());
 	 
-	private String outputJavaDir    =DbProp.TMP_WORK_DIR_GEN+"/src/test/java";
-	private String outputResourceDir=DbProp.TMP_WORK_DIR_GEN+"/src/test/resources";
+	private String outputJavaDir    =DbProp.TMP_WORK_DIR_GEN+"/java";
+	private String outputResourceDir=DbProp.TMP_WORK_DIR_GEN+"/resources";
 	
 	private String pkg=MysqlDB.class.getName().toLowerCase().replace(".","/");
 	
