@@ -23,10 +23,12 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 
 /**
  * 
@@ -42,6 +44,21 @@ public class MelpFile {
 			return readBytes(new FileInputStream(file));
 		}catch(FileNotFoundException e){
 			throw new RuntimeException("File not found: "+file.getAbsolutePath(),e);
+		}
+	}
+	
+	public static Properties loadProperties(InputStream in,String charset){
+		try{
+			InputStreamReader reader=new InputStreamReader(in,"utf-8");					 
+			Properties prop=new Properties();
+			prop.load(reader);
+			reader.close();
+			
+			return prop;
+		}catch(IOException e){
+			throw new RuntimeException("Load property exception: "+e,e);
+		}finally{
+			MelpClose.close(in);
 		}
 	}
 	

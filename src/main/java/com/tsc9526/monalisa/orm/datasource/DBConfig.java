@@ -20,6 +20,7 @@ import java.io.Closeable;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.lang.annotation.Annotation;
 import java.sql.Connection;
@@ -618,11 +619,17 @@ public class DBConfig implements Closeable{
 			p.setProperty(key, value);
 		}
 		
+		public void resetProperties(Properties p){
+			this.p.clear();
+			this.p.putAll(p);
+		}
+		
 		private void loadProperties(){
 			if(cfgBasePath!=null){
 				loadCfgFromFile();
 			}else{
 				Class<? extends ConfigClass> clazz=DBGeneratorProcessing.getDBConfigClass(db); 
+				String cff=db.configFile();
 				
 				if(clazz!=null && clazz != ConfigClass.class){
 					try{
@@ -631,6 +638,9 @@ public class DBConfig implements Closeable{
 					}catch(Exception e){
 						throw new RuntimeException("Load config exception, class: "+clazz.getName()+", "+e, e);
 					}
+				}else if(cff!=null && cff.startsWith("classpath:")){
+					String resource=cff.substring("classpath:".length());
+					loadCfgFromClassResource(clazz,resource);
 				}else{
 					loadCfgFromFile();
 				}
@@ -656,13 +666,48 @@ public class DBConfig implements Closeable{
 			}
 		}
 	  
+		protected void loadCfgFromClassResource(Class<?> clazz,String resource) {
+			try{
+				InputStream in=clazz.getResourceAsStream(resource);
+				if(in==null && annotationClass!=null){
+					in=annotationClass.getResourceAsStream(resource);
+				}
+				
+				//try: /resource
+				if(in==null && !resource.startsWith("/")){
+					resource="/"+resource;
+					in=clazz.getResourceAsStream(resource);
+					if(in==null && annotationClass!=null){
+						in=annotationClass.getResourceAsStream(resource);
+					}
+				}
+				
+				InputStreamReader reader=new InputStreamReader(in,"utf-8");					 
+				Properties prop=new Properties();
+				prop.load(reader);
+				reader.close();
+				
+				this.p=prop;
+			}catch(Exception e){
+				throw new RuntimeException("Failed to load classpath resource: "+resource,e);
+			}
+		}
+		
 		protected void loadCfgFromFile() {
 			configFile=db.configFile();
-			
+			 
 			boolean definedCfgFile= configFile!=null && configFile.trim().length()>0;
 			
 			if(definedCfgFile){
 				configFile=configFile.trim();
+				
+				if(configFile.startsWith("file:")){
+					configFile=configFile.substring("file:".length());
+				}
+				
+				if(configFile.startsWith("classpath:")){
+					configFile=configFile.substring("classpath:".length());
+				}
 			}else{
 				configFile=key+".cfg";
 			}
@@ -866,7 +911,7 @@ public class DBConfig implements Closeable{
 		public boolean isCfgFileChanged(){
 			if(configClass!=null){
 				return configClass.isCfgChanged();
-			}else{
+			}else if(configFile!=null){
 				if(cfgFile!=null && cfgFile.lastModified>0){
 					if( cfgFile.lastModified < cfgFile.cfgFile.lastModified()){
 						return true;

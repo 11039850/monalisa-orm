@@ -17,6 +17,7 @@
 package com.tsc9526.monalisa.orm.generator;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.OutputStream;
 import java.io.Writer;
 
@@ -59,6 +60,8 @@ public class DBGeneratorProcessing extends DBGenerator{
 		this.processingEnv = processingEnv;		 
 		this.typeElement = typeElement;
 		
+		this.dbi=typeElement.getQualifiedName().toString();
+		
 		DB db=typeElement.getAnnotation(DB.class);
 		if(db==null){
 			throw new RuntimeException("TypeElement without @DB: "+typeElement.toString());
@@ -89,9 +92,9 @@ public class DBGeneratorProcessing extends DBGenerator{
 		}
 		
 		System.setProperty("DB@"+dbKey,projectPath);				 
-		 
-		this.dbcfg=DataSourceManager.getInstance().getDBConfig(dbKey,db,true);
-				
+		
+		
+		
 		String name=typeElement.getQualifiedName().toString();
 		String pkg=name.toLowerCase();
 		int p=name.lastIndexOf(".");
@@ -99,11 +102,45 @@ public class DBGeneratorProcessing extends DBGenerator{
 			pkg=name.substring(0,p)+name.substring(p).toLowerCase();
 		}		
 		
+		initDbcfg(dbKey,db);
+		
 		this.javaPackage=pkg;		
 		this.resourcePackage="resources."+pkg;
-		this.dbi=typeElement.getQualifiedName().toString();
 		this.dbmetadata=new DBMetadata(projectPath,javaPackage,dbcfg);		
 	}	 
+	
+	protected void initDbcfg(String dbKey,DB db){
+		DataSourceManager dsm=DataSourceManager.getInstance();
+		this.dbcfg=dsm.getDBConfig(dbKey, db, null);
+		 
+		String cff=db.configFile();
+		if(cff!=null && cff.startsWith("classpath:")){
+			String resource=cff.substring("classpath:".length());
+			if(resource.startsWith("/")){
+				resource=resource.substring(1);
+			}
+			
+			String pkg="";
+			String relativeName=resource;
+			int p=resource.lastIndexOf("/");
+			if(p>0){
+				pkg=resource.substring(0,p).replace('/','.');
+				relativeName=resource.substring(p+1);
+			}
+			
+			
+			try{
+				FileObject fo=processingEnv.getFiler().getResource(javax.tools.StandardLocation.CLASS_OUTPUT,pkg,relativeName);
+				File f=new File(fo.toUri());
+				String basepath=f.getAbsolutePath().replace('\\','/');
+				basepath=basepath.substring(0,basepath.length()-resource.length());
+				dbcfg.setCfgBasePath(basepath);
+				dsm.getDBConfig(dbKey, db, true);
+			}catch(IOException e){
+				throw new RuntimeException("Failed to read classpath resource: "+resource,e);
+			}
+		}
+	}
 	  
 	protected OutputStream getResourceOutputStream(String pkg,String filename){		
 		try{			 					
@@ -160,16 +197,17 @@ public class DBGeneratorProcessing extends DBGenerator{
 			String className=classTypeElement.getQualifiedName().toString();
 			try{
 				clazz=(Class<? extends ConfigClass>)MelpClass.forName(className);
+				plogger.info("Loaded db config from class: "+className);
 			}catch(ClassNotFoundException e){
-				plogger.info("Class not found, try load class: "+className+" from project path.");
+				plogger.info("Class not found, try load class  from project path: "+className);
 				
 				return loadClassFromProject(className);
-				
 			}
 		}
 		
 		return clazz;
 	}
+	 
 	
 	private static Class<? extends ConfigClass> loadClassFromProject(String className){
 		throw new RuntimeException("Class not found: "+className);

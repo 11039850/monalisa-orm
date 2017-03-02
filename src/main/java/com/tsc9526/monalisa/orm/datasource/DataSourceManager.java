@@ -147,8 +147,7 @@ public class DataSourceManager {
 		if(cfg==null && db!=null){
 			cfg=new DBConfig(dbKey,db,clazzWithDBAnnotation);
 			putDBConfig(dbKey, cfg);
-		}
-		
+		}		
 		return cfg;
 	}
 	
