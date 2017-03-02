@@ -21,6 +21,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.Writer;
 
+import javax.annotation.processing.Filer;
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.DeclaredType;
@@ -28,6 +29,7 @@ import javax.lang.model.type.MirroredTypeException;
 import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.Types;
 import javax.tools.FileObject;
+import javax.tools.JavaFileManager.Location;
 import javax.tools.JavaFileObject;
 import javax.tools.StandardLocation;
 
@@ -130,8 +132,8 @@ public class DBGeneratorProcessing extends DBGenerator{
 			
 			
 			try{
-				FileObject fo=processingEnv.getFiler().getResource(javax.tools.StandardLocation.CLASS_OUTPUT,pkg,relativeName);
-				File f=new File(fo.toUri());
+				File f=tryGetResourceFile(pkg,relativeName);
+			 	 
 				String basepath=f.getAbsolutePath().replace('\\','/');
 				basepath=basepath.substring(0,basepath.length()-resource.length());
 				dbcfg.setCfgBasePath(basepath);
@@ -140,6 +142,21 @@ public class DBGeneratorProcessing extends DBGenerator{
 				throw new RuntimeException("Failed to read classpath resource: "+resource,e);
 			}
 		}
+	}
+	
+	protected File tryGetResourceFile(String pkg,String relativeName)throws IOException{
+		Filer filer=processingEnv.getFiler();
+		
+		Location[] ls=new Location[]{StandardLocation.CLASS_OUTPUT,StandardLocation.SOURCE_PATH};
+		for(Location l:ls){
+			FileObject fo=filer.getResource(l,pkg,relativeName);
+			File f=new File(fo.toUri());
+			if(f.exists()){
+				return f;
+			} 
+		}
+		
+		return null;
 	}
 	  
 	protected OutputStream getResourceOutputStream(String pkg,String filename){		
