@@ -178,7 +178,7 @@ public @interface DB{
 	 * For example:
 	 * <code><br>
 	 * package test; <br> @DB public interface UserDB{}
-	 * </code><br> The configuration file will be: test.UserDB <br> <br>
+	 * </code><br> The configuration file will be: test.UserDB.cfg<br> <br>
 	 * 
 	 * Another example: 
 	 * <code><br>
