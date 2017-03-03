@@ -133,13 +133,25 @@ public class DataSourceManager {
 	public DBConfig getDBConfig(String dbKey,DB db,boolean reInit) {		  		
 		DBConfig cfg=dss.get(dbKey);
 		if(cfg==null){			
-			cfg=getDBConfig(dbKey,db,null);
+			cfg=getDBConfig(dbKey,db);
 		}else if(reInit){
 			cfg.init(db);			
 		}
 		return cfg;
 	}
+	
+	public DBConfig getDBConfig(String dbKey,DB db,String cfgBasePath) {		  		
+		DBConfig cfg=dss.get(dbKey);
+		if(cfg==null){			
+			cfg=getDBConfig(dbKey,db,(Class<?>)null);
+		}
+		cfg._cfg.cfgBasePath=cfgBasePath;
+		return cfg;
+	}
  
+	public DBConfig getDBConfig(String dbKey,DB db){
+		return getDBConfig(dbKey,db,(Class<?>)null);
+	}
 	
 	public synchronized DBConfig getDBConfig(String dbKey,DB db,Class<?> clazzWithDBAnnotation){
 		DBConfig cfg=dss.get(dbKey);

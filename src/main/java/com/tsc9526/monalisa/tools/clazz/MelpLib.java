@@ -165,7 +165,7 @@ public class MelpLib {
 			String mname=ste.getClassName()+"."+ste.getMethodName();
 			if(mname.equals(PkgNames.ORM_LOADERCLASS+".loadClass")){
 				begin=true;
-			}else if(begin && !mname.startsWith(PkgNames.ORM_PACKAGE+".")){
+			}else if(begin && !mname.startsWith(PkgNames.ORM_PACKAGE+".") && !mname.startsWith(PkgNames.ORM_TOOLS+".")){
 				return ste;
 			}
 		}

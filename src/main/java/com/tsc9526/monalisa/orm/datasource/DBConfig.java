@@ -75,16 +75,14 @@ public class DBConfig implements Closeable{
 	
 	private String[] prefixs=new String[]{PREFIX_DB+"."+CFG_DEFAULT_NAME};
 	
-	private CFG _cfg=new CFG();
+	protected CFG _cfg=new CFG();
 	 
 	private DSI dsi;
 	
 	private DBConfig owner;
 	
 	private boolean initialized=false;
-	
-	private String   cfgBasePath       =null;
-		
+ 		
 	private DBConfig(){
 	}
 	
@@ -100,17 +98,12 @@ public class DBConfig implements Closeable{
 		}
 		return _cfg;
 	}
- 
-	public synchronized DBConfig setCfgBasePath(String basepath){
-		cfgBasePath=basepath;
-		return this;
-	}
-	
+  	
 	public synchronized DBConfig getByConfigName(String configName){
 		DataSourceManager dsm=DataSourceManager.getInstance();
 		
 		String dbKey=this._cfg.key+"#"+configName;		 
-		DBConfig r=dsm.getDBConfig(dbKey, null,null);
+		DBConfig r=dsm.getDBConfig(dbKey, null);
 		if(r==null){
 			String cfgDBUrl=getCfg().p.getProperty(PREFIX_DB+"."+configName+".url");
 			if(cfgDBUrl!=null){
@@ -379,7 +372,7 @@ public class DBConfig implements Closeable{
 	public static DBConfig fromJdbcUrl(String jdbcUrl,String username,String password){
 		final String dbKey=jdbcUrl+"&username="+username+"&password="+password;
 		DB db=createDB(jdbcUrl,username,password);
-		return DataSourceManager.getInstance().getDBConfig(dbKey, db,null);
+		return DataSourceManager.getInstance().getDBConfig(dbKey, db);
 	}
 	
 	public static DB createDB(final String jdbcUrl,final String username,final String password){
@@ -507,7 +500,7 @@ public class DBConfig implements Closeable{
 			 
 			dbcfg.owner=DBConfig.this;
 			dbcfg._cfg.url=URL;			
-			
+		 	
 			String x=DBConfig.this._cfg.key;
 			if(LEVEL==Level.ONLY_READ){
 				x="-"+x;
@@ -532,6 +525,8 @@ public class DBConfig implements Closeable{
 	
 	
 	public class CFG{
+		protected String cfgBasePath =null;
+		
 		private Class<?> annotationClass;
 		private DB     db;
 		private String key;

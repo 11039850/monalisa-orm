@@ -58,6 +58,13 @@ public abstract class DBGenerator {
 		generateResources(tables);
 	}
 	
+	public void setJavaResourcePackage(String pkgName){
+		this.dbi=pkgName.replace('$', '.');
+		 	
+		this.javaPackage=dbi.toLowerCase();
+		this.resourcePackage="resources."+javaPackage;
+	}
+	
 	protected void verifyPartition(MetaTable table){
 		MetaPartition mp=table.getPartition();
 		if(mp!=null){			 

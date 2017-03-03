@@ -53,21 +53,13 @@ public class DBGeneratorLocal extends DBGenerator{
 		String projectPath=".";
 		 		
 		String name=clazzWithDBAnnotation.getName();
-		String pkg=name.toLowerCase();
-		int p=name.lastIndexOf(".");
-		if(p>0){
-			pkg=name.substring(0,p)+name.substring(p).toLowerCase();
-		}	
+		this.setJavaResourcePackage(name);
 		
 		this.outputJavaDir=outputJavaDir;
 		this.outputResourceDir=outputResourceDir;
 		
 		this.dbcfg=DBConfig.fromClass(clazzWithDBAnnotation);		
-		this.javaPackage=pkg;		
-		this.resourcePackage="resources."+pkg;
-		this.dbi=clazzWithDBAnnotation.getName();
 		this.dbmetadata=new DBMetadata(projectPath,javaPackage,dbcfg);
-		
 	}	 
 	  
  

@@ -61,9 +61,7 @@ public class DBGeneratorProcessing extends DBGenerator{
 		 
 		this.processingEnv = processingEnv;		 
 		this.typeElement = typeElement;
-		
-		this.dbi=typeElement.getQualifiedName().toString();
-		
+	 	
 		DB db=typeElement.getAnnotation(DB.class);
 		if(db==null){
 			throw new RuntimeException("TypeElement without @DB: "+typeElement.toString());
@@ -94,26 +92,18 @@ public class DBGeneratorProcessing extends DBGenerator{
 		}
 		
 		System.setProperty("DB@"+dbKey,projectPath);				 
-		
-		
-		
+	 	
 		String name=typeElement.getQualifiedName().toString();
-		String pkg=name.toLowerCase();
-		int p=name.lastIndexOf(".");
-		if(p>0){
-			pkg=name.substring(0,p)+name.substring(p).toLowerCase();
-		}		
+		setJavaResourcePackage(name);	
 		
 		initDbcfg(dbKey,db);
-		
-		this.javaPackage=pkg;		
-		this.resourcePackage="resources."+pkg;
+		 
 		this.dbmetadata=new DBMetadata(projectPath,javaPackage,dbcfg);		
 	}	 
 	
 	protected void initDbcfg(String dbKey,DB db){
 		DataSourceManager dsm=DataSourceManager.getInstance();
-		this.dbcfg=dsm.getDBConfig(dbKey, db, null);
+		this.dbcfg=dsm.getDBConfig(dbKey, db);
 		 
 		String cff=db.configFile();
 		if(cff!=null && cff.startsWith("classpath:")){
@@ -136,7 +126,7 @@ public class DBGeneratorProcessing extends DBGenerator{
 			 	 
 				String basepath=f.getAbsolutePath().replace('\\','/');
 				basepath=basepath.substring(0,basepath.length()-resource.length());
-				dbcfg.setCfgBasePath(basepath);
+				dsm.getDBConfig(dbKey, db, basepath);
 				dsm.getDBConfig(dbKey, db, true);
 			}catch(IOException e){
 				throw new RuntimeException("Failed to read classpath resource: "+resource,e);
