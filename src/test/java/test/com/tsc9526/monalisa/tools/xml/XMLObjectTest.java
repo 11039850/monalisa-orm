@@ -16,10 +16,11 @@
  *******************************************************************************************/
 package test.com.tsc9526.monalisa.tools.xml;
 
+import java.io.Serializable;
+
 import org.junit.Assert;
 import org.testng.annotations.Test;
 
-import com.tsc9526.monalisa.service.Response;
 import com.tsc9526.monalisa.tools.datatable.DataMap;
 import com.tsc9526.monalisa.tools.datatable.DataTable;
 import com.tsc9526.monalisa.tools.xml.XMLObject;
@@ -40,6 +41,18 @@ public class XMLObjectTest {
 		Response resp=new Response(data);
 		XMLObject xml=new XMLObject(resp);
 		Assert.assertTrue(xml.toString().indexOf("<province>GuangDong</province>")>0);
+	}
+	
+	static class Response implements Serializable{	 
+		private static final long serialVersionUID = 5042617802808490420L;
+		int status;
+		String message="OK";
+		
+	 	protected Object data;
+	 
+		public Response(Object data){
+			this.data=data;
+		}
 	}
 	
 	static class Address{

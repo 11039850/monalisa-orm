@@ -29,11 +29,21 @@ public class SLF4JLoggerFactory implements LoggerFactory {
 	
 	public Logger getLogger(String category) {
 		org.slf4j.Logger slf4jLogger = org.slf4j.LoggerFactory.getLogger(category);
-		if (slf4jLogger instanceof LocationAwareLogger) {
-			return new LocationAwareSLF4JLogger((LocationAwareLogger) slf4jLogger);
-		} else {
+		
+		try{
+			Class.forName("org.slf4j.spi.LocationAwareLogger");
+			
+			if (slf4jLogger instanceof LocationAwareLogger) {
+				return new LocationAwareSLF4JLogger((LocationAwareLogger) slf4jLogger);
+			} else {
+				return new LocationUnawareSLF4JLogger(slf4jLogger);
+			}
+		}catch(ClassNotFoundException e){
+			return new LocationUnawareSLF4JLogger(slf4jLogger);
+		}catch(NoClassDefFoundError e){
 			return new LocationUnawareSLF4JLogger(slf4jLogger);
 		}
+		
 	}
 	 
 	private static final class LocationAwareSLF4JLogger extends Logger {

@@ -523,6 +523,17 @@ public class ModelMeta{
 						
 						if(Date.class.getName().equals(c.getJavaType())){
 							v=MelpClass.converter.convert(v, Date.class);
+						}else{
+							try{
+								String jtype=c.getJavaType();
+								if(jtype.indexOf(".")<0){
+									jtype="java.lang."+jtype;
+								}
+								
+								v=MelpClass.converter.convert(v, Class.forName(jtype));
+							}catch(ClassNotFoundException e){
+								throw new RuntimeException("Convert: "+v+" to class exception: "+c.getJavaType(),e);
+							}
 						}
 						
 						m.holder().set(c.getName(), v);							
