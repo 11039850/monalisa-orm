@@ -194,7 +194,7 @@ Output will be:
 	<dependency>
 		<groupId>com.tsc9526</groupId>
 		<artifactId>monalisa-orm</artifactId>
-		<version>1.7.0</version>
+		<version>2.0.0</version>
 	</dependency>
 ``` 
 
