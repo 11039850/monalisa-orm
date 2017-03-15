@@ -1,7 +1,8 @@
 # monalisa-orm
 
 > And God said, Let there be light: and there was light.
-      
+
+
 # Features
 
 * Using the database takes only 1 line of code
@@ -13,14 +14,16 @@
 
 5 minutes video: [Youtube](http://www.youtube.com/watch?v=3qpr0J7D7cQ) / [YouKu](http://v.youku.com/v_show/id_XMTU0ODk1MzA2MA==.html) 
 
-[Details](https://github.com/11039850/monalisa-orm/wiki)
+[Example Project](https://github.com/11039850/monalisa-example) |  [Eclipse Plugin](https://github.com/11039850/monalisa-orm/wiki/Code-Generator#eclipse-plugin)
 
-# Example
 
-[Example Project](https://github.com/11039850/monalisa-example)
+# Usage
 
 
 ## Using the database
+
+![image](https://github.com/11039850/monalisa-orm/raw/master/doc/images/db.gif)
+
 ```java  
 	
 	@DB(url="jdbc:mysql://127.0.0.1:3306/test" ,username="root", password="root")
@@ -36,6 +39,8 @@
  
 
 ## Auto generate DTOs
+
+![image](https://github.com/11039850/monalisa-orm/raw/master/doc/images/select.gif)
 
 ```java
 
