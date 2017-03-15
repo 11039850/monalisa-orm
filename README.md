@@ -25,7 +25,6 @@
 ![image](https://github.com/11039850/monalisa-orm/raw/master/doc/images/db.gif)
 
 ```java  
-	
 	@DB(url="jdbc:mysql://127.0.0.1:3306/test" ,username="root", password="root")
 	public interface TestDB {
 		public static DBConfig DB=DBConfig.fromClass(TestDB.class); 
@@ -33,7 +32,6 @@
 ```
 
 ```java
-	
 	TestDB.DB.select("SELECT * FROM user WHERE name like ?","zzg%");
 ```	
  
@@ -43,7 +41,6 @@
 ![image](https://github.com/11039850/monalisa-orm/raw/master/doc/images/select.gif)
 
 ```java
-
 	public class UserBlogDao {
 		@Select(name="test.result.UserBlogs")      // <--- Auto create/update: test.result.UserBlogs
 		public List  selectUserBlogs(int user_id){ // <--- Auto replace List to List<UserBlogs>
@@ -65,7 +62,6 @@
 
 Direct Access Database by HTTP, see: [monalisa-service](https://github.com/11039850/monalisa-service)
 ```
-
   curl http://localhost:8080/your_web_app/dbs/testdb/your_table_name
 ```
 
@@ -74,7 +70,6 @@ Direct Access Database by HTTP, see: [monalisa-service](https://github.com/11039
 ### Insert
 
 ```java
-
 	//insert
 	new User().setName("zzg.zhou").setStatus(1).save();
 	
@@ -92,7 +87,6 @@ Direct Access Database by HTTP, see: [monalisa-service](https://github.com/11039
 ### Delete
 
 ```java
-	
 	//delete
 	user.delete();
 	
@@ -107,16 +101,13 @@ Direct Access Database by HTTP, see: [monalisa-service](https://github.com/11039
 ### Update
 
 ```java
-
 	user.setName("newName").setStatus(1).save();
-	
 ```
  
 
 #### Select records
 
 ```java
-	
 	//select by primary key
 	User.SELECT().selectByPrimaryKey(1);
 	
@@ -138,7 +129,6 @@ Direct Access Database by HTTP, see: [monalisa-service](https://github.com/11039
 #### Where query 	
 
 ```java
-
 	//SQL: SELECT * FROM `user` WHERE `name` like 'zzg%' AND `status` IN(0, 1)
 	for(User x:User.WHERE().name.like("zzg%").status.in(0, 1).SELECT().select()){
 		System.out.println(x);
@@ -159,7 +149,6 @@ Direct Access Database by HTTP, see: [monalisa-service](https://github.com/11039
 #### General query
 
 ```java
-
 	TestDB.DB.select("SELECT * FROM user WHERE name like ?","zzg%");
 	TestDB.DB.createQuery().add("SELECT * FROM user WHERE name like ?","zzg%").getList(User.class);
 	 
@@ -176,7 +165,6 @@ Direct Access Database by HTTP, see: [monalisa-service](https://github.com/11039
 #### DataTable query	
 
 ```java
-
 	//DataTable query
 	//SQL: SELECT name, count(*) as cnt FROM _THIS_TABLE WHERE status>=0 GROUP BY name ORDER BY name ASC
 	DataTable<DataMap> newTable=rs.select("name, count(*) as cnt","status>=0","name ASC","GROUP BY name");
@@ -193,7 +181,6 @@ Direct Access Database by HTTP, see: [monalisa-service](https://github.com/11039
 ### Transaction
 
 ```java
-	
 	//transaction
 	Tx.execute(new Tx.Atom() {
 		public int execute() {
@@ -208,7 +195,6 @@ Direct Access Database by HTTP, see: [monalisa-service](https://github.com/11039
 ### Dynamic model
 
 ```java
-	 
 	//Dynamic model: Record
 	Record r=new Record("user").use(TestDB.DB);
 	r.set("name", "jjyy").set("status",1)
@@ -238,7 +224,6 @@ Direct Access Database by HTTP, see: [monalisa-service](https://github.com/11039
 see [Multiple-line-syntax](https://github.com/11039850/monalisa-orm/wiki/Multiple-line-syntax)
 
 ```java
-
 	public static void main(String[] args) {
 		String lines = ""/**~{
 			SELECT * 
@@ -252,7 +237,6 @@ see [Multiple-line-syntax](https://github.com/11039850/monalisa-orm/wiki/Multipl
 Output will be:
 
 ```sql
-
 	SELECT * 
 		FROM user
 		WHERE name="zzg"
@@ -262,8 +246,7 @@ Output will be:
 [Details](https://github.com/11039850/monalisa-orm/wiki)
 
 # Maven: 
-```xml
-	
+```xml	
 	<dependency>
 		<groupId>com.tsc9526</groupId>
 		<artifactId>monalisa-orm</artifactId>
