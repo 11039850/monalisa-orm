@@ -7,26 +7,26 @@
 * Using the database takes only 1 line of code
 * Generic ORM functions(CRUD)
 * Auto generate DTOs
+* Object fields
 * Dynamic load java code
-* Dynamic load jar if needed
 * Easily write multi-line strings in the java code
 
 5 minutes video: [Youtube](http://www.youtube.com/watch?v=3qpr0J7D7cQ) / [YouKu](http://v.youku.com/v_show/id_XMTU0ODk1MzA2MA==.html) 
 
-[For more details](https://github.com/11039850/monalisa-orm/wiki)
+[Details](https://github.com/11039850/monalisa-orm/wiki)
 
 # Example
 
-Full example: [Example Project](https://github.com/11039850/monalisa-example)
+[Example Project](https://github.com/11039850/monalisa-example)
 
 
 ## Using the database
 ```java  
 	
 	@DB(url="jdbc:mysql://127.0.0.1:3306/test" ,username="root", password="root")
-    public interface TestDB {
-    	public static DBConfig DB=DBConfig.fromClass(TestDB.class); 
-    }
+	public interface TestDB {
+		public static DBConfig DB=DBConfig.fromClass(TestDB.class); 
+	}
 ```
 
 ```java
@@ -45,18 +45,29 @@ Full example: [Example Project](https://github.com/11039850/monalisa-example)
 			Query q=TestDB.DB.createQuery();
 			            
 			q.add(""/**~{
-					SELECT a.id, a.name, b.title, b.content, b.create_time
-						FROM user a, blog b   
-						WHERE a.id=b.user_id AND a.id=?		
+				SELECT a.id, a.name, b.title, b.content, b.create_time
+					FROM user a, blog b   
+					WHERE a.id=b.user_id AND a.id=?		
 			}*/, user_id);
 			 
-			return q.getList();                    // <--- Auto replace getList() to getList<UserBlogs>
+			return q.getList();                   // <--- Auto replace getList() to getList<UserBlogs>
 		} 
 	}
 ```
 
 
+## Database service
+
+Direct Access Database by HTTP, see: [monalisa-service](https://github.com/11039850/monalisa-service)
+```
+
+  curl http://localhost:8080/your_web_app/dbs/testdb/your_table_name
+```
+
 ## Query Example
+
+### Insert
+
 ```java
 
 	//insert
@@ -66,7 +77,42 @@ Full example: [Example Project](https://github.com/11039850/monalisa-example)
 	new User().parse("{'name':'oschina','status':0}").save();
 	new User().parse("<data> <name>china01</name><status>1</status> </data>").save();
 	
-	//select
+	//Object field
+	Address address=new Address("guangdong","shenzhen");
+	user.setAddress(address).save();
+	
+```
+
+
+### Delete
+
+```java
+	
+	//delete
+	user.delete();
+	
+	//SQL: DELETE FROM `user` WHERE `name`='china01'
+	User.WHERE().name.eq("china01").delete();
+	
+	//User.DELETE().deleteAll();
+	//User.DELETE().truncate();     
+```
+
+
+### Update
+
+```java
+
+	user.setName("newName").setStatus(1).save();
+	
+```
+ 
+
+#### Select records
+
+```java
+	
+	//select by primary key
 	User.SELECT().selectByPrimaryKey(1);
 	
 	//SQL: SELECT * FROM `user` WHERE `name` = 'zzg.zhou'
@@ -74,10 +120,20 @@ Full example: [Example Project](https://github.com/11039850/monalisa-example)
 	
 	//SQL: SELECT `name`, `status` FROM `user`
 	User.SELECT().include("name","status").select();
+```
+
+#### Page query
+
+```java
 	 
 	Page<User> page=User.WHERE().name.like("zzg%").status.in(1,2,3).SELECT().selectPage(10,0);
 	System.out.println(page.getTotalRow());
-	
+```
+
+#### Where query 	
+
+```java
+
 	//SQL: SELECT * FROM `user` WHERE `name` like 'zzg%' AND `status` IN(0, 1)
 	for(User x:User.WHERE().name.like("zzg%").status.in(0, 1).SELECT().select()){
 		System.out.println(x);
@@ -93,9 +149,12 @@ Full example: [Example Project](https://github.com/11039850/monalisa-example)
 				.SELECT().select()){ //SELECT / delete / update
 		System.out.println(x);
 	}
-	
-	 
-	//general query
+```
+
+#### General query
+
+```java
+
 	TestDB.DB.select("SELECT * FROM user WHERE name like ?","zzg%");
 	TestDB.DB.createQuery().add("SELECT * FROM user WHERE name like ?","zzg%").getList(User.class);
 	 
@@ -103,15 +162,20 @@ Full example: [Example Project](https://github.com/11039850/monalisa-example)
 	DataTable<DataMap> rs=q.add("SELECT * FROM user WHERE name like ?","zzg%")
 	 .add(" AND status ").in(1,2,3)
 	 .getList();
+	 
 	for(User x:rs.as(User.class)){
 		System.out.println(x);
 	}
-	
+```
+
+#### DataTable query	
+
+```java
+
 	//DataTable query
 	//SQL: SELECT name, count(*) as cnt FROM _THIS_TABLE WHERE status>=0 GROUP BY name ORDER BY name ASC
 	DataTable<DataMap> newTable=rs.select("name, count(*) as cnt","status>=0","name ASC","GROUP BY name");
-	
-	
+		
 	//update
 	User user=User.SELECT().selectOne("name=?", "zzg.zhou");
 	user.setStatus(3).update();
@@ -119,6 +183,11 @@ Full example: [Example Project](https://github.com/11039850/monalisa-example)
 	User updateTo=new User().setName("tsc9526");
 	User.WHERE().name.like("zzg%").update(updateTo);
 	
+```
+
+### Transaction
+
+```java
 	
 	//transaction
 	Tx.execute(new Tx.Atom() {
@@ -129,6 +198,11 @@ Full example: [Example Project](https://github.com/11039850/monalisa-example)
 			return 0;
 		}
 	});
+```
+
+### Dynamic model
+
+```java
 	 
 	//Dynamic model: Record
 	Record r=new Record("user").use(TestDB.DB);
@@ -150,20 +224,14 @@ Full example: [Example Project](https://github.com/11039850/monalisa-example)
 	r.WHERE()
 	 .field("name").like("jjyy%").field("status").ge(0)
 	 .delete();
-		  
+```		  
 	
-	//delete
-	user.delete();
-	
-	//SQL: DELETE FROM `user` WHERE `name`='china01'
-	User.WHERE().name.eq("china01").delete();
-	
-	//User.DELETE().deleteAll();     
-
-```
 
 
 ## Multi-line strings
+
+see [Multiple-line-syntax](https://github.com/11039850/monalisa-orm/wiki/Multiple-line-syntax)
+
 ```java
 
 	public static void main(String[] args) {
@@ -186,7 +254,7 @@ Output will be:
 ```
 
 
-[For more details](https://github.com/11039850/monalisa-orm/wiki)
+[Details](https://github.com/11039850/monalisa-orm/wiki)
 
 # Maven: 
 ```xml
