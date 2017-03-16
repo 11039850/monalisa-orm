@@ -101,7 +101,14 @@ Direct Access Database by HTTP, see: [monalisa-service](https://github.com/11039
 ### Update
 
 ```java
-	user.setName("newName").setStatus(1).save();
+	//update by primary key
+	User user=User.SELECT().selectOne("name=?", "zzg.zhou");
+	user.setStatus(3).update();
+	
+		
+	//SQL: UPDATE user SET name='tsc9526' WHERE name like 'zzg%'	
+	User updateTo=new User().setName("tsc9526");
+	User.WHERE().name.like("zzg%").update(updateTo);
 ```
  
 
@@ -150,32 +157,23 @@ Direct Access Database by HTTP, see: [monalisa-service](https://github.com/11039
 
 ```java
 	TestDB.DB.select("SELECT * FROM user WHERE name like ?","zzg%");
-	TestDB.DB.createQuery().add("SELECT * FROM user WHERE name like ?","zzg%").getList(User.class);
+	TestDB.DB.createQuery()
+		.add("SELECT * FROM user WHERE name like ?","zzg%")
+		.getList(User.class);
 	 
-	Query q=new Query(TestDB.DB);
-	DataTable<DataMap> rs=q.add("SELECT * FROM user WHERE name like ?","zzg%")
-	 .add(" AND status ").in(1,2,3)
-	 .getList();
-	 
-	for(User x:rs.as(User.class)){
-		System.out.println(x);
-	}
 ```
 
 #### DataTable query	
 
 ```java
 	//DataTable query
+	Query q=new Query(TestDB.DB);
+	DataTable<DataMap> rs=q.add("SELECT * FROM user WHERE name like ?","zzg%")
+	 .add(" AND status ").in(1,2,3)
+	 .getList();
+	 
 	//SQL: SELECT name, count(*) as cnt FROM _THIS_TABLE WHERE status>=0 GROUP BY name ORDER BY name ASC
-	DataTable<DataMap> newTable=rs.select("name, count(*) as cnt","status>=0","name ASC","GROUP BY name");
-		
-	//update
-	User user=User.SELECT().selectOne("name=?", "zzg.zhou");
-	user.setStatus(3).update();
-	
-	User updateTo=new User().setName("tsc9526");
-	User.WHERE().name.like("zzg%").update(updateTo);
-	
+	DataTable<DataMap> newTable=rs.select("name, count(*) as cnt","status>=0","name ASC","GROUP BY name");	
 ```
 
 ### Transaction
@@ -225,11 +223,14 @@ see [Multiple-line-syntax](https://github.com/11039850/monalisa-orm/wiki/Multipl
 
 ```java
 	public static void main(String[] args) {
-		String lines = ""/**~{
+		String name="zzg";
+		
+		String lines = ""/**~!{
 			SELECT * 
 				FROM user
-				WHERE name="zzg"
+				WHERE name="$name"
 		}*/;
+		
 		System.out.println(lines);
 	}
 ```
