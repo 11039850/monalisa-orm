@@ -93,8 +93,8 @@ Direct Access Database by HTTP, see: [monalisa-service](https://github.com/11039
 	//SQL: DELETE FROM `user` WHERE `name`='china01'
 	User.WHERE().name.eq("china01").delete();
 	
-	//User.DELETE().deleteAll();
-	//User.DELETE().truncate();     
+	User.DELETE().deleteAll();
+	User.DELETE().truncate();     
 ```
 
 
@@ -128,8 +128,10 @@ Direct Access Database by HTTP, see: [monalisa-service](https://github.com/11039
 #### Page query
 
 ```java
-	 
-	Page<User> page=User.WHERE().name.like("zzg%").status.in(1,2,3).SELECT().selectPage(10,0);
+	Page<User> page=User.WHERE()
+		.name.like("zzg%")
+		.status.in(1,2,3)
+		.SELECT().selectPage(10,0);
 	System.out.println(page.getTotalRow());
 ```
 
@@ -144,11 +146,11 @@ Direct Access Database by HTTP, see: [monalisa-service](https://github.com/11039
 	//SQL: SELECT * FROM `user` WHERE (`name` like 'zzg%' AND `status` >= 0) 
 	//                             OR (`name` = 'zzg' AND `status` > 1) ORDER BY `status` ASC 
 	for(User x:User.WHERE()
-				.name.like("zzg%").status.ge(0)
-				.OR()
-				.name.eq("zzg").status.gt(1)
-				.status.asc()
-				.SELECT().select()){ //SELECT / delete / update
+			.name.like("zzg%").status.ge(0)
+			.OR()
+			.name.eq("zzg").status.gt(1)
+			.status.asc()
+			.SELECT().select()){ //SELECT / delete / update
 		System.out.println(x);
 	}
 ```
