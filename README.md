@@ -20,7 +20,7 @@
 # Usage
 
 
-## Using the database
+## Using Database
 
 ![image](https://github.com/11039850/monalisa-orm/raw/master/doc/images/db.gif)
 
@@ -36,7 +36,7 @@
 ```	
  
 
-## Auto generate DTOs
+## Auto-Generate DTOs
 
 ![image](https://github.com/11039850/monalisa-orm/raw/master/doc/images/select.gif)
 
@@ -58,7 +58,7 @@
 ```
 
 
-## Database service
+## Database Service
 
 Direct Access Database by HTTP, see: [monalisa-service](https://github.com/11039850/monalisa-service)
 ```
