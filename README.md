@@ -26,13 +26,11 @@
 
 ```java  
 	@DB(url="jdbc:mysql://127.0.0.1:3306/test" ,username="root", password="root")
-	public interface TestDB {
-		public static DBConfig DB=DBConfig.fromClass(TestDB.class); 
-	}
+	public interface TestDB{}
 ```
 
 ```java
-	TestDB.DB.select("SELECT * FROM user WHERE name like ?","zzg%");
+	new User().setName("zzg.zhou").setStatus(1).save();
 ```	
  
 
@@ -76,6 +74,9 @@ Direct Access Database by HTTP, see: [monalisa-service](https://github.com/11039
 	//parse data from type: Map, json/xml string, JsonObject(Gson), HttpServletRequest, JavaBean
 	new User().parse("{'name':'oschina','status':0}").save();
 	new User().parse("<data> <name>china01</name><status>1</status> </data>").save();
+	
+	//parse data from HttpServeltRequest
+	new User().parse(request).save();
 	
 	//Object field
 	Address address=new Address("guangdong","shenzhen");
@@ -132,12 +133,7 @@ Direct Access Database by HTTP, see: [monalisa-service](https://github.com/11039
 		.name.like("zzg%")
 		.status.in(1,2,3)
 		.SELECT().selectPage(10,0);
-	System.out.println(page.getTotalRow());
-```
-
-#### Where query 	
-
-```java
+	 
 	//SQL: SELECT * FROM `user` WHERE `name` like 'zzg%' AND `status` IN(0, 1)
 	for(User x:User.WHERE().name.like("zzg%").status.in(0, 1).SELECT().select()){
 		System.out.println(x);
@@ -158,7 +154,14 @@ Direct Access Database by HTTP, see: [monalisa-service](https://github.com/11039
 #### General query
 
 ```java
+	@DB(url="jdbc:mysql://127.0.0.1:3306/test" ,username="root", password="root")
+	public interface TestDB {
+		public static DBConfig DB=DBConfig.fromClass(TestDB.class); 
+	}
+	
+	
 	TestDB.DB.select("SELECT * FROM user WHERE name like ?","zzg%");
+	
 	TestDB.DB.createQuery()
 		.add("SELECT * FROM user WHERE name like ?","zzg%")
 		.getList(User.class);
