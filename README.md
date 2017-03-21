@@ -9,8 +9,8 @@
 * Generic ORM functions(CRUD)
 * Auto-Generate DTOs
 * Object fields
-* Dynamic load SQL
-* Easily write multi-line strings
+* Reload SQL dynamically
+* Write multi-line strings easily
 
 5 minutes video: [Youtube](http://www.youtube.com/watch?v=3qpr0J7D7cQ) / [YouKu](http://v.youku.com/v_show/id_XMTU0ODk1MzA2MA==.html) 
 
@@ -58,7 +58,7 @@
 
 ## Database Service
 
-Direct Access Database by HTTP, see: [monalisa-service](https://github.com/11039850/monalisa-service)
+Direct Database Access by HTTP, see: [monalisa-service](https://github.com/11039850/monalisa-service)
 ```
   curl http://localhost:8080/your_web_app/dbs/testdb/your_table_name
 ```
@@ -74,21 +74,24 @@ Direct Access Database by HTTP, see: [monalisa-service](https://github.com/11039
 	//parse data from type: Map, json/xml string, JsonObject(Gson), HttpServletRequest, JavaBean
 	new User().parse("{'name':'oschina','status':0}").save();
 	new User().parse("<data> <name>china01</name><status>1</status> </data>").save();
-	
-	//parse data from HttpServeltRequest
 	new User().parse(request).save();
 	
 	//Object field
 	Address address=new Address("guangdong","shenzhen");
 	user.setAddress(address).save();
 	
+	//File field
+	String detail_save_path="path/001.txt";
+	String content="This is a big text.";
+	user.setDetail(path,content.getBytes()).save(); 
+	user.getDetailAsString();
 ```
 
 
 ### Delete
 
 ```java
-	//delete
+	//delete user by primary key or unique key
 	user.delete();
 	
 	//SQL: DELETE FROM `user` WHERE `name`='china01'
@@ -264,7 +267,6 @@ Output will be:
 # TODO list
 
 * Other database's dialect
-* Direct access data through HTTP
 * Automatic refresh the query cache in the background
 * ...
 
