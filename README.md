@@ -9,7 +9,7 @@
 * Generic ORM functions(CRUD)
 * Auto-Generate DTOs
 * Object fields
-* Dynamic load java code
+* Dynamic load SQL
 * Easily write multi-line strings
 
 5 minutes video: [Youtube](http://www.youtube.com/watch?v=3qpr0J7D7cQ) / [YouKu](http://v.youku.com/v_show/id_XMTU0ODk1MzA2MA==.html) 
