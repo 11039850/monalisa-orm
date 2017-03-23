@@ -1,8 +1,3 @@
-# monalisa-orm
-
-> And God said, Let there be light: and there was light.
-
-
 # Features
 
 * Using the database takes only 1 line of code
