@@ -10,6 +10,7 @@
 * Auto-Generate DTOs
 * Object fields
 * Reload SQL dynamically
+* Sharding support 
 * Write multi-line strings easily
 
 5 minutes video: [Youtube](http://www.youtube.com/watch?v=3qpr0J7D7cQ) / [YouKu](http://v.youku.com/v_show/id_XMTU0ODk1MzA2MA==.html) 
@@ -26,7 +27,9 @@
 
 ```java  
 	@DB(url="jdbc:mysql://127.0.0.1:3306/test" ,username="root", password="root")
-	public interface TestDB{}
+	public interface TestDB{
+		public static DBConfig DB=DBConfig.fromClass(TestDB.class);  
+	}
 ```
 
 ```java
@@ -116,7 +119,7 @@ Direct Database Access by HTTP, see: [monalisa-service](https://github.com/11039
 ```
  
 
-#### Select records
+### Select
 
 ```java
 	//select by primary key
@@ -127,22 +130,8 @@ Direct Database Access by HTTP, see: [monalisa-service](https://github.com/11039
 	
 	//SQL: SELECT `name`, `status` FROM `user`
 	User.SELECT().include("name","status").select();
-```
-
-#### Page query
-
-```java
-	Page<User> page=User.WHERE()
-		.name.like("zzg%")
-		.status.in(1,2,3)
-		.SELECT().selectPage(10,0);
-	 
-	//SQL: SELECT * FROM `user` WHERE `name` like 'zzg%' AND `status` IN(0, 1)
-	for(User x:User.WHERE().name.like("zzg%").status.in(0, 1).SELECT().select()){
-		System.out.println(x);
-	}
-			
-	//SQL: SELECT * FROM `user` WHERE (`name` like 'zzg%' AND `status` >= 0) 
+ 
+ 	//SQL: SELECT * FROM `user` WHERE (`name` like 'zzg%' AND `status` >= 0) 
 	//                             OR (`name` = 'zzg' AND `status` > 1) ORDER BY `status` ASC 
 	for(User x:User.WHERE()
 			.name.like("zzg%").status.ge(0)
@@ -152,17 +141,18 @@ Direct Database Access by HTTP, see: [monalisa-service](https://github.com/11039
 			.SELECT().select()){ //SELECT / delete / update
 		System.out.println(x);
 	}
+	
+ 	//Page
+	Page<User> page=User.WHERE()
+		.name.like("zzg%")
+		.status.in(1,2,3)
+		.SELECT().selectPage(10,0);	
+	
 ```
 
-#### General query
+### Query
 
 ```java
-	@DB(url="jdbc:mysql://127.0.0.1:3306/test" ,username="root", password="root")
-	public interface TestDB {
-		public static DBConfig DB=DBConfig.fromClass(TestDB.class); 
-	}
-	
-	
 	TestDB.DB.select("SELECT * FROM user WHERE name like ?","zzg%");
 	
 	TestDB.DB.createQuery()
@@ -171,15 +161,15 @@ Direct Database Access by HTTP, see: [monalisa-service](https://github.com/11039
 	 
 ```
 
-#### DataTable query	
+### DataTable	
 
 ```java
-	//DataTable query
 	Query q=new Query(TestDB.DB);
 	DataTable<DataMap> rs=q.add("SELECT * FROM user WHERE name like ?","zzg%")
 	 .add(" AND status ").in(1,2,3)
 	 .getList();
 	 
+	//Query inside DataTable
 	//SQL: SELECT name, count(*) as cnt FROM _THIS_TABLE WHERE status>=0 GROUP BY name ORDER BY name ASC
 	DataTable<DataMap> newTable=rs.select("name, count(*) as cnt","status>=0","name ASC","GROUP BY name");	
 ```
@@ -198,7 +188,7 @@ Direct Database Access by HTTP, see: [monalisa-service](https://github.com/11039
 	});
 ```
 
-### Dynamic model
+### Record
 
 ```java
 	//Dynamic model: Record
@@ -222,7 +212,29 @@ Direct Database Access by HTTP, see: [monalisa-service](https://github.com/11039
 	 .field("name").like("jjyy%").field("status").ge(0)
 	 .delete();
 ```		  
+
+### Sharding
+
+```java
+	public class ShardingUser extends User{
+		//Override
+		public Table table(){
+			String tableName= "user_"+( getId()%10 );
+			return ModelMeta.createTable(tableName);
+		}
+		
+		//Override
+		public DBConfig db(){
+			return getId()<10 ? TestDB.DB1 : TestDB.DB2;
+		}
+	}
 	
+	ShardingUser user1=new ShardingUser(1);
+	user1.save(); //Will be saved to table: user_1, database: TestDB.DB1
+	
+	ShardingUser user2=new ShardingUser(15);
+	user2.save(); //Will be saved to table: user_5, database: TestDB.DB2
+```	
 
 
 ## Multi-line strings
