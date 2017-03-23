@@ -48,7 +48,7 @@
 					WHERE a.id=b.user_id AND a.id=?		
 			}*/, user_id);
 			 
-			return q.getList();                   // <--- Auto replace getList() to getList<UserBlogs>
+			return q.getList();               // <--- Auto replace getList() to getList<UserBlogs>
 		} 
 	}
 ```
