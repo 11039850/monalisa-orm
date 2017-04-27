@@ -25,7 +25,6 @@ import com.tsc9526.monalisa.orm.meta.MetaTable.CreateTable;
  * @author zzg.zhou(11039850@qq.com)
  */
 class SQLDialect extends Dialect{
-
 	public String getUrlPrefix() {
 		return null;
 	}
@@ -57,5 +56,4 @@ class SQLDialect extends Dialect{
 	public String getIdleValidationQuery() {
 		return null;
 	}
-
 }

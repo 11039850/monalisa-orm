@@ -24,6 +24,7 @@ import com.tsc9526.monalisa.orm.datasource.DbProp;
 import com.tsc9526.monalisa.orm.meta.MetaTable.CreateTable;
 import com.tsc9526.monalisa.orm.meta.MetaTable.TableType;
 import com.tsc9526.monalisa.tools.datatable.DataMap;
+import com.tsc9526.monalisa.tools.datatable.DataTable;
 
 /**
  * 
@@ -87,6 +88,11 @@ public class MysqlDialect extends Dialect {
 		query.add(" LIMIT " + limit + " OFFSET " + offset);
 
 		return query;
+	}
+	
+	public DataTable<DataMap> getTableDesription(DBConfig db,String schema){
+		String sql="SELECT TABLE_NAME,TABLE_COMMENT  FROM information_schema.`TABLES` WHERE TABLE_SCHEMA=? ";
+		return db.select(sql, schema);
 	}
 
 	public boolean tableExist(DBConfig db,String name,boolean incudeView){

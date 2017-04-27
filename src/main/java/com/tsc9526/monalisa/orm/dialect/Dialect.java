@@ -35,6 +35,8 @@ import com.tsc9526.monalisa.orm.model.ModelIndex;
 import com.tsc9526.monalisa.tools.clazz.MelpEnum;
 import com.tsc9526.monalisa.tools.clazz.MelpClass.FGS;
 import com.tsc9526.monalisa.tools.converters.impl.ArrayTypeConversion;
+import com.tsc9526.monalisa.tools.datatable.DataMap;
+import com.tsc9526.monalisa.tools.datatable.DataTable;
 import com.tsc9526.monalisa.tools.json.MelpJson;
 import com.tsc9526.monalisa.tools.logger.Logger;
 import com.tsc9526.monalisa.tools.string.MelpSQL;
@@ -65,6 +67,10 @@ public abstract class Dialect{
 	public abstract Query getLimitQuery(Query origin,int limit ,int offset);
 	 
 	public abstract CreateTable getCreateTable(DBConfig db,String tableName);
+	
+	public DataTable<DataMap> getTableDesription(DBConfig db,String schema){
+		return null;
+	}
 	
 	public boolean tableExist(DBConfig db,String name,boolean includeView){
 		name=getRealname(name);

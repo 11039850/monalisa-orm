@@ -46,8 +46,11 @@ import com.tsc9526.monalisa.orm.meta.MetaTable;
 import com.tsc9526.monalisa.orm.meta.MetaTable.CreateTable;
 import com.tsc9526.monalisa.orm.meta.MetaTable.TableType;
 import com.tsc9526.monalisa.orm.utils.TableHelper;
+import com.tsc9526.monalisa.tools.datatable.DataMap;
+import com.tsc9526.monalisa.tools.datatable.DataTable;
 import com.tsc9526.monalisa.tools.io.MelpClose;
 import com.tsc9526.monalisa.tools.io.MelpFile;
+import com.tsc9526.monalisa.tools.string.MelpString;
 
 /**
  * 
@@ -265,7 +268,7 @@ public class DBMetadata {
 		for(MetaPartition p:partitions){
 			p.clearTable();
 		}
-		
+		 
 		List<MetaTable> tables=new ArrayList<MetaTable>();
 		ResultSet rs=metadata.getTables(catalog, schema, tableName, new String[]{"TABLE"});			 
 		while(rs.next()){
@@ -282,6 +285,7 @@ public class DBMetadata {
 		}
 		rs.close();
 		 
+		processTableRemarks(tables);
 	    	    
 		processTableMapping(tables);
 		
@@ -293,6 +297,33 @@ public class DBMetadata {
 		}
 		
 		return tables;
+	}
+	
+	protected void processTableRemarks(List<MetaTable> tables){
+		for(MetaTable table:tables){
+			if(!MelpString.isEmpty(table.getRemarks())){
+				return;
+			}
+		}
+		
+		try{
+			DataTable<DataMap> tds=dbcfg.getDialect().getTableDesription(dbcfg, schema);
+			if(tds!=null){
+				DataMap xs=new DataMap();
+				
+				for(DataMap m:tds){
+					String name  =m.getString("TABLE_NAME","");
+					String remark=m.getString("TABLE_COMMENT","");
+					xs.put(name, remark);
+				}
+				
+				for(MetaTable table:tables){
+					table.setRemarks(xs.getString(table.getName(),""));
+				}
+			}
+		}catch(Exception e){
+			DBGenerator.plogger.error("Failed read table schema info: "+e.getMessage(),e);
+		}
 	}
 	 
 	
