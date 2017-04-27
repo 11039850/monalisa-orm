@@ -739,7 +739,7 @@ public class DBConfig implements Closeable{
 						//Windows ROOT C: D: E: ...
 						logger.info("find("+key+") cfg base path by win-root config file: "+configFile); 
 					}else{
-						configFile=MelpFile.combinePath(findCfgBasePath(),configFile);
+						configFile=MelpFile.combinePath(findCfgBasePath(configFile),configFile);
 					}				
 				}else{
 					logger.info("find("+key+") cfg base path by root config file: "+configFile); 
@@ -749,12 +749,12 @@ public class DBConfig implements Closeable{
 			return configFile;
 		}
 		
-		protected String findCfgBasePath(){
+		protected String findCfgBasePath(String configFile){
 			String basepath=System.getProperty("DB@"+key);
 			if(basepath==null){
 				String defpath=MelpFile.combinePath(DbProp.CFG_ROOT_PATH,configFile);
 				if(new File(defpath).exists()==false && annotationClass!=null){
-					basepath=MelpEclipse.findCfgBasePathByClass(annotationClass);
+					basepath=MelpEclipse.findCfgBasePathByClass(annotationClass,configFile);
 					if(basepath!=null){
 						logger.info("Search("+key+") base path from class: "+annotationClass.getName()+", path: "+basepath+", file: "+configFile);
 						

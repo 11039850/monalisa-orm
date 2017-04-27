@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.tsc9526</groupId>
 	<artifactId>monalisa-orm</artifactId>
-	<version>2.0.0</version>
+	<version>2.0.1-SNAPSHOT</version>
 
 	<name>monalisa-orm</name>
 	<url>https://github.com/11039850/monalisa-orm</url>
@@ -141,6 +141,13 @@
 			<artifactId>mysql-connector-java</artifactId>
 			<version>5.1.24</version>
 			<scope>provided</scope>
+		</dependency>
+		
+		<dependency>
+		  <groupId>com.hynnet</groupId>
+		  <artifactId>sqljdbc-chs</artifactId>
+		  <version>4.0.2206.100</version>
+		  <scope>provided</scope>
 		</dependency>
 
 		<dependency>

@@ -45,14 +45,14 @@ public class MelpEclipse {
 		}
 	}
 	
-	public static String findCfgBasePathByClass(Class<?> clazz){
+	public static String findCfgBasePathByClass(Class<?> clazz,String configFile){
 		String basepath=null;
 		
 		String ewd=getEclipseWorkspaceDir();
 		if(ewd!=null){
-			String name=getProjectNameFromClass(clazz);
-			if(name!=null){
-				basepath= getProjectLocation(ewd,name);
+			basepath=getBaseConfigPath(ewd, getWebProjectName(clazz),configFile);
+			if(basepath==null){
+				basepath=getBaseConfigPath(ewd, getProjectNameFromClass(clazz),configFile);
 			}
 		}else{
 			File f=MelpClasspath.getClassOrJarFile(clazz);
@@ -85,6 +85,19 @@ public class MelpEclipse {
 		return basepath;
 	}
 	
+	protected static String getBaseConfigPath(String ewd,String projectName,String configFile){
+		if(ewd!=null && projectName!=null){
+			String basepath= getProjectLocation(ewd,projectName);
+			if(basepath!=null){
+				String f=MelpFile.combinePath(basepath,configFile);
+				if(new File(f).exists()){
+					return basepath;
+				}
+			}
+		}
+		return null;
+	}
+	
 	public static String getEclipseWorkspaceDir(){
 		String ewd=System.getProperty("eclipse.workspace.dir");
 		if(ewd==null){
@@ -106,6 +119,27 @@ public class MelpEclipse {
 				}
 			}
 		}
+		return null;
+	}
+	
+	public static String getWebProjectName(Class<?> clazz){
+		File f=MelpClasspath.getClassOrJarFile(clazz);
+		
+		String path=f.getAbsolutePath();
+		path=path.replace("\\","/");
+		
+		int p=path.indexOf("/WEB-INF/classes/");
+		if(p<0){
+			p=path.indexOf("/WEB-INF/lib/");
+		}
+		
+		if(p>0){
+			path=path.substring(0,p);
+			p=path.lastIndexOf("/");
+			
+			return path.substring(p+1);
+		}
+		
 		return null;
 	}
 	
@@ -158,7 +192,14 @@ public class MelpEclipse {
 		
 		File file=new File(lf);
 		
-		if(!file.exists()){
+		if(!file.exists() ){
+			String projects=MelpFile.combinePath(eclipseWorkspaceDir,basePath);
+			if(new File(projects).exists()){
+				String localProject= MelpFile.combinePath(eclipseWorkspaceDir,projectName);
+				if(new File(localProject).exists()){
+					return localProject;
+				}
+			}
 			return null;
 		}
 		

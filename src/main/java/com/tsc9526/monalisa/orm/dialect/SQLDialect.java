@@ -26,51 +26,35 @@ import com.tsc9526.monalisa.orm.meta.MetaTable.CreateTable;
  */
 class SQLDialect extends Dialect{
 
-	@Override
 	public String getUrlPrefix() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
-	@Override
 	public String getDriver() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
-	@Override
 	public String getSchema(String jdbcUrl) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
-	@Override
 	public String getColumnName(String name) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
-	@Override
 	public String getTableName(String name) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
-	@Override
 	public Query getLimitQuery(Query origin, int limit, int offset) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
-	@Override
 	public CreateTable getCreateTable(DBConfig db, String tableName) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
-	@Override
 	public String getIdleValidationQuery() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
