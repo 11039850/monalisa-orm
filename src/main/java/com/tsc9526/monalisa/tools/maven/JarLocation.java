@@ -134,6 +134,8 @@ public class JarLocation implements MelpHttp.DownloadListener{
 					}
 					
 					if(download(downUrl,jar)){
+						logger.info(">>> Save to maven repository: "+pathfile);
+						MelpFile.copy(jar,jarFromMaven);
 						break;
 					}
 				}
