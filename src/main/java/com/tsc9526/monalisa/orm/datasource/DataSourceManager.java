@@ -113,21 +113,18 @@ public class DataSourceManager {
 	}
 	
 	public  DBConfig getDBConfig(Class<?> clazzWithDBAnnotation) {
-		DB db=clazzWithDBAnnotation.getAnnotation(DB.class);
-		if(db==null){
-			db=MelpClass.findAnnotation(clazzWithDBAnnotation, DB.class);
-		}
-		
-		if(db==null){
+		Class<?> dbClass=MelpClass.findClassWithAnnotation(clazzWithDBAnnotation, DB.class);
+		if(dbClass==null){
 			throw new RuntimeException("Class without @DB: "+clazzWithDBAnnotation);
 		}
 		
+		DB db=dbClass.getAnnotation(DB.class);
 		String dbKey=db.key();
 		if(dbKey==null || dbKey.length()<1){
-			dbKey=clazzWithDBAnnotation.getName();
+			dbKey=dbClass.getName();
 		}
 		
-		return getDBConfig(dbKey,db,clazzWithDBAnnotation);
+		return getDBConfig(dbKey,db,dbClass);
 	}
 	
 	public DBConfig getDBConfig(String dbKey,DB db,boolean reInit) {		  		
