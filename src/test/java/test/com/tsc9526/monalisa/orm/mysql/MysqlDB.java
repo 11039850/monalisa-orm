@@ -29,7 +29,11 @@ import com.tsc9526.monalisa.orm.datasource.DBConfig;
 		url=TestConstants.url, 
 		username=TestConstants.username, 
 		password=TestConstants.password,
-		partitions="test_logyyyymm_{DatePartitionTable(yyyyMM,log_time)}")
+		partitions="test_logyyyymm_{DatePartitionTable(yyyyMM,log_time)}"
+		
+		,properties={
+				"sql.debug=true"
+		})
 public interface MysqlDB {
 	public static DBConfig DB=DBConfig.fromClass(MysqlDB.class);
 }

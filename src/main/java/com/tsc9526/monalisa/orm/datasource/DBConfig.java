@@ -456,6 +456,10 @@ public class DBConfig implements Closeable{
 			public Class<? extends ConfigClass> configClass() {
 				return null;
 			}
+			
+			public String[] properties(){
+				return null;
+			}
 		};
 	}
 	
@@ -638,6 +642,22 @@ public class DBConfig implements Closeable{
 					loadCfgFromClassResource(clazz,resource);
 				}else{
 					loadCfgFromFile();
+				}
+			}
+			
+			String[] props=db.properties();
+			if(props!=null){
+				for(String pv:props){
+					if(pv!=null){
+						int x=pv.indexOf("=");
+						if(x>0){
+							String name=pv.substring(0,x).trim();
+							String value=pv.substring(x+1).trim();
+							if(!p.containsKey(name)){
+								p.put(name, value);
+							}
+						}
+					}
 				}
 			}
 		}

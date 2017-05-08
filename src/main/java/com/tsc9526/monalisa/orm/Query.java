@@ -140,6 +140,12 @@ public class Query {
 	public void setTag(Object tag){
 		this.tag=tag;
 	}
+	
+	public long count(){
+		Query countQuery=getDialect().getCountQuery(this);			
+		long total=countQuery.getResult(Long.class);
+		return total;
+	}
 	 
 	public Query notin(Object value,Object... otherValues){
 		Dialect dialect=db==null?Dialect.SQLDialect:getDialect();

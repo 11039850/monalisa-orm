@@ -196,4 +196,7 @@ public @interface DB{
 	 * @return ConfigClass.class
 	 */
 	Class<? extends ConfigClass> configClass() default ConfigClass.class; 
+	
+	
+	String[] properties() default {};
 } 
