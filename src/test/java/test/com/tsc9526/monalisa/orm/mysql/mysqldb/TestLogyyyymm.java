@@ -25,20 +25,20 @@ import java.util.LinkedHashMap;
 public class TestLogyyyymm extends com.tsc9526.monalisa.orm.model.Model<TestLogyyyymm> implements test.com.tsc9526.monalisa.orm.mysql.MysqlDB{
 	private static final long serialVersionUID = 1122353328333L;
 		 
-	public static final Insert INSERT(){
-	 	return new Insert(new TestLogyyyymm());
+	public static final $Insert INSERT(){
+	 	return new $Insert(new TestLogyyyymm());
 	}
 	
-	public static final Delete DELETE(){
-	 	return new Delete(new TestLogyyyymm());
+	public static final $Delete DELETE(){
+	 	return new $Delete(new TestLogyyyymm());
 	}
 	
-	public static final Update UPDATE(TestLogyyyymm model){
-		return new Update(model);
+	public static final $Update UPDATE(TestLogyyyymm model){
+		return new $Update(model);
 	}		
 	
-	public static final Select SELECT(){
-	 	return new Select(new TestLogyyyymm());
+	public static final $Select SELECT(){
+	 	return new $Select(new TestLogyyyymm());
 	}	 	 
 	 
 	
@@ -46,17 +46,25 @@ public class TestLogyyyymm extends com.tsc9526.monalisa.orm.model.Model<TestLogy
 	* Simple query with example <br>
 	* 
 	*/
-	public static Criteria WHERE(){
-		return new Example().createCriteria();
+	public static $Criteria WHERE(){
+		return new $Example().createCriteria();
 	}
-	 
+	
+	/**
+	 * name: <b>test_logyyyymm_</b> <br>
+	 * primaryKeys: "id" <br>
+	 * remarks: 
+	 */ 
 	public TestLogyyyymm(){
 		super("test_logyyyymm_", "id");		
 	}		 
 	
 	
 	/**
-	 * Constructor use primary keys.
+	 * Constructor use primary keys.<br><br>
+	 * name: <b>test_logyyyymm_</b> <br>
+	 * primaryKeys: "id" <br>
+	 * remarks: <br><br>
 	 *
 	 * @param id  primary key	 
 	 */
@@ -621,14 +629,15 @@ public class TestLogyyyymm extends com.tsc9526.monalisa.orm.model.Model<TestLogy
 	
 	
 	
-	public static class Insert extends com.tsc9526.monalisa.orm.dao.Insert<TestLogyyyymm>{
-		Insert(TestLogyyyymm model){
+	 
+	public static class $Insert extends com.tsc9526.monalisa.orm.dao.Insert<TestLogyyyymm>{
+		$Insert(TestLogyyyymm model){
 			super(model);
 		}	 
 	}	
 	
-	public static class Delete extends com.tsc9526.monalisa.orm.dao.Delete<TestLogyyyymm>{
-		Delete(TestLogyyyymm model){
+	public static class $Delete extends com.tsc9526.monalisa.orm.dao.Delete<TestLogyyyymm>{
+		$Delete(TestLogyyyymm model){
 			super(model);
 		}
 		 
@@ -643,16 +652,17 @@ public class TestLogyyyymm extends com.tsc9526.monalisa.orm.model.Model<TestLogy
 		
 	}
 	
-	public static class Update extends com.tsc9526.monalisa.orm.dao.Update<TestLogyyyymm>{
-		Update(TestLogyyyymm model){
+	public static class $Update extends com.tsc9526.monalisa.orm.dao.Update<TestLogyyyymm>{
+		$Update(TestLogyyyymm model){
 			super(model);
 		}		 			 			 		
 	}
 	
-	public static class Select extends com.tsc9526.monalisa.orm.dao.Select<TestLogyyyymm,Select>{		
-		Select(TestLogyyyymm x){
+	public static class $Select extends com.tsc9526.monalisa.orm.dao.Select<TestLogyyyymm,$Select>{		
+		$Select(TestLogyyyymm x){
 			super(x);
-		}					 
+		}	
+						 
 		
 		/**
 		* find model by primary keys
@@ -695,7 +705,7 @@ public class TestLogyyyymm extends com.tsc9526.monalisa.orm.model.Model<TestLogy
 		/**
 		* List result to Map, The map key is primary-key: id 
 		*/
-		public Map<Integer,TestLogyyyymm> selectByExampleToMap(Example example){
+		public Map<Integer,TestLogyyyymm> selectByExampleToMap($Example example){
 			List<TestLogyyyymm> list=super.selectByExample(example);
 			
 			Map<Integer,TestLogyyyymm> m=new LinkedHashMap<Integer,TestLogyyyymm>();
@@ -707,13 +717,13 @@ public class TestLogyyyymm extends com.tsc9526.monalisa.orm.model.Model<TestLogy
 		
 		
 		
-		public SelectForExample selectForExample(Example example){
-			return new SelectForExample(example);
+		public $SelectForExample selectForExample($Example example){
+			return new $SelectForExample(example);
 		} 	
 		
-		public class SelectForExample extends com.tsc9526.monalisa.orm.dao.Select<TestLogyyyymm,Select>.SelectForExample{
-			public SelectForExample(Example example) {
-				super(example);
+		public class $SelectForExample extends com.tsc9526.monalisa.orm.dao.Select<TestLogyyyymm,$Select>.$SelectForExample{
+			public $SelectForExample($Example example) {
+				super(example); 
 			}
 			
 			
@@ -722,7 +732,7 @@ public class TestLogyyyymm extends com.tsc9526.monalisa.orm.model.Model<TestLogy
 			* List result to Map, The map key is primary-key:  id
 			*/
 			public Map<Integer,TestLogyyyymm> selectToMap(){
-				return selectByExampleToMap((Example)this.example);
+				return selectByExampleToMap(($Example)this.example);
 			}
 			
 		}
@@ -730,11 +740,11 @@ public class TestLogyyyymm extends com.tsc9526.monalisa.orm.model.Model<TestLogy
 	}
 	 
 		
-	public static class Example extends com.tsc9526.monalisa.orm.criteria.Example<Criteria,TestLogyyyymm>{
-		public Example(){}
+	public static class $Example extends com.tsc9526.monalisa.orm.criteria.Example<$Criteria,TestLogyyyymm>{
+		public $Example(){}
 		 
-		protected Criteria createInternal(){
-			Criteria x= new Criteria(this);
+		protected $Criteria createInternal(){
+			$Criteria x= new $Criteria(this);
 			
 			@SuppressWarnings("rawtypes")
 			Class clazz=MelpClass.findClassWithAnnotation(TestLogyyyymm.class,DB.class);	  			
@@ -759,40 +769,40 @@ public class TestLogyyyymm extends com.tsc9526.monalisa.orm.model.Model<TestLogy
 		
 	}
 	
-	public static class Criteria extends com.tsc9526.monalisa.orm.criteria.Criteria<Criteria>{
+	public static class $Criteria extends com.tsc9526.monalisa.orm.criteria.Criteria<$Criteria>{
 		
-		private Example example;
+		private $Example $example;
 		
-		private Criteria(Example example){
-			this.example=example;
+		private $Criteria($Example example){
+			this.$example=example;
 		}
 		
 		/**
 		 * Create Select for example
 		 */
-		public Select.SelectForExample SELECT(){
-			return TestLogyyyymm.SELECT().selectForExample(this.example);
+		public $Select.$SelectForExample SELECT(){
+			return TestLogyyyymm.SELECT().selectForExample(this.$example);
 		}
 		
 		/**
 		* Update records with this example
 		*/
 		public int update(TestLogyyyymm m){			 
-			return UPDATE(m).updateByExample(this.example);
+			return UPDATE(m).updateByExample(this.$example);
 		}
 				
 		/**
 		* Delete records with this example
 		*/		
 		public int delete(){
-			return DELETE().deleteByExample(this.example);
+			return DELETE().deleteByExample(this.$example);
 		}
 		
 		/**
 		* Append "OR" Criteria  
 		*/	
-		public Criteria OR(){
-			return this.example.or();
+		public $Criteria OR(){
+			return this.$example.or();
 		}
 		
 		
@@ -803,7 +813,7 @@ public class TestLogyyyymm extends com.tsc9526.monalisa.orm.model.Model<TestLogy
 		* <li><B>remarks:</B> primary key
 		*/
 		@Column(table=M.TABLE, jdbcType=4, name=M.id$name, key=M.id$key, auto=M.id$auto, notnull=M.id$notnull, length=M.id$length, value=M.id$value, remarks=M.id$remarks)
-		public com.tsc9526.monalisa.orm.criteria.Field.FieldInteger<Criteria> id = new com.tsc9526.monalisa.orm.criteria.Field.FieldInteger<Criteria>("id", this);
+		public com.tsc9526.monalisa.orm.criteria.Field.FieldInteger<$Criteria> id = new com.tsc9526.monalisa.orm.criteria.Field.FieldInteger<$Criteria>("id", this);
 			
 		/**
 		* @Column
@@ -812,7 +822,7 @@ public class TestLogyyyymm extends com.tsc9526.monalisa.orm.model.Model<TestLogy
 		* <li><B>remarks:</B> 
 		*/
 		@Column(table=M.TABLE, jdbcType=93, name=M.logTime$name, key=M.logTime$key, auto=M.logTime$auto, notnull=M.logTime$notnull, length=M.logTime$length, value=M.logTime$value, remarks=M.logTime$remarks)
-		public com.tsc9526.monalisa.orm.criteria.Field<java.util.Date,Criteria> logTime = new com.tsc9526.monalisa.orm.criteria.Field<java.util.Date,Criteria>("log_time", this, 93);		 
+		public com.tsc9526.monalisa.orm.criteria.Field<java.util.Date,$Criteria> logTime = new com.tsc9526.monalisa.orm.criteria.Field<java.util.Date,$Criteria>("log_time", this, 93);		 
 			
 		/**
 		* @Column
@@ -821,7 +831,7 @@ public class TestLogyyyymm extends com.tsc9526.monalisa.orm.model.Model<TestLogy
 		* <li><B>remarks:</B> the name
 		*/
 		@Column(table=M.TABLE, jdbcType=12, name=M.name$name, key=M.name$key, auto=M.name$auto, notnull=M.name$notnull, length=M.name$length, value=M.name$value, remarks=M.name$remarks)
-		public com.tsc9526.monalisa.orm.criteria.Field.FieldString<Criteria> name = new com.tsc9526.monalisa.orm.criteria.Field.FieldString<Criteria>("name", this);
+		public com.tsc9526.monalisa.orm.criteria.Field.FieldString<$Criteria> name = new com.tsc9526.monalisa.orm.criteria.Field.FieldString<$Criteria>("name", this);
 			
 		/**
 		* @Column
@@ -830,7 +840,7 @@ public class TestLogyyyymm extends com.tsc9526.monalisa.orm.model.Model<TestLogy
 		* <li><B>remarks:</B> enum field a.  #enum{{V0,V1}}
 		*/
 		@Column(table=M.TABLE, jdbcType=4, name=M.enumIntA$name, key=M.enumIntA$key, auto=M.enumIntA$auto, notnull=M.enumIntA$notnull, length=M.enumIntA$length, value=M.enumIntA$value, remarks=M.enumIntA$remarks)
-		public com.tsc9526.monalisa.orm.criteria.Field<EnumIntA,Criteria> enumIntA = new com.tsc9526.monalisa.orm.criteria.Field<EnumIntA,Criteria>("enum_int_a", this, 4);		 
+		public com.tsc9526.monalisa.orm.criteria.Field<EnumIntA,$Criteria> enumIntA = new com.tsc9526.monalisa.orm.criteria.Field<EnumIntA,$Criteria>("enum_int_a", this, 4);		 
 			
 		/**
 		* @Column
@@ -839,7 +849,7 @@ public class TestLogyyyymm extends com.tsc9526.monalisa.orm.model.Model<TestLogy
 		* <li><B>remarks:</B> enum field string. #enum{{ TRUE, FALSE}}
 		*/
 		@Column(table=M.TABLE, jdbcType=12, name=M.enumStringA$name, key=M.enumStringA$key, auto=M.enumStringA$auto, notnull=M.enumStringA$notnull, length=M.enumStringA$length, value=M.enumStringA$value, remarks=M.enumStringA$remarks)
-		public com.tsc9526.monalisa.orm.criteria.Field<EnumStringA,Criteria> enumStringA = new com.tsc9526.monalisa.orm.criteria.Field<EnumStringA,Criteria>("enum_string_a", this, 12);		 
+		public com.tsc9526.monalisa.orm.criteria.Field<EnumStringA,$Criteria> enumStringA = new com.tsc9526.monalisa.orm.criteria.Field<EnumStringA,$Criteria>("enum_string_a", this, 12);		 
 			
 		/**
 		* @Column
@@ -848,7 +858,7 @@ public class TestLogyyyymm extends com.tsc9526.monalisa.orm.model.Model<TestLogy
 		* <li><B>remarks:</B> 
 		*/
 		@Column(table=M.TABLE, jdbcType=93, name=M.createTime$name, key=M.createTime$key, auto=M.createTime$auto, notnull=M.createTime$notnull, length=M.createTime$length, value=M.createTime$value, remarks=M.createTime$remarks)
-		public com.tsc9526.monalisa.orm.criteria.Field<java.util.Date,Criteria> createTime = new com.tsc9526.monalisa.orm.criteria.Field<java.util.Date,Criteria>("create_time", this, 93);		 
+		public com.tsc9526.monalisa.orm.criteria.Field<java.util.Date,$Criteria> createTime = new com.tsc9526.monalisa.orm.criteria.Field<java.util.Date,$Criteria>("create_time", this, 93);		 
 			
 		/**
 		* @Column
@@ -857,7 +867,7 @@ public class TestLogyyyymm extends com.tsc9526.monalisa.orm.model.Model<TestLogy
 		* <li><B>remarks:</B> 
 		*/
 		@Column(table=M.TABLE, jdbcType=12, name=M.createBy$name, key=M.createBy$key, auto=M.createBy$auto, notnull=M.createBy$notnull, length=M.createBy$length, value=M.createBy$value, remarks=M.createBy$remarks)
-		public com.tsc9526.monalisa.orm.criteria.Field.FieldString<Criteria> createBy = new com.tsc9526.monalisa.orm.criteria.Field.FieldString<Criteria>("create_by", this);
+		public com.tsc9526.monalisa.orm.criteria.Field.FieldString<$Criteria> createBy = new com.tsc9526.monalisa.orm.criteria.Field.FieldString<$Criteria>("create_by", this);
 			
 		/**
 		* @Column
@@ -866,7 +876,7 @@ public class TestLogyyyymm extends com.tsc9526.monalisa.orm.model.Model<TestLogy
 		* <li><B>remarks:</B> 
 		*/
 		@Column(table=M.TABLE, jdbcType=93, name=M.updateTime$name, key=M.updateTime$key, auto=M.updateTime$auto, notnull=M.updateTime$notnull, length=M.updateTime$length, value=M.updateTime$value, remarks=M.updateTime$remarks)
-		public com.tsc9526.monalisa.orm.criteria.Field<java.util.Date,Criteria> updateTime = new com.tsc9526.monalisa.orm.criteria.Field<java.util.Date,Criteria>("update_time", this, 93);		 
+		public com.tsc9526.monalisa.orm.criteria.Field<java.util.Date,$Criteria> updateTime = new com.tsc9526.monalisa.orm.criteria.Field<java.util.Date,$Criteria>("update_time", this, 93);		 
 			
 		/**
 		* @Column
@@ -875,7 +885,7 @@ public class TestLogyyyymm extends com.tsc9526.monalisa.orm.model.Model<TestLogy
 		* <li><B>remarks:</B> 
 		*/
 		@Column(table=M.TABLE, jdbcType=12, name=M.updateBy$name, key=M.updateBy$key, auto=M.updateBy$auto, notnull=M.updateBy$notnull, length=M.updateBy$length, value=M.updateBy$value, remarks=M.updateBy$remarks)
-		public com.tsc9526.monalisa.orm.criteria.Field.FieldString<Criteria> updateBy = new com.tsc9526.monalisa.orm.criteria.Field.FieldString<Criteria>("update_by", this);
+		public com.tsc9526.monalisa.orm.criteria.Field.FieldString<$Criteria> updateBy = new com.tsc9526.monalisa.orm.criteria.Field.FieldString<$Criteria>("update_by", this);
 			
 	}
 	 
@@ -885,101 +895,11 @@ public class TestLogyyyymm extends com.tsc9526.monalisa.orm.model.Model<TestLogy
 	public static enum EnumStringA{ TRUE, FALSE}
 	
 	
-	/**
-	* Easy to import the table fields statically. <br><br>
-	* 
-	* import static test.com.tsc9526.monalisa.orm.mysql.mysqldb.TestLogyyyymm.TESTLOGYYYYMM;
-	*/
-	public static class TESTLOGYYYYMM{
-		
-		/**
-		* @Column
-		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201601&nbsp;<B>name:</B> id &nbsp;[<font color=red>KEY</font>|<font color=red>AUTO</font>|<font color=red>NOTNULL</font>]
-		* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 10<br>
-		* <li><B>remarks:</B> primary key
-		*/
-		@Column(table=M.TABLE, jdbcType=4, name=M.id$name, key=M.id$key, auto=M.id$auto, notnull=M.id$notnull, length=M.id$length, value=M.id$value, remarks=M.id$remarks)
-		public final static String  id         = "id";
-		
-		/**
-		* @Column
-		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201601&nbsp;<B>name:</B> log_time &nbsp;[<font color=red>NOTNULL</font>]
-		* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 19<br>
-		* <li><B>remarks:</B> 
-		*/
-		@Column(table=M.TABLE, jdbcType=93, name=M.logTime$name, key=M.logTime$key, auto=M.logTime$auto, notnull=M.logTime$notnull, length=M.logTime$length, value=M.logTime$value, remarks=M.logTime$remarks)
-		public final static String  logTime         = "log_time";
-		
-		/**
-		* @Column
-		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201601&nbsp;<B>name:</B> name
-		* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 128<br>
-		* <li><B>remarks:</B> the name
-		*/
-		@Column(table=M.TABLE, jdbcType=12, name=M.name$name, key=M.name$key, auto=M.name$auto, notnull=M.name$notnull, length=M.name$length, value=M.name$value, remarks=M.name$remarks)
-		public final static String  name         = "name";
-		
-		/**
-		* @Column
-		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201601&nbsp;<B>name:</B> enum_int_a &nbsp;[<font color=red>ENUM</font>]
-		* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 10<br>
-		* <li><B>remarks:</B> enum field a.  #enum{{V0,V1}}
-		*/
-		@Column(table=M.TABLE, jdbcType=4, name=M.enumIntA$name, key=M.enumIntA$key, auto=M.enumIntA$auto, notnull=M.enumIntA$notnull, length=M.enumIntA$length, value=M.enumIntA$value, remarks=M.enumIntA$remarks)
-		public final static String  enumIntA         = "enum_int_a";
-		
-		/**
-		* @Column
-		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201601&nbsp;<B>name:</B> enum_string_a &nbsp;[<font color=red>ENUM</font>]
-		* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 64<br>
-		* <li><B>remarks:</B> enum field string. #enum{{ TRUE, FALSE}}
-		*/
-		@Column(table=M.TABLE, jdbcType=12, name=M.enumStringA$name, key=M.enumStringA$key, auto=M.enumStringA$auto, notnull=M.enumStringA$notnull, length=M.enumStringA$length, value=M.enumStringA$value, remarks=M.enumStringA$remarks)
-		public final static String  enumStringA         = "enum_string_a";
-		
-		/**
-		* @Column
-		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201601&nbsp;<B>name:</B> create_time
-		* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 19<br>
-		* <li><B>remarks:</B> 
-		*/
-		@Column(table=M.TABLE, jdbcType=93, name=M.createTime$name, key=M.createTime$key, auto=M.createTime$auto, notnull=M.createTime$notnull, length=M.createTime$length, value=M.createTime$value, remarks=M.createTime$remarks)
-		public final static String  createTime         = "create_time";
-		
-		/**
-		* @Column
-		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201601&nbsp;<B>name:</B> create_by
-		* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 64<br>
-		* <li><B>remarks:</B> 
-		*/
-		@Column(table=M.TABLE, jdbcType=12, name=M.createBy$name, key=M.createBy$key, auto=M.createBy$auto, notnull=M.createBy$notnull, length=M.createBy$length, value=M.createBy$value, remarks=M.createBy$remarks)
-		public final static String  createBy         = "create_by";
-		
-		/**
-		* @Column
-		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201601&nbsp;<B>name:</B> update_time
-		* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 19<br>
-		* <li><B>remarks:</B> 
-		*/
-		@Column(table=M.TABLE, jdbcType=93, name=M.updateTime$name, key=M.updateTime$key, auto=M.updateTime$auto, notnull=M.updateTime$notnull, length=M.updateTime$length, value=M.updateTime$value, remarks=M.updateTime$remarks)
-		public final static String  updateTime         = "update_time";
-		
-		/**
-		* @Column
-		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201601&nbsp;<B>name:</B> update_by
-		* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 64<br>
-		* <li><B>remarks:</B> 
-		*/
-		@Column(table=M.TABLE, jdbcType=12, name=M.updateBy$name, key=M.updateBy$key, auto=M.updateBy$auto, notnull=M.updateBy$notnull, length=M.updateBy$length, value=M.updateBy$value, remarks=M.updateBy$remarks)
-		public final static String  updateBy         = "update_by";
-		
-	}
-	
-	
+	  
 	/**
 	* Meta info about table: test_logyyyymm_
 	*/ 
-	public static class M extends TESTLOGYYYYMM{
+	public static class M{
 		public final static String TABLE ="test_logyyyymm_";
 	 	
 	 	
@@ -1063,7 +983,90 @@ public class TestLogyyyymm extends com.tsc9526.monalisa.orm.model.Model<TestLogy
 		public final static boolean updateBy$auto    = false;
 		public final static boolean updateBy$notnull = false;
 		
-			 
+			
+		
+		
+		/**
+		* @Column
+		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201601&nbsp;<B>name:</B> id &nbsp;[<font color=red>KEY</font>|<font color=red>AUTO</font>|<font color=red>NOTNULL</font>]
+		* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 10<br>
+		* <li><B>remarks:</B> primary key
+		*/
+		@Column(table=M.TABLE, jdbcType=4, name=M.id$name, key=M.id$key, auto=M.id$auto, notnull=M.id$notnull, length=M.id$length, value=M.id$value, remarks=M.id$remarks)
+		public final static String  id         = "id";
+		
+		/**
+		* @Column
+		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201601&nbsp;<B>name:</B> log_time &nbsp;[<font color=red>NOTNULL</font>]
+		* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 19<br>
+		* <li><B>remarks:</B> 
+		*/
+		@Column(table=M.TABLE, jdbcType=93, name=M.logTime$name, key=M.logTime$key, auto=M.logTime$auto, notnull=M.logTime$notnull, length=M.logTime$length, value=M.logTime$value, remarks=M.logTime$remarks)
+		public final static String  logTime         = "log_time";
+		
+		/**
+		* @Column
+		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201601&nbsp;<B>name:</B> name
+		* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 128<br>
+		* <li><B>remarks:</B> the name
+		*/
+		@Column(table=M.TABLE, jdbcType=12, name=M.name$name, key=M.name$key, auto=M.name$auto, notnull=M.name$notnull, length=M.name$length, value=M.name$value, remarks=M.name$remarks)
+		public final static String  name         = "name";
+		
+		/**
+		* @Column
+		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201601&nbsp;<B>name:</B> enum_int_a &nbsp;[<font color=red>ENUM</font>]
+		* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 10<br>
+		* <li><B>remarks:</B> enum field a.  #enum{{V0,V1}}
+		*/
+		@Column(table=M.TABLE, jdbcType=4, name=M.enumIntA$name, key=M.enumIntA$key, auto=M.enumIntA$auto, notnull=M.enumIntA$notnull, length=M.enumIntA$length, value=M.enumIntA$value, remarks=M.enumIntA$remarks)
+		public final static String  enumIntA         = "enum_int_a";
+		
+		/**
+		* @Column
+		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201601&nbsp;<B>name:</B> enum_string_a &nbsp;[<font color=red>ENUM</font>]
+		* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 64<br>
+		* <li><B>remarks:</B> enum field string. #enum{{ TRUE, FALSE}}
+		*/
+		@Column(table=M.TABLE, jdbcType=12, name=M.enumStringA$name, key=M.enumStringA$key, auto=M.enumStringA$auto, notnull=M.enumStringA$notnull, length=M.enumStringA$length, value=M.enumStringA$value, remarks=M.enumStringA$remarks)
+		public final static String  enumStringA         = "enum_string_a";
+		
+		/**
+		* @Column
+		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201601&nbsp;<B>name:</B> create_time
+		* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 19<br>
+		* <li><B>remarks:</B> 
+		*/
+		@Column(table=M.TABLE, jdbcType=93, name=M.createTime$name, key=M.createTime$key, auto=M.createTime$auto, notnull=M.createTime$notnull, length=M.createTime$length, value=M.createTime$value, remarks=M.createTime$remarks)
+		public final static String  createTime         = "create_time";
+		
+		/**
+		* @Column
+		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201601&nbsp;<B>name:</B> create_by
+		* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 64<br>
+		* <li><B>remarks:</B> 
+		*/
+		@Column(table=M.TABLE, jdbcType=12, name=M.createBy$name, key=M.createBy$key, auto=M.createBy$auto, notnull=M.createBy$notnull, length=M.createBy$length, value=M.createBy$value, remarks=M.createBy$remarks)
+		public final static String  createBy         = "create_by";
+		
+		/**
+		* @Column
+		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201601&nbsp;<B>name:</B> update_time
+		* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 19<br>
+		* <li><B>remarks:</B> 
+		*/
+		@Column(table=M.TABLE, jdbcType=93, name=M.updateTime$name, key=M.updateTime$key, auto=M.updateTime$auto, notnull=M.updateTime$notnull, length=M.updateTime$length, value=M.updateTime$value, remarks=M.updateTime$remarks)
+		public final static String  updateTime         = "update_time";
+		
+		/**
+		* @Column
+		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_logyyyymm_201601&nbsp;<B>name:</B> update_by
+		* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 64<br>
+		* <li><B>remarks:</B> 
+		*/
+		@Column(table=M.TABLE, jdbcType=12, name=M.updateBy$name, key=M.updateBy$key, auto=M.updateBy$auto, notnull=M.updateBy$notnull, length=M.updateBy$length, value=M.updateBy$value, remarks=M.updateBy$remarks)
+		public final static String  updateBy         = "update_by";
+		 
 	}
 	
 }

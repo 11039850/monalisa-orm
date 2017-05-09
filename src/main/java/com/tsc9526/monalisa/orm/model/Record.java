@@ -86,7 +86,7 @@ public class Record extends Model<Record>{
 		 * Create Select for example
 		 * @return Select for example
 		 */
-		public Select<Record,Select<Record, ?>>.SelectForExample SELECT(){
+		public Select<Record,Select<Record, ?>>.$SelectForExample SELECT(){
 			return Record.this.SELECT().selectForExample(example);
 		}
 		

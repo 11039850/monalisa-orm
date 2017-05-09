@@ -35,7 +35,7 @@ import com.tsc9526.monalisa.orm.model.Record;
 @Test
 public class WhereTest {
 	public void testAND(){
-		TestRecord.Example example=new TestRecord.Example();
+		TestRecord.$Example example=new TestRecord.$Example();
 		example.createCriteria().name.eq("a1").title.eq("a2");
 		
 		Query w=QEH.getQuery(example);
@@ -44,7 +44,7 @@ public class WhereTest {
 	}
 	
 	public void testOR1(){
-		TestRecord.Example example=new TestRecord.Example();
+		TestRecord.$Example example=new TestRecord.$Example();
 		example.createCriteria() 
 			.name.eq("a1")
 			.OR()
@@ -56,7 +56,7 @@ public class WhereTest {
 	}
 	
 	public void testOR2(){
-		TestRecord.Example example=new TestRecord.Example();
+		TestRecord.$Example example=new TestRecord.$Example();
 		example.createCriteria() 
 			.name.eq("a1").title.eq("a2")
 			.OR()
@@ -68,7 +68,7 @@ public class WhereTest {
 	}
 	
 	public void testOR3(){
-		TestRecord.Example example=new TestRecord.Example();
+		TestRecord.$Example example=new TestRecord.$Example();
 		example.createCriteria() 
 			.name.eq("a1")
 			.OR()
@@ -80,7 +80,7 @@ public class WhereTest {
 	}
 	
 	public void testASC(){
-		TestRecord.Example example=new TestRecord.Example();
+		TestRecord.$Example example=new TestRecord.$Example();
 		example.createCriteria() 
 			.name.eq("a1")
 			.OR()
@@ -93,7 +93,7 @@ public class WhereTest {
 	}
 	
 	public void testDESC(){
-		TestRecord.Example example=new TestRecord.Example();
+		TestRecord.$Example example=new TestRecord.$Example();
 		example.createCriteria() 
 			.name.eq("a1")
 			.OR()

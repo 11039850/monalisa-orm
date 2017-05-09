@@ -28,20 +28,20 @@ import <%=i%>; <%} %>
 public class <%=table.getJavaName()%> extends <%=modelClass%><<%=table.getJavaName()%>> implements <%=dbi %>{
 	private static final long serialVersionUID = <%=table.getSerialID()%>L;
 		 
-	public static final Insert INSERT(){
-	 	return new Insert(new <%=table.getJavaName()%>());
+	public static final $Insert INSERT(){
+	 	return new $Insert(new <%=table.getJavaName()%>());
 	}
 	
-	public static final Delete DELETE(){
-	 	return new Delete(new <%=table.getJavaName()%>());
+	public static final $Delete DELETE(){
+	 	return new $Delete(new <%=table.getJavaName()%>());
 	}
 	
-	public static final Update UPDATE(<%=table.getJavaName()%> model){
-		return new Update(model);
+	public static final $Update UPDATE(<%=table.getJavaName()%> model){
+		return new $Update(model);
 	}		
 	
-	public static final Select SELECT(){
-	 	return new Select(new <%=table.getJavaName()%>());
+	public static final $Select SELECT(){
+	 	return new $Select(new <%=table.getJavaName()%>());
 	}	 	 
 	 
 	
@@ -49,17 +49,25 @@ public class <%=table.getJavaName()%> extends <%=modelClass%><<%=table.getJavaNa
 	* Simple query with example <br>
 	* 
 	*/
-	public static Criteria WHERE(){
-		return new Example().createCriteria();
+	public static $Criteria WHERE(){
+		return new $Example().createCriteria();
 	}
-	 
+	
+	/**
+	 * name: <b><%=table.getName() %></b> <br>
+	 * primaryKeys: <%for(MetaColumn k:table.getKeyColumns()){%><%=k==table.getKeyColumns().get(0)?"":", "%>"<%=k.getName()%>"<%}%> <br>
+	 * remarks: <%=toJavaString(table.getRemarks())%>
+	 */ 
 	public <%=table.getJavaName()%>(){
 		super("<%=table.getName()%>"<%for(MetaColumn k:table.getKeyColumns()){%>, "<%=k.getName() %>"<%}%>);		
 	}		 
 	
 	<%if(table.getKeyColumns().size()>0){ %>
 	/**
-	 * Constructor use primary keys.
+	 * Constructor use primary keys.<br><br>
+	 * name: <b><%=table.getName() %></b> <br>
+	 * primaryKeys: <%for(MetaColumn k:table.getKeyColumns()){%><%=k==table.getKeyColumns().get(0)?"":", "%>"<%=k.getName()%>"<%}%> <br>
+	 * remarks: <%=toJavaString(table.getRemarks())%><br><br>
 	 *<%for(MetaColumn k:table.getKeyColumns()){%>
 	 * @param <%=k.getJavaName()%>  <%=toComments(k.getRemarks()) %><%}%>	 
 	 */
@@ -200,14 +208,15 @@ public class <%=table.getJavaName()%> extends <%=modelClass%><<%=table.getJavaNa
 	
 	<%} %>
 	
-	public static class Insert extends com.tsc9526.monalisa.orm.dao.Insert<<%=table.getJavaName()%>>{
-		Insert(<%=table.getJavaName()%> model){
+	 
+	public static class $Insert extends com.tsc9526.monalisa.orm.dao.Insert<<%=table.getJavaName()%>>{
+		$Insert(<%=table.getJavaName()%> model){
 			super(model);
 		}	 
 	}	
 	
-	public static class Delete extends com.tsc9526.monalisa.orm.dao.Delete<<%=table.getJavaName()%>>{
-		Delete(<%=table.getJavaName()%> model){
+	public static class $Delete extends com.tsc9526.monalisa.orm.dao.Delete<<%=table.getJavaName()%>>{
+		$Delete(<%=table.getJavaName()%> model){
 			super(model);
 		}
 		 
@@ -242,16 +251,17 @@ public class <%=table.getJavaName()%> extends <%=modelClass%><<%=table.getJavaNa
 		<%} %> <%} %>
 	}
 	
-	public static class Update extends com.tsc9526.monalisa.orm.dao.Update<<%=table.getJavaName()%>>{
-		Update(<%=table.getJavaName()%> model){
+	public static class $Update extends com.tsc9526.monalisa.orm.dao.Update<<%=table.getJavaName()%>>{
+		$Update(<%=table.getJavaName()%> model){
 			super(model);
 		}		 			 			 		
 	}
 	
-	public static class Select extends com.tsc9526.monalisa.orm.dao.Select<<%=table.getJavaName()%>,Select>{		
-		Select(<%=table.getJavaName()%> x){
+	public static class $Select extends com.tsc9526.monalisa.orm.dao.Select<<%=table.getJavaName()%>,$Select>{		
+		$Select(<%=table.getJavaName()%> x){
 			super(x);
-		}					 
+		}	
+						 
 		<%if(table.getKeyColumns().size()>0){%>
 		/**
 		* find model by primary keys
@@ -291,11 +301,11 @@ public class <%=table.getJavaName()%> extends <%=modelClass%><<%=table.getJavaNa
 		* @param <%=c.getJavaName()%> <%=toComments(c.getRemarks()) %><%} %>	
 		*/
 		public <%=table.getJavaName()%> selectBy<%=m%>(<%for(MetaColumn k:index.getColumns()){%><%=k==index.getColumns().get(0)?"":", "%><%=k.getJavaType() %> <%=k.getJavaName()%><%}%>){	
-			Criteria c=WHERE();
+			$Criteria c=WHERE();
 			<%for(MetaColumn k:index.getColumns()){ %>
 			c.<%=k.getJavaName()%>.eq(<%=k.getJavaName()%>);<%} %>			 
 			 
-			return super.selectOneByExample(c.example);
+			return super.selectOneByExample(c.$example);
 		}			 
 		<%
 		if(index.getColumns().size()==1){
@@ -319,7 +329,7 @@ public class <%=table.getJavaName()%> extends <%=modelClass%><<%=table.getJavaNa
 		/**
 		* List result to Map, The map key is unique-key: <%=k.getJavaName()%> 
 		*/
-		public Map<<%=k.getJavaType()%>,<%=table.getJavaName()%>> selectByExampleToMapWith<%=firstUpper(k.getJavaName())%>(Example example){
+		public Map<<%=k.getJavaType()%>,<%=table.getJavaName()%>> selectByExampleToMapWith<%=firstUpper(k.getJavaName())%>($Example example){
 			List<<%=table.getJavaName()%>> list=super.selectByExample(example);
 			
 			Map<<%=k.getJavaType()%>,<%=table.getJavaName()%>> m=new LinkedHashMap<<%=k.getJavaType()%>,<%=table.getJavaName()%>>();
@@ -350,7 +360,7 @@ public class <%=table.getJavaName()%> extends <%=modelClass%><<%=table.getJavaNa
 		/**
 		* List result to Map, The map key is primary-key: <%=k.getJavaName()%> 
 		*/
-		public Map<<%=k.getJavaType()%>,<%=table.getJavaName()%>> selectByExampleToMap(Example example){
+		public Map<<%=k.getJavaType()%>,<%=table.getJavaName()%>> selectByExampleToMap($Example example){
 			List<<%=table.getJavaName()%>> list=super.selectByExample(example);
 			
 			Map<<%=k.getJavaType()%>,<%=table.getJavaName()%>> m=new LinkedHashMap<<%=k.getJavaType()%>,<%=table.getJavaName()%>>();
@@ -362,13 +372,13 @@ public class <%=table.getJavaName()%> extends <%=modelClass%><<%=table.getJavaNa
 		<%}%>
 		
 		<%if(select_to_map){ %>
-		public SelectForExample selectForExample(Example example){
-			return new SelectForExample(example);
+		public $SelectForExample selectForExample($Example example){
+			return new $SelectForExample(example);
 		} 	
 		
-		public class SelectForExample extends com.tsc9526.monalisa.orm.dao.Select<<%=table.getJavaName()%>,Select>.SelectForExample{
-			public SelectForExample(Example example) {
-				super(example);
+		public class $SelectForExample extends com.tsc9526.monalisa.orm.dao.Select<<%=table.getJavaName()%>,$Select>.$SelectForExample{
+			public $SelectForExample($Example example) {
+				super(example); 
 			}
 			
 			<%for(MetaIndex index:table.getIndexes()){ 
@@ -386,7 +396,7 @@ public class <%=table.getJavaName()%> extends <%=modelClass%><<%=table.getJavaNa
 			* List result to Map, The map key is unique-key: <%=k.getJavaName()%> 
 			*/
 			public Map<<%=k.getJavaType()%>,<%=table.getJavaName()%>> selectToMapWith<%=firstUpper(k.getJavaName())%>(){
-				return selectByExampleToMapWith<%=firstUpper(k.getJavaName())%>((Example)this.example);
+				return selectByExampleToMapWith<%=firstUpper(k.getJavaName())%>(($Example)this.example);
 			}
 			<%}%><%}%>
 			<%
@@ -397,7 +407,7 @@ public class <%=table.getJavaName()%> extends <%=modelClass%><<%=table.getJavaNa
 			* List result to Map, The map key is primary-key:  <%=k.getJavaName()%>
 			*/
 			public Map<<%=k.getJavaType()%>,<%=table.getJavaName()%>> selectToMap(){
-				return selectByExampleToMap((Example)this.example);
+				return selectByExampleToMap(($Example)this.example);
 			}
 			<%}%>
 		}
@@ -405,11 +415,11 @@ public class <%=table.getJavaName()%> extends <%=modelClass%><<%=table.getJavaNa
 	}
 	 
 		
-	public static class Example extends com.tsc9526.monalisa.orm.criteria.Example<Criteria,<%=table.getJavaName()%>>{
-		public Example(){}
+	public static class $Example extends com.tsc9526.monalisa.orm.criteria.Example<$Criteria,<%=table.getJavaName()%>>{
+		public $Example(){}
 		 
-		protected Criteria createInternal(){
-			Criteria x= new Criteria(this);
+		protected $Criteria createInternal(){
+			$Criteria x= new $Criteria(this);
 			
 			@SuppressWarnings("rawtypes")
 			Class clazz=MelpClass.findClassWithAnnotation(<%=table.getJavaName()%>.class,DB.class);	  			
@@ -437,49 +447,49 @@ public class <%=table.getJavaName()%> extends <%=modelClass%><<%=table.getJavaNa
 		
 	}
 	
-	public static class Criteria extends com.tsc9526.monalisa.orm.criteria.Criteria<Criteria>{
+	public static class $Criteria extends com.tsc9526.monalisa.orm.criteria.Criteria<$Criteria>{
 		
-		private Example example;
+		private $Example $example;
 		
-		private Criteria(Example example){
-			this.example=example;
+		private $Criteria($Example example){
+			this.$example=example;
 		}
 		
 		/**
 		 * Create Select for example
 		 */
-		public Select.SelectForExample SELECT(){
-			return <%=table.getJavaName()%>.SELECT().selectForExample(this.example);
+		public $Select.$SelectForExample SELECT(){
+			return <%=table.getJavaName()%>.SELECT().selectForExample(this.$example);
 		}
 		
 		/**
 		* Update records with this example
 		*/
 		public int update(<%=table.getJavaName()%> m){			 
-			return UPDATE(m).updateByExample(this.example);
+			return UPDATE(m).updateByExample(this.$example);
 		}
 				
 		/**
 		* Delete records with this example
 		*/		
 		public int delete(){
-			return DELETE().deleteByExample(this.example);
+			return DELETE().deleteByExample(this.$example);
 		}
 		
 		/**
 		* Append "OR" Criteria  
 		*/	
-		public Criteria OR(){
-			return this.example.or();
+		public $Criteria OR(){
+			return this.$example.or();
 		}
 		
 		<%for(MetaColumn f:table.getColumns()){ %>
 		<%=getComments(table, f, "		","\t\t")%>
-		<%if(f.getJavaType().equals("Integer")){      %>public com.tsc9526.monalisa.orm.criteria.Field.FieldInteger<Criteria> <%=f.getJavaName()%> = new com.tsc9526.monalisa.orm.criteria.Field.FieldInteger<Criteria>("<%=f.getName()%>", this);
-		<%}else if(f.getJavaType().equals("Short")){  %>public com.tsc9526.monalisa.orm.criteria.Field.FieldShort<Criteria> <%=f.getJavaName()%> = new com.tsc9526.monalisa.orm.criteria.Field.FieldShort<Criteria>("<%=f.getName()%>", this);
-		<%}else if(f.getJavaType().equals("Long")){   %>public com.tsc9526.monalisa.orm.criteria.Field.FieldLong<Criteria> <%=f.getJavaName()%> = new com.tsc9526.monalisa.orm.criteria.Field.FieldLong<Criteria>("<%=f.getName()%>", this); 
-		<%}else if(f.getJavaType().equals("String")){ %>public com.tsc9526.monalisa.orm.criteria.Field.FieldString<Criteria> <%=f.getJavaName()%> = new com.tsc9526.monalisa.orm.criteria.Field.FieldString<Criteria>("<%=f.getName()%>", this);
-		<%}else{                                      %>public com.tsc9526.monalisa.orm.criteria.Field<<%=f.getJavaType()%>,Criteria> <%=f.getJavaName()%> = new com.tsc9526.monalisa.orm.criteria.Field<<%=f.getJavaType()%>,Criteria>("<%=f.getName()%>", this, <%=f.getJdbcType()%>);		 
+		<%if(f.getJavaType().equals("Integer")){      %>public com.tsc9526.monalisa.orm.criteria.Field.FieldInteger<$Criteria> <%=f.getJavaName()%> = new com.tsc9526.monalisa.orm.criteria.Field.FieldInteger<$Criteria>("<%=f.getName()%>", this);
+		<%}else if(f.getJavaType().equals("Short")){  %>public com.tsc9526.monalisa.orm.criteria.Field.FieldShort<$Criteria> <%=f.getJavaName()%> = new com.tsc9526.monalisa.orm.criteria.Field.FieldShort<$Criteria>("<%=f.getName()%>", this);
+		<%}else if(f.getJavaType().equals("Long")){   %>public com.tsc9526.monalisa.orm.criteria.Field.FieldLong<$Criteria> <%=f.getJavaName()%> = new com.tsc9526.monalisa.orm.criteria.Field.FieldLong<$Criteria>("<%=f.getName()%>", this); 
+		<%}else if(f.getJavaType().equals("String")){ %>public com.tsc9526.monalisa.orm.criteria.Field.FieldString<$Criteria> <%=f.getJavaName()%> = new com.tsc9526.monalisa.orm.criteria.Field.FieldString<$Criteria>("<%=f.getName()%>", this);
+		<%}else{                                      %>public com.tsc9526.monalisa.orm.criteria.Field<<%=f.getJavaType()%>,$Criteria> <%=f.getJavaName()%> = new com.tsc9526.monalisa.orm.criteria.Field<<%=f.getJavaType()%>,$Criteria>("<%=f.getName()%>", this, <%=f.getJdbcType()%>);		 
 		<%} %>	<%}%>
 	}
 	 
@@ -490,23 +500,11 @@ public class <%=table.getJavaName()%> extends <%=modelClass%><<%=table.getJavaNa
 	public static enum <%=em%>
 	<%}%><%}%>
 	
-	/**
-	* Easy to import the table fields statically. <br><br>
-	* 
-	* import static <%=table.getJavaPackage()%>.<%=table.getJavaName()%>.<%=table.getJavaName().toUpperCase()%>;
-	*/
-	public static class <%=table.getJavaName().toUpperCase()%>{
-		<%for(MetaColumn f:table.getColumns()){ %>
-		<%=getComments(table, f, "		","\t\t")%>
-		public final static String  <%=f.getJavaName()%>         = "<%=f.getName()%>";
-		<%}%>
-	}
-	
-	
+	  
 	/**
 	* Meta info about table: <%=table.getName()%>
 	*/ 
-	public static class M extends <%=table.getJavaName().toUpperCase()%>{
+	public static class M{
 		public final static String TABLE ="<%=table.getName()%>";
 	 	
 	 	<%for(MetaColumn f:table.getColumns()){ %>
@@ -518,7 +516,12 @@ public class <%=table.getJavaName()%> extends <%=modelClass%><<%=table.getJavaNa
 		public final static boolean <%=f.getJavaName()%>$auto    = <%=f.isAuto()?"true":"false"%>;
 		public final static boolean <%=f.getJavaName()%>$notnull = <%=f.isNotnull()?"true":"false"%>;
 		
-		<%}%>	 
+		<%}%>	
+		
+		<%for(MetaColumn f:table.getColumns()){ %>
+		<%=getComments(table, f, "		","\t\t")%>
+		public final static String  <%=f.getJavaName()%>         = "<%=f.getName()%>";
+		<%}%> 
 	}
 	
 }

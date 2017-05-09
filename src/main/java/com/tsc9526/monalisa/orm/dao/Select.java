@@ -308,8 +308,8 @@ public class Select<T extends Model,S extends Select> {
 		return selectPage(limit, offset, null);
 	}	
 	
-	public SelectForExample selectForExample(Example example){
-		return new SelectForExample(example);
+	public $SelectForExample selectForExample(Example example){
+		return new $SelectForExample(example);
 	} 
 	
 	
@@ -335,14 +335,14 @@ public class Select<T extends Model,S extends Select> {
 		query.setCache(db.getCfg().getCache(model));	
 	}
 	
-	public class SelectForExample{
+	public class $SelectForExample{
 		protected Example example;
 		
-		public SelectForExample(Example example){
+		public $SelectForExample(Example example){
 			this.example=example;
 		}
 		
-		public SelectForExample set(String name,Object value){		
+		public $SelectForExample set(String name,Object value){		
 			set(name,value);
 			return this;
 		}	
@@ -353,7 +353,7 @@ public class Select<T extends Model,S extends Select> {
 		 * @param fields  需要的字段名称
 		 * @return SelectForExample
 		 */
-		public SelectForExample include(String... fields){
+		public $SelectForExample include(String... fields){
 			model.include(fields);
 			return this;
 		}
@@ -365,7 +365,7 @@ public class Select<T extends Model,S extends Select> {
 		 * 
 		 * @return  SelectForExample
 		 */
-		public SelectForExample exclue(String... fields){
+		public $SelectForExample exclue(String... fields){
 			model.exclude(fields);
 			return this;
 		}
@@ -375,7 +375,7 @@ public class Select<T extends Model,S extends Select> {
 		 * 
 		 * @return SelectForExample
 		 */
-		public SelectForExample excludeBlobs(){
+		public $SelectForExample excludeBlobs(){
 			model.excludeBlobs();
 			return this;
 		}
@@ -387,7 +387,7 @@ public class Select<T extends Model,S extends Select> {
 		 * 
 		 * @return SelectForExample
 		 */
-		public SelectForExample excludeBlobs(int maxLength ){
+		public $SelectForExample excludeBlobs(int maxLength ){
 			Select.this.excludeBlobs(maxLength);
 			return this;
 		}
