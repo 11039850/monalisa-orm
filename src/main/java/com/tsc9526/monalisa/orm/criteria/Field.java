@@ -160,7 +160,7 @@ public class Field<X,Y extends Criteria<?>>{
 	/**
 	 * SQL: <code>NOT BETWEEN ? AND ?</code>
 	 * 
-	 * @param from  &lt; from OR
+	 * @param from  &lt; from 
 	 * @param to    &gt; to
 	 * @return this
 	 */
@@ -497,10 +497,26 @@ public class Field<X,Y extends Criteria<?>>{
 			return super.notin(toIntegers(values));
 		}
 		
+		public Y in(int[] values){
+			return super.in(toIntegers(values));
+		}
+		
+		public Y notin(int[] values){
+			return super.notin(toIntegers(values));
+		}
+		
 		private List<Integer> toIntegers(String[] values){
 			List<Integer> xs=new ArrayList<Integer>();
 			for(int i=0;i<values.length;i++){
 				xs.add(Integer.parseInt(values[i].trim()));
+			}
+			return xs;
+		}
+		
+		private List<Integer> toIntegers(int[] values){
+			List<Integer> xs=new ArrayList<Integer>();
+			for(int i=0;i<values.length;i++){
+				xs.add(values[i]);
 			}
 			return xs;
 		}
@@ -629,10 +645,26 @@ public class Field<X,Y extends Criteria<?>>{
 			return super.notin(toLongs(values));
 		}
 		
+		public Y in(long[] values){			 
+			return super.in(toLongs(values));
+		}
+	  
+		public Y notin(long[] values){			 
+			return super.notin(toLongs(values));
+		}
+		
 		private List<Long> toLongs(String[] values){
 			List<Long> xs=new ArrayList<Long>();
 			for(int i=0;i<values.length;i++){
 				xs.add(Long.parseLong(values[i].trim()));
+			}
+			return xs;
+		}
+		
+		private List<Long> toLongs(long[] values){
+			List<Long> xs=new ArrayList<Long>();
+			for(int i=0;i<values.length;i++){
+				xs.add(values[i]);
 			}
 			return xs;
 		}
@@ -676,10 +708,26 @@ public class Field<X,Y extends Criteria<?>>{
 			return super.notin(toShorts(values));
 		}
 		
+		public Y in(short[] values){		 
+			return super.in(toShorts(values));
+		}
+		  
+		public Y notin(short[] values){			 
+			return super.notin(toShorts(values));
+		}
+		
 		private List<Short> toShorts(String[] values){
 			List<Short> xs=new ArrayList<Short>();
 			for(int i=0;i<values.length;i++){
 				xs.add(Short.parseShort(values[i].trim()));
+			}
+			return xs;
+		}
+		
+		private List<Short> toShorts(short[] values){
+			List<Short> xs=new ArrayList<Short>();
+			for(int i=0;i<values.length;i++){
+				xs.add(values[i]);
 			}
 			return xs;
 		}
