@@ -17,6 +17,7 @@
 package test.com.tsc9526.monalisa.tools.converter;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -192,5 +193,14 @@ public class TestConverter {
 		Map<?,?> to=converter.convert(from, Map.class);
 		
 		Assert.assertEquals(""+to.get("intField1"),"226");
+	}
+	
+	public void testDateToLong(){
+		Date time=new Date();
+		long v1=converter.convert(time, long.class);
+		Assert.assertEquals(v1, time.getTime());
+		
+		Long v2=converter.convert(time, Long.class);
+		Assert.assertEquals(v2.longValue(), time.getTime());
 	}
 }
