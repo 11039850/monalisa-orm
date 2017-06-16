@@ -574,6 +574,10 @@ public class MelpClass {
 					Class<?> type=getType();
 					Object theValue=convert(value, type);
 					
+					if(type.isPrimitive() && value==null){
+						return;
+					}
+					
 					if(setMethod!=null){
 						setMethod.invoke(target, theValue);
 					}else{
@@ -582,7 +586,7 @@ public class MelpClass {
 					}
 				}
 			} catch (Exception e) {
-				throw new RuntimeException("Field: "+this.fieldName+", type: "+type.getName()+", value type: "+value.getClass().getName(),e);
+				throw new RuntimeException("Field: "+this.fieldName+", type: "+type.getName()+", value type: "+(value==null?"null":value.getClass().getName()),e);
 			}
 		}
 		
