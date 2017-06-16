@@ -55,6 +55,8 @@ public class MelpJson {
 		MelpLib.tryLoadGson();
 	}
 	
+	private MelpJson(){}
+	
 	private static GsonBuilder gb=createGsonBuilder();
 	
 	public static GsonBuilder createGsonBuilder(){
@@ -83,6 +85,10 @@ public class MelpJson {
 		return gb.create();   
 	}
 	 
+	public static String toJson(Object bean) {
+		return toJson(getGson(),bean);
+	}
+	
 	public static String toJson(Gson gson,Object bean) {
 		JsonObject json=new JsonObject(); 
 		
@@ -155,9 +161,8 @@ public class MelpJson {
 		long page   =json.get("page").getAsLong();
 	 
 		long offset=(page-1)*size;
-		Page<DataMap> r= new Page<DataMap>(rows,records,size,offset);
 		
-		return r;
+		return new Page<DataMap>(rows,records,size,offset); 
 	}	
 	
 	public static DataMap parseToDataMap(String json){
@@ -251,26 +256,30 @@ public class MelpJson {
 					doWriteValue(w,o);
 				} 
 			}else{
-				if(v.getClass().isPrimitive() || v.getClass().getName().startsWith("java.")){
-					doWriteValue(w,v);
-				}else if(v.getClass().isArray()){
-					Object[] xs=(Object[])v;
-					for(int k=0;k<xs.length;k++){
-						doWriteValue(w,xs[k]);
-					}
-				}else{	
-					ClassHelper mc=MelpClass.getClassHelper(v.getClass());
-					for(DataColumn c:headers){
-						FGS fgs=mc.getField(c.getName());
-						Object o=null;
-						if(fgs!=null){
-							o=fgs.getObject(v);
-						}
-						 
-						doWriteValue(w,o);
-					} 
-				}
+				writeValueNoMap(w,headers,v);
 			}
+		}
+	}
+	
+	private static void writeValueNoMap(JsonWriter w,List<DataColumn> headers,Object v)throws IOException{
+		if(v.getClass().isPrimitive() || v.getClass().getName().startsWith("java.")){
+			doWriteValue(w,v);
+		}else if(v.getClass().isArray()){
+			Object[] xs=(Object[])v;
+			for(int k=0;k<xs.length;k++){
+				doWriteValue(w,xs[k]);
+			}
+		}else{	
+			ClassHelper mc=MelpClass.getClassHelper(v.getClass());
+			for(DataColumn c:headers){
+				FGS fgs=mc.getField(c.getName());
+				Object o=null;
+				if(fgs!=null){
+					o=fgs.getObject(v);
+				}
+				 
+				doWriteValue(w,o);
+			} 
 		}
 	}
 	
