@@ -45,7 +45,7 @@ public class InitTestDatabase {
 			}
 		}
 	 	 
-		String sql=MelpFile.readToString(TestGenterator.class.getResourceAsStream("/mysql-create.sql"),"utf-8");
+		String sql=MelpFile.readToString(TestGenterator.class.getResourceAsStream("/create-mysql.sql"),"utf-8");
 		for(String x:sql.split(";")){
 			x=x.trim();
 			if(x.length()>0){

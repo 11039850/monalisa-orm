@@ -25,7 +25,16 @@ import com.tsc9526.monalisa.tools.string.MelpString;
  * @author zzg.zhou(11039850@qq.com)
  */
 public class MelpException {
- 
+	private MelpException(){}
+	
+	public static <T> T throwRuntimeException(String msg,Throwable e){
+		if(e instanceof Error){
+			throw new RuntimeErrorException((Error)e,msg);
+		}else{
+			throw new RuntimeException(msg,e);
+		}
+	}
+	
 	public static <T> T throwRuntimeException(Throwable e){
 		if(e instanceof Error){
 			throw new RuntimeErrorException((Error)e);

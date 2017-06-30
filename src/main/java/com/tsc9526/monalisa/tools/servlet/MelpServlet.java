@@ -23,21 +23,27 @@ import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Method;
 import java.net.URLDecoder;
+import java.util.Enumeration;
 import java.util.List;
 import java.util.Map;
 import java.util.zip.GZIPInputStream;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import com.tsc9526.monalisa.tools.clazz.MelpClass;
 import com.tsc9526.monalisa.tools.datatable.DataMap;
 import com.tsc9526.monalisa.tools.io.MelpFile;
+import com.tsc9526.monalisa.tools.misc.MelpException;
 
 /**
  * 
  * @author zzg.zhou(11039850@qq.com)
  */
 public class MelpServlet {
+	private MelpServlet(){}
+	
 	/**
 	 * Webroot path : /example <br>
 	 * Servlet path : /dbs     <br>
@@ -73,13 +79,82 @@ public class MelpServlet {
 		}
 	}
 	
-	public static DataMap toDataMap(HttpServletRequest request){
-		DataMap requestMap=new DataMap();
+	/**
+	 * 
+	 * retrieve attributes in the following order (ignore the case of the key):
+	 * <pre> 
+	 * 1. request.getParameter()
+	 * 2. request.getAttribute()
+	 * 3. request.getSession().getAttribute()
+	 * 4. request.getServletContext().getAttribute()
+	 * </pre>
+	 * @param request the servlet request
+	 * @return data map
+	 */
+	public static DataMap toDataMapAll(HttpServletRequest request){
+		DataMap m=new DataMap();
+		
+		m.putAll(toDataMapAttrs(request));
+		
+		m.putAll(toDataMapParas(request));
+		
+		return m;
+	}
+	
+	/**
+	 * retrieve parameters from request.getParameter  (ignore the case of the key). 
+	 * @param request the servlet request
+	 * @return data map (ignore the case of the key)
+	 */
+	public static DataMap toDataMapParas(HttpServletRequest request){
+		DataMap m=new DataMap();
+	 	
 		Map<String, String[]> rs = request.getParameterMap();
-		for (String name : rs.keySet()) {
-			requestMap.put(name, rs.get(name));
+		for(Map.Entry<String, String[]> entry: rs.entrySet()) {
+			m.put(entry.getKey(), entry.getValue());
 		}
-		return requestMap;
+		return m;
+	}
+	
+	/**
+	 * 
+	 * retrieve attributes in the following order  (ignore the case of the key):
+	 * <pre> 
+	 * 1. request.getAttribute()
+	 * 2. request.getSession().getAttribute()
+	 * 3. request.getServletContext().getAttribute()
+	 * </pre>
+	 * @param request the servlet request
+	 * @return data map (ignore the case of the key)
+	 */
+	public static DataMap toDataMapAttrs(HttpServletRequest request){
+		DataMap m=new DataMap();
+		
+		ServletContext sc=request.getServletContext();
+		Enumeration<String> es=sc.getAttributeNames();
+		while(es.hasMoreElements()){
+			String name  = es.nextElement();
+			Object value = sc.getAttribute(name);
+			m.put(name,value);
+			
+		} 
+		
+		HttpSession session=request.getSession();
+		es=session.getAttributeNames();
+		while(es.hasMoreElements()){
+			String name  = es.nextElement();
+			Object value = session.getAttribute(name);
+			m.put(name,value);
+		} 
+		
+		es=request.getAttributeNames();
+		while(es.hasMoreElements()){
+			String name  = es.nextElement();
+			Object value = request.getAttribute(name);
+			m.put(name,value);
+		} 
+		
+		return m;
 	}
 	 
 	public static <T> List<T> parseArrays(T targetTemplate, javax.servlet.ServletRequest data, String... mappings) {
@@ -97,7 +172,7 @@ public class MelpServlet {
 	public static byte[] getBodyBytes(HttpServletRequest request)throws IOException{
 		int size = request.getContentLength();
 		if(size<=0){
-			return null;
+			return new byte[0];
 		}
 		
 		InputStream is = request.getInputStream(); 
@@ -125,27 +200,28 @@ public class MelpServlet {
 
 	public static String getRequestRealIp(HttpServletRequest request) {
 		String ip = null;
+		
 		String[] ip_headers = new String[] { 
-				"x-forwarded-for", 
-				"X-Forwarded-For", 
-				"HTTP_X_FORWARDED_FOR", 
-				"Proxy-Client-IP", 
-				"WL-Proxy-Client-IP",
-				"HTTP_CLIENT_IP" };
-		for (String ih : ip_headers) {
-			String ips = request.getHeader(ih);
-
-			if (ips != null && ips.length() > 0 && ("unknown".equalsIgnoreCase(ips) == false)) {
-				String[] vs = ips.split(",");
-				for (String v : vs) {
-					v = v.trim();
-					if ("unknown".equalsIgnoreCase(v) == false) {
-						ip = v;
-						break;
-					}
-				}
-
-				if (ip != null) {
+			"x-forwarded-for", 
+			"X-Forwarded-For", 
+			"HTTP_X_FORWARDED_FOR", 
+			"Proxy-Client-IP", 
+			"WL-Proxy-Client-IP",
+			"HTTP_CLIENT_IP" 
+		};
+		
+		for(int i=0;ip==null && i<ip_headers.length; i++) {
+			String ips = request.getHeader(ip_headers[i]);			
+			 
+			if(ips==null || "unknown".equalsIgnoreCase(ips)){
+				continue;
+			}
+			 
+			String[] vs = ips.split(",");
+			for (String v : vs) {
+				v = v.trim();
+				if (!"unknown".equalsIgnoreCase(v)) {
+					ip = v;
 					break;
 				}
 			}
@@ -155,7 +231,7 @@ public class MelpServlet {
 			ip = request.getRemoteAddr();
 		}
 
-		int p = ip.indexOf(":");
+		int p = ip.indexOf(':');
 		if (p > 0) {
 			ip = ip.substring(0, p);
 		}
@@ -171,7 +247,7 @@ public class MelpServlet {
 		 	 
 			return (String)gcn.invoke(loader);
 		}catch(Exception e){
-			return null;
+			return MelpException.throwRuntimeException(e);
 		}
 	}
 }

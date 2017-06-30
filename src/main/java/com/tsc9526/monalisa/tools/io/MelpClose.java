@@ -50,7 +50,7 @@ public class MelpClose {
 				close((AutoCloseable)x);
 			}else if(x instanceof HttpURLConnection){
 				close((HttpURLConnection)x);
-			}else{		
+			}else if(x!=null){		
 				try{
 					Method m=x.getClass().getMethod("close");
 					m.setAccessible(true);

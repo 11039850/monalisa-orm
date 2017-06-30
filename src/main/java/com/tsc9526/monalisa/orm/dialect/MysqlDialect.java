@@ -32,6 +32,14 @@ import com.tsc9526.monalisa.tools.datatable.DataTable;
  */
 public class MysqlDialect extends Dialect {
 
+	public String getUrl(String host,int port,String dbname){
+		if(port>0){
+			return getUrlPrefix()+host+":"+port+"/"+dbname;
+		}else{
+			return getUrlPrefix()+host+"/"+dbname;
+		}
+	}
+	
 	public String getUrlPrefix() {
 		return "jdbc:mysql://";
 	}
@@ -44,6 +52,10 @@ public class MysqlDialect extends Dialect {
     	return "SELECT 1";
     }
 
+	public String geCatalog(String jdbcUrl) {
+		return null;
+	}
+	
 	public String getSchema(String jdbcUrl) {
 		String schema = "";
 

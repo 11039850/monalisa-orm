@@ -16,6 +16,8 @@
  *******************************************************************************************/
 package com.tsc9526.monalisa.tools.logger;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -54,6 +56,38 @@ public abstract class Logger {
 
 	public abstract boolean isFatalEnabled();
 	
+	public void debug(Object msg){
+		debug(toString(msg));
+	}
+	
+	public void info(Object msg){
+		info(toString(msg));
+	}
+	
+	public void warn(Object msg){
+		warn(toString(msg));
+	}
+	
+	public void error(Object msg){
+		error(toString(msg));
+	}
+	
+	protected String toString(Object msg){
+		if(msg instanceof String){
+			return (String)msg;
+		}else if(msg instanceof Throwable){
+			Throwable t=(Throwable)msg;
+			
+			StringWriter sw=new StringWriter();
+			PrintWriter w=new PrintWriter(sw);
+			t.printStackTrace(w);
+			
+			return sw.toString();
+			
+		}else{
+			return ""+msg;
+		}
+	}
 	
 	public static final int  INDEX_AUTO      = -1;
 	public static final int  INDEX_CONSOLE   =  0;

@@ -52,7 +52,13 @@ public class SimpleDataSource implements PooledDataSource {
 	private Semaphore semaphore;
 
 	public SimpleDataSource(DBConfig db) {
-		setDriver(db.getCfg().getDriver());
+		String driver=db.getDialect().getDriver();
+		String v=db.getCfg().getDriver();
+		if(v!=null && v.length()>1){
+			driver=v;
+		}
+		setDriver(driver);
+		
 		setUrl(db.getCfg().getUrl());
 		setUsername(db.getCfg().getUsername());
 		setPassword(db.getCfg().getPassword());

@@ -58,8 +58,9 @@ public abstract class Dialect{
 	
 	public abstract String getDriver();
 	
+	public abstract String geCatalog(String jdbcUrl);
 	public abstract String getSchema(String jdbcUrl);
-	
+	 
 	public abstract String getColumnName(String name);
 	
 	public abstract String getTableName(String name);

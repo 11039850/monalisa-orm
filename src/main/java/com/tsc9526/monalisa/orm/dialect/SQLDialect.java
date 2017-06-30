@@ -33,6 +33,10 @@ class SQLDialect extends Dialect{
 		return null;
 	}
 
+	public String geCatalog(String jdbcUrl) {
+		return null;
+	}
+	
 	public String getSchema(String jdbcUrl) {
 		return null;
 	}

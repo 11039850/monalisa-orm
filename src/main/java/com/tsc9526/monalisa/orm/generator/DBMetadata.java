@@ -179,17 +179,17 @@ public class DBMetadata {
 		schema=dbcfg.getCfg().getSchema();
 		tableName=dbcfg.getCfg().getTables();
 		
+		if(catalog==null || catalog.length()==0){
+			catalog=dsm.getDialect(dbcfg).geCatalog(dbcfg.getCfg().getUrl());
+		}
+		
 		if(schema==null || schema.length()==0){
 			schema=dsm.getDialect(dbcfg).getSchema(dbcfg.getCfg().getUrl());
-		}		
+		}	
 	}
 	 
 	
 	public List<MetaTable> getTables(){
-		if(schema==null || schema.length()==0){
-			throw new RuntimeException("Database not set in DB annotation schema or url: "+dbcfg.getCfg().getUrl());
-		}
-		
 		DataSource ds=dbcfg.getDataSource();
 		Connection conn=null;
 		try{
@@ -268,7 +268,7 @@ public class DBMetadata {
 		for(MetaPartition p:partitions){
 			p.clearTable();
 		}
-		 
+		
 		List<MetaTable> tables=new ArrayList<MetaTable>();
 		ResultSet rs=metadata.getTables(catalog, schema, tableName, new String[]{"TABLE"});			 
 		while(rs.next()){

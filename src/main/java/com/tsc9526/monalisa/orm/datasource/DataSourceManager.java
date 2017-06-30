@@ -29,6 +29,7 @@ import javax.sql.DataSource;
 import com.tsc9526.monalisa.orm.annotation.DB;
 import com.tsc9526.monalisa.orm.dialect.Dialect;
 import com.tsc9526.monalisa.orm.dialect.MysqlDialect;
+import com.tsc9526.monalisa.orm.dialect.SQLServerDialect;
 import com.tsc9526.monalisa.tools.Tasks;
 import com.tsc9526.monalisa.tools.clazz.MelpClass;
 import com.tsc9526.monalisa.tools.logger.Logger;
@@ -82,6 +83,7 @@ public class DataSourceManager {
 		});
 		
 		registerDialect(new MysqlDialect());
+		registerDialect(new SQLServerDialect());
 	}	
 	
 	private void shutdownMysqlThreads(){

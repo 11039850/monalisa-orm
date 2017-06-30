@@ -151,11 +151,17 @@
 		</dependency>
 		
 		<dependency>
-		  <groupId>com.hynnet</groupId>
-		  <artifactId>sqljdbc-chs</artifactId>
-		  <version>4.0.2206.100</version>
-		  <scope>provided</scope>
+		  <groupId>com.microsoft.sqlserver</groupId>
+		  <artifactId>sqljdbc4</artifactId>
+		  <version>4.0</version>
 		</dependency>
+
+		<dependency>
+		    <groupId>com.oracle</groupId>
+		    <artifactId>ojdbc14</artifactId>
+		    <version>10.2.0.5.0</version>
+		    <scope>provided</scope>
+		</dependency> 
 
 		<dependency>
 			<groupId>javax.servlet</groupId>

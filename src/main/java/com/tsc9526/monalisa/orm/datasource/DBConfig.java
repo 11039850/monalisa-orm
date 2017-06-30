@@ -342,7 +342,7 @@ public class DBConfig implements Closeable{
 			Set<String> tables=new LinkedHashSet<String>();
 			 
 			DatabaseMetaData dbm=conn.getMetaData();
-			rs=dbm.getTables("", "","%",types );
+			rs=dbm.getTables(null, null,"%",types );
 			while(rs.next()){
 				String table=rs.getString("TABLE_NAME");
 				table=Dialect.getRealname(table);
@@ -610,7 +610,7 @@ public class DBConfig implements Closeable{
 					throw new RuntimeException("DBCfg: "+key+", missing property: url, annotationClass: "+annotationClass);
 				}
 			}
-			
+		 	
 			processUrlHosts();
 		}
 		
@@ -1042,6 +1042,10 @@ public class DBConfig implements Closeable{
 		}
 		
 		public String getDriver() {
+			if(driver==null||driver.length()<1){
+				driver=getDialect().getDriver();
+			}
+			
 			return driver;
 		}
 		

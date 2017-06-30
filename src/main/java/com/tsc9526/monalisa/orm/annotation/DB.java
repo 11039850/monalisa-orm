@@ -57,9 +57,9 @@ public @interface DB{
 	String url()      default "";
 	
 	/**
-	 * @return Database driver.  default is： com.mysql.jdbc.Driver
+	 * @return Database driver. 
 	 */
-	String driver()   default "com.mysql.jdbc.Driver";
+	String driver()   default "";
 	
 	/**
 	 * 
