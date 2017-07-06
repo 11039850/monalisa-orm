@@ -111,7 +111,12 @@ public class MelpServlet {
 	 	
 		Map<String, String[]> rs = request.getParameterMap();
 		for(Map.Entry<String, String[]> entry: rs.entrySet()) {
-			m.put(entry.getKey(), entry.getValue());
+			String[] vs=entry.getValue();
+			if(vs.length==1){
+				m.put(entry.getKey(), vs[0]);
+			}else{
+				m.put(entry.getKey(), vs);
+			}
 		}
 		return m;
 	}
