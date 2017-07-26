@@ -42,9 +42,9 @@ public class JsonObjectTypeConversion implements Conversion<JsonObject> {
   
 		if (!(value instanceof JsonObject)) {
 			if(value instanceof String){
-				new JsonParser().parse(value.toString()).getAsJsonObject();
+				return new JsonParser().parse(value.toString()).getAsJsonObject();
 			}else{
-				value=MelpJson.getGson().toJsonTree(value);
+				return MelpJson.getGson().toJsonTree(value).getAsJsonObject();
 			}
 		}
 		return (JsonObject)value;
