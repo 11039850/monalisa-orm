@@ -77,6 +77,9 @@ import com.tsc9526.monalisa.orm.dialect.Dialect;
  * <li><b>cache.tables = </b> [scope: DB]<br>
  * &nbsp;&nbsp;&nbsp;&nbsp;  Which tables will be cached 
  * 
+ * <li><b>version.name = version</b> [scope: TABLE]<br>
+ * &nbsp;&nbsp;&nbsp;&nbsp;  The version field's name 
+ *   
  * <li><b>modelClass = </b> [scope: TABLE]<br>
  * &nbsp;&nbsp;&nbsp;&nbsp;   A base mode class, which inherits from  {@link com.tsc9526.monalisa.orm.model.Model}
  * 
@@ -164,6 +167,8 @@ public class DbProp {
 	public final static DbProp PROP_DB_MULTI_RESULTSET_DEEPTH = new DbProp("multi.resultset.deepth",100);
   
 	public final static DbProp PROP_DB_CACHE_TABLES	  		  = new DbProp("cache.tables");
+	 
+	public final static DbProp PROP_TABLE_VERSION_FIELD       = new DbProp("version.name","version");
 	 
 	public final static DbProp PROP_TABLE_MODEL_CLASS         = new DbProp("modelClass");
 	public final static DbProp PROP_TABLE_MODEL_LISTENER      = new DbProp("modelListener");

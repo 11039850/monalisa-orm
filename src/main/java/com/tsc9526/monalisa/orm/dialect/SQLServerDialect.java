@@ -24,28 +24,20 @@ import com.tsc9526.monalisa.orm.datasource.DbProp;
 import com.tsc9526.monalisa.orm.meta.MetaTable.CreateTable;
 import com.tsc9526.monalisa.orm.meta.MetaTable.TableType;
 import com.tsc9526.monalisa.tools.datatable.DataMap;
-import com.tsc9526.monalisa.tools.datatable.DataTable;
 
 /**
+ * jdbc:sqlserver://localhost:1433;databaseName=AdventureWorks;user=MyUserName;password=*****;
  * 
  * @author zzg.zhou(11039850@qq.com)
  */
-public class MysqlDialect extends Dialect {
+public class SQLServerDialect extends Dialect {
 
-	public String getUrl(String host,int port,String dbname){
-		if(port>0){
-			return getUrlPrefix()+host+":"+port+"/"+dbname;
-		}else{
-			return getUrlPrefix()+host+"/"+dbname;
-		}
-	}
-	
 	public String getUrlPrefix() {
-		return "jdbc:mysql://";
+		return "jdbc:sqlserver://";
 	}
 
 	public String getDriver() {
-		return "com.mysql.jdbc.Driver";
+		return "com.microsoft.sqlserver.jdbc.SQLServerDriver";
 	}
 	
 	public String getIdleValidationQuery(){
@@ -53,41 +45,45 @@ public class MysqlDialect extends Dialect {
     }
 
 	public String geCatalog(String jdbcUrl) {
-		return null;
-	}
-	
-	public String getSchema(String jdbcUrl) {
-		String schema = "";
+		String catelog = null;
 
+		//jdbc:sqlserver://localhost:1433;databaseName=AdventureWorks;user=MyUserName;password=*****;
 		String prefix = getUrlPrefix();
-
 		if (jdbcUrl.startsWith(prefix)) {
-			int p = jdbcUrl.indexOf('/', prefix.length());
-			if (p > 0) {
-				schema = jdbcUrl.substring(p + 1);
-				p = schema.indexOf('?');
-				if (p > 0) {
-					schema = schema.substring(0, p);
+			for(String vs: jdbcUrl.split(";")){
+				int p=vs.indexOf('=');
+				if(p>0){
+					String name =vs.substring(0,p).trim();
+					String value=vs.substring(p+1).trim();
+					
+					if("databaseName".equalsIgnoreCase(name)){
+						catelog=value;
+						break;
+					}
 				}
 			}
 		}
 
-		return schema;
+		return catelog;
+	}
+	
+	public String getSchema(String jdbcUrl) {
+		return null;
 	}
 
 	public String getColumnName(String name) {
-		if (name.startsWith("`")) {
+		if (name.startsWith("[")) {
 			return name;
 		} else {
-			return "`" + name + "`";
+			return "[" + name + "]";
 		}
 	}
 
 	public String getTableName(String name) {
-		if (name.startsWith("`")) {
+		if (name.startsWith("[")) {
 			return name;
 		} else {
-			return "`" + name + "`";
+			return "[" + name + "]";
 		}
 	}
 
@@ -101,18 +97,12 @@ public class MysqlDialect extends Dialect {
 
 		return query;
 	}
-	
-	@Override
-	public DataTable<DataMap> getTableDesription(DBConfig db,String schema){
-		String sql="SELECT TABLE_NAME,TABLE_COMMENT  FROM information_schema.`TABLES` WHERE TABLE_SCHEMA=? ";
-		return db.select(sql, schema);
-	}
 
 	@Override
 	public boolean tableExist(DBConfig db,String name,boolean incudeView){
 		//always include view 
 		List<DataMap> rs=db.select("show tables like ?", name);
-		return !rs.isEmpty();
+		return rs.size()>0;
 	}
 	
 	public CreateTable getCreateTable(DBConfig db, String tableName) {
@@ -121,17 +111,17 @@ public class MysqlDialect extends Dialect {
 		if (rs != null) {
 			String createSQL = rs.get(1).toString();
 
-			int p = createSQL.indexOf('(');
+			int p = createSQL.indexOf("(");
 
 			createSQL = "CREATE TABLE IF NOT EXISTS " + getTableName(CreateTable.TABLE_VAR) + createSQL.substring(p);
 
-			return new CreateTable(tableName, createSQL); 
+			CreateTable createTable = new CreateTable(tableName, createSQL);
+			return createTable;
 		} else {
 			throw new RuntimeException("Table not found: " + tableName);
 		}
 	}
 
-	@Override
 	public synchronized void createTable(DBConfig db, CreateTable table) {
 		String key=db.getKey()+":"+table.getTableName();
 		if(!hTables.containsKey(key)){
@@ -162,7 +152,7 @@ public class MysqlDialect extends Dialect {
 
 		String pkIndex=null;
 		String prefix = DbProp.PROP_DB_HISTORY_PREFIX_COLUMN.getValue(db);
-		StringBuilder sb = new StringBuilder();
+		StringBuffer sb = new StringBuffer();
 		for (String x : sql.split("\\n")) {
 			x = x.trim();
 			if (x.startsWith("CREATE")) {
@@ -177,8 +167,8 @@ public class MysqlDialect extends Dialect {
 				sb.append("`" + prefix + "user` varchar(128)          COMMENT '操作用户',\r\n");
 			}else if (x.startsWith("PRIMARY")) {
 				//为源表主键建立索引
-				int p1=x.indexOf('(');
-				int p2=x.indexOf(')');
+				int p1=x.indexOf("(");
+				int p2=x.indexOf(")");
 				if(p2>p1 && p1>0){
 					pkIndex="KEY `ix_" + tableName + "_pk` "+ x.substring(p1,p2+1) +" USING BTREE,\r\n";
 				}

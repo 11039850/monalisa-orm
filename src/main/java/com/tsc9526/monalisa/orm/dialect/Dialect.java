@@ -29,6 +29,7 @@ import com.tsc9526.monalisa.orm.Query;
 import com.tsc9526.monalisa.orm.annotation.Column;
 import com.tsc9526.monalisa.orm.annotation.Table;
 import com.tsc9526.monalisa.orm.datasource.DBConfig;
+import com.tsc9526.monalisa.orm.datasource.DbProp;
 import com.tsc9526.monalisa.orm.meta.MetaTable.CreateTable;
 import com.tsc9526.monalisa.orm.model.Model;
 import com.tsc9526.monalisa.orm.model.ModelIndex;
@@ -50,7 +51,43 @@ import com.tsc9526.monalisa.tools.string.MelpTypes;
 public abstract class Dialect{
 	static Logger logger=Logger.getLogger(Dialect.class.getName());
 	
-	public static Dialect SQLDialect=new SQLDialect();
+	public final static Dialect SQLDialect=new Dialect(){
+		public String getUrlPrefix() {
+			return null;
+		}
+
+		public String getDriver() {
+			return null;
+		}
+
+		public String geCatalog(String jdbcUrl) {
+			return null;
+		}
+		
+		public String getSchema(String jdbcUrl) {
+			return null;
+		}
+
+		public String getColumnName(String name) {
+			return null;
+		}
+
+		public String getTableName(String name) {
+			return null;
+		}
+
+		public Query getLimitQuery(Query origin, int limit, int offset) {
+			return null;
+		}
+
+		public CreateTable getCreateTable(DBConfig db, String tableName) {
+			return null;
+		}
+
+		public String getIdleValidationQuery() {
+			return null;
+		}
+	};
 		
 	protected static Map<String, CreateTable> hTables=new ConcurrentHashMap<String, CreateTable>();
 	
@@ -74,11 +111,9 @@ public abstract class Dialect{
 	}
 	
 	public boolean tableExist(DBConfig db,String name,boolean includeView){
-		name=getRealname(name);
+	 	Set<String> names=db.getTables(includeView);
 		
-		Set<String> names=db.getTables(includeView);
-		
-		return names.contains(name);
+		return names.contains(getRealname(name));
 	}
 	
 	/**
@@ -189,11 +224,23 @@ public abstract class Dialect{
 		
 		return update(model,q.getSql(),q.getParameters());
 	}	
+	
+	public Query updateByVersion(Model model){		 
+		Query q=findWhereKey(model);
+		 
+		return updateByVersion(model,q.getSql(),q.getParameters());
+	}	
 	 
-	public Query update(Model model,String whereStatement,Object ... args){		
+	public Query updateByVersion(Model model,String whereStatement, Object ... args){
+		return createUpdateQuery(model, whereStatement, true, args);
+	}
+	 
+	protected Query createUpdateQuery(Model model,String whereStatement,boolean updateByVersion, Object ... args){
 		if(whereStatement==null || whereStatement.trim().length()==0){
 			throw new RuntimeException("Model: "+model.getClass()+" update fail, no where cause.");
 		}
+		
+		String versionField=getVersionField(model);
 		
 		Query query=new Query();
 		
@@ -204,24 +251,53 @@ public abstract class Dialect{
 			Column c=fgs.getAnnotation(Column.class);
 			Object v=getValue(fgs,model);
 			 
-			if(c.key()==false || (model.updateKey() && v!=null)){
+			boolean updateField = !c.key() || (model.updateKey() && v!=null);
+			if(updateField && updateByVersion &&  c.name().equalsIgnoreCase(versionField) ){
+				updateField=false;
+			}
+				
+			if(updateField){
 				if(query.parameterCount()>0){
 					query.add(", ");
 				}
-				query.add(getColumnName(c.name())+"=?",v);				 		
+				
+				query.add(getColumnName(c.name())+"=?",v);	 
 			}				 
 		}		
-		query.add(" ");
 		
+		
+		if(updateByVersion){
+			String vfn=getColumnName(versionField);
+			query.add(", ").add(vfn).add(" = ").add(vfn).add(" + 1");
+			
+			addWhereCause(query,whereStatement,args);
+			
+			int versionValue=(Integer)model.get(versionField);
+			query.add(" AND ").add(vfn).add(" = ").add(String.valueOf(versionValue));
+		}else{
+		
+			addWhereCause(query,whereStatement,args);
+		}
+		
+		return query;		 				 
+	}
+	
+	private void addWhereCause(Query query,String whereStatement,Object ... args){
 		List<String> kws=MelpSQL.splitKeyWords(whereStatement);
 		String w=kws.get(0);
 		if(w.equalsIgnoreCase("WHERE")){
 			query.add(whereStatement, args);
 		}else{ 
-			query.add("WHERE ").add(whereStatement,  args);
+			query.add(" WHERE ").add(whereStatement,  args);
 		} 	
-		
-		return query;		 				 
+	}
+	
+	protected String getVersionField(Model model){
+		return DbProp.PROP_TABLE_VERSION_FIELD.getValue(model.db(),model.table().name());
+	}
+	
+	public Query update(Model model,String whereStatement,Object ... args){		
+		return createUpdateQuery(model, whereStatement, false, args);	 				 
 	}
 	 
 	

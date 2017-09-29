@@ -21,10 +21,14 @@ import java.util.Collection;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import test.com.tsc9526.monalisa.orm.mysql.MysqlDB;
+import test.com.tsc9526.monalisa.orm.mysql.mysqldb.TestTable1;
+import test.com.tsc9526.monalisa.orm.mysql.mysqldb.TestTable2;
 import test.com.tsc9526.monalisa.orm.query.TestSimpleModel;
 
 import com.tsc9526.monalisa.orm.Query;
 import com.tsc9526.monalisa.tools.clazz.MelpClass.FGS;
+import com.tsc9526.monalisa.tools.string.MelpDate;
 
 /**
  * 
@@ -45,6 +49,78 @@ public class ModelHolderTest {
 		query=model.dialect().update(model);
 		sql=query.getExecutableSQL(); 
 		Assert.assertEquals(sql,"UPDATE `simple_model` SET `int_field1`=1, `int_field2`=2 WHERE `auto` = 1");
+	}
+	
+	public void testUpdateByVersion(){
+		String ts=MelpDate.now();
+		
+		TestTable1 table1=new TestTable1();
+		table1.setTitle("title_v1");
+		table1.setName("name_v1");
+		table1.setVersion(1);
+		table1.set("ts_a",ts);
+		table1.set("create_time",ts);
+		
+		Assert.assertEquals(table1.save(),1);
+		
+		TestTable1 table2=TestTable1.SELECT().selectByPrimaryKey(table1.getId());
+		TestTable1 table3=TestTable1.SELECT().selectByPrimaryKey(table1.getId());
+		 
+		table2.setName("n2");
+		table3.setName("n3");
+		 
+		String sql=MysqlDB.DB.getDialect().updateByVersion(table2).getExecutableSQL();
+		String expect="UPDATE `test_table_1` SET `name`='n2', `title`='title_v1', `enum_int_a`=0, `enum_string_a`='TRUE', `ts_a`='"+ts+"', `create_time`='"+ts+"', `create_by`=null, `update_time`=null, `update_by`=null, `version` = `version` + 1 WHERE `id` = "+table1.getId()+" AND `version` = 1";
+		Assert.assertEquals(sql,expect);
+		
+		
+		sql=MysqlDB.DB.getDialect().update(table2).getExecutableSQL();
+		expect="UPDATE `test_table_1` SET `name`='n2', `title`='title_v1', `enum_int_a`=0, `enum_string_a`='TRUE', `ts_a`='"+ts+"', `create_time`='"+ts+"', `create_by`=null, `update_time`=null, `update_by`=null, `version`=1 WHERE `id` = "+table1.getId();
+		Assert.assertEquals(sql,expect);
+		
+		Assert.assertEquals(table2.updateByVersion(),1);
+		Assert.assertEquals(table3.updateByVersion(),0);
+		
+		table3.load();
+		Assert.assertEquals(table3.getVersion().intValue(),2);
+		Assert.assertEquals(table3.getName(),"n2");
+	}
+	
+	public void testUpdateByVersion2(){
+		String ts=MelpDate.now();
+		
+		//version field's name is v1
+		TestTable2 table1=new TestTable2();
+		
+		table1.setTitle("title_v2");
+		table1.setName("name_v2");
+		table1.setV1(1);
+		table1.set("ts_a",ts);
+		table1.set("create_time",ts);
+		
+		Assert.assertEquals(table1.save(),1);
+		
+		TestTable2 table2=TestTable2.SELECT().selectByPrimaryKey(table1.getId());
+		TestTable2 table3=TestTable2.SELECT().selectByPrimaryKey(table1.getId());
+		 
+		table2.setName("n2");
+		table3.setName("n3");
+		 
+		String sql=MysqlDB.DB.getDialect().updateByVersion(table2).getExecutableSQL();
+		String expect="UPDATE `test_table_2` SET `name`='n2', `title`='title_v2', `enum_int_a`=0, `enum_string_a`='TRUE', `array_int`=null, `array_string`=null, `json`=null, `obj`=null, `ts_a`='"+ts+"', `create_time`='"+ts+"', `create_by`=null, `update_time`=null, `update_by`=null, `v1` = `v1` + 1 WHERE `id` = "+table1.getId()+" AND `v1` = 1";
+		Assert.assertEquals(sql,expect);
+		
+		
+		sql=MysqlDB.DB.getDialect().update(table2).getExecutableSQL();
+		expect="UPDATE `test_table_2` SET `name`='n2', `title`='title_v2', `enum_int_a`=0, `enum_string_a`='TRUE', `array_int`=null, `array_string`=null, `json`=null, `obj`=null, `ts_a`='"+ts+"', `create_time`='"+ts+"', `create_by`=null, `update_time`=null, `update_by`=null, `v1`=1 WHERE `id` = "+table1.getId();
+		Assert.assertEquals(sql,expect);
+		
+		Assert.assertEquals(table2.updateByVersion(),1);
+		Assert.assertEquals(table3.updateByVersion(),0);
+		
+		table3.load();
+		Assert.assertEquals(table3.getV1().intValue(),2);
+		Assert.assertEquals(table3.getName(),"n2");
 	}
 	
 	public void testInclude()throws Exception{

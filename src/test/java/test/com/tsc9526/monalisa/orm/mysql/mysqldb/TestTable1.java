@@ -26,7 +26,7 @@ import java.util.LinkedHashMap;
 	}
 )
 public class TestTable1 extends com.tsc9526.monalisa.orm.model.Model<TestTable1> implements test.com.tsc9526.monalisa.orm.mysql.MysqlDB{
-	private static final long serialVersionUID = 1135320746160L;
+	private static final long serialVersionUID = 1203536589395L;
 		 
 	public static final $Insert INSERT(){
 	 	return new $Insert(new TestTable1());
@@ -176,6 +176,15 @@ public class TestTable1 extends com.tsc9526.monalisa.orm.model.Model<TestTable1>
 	@Column(table=M.TABLE, jdbcType=12, name=M.updateBy$name, key=M.updateBy$key, auto=M.updateBy$auto, notnull=M.updateBy$notnull, length=M.updateBy$length, value=M.updateBy$value, remarks=M.updateBy$remarks)
 	@Alias("update_by")
 	private String updateBy;	
+	
+	/**
+	* @Column
+	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_1&nbsp;<B>name:</B> version &nbsp;[<font color=red>NOTNULL</font>]
+	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 10 &nbsp;<B>value:</B> 0<br>
+	* <li><B>remarks:</B> version
+	*/
+	@Column(table=M.TABLE, jdbcType=4, name=M.version$name, key=M.version$key, auto=M.version$auto, notnull=M.version$notnull, length=M.version$length, value=M.version$value, remarks=M.version$remarks)
+	private Integer version;	
 	
 	
 	
@@ -353,6 +362,24 @@ public class TestTable1 extends com.tsc9526.monalisa.orm.model.Model<TestTable1>
 		this.updateBy = updateBy;  
 		
 		fieldChanged("updateBy");
+		
+		return this;
+	}
+	
+	
+	
+	
+	/**
+	* @Column
+	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_1&nbsp;<B>name:</B> version &nbsp;[<font color=red>NOTNULL</font>]
+	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 10 &nbsp;<B>value:</B> 0<br>
+	* <li><B>remarks:</B> version
+	*/
+	@Column(table=M.TABLE, jdbcType=4, name=M.version$name, key=M.version$key, auto=M.version$auto, notnull=M.version$notnull, length=M.version$length, value=M.version$value, remarks=M.version$remarks) 
+	public TestTable1 setVersion(Integer version){
+		this.version = version;  
+		
+		fieldChanged("version");
 		
 		return this;
 	}
@@ -691,6 +718,39 @@ public class TestTable1 extends com.tsc9526.monalisa.orm.model.Model<TestTable1>
 	
 	
 	
+	/**
+	* @Column
+	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_1&nbsp;<B>name:</B> version &nbsp;[<font color=red>NOTNULL</font>]
+	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 10 &nbsp;<B>value:</B> 0<br>
+	* <li><B>remarks:</B> version
+	*/
+	@Column(table=M.TABLE, jdbcType=4, name=M.version$name, key=M.version$key, auto=M.version$auto, notnull=M.version$notnull, length=M.version$length, value=M.version$value, remarks=M.version$remarks) 
+	public Integer getVersion(){
+		return this.version;
+ 
+	}
+	
+	/**
+	* @Column
+	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_1&nbsp;<B>name:</B> version &nbsp;[<font color=red>NOTNULL</font>]
+	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 10 &nbsp;<B>value:</B> 0<br>
+	* <li><B>remarks:</B> version
+	* @param defaultValue  Return the default value if version is null.
+	*/
+	@Column(table=M.TABLE, jdbcType=4, name=M.version$name, key=M.version$key, auto=M.version$auto, notnull=M.version$notnull, length=M.version$length, value=M.version$value, remarks=M.version$remarks) 
+	public Integer getVersion(Integer defaultValue){
+		Integer r=this.getVersion();
+		
+		if(r==null){
+			r=defaultValue;
+		}
+		
+		return r;
+	}
+	 	
+	
+	
+	
 	
 	 
 	public static class $Insert extends com.tsc9526.monalisa.orm.dao.Insert<TestTable1>{
@@ -990,6 +1050,15 @@ public class TestTable1 extends com.tsc9526.monalisa.orm.model.Model<TestTable1>
 		@Column(table=M.TABLE, jdbcType=12, name=M.updateBy$name, key=M.updateBy$key, auto=M.updateBy$auto, notnull=M.updateBy$notnull, length=M.updateBy$length, value=M.updateBy$value, remarks=M.updateBy$remarks)
 		public com.tsc9526.monalisa.orm.criteria.Field.FieldString<$Criteria> updateBy = new com.tsc9526.monalisa.orm.criteria.Field.FieldString<$Criteria>("update_by", this);
 			
+		/**
+		* @Column
+		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_1&nbsp;<B>name:</B> version &nbsp;[<font color=red>NOTNULL</font>]
+		* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 10 &nbsp;<B>value:</B> 0<br>
+		* <li><B>remarks:</B> version
+		*/
+		@Column(table=M.TABLE, jdbcType=4, name=M.version$name, key=M.version$key, auto=M.version$auto, notnull=M.version$notnull, length=M.version$length, value=M.version$value, remarks=M.version$remarks)
+		public com.tsc9526.monalisa.orm.criteria.Field.FieldInteger<$Criteria> version = new com.tsc9526.monalisa.orm.criteria.Field.FieldInteger<$Criteria>("version", this);
+			
 	}
 	 
 			
@@ -1095,6 +1164,15 @@ public class TestTable1 extends com.tsc9526.monalisa.orm.model.Model<TestTable1>
 		public final static boolean updateBy$auto    = false;
 		public final static boolean updateBy$notnull = false;
 		
+		
+		public final static String  version$name    = "version";
+		public final static boolean version$key     = false;
+		public final static int     version$length  = 10;
+		public final static String  version$value   = "0";
+		public final static String  version$remarks = "version";
+		public final static boolean version$auto    = false;
+		public final static boolean version$notnull = true;
+		
 			
 		
 		
@@ -1187,6 +1265,15 @@ public class TestTable1 extends com.tsc9526.monalisa.orm.model.Model<TestTable1>
 		*/
 		@Column(table=M.TABLE, jdbcType=12, name=M.updateBy$name, key=M.updateBy$key, auto=M.updateBy$auto, notnull=M.updateBy$notnull, length=M.updateBy$length, value=M.updateBy$value, remarks=M.updateBy$remarks)
 		public final static String  updateBy         = "update_by";
+		
+		/**
+		* @Column
+		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_1&nbsp;<B>name:</B> version &nbsp;[<font color=red>NOTNULL</font>]
+		* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 10 &nbsp;<B>value:</B> 0<br>
+		* <li><B>remarks:</B> version
+		*/
+		@Column(table=M.TABLE, jdbcType=4, name=M.version$name, key=M.version$key, auto=M.version$auto, notnull=M.version$notnull, length=M.version$length, value=M.version$value, remarks=M.version$remarks)
+		public final static String  version         = "version";
 		 
 	}
 	

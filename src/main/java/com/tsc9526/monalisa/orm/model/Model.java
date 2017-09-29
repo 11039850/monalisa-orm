@@ -292,7 +292,43 @@ public abstract class Model<T extends Model> implements Serializable ,Shallowabl
 			return doUpdate();
 		}
 	}
+	
+	/**
+	 * The default version field's name is: <b>version</b> <br>
+	 * 
+	 * SQL like this:<br>
+	 * <pre>
+	 * 	UPDATE table_xxx SET ... , 
+	 * 		version = version +1 
+	 * 	WHERE ... 
+	 * 		AND version = ?
+	 * </pre>
+	 *  
+	 * @return &gt;0 if update success, otherwise is 0.
+	 */
+	public int updateByVersion() {
+		if (history()) {
+			return Tx.execute(new Atom<Integer>() {
+				public Integer execute() {
+					int r= doUpdateByVersion();
+					saveHistory(ModelEvent.UPDATE);
+					return r;
+				}
+			});
+		} else {
+			return doUpdateByVersion();
+		}
+	}
 
+	protected int doUpdateByVersion() {
+		int r = -1;
+		before(ModelEvent.UPDATE);
+		doValidate();
+		r = new Update(this).updateByVersion();
+		after(ModelEvent.UPDATE, r);
+		return r;
+	}
+	
 	protected int doUpdate() {
 		int r = -1;
 		before(ModelEvent.UPDATE);
@@ -514,6 +550,15 @@ public abstract class Model<T extends Model> implements Serializable ,Shallowabl
 		return (T) this;
 	}
 
+	/**
+	 * Clear any field changes
+	 * @return this
+	 */
+	public T clearChanges(){
+		holder().clearChanges();
+		return (T) this;
+	}
+	
 	/**
 	 * Set all fields to the default value 
 	 * 

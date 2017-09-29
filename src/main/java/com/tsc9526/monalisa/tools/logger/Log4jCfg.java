@@ -23,6 +23,8 @@ import java.net.URL;
  * @author zzg.zhou(11039850@qq.com)
  */
 public class Log4jCfg {
+	private Log4jCfg(){}
+	
 	public static void initLog4jConfiguration(){
 		try{
 			Class.forName("org.apache.log4j.Logger");
@@ -40,13 +42,15 @@ public class Log4jCfg {
 			}
 			
 			if(!cfg){
-				URL log4jCfg=LoggerFactory.class.getResource("/logger/log4j.xml");
+				URL log4jCfg=LoggerFactory.class.getResource("/logger/log4j.properties");
 				
 				Thread.currentThread().setContextClassLoader(LoggerFactory.class.getClassLoader());
 				
-				org.apache.log4j.xml.DOMConfigurator.configure(log4jCfg);
+				org.apache.log4j.PropertyConfigurator.configure(log4jCfg);
 				
 			}
-		}catch(Exception e){}
+		}catch(Exception e){
+			ConsoleLoggerFactory.LOGGER.trace(e);
+		}
 	}
 }

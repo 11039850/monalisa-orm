@@ -33,12 +33,22 @@ public class ConsoleLoggerFactory implements LoggerFactory {
 	}
 
 	public Logger getLogger(String category) {
-		return INSTANCE;
+		return LOGGER;
 	}
 
-	private static final Logger INSTANCE = new ConsoleLogger();
+	static final ConsoleLogger LOGGER= new ConsoleLogger();
 	
 	public static class ConsoleLogger extends Logger {
+		public void trace(String message){	
+		}
+		
+		public void trace(String message, Throwable t){
+		}
+		
+		public void trace(Throwable t){
+			
+		}
+		
 		public void debug(String message) {
 			println("DEBUG",message);
 		}
@@ -96,7 +106,7 @@ public class ConsoleLoggerFactory implements LoggerFactory {
 		}
 		
 		protected void println(String level,String message, Throwable t){
-			StringBuffer sb=new StringBuffer();
+			StringBuilder sb=new StringBuilder();
 			
 			sb.append("[").append(level).append("] ").append(message);
 			
@@ -126,7 +136,7 @@ public class ConsoleLoggerFactory implements LoggerFactory {
 		}
 		
 		protected boolean isError(String level) {
-			return level.equals("ERROR") || level.equals("FATAL");
+			return "ERROR".equals(level) || "FATAL".equals(level);
 		}
 	};
 }

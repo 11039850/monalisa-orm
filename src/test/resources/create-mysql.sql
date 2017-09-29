@@ -9,6 +9,7 @@ CREATE TABLE `test_table_1` (
   `create_by` varchar(64) NULL,
   `update_time` datetime NULL,
   `update_by` varchar(64) NULL,
+  `version` int NOT NULL default 0 comment 'version',
   PRIMARY KEY (`id`),
   KEY `ix_name_title`(`name`,`title`),
   UNIQUE KEY `ux_name_time`(`name`,`create_time`)
@@ -29,6 +30,7 @@ CREATE TABLE `test_table_2` (
   `create_by` varchar(64) NULL,
   `update_time` datetime NULL,
   `update_by` varchar(64) NULL,
+   `v1` int NOT NULL default 0 comment 'version',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 

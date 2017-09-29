@@ -59,7 +59,12 @@ public class Update<T extends Model>{
 		query.use(db());
 		return query.execute();
 	}
-	 
+	
+	public int updateByVersion() {
+		Query query=model.dialect().updateByVersion(model);
+		query.use(db());
+		return query.execute();
+	}
 	
 	/**
 	 * 
@@ -117,5 +122,7 @@ public class Update<T extends Model>{
 			return Update.this.updateByExample(example);
 		}				
 	}
+
+	
 	 
 }

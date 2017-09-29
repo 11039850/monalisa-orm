@@ -13,7 +13,7 @@ import com.tsc9526.monalisa.orm.annotation.Column;
  * @see 
  */
 public class DS0001 implements java.io.Serializable{
-	private static final long serialVersionUID = 2389186314940L;	
+	private static final long serialVersionUID = 2505485319463L;	
 	final static String  FINGERPRINT = "";
 	  
 	 
@@ -116,6 +116,16 @@ public class DS0001 implements java.io.Serializable{
 	*/
 	@Column(table=TestTable1.M.TABLE, jdbcType=12, name=TestTable1.M.updateBy$name, key=TestTable1.M.updateBy$key, auto=TestTable1.M.updateBy$auto, notnull=TestTable1.M.updateBy$notnull, length=TestTable1.M.updateBy$length, value=TestTable1.M.updateBy$value, remarks=TestTable1.M.updateBy$remarks)
 	private String updateBy;	
+	
+	
+	/**
+	* @Column
+	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_1&nbsp;<B>name:</B> version &nbsp;[<font color=red>NOTNULL</font>]
+	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 10 &nbsp;<B>value:</B> 0<br>
+	* <li><B>remarks:</B> version
+	*/
+	@Column(table=TestTable1.M.TABLE, jdbcType=4, name=TestTable1.M.version$name, key=TestTable1.M.version$key, auto=TestTable1.M.version$auto, notnull=TestTable1.M.version$notnull, length=TestTable1.M.version$length, value=TestTable1.M.version$value, remarks=TestTable1.M.version$remarks)
+	private Integer version;	
 	
 	
 	/**
@@ -260,6 +270,16 @@ public class DS0001 implements java.io.Serializable{
 	
 	/**
 	* @Column
+	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_2&nbsp;<B>name:</B> v1 &nbsp;[<font color=red>NOTNULL</font>]
+	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 10 &nbsp;<B>value:</B> 0<br>
+	* <li><B>remarks:</B> version
+	*/
+	@Column(table=TestTable2.M.TABLE, jdbcType=4, name=TestTable2.M.v1$name, key=TestTable2.M.v1$key, auto=TestTable2.M.v1$auto, notnull=TestTable2.M.v1$notnull, length=TestTable2.M.v1$length, value=TestTable2.M.v1$value, remarks=TestTable2.M.v1$remarks)
+	private Integer v1;	
+	
+	
+	/**
+	* @Column
 	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_2&nbsp;<B>name:</B> id &nbsp;[<font color=red>KEY</font>|<font color=red>AUTO</font>|<font color=red>NOTNULL</font>]
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 10<br>
 	* <li><B>remarks:</B> primary key
@@ -397,6 +417,19 @@ public class DS0001 implements java.io.Serializable{
 	@Column(table=TestTable1.M.TABLE, jdbcType=12, name=TestTable1.M.updateBy$name, key=TestTable1.M.updateBy$key, auto=TestTable1.M.updateBy$auto, notnull=TestTable1.M.updateBy$notnull, length=TestTable1.M.updateBy$length, value=TestTable1.M.updateBy$value, remarks=TestTable1.M.updateBy$remarks)
 	public DS0001 setUpdateBy(String updateBy){
 		this.updateBy = updateBy;
+		return this;
+	}
+	
+	
+	/**
+	* @Column
+	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_1&nbsp;<B>name:</B> version &nbsp;[<font color=red>NOTNULL</font>]
+	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 10 &nbsp;<B>value:</B> 0<br>
+	* <li><B>remarks:</B> version
+	*/
+	@Column(table=TestTable1.M.TABLE, jdbcType=4, name=TestTable1.M.version$name, key=TestTable1.M.version$key, auto=TestTable1.M.version$auto, notnull=TestTable1.M.version$notnull, length=TestTable1.M.version$length, value=TestTable1.M.version$value, remarks=TestTable1.M.version$remarks)
+	public DS0001 setVersion(Integer version){
+		this.version = version;
 		return this;
 	}
 	
@@ -579,6 +612,19 @@ public class DS0001 implements java.io.Serializable{
 	@Column(table=TestTable2.M.TABLE, jdbcType=12, name=TestTable2.M.updateBy$name, key=TestTable2.M.updateBy$key, auto=TestTable2.M.updateBy$auto, notnull=TestTable2.M.updateBy$notnull, length=TestTable2.M.updateBy$length, value=TestTable2.M.updateBy$value, remarks=TestTable2.M.updateBy$remarks)
 	public DS0001 setUpdateBy1(String updateBy1){
 		this.updateBy1 = updateBy1;
+		return this;
+	}
+	
+	
+	/**
+	* @Column
+	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_2&nbsp;<B>name:</B> v1 &nbsp;[<font color=red>NOTNULL</font>]
+	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 10 &nbsp;<B>value:</B> 0<br>
+	* <li><B>remarks:</B> version
+	*/
+	@Column(table=TestTable2.M.TABLE, jdbcType=4, name=TestTable2.M.v1$name, key=TestTable2.M.v1$key, auto=TestTable2.M.v1$auto, notnull=TestTable2.M.v1$notnull, length=TestTable2.M.v1$length, value=TestTable2.M.v1$value, remarks=TestTable2.M.v1$remarks)
+	public DS0001 setV1(Integer v1){
+		this.v1 = v1;
 		return this;
 	}
 	
@@ -880,6 +926,35 @@ public class DS0001 implements java.io.Serializable{
 	@Column(table=TestTable1.M.TABLE, jdbcType=12, name=TestTable1.M.updateBy$name, key=TestTable1.M.updateBy$key, auto=TestTable1.M.updateBy$auto, notnull=TestTable1.M.updateBy$notnull, length=TestTable1.M.updateBy$length, value=TestTable1.M.updateBy$value, remarks=TestTable1.M.updateBy$remarks)
 	public String getUpdateBy(String defaultValue){
 		String r=this.getUpdateBy();
+		if(r==null){
+			r=defaultValue;
+		}		
+		
+		return r;
+	}
+	
+	
+	
+	/**
+	* @Column
+	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_1&nbsp;<B>name:</B> version &nbsp;[<font color=red>NOTNULL</font>]
+	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 10 &nbsp;<B>value:</B> 0<br>
+	* <li><B>remarks:</B> version
+	*/
+	@Column(table=TestTable1.M.TABLE, jdbcType=4, name=TestTable1.M.version$name, key=TestTable1.M.version$key, auto=TestTable1.M.version$auto, notnull=TestTable1.M.version$notnull, length=TestTable1.M.version$length, value=TestTable1.M.version$value, remarks=TestTable1.M.version$remarks)
+	public Integer getVersion(){
+		return this.version;		
+	}
+	
+	/**
+	* @Column
+	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_1&nbsp;<B>name:</B> version &nbsp;[<font color=red>NOTNULL</font>]
+	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 10 &nbsp;<B>value:</B> 0<br>
+	* <li><B>remarks:</B> version
+	* @param defaultValue  Return the default value if version is null.*/
+	@Column(table=TestTable1.M.TABLE, jdbcType=4, name=TestTable1.M.version$name, key=TestTable1.M.version$key, auto=TestTable1.M.version$auto, notnull=TestTable1.M.version$notnull, length=TestTable1.M.version$length, value=TestTable1.M.version$value, remarks=TestTable1.M.version$remarks)
+	public Integer getVersion(Integer defaultValue){
+		Integer r=this.getVersion();
 		if(r==null){
 			r=defaultValue;
 		}		
@@ -1286,6 +1361,35 @@ public class DS0001 implements java.io.Serializable{
 	@Column(table=TestTable2.M.TABLE, jdbcType=12, name=TestTable2.M.updateBy$name, key=TestTable2.M.updateBy$key, auto=TestTable2.M.updateBy$auto, notnull=TestTable2.M.updateBy$notnull, length=TestTable2.M.updateBy$length, value=TestTable2.M.updateBy$value, remarks=TestTable2.M.updateBy$remarks)
 	public String getUpdateBy1(String defaultValue){
 		String r=this.getUpdateBy1();
+		if(r==null){
+			r=defaultValue;
+		}		
+		
+		return r;
+	}
+	
+	
+	
+	/**
+	* @Column
+	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_2&nbsp;<B>name:</B> v1 &nbsp;[<font color=red>NOTNULL</font>]
+	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 10 &nbsp;<B>value:</B> 0<br>
+	* <li><B>remarks:</B> version
+	*/
+	@Column(table=TestTable2.M.TABLE, jdbcType=4, name=TestTable2.M.v1$name, key=TestTable2.M.v1$key, auto=TestTable2.M.v1$auto, notnull=TestTable2.M.v1$notnull, length=TestTable2.M.v1$length, value=TestTable2.M.v1$value, remarks=TestTable2.M.v1$remarks)
+	public Integer getV1(){
+		return this.v1;		
+	}
+	
+	/**
+	* @Column
+	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_2&nbsp;<B>name:</B> v1 &nbsp;[<font color=red>NOTNULL</font>]
+	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 10 &nbsp;<B>value:</B> 0<br>
+	* <li><B>remarks:</B> version
+	* @param defaultValue  Return the default value if v1 is null.*/
+	@Column(table=TestTable2.M.TABLE, jdbcType=4, name=TestTable2.M.v1$name, key=TestTable2.M.v1$key, auto=TestTable2.M.v1$auto, notnull=TestTable2.M.v1$notnull, length=TestTable2.M.v1$length, value=TestTable2.M.v1$value, remarks=TestTable2.M.v1$remarks)
+	public Integer getV1(Integer defaultValue){
+		Integer r=this.getV1();
 		if(r==null){
 			r=defaultValue;
 		}		

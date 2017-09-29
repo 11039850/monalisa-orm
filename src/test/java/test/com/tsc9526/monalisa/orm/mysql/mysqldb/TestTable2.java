@@ -25,7 +25,7 @@ import java.util.LinkedHashMap;
 	}
 )
 public class TestTable2 extends com.tsc9526.monalisa.orm.model.Model<TestTable2> implements test.com.tsc9526.monalisa.orm.mysql.MysqlDB{
-	private static final long serialVersionUID = 1431549092862L;
+	private static final long serialVersionUID = 1478463636296L;
 		 
 	public static final $Insert INSERT(){
 	 	return new $Insert(new TestTable2());
@@ -213,6 +213,15 @@ public class TestTable2 extends com.tsc9526.monalisa.orm.model.Model<TestTable2>
 	@Column(table=M.TABLE, jdbcType=12, name=M.updateBy$name, key=M.updateBy$key, auto=M.updateBy$auto, notnull=M.updateBy$notnull, length=M.updateBy$length, value=M.updateBy$value, remarks=M.updateBy$remarks)
 	@Alias("update_by")
 	private String updateBy;	
+	
+	/**
+	* @Column
+	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_2&nbsp;<B>name:</B> v1 &nbsp;[<font color=red>NOTNULL</font>]
+	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 10 &nbsp;<B>value:</B> 0<br>
+	* <li><B>remarks:</B> version
+	*/
+	@Column(table=M.TABLE, jdbcType=4, name=M.v1$name, key=M.v1$key, auto=M.v1$auto, notnull=M.v1$notnull, length=M.v1$length, value=M.v1$value, remarks=M.v1$remarks)
+	private Integer v1;	
 	
 	
 	
@@ -462,6 +471,24 @@ public class TestTable2 extends com.tsc9526.monalisa.orm.model.Model<TestTable2>
 		this.updateBy = updateBy;  
 		
 		fieldChanged("updateBy");
+		
+		return this;
+	}
+	
+	
+	
+	
+	/**
+	* @Column
+	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_2&nbsp;<B>name:</B> v1 &nbsp;[<font color=red>NOTNULL</font>]
+	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 10 &nbsp;<B>value:</B> 0<br>
+	* <li><B>remarks:</B> version
+	*/
+	@Column(table=M.TABLE, jdbcType=4, name=M.v1$name, key=M.v1$key, auto=M.v1$auto, notnull=M.v1$notnull, length=M.v1$length, value=M.v1$value, remarks=M.v1$remarks) 
+	public TestTable2 setV1(Integer v1){
+		this.v1 = v1;  
+		
+		fieldChanged("v1");
 		
 		return this;
 	}
@@ -932,6 +959,39 @@ public class TestTable2 extends com.tsc9526.monalisa.orm.model.Model<TestTable2>
 	
 	
 	
+	/**
+	* @Column
+	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_2&nbsp;<B>name:</B> v1 &nbsp;[<font color=red>NOTNULL</font>]
+	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 10 &nbsp;<B>value:</B> 0<br>
+	* <li><B>remarks:</B> version
+	*/
+	@Column(table=M.TABLE, jdbcType=4, name=M.v1$name, key=M.v1$key, auto=M.v1$auto, notnull=M.v1$notnull, length=M.v1$length, value=M.v1$value, remarks=M.v1$remarks) 
+	public Integer getV1(){
+		return this.v1;
+ 
+	}
+	
+	/**
+	* @Column
+	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_2&nbsp;<B>name:</B> v1 &nbsp;[<font color=red>NOTNULL</font>]
+	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 10 &nbsp;<B>value:</B> 0<br>
+	* <li><B>remarks:</B> version
+	* @param defaultValue  Return the default value if v1 is null.
+	*/
+	@Column(table=M.TABLE, jdbcType=4, name=M.v1$name, key=M.v1$key, auto=M.v1$auto, notnull=M.v1$notnull, length=M.v1$length, value=M.v1$value, remarks=M.v1$remarks) 
+	public Integer getV1(Integer defaultValue){
+		Integer r=this.getV1();
+		
+		if(r==null){
+			r=defaultValue;
+		}
+		
+		return r;
+	}
+	 	
+	
+	
+	
 	
 	 
 	public static class $Insert extends com.tsc9526.monalisa.orm.dao.Insert<TestTable2>{
@@ -1236,6 +1296,15 @@ public class TestTable2 extends com.tsc9526.monalisa.orm.model.Model<TestTable2>
 		@Column(table=M.TABLE, jdbcType=12, name=M.updateBy$name, key=M.updateBy$key, auto=M.updateBy$auto, notnull=M.updateBy$notnull, length=M.updateBy$length, value=M.updateBy$value, remarks=M.updateBy$remarks)
 		public com.tsc9526.monalisa.orm.criteria.Field.FieldString<$Criteria> updateBy = new com.tsc9526.monalisa.orm.criteria.Field.FieldString<$Criteria>("update_by", this);
 			
+		/**
+		* @Column
+		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_2&nbsp;<B>name:</B> v1 &nbsp;[<font color=red>NOTNULL</font>]
+		* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 10 &nbsp;<B>value:</B> 0<br>
+		* <li><B>remarks:</B> version
+		*/
+		@Column(table=M.TABLE, jdbcType=4, name=M.v1$name, key=M.v1$key, auto=M.v1$auto, notnull=M.v1$notnull, length=M.v1$length, value=M.v1$value, remarks=M.v1$remarks)
+		public com.tsc9526.monalisa.orm.criteria.Field.FieldInteger<$Criteria> v1 = new com.tsc9526.monalisa.orm.criteria.Field.FieldInteger<$Criteria>("v1", this);
+			
 	}
 	 
 			
@@ -1377,6 +1446,15 @@ public class TestTable2 extends com.tsc9526.monalisa.orm.model.Model<TestTable2>
 		public final static boolean updateBy$auto    = false;
 		public final static boolean updateBy$notnull = false;
 		
+		
+		public final static String  v1$name    = "v1";
+		public final static boolean v1$key     = false;
+		public final static int     v1$length  = 10;
+		public final static String  v1$value   = "0";
+		public final static String  v1$remarks = "version";
+		public final static boolean v1$auto    = false;
+		public final static boolean v1$notnull = true;
+		
 			
 		
 		
@@ -1505,6 +1583,15 @@ public class TestTable2 extends com.tsc9526.monalisa.orm.model.Model<TestTable2>
 		*/
 		@Column(table=M.TABLE, jdbcType=12, name=M.updateBy$name, key=M.updateBy$key, auto=M.updateBy$auto, notnull=M.updateBy$notnull, length=M.updateBy$length, value=M.updateBy$value, remarks=M.updateBy$remarks)
 		public final static String  updateBy         = "update_by";
+		
+		/**
+		* @Column
+		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_2&nbsp;<B>name:</B> v1 &nbsp;[<font color=red>NOTNULL</font>]
+		* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 10 &nbsp;<B>value:</B> 0<br>
+		* <li><B>remarks:</B> version
+		*/
+		@Column(table=M.TABLE, jdbcType=4, name=M.v1$name, key=M.v1$key, auto=M.v1$auto, notnull=M.v1$notnull, length=M.v1$length, value=M.v1$value, remarks=M.v1$remarks)
+		public final static String  v1         = "v1";
 		 
 	}
 	

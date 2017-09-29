@@ -22,6 +22,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.annotation.processing.Messager;
+import javax.management.RuntimeErrorException;
 
 import com.tsc9526.monalisa.tools.PkgNames;
 
@@ -133,7 +134,7 @@ public abstract class Logger {
 		return getLogger(clazz.getName());
 	}
 
-	public static Logger getLogger(String category) {
+	public static Logger getLogger(String theCategory) {
 		if (factory == null) {
 			synchronized (Logger.class) {
 				if (factory == null) {
@@ -146,10 +147,10 @@ public abstract class Logger {
 			}
 		}
 
-		category = categoryPrefix + category;
+		String category = categoryPrefix + theCategory;
 
 		synchronized (loggers) {
-			Logger logger = (Logger) loggers.get(category);
+			Logger logger = loggers.get(category);
 			if (logger == null) {
 				logger = factory.getLogger(category);
 				logger=new LoggerWrapper(logger);
@@ -164,14 +165,19 @@ public abstract class Logger {
 			if(factory!=null){
 				return factory;
 			}
-			
+			  
 			for (int i = LIBRARY.length - 1; i > 0; --i) {				 
 				try {
 					return createFactory(i);
-				}catch(ClassNotFoundException e){	
-				}catch (NoClassDefFoundError e) {}
-			}
-			System.err.println("!!! WARNING: Monalisa logging suppressed!");
+				}catch(ClassNotFoundException e){
+					ConsoleLoggerFactory.LOGGER.trace(e);
+				}catch (NoClassDefFoundError e) {
+					ConsoleLoggerFactory.LOGGER.trace(e);
+				}
+			} 
+			
+			ConsoleLoggerFactory.LOGGER.error("!!! WARNING: Monalisa logging suppressed!");
+			
 			return new ConsoleLoggerFactory();
 		} else {
 			return createFactory(loggerIndex);
@@ -185,11 +191,14 @@ public abstract class Logger {
 		try {
 			forName(loggerClassName);
 			  
-			return (LoggerFactory) forName(PkgNames.ORM_LOGGER_PKG+"." + factoryType + "LoggerFactory").newInstance();
+			String loggerFactoryClass=PkgNames.ORM_LOGGER_PKG+"." + factoryType + "LoggerFactory";
+		 	
+			return (LoggerFactory)forName(loggerFactoryClass).newInstance();
+			
 		} catch (IllegalAccessException e) {			 
-			throw new IllegalAccessError(e.getMessage());
+			throw new RuntimeErrorException(new Error(e.getMessage(),e));
 		} catch (InstantiationException e) {			 
-			throw new InstantiationError(e.getMessage());
+			throw new RuntimeErrorException(new Error(e.getMessage(),e));
 		}
 	} 
 	

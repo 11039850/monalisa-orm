@@ -14,27 +14,43 @@
  *	You should have received a copy of the GNU Lesser General Public License
  *	along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************************/
-package test.com.tsc9526.monalisa.orm.mysql;
+package test.com.tsc9526.monalisa.orm.dialect.sqlserver;
+ 
+import test.com.tsc9526.monalisa.orm.mysql.TestGenterator;
 
-import test.com.tsc9526.monalisa.TestConstants;
-
+import com.tsc9526.monalisa.main.DBModelGenerateMain;
 import com.tsc9526.monalisa.orm.annotation.DB;
 import com.tsc9526.monalisa.orm.datasource.DBConfig;
+import com.tsc9526.monalisa.tools.io.MelpFile;
 
 /**
  * 
  * @author zzg.zhou(11039850@qq.com)
  */
-@DB(
-		url=TestConstants.url, 
-		username=TestConstants.username, 
-		password=TestConstants.password,
-		partitions="test_logyyyymm_{DatePartitionTable(yyyyMM,log_time)}"
+@DB(url="jdbc:sqlserver://127.0.0.1:1433;databaseName=test_monalisa",username="monalisa",password="monalisa")
+public interface SqlserverDB {
+	public static DBConfig DB=DBConfig.fromClass(SqlserverDB.class);
+	
+	public static class Generate{
+		public static void main(String[] args) throws Exception{
+			//initDatebase();
+			
+			DBModelGenerateMain.generateModelClass(SqlserverDB.class,"src/test/java");
+		}
 		
-		,properties={
-				"sql.debug=true",
-				"version.name.test_table_2=v1"
-		})
-public interface MysqlDB {
-	public static DBConfig DB=DBConfig.fromClass(MysqlDB.class);
+		public static void initDatebase()throws Exception{
+			for(String table:DB.getTables()){
+				if(table.toLowerCase().startsWith("test_")){
+					 
+					DB.execute("DROP TABLE `"+table+"`");
+				}
+			}
+		 	 
+			String sql=MelpFile.readToString(TestGenterator.class.getResourceAsStream("/create-sqlserver.sql"),"utf-8");
+			DB.execute(sql); 
+		}
+	}
+	
+	
+	
 }
