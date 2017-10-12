@@ -45,7 +45,7 @@ public class DataMapTest {
 		DataMap t1=x.as(DataMap.class);
 		Assert.assertTrue(t1==x);
 	}
-	
+	 
 	public void testAsMap(){
 		DataMap x=new DataMap();
 		x.put("a","a");
@@ -294,5 +294,43 @@ public class DataMapTest {
 		DataMap m1=(DataMap)m.get("f5");
 		Assert.assertEquals(m1.getLong("x3")   ,new Long(1234567812345678L));
 		Assert.assertEquals(m1.getString("x3") ,"1234567812345678");
+	}
+	
+	
+	public void testToJsonPretty(){
+		DataMap x=new DataMap();
+		x.put("a","a");
+		x.put("b",100);
+	 	
+		Assert.assertEquals(x.toJson(),x.toJson(true));
+		
+		String x1=x.toJson();
+		String x2=(""+/**~!{*/""
+				+ "{"
+				+ "\r\n  \"a\": \"a\","
+				+ "\r\n  \"b\": 100"
+				+ "\r\n}"
+		+ "\r\n"/**}*/).trim();
+		
+		x1=x1.replace("\r","");
+		x2=x2.replace("\r","");
+		
+		
+		Assert.assertEquals(x1,x2);
+	}
+	
+	public void testToJson(){
+		DataMap x=new DataMap();
+		x.put("a","a");
+		x.put("b",100);
+	 	
+		Assert.assertNotEquals(x.toJson(),x.toJson(false));
+		
+		String x1=x.toJson(false);
+		String x2=(""+/**~!{*/""
+			+ "{\"a\":\"a\",\"b\":100}"
+		+ "\r\n"/**}*/).trim();
+	 	
+		Assert.assertEquals(x1,x2);
 	}
 }

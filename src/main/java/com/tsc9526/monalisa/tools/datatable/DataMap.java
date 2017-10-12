@@ -19,11 +19,13 @@ package com.tsc9526.monalisa.tools.datatable;
 import java.util.Date;
 import java.util.Map;
 
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.tsc9526.monalisa.orm.model.Model;
 import com.tsc9526.monalisa.tools.clazz.MelpClass;
 import com.tsc9526.monalisa.tools.clazz.MelpClass.ClassHelper;
 import com.tsc9526.monalisa.tools.clazz.MelpClass.FGS;
+import com.tsc9526.monalisa.tools.json.MelpJson;
 import com.tsc9526.monalisa.tools.misc.MelpException;
 import com.tsc9526.monalisa.tools.string.MelpDate;
 import com.tsc9526.monalisa.tools.string.MelpString;
@@ -48,6 +50,20 @@ public class DataMap extends CaseInsensitiveMap<Object>{
 	
 	public DataMap(){
 		
+	}
+	
+	public String toJson() {
+		return toJson(true);
+	}
+
+	public String toJson(boolean pretty) {
+		GsonBuilder gb=MelpJson.createGsonBuilder();
+		
+		if(pretty){
+			gb.setPrettyPrinting();
+		}
+		
+		return gb.create().toJson(this);
 	}
 	
 	public DataMap(Map<String, Object> m){
