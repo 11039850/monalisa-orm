@@ -107,7 +107,7 @@ public class DataMap extends CaseInsensitiveMap<Object>{
 	 * 
 	 * @param paths split by /
 	 * @param <T> result type
-	 * @return the object value
+	 * @return the object value, maybe null
 	 */
 	@SuppressWarnings("unchecked")
 	public <T> T getByPath(String paths){
@@ -136,6 +136,16 @@ public class DataMap extends CaseInsensitiveMap<Object>{
 		}
 		
 		return (T)ret;
+	}
+	
+	public <T> T getByPath(String paths,T defaultValue){
+		T r=getByPath(paths);
+		
+		if(r==null){
+			r=defaultValue;
+		}
+		
+		return r;
 	}
 	
 	private Object getValue(Object v,String name){
