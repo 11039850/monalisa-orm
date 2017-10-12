@@ -30,11 +30,17 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
+import com.tsc9526.monalisa.tools.string.MelpString;
+
 /**
  * 
  * @author zzg.zhou(11039850@qq.com)
  */
 public class MelpFile {
+	public final static String SLASH = "/";
+	
+	private MelpFile(){}
+	
 	public static byte[] readFile(String filePath){
 		return readFile(new File(filePath));
 	}
@@ -43,13 +49,13 @@ public class MelpFile {
 		try{
 			return readBytes(new FileInputStream(file));
 		}catch(FileNotFoundException e){
-			throw new RuntimeException("File not found: "+file.getAbsolutePath(),e);
+			return throwFileNotFoundException(file,e);
 		}
 	}
 	
 	public static Properties loadProperties(InputStream in,String charset){
 		try{
-			InputStreamReader reader=new InputStreamReader(in,"utf-8");					 
+			InputStreamReader reader=new InputStreamReader(in,charset);					 
 			Properties prop=new Properties();
 			prop.load(reader);
 			reader.close();
@@ -100,47 +106,62 @@ public class MelpFile {
 	}
 	
 	public static String combinePath(String... paths){
-		StringBuffer sb=new StringBuffer();
-		for(String x:paths){
-			x=x.replace("\\","/");
+		List<String> list=new ArrayList<String>();
+	   	
+		boolean prefix=false;
+		boolean suffix=false;
+		
+		for(int i=0;i<paths.length;i++){
+			String x=paths[i].trim().replace("\\",SLASH);
 			
-			if(sb.length()==0){
-				sb.append(x);
+			boolean slashPrefix = x.startsWith(SLASH);
+			boolean slashSuffix = x.endsWith(SLASH);
+
+			if(list.isEmpty()){
+				prefix=slashPrefix;
 			}else{
-				char last=sb.charAt(sb.length()-1);
+				suffix=slashSuffix;
+			}
+			
+			while(x.startsWith(SLASH)){
+				x=x.substring(1);
+			}
+			
+			while(x.endsWith(SLASH)){
+				x=x.substring(0,x.length()-1);
+			}
+			 
+			if(x.length()>0){
+				list.add(x);
 				
-				if(x.startsWith("/")){
-					if(last=='/'){
-						sb.append(x.substring(1));
-					}else{
-						sb.append(x);
-					}
-				}else{
-					if(last=='/'){
-						sb.append(x);
-					}else{
-						sb.append("/").append(x);
-					}
-				}
-				
-			}			 
+				suffix=slashSuffix;
+			}
 		}
-		return sb.toString(); 
+		  
+		String path=MelpString.join(list,SLASH); 
+		
+		if(prefix && !path.startsWith(SLASH) ){
+			path = SLASH+path;
+		}
+		
+		if(suffix && !path.endsWith(SLASH)){
+			path = path+SLASH;
+		}
+		
+		return path;
 	}
 	
 	public static String[] combineExistFiles(String[]... ls) {
 		if (ls == null) {
-			return null;
+			return new String[0];
 		}
 
 		List<String> rs = new ArrayList<String>();
 		for (String[] s : ls) {
 			if (s != null) {
 				for (String x : s) {
-					if (x != null) {
-						if (new File(x).exists() && rs.contains(x) == false) {
-							rs.add(x);
-						}
+					if (x != null && new File(x).exists() && !rs.contains(x)) {
+						rs.add(x);
 					}
 				}
 			}
@@ -164,9 +185,9 @@ public class MelpFile {
 	 * @param f  the file/dir to be deleted
 	 * @param delete true if delete the root dir, otherwise false.
 	 */
-  	public static void delete(File f,boolean delete){
+  	public static boolean delete(File f,boolean delete){
 		if(f.isFile()){
-			f.delete();
+			return f.delete();
 		}else if(f.isDirectory()){
 			File[] fs=f.listFiles();
 			
@@ -177,9 +198,11 @@ public class MelpFile {
 			}
 			
 			if(delete){
-				f.delete();
+				return f.delete();
 			}
 		}
+		return false;
+		
 	}
    	
 	public static void writeUTF8(File target,String data){
@@ -195,25 +218,29 @@ public class MelpFile {
   	}
   	
   	public static boolean createFileDirectories(File target){
-  		String path=target.getAbsolutePath().replaceAll("\\\\", "/");
-		int p=path.lastIndexOf("/");
+  		String path=target.getAbsolutePath().replaceAll("\\\\", SLASH);
+		int p=path.lastIndexOf('/');
 		File dir=new File(path.substring(0,p));
-		if(dir.exists()==false){
+		if(!dir.exists()){
 			return dir.mkdirs();
 		}
 		return true;
   	}
   	
 	public static void write(File target, byte[] data) {
+		FileOutputStream fos=null;
 		try{
 			createFileDirectories(target);
 			
-			FileOutputStream fos = new FileOutputStream(target);
+			fos = new FileOutputStream(target);
 			fos.write(data);
-			fos.close();
+
 		}catch(IOException e){
 			throw new RuntimeException(e);
+		}finally{
+			MelpClose.close(fos);
 		}
+		
 	}
 	
 	public static void write(File target, InputStream data) {
@@ -254,7 +281,7 @@ public class MelpFile {
 			fin=new FileInputStream(file);
 			return readToObject(fin);
 		}catch(FileNotFoundException e){
-			throw new RuntimeException("File not found: "+file.getAbsolutePath(),e);
+			return throwFileNotFoundException(file,e);
 		}finally{
 			MelpClose.close(fin);
 		}
@@ -278,7 +305,7 @@ public class MelpFile {
 		try{
 			return readToString(new FileInputStream(file),charset);
 		}catch(FileNotFoundException e){
-			throw new RuntimeException("File not found: "+file.getAbsolutePath(),e);
+			return throwFileNotFoundException(file,e);
 		}
 	}
 	
@@ -299,4 +326,8 @@ public class MelpFile {
     		MelpClose.close(in);
     	}
     }
+	
+	public static <T> T throwFileNotFoundException(File file,FileNotFoundException e){
+		throw new RuntimeException("File not found: "+file.getAbsolutePath(),e);
+	}
 }

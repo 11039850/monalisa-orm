@@ -42,10 +42,11 @@ import com.tsc9526.monalisa.tools.xml.XMLObject;
  * @author zzg.zhou(11039850@qq.com)
  */
 public class MelpString {
+	private MelpString(){}
+	
 	public static boolean isEmpty(String s) {
 		return s == null || s.length() == 0;
 	}
-
 	
 	public static String toString(Object bean){
 		if(bean==null){
@@ -73,7 +74,7 @@ public class MelpString {
 	}
 	 
 	public static String repeat(String x,int times){
-		StringBuffer sb=new StringBuffer();
+		StringBuilder sb=new StringBuilder();
 		for(int i=0;i<times;i++){
 			sb.append(x);
 		}
@@ -95,8 +96,8 @@ public class MelpString {
 		return MelpJson.parseToDataMap(json);
 	}
 	
-	public static String normalizeXml(String xml){
-		xml=xml.trim();
+	public static String normalizeXml(String xmlString){
+		String xml=xmlString.trim();
 		
 		//check xml tag
 		int p1=xml.indexOf("<xml>");
@@ -112,8 +113,8 @@ public class MelpString {
 		return xml;
 	}
 	
-	public static DataMap xml2Map(String xml){
-		xml=normalizeXml(xml); 
+	public static DataMap xml2Map(String xmlString){
+		String xml=normalizeXml(xmlString); 
 		
 		try{
 			XMLDocument p= new XMLDocument(); 
@@ -150,7 +151,7 @@ public class MelpString {
 			return null;
 		}
 
-		StringBuffer r = new StringBuffer();
+		StringBuilder r = new StringBuilder();
 		for (int i = 0; i < v.length(); i++) {
 			char c = v.charAt(i);
 			if (c == '\\' && (i + 1) < v.length()) {
@@ -163,9 +164,12 @@ public class MelpString {
 	}
 
 	 
-
+	public static String join(String[] vs,String joinString) {
+		return join(vs,0,vs.length,joinString);
+	}
+	
 	public static String join(String[] vs, int from, int len, String joinString) {
-		StringBuffer sb = new StringBuffer();
+		StringBuilder sb = new StringBuilder();
 		for (int i = from; i < (from + len) && i < vs.length; i++) {
 			if (sb.length() > 0) {
 				sb.append(joinString);
@@ -175,8 +179,12 @@ public class MelpString {
 		return sb.toString();
 	}
 
+	public static String join(List<String> vs,String joinString) {
+		return join(vs,0,vs.size(),joinString);
+	}
+	
 	public static String join(List<String> vs, int from, int len, String joinString) {
-		StringBuffer sb = new StringBuffer();
+		StringBuilder sb = new StringBuilder();
 		for (int i = from; i < (from + len) && i < vs.size(); i++) {
 			if (sb.length() > 0) {
 				sb.append(joinString);
@@ -190,7 +198,7 @@ public class MelpString {
 		if (vs.length > len) {
 			return Arrays.copyOfRange(vs, len, vs.length - 1);
 		} else {
-			return null;
+			return new String[0];
 		}
 	}
 
@@ -212,16 +220,17 @@ public class MelpString {
 	 
 
 	public static byte[] hexStringToBytes(String hexString) {
-		if (hexString == null || hexString.equals("")) {
-			return null;
+		if (hexString == null || hexString.isEmpty()) {
+			return new byte[0];
 		}
-		hexString = hexString.toUpperCase();
-		int length = hexString.length() / 2;
-		char[] hexChars = hexString.toCharArray();
+		
+		String hex = hexString.toUpperCase();
+		int length = hex.length() / 2;
+		char[] hexChars = hex.toCharArray();
 		byte[] d = new byte[length];
 		for (int i = 0; i < length; i++) {
 			int pos = i * 2;
-			d[i] = (byte) (hexCharToByte(hexChars[pos]) << 4 | hexCharToByte(hexChars[pos + 1]));
+			d[i] = (byte) (hexCharToByte(hexChars[pos]) << 4 | (hexCharToByte(hexChars[pos + 1]) & 0x0FF ));
 
 		}
 		return d;
@@ -275,9 +284,7 @@ public class MelpString {
 	}
 	
 	public static byte[] toBytes(String data,String charset){
-		if(data==null){
-			return null;
-		}else if(data.length()==0){
+		if(data==null || data.length()==0){
 			return new byte[0];
 		}else{
 			try{
