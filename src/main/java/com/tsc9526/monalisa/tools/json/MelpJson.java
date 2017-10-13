@@ -35,11 +35,12 @@ import com.google.gson.JsonParser;
 import com.google.gson.JsonPrimitive;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
+import com.google.gson.internal.LazilyParsedNumber;
 import com.google.gson.stream.JsonWriter;
 import com.tsc9526.monalisa.tools.clazz.MelpClass;
-import com.tsc9526.monalisa.tools.clazz.MelpLib;
-import com.tsc9526.monalisa.tools.clazz.MelpClass.FGS;
 import com.tsc9526.monalisa.tools.clazz.MelpClass.ClassHelper;
+import com.tsc9526.monalisa.tools.clazz.MelpClass.FGS;
+import com.tsc9526.monalisa.tools.clazz.MelpLib;
 import com.tsc9526.monalisa.tools.converters.Conversion;
 import com.tsc9526.monalisa.tools.datatable.DataColumn;
 import com.tsc9526.monalisa.tools.datatable.DataMap;
@@ -190,13 +191,7 @@ public class MelpJson {
 		if(e==null || e.isJsonNull()){
 			return null;
 		}else if(e.isJsonPrimitive()){
-			JsonPrimitive x=(JsonPrimitive)e;
-			
-			if(x.isNumber()){
-				return e.getAsNumber();
-			}else{
-				return e.getAsString();
-			}
+			return primitive((JsonPrimitive)e);
 		}else if(e.isJsonObject()){
 			return parseToDataMap(e.getAsJsonObject());
 		}else if(e.isJsonArray()){
@@ -214,6 +209,27 @@ public class MelpJson {
 		}else{
 			return e;
 		}   
+	}
+	
+	public static Object primitive(JsonPrimitive e){
+		if(e.isNumber()){
+			Number n=e.getAsNumber();
+			if(n instanceof LazilyParsedNumber){
+				LazilyParsedNumber ln=(LazilyParsedNumber)n;
+				String value=ln.toString();
+				if(value.indexOf('.')>=0){
+					return ln.doubleValue();
+				}else{
+					return ln.longValue();
+				}
+			}else{
+				return n;
+			}
+		}else if(e.isBoolean()){
+			return e.getAsBoolean();
+		}else{
+			return e.getAsString();
+		}
 	}
 	
 	public static void writeJson(JsonWriter w,DataTable<?> table,boolean close){
