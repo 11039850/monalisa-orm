@@ -296,7 +296,7 @@ public abstract class Model<T extends Model> implements Serializable ,Shallowabl
 	}
 	
 	/**
-	 * The default version field's name is: <b>version</b> <br>
+	 * The default version column's name is: <b>version</b> <br>
 	 * 
 	 * SQL like this:<br>
 	 * <pre>
@@ -306,7 +306,13 @@ public abstract class Model<T extends Model> implements Serializable ,Shallowabl
 	 * 		AND version = ?
 	 * </pre>
 	 *  
-	 * @return &gt;0 if update success, otherwise is 0.
+	 * Here is an example to set the column's name from <b>version</b> to <b>v1</b>
+	 * <pre>
+	 * @DB(url="jdbc:mysql://xxx", username="yyy", password="zzz", 
+	 *     properties={"version.name.table_xxx=v1",...}
+	 * )
+	 * </pre>
+	 * @return 1 if update success, otherwise 0.
 	 */
 	public int updateByVersion() {
 		if (history()) {
