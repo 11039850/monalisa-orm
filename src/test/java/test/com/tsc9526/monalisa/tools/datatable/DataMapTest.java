@@ -364,4 +364,23 @@ public class DataMapTest {
 		Assert.assertEquals(x1,x2);
 	}
 	
+	public void testArrayByPath(){
+		String json=""+/**~!{*/""
+			+ "{"
+			+ "\r\n	\"f1\":{"
+			+ "\r\n		\"f2\":['a','b','c']"
+			+ "\r\n	}"
+			+ "\r\n}	"
+		+ "\r\n"/**}*/;
+				
+		DataMap m=DataMap.fromJson(json);
+		Assert.assertEquals(m.getByPath("f1/f2[1]"), "a");
+		Assert.assertEquals(m.getByPath("f1/f2[2]"), "b");
+		Assert.assertEquals(m.getByPath("f1/f2[3]"), "c");
+		
+		Assert.assertEquals(m.getByPath("f1/f2[-1]"), "c");
+		Assert.assertEquals(m.getByPath("f1/f2[-2]"), "b");
+		Assert.assertEquals(m.getByPath("f1/f2[-3]"), "a");
+	}
+	
 }

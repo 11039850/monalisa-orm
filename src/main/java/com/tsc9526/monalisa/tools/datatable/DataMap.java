@@ -17,6 +17,7 @@
 package com.tsc9526.monalisa.tools.datatable;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 import com.google.gson.GsonBuilder;
@@ -107,31 +108,42 @@ public class DataMap extends CaseInsensitiveMap<Object>{
 	@SuppressWarnings("unchecked")
 	public Object get(int index){
 		Map.Entry<String,Object> entry=(Map.Entry<String,Object>)this.entrySet().toArray()[index];
-		
-		Object v=entry.getValue();
-		return v;
+		 
+		return entry.getValue();
 	}
 	
 	/**
-	 * Map example: <br> 
+	 * <b>For example:</b> <br> 
 	 * <code>
 	 * DataMap m=DataMap.fromJson("{'f1':{'f2':'yes'}}");
 	 * <br>
-	 * m.getPath("f1/f2") will be return string: "yes"
+	 * m.getByPath("f1/f2") = "yes"
 	 * 
 	 * </code>
+	 * <br><br>
+	 * <b>Another example(array):</b> <br> 
+	 * <code>
+	 * DataMap m=DataMap.fromJson("{'f1':{'f2':['a','b','c']}}");
+	 * <br> m.getByPath("f1/f2[1]") = "a"
+	 * <br> m.getByPath("f1/f2[2]") = "b"
+	 * <br> m.getByPath("f1/f2[3]") = "c"
+	 * <br>
+	 * <br> m.getByPath("f1/f2[-1]") = "c"
+	 * <br> m.getByPath("f1/f2[-2]") = "b"
+	 * <br> m.getByPath("f1/f2[-3]") = "a"
+	 * </code>
 	 * 
-	 * @param paths split by /
+	 * @param pathString split by /
 	 * @param <T> result type
 	 * @return the object value, maybe null
 	 */
-	@SuppressWarnings("unchecked")
-	public <T> T getByPath(String paths){
+	public <T> T getByPath(String pathString){
+		String paths=pathString;
 		if(paths.startsWith("/")){
 			paths=paths.substring(1);
 		}
 		
-		String sv[]=paths.split("/");
+		String[] sv=paths.split("/");
 		
 		Object ret=null;
 		
@@ -141,7 +153,6 @@ public class DataMap extends CaseInsensitiveMap<Object>{
 			
 			if(i==(sv.length-1)){
 				ret=v;
-				break;
 			}else{
 				if(v!=null){
 					m=v;
@@ -150,8 +161,10 @@ public class DataMap extends CaseInsensitiveMap<Object>{
 				}
 			}
 		}
-		
-		return (T)ret;
+
+		@SuppressWarnings("unchecked")
+		T r = (T)ret;
+		return r;
 	}
 	
 	public <T> T getByPath(String paths,T defaultValue){
@@ -164,22 +177,47 @@ public class DataMap extends CaseInsensitiveMap<Object>{
 		return r;
 	}
 	
-	private Object getValue(Object v,String name){
+	private Object getValue(Object v,String fieldName){
+		// name[0]
+		String name = fieldName;
+		
+		Integer index = null;
+		
+		int x=name.indexOf('[');
+		if(x>0 && name.endsWith("]")){
+			index=Integer.parseInt(name.substring(x+1,name.length()-1).trim());
+			name=name.substring(0,x);
+		}
+		
+		Object ret=null;
 		if(v instanceof Map){
-			return ((Map<?,?>)v).get(name);
+			ret= ((Map<?,?>)v).get(name);
 		}else if(v instanceof JsonObject){
-			return ((JsonObject)v).get(name);
+			ret= ((JsonObject)v).get(name);
 		}else if(v instanceof Model){
-			return ((Model<?>)v).get(name);
+			ret= ((Model<?>)v).get(name);
 		}else{
 			ClassHelper mc=MelpClass.getClassHelper(v);
 			FGS fgs=mc.getField(name);
 			if(fgs!=null){
-				return fgs.getObject(v);
+				ret= fgs.getObject(v);
+			}
+		}	
+		 
+		return getFromList(ret,index);
+	}
+	
+	private Object getFromList(Object obj,Integer index){
+		if(index!=null && obj instanceof List){
+			List<?> list=(List<?>)obj;
+			if(index < 0){
+				return list.get(list.size()+index);
 			}else{
-				return null;
+				return list.get(index-1);
 			}
 		}
+		
+		return obj;
 	}
 	
 	
@@ -187,7 +225,9 @@ public class DataMap extends CaseInsensitiveMap<Object>{
 		Object v=get(key);
 		
 		if(v!=null && v.getClass().isArray() ) {
-			return ((Object[])v)[0];
+			Object[] os=(Object[])v;
+			
+			return os[0];
 		}else{
 			return v;
 		}
@@ -220,7 +260,7 @@ public class DataMap extends CaseInsensitiveMap<Object>{
 			}
 			return rs;
 		}else{
-			return null;
+			return new Integer[0];
 		}
 	}
 	
@@ -232,7 +272,7 @@ public class DataMap extends CaseInsensitiveMap<Object>{
 		}
 		
 		if(v==null){
-			return null;
+			return new String[0];
 		}else {
 			if( v.getClass().isArray() ) {
 				Object[] os=(Object[])v;
@@ -259,7 +299,7 @@ public class DataMap extends CaseInsensitiveMap<Object>{
 	public Boolean getBoolean(String key){
 		Object v=getOne(key);
 		if(v==null){
-			return null;
+			return Boolean.FALSE;
 		}else{
 			if(v instanceof Boolean){
 				return (Boolean)v;
