@@ -184,6 +184,8 @@ public class MelpFile {
 	 * 
 	 * @param f  the file/dir to be deleted
 	 * @param delete true if delete the root dir, otherwise false.
+	 * 
+	 * @return true if delete successfully. otherwise false
 	 */
   	public static boolean delete(File f,boolean delete){
 		if(f.isFile()){
@@ -204,7 +206,7 @@ public class MelpFile {
 		return false;
 		
 	}
-   	
+   
 	public static void writeUTF8(File target,String data){
 		write(target,data,"utf-8");
 	}
@@ -217,6 +219,7 @@ public class MelpFile {
 		}
   	}
   	
+   
   	public static boolean createFileDirectories(File target){
   		String path=target.getAbsolutePath().replaceAll("\\\\", SLASH);
 		int p=path.lastIndexOf('/');

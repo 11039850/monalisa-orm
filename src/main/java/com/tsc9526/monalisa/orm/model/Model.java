@@ -308,7 +308,7 @@ public abstract class Model<T extends Model> implements Serializable ,Shallowabl
 	 *  
 	 * Here is an example to set the column's name from <b>version</b> to <b>v1</b>
 	 * <pre>
-	 * @DB(url="jdbc:mysql://xxx", username="yyy", password="zzz", 
+	 * &#64;DB(url="jdbc:mysql://xxx", username="yyy", password="zzz", 
 	 *     properties={"version.name.table_xxx=v1",...}
 	 * )
 	 * </pre>

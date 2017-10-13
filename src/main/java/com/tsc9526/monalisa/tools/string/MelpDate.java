@@ -70,19 +70,7 @@ public class MelpDate {
 		SimpleDateFormat sdf = new SimpleDateFormat(format);
 
 		return sdf.format(date);
-	}
-
-	
-	public static Date from(String v){
-		try{
-			long ts=Long.parseLong(v);
-			
-			return new Date(ts);
-		}catch(Exception e){
-			return null;
-		}
-	}
-	
+	}	
 	 
 	/**
 	 * Auto detect the date format:<br>
