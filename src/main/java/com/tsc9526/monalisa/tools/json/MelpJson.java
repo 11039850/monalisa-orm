@@ -85,9 +85,29 @@ public class MelpJson {
 	public static Gson getGson(){	
 		return gb.create();   
 	}
-	 
+	
+	/**
+	 * Transform object to json string(no pretty print).
+	 * 
+	 * @param bean : The object transform to json string.
+	 * @return json string(no pretty print). 
+	 * 
+	 * @see #toJsonPretty(Object)
+	 */
 	public static String toJson(Object bean) {
 		return toJson(getGson(),bean);
+	}
+	
+	/**
+	 * Transform object to json string (pretty print).
+	 * 
+	 * @param bean : The object transform to json string.
+	 * @return json string(pretty print). 
+	 * 
+	 * @see #toJson(Object)
+	 */
+	public static String toJsonPretty(Object bean) {
+		return toJson(gb.setPrettyPrinting().create(),bean); 
 	}
 	
 	public static String toJson(Gson gson,Object bean) {

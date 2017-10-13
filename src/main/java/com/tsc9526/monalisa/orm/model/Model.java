@@ -21,6 +21,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
 
 import com.tsc9526.monalisa.orm.Query;
@@ -47,6 +48,7 @@ import com.tsc9526.monalisa.tools.clazz.MelpJavaBeans;
 import com.tsc9526.monalisa.tools.clazz.Shallowable;
 import com.tsc9526.monalisa.tools.clazz.Specifiable;
 import com.tsc9526.monalisa.tools.datatable.DataMap;
+import com.tsc9526.monalisa.tools.json.MelpJson;
 import com.tsc9526.monalisa.tools.logger.Logger;
 import com.tsc9526.monalisa.tools.misc.MelpException;
 import com.tsc9526.monalisa.tools.string.MelpString;
@@ -642,6 +644,7 @@ public abstract class Model<T extends Model> implements Serializable ,Shallowabl
 	 * @return Enable update the model's primary key, default is: false
 	 */
 	public T updateKey(boolean updateKey) {
+		holder().updateKey=updateKey;
 		return (T) this;
 	}
 
@@ -846,9 +849,13 @@ public abstract class Model<T extends Model> implements Serializable ,Shallowabl
 	}
 
 	public String toJson() {
-		return MelpString.toJson(this);
+		return toJson(false);
 	}
 
+	public String toJson(boolean pretty) {
+		return pretty?MelpJson.toJsonPretty(this):MelpJson.toJson(this);
+	}
+	
 	public String toXml() {
 		return toXml(true, true);
 	}
@@ -862,8 +869,9 @@ public abstract class Model<T extends Model> implements Serializable ,Shallowabl
 		
 		Map<String,FGS> hs=usingFieldName?mm().hFieldsByJavaName:mm().hFieldsByColumnName;
 	 
-		for (String column:hs.keySet()) {
-			FGS fgs=hs.get(column);
+		for(Entry<String,FGS> entry:hs.entrySet()) {
+			String column=entry.getKey();
+			FGS fgs      =entry.getValue();
 			
 			Object v = fgs.getObject(this);
 			if (v != null) {
