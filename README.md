@@ -21,9 +21,16 @@
 ![image](https://github.com/11039850/monalisa-orm/raw/master/doc/images/db.gif)
 
 ```java  
+
 	@DB(url="jdbc:mysql://127.0.0.1:3306/test" ,username="root", password="root")
 	public interface TestDB{
 		public static DBConfig DB=DBConfig.fromClass(TestDB.class);  
+		
+		public static class NewsModelGenerator{
+			public static void main(String[] args) {
+				DBModelGenerateMain.generateModelClass(TestDB.class);
+			}
+		}
 	}
 ```
 
