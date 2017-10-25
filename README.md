@@ -16,9 +16,11 @@
 # Usage
 
 
-## Using Database
+## Using Database with plugin
 
 ![image](https://github.com/11039850/monalisa-orm/raw/master/doc/images/db.gif)
+
+## Using Database without plugin
 
 ```java  
 
@@ -39,7 +41,7 @@
 ```	
  
 
-## Auto-Generate DTOs
+## Auto-Generate DTOs (need eclipse-plugin)
 
 ![image](https://github.com/11039850/monalisa-orm/raw/master/doc/images/select.gif)
 
