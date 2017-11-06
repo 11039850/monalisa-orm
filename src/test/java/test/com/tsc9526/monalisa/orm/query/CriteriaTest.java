@@ -194,7 +194,7 @@ public class CriteriaTest {
 				
 	}
 	
-	public void testInsert()throws Exception{
+	public void testInsertOrUpdate()throws Exception{
 		String time="2015-06-08 11:10:31";
 		SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		 
@@ -204,19 +204,45 @@ public class CriteriaTest {
 		model.setIntField2(2);
 		model.setDateField1(sdf.parse(time));		
 		 
-		Query query=model.dialect().insert(model, true);
+		Query query=model.dialect().insertOrUpdate(model);
 		String sql=query.getSql();
-		String sql_expect="REPLACE INTO `simple_model`(`int_field1`, `int_field2`, `date_field1`)VALUES(?, ?, ?)";
+		String sql_expect="INSERT INTO `simple_model`(`int_field1`, `int_field2`, `date_field1`)VALUES(?, ?, ?)";
 		Assert.assertEquals(sql,sql_expect);
 		
-		query=model.dialect().insert(model, false);
+		model.setAuto(1);
+		query=model.dialect().insertOrUpdate(model);
 		sql=query.getSql();
-		sql_expect="INSERT INTO `simple_model`(`int_field1`, `int_field2`, `date_field1`)VALUES(?, ?, ?)";
+		sql_expect="INSERT INTO `simple_model`(`int_field1`, `int_field2`, `date_field1`, `auto`)VALUES(?, ?, ?, ?) ON DUPLICATE KEY UPDATE `int_field1` = ?, `int_field2` = ?, `date_field1` = ?";
+		Assert.assertEquals(sql,sql_expect);
+		
+		//update none
+		model=new TestSimpleModel();
+		model.setIntField1(1);
+		model.setStringField1("1");
+		query=model.dialect().insertOrUpdate(model);
+		sql=query.getSql();
+		sql_expect="INSERT INTO `simple_model`(`int_field1`, `string_field1`)VALUES(?, ?) ON DUPLICATE KEY UPDATE `int_field1` = `int_field1`";
+		Assert.assertEquals(sql,sql_expect);
+	}
+	
+	public void testInsert()throws Exception{
+		String time="2015-06-08 11:10:31";
+		SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		 
+		
+		TestSimpleModel model=new TestSimpleModel();
+		model.setIntField1(1);
+		model.setIntField2(2);
+		model.setDateField1(sdf.parse(time));		
+	 	
+		Query query=model.dialect().insert(model);
+		String sql=query.getSql();
+		String sql_expect="INSERT INTO `simple_model`(`int_field1`, `int_field2`, `date_field1`)VALUES(?, ?, ?)";
 		Assert.assertEquals(sql,sql_expect);
 		
 		 
 		model.setStatus(StatusA.OK);
-		query=model.dialect().insert(model, false);
+		query=model.dialect().insert(model);
 		sql=query.getExecutableSQL();
 		sql_expect="INSERT INTO `simple_model`(`int_field1`, `int_field2`, `date_field1`, `status`)VALUES(1, 2, '2015-06-08 11:10:31', 0)";
 		Assert.assertEquals(sql,sql_expect);		 

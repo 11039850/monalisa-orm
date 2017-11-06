@@ -1,8 +1,8 @@
 package test.com.tsc9526.monalisa.orm.sql;
  
 
-import test.com.tsc9526.monalisa.orm.mysql.mysqldb.TestTable1;
-import test.com.tsc9526.monalisa.orm.mysql.mysqldb.TestTable2;
+import test.com.tsc9526.monalisa.orm.dialect.mysql.mysqldb.TestTable1;
+import test.com.tsc9526.monalisa.orm.dialect.mysql.mysqldb.TestTable2;
 import com.google.gson.JsonObject;
 import test.com.tsc9526.monalisa.orm.data.ColumnData;
 import com.tsc9526.monalisa.orm.annotation.Column;

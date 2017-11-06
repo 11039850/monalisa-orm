@@ -24,7 +24,7 @@ import org.junit.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-import test.com.tsc9526.monalisa.orm.mysql.MysqlDB;
+import test.com.tsc9526.monalisa.orm.dialect.mysql.MysqlDB;
 
 import com.tsc9526.monalisa.orm.model.Model;
 import com.tsc9526.monalisa.orm.model.Record;

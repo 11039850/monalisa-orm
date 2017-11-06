@@ -22,6 +22,7 @@ import com.tsc9526.monalisa.orm.datasource.DBConfig;
 import com.tsc9526.monalisa.orm.dialect.Dialect;
 import com.tsc9526.monalisa.orm.executor.KeysExecutor;
 import com.tsc9526.monalisa.orm.model.Model;
+import com.tsc9526.monalisa.orm.model.ModelHolder;
 import com.tsc9526.monalisa.tools.clazz.MelpClass.FGS;
 import com.tsc9526.monalisa.tools.string.MelpString;
 
@@ -90,10 +91,12 @@ public class Insert<T extends Model>{
 				q.add(seqNextSql);
 				Long seqNextNo = q.getResult(Long.class);
 				fgs.setObject(model, seqNextNo);
+				
+				model.holder().setProperty(ModelHolder.PROP_SEQ_FIELD, fgs.getFieldName());
 			}	
 		}
 		
-		Query query=dialect.insert(model, updateOnDuplicateKey);
+		Query query= updateOnDuplicateKey ? dialect.insertOrUpdate(model) : dialect.insert(model);
 		query.use(db());
 		return query.execute(new KeysExecutor(model));  
 	}

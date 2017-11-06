@@ -522,6 +522,28 @@ public class MelpClass {
 			setMethod=getMethod(clazz,set, field.getType());		
 		}
 		
+		public boolean isSameName(FGS other){
+			if(other == null){
+				return false;
+			}
+			
+			Set<String> ns=new HashSet<String>();
+			ns.add(fieldName);
+			ns.addAll(alias);
+			
+			List<String> ls=new ArrayList<String>();
+			ls.add(other.fieldName);
+			ls.addAll(other.alias);
+			
+			for(String s:ls){
+				if(ns.contains(s)){
+					return true;
+				}
+			}
+			
+			return false;
+		}
+		
 		protected void setAlias(String[] names){
 			for(String s:names){
 				alias.add(s);

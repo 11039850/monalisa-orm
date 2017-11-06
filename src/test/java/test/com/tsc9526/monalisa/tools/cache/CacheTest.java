@@ -19,7 +19,7 @@ package test.com.tsc9526.monalisa.tools.cache;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import test.com.tsc9526.monalisa.orm.mysql.MysqlDB;
+import test.com.tsc9526.monalisa.orm.dialect.mysql.MysqlDB;
 
 import com.tsc9526.monalisa.orm.Query;
 import com.tsc9526.monalisa.tools.datatable.DataMap;

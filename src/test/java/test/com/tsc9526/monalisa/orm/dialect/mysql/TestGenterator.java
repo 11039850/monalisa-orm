@@ -14,7 +14,7 @@
  *	You should have received a copy of the GNU Lesser General Public License
  *	along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************************/
-package test.com.tsc9526.monalisa.orm.mysql;
+package test.com.tsc9526.monalisa.orm.dialect.mysql;
 
  
 import java.io.File;
@@ -24,7 +24,7 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 import test.com.tsc9526.monalisa.InitTestDatabase;
-import test.com.tsc9526.monalisa.orm.mysql.mock.MockProcessingEnvironment;
+import test.com.tsc9526.monalisa.orm.dialect.mysql.mock.MockProcessingEnvironment;
 
 import com.tsc9526.monalisa.orm.datasource.DbProp;
 import com.tsc9526.monalisa.orm.generator.DBGeneratorLocal;
@@ -88,12 +88,14 @@ public class TestGenterator {
 			
 			String ss=MelpFile.readToString(fs, "utf-8");
 			String se=MelpFile.readToString(fe, "utf-8");
+			
+			String expectMessage=", expect: "+expectDir+"/"+fs.getName();
 			if(ss.equals(se)){
-				logger.info("Check[OK] generate java file: "+fs.getName()+", expect: "+expectDir+"/"+fs.getName());
+				logger.info("Check[OK] generate java file: "+fs.getName()+expectMessage);
 			}else{
-				logger.error("Check[FAIL] generate java file: "+fs.getName()+", expect: "+expectDir+"/"+fs.getName());
+				logger.error("Check[FAIL] generate java file: "+fs.getName()+expectMessage);
 			}
-			Assert.assertTrue(ss.equals(se));
+			Assert.assertTrue(ss.equals(se),"Generate: "+fs.getAbsolutePath()+expectMessage);
 		}
 		
 	}

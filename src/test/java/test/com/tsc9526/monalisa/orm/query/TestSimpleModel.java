@@ -23,6 +23,7 @@ import java.util.Date;
 import com.google.gson.JsonObject;
 import com.tsc9526.monalisa.orm.annotation.Column;
 import com.tsc9526.monalisa.orm.annotation.DB;
+import com.tsc9526.monalisa.orm.annotation.Index;
 import com.tsc9526.monalisa.orm.annotation.Table;
 import com.tsc9526.monalisa.orm.criteria.QEH;
 import com.tsc9526.monalisa.orm.datasource.DBConfig;
@@ -34,7 +35,14 @@ import com.tsc9526.monalisa.tools.clazz.MelpClass;
  * 
  * @author zzg.zhou(11039850@qq.com)
  */
-@Table(name="simple_model")
+@Table(name="simple_model",
+	primaryKeys={"auto"},
+	remarks="",
+	indexes={
+		  @Index(name="PK_simple_model", type=1, unique=true, fields={"auto"}) 
+		, @Index(name="UK_int_string",   type=1, unique=true, fields={"int_field1", "string_field1"}) 
+	}
+)
 public class TestSimpleModel extends Model<TestSimpleModel> implements TestSimpleDB{
 	private static final long serialVersionUID = 3625669623226866359L;
 

@@ -5,8 +5,8 @@ import java.util.List;
 import org.testng.annotations.Test;
 
 import junit.framework.Assert;
-import test.com.tsc9526.monalisa.orm.mysql.MysqlDB;
-import test.com.tsc9526.monalisa.orm.mysql.mysqldb.TestTable1;
+import test.com.tsc9526.monalisa.orm.dialect.mysql.MysqlDB;
+import test.com.tsc9526.monalisa.orm.dialect.mysql.mysqldb.TestTable1;
 
 import com.tsc9526.monalisa.tools.datatable.DataMap;
 import com.tsc9526.monalisa.tools.datatable.DataTable;

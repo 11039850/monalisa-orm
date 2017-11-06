@@ -14,27 +14,27 @@
  *	You should have received a copy of the GNU Lesser General Public License
  *	along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************************/
-package test.com.tsc9526.monalisa.orm.dialect.oracle.cases;
+package test.com.tsc9526.monalisa.orm.dialect.mysql;
 
-import org.testng.annotations.Test;
+import test.com.tsc9526.monalisa.TestConstants;
 
-import test.com.tsc9526.monalisa.orm.dialect.oracle.oracledb.TestTable1;
-
-import com.tsc9526.monalisa.orm.Query;
-import com.tsc9526.monalisa.orm.dialect.OracleDialect;
+import com.tsc9526.monalisa.orm.annotation.DB;
+import com.tsc9526.monalisa.orm.datasource.DBConfig;
 
 /**
  * 
  * @author zzg.zhou(11039850@qq.com)
  */
-@Test
-public class InsertTest {
-
-	public void testReplace(){
-		OracleDialect oracle=new OracleDialect();
-		
-		TestTable1 table=new TestTable1();
-		Query q=oracle.insert(table, true);
-		q.getExecutableSQL();
-	}
+@DB(
+		url=TestConstants.mysqlUrl, 
+		username=TestConstants.username, 
+		password=TestConstants.password,
+		partitions="test_logyyyymm_{DatePartitionTable(yyyyMM,log_time)}"
+		,datasourceClass="C3p0DataSource"
+		,properties={
+				"sql.debug="+TestConstants.DEBUG_SQL,
+				"version.name.test_table_2=v1"
+		})
+public interface MysqlDB {
+	public static DBConfig DB=DBConfig.fromClass(MysqlDB.class);
 }

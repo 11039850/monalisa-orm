@@ -1,4 +1,4 @@
-package test.com.tsc9526.monalisa.orm.mysql.mysqldb;
+package test.com.tsc9526.monalisa.orm.dialect.mysql.mysqldb;
  		
 
 import com.tsc9526.monalisa.orm.annotation.DB; 
@@ -16,29 +16,29 @@ import java.util.LinkedHashMap;
  *
  */
 @Table(
-	name="test_record",
+	name="test_record_v2",
 	primaryKeys={"record_id"},
 	remarks="",
 	indexes={
 	}
 )
-public class TestRecord extends com.tsc9526.monalisa.orm.model.Model<TestRecord> implements test.com.tsc9526.monalisa.orm.mysql.MysqlDB{
-	private static final long serialVersionUID = 962655007781L;
+public class TestRecordV2 extends com.tsc9526.monalisa.orm.model.Model<TestRecordV2> implements test.com.tsc9526.monalisa.orm.dialect.mysql.MysqlDB{
+	private static final long serialVersionUID = 1019869136944L;
 		 
 	public static final $Insert INSERT(){
-	 	return new $Insert(new TestRecord());
+	 	return new $Insert(new TestRecordV2());
 	}
 	
 	public static final $Delete DELETE(){
-	 	return new $Delete(new TestRecord());
+	 	return new $Delete(new TestRecordV2());
 	}
 	
-	public static final $Update UPDATE(TestRecord model){
+	public static final $Update UPDATE(TestRecordV2 model){
 		return new $Update(model);
 	}		
 	
 	public static final $Select SELECT(){
-	 	return new $Select(new TestRecord());
+	 	return new $Select(new TestRecordV2());
 	}	 	 
 	 
 	
@@ -51,25 +51,25 @@ public class TestRecord extends com.tsc9526.monalisa.orm.model.Model<TestRecord>
 	}
 	
 	/**
-	 * name: <b>test_record</b> <br>
+	 * name: <b>test_record_v2</b> <br>
 	 * primaryKeys: "record_id" <br>
 	 * remarks: 
 	 */ 
-	public TestRecord(){
-		super("test_record", "record_id");		
+	public TestRecordV2(){
+		super("test_record_v2", "record_id");		
 	}		 
 	
 	
 	/**
 	 * Constructor use primary keys.<br><br>
-	 * name: <b>test_record</b> <br>
+	 * name: <b>test_record_v2</b> <br>
 	 * primaryKeys: "record_id" <br>
 	 * remarks: <br><br>
 	 *
 	 * @param recordId  primary key	 
 	 */
-	public TestRecord(Integer recordId){
-		super("test_record", "record_id");
+	public TestRecordV2(Integer recordId){
+		super("test_record_v2", "record_id");
 		
 		this.recordId = recordId;
 		fieldChanged("recordId");
@@ -79,7 +79,7 @@ public class TestRecord extends com.tsc9526.monalisa.orm.model.Model<TestRecord>
 	
 	/**
 	* @Column
-	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record&nbsp;<B>name:</B> record_id &nbsp;[<font color=red>KEY</font>|<font color=red>AUTO</font>|<font color=red>NOTNULL</font>]
+	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record_v2&nbsp;<B>name:</B> record_id &nbsp;[<font color=red>KEY</font>|<font color=red>AUTO</font>|<font color=red>NOTNULL</font>]
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 10<br>
 	* <li><B>remarks:</B> primary key
 	*/
@@ -89,7 +89,7 @@ public class TestRecord extends com.tsc9526.monalisa.orm.model.Model<TestRecord>
 	
 	/**
 	* @Column
-	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record&nbsp;<B>name:</B> name &nbsp;[<font color=red>NOTNULL</font>]
+	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record_v2&nbsp;<B>name:</B> name &nbsp;[<font color=red>NOTNULL</font>]
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 128 &nbsp;<B>value:</B> N0001<br>
 	* <li><B>remarks:</B> the name
 	*/
@@ -98,7 +98,7 @@ public class TestRecord extends com.tsc9526.monalisa.orm.model.Model<TestRecord>
 	
 	/**
 	* @Column
-	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record&nbsp;<B>name:</B> title
+	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record_v2&nbsp;<B>name:</B> title
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 128<br>
 	* <li><B>remarks:</B> the title
 	*/
@@ -107,7 +107,7 @@ public class TestRecord extends com.tsc9526.monalisa.orm.model.Model<TestRecord>
 	
 	/**
 	* @Column
-	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record&nbsp;<B>name:</B> ts_a
+	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record_v2&nbsp;<B>name:</B> ts_a
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 19<br>
 	* <li><B>remarks:</B> date time field
 	*/
@@ -117,7 +117,7 @@ public class TestRecord extends com.tsc9526.monalisa.orm.model.Model<TestRecord>
 	
 	/**
 	* @Column
-	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record&nbsp;<B>name:</B> create_time &nbsp;[<font color=red>NOTNULL</font>]
+	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record_v2&nbsp;<B>name:</B> create_time &nbsp;[<font color=red>NOTNULL</font>]
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 19<br>
 	* <li><B>remarks:</B> 
 	*/
@@ -127,7 +127,7 @@ public class TestRecord extends com.tsc9526.monalisa.orm.model.Model<TestRecord>
 	
 	/**
 	* @Column
-	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record&nbsp;<B>name:</B> create_by
+	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record_v2&nbsp;<B>name:</B> create_by
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 64<br>
 	* <li><B>remarks:</B> 
 	*/
@@ -137,7 +137,7 @@ public class TestRecord extends com.tsc9526.monalisa.orm.model.Model<TestRecord>
 	
 	/**
 	* @Column
-	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record&nbsp;<B>name:</B> update_time
+	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record_v2&nbsp;<B>name:</B> update_time
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 19<br>
 	* <li><B>remarks:</B> 
 	*/
@@ -147,7 +147,7 @@ public class TestRecord extends com.tsc9526.monalisa.orm.model.Model<TestRecord>
 	
 	/**
 	* @Column
-	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record&nbsp;<B>name:</B> update_by
+	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record_v2&nbsp;<B>name:</B> update_by
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 64<br>
 	* <li><B>remarks:</B> 
 	*/
@@ -160,12 +160,12 @@ public class TestRecord extends com.tsc9526.monalisa.orm.model.Model<TestRecord>
 	
 	/**
 	* @Column
-	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record&nbsp;<B>name:</B> record_id &nbsp;[<font color=red>KEY</font>|<font color=red>AUTO</font>|<font color=red>NOTNULL</font>]
+	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record_v2&nbsp;<B>name:</B> record_id &nbsp;[<font color=red>KEY</font>|<font color=red>AUTO</font>|<font color=red>NOTNULL</font>]
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 10<br>
 	* <li><B>remarks:</B> primary key
 	*/
 	@Column(table=M.TABLE, jdbcType=4, name=M.recordId$name, key=M.recordId$key, auto=M.recordId$auto, seq=M.recordId$seq, notnull=M.recordId$notnull, length=M.recordId$length, value=M.recordId$value, remarks=M.recordId$remarks) 
-	public TestRecord setRecordId(Integer recordId){
+	public TestRecordV2 setRecordId(Integer recordId){
 		this.recordId = recordId;  
 		
 		fieldChanged("recordId");
@@ -178,12 +178,12 @@ public class TestRecord extends com.tsc9526.monalisa.orm.model.Model<TestRecord>
 	
 	/**
 	* @Column
-	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record&nbsp;<B>name:</B> name &nbsp;[<font color=red>NOTNULL</font>]
+	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record_v2&nbsp;<B>name:</B> name &nbsp;[<font color=red>NOTNULL</font>]
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 128 &nbsp;<B>value:</B> N0001<br>
 	* <li><B>remarks:</B> the name
 	*/
 	@Column(table=M.TABLE, jdbcType=12, name=M.name$name, key=M.name$key, auto=M.name$auto, seq=M.name$seq, notnull=M.name$notnull, length=M.name$length, value=M.name$value, remarks=M.name$remarks) 
-	public TestRecord setName(String name){
+	public TestRecordV2 setName(String name){
 		this.name = name;  
 		
 		fieldChanged("name");
@@ -196,12 +196,12 @@ public class TestRecord extends com.tsc9526.monalisa.orm.model.Model<TestRecord>
 	
 	/**
 	* @Column
-	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record&nbsp;<B>name:</B> title
+	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record_v2&nbsp;<B>name:</B> title
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 128<br>
 	* <li><B>remarks:</B> the title
 	*/
 	@Column(table=M.TABLE, jdbcType=12, name=M.title$name, key=M.title$key, auto=M.title$auto, seq=M.title$seq, notnull=M.title$notnull, length=M.title$length, value=M.title$value, remarks=M.title$remarks) 
-	public TestRecord setTitle(String title){
+	public TestRecordV2 setTitle(String title){
 		this.title = title;  
 		
 		fieldChanged("title");
@@ -214,12 +214,12 @@ public class TestRecord extends com.tsc9526.monalisa.orm.model.Model<TestRecord>
 	
 	/**
 	* @Column
-	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record&nbsp;<B>name:</B> ts_a
+	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record_v2&nbsp;<B>name:</B> ts_a
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 19<br>
 	* <li><B>remarks:</B> date time field
 	*/
 	@Column(table=M.TABLE, jdbcType=93, name=M.tsA$name, key=M.tsA$key, auto=M.tsA$auto, seq=M.tsA$seq, notnull=M.tsA$notnull, length=M.tsA$length, value=M.tsA$value, remarks=M.tsA$remarks) 
-	public TestRecord setTsA(java.util.Date tsA){
+	public TestRecordV2 setTsA(java.util.Date tsA){
 		this.tsA = tsA;  
 		
 		fieldChanged("tsA");
@@ -232,12 +232,12 @@ public class TestRecord extends com.tsc9526.monalisa.orm.model.Model<TestRecord>
 	
 	/**
 	* @Column
-	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record&nbsp;<B>name:</B> create_time &nbsp;[<font color=red>NOTNULL</font>]
+	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record_v2&nbsp;<B>name:</B> create_time &nbsp;[<font color=red>NOTNULL</font>]
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 19<br>
 	* <li><B>remarks:</B> 
 	*/
 	@Column(table=M.TABLE, jdbcType=93, name=M.createTime$name, key=M.createTime$key, auto=M.createTime$auto, seq=M.createTime$seq, notnull=M.createTime$notnull, length=M.createTime$length, value=M.createTime$value, remarks=M.createTime$remarks) 
-	public TestRecord setCreateTime(java.util.Date createTime){
+	public TestRecordV2 setCreateTime(java.util.Date createTime){
 		this.createTime = createTime;  
 		
 		fieldChanged("createTime");
@@ -250,12 +250,12 @@ public class TestRecord extends com.tsc9526.monalisa.orm.model.Model<TestRecord>
 	
 	/**
 	* @Column
-	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record&nbsp;<B>name:</B> create_by
+	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record_v2&nbsp;<B>name:</B> create_by
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 64<br>
 	* <li><B>remarks:</B> 
 	*/
 	@Column(table=M.TABLE, jdbcType=12, name=M.createBy$name, key=M.createBy$key, auto=M.createBy$auto, seq=M.createBy$seq, notnull=M.createBy$notnull, length=M.createBy$length, value=M.createBy$value, remarks=M.createBy$remarks) 
-	public TestRecord setCreateBy(String createBy){
+	public TestRecordV2 setCreateBy(String createBy){
 		this.createBy = createBy;  
 		
 		fieldChanged("createBy");
@@ -268,12 +268,12 @@ public class TestRecord extends com.tsc9526.monalisa.orm.model.Model<TestRecord>
 	
 	/**
 	* @Column
-	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record&nbsp;<B>name:</B> update_time
+	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record_v2&nbsp;<B>name:</B> update_time
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 19<br>
 	* <li><B>remarks:</B> 
 	*/
 	@Column(table=M.TABLE, jdbcType=93, name=M.updateTime$name, key=M.updateTime$key, auto=M.updateTime$auto, seq=M.updateTime$seq, notnull=M.updateTime$notnull, length=M.updateTime$length, value=M.updateTime$value, remarks=M.updateTime$remarks) 
-	public TestRecord setUpdateTime(java.util.Date updateTime){
+	public TestRecordV2 setUpdateTime(java.util.Date updateTime){
 		this.updateTime = updateTime;  
 		
 		fieldChanged("updateTime");
@@ -286,12 +286,12 @@ public class TestRecord extends com.tsc9526.monalisa.orm.model.Model<TestRecord>
 	
 	/**
 	* @Column
-	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record&nbsp;<B>name:</B> update_by
+	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record_v2&nbsp;<B>name:</B> update_by
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 64<br>
 	* <li><B>remarks:</B> 
 	*/
 	@Column(table=M.TABLE, jdbcType=12, name=M.updateBy$name, key=M.updateBy$key, auto=M.updateBy$auto, seq=M.updateBy$seq, notnull=M.updateBy$notnull, length=M.updateBy$length, value=M.updateBy$value, remarks=M.updateBy$remarks) 
-	public TestRecord setUpdateBy(String updateBy){
+	public TestRecordV2 setUpdateBy(String updateBy){
 		this.updateBy = updateBy;  
 		
 		fieldChanged("updateBy");
@@ -305,7 +305,7 @@ public class TestRecord extends com.tsc9526.monalisa.orm.model.Model<TestRecord>
 	
 	/**
 	* @Column
-	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record&nbsp;<B>name:</B> record_id &nbsp;[<font color=red>KEY</font>|<font color=red>AUTO</font>|<font color=red>NOTNULL</font>]
+	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record_v2&nbsp;<B>name:</B> record_id &nbsp;[<font color=red>KEY</font>|<font color=red>AUTO</font>|<font color=red>NOTNULL</font>]
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 10<br>
 	* <li><B>remarks:</B> primary key
 	*/
@@ -317,7 +317,7 @@ public class TestRecord extends com.tsc9526.monalisa.orm.model.Model<TestRecord>
 	
 	/**
 	* @Column
-	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record&nbsp;<B>name:</B> record_id &nbsp;[<font color=red>KEY</font>|<font color=red>AUTO</font>|<font color=red>NOTNULL</font>]
+	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record_v2&nbsp;<B>name:</B> record_id &nbsp;[<font color=red>KEY</font>|<font color=red>AUTO</font>|<font color=red>NOTNULL</font>]
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 10<br>
 	* <li><B>remarks:</B> primary key
 	* @param defaultValue  Return the default value if recordId is null.
@@ -338,7 +338,7 @@ public class TestRecord extends com.tsc9526.monalisa.orm.model.Model<TestRecord>
 	
 	/**
 	* @Column
-	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record&nbsp;<B>name:</B> name &nbsp;[<font color=red>NOTNULL</font>]
+	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record_v2&nbsp;<B>name:</B> name &nbsp;[<font color=red>NOTNULL</font>]
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 128 &nbsp;<B>value:</B> N0001<br>
 	* <li><B>remarks:</B> the name
 	*/
@@ -350,7 +350,7 @@ public class TestRecord extends com.tsc9526.monalisa.orm.model.Model<TestRecord>
 	
 	/**
 	* @Column
-	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record&nbsp;<B>name:</B> name &nbsp;[<font color=red>NOTNULL</font>]
+	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record_v2&nbsp;<B>name:</B> name &nbsp;[<font color=red>NOTNULL</font>]
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 128 &nbsp;<B>value:</B> N0001<br>
 	* <li><B>remarks:</B> the name
 	* @param defaultValue  Return the default value if name is null.
@@ -371,7 +371,7 @@ public class TestRecord extends com.tsc9526.monalisa.orm.model.Model<TestRecord>
 	
 	/**
 	* @Column
-	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record&nbsp;<B>name:</B> title
+	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record_v2&nbsp;<B>name:</B> title
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 128<br>
 	* <li><B>remarks:</B> the title
 	*/
@@ -383,7 +383,7 @@ public class TestRecord extends com.tsc9526.monalisa.orm.model.Model<TestRecord>
 	
 	/**
 	* @Column
-	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record&nbsp;<B>name:</B> title
+	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record_v2&nbsp;<B>name:</B> title
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 128<br>
 	* <li><B>remarks:</B> the title
 	* @param defaultValue  Return the default value if title is null.
@@ -404,7 +404,7 @@ public class TestRecord extends com.tsc9526.monalisa.orm.model.Model<TestRecord>
 	
 	/**
 	* @Column
-	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record&nbsp;<B>name:</B> ts_a
+	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record_v2&nbsp;<B>name:</B> ts_a
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 19<br>
 	* <li><B>remarks:</B> date time field
 	*/
@@ -416,7 +416,7 @@ public class TestRecord extends com.tsc9526.monalisa.orm.model.Model<TestRecord>
 	
 	/**
 	* @Column
-	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record&nbsp;<B>name:</B> ts_a
+	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record_v2&nbsp;<B>name:</B> ts_a
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 19<br>
 	* <li><B>remarks:</B> date time field
 	* @param defaultValue  Return the default value if tsA is null.
@@ -437,7 +437,7 @@ public class TestRecord extends com.tsc9526.monalisa.orm.model.Model<TestRecord>
 	
 	/**
 	* @Column
-	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record&nbsp;<B>name:</B> create_time &nbsp;[<font color=red>NOTNULL</font>]
+	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record_v2&nbsp;<B>name:</B> create_time &nbsp;[<font color=red>NOTNULL</font>]
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 19<br>
 	* <li><B>remarks:</B> 
 	*/
@@ -449,7 +449,7 @@ public class TestRecord extends com.tsc9526.monalisa.orm.model.Model<TestRecord>
 	
 	/**
 	* @Column
-	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record&nbsp;<B>name:</B> create_time &nbsp;[<font color=red>NOTNULL</font>]
+	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record_v2&nbsp;<B>name:</B> create_time &nbsp;[<font color=red>NOTNULL</font>]
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 19<br>
 	* <li><B>remarks:</B> 
 	* @param defaultValue  Return the default value if createTime is null.
@@ -470,7 +470,7 @@ public class TestRecord extends com.tsc9526.monalisa.orm.model.Model<TestRecord>
 	
 	/**
 	* @Column
-	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record&nbsp;<B>name:</B> create_by
+	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record_v2&nbsp;<B>name:</B> create_by
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 64<br>
 	* <li><B>remarks:</B> 
 	*/
@@ -482,7 +482,7 @@ public class TestRecord extends com.tsc9526.monalisa.orm.model.Model<TestRecord>
 	
 	/**
 	* @Column
-	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record&nbsp;<B>name:</B> create_by
+	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record_v2&nbsp;<B>name:</B> create_by
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 64<br>
 	* <li><B>remarks:</B> 
 	* @param defaultValue  Return the default value if createBy is null.
@@ -503,7 +503,7 @@ public class TestRecord extends com.tsc9526.monalisa.orm.model.Model<TestRecord>
 	
 	/**
 	* @Column
-	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record&nbsp;<B>name:</B> update_time
+	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record_v2&nbsp;<B>name:</B> update_time
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 19<br>
 	* <li><B>remarks:</B> 
 	*/
@@ -515,7 +515,7 @@ public class TestRecord extends com.tsc9526.monalisa.orm.model.Model<TestRecord>
 	
 	/**
 	* @Column
-	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record&nbsp;<B>name:</B> update_time
+	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record_v2&nbsp;<B>name:</B> update_time
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 19<br>
 	* <li><B>remarks:</B> 
 	* @param defaultValue  Return the default value if updateTime is null.
@@ -536,7 +536,7 @@ public class TestRecord extends com.tsc9526.monalisa.orm.model.Model<TestRecord>
 	
 	/**
 	* @Column
-	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record&nbsp;<B>name:</B> update_by
+	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record_v2&nbsp;<B>name:</B> update_by
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 64<br>
 	* <li><B>remarks:</B> 
 	*/
@@ -548,7 +548,7 @@ public class TestRecord extends com.tsc9526.monalisa.orm.model.Model<TestRecord>
 	
 	/**
 	* @Column
-	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record&nbsp;<B>name:</B> update_by
+	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record_v2&nbsp;<B>name:</B> update_by
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 64<br>
 	* <li><B>remarks:</B> 
 	* @param defaultValue  Return the default value if updateBy is null.
@@ -569,14 +569,14 @@ public class TestRecord extends com.tsc9526.monalisa.orm.model.Model<TestRecord>
 	
 	
 	 
-	public static class $Insert extends com.tsc9526.monalisa.orm.dao.Insert<TestRecord>{
-		$Insert(TestRecord model){
+	public static class $Insert extends com.tsc9526.monalisa.orm.dao.Insert<TestRecordV2>{
+		$Insert(TestRecordV2 model){
 			super(model);
 		}	 
 	}	
 	
-	public static class $Delete extends com.tsc9526.monalisa.orm.dao.Delete<TestRecord>{
-		$Delete(TestRecord model){
+	public static class $Delete extends com.tsc9526.monalisa.orm.dao.Delete<TestRecordV2>{
+		$Delete(TestRecordV2 model){
 			super(model);
 		}
 		 
@@ -591,14 +591,14 @@ public class TestRecord extends com.tsc9526.monalisa.orm.model.Model<TestRecord>
 		
 	}
 	
-	public static class $Update extends com.tsc9526.monalisa.orm.dao.Update<TestRecord>{
-		$Update(TestRecord model){
+	public static class $Update extends com.tsc9526.monalisa.orm.dao.Update<TestRecordV2>{
+		$Update(TestRecordV2 model){
 			super(model);
 		}		 			 			 		
 	}
 	
-	public static class $Select extends com.tsc9526.monalisa.orm.dao.Select<TestRecord,$Select>{		
-		$Select(TestRecord x){
+	public static class $Select extends com.tsc9526.monalisa.orm.dao.Select<TestRecordV2,$Select>{		
+		$Select(TestRecordV2 x){
 			super(x);
 		}	
 						 
@@ -608,7 +608,7 @@ public class TestRecord extends com.tsc9526.monalisa.orm.model.Model<TestRecord>
 		*
 		* @return the model associated with the primary keys,  null if not found.
 		*/
-		public TestRecord selectByPrimaryKey(Integer recordId){
+		public TestRecordV2 selectByPrimaryKey(Integer recordId){
 			if(recordId ==null ) return null;
 			
 			
@@ -631,11 +631,11 @@ public class TestRecord extends com.tsc9526.monalisa.orm.model.Model<TestRecord>
 		/**
 		* List result to Map, The map key is primary-key:  recordId
 		*/
-		public Map<Integer,TestRecord> selectToMap(String whereStatement,Object ... args){
-			List<TestRecord> list=super.select(whereStatement,args);
+		public Map<Integer,TestRecordV2> selectToMap(String whereStatement,Object ... args){
+			List<TestRecordV2> list=super.select(whereStatement,args);
 			
-			Map<Integer,TestRecord> m=new LinkedHashMap<Integer,TestRecord>();
-			for(TestRecord x:list){
+			Map<Integer,TestRecordV2> m=new LinkedHashMap<Integer,TestRecordV2>();
+			for(TestRecordV2 x:list){
 				m.put(x.getRecordId(),x);
 			}
 			return m;
@@ -644,11 +644,11 @@ public class TestRecord extends com.tsc9526.monalisa.orm.model.Model<TestRecord>
 		/**
 		* List result to Map, The map key is primary-key: recordId 
 		*/
-		public Map<Integer,TestRecord> selectByExampleToMap($Example example){
-			List<TestRecord> list=super.selectByExample(example);
+		public Map<Integer,TestRecordV2> selectByExampleToMap($Example example){
+			List<TestRecordV2> list=super.selectByExample(example);
 			
-			Map<Integer,TestRecord> m=new LinkedHashMap<Integer,TestRecord>();
-			for(TestRecord x:list){
+			Map<Integer,TestRecordV2> m=new LinkedHashMap<Integer,TestRecordV2>();
+			for(TestRecordV2 x:list){
 				m.put(x.getRecordId(),x);
 			}
 			return m;
@@ -660,7 +660,7 @@ public class TestRecord extends com.tsc9526.monalisa.orm.model.Model<TestRecord>
 			return new $SelectForExample(example);
 		} 	
 		
-		public class $SelectForExample extends com.tsc9526.monalisa.orm.dao.Select<TestRecord,$Select>.$SelectForExample{
+		public class $SelectForExample extends com.tsc9526.monalisa.orm.dao.Select<TestRecordV2,$Select>.$SelectForExample{
 			public $SelectForExample($Example example) {
 				super(example); 
 			}
@@ -670,7 +670,7 @@ public class TestRecord extends com.tsc9526.monalisa.orm.model.Model<TestRecord>
 			/**
 			* List result to Map, The map key is primary-key:  recordId
 			*/
-			public Map<Integer,TestRecord> selectToMap(){
+			public Map<Integer,TestRecordV2> selectToMap(){
 				return selectByExampleToMap(($Example)this.example);
 			}
 			
@@ -679,14 +679,14 @@ public class TestRecord extends com.tsc9526.monalisa.orm.model.Model<TestRecord>
 	}
 	 
 		
-	public static class $Example extends com.tsc9526.monalisa.orm.criteria.Example<$Criteria,TestRecord>{
+	public static class $Example extends com.tsc9526.monalisa.orm.criteria.Example<$Criteria,TestRecordV2>{
 		public $Example(){}
 		 
 		protected $Criteria createInternal(){
 			$Criteria x= new $Criteria(this);
 			
 			@SuppressWarnings("rawtypes")
-			Class clazz=MelpClass.findClassWithAnnotation(TestRecord.class,DB.class);	  			
+			Class clazz=MelpClass.findClassWithAnnotation(TestRecordV2.class,DB.class);	  			
 			com.tsc9526.monalisa.orm.criteria.QEH.getQuery(x).use(dsm.getDBConfig(clazz));
 			
 			return x;
@@ -695,11 +695,11 @@ public class TestRecord extends com.tsc9526.monalisa.orm.model.Model<TestRecord>
 		/**
 		* List result to Map, The map key is primary-key: recordId 
 		*/
-		public Map<Integer,TestRecord> selectToMap(){			
-			List<TestRecord> list=SELECT().selectByExample(this);
+		public Map<Integer,TestRecordV2> selectToMap(){			
+			List<TestRecordV2> list=SELECT().selectByExample(this);
 			
-			Map<Integer,TestRecord> m=new LinkedHashMap<Integer,TestRecord>();
-			for(TestRecord x:list){
+			Map<Integer,TestRecordV2> m=new LinkedHashMap<Integer,TestRecordV2>();
+			for(TestRecordV2 x:list){
 				m.put(x.getRecordId(),x);
 			}
 			return m;
@@ -720,13 +720,13 @@ public class TestRecord extends com.tsc9526.monalisa.orm.model.Model<TestRecord>
 		 * Create Select for example
 		 */
 		public $Select.$SelectForExample SELECT(){
-			return TestRecord.SELECT().selectForExample(this.$example);
+			return TestRecordV2.SELECT().selectForExample(this.$example);
 		}
 		
 		/**
 		* Update records with this example
 		*/
-		public int update(TestRecord m){			 
+		public int update(TestRecordV2 m){			 
 			return UPDATE(m).updateByExample(this.$example);
 		}
 				
@@ -747,7 +747,7 @@ public class TestRecord extends com.tsc9526.monalisa.orm.model.Model<TestRecord>
 		
 		/**
 		* @Column
-		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record&nbsp;<B>name:</B> record_id &nbsp;[<font color=red>KEY</font>|<font color=red>AUTO</font>|<font color=red>NOTNULL</font>]
+		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record_v2&nbsp;<B>name:</B> record_id &nbsp;[<font color=red>KEY</font>|<font color=red>AUTO</font>|<font color=red>NOTNULL</font>]
 		* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 10<br>
 		* <li><B>remarks:</B> primary key
 		*/
@@ -756,7 +756,7 @@ public class TestRecord extends com.tsc9526.monalisa.orm.model.Model<TestRecord>
 			
 		/**
 		* @Column
-		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record&nbsp;<B>name:</B> name &nbsp;[<font color=red>NOTNULL</font>]
+		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record_v2&nbsp;<B>name:</B> name &nbsp;[<font color=red>NOTNULL</font>]
 		* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 128 &nbsp;<B>value:</B> N0001<br>
 		* <li><B>remarks:</B> the name
 		*/
@@ -765,7 +765,7 @@ public class TestRecord extends com.tsc9526.monalisa.orm.model.Model<TestRecord>
 			
 		/**
 		* @Column
-		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record&nbsp;<B>name:</B> title
+		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record_v2&nbsp;<B>name:</B> title
 		* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 128<br>
 		* <li><B>remarks:</B> the title
 		*/
@@ -774,7 +774,7 @@ public class TestRecord extends com.tsc9526.monalisa.orm.model.Model<TestRecord>
 			
 		/**
 		* @Column
-		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record&nbsp;<B>name:</B> ts_a
+		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record_v2&nbsp;<B>name:</B> ts_a
 		* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 19<br>
 		* <li><B>remarks:</B> date time field
 		*/
@@ -783,7 +783,7 @@ public class TestRecord extends com.tsc9526.monalisa.orm.model.Model<TestRecord>
 			
 		/**
 		* @Column
-		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record&nbsp;<B>name:</B> create_time &nbsp;[<font color=red>NOTNULL</font>]
+		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record_v2&nbsp;<B>name:</B> create_time &nbsp;[<font color=red>NOTNULL</font>]
 		* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 19<br>
 		* <li><B>remarks:</B> 
 		*/
@@ -792,7 +792,7 @@ public class TestRecord extends com.tsc9526.monalisa.orm.model.Model<TestRecord>
 			
 		/**
 		* @Column
-		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record&nbsp;<B>name:</B> create_by
+		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record_v2&nbsp;<B>name:</B> create_by
 		* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 64<br>
 		* <li><B>remarks:</B> 
 		*/
@@ -801,7 +801,7 @@ public class TestRecord extends com.tsc9526.monalisa.orm.model.Model<TestRecord>
 			
 		/**
 		* @Column
-		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record&nbsp;<B>name:</B> update_time
+		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record_v2&nbsp;<B>name:</B> update_time
 		* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 19<br>
 		* <li><B>remarks:</B> 
 		*/
@@ -810,7 +810,7 @@ public class TestRecord extends com.tsc9526.monalisa.orm.model.Model<TestRecord>
 			
 		/**
 		* @Column
-		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record&nbsp;<B>name:</B> update_by
+		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record_v2&nbsp;<B>name:</B> update_by
 		* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 64<br>
 		* <li><B>remarks:</B> 
 		*/
@@ -823,10 +823,10 @@ public class TestRecord extends com.tsc9526.monalisa.orm.model.Model<TestRecord>
 	
 	  
 	/**
-	* Meta info about table: test_record
+	* Meta info about table: test_record_v2
 	*/ 
 	public static class M{
-		public final static String TABLE ="test_record";
+		public final static String TABLE ="test_record_v2";
 	 	
 	 	
 		public final static String  recordId$name    = "record_id";
@@ -913,7 +913,7 @@ public class TestRecord extends com.tsc9526.monalisa.orm.model.Model<TestRecord>
 		
 		/**
 		* @Column
-		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record&nbsp;<B>name:</B> record_id &nbsp;[<font color=red>KEY</font>|<font color=red>AUTO</font>|<font color=red>NOTNULL</font>]
+		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record_v2&nbsp;<B>name:</B> record_id &nbsp;[<font color=red>KEY</font>|<font color=red>AUTO</font>|<font color=red>NOTNULL</font>]
 		* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 10<br>
 		* <li><B>remarks:</B> primary key
 		*/
@@ -922,7 +922,7 @@ public class TestRecord extends com.tsc9526.monalisa.orm.model.Model<TestRecord>
 		
 		/**
 		* @Column
-		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record&nbsp;<B>name:</B> name &nbsp;[<font color=red>NOTNULL</font>]
+		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record_v2&nbsp;<B>name:</B> name &nbsp;[<font color=red>NOTNULL</font>]
 		* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 128 &nbsp;<B>value:</B> N0001<br>
 		* <li><B>remarks:</B> the name
 		*/
@@ -931,7 +931,7 @@ public class TestRecord extends com.tsc9526.monalisa.orm.model.Model<TestRecord>
 		
 		/**
 		* @Column
-		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record&nbsp;<B>name:</B> title
+		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record_v2&nbsp;<B>name:</B> title
 		* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 128<br>
 		* <li><B>remarks:</B> the title
 		*/
@@ -940,7 +940,7 @@ public class TestRecord extends com.tsc9526.monalisa.orm.model.Model<TestRecord>
 		
 		/**
 		* @Column
-		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record&nbsp;<B>name:</B> ts_a
+		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record_v2&nbsp;<B>name:</B> ts_a
 		* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 19<br>
 		* <li><B>remarks:</B> date time field
 		*/
@@ -949,7 +949,7 @@ public class TestRecord extends com.tsc9526.monalisa.orm.model.Model<TestRecord>
 		
 		/**
 		* @Column
-		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record&nbsp;<B>name:</B> create_time &nbsp;[<font color=red>NOTNULL</font>]
+		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record_v2&nbsp;<B>name:</B> create_time &nbsp;[<font color=red>NOTNULL</font>]
 		* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 19<br>
 		* <li><B>remarks:</B> 
 		*/
@@ -958,7 +958,7 @@ public class TestRecord extends com.tsc9526.monalisa.orm.model.Model<TestRecord>
 		
 		/**
 		* @Column
-		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record&nbsp;<B>name:</B> create_by
+		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record_v2&nbsp;<B>name:</B> create_by
 		* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 64<br>
 		* <li><B>remarks:</B> 
 		*/
@@ -967,7 +967,7 @@ public class TestRecord extends com.tsc9526.monalisa.orm.model.Model<TestRecord>
 		
 		/**
 		* @Column
-		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record&nbsp;<B>name:</B> update_time
+		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record_v2&nbsp;<B>name:</B> update_time
 		* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 19<br>
 		* <li><B>remarks:</B> 
 		*/
@@ -976,7 +976,7 @@ public class TestRecord extends com.tsc9526.monalisa.orm.model.Model<TestRecord>
 		
 		/**
 		* @Column
-		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record&nbsp;<B>name:</B> update_by
+		* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record_v2&nbsp;<B>name:</B> update_by
 		* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 64<br>
 		* <li><B>remarks:</B> 
 		*/

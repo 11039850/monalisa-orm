@@ -243,7 +243,7 @@ public class ModelParserTest {
 		objectOne.setThree(now);
 		model.setObjectOne(objectOne);
 		
-		Query query=model.dialect().insert(model, true);
+		Query query=model.dialect().insertOrUpdate(model);
 		String sql=query.getExecutableSQL();		 
 		Assert.assertTrue(sql.indexOf("ooo")>0);
 		

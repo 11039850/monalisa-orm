@@ -32,7 +32,7 @@ import com.tsc9526.monalisa.orm.datasource.DBConfig;
 	username=TestConstants.username,
 	password=TestConstants.password, 
 	datasourceClass="C3p0DataSource",properties={
-		"sql.debug = true"	
+		"sql.debug = "+TestConstants.DEBUG_SQL	
 	})
 public interface OracleDB {
 	public static DBConfig DB=DBConfig.fromClass(OracleDB.class);

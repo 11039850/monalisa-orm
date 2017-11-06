@@ -18,7 +18,10 @@ package com.tsc9526.monalisa.orm.dialect;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.sql.DataSource;
 
@@ -35,7 +38,7 @@ import com.tsc9526.monalisa.tools.clazz.MelpClass.FGS;
  * 
  * @author zzg.zhou(11039850@qq.com)
  */
-@SuppressWarnings({ "rawtypes", "unchecked" })
+@SuppressWarnings({ "rawtypes"})
 public class OracleDialect extends Dialect{
 
 	@Override
@@ -117,33 +120,21 @@ public class OracleDialect extends Dialect{
 
 		return pagingSelect.toString();
 	}
+ 
 	
-	@Override
-	public Query insert(Model model,boolean updateOnDuplicateKey){
-		if(updateOnDuplicateKey){
-			List<FGS> pkFields = model.pkFields(); 
-			for(FGS fgs:pkFields){
-				Object v=fgs.getObject(model);
-				if(v==null){
-					return super.insert(model, updateOnDuplicateKey);
-				}
-			}
-			
-			return insertUsingMerge(model);
-		}else{
-			return super.insert(model, updateOnDuplicateKey);
+	public Query insertOrUpdate(Model model){
+		List<FGS> uniqueFields = getUniqueFields(model); 
+		if(uniqueFields.isEmpty()){
+			return insert(model);
 		}
-	}
-	
-	protected Query insertUsingMerge(Model model){
+		 
 		Query query=createQuery();
-		
-		int i=0;
 		
 		query.add("MERGE INTO ").add(getTableName(model.table())).add(" m USING dual ON (");
 		
-		List<FGS> pkFields = model.pkFields(); 
-		for(FGS fgs:pkFields){
+		int i=0;
+		Set<String> unames=new LinkedHashSet<String>();
+		for(FGS fgs:uniqueFields){
 			Object v=fgs.getObject(model);
 			if(i>0){
 				query.add(" AND ");
@@ -151,35 +142,48 @@ public class OracleDialect extends Dialect{
 			Column c=fgs.getAnnotation(Column.class);
 			query.add(getColumnName(c.name()) + " = ?",v);
 			
+			unames.add(fgs.getFieldName());
 			i++;
 		}
 		
-		query.add(") \r\n");
-		query.add("  WHEN NOT MATCHED THEN INSERT ");
+		query.add(")");
+		query.add("\r\n WHEN NOT MATCHED THEN INSERT ");
 		
 		addNameValues(query,model);
-		
-		query.add("  WHEN MATCHED     THEN UPDATE SET ");
-		
+		  
 		i=0;
+		StringBuilder updateSql = new StringBuilder("\r\n WHEN MATCHED     THEN UPDATE SET ");
+		List<Object> updateArgs = new ArrayList<Object>();
+		FGS createTime = model.fieldGetCreateTime();
+		FGS createBy   = model.fieldGetCreateBy();
 		for(Object o:model.changedFields()){
 			FGS fgs=(FGS)o;
 			
-			Column c=fgs.getAnnotation(Column.class);
-			Object v=getValue(fgs,model);
-			if(!c.auto() && !c.key()){
+			Column c = fgs.getAnnotation(Column.class);
+			Object v = getValue(fgs,model);
+			
+			boolean skip = c.auto() || c.key() || unames.contains(fgs.getFieldName());
+			if(!skip){
+				skip = fgs.isSameName(createTime) || fgs.isSameName(createBy);
+			} 
+			
+			if(!skip){
 				if(i>0){
-					query.add(", ");
+					updateSql.append(", ");
 				}
-				query.add(getColumnName(c.name()) + " = ?",v);
-				
+				updateSql.append(getColumnName(c.name()) + " = ?");
+				updateArgs.add(v);
 				i++;
 			}			
 		}
 		
+		if(i>0){
+			query.add(updateSql.toString(), updateArgs);
+		}
+		
 		return query;
 	}
-
+	 
 	@Override
 	public CreateTable getCreateTable(DBConfig db, String tableName) {
 		throw new RuntimeException("Not implement!");

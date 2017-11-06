@@ -54,7 +54,7 @@ public class MelpSQL {
 			char c=original.charAt(i);
 			if(c=='?'){
 				if(x>=parameters.size()){
-					return original;
+					throw new RuntimeException("Parameter index out-of-bound: "+x+", total parameters: "+parameters.size());
 				}
 				
 				Object p=parameters.get(x);

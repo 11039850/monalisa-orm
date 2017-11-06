@@ -19,12 +19,14 @@ package com.tsc9526.monalisa.orm.dialect;
 import com.tsc9526.monalisa.orm.Query;
 import com.tsc9526.monalisa.orm.datasource.DBConfig;
 import com.tsc9526.monalisa.orm.meta.MetaTable.CreateTable;
+import com.tsc9526.monalisa.orm.model.Model;
 
 /**
  * jdbc:sqlserver://localhost:1433;databaseName=AdventureWorks;user=MyUserName;password=*****;
  * 
  * @author zzg.zhou(11039850@qq.com)
  */
+@SuppressWarnings("rawtypes")
 public class SQLServerDialect extends Dialect {
 
 	public String getUrlPrefix() {
@@ -82,6 +84,7 @@ public class SQLServerDialect extends Dialect {
 		}
 	}
 
+	@Override
 	public Query getLimitQuery(Query origin, int limit, int offset) {
 		throw new RuntimeException("Not implement!");
 	}
@@ -105,7 +108,14 @@ public class SQLServerDialect extends Dialect {
 		throw new RuntimeException("Not implement!");
 	}
 
+	@Override
 	public synchronized void createTable(DBConfig db, CreateTable table) {
+		throw new RuntimeException("Not implement!");
+	}
+
+	
+	@Override
+	public Query insertOrUpdate(Model model) {
 		throw new RuntimeException("Not implement!");
 	}
 

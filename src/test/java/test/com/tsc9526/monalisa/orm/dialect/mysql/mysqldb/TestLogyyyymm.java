@@ -1,4 +1,4 @@
-package test.com.tsc9526.monalisa.orm.mysql.mysqldb;
+package test.com.tsc9526.monalisa.orm.dialect.mysql.mysqldb;
  		
 
 import com.tsc9526.monalisa.orm.annotation.DB; 
@@ -22,8 +22,8 @@ import java.util.LinkedHashMap;
 	indexes={
 	}
 )
-public class TestLogyyyymm extends com.tsc9526.monalisa.orm.model.Model<TestLogyyyymm> implements test.com.tsc9526.monalisa.orm.mysql.MysqlDB{
-	private static final long serialVersionUID = 1122353328333L;
+public class TestLogyyyymm extends com.tsc9526.monalisa.orm.model.Model<TestLogyyyymm> implements test.com.tsc9526.monalisa.orm.dialect.mysql.MysqlDB{
+	private static final long serialVersionUID = 1155425976213L;
 		 
 	public static final $Insert INSERT(){
 	 	return new $Insert(new TestLogyyyymm());

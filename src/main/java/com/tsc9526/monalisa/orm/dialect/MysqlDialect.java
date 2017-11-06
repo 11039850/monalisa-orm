@@ -16,12 +16,18 @@
  *******************************************************************************************/
 package com.tsc9526.monalisa.orm.dialect;
 
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
+import com.tsc9526.monalisa.orm.Query;
+import com.tsc9526.monalisa.orm.annotation.Column;
 import com.tsc9526.monalisa.orm.datasource.DBConfig;
 import com.tsc9526.monalisa.orm.datasource.DbProp;
 import com.tsc9526.monalisa.orm.meta.MetaTable.CreateTable;
 import com.tsc9526.monalisa.orm.meta.MetaTable.TableType;
+import com.tsc9526.monalisa.orm.model.Model;
+import com.tsc9526.monalisa.tools.clazz.MelpClass.FGS;
 import com.tsc9526.monalisa.tools.datatable.DataMap;
 import com.tsc9526.monalisa.tools.datatable.DataTable;
 
@@ -29,6 +35,7 @@ import com.tsc9526.monalisa.tools.datatable.DataTable;
  * 
  * @author zzg.zhou(11039850@qq.com)
  */
+@SuppressWarnings("rawtypes")
 public class MysqlDialect extends Dialect {
 
 	public String getUrl(String host,int port,String dbname){
@@ -85,11 +92,63 @@ public class MysqlDialect extends Dialect {
 	public String getTableName(String name) {
 		return getColumnName(name);
 	}
+	
+	
+	public Query insertOrUpdate(Model model){
+		List<FGS> uniqueFields = getUniqueFields(model); 
+		if(uniqueFields.isEmpty()){
+			return insert(model);
+		}
+		 
+		Set<String> unames=new LinkedHashSet<String>();
+		for(FGS fgs:uniqueFields){
+			unames.add(fgs.getFieldName());
+		}
+		
+		Query query=createQuery();
+		
+		query.add("INSERT INTO ").add(getTableName(model.table()));
+		 
+		addNameValues(query,model);
+		
+		query.add(" ON DUPLICATE KEY UPDATE ");
+		
+		int i=0;
+		FGS createTime = model.fieldGetCreateTime();
+		FGS createBy   = model.fieldGetCreateBy();
+		for(Object o:model.changedFields()){
+			FGS fgs=(FGS)o;
+			
+			Column c = fgs.getAnnotation(Column.class);
+			Object v = getValue(fgs,model);
+			
+			boolean skip = c.auto() || c.key() || unames.contains(fgs.getFieldName());
+			if(!skip){
+				skip = fgs.isSameName(createTime) || fgs.isSameName(createBy);
+			} 
+			
+			if(!skip){
+				if(i>0){
+					query.add(", ");
+				}
+				query.add(getColumnName(c.name()) + " = ?",v);
+				i++;
+			}			
+		}
+		
+		if(i==0){
+			FGS fgs=uniqueFields.get(0);
+			Column c = fgs.getAnnotation(Column.class);
+			query.add(getColumnName(c.name()) + " = " +getColumnName(c.name()));
+		}
+		
+		return query;
+	}
  
 	public String getLimitSql(String orignSql, int limit,int offset){
 		return orignSql+" LIMIT " + limit + " OFFSET " + offset;
 	}
-	 
+  
 	@Override
 	public DataTable<DataMap> getTableDesription(DBConfig db,String schemaPattern){
 		String sql="SELECT TABLE_NAME,TABLE_COMMENT  FROM information_schema.`TABLES` WHERE TABLE_SCHEMA=? ";
@@ -187,4 +246,6 @@ public class MysqlDialect extends Dialect {
 		
 		//TODO: 处理字段变更 ...
 	}
+
+	
 }

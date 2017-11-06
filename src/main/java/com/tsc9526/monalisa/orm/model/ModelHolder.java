@@ -27,14 +27,18 @@ import java.util.Set;
 import com.tsc9526.monalisa.orm.annotation.Column;
 import com.tsc9526.monalisa.tools.clazz.MelpClass.FGS;
 import com.tsc9526.monalisa.tools.datatable.CaseInsensitiveMap;
+import com.tsc9526.monalisa.tools.datatable.DataMap;
 import com.tsc9526.monalisa.tools.string.MelpString;
 
 /**
  * 
  * @author zzg.zhou(11039850@qq.com)
  */
+@SuppressWarnings("unchecked")
 public class ModelHolder implements Serializable {
 	private static final long serialVersionUID = 703976566431364671L;
+	
+	public final static String PROP_SEQ_FIELD      = "SEQ_FIELD";
 	
 	protected boolean     fieldFilterExcludeMode = true;	
 	protected Set<String> fieldFilterSets		 = new LinkedHashSet<String>();
@@ -44,12 +48,14 @@ public class ModelHolder implements Serializable {
 	protected boolean     dirty     = true;
 	protected boolean     entity    = false;
 	
-	protected CaseInsensitiveMap<Object> hModelValues=null;
+	protected CaseInsensitiveMap<Object> hModelValues=null; 
 	
 	//javaName
 	protected Set<String> 		 changedFields=new LinkedHashSet<String>();
  
 	protected transient Model<?> model;
+	
+	protected DataMap props = new DataMap();
 	
 	public ModelHolder(Model<?> model){
 		this.model=model;
@@ -60,6 +66,14 @@ public class ModelHolder implements Serializable {
 			hModelValues=new CaseInsensitiveMap<Object>();
 		}
 		return hModelValues;
+	}
+	
+	public <T> T getProperty(String key){
+		return props.gets(key);
+	}
+	 
+	public <T> T setProperty(String key,Object value){
+		return (T)props.put(key,value);
 	}
 	
 	protected void set(String name,Object value){

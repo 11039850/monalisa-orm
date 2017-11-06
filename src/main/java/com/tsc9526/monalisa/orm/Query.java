@@ -349,7 +349,7 @@ public class Query {
 			pst=x.preparedStatement(conn,getSql());
 			if(pst!=null){ 
 				MelpSQL.setPreparedParameters(pst, parameters);
-				logSql(getExecutableSQL());
+				logExcecutableSql();
 			}
 			return x.execute(conn,pst);
 		}catch(SQLException e){
@@ -571,15 +571,16 @@ public class Query {
 		return writer;
 	}
 	
-	protected void logSql(String sql){
+	protected void logExcecutableSql(){
 		boolean debug=false;
 		if(debugSql==null){
-			debug=  "true".equalsIgnoreCase( DbProp.PROP_DB_SQL_DEBUG.getValue(db));
+			debug =  "true".equalsIgnoreCase( DbProp.PROP_DB_SQL_DEBUG.getValue(db));
 		}else{
-			debug=debugSql.booleanValue();
+			debug = debugSql.booleanValue();
 		}
 		
 		if(debug){
+			String sql=getExecutableSQL();
 			logger.info(sql);
 		}
 	}
@@ -620,7 +621,11 @@ public class Query {
 
 	public Query use(DBConfig db) {
 		this.db = db;
-		this.dialect=db.getDialect();
+		
+		if(db!=null){
+			this.dialect=db.getDialect();
+		}
+		
 		return this;
 	}
 	

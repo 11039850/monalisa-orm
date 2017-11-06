@@ -16,8 +16,8 @@
  *******************************************************************************************/
 package test.com.tsc9526.monalisa;
 
-import test.com.tsc9526.monalisa.orm.mysql.MysqlDB;
-import test.com.tsc9526.monalisa.orm.mysql.TestGenterator;
+import test.com.tsc9526.monalisa.orm.dialect.mysql.MysqlDB;
+import test.com.tsc9526.monalisa.orm.dialect.mysql.TestGenterator;
 
 import com.tsc9526.monalisa.orm.generator.DBGeneratorLocal;
 import com.tsc9526.monalisa.orm.mqs.SQLGenerator;

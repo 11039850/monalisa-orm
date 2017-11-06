@@ -17,14 +17,14 @@
 package test.com.tsc9526.monalisa.orm.sqlfiles;
 
  
-import test.com.tsc9526.monalisa.orm.mysql.MysqlDB;
+import test.com.tsc9526.monalisa.orm.dialect.mysql.MysqlDB;
  
 /**
  * 
  * @author zzg.zhou(11039850@qq.com)
  */
 public class Q2 implements MysqlDB {
-	final static long $VERSION$= 5L;
+	final static long $VERSION$= 6L;
 	 
 	public int findOne(){ 
 		return 4;

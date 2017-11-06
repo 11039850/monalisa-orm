@@ -16,7 +16,7 @@
  *******************************************************************************************/
 package test.com.tsc9526.monalisa.orm.sqlfiles;
 
-import test.com.tsc9526.monalisa.orm.mysql.MysqlDB;
+import test.com.tsc9526.monalisa.orm.dialect.mysql.MysqlDB;
  
 /**
  * 

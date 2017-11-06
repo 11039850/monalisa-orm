@@ -20,8 +20,8 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-import test.com.tsc9526.monalisa.orm.mysql.MysqlDB;
-import test.com.tsc9526.monalisa.orm.mysql.mysqldb.TestTable1;
+import test.com.tsc9526.monalisa.orm.dialect.mysql.MysqlDB;
+import test.com.tsc9526.monalisa.orm.dialect.mysql.mysqldb.TestTable1;
 
 import com.tsc9526.monalisa.orm.Query;
 

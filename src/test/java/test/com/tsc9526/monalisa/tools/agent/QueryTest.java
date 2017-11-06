@@ -59,6 +59,8 @@ public class QueryTest {
 			initJavaSources("Q3",3);
 			initJavaSources("Q4",4);
 			initJavaSources("Q5",5);
+			
+			AgentClass.reloadClasses(); 
 		}catch(Exception e){
 			throw new RuntimeException(e);
 		}

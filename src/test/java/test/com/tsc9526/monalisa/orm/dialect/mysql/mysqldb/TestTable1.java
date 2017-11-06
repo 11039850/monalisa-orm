@@ -1,4 +1,4 @@
-package test.com.tsc9526.monalisa.orm.mysql.mysqldb;
+package test.com.tsc9526.monalisa.orm.dialect.mysql.mysqldb;
  		
 
 import com.tsc9526.monalisa.orm.annotation.DB; 
@@ -25,8 +25,8 @@ import java.util.LinkedHashMap;
 		, @Index(name="ix_name_title", type=3, unique=false, fields={"name", "title"}) 
 	}
 )
-public class TestTable1 extends com.tsc9526.monalisa.orm.model.Model<TestTable1> implements test.com.tsc9526.monalisa.orm.mysql.MysqlDB{
-	private static final long serialVersionUID = 1203536589395L;
+public class TestTable1 extends com.tsc9526.monalisa.orm.model.Model<TestTable1> implements test.com.tsc9526.monalisa.orm.dialect.mysql.MysqlDB{
+	private static final long serialVersionUID = 1237934740107L;
 		 
 	public static final $Insert INSERT(){
 	 	return new $Insert(new TestTable1());

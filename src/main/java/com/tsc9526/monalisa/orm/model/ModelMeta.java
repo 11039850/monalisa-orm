@@ -261,7 +261,7 @@ public class ModelMeta{
 	protected void initIndexes(Model<?> model) {
 		Index[] tbIndexes=table.indexes();
 		if(tbIndexes!=null && tbIndexes.length>0){
-			for(Index index:tbIndexes){
+			for(Index index:tbIndexes){ 
 				ModelIndex mIndex=new ModelIndex();
 				mIndex.setName(index.name());
 				mIndex.setType(index.type());
@@ -276,10 +276,33 @@ public class ModelMeta{
 					fs.add(x);
 				}
 				mIndex.setFields(fs);
+				mIndex.setPrimary(isPrimary(fs));
 				
-				indexes.add(mIndex);
+				if(mIndex.isPrimary()){
+					indexes.add(0, mIndex);
+				}else{
+					indexes.add(mIndex);
+				}
 			}
 		}
+	}
+	
+	protected boolean isPrimary(List<FGS> fs){
+		String s1 = field2String(fs);
+		String s2 = field2String(getPkFields());
+		
+		return s2.length()>0 && s2.equals(s1);
+	}
+	
+	private String field2String(List<FGS> fs){
+		StringBuilder sb=new StringBuilder();
+		for(FGS f:fs){
+			if(sb.length()>0){
+				sb.append(",");
+			}
+			sb.append(f.getFieldName());
+		}
+		return sb.toString();
 	}
 	
 	protected void initListeners(Model<?> model){
@@ -393,8 +416,12 @@ public class ModelMeta{
 		}
 	}
 	 
-	public FGS findFieldByName(String name){
-		name=name.toLowerCase();
+	public FGS findFieldByName(String theFieldName){
+		if(theFieldName == null){
+			return null;
+		}
+		
+		String name=theFieldName.trim().toLowerCase();
 		
 		name=Dialect.getRealname(name);
 		

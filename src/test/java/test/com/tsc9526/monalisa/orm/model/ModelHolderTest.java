@@ -21,9 +21,9 @@ import java.util.Collection;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import test.com.tsc9526.monalisa.orm.mysql.MysqlDB;
-import test.com.tsc9526.monalisa.orm.mysql.mysqldb.TestTable1;
-import test.com.tsc9526.monalisa.orm.mysql.mysqldb.TestTable2;
+import test.com.tsc9526.monalisa.orm.dialect.mysql.MysqlDB;
+import test.com.tsc9526.monalisa.orm.dialect.mysql.mysqldb.TestTable1;
+import test.com.tsc9526.monalisa.orm.dialect.mysql.mysqldb.TestTable2;
 import test.com.tsc9526.monalisa.orm.query.TestSimpleModel;
 
 import com.tsc9526.monalisa.orm.Query;
@@ -41,7 +41,7 @@ public class ModelHolderTest {
 	 	model.setIntField1(1);
 		model.setIntField2(2);
 		
-		Query query=model.dialect().insert(model,false);
+		Query query=model.dialect().insert(model);
 		String sql=query.getExecutableSQL(); 
 		Assert.assertEquals(sql,"INSERT INTO `simple_model`(`int_field1`, `int_field2`)VALUES(1, 2)");
 		
@@ -129,7 +129,7 @@ public class ModelHolderTest {
 		model.setIntField1(1);
 		model.setIntField2(2);
 		
-		Query query=model.dialect().insert(model,false);
+		Query query=model.dialect().insert(model);
 		String sql=query.getExecutableSQL(); 
 		Assert.assertEquals(sql,"INSERT INTO `simple_model`(`int_field1`)VALUES(1)");
 		
@@ -147,7 +147,7 @@ public class ModelHolderTest {
 		model.setIntField2(2);
 		model.setStringField1("xstring");
 		
-		Query query=model.dialect().insert(model,false);
+		Query query=model.dialect().insert(model);
 		String sql=query.getExecutableSQL(); 
 		Assert.assertEquals(sql,"INSERT INTO `simple_model`(`int_field2`, `string_field1`)VALUES(2, 'xstring')");
 		
@@ -170,7 +170,7 @@ public class ModelHolderTest {
 		cgs= model.changedFields();
 		Assert.assertEquals(cgs.size(),2);
 		
-		Query query=model.dialect().insert(model,false);
+		Query query=model.dialect().insert(model);
 		String sql=query.getExecutableSQL(); 
 		Assert.assertEquals(sql,"INSERT INTO `simple_model`(`int_field2`, `string_field1`)VALUES(2, 'xstring')");
 		

@@ -20,15 +20,14 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Map;
 
-import org.eclipse.jdt.core.dom.AssertStatement;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import test.com.tsc9526.monalisa.orm.data.ColumnData;
-import test.com.tsc9526.monalisa.orm.mysql.MysqlDB;
-import test.com.tsc9526.monalisa.orm.mysql.mysqldb.TestLogyyyymm;
-import test.com.tsc9526.monalisa.orm.mysql.mysqldb.TestTable1;
-import test.com.tsc9526.monalisa.orm.mysql.mysqldb.TestTable2;
+import test.com.tsc9526.monalisa.orm.dialect.mysql.MysqlDB;
+import test.com.tsc9526.monalisa.orm.dialect.mysql.mysqldb.TestLogyyyymm;
+import test.com.tsc9526.monalisa.orm.dialect.mysql.mysqldb.TestTable1;
+import test.com.tsc9526.monalisa.orm.dialect.mysql.mysqldb.TestTable2;
 
 import com.tsc9526.monalisa.orm.Tx;
 import com.tsc9526.monalisa.tools.string.MelpDate;

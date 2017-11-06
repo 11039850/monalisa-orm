@@ -16,7 +16,7 @@
  *******************************************************************************************/
 package test.com.tsc9526.monalisa.orm.dialect.sqlserver;
  
-import test.com.tsc9526.monalisa.orm.mysql.TestGenterator;
+import test.com.tsc9526.monalisa.orm.dialect.mysql.TestGenterator;
 
 import com.tsc9526.monalisa.main.DBModelGenerateMain;
 import com.tsc9526.monalisa.orm.annotation.DB;

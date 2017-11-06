@@ -20,8 +20,8 @@ package test.com.tsc9526.monalisa.orm.criteria;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import test.com.tsc9526.monalisa.orm.mysql.MysqlDB;
-import test.com.tsc9526.monalisa.orm.mysql.mysqldb.TestRecord;
+import test.com.tsc9526.monalisa.orm.dialect.mysql.MysqlDB;
+import test.com.tsc9526.monalisa.orm.dialect.mysql.mysqldb.TestRecord;
 
 import com.tsc9526.monalisa.orm.Query;
 import com.tsc9526.monalisa.orm.criteria.QEH;

@@ -24,7 +24,7 @@ import org.testng.annotations.Test;
 
 import com.tsc9526.monalisa.orm.Tx;
 
-import test.com.tsc9526.monalisa.orm.mysql.mysqldb.TestRecord;
+import test.com.tsc9526.monalisa.orm.dialect.mysql.mysqldb.TestRecord;
 
 /**
  * 

@@ -44,6 +44,8 @@ public class ModelIndex{
 	 * 索引字段
 	 */
 	private List<FGS> fields;
+	
+	private boolean primary;
 
 	public String getName() {
 		return name;
@@ -75,6 +77,14 @@ public class ModelIndex{
 
 	public void setFields(List<FGS> fields) {
 		this.fields = fields;
+	}
+
+	public boolean isPrimary() {
+		return primary;
+	}
+
+	public void setPrimary(boolean primary) {
+		this.primary = primary;
 	}
 	
 }

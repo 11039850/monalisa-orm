@@ -21,6 +21,16 @@ package test.com.tsc9526.monalisa;
  * @author zzg.zhou(11039850@qq.com)
  */
 public class TestConstants {
+	/** Print sql statements to console */
+	public final static boolean DEBUG_SQL               = true;
+	
+	/** Test with mysql db */
+	public final static boolean ENABLE_TEST_WITH_MYSQL  = true;
+	
+	/** Test with oracle db */
+	public final static boolean ENABLE_TEST_WITH_ORACLE = true;
+	
+	
 	public final static String database  = "test_monalisa";
 	public final static String username  = "monalisa";
 	public final static String password  = "monalisa";

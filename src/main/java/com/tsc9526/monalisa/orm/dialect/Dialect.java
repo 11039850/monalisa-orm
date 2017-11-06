@@ -18,6 +18,7 @@ package com.tsc9526.monalisa.orm.dialect;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -37,6 +38,7 @@ import com.tsc9526.monalisa.orm.datasource.DbProp;
 import com.tsc9526.monalisa.orm.meta.MetaTable;
 import com.tsc9526.monalisa.orm.meta.MetaTable.CreateTable;
 import com.tsc9526.monalisa.orm.model.Model;
+import com.tsc9526.monalisa.orm.model.ModelHolder;
 import com.tsc9526.monalisa.orm.model.ModelIndex;
 import com.tsc9526.monalisa.tools.clazz.MelpClass.FGS;
 import com.tsc9526.monalisa.tools.clazz.MelpEnum;
@@ -52,7 +54,7 @@ import com.tsc9526.monalisa.tools.string.MelpTypes;
  * 
  * @author zzg.zhou(11039850@qq.com)
  */
-@SuppressWarnings({"rawtypes"})
+@SuppressWarnings({"rawtypes","unchecked"})
 public abstract class Dialect{
 	static Logger logger=Logger.getLogger(Dialect.class.getName());
 	
@@ -92,6 +94,10 @@ public abstract class Dialect{
 		public String getIdleValidationQuery() {
 			return null;
 		}
+		
+		public Query insertOrUpdate(Model model){
+			return null;
+		}
 	};
 		
 	protected static Map<String, CreateTable> hTables=new ConcurrentHashMap<String, CreateTable>();
@@ -108,9 +114,10 @@ public abstract class Dialect{
 	public abstract String getTableName(String name);
  	
 	public abstract String getLimitSql(String orignSql, int limit,int offset);
- 
-	
+  	
 	public abstract CreateTable getCreateTable(DBConfig db,String tableName);
+	
+	public abstract Query insertOrUpdate(Model model);
 	
 	public DataTable<DataMap> getTableDesription(DBConfig db,String schemaPattern){
 		return null;
@@ -188,6 +195,33 @@ public abstract class Dialect{
 		}
 		return getTableName(tableName);
 	}
+	  
+	protected List<FGS> getUniqueFields(Model model) {
+		List<FGS> uniqueKeys = new ArrayList<FGS>(); 
+		
+		String seq = model.holder().getProperty(ModelHolder.PROP_SEQ_FIELD);
+		
+		List<ModelIndex> mis=model.uniqueIndexes();
+		for(ModelIndex i:mis){
+			List<FGS> ufs=i.getFields();
+			for(FGS fgs:ufs){
+				Object v=fgs.getObject(model);
+				if(v!=null && !fgs.getFieldName().equalsIgnoreCase(seq)){
+					uniqueKeys.add(fgs);
+				}else{
+					break;
+				}
+			}
+			
+			if(uniqueKeys.size() == ufs.size()){
+				break;
+			}else{
+				uniqueKeys.clear();
+			}
+		}
+		
+		return uniqueKeys;
+	}
 	
 	public String getCountSql(String sql){
     	String cql=sql;
@@ -223,25 +257,23 @@ public abstract class Dialect{
     	}
     }
 	
-	public Query insert(Model model,boolean updateOnDuplicateKey){
+	public Query insert(Model model){
 		Query query=createQuery();
 		
-		if(updateOnDuplicateKey){
-			query.add("REPLACE ");
-		}else{
-			query.add("INSERT "); 
-		}		 
-		
+		query.add("INSERT "); 
+		 
 		query.add("INTO "+getTableName(model.table()));
 		
 		addNameValues(query,model);
 	  	 
 		return query;		 
-	}	
+	}
+ 	
 	
 	protected void addNameValues(Query query,Model model){
 		query.add("(");
 		
+		int i=0;
 		for(Object o:model.changedFields()){
 			FGS fgs=(FGS)o;
 			
@@ -249,16 +281,17 @@ public abstract class Dialect{
 			Object v=getValue(fgs,model);
 			 
 			if(!c.auto() || v!=null){
-				if(query.parameterCount()>0){
+				if(i>0){
 					query.add(", ");
 				}
 				query.add(getColumnName(c.name()),v);
+				i++;
 			}			
 		}
 		query.add(")VALUES(");
 		
-		for(int i=0;i<query.parameterCount();i++){			 
-			query.add(i>0?", ?":"?");
+		for(int k=0;k<i;k++){			 
+			query.add(k>0?", ?":"?");
 		}
 		query.add(")");
 	}
@@ -705,10 +738,11 @@ public abstract class Dialect{
 	}
 	
 	public Query getCountQuery(Query origin){
+		String sql=getCountSql(origin.getSql());
+		
 		Query query=createQuery();
 		query.use(origin.getDb());
-		String sql=origin.getSql().toLowerCase();
-	 	query.add(getCountSql(sql), origin.getParameters());
+	 	query.add(sql, origin.getParameters());
 		
 		return query;
 	} 
