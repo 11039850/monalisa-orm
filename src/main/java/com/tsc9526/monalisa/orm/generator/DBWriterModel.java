@@ -115,7 +115,7 @@ public class DBWriterModel{
 		 		f="M.";
 		 	}
 			 	
-			String[] names=new String[]{"name","key","auto","notnull","length","value","remarks"};
+			String[] names=new String[]{"name","key","auto","seq","notnull","length","value","remarks"};
 			
 			r+="@Column(table="+f+"TABLE, jdbcType="+c.getJdbcType();
 			for(String n:names){
@@ -1207,6 +1207,11 @@ public class DBWriterModel{
 			out.print("$notnull = ");
 			out.print(f.isNotnull()?"true":"false");
 			out.println(";");
+			out.print("		public final static String  ");
+			out.print(f.getJavaName());
+			out.print("$seq     = \"");
+			out.print(f.getSeq()==null?"":f.getSeq());
+			out.println("\";");
 			out.println("		");
 			out.print("		");
 			}		out.println("	");

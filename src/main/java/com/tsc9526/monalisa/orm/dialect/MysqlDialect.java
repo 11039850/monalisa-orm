@@ -18,7 +18,6 @@ package com.tsc9526.monalisa.orm.dialect;
 
 import java.util.List;
 
-import com.tsc9526.monalisa.orm.Query;
 import com.tsc9526.monalisa.orm.datasource.DBConfig;
 import com.tsc9526.monalisa.orm.datasource.DbProp;
 import com.tsc9526.monalisa.orm.meta.MetaTable.CreateTable;
@@ -84,28 +83,17 @@ public class MysqlDialect extends Dialect {
 	}
 
 	public String getTableName(String name) {
-		if (name.startsWith("`")) {
-			return name;
-		} else {
-			return "`" + name + "`";
-		}
+		return getColumnName(name);
 	}
-
-	public Query getLimitQuery(Query origin, int limit, int offset) {
-		Query query = new Query();
-
-		query.use(origin.getDb());
-		query.add(origin.getSql());
-		query.setParameters(origin.getParameters());
-		query.add(" LIMIT " + limit + " OFFSET " + offset);
-
-		return query;
+ 
+	public String getLimitSql(String orignSql, int limit,int offset){
+		return orignSql+" LIMIT " + limit + " OFFSET " + offset;
 	}
-	
+	 
 	@Override
-	public DataTable<DataMap> getTableDesription(DBConfig db,String schema){
+	public DataTable<DataMap> getTableDesription(DBConfig db,String schemaPattern){
 		String sql="SELECT TABLE_NAME,TABLE_COMMENT  FROM information_schema.`TABLES` WHERE TABLE_SCHEMA=? ";
-		return db.select(sql, schema);
+		return db.select(sql, schemaPattern);
 	}
 
 	@Override

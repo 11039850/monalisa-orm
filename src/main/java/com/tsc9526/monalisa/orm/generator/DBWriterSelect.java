@@ -104,7 +104,7 @@ public class DBWriterSelect{
 		 		f="M.";
 		 	}
 			 	
-			String[] names=new String[]{"name","key","auto","notnull","length","value","remarks"};
+			String[] names=new String[]{"name","key","auto","seq","notnull","length","value","remarks"};
 			
 			r+="@Column(table="+f+"TABLE, jdbcType="+c.getJdbcType();
 			for(String n:names){

@@ -55,10 +55,10 @@ public class DruidDataSourceTest {
 	}
 	
 	
-	@DB(url=TestConstants.url,username=TestConstants.username,password=TestConstants.password,datasourceClass="DruidDataSource")
+	@DB(url=TestConstants.mysqlUrl,username=TestConstants.username,password=TestConstants.password,datasourceClass="DruidDataSource")
 	private class testDruidA{}
 	
-	@DB(url=TestConstants.url,username=TestConstants.username,password=TestConstants.password,datasourceClass="com.tsc9526.monalisa.orm.datasource.DruidDataSource")
+	@DB(url=TestConstants.mysqlUrl,username=TestConstants.username,password=TestConstants.password,datasourceClass="com.tsc9526.monalisa.orm.datasource.DruidDataSource")
 	private class testDruidB{}
 	
 	@DB(configClass=InnerConfigClass.class)
@@ -68,7 +68,7 @@ public class DruidDataSourceTest {
 		public Properties getConfigProperties() {
 			Properties p=new Properties();
 			 
-			p.put(getKey("url"),        TestConstants.url);
+			p.put(getKey("url"),        TestConstants.mysqlUrl);
 			p.put(getKey("username"),   TestConstants.username);
 			p.put(getKey("password"),   TestConstants.password);
 			

@@ -17,8 +17,10 @@
 package test.com.tsc9526.monalisa.orm.model;
 
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Map;
 
+import org.eclipse.jdt.core.dom.AssertStatement;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -29,6 +31,7 @@ import test.com.tsc9526.monalisa.orm.mysql.mysqldb.TestTable1;
 import test.com.tsc9526.monalisa.orm.mysql.mysqldb.TestTable2;
 
 import com.tsc9526.monalisa.orm.Tx;
+import com.tsc9526.monalisa.tools.string.MelpDate;
 
 /**
  * 
@@ -36,6 +39,19 @@ import com.tsc9526.monalisa.orm.Tx;
  */
 @Test
 public class ModelTest {
+	public void testInsertDate() throws Exception{
+		TestTable1 table1=new TestTable1();
+		table1.defaults();
+		table1.save();
+		
+		TestTable1 x=TestTable1.SELECT().selectByPrimaryKey( table1.getId() );
+		Date createTime=x.getCreateTime();
+		
+		String time=MelpDate.toString(createTime,"HH:mm:ss");
+		Assert.assertNotEquals(time, "00:00:00");
+	}
+	
+	
 	public void testPartition()throws Exception{
 		TestLogyyyymm log=new TestLogyyyymm();
 		log.setLogTime(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse("2016-03-01 01:01:01"));

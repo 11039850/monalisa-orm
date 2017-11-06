@@ -63,19 +63,19 @@ public class ResultHandler<T> {
 
 	public T createResult(ResultSet rs) throws SQLException {
 		if (resultClass == Long.class || resultClass == long.class) {
-			return (T) new Long(rs.getLong(1));
+			return (T) Long.valueOf(rs.getLong(1));
 		} else if (resultClass == Integer.class || resultClass == int.class) {
-			return (T) new Integer(rs.getInt(1));
+			return (T) Integer.valueOf(rs.getInt(1));
 		} else if (resultClass == Float.class || resultClass == float.class) {
-			return (T) new Float(rs.getFloat(1));
+			return (T) Float.valueOf(rs.getFloat(1));
 		} else if (resultClass == Short.class || resultClass == short.class) {
-			return (T) new Short(rs.getShort(1));
+			return (T) Short.valueOf(rs.getShort(1));
 		} else if (resultClass == Byte.class || resultClass == byte.class) {
-			return (T) new Byte(rs.getByte(1));
+			return (T) Byte.valueOf(rs.getByte(1));
 		} else if (resultClass == Double.class || resultClass == double.class) {
-			return (T) new Double(rs.getDouble(1));
+			return (T) Double.valueOf(rs.getDouble(1));
 		} else if (resultClass == Boolean.class || resultClass == boolean.class) {
-			return (T) new Boolean(rs.getBoolean(1));
+			return (T) Boolean.valueOf(rs.getBoolean(1));
 		} else if (resultClass == String.class) {
 			return (T) rs.getString(1);
 		} else if (resultClass == BigDecimal.class) {
@@ -85,17 +85,21 @@ public class ResultHandler<T> {
 		} else if (resultClass == byte[].class) {
 			return (T) rs.getBytes(1);
 		} else {
-			try {
-				if (Map.class.isAssignableFrom(resultClass)) {
-					return (T) loadToMap(rs, new DataMap());
-				} else {
-					return (T) load(rs, resultClass.newInstance());
-				}
-			} catch (IllegalAccessException e) {
-				throw new RuntimeException(e);
-			} catch (InstantiationException e) {
-				throw new RuntimeException(e);
+			return handleResults(rs);
+		}
+	}
+	
+	protected T handleResults(ResultSet rs)throws SQLException{
+		try {
+			if (Map.class.isAssignableFrom(resultClass)) {
+				return (T) loadToMap(rs, new DataMap());
+			} else {
+				return (T) load(rs, resultClass.newInstance());
 			}
+		} catch (IllegalAccessException e) {
+			throw new RuntimeException(e);
+		} catch (InstantiationException e) {
+			throw new RuntimeException(e);
 		}
 	}
 
@@ -152,8 +156,11 @@ public class ResultHandler<T> {
 
 			FGS fgs = model.field(nColumn.getJavaName());
 			if (fgs != null) {
-				Object v = rs.getObject(i);
-				fgs.setObject(model, v);
+				if(MelpTypes.isDateType(rsmd.getColumnType(i))){
+					fgs.setObject(model,  rs.getTimestamp(i));
+				}else{
+					fgs.setObject(model, rs.getObject(i));
+				}
 			}
 		}
 	}
@@ -192,12 +199,13 @@ public class ResultHandler<T> {
 
 	public static void processExchange(Query query, DBExchange exchange) {
 		Connection conn = null;
+		PreparedStatement pst=null;
 		try {
 			exchange.setDbKey(query.getDb().getCfg().getKey());
 			exchange.setSql(query.getExecutableSQL());
 			
 			conn = dsm.getDataSource(query.getDb()).getConnection();
-			PreparedStatement pst = conn.prepareStatement(query.getSql());
+			pst = conn.prepareStatement(query.getSql());
 			MelpSQL.setPreparedParameters(pst, query.getParameters());
 
 			ResultSet rs = pst.executeQuery();
@@ -235,7 +243,7 @@ public class ResultHandler<T> {
 		} catch (Exception e) {
 			exchange.setErrorString(MelpString.toString(e));
 		} finally {
-			MelpClose.close(conn);
+			MelpClose.close(conn,pst);
 		}
 	}
 	

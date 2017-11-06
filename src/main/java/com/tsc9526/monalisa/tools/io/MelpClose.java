@@ -27,7 +27,8 @@ import java.util.TimerTask;
  * @author zzg.zhou(11039850@qq.com)
  */
 public class MelpClose {
-
+	private MelpClose(){}
+	
 	public static void delayClose(final Object x, int delay){
 		final Timer timer=new Timer(true);
 		
@@ -39,12 +40,14 @@ public class MelpClose {
 					timer.cancel();
 				}
 			}
-		}, delay*1000);
+		}, delay*1000L);
 	}
 	
 	public static void close(Object ... xs){
 		for(Object x:xs){
-			if(x instanceof Closeable){
+			if(x instanceof Throwable){
+				//do nothing
+			}else if(x instanceof Closeable){
 				close((Closeable)x);
 			}else if(x instanceof AutoCloseable){
 				close((AutoCloseable)x);
@@ -63,13 +66,22 @@ public class MelpClose {
 			}
 		}
 	}
-		
+	
+	/**
+	 * Eat a throwable message(Exception and Error)
+	 * 
+	 * @param t throwable object
+	 */
+	public static void close(Throwable t){
+		//do nothing
+	}
+	
 	public static void close(HttpURLConnection c){
 		try{
 			if(c!=null){
 				c.disconnect();
 			}
-		}catch(Exception e){}
+		}catch(Exception e){close(e);}
 	}	
 	 
 	
@@ -78,7 +90,7 @@ public class MelpClose {
 			if(c!=null){
 				c.close();
 			}
-		}catch(Exception e){}
+		}catch(Exception e){close(e);}
 	}	
 
 	public static void close(AutoCloseable c) {
@@ -86,7 +98,7 @@ public class MelpClose {
 			if(c!=null){
 				c.close();
 			}
-		}catch(Exception e){}		
+		}catch(Exception e){close(e);}		
 	}
 }
 

@@ -83,7 +83,7 @@ public class MonalisaServiceDbs extends com.tsc9526.monalisa.orm.model.Model<Mon
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 64<br>
 	* <li><B>remarks:</B> database service name
 	*/
-	@Column(table=M.TABLE, jdbcType=12, name=M.dbs$name, key=M.dbs$key, auto=M.dbs$auto, notnull=M.dbs$notnull, length=M.dbs$length, value=M.dbs$value, remarks=M.dbs$remarks)
+	@Column(table=M.TABLE, jdbcType=12, name=M.dbs$name, key=M.dbs$key, auto=M.dbs$auto, seq=M.dbs$seq, notnull=M.dbs$notnull, length=M.dbs$length, value=M.dbs$value, remarks=M.dbs$remarks)
 	private String dbs;	
 	
 	/**
@@ -92,7 +92,7 @@ public class MonalisaServiceDbs extends com.tsc9526.monalisa.orm.model.Model<Mon
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 64<br>
 	* <li><B>remarks:</B> database schema name
 	*/
-	@Column(table=M.TABLE, jdbcType=12, name=M.schema$name, key=M.schema$key, auto=M.schema$auto, notnull=M.schema$notnull, length=M.schema$length, value=M.schema$value, remarks=M.schema$remarks)
+	@Column(table=M.TABLE, jdbcType=12, name=M.schema$name, key=M.schema$key, auto=M.schema$auto, seq=M.schema$seq, notnull=M.schema$notnull, length=M.schema$length, value=M.schema$value, remarks=M.schema$remarks)
 	private String schema;	
 	
 	/**
@@ -101,7 +101,7 @@ public class MonalisaServiceDbs extends com.tsc9526.monalisa.orm.model.Model<Mon
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 512<br>
 	* <li><B>remarks:</B> JDBC-URL
 	*/
-	@Column(table=M.TABLE, jdbcType=12, name=M.url$name, key=M.url$key, auto=M.url$auto, notnull=M.url$notnull, length=M.url$length, value=M.url$value, remarks=M.url$remarks)
+	@Column(table=M.TABLE, jdbcType=12, name=M.url$name, key=M.url$key, auto=M.url$auto, seq=M.url$seq, notnull=M.url$notnull, length=M.url$length, value=M.url$value, remarks=M.url$remarks)
 	private String url;	
 	
 	/**
@@ -110,7 +110,7 @@ public class MonalisaServiceDbs extends com.tsc9526.monalisa.orm.model.Model<Mon
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 64<br>
 	* <li><B>remarks:</B> database username
 	*/
-	@Column(table=M.TABLE, jdbcType=12, name=M.username$name, key=M.username$key, auto=M.username$auto, notnull=M.username$notnull, length=M.username$length, value=M.username$value, remarks=M.username$remarks)
+	@Column(table=M.TABLE, jdbcType=12, name=M.username$name, key=M.username$key, auto=M.username$auto, seq=M.username$seq, notnull=M.username$notnull, length=M.username$length, value=M.username$value, remarks=M.username$remarks)
 	private String username;	
 	
 	/**
@@ -119,7 +119,7 @@ public class MonalisaServiceDbs extends com.tsc9526.monalisa.orm.model.Model<Mon
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 64<br>
 	* <li><B>remarks:</B> database password
 	*/
-	@Column(table=M.TABLE, jdbcType=12, name=M.password$name, key=M.password$key, auto=M.password$auto, notnull=M.password$notnull, length=M.password$length, value=M.password$value, remarks=M.password$remarks)
+	@Column(table=M.TABLE, jdbcType=12, name=M.password$name, key=M.password$key, auto=M.password$auto, seq=M.password$seq, notnull=M.password$notnull, length=M.password$length, value=M.password$value, remarks=M.password$remarks)
 	private String password;	
 	
 	/**
@@ -128,7 +128,7 @@ public class MonalisaServiceDbs extends com.tsc9526.monalisa.orm.model.Model<Mon
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 10 &nbsp;<B>value:</B> 1<br>
 	* <li><B>remarks:</B> status: 1-enable database service, 0-disable
 	*/
-	@Column(table=M.TABLE, jdbcType=4, name=M.status$name, key=M.status$key, auto=M.status$auto, notnull=M.status$notnull, length=M.status$length, value=M.status$value, remarks=M.status$remarks)
+	@Column(table=M.TABLE, jdbcType=4, name=M.status$name, key=M.status$key, auto=M.status$auto, seq=M.status$seq, notnull=M.status$notnull, length=M.status$length, value=M.status$value, remarks=M.status$remarks)
 	private Integer status;	
 	
 	/**
@@ -137,7 +137,7 @@ public class MonalisaServiceDbs extends com.tsc9526.monalisa.orm.model.Model<Mon
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 19<br>
 	* <li><B>remarks:</B> create time
 	*/
-	@Column(table=M.TABLE, jdbcType=93, name=M.createTime$name, key=M.createTime$key, auto=M.createTime$auto, notnull=M.createTime$notnull, length=M.createTime$length, value=M.createTime$value, remarks=M.createTime$remarks)
+	@Column(table=M.TABLE, jdbcType=93, name=M.createTime$name, key=M.createTime$key, auto=M.createTime$auto, seq=M.createTime$seq, notnull=M.createTime$notnull, length=M.createTime$length, value=M.createTime$value, remarks=M.createTime$remarks)
 	@Alias("create_time")
 	private java.util.Date createTime;	
 	
@@ -147,7 +147,7 @@ public class MonalisaServiceDbs extends com.tsc9526.monalisa.orm.model.Model<Mon
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 19<br>
 	* <li><B>remarks:</B> update time
 	*/
-	@Column(table=M.TABLE, jdbcType=93, name=M.updateTime$name, key=M.updateTime$key, auto=M.updateTime$auto, notnull=M.updateTime$notnull, length=M.updateTime$length, value=M.updateTime$value, remarks=M.updateTime$remarks)
+	@Column(table=M.TABLE, jdbcType=93, name=M.updateTime$name, key=M.updateTime$key, auto=M.updateTime$auto, seq=M.updateTime$seq, notnull=M.updateTime$notnull, length=M.updateTime$length, value=M.updateTime$value, remarks=M.updateTime$remarks)
 	@Alias("update_time")
 	private java.util.Date updateTime;	
 	
@@ -160,7 +160,7 @@ public class MonalisaServiceDbs extends com.tsc9526.monalisa.orm.model.Model<Mon
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 64<br>
 	* <li><B>remarks:</B> database service name
 	*/
-	@Column(table=M.TABLE, jdbcType=12, name=M.dbs$name, key=M.dbs$key, auto=M.dbs$auto, notnull=M.dbs$notnull, length=M.dbs$length, value=M.dbs$value, remarks=M.dbs$remarks) 
+	@Column(table=M.TABLE, jdbcType=12, name=M.dbs$name, key=M.dbs$key, auto=M.dbs$auto, seq=M.dbs$seq, notnull=M.dbs$notnull, length=M.dbs$length, value=M.dbs$value, remarks=M.dbs$remarks) 
 	public MonalisaServiceDbs setDbs(String dbs){
 		this.dbs = dbs;  
 		
@@ -178,7 +178,7 @@ public class MonalisaServiceDbs extends com.tsc9526.monalisa.orm.model.Model<Mon
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 64<br>
 	* <li><B>remarks:</B> database schema name
 	*/
-	@Column(table=M.TABLE, jdbcType=12, name=M.schema$name, key=M.schema$key, auto=M.schema$auto, notnull=M.schema$notnull, length=M.schema$length, value=M.schema$value, remarks=M.schema$remarks) 
+	@Column(table=M.TABLE, jdbcType=12, name=M.schema$name, key=M.schema$key, auto=M.schema$auto, seq=M.schema$seq, notnull=M.schema$notnull, length=M.schema$length, value=M.schema$value, remarks=M.schema$remarks) 
 	public MonalisaServiceDbs setSchema(String schema){
 		this.schema = schema;  
 		
@@ -196,7 +196,7 @@ public class MonalisaServiceDbs extends com.tsc9526.monalisa.orm.model.Model<Mon
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 512<br>
 	* <li><B>remarks:</B> JDBC-URL
 	*/
-	@Column(table=M.TABLE, jdbcType=12, name=M.url$name, key=M.url$key, auto=M.url$auto, notnull=M.url$notnull, length=M.url$length, value=M.url$value, remarks=M.url$remarks) 
+	@Column(table=M.TABLE, jdbcType=12, name=M.url$name, key=M.url$key, auto=M.url$auto, seq=M.url$seq, notnull=M.url$notnull, length=M.url$length, value=M.url$value, remarks=M.url$remarks) 
 	public MonalisaServiceDbs setUrl(String url){
 		this.url = url;  
 		
@@ -214,7 +214,7 @@ public class MonalisaServiceDbs extends com.tsc9526.monalisa.orm.model.Model<Mon
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 64<br>
 	* <li><B>remarks:</B> database username
 	*/
-	@Column(table=M.TABLE, jdbcType=12, name=M.username$name, key=M.username$key, auto=M.username$auto, notnull=M.username$notnull, length=M.username$length, value=M.username$value, remarks=M.username$remarks) 
+	@Column(table=M.TABLE, jdbcType=12, name=M.username$name, key=M.username$key, auto=M.username$auto, seq=M.username$seq, notnull=M.username$notnull, length=M.username$length, value=M.username$value, remarks=M.username$remarks) 
 	public MonalisaServiceDbs setUsername(String username){
 		this.username = username;  
 		
@@ -232,7 +232,7 @@ public class MonalisaServiceDbs extends com.tsc9526.monalisa.orm.model.Model<Mon
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 64<br>
 	* <li><B>remarks:</B> database password
 	*/
-	@Column(table=M.TABLE, jdbcType=12, name=M.password$name, key=M.password$key, auto=M.password$auto, notnull=M.password$notnull, length=M.password$length, value=M.password$value, remarks=M.password$remarks) 
+	@Column(table=M.TABLE, jdbcType=12, name=M.password$name, key=M.password$key, auto=M.password$auto, seq=M.password$seq, notnull=M.password$notnull, length=M.password$length, value=M.password$value, remarks=M.password$remarks) 
 	public MonalisaServiceDbs setPassword(String password){
 		this.password = password;  
 		
@@ -250,7 +250,7 @@ public class MonalisaServiceDbs extends com.tsc9526.monalisa.orm.model.Model<Mon
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 10 &nbsp;<B>value:</B> 1<br>
 	* <li><B>remarks:</B> status: 1-enable database service, 0-disable
 	*/
-	@Column(table=M.TABLE, jdbcType=4, name=M.status$name, key=M.status$key, auto=M.status$auto, notnull=M.status$notnull, length=M.status$length, value=M.status$value, remarks=M.status$remarks) 
+	@Column(table=M.TABLE, jdbcType=4, name=M.status$name, key=M.status$key, auto=M.status$auto, seq=M.status$seq, notnull=M.status$notnull, length=M.status$length, value=M.status$value, remarks=M.status$remarks) 
 	public MonalisaServiceDbs setStatus(Integer status){
 		this.status = status;  
 		
@@ -268,7 +268,7 @@ public class MonalisaServiceDbs extends com.tsc9526.monalisa.orm.model.Model<Mon
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 19<br>
 	* <li><B>remarks:</B> create time
 	*/
-	@Column(table=M.TABLE, jdbcType=93, name=M.createTime$name, key=M.createTime$key, auto=M.createTime$auto, notnull=M.createTime$notnull, length=M.createTime$length, value=M.createTime$value, remarks=M.createTime$remarks) 
+	@Column(table=M.TABLE, jdbcType=93, name=M.createTime$name, key=M.createTime$key, auto=M.createTime$auto, seq=M.createTime$seq, notnull=M.createTime$notnull, length=M.createTime$length, value=M.createTime$value, remarks=M.createTime$remarks) 
 	public MonalisaServiceDbs setCreateTime(java.util.Date createTime){
 		this.createTime = createTime;  
 		
@@ -286,7 +286,7 @@ public class MonalisaServiceDbs extends com.tsc9526.monalisa.orm.model.Model<Mon
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 19<br>
 	* <li><B>remarks:</B> update time
 	*/
-	@Column(table=M.TABLE, jdbcType=93, name=M.updateTime$name, key=M.updateTime$key, auto=M.updateTime$auto, notnull=M.updateTime$notnull, length=M.updateTime$length, value=M.updateTime$value, remarks=M.updateTime$remarks) 
+	@Column(table=M.TABLE, jdbcType=93, name=M.updateTime$name, key=M.updateTime$key, auto=M.updateTime$auto, seq=M.updateTime$seq, notnull=M.updateTime$notnull, length=M.updateTime$length, value=M.updateTime$value, remarks=M.updateTime$remarks) 
 	public MonalisaServiceDbs setUpdateTime(java.util.Date updateTime){
 		this.updateTime = updateTime;  
 		
@@ -305,7 +305,7 @@ public class MonalisaServiceDbs extends com.tsc9526.monalisa.orm.model.Model<Mon
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 64<br>
 	* <li><B>remarks:</B> database service name
 	*/
-	@Column(table=M.TABLE, jdbcType=12, name=M.dbs$name, key=M.dbs$key, auto=M.dbs$auto, notnull=M.dbs$notnull, length=M.dbs$length, value=M.dbs$value, remarks=M.dbs$remarks) 
+	@Column(table=M.TABLE, jdbcType=12, name=M.dbs$name, key=M.dbs$key, auto=M.dbs$auto, seq=M.dbs$seq, notnull=M.dbs$notnull, length=M.dbs$length, value=M.dbs$value, remarks=M.dbs$remarks) 
 	public String getDbs(){
 		return this.dbs;
  
@@ -318,7 +318,7 @@ public class MonalisaServiceDbs extends com.tsc9526.monalisa.orm.model.Model<Mon
 	* <li><B>remarks:</B> database service name
 	* @param defaultValue  Return the default value if dbs is null.
 	*/
-	@Column(table=M.TABLE, jdbcType=12, name=M.dbs$name, key=M.dbs$key, auto=M.dbs$auto, notnull=M.dbs$notnull, length=M.dbs$length, value=M.dbs$value, remarks=M.dbs$remarks) 
+	@Column(table=M.TABLE, jdbcType=12, name=M.dbs$name, key=M.dbs$key, auto=M.dbs$auto, seq=M.dbs$seq, notnull=M.dbs$notnull, length=M.dbs$length, value=M.dbs$value, remarks=M.dbs$remarks) 
 	public String getDbs(String defaultValue){
 		String r=this.getDbs();
 		
@@ -338,7 +338,7 @@ public class MonalisaServiceDbs extends com.tsc9526.monalisa.orm.model.Model<Mon
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 64<br>
 	* <li><B>remarks:</B> database schema name
 	*/
-	@Column(table=M.TABLE, jdbcType=12, name=M.schema$name, key=M.schema$key, auto=M.schema$auto, notnull=M.schema$notnull, length=M.schema$length, value=M.schema$value, remarks=M.schema$remarks) 
+	@Column(table=M.TABLE, jdbcType=12, name=M.schema$name, key=M.schema$key, auto=M.schema$auto, seq=M.schema$seq, notnull=M.schema$notnull, length=M.schema$length, value=M.schema$value, remarks=M.schema$remarks) 
 	public String getSchema(){
 		return this.schema;
  
@@ -351,7 +351,7 @@ public class MonalisaServiceDbs extends com.tsc9526.monalisa.orm.model.Model<Mon
 	* <li><B>remarks:</B> database schema name
 	* @param defaultValue  Return the default value if schema is null.
 	*/
-	@Column(table=M.TABLE, jdbcType=12, name=M.schema$name, key=M.schema$key, auto=M.schema$auto, notnull=M.schema$notnull, length=M.schema$length, value=M.schema$value, remarks=M.schema$remarks) 
+	@Column(table=M.TABLE, jdbcType=12, name=M.schema$name, key=M.schema$key, auto=M.schema$auto, seq=M.schema$seq, notnull=M.schema$notnull, length=M.schema$length, value=M.schema$value, remarks=M.schema$remarks) 
 	public String getSchema(String defaultValue){
 		String r=this.getSchema();
 		
@@ -371,7 +371,7 @@ public class MonalisaServiceDbs extends com.tsc9526.monalisa.orm.model.Model<Mon
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 512<br>
 	* <li><B>remarks:</B> JDBC-URL
 	*/
-	@Column(table=M.TABLE, jdbcType=12, name=M.url$name, key=M.url$key, auto=M.url$auto, notnull=M.url$notnull, length=M.url$length, value=M.url$value, remarks=M.url$remarks) 
+	@Column(table=M.TABLE, jdbcType=12, name=M.url$name, key=M.url$key, auto=M.url$auto, seq=M.url$seq, notnull=M.url$notnull, length=M.url$length, value=M.url$value, remarks=M.url$remarks) 
 	public String getUrl(){
 		return this.url;
  
@@ -384,7 +384,7 @@ public class MonalisaServiceDbs extends com.tsc9526.monalisa.orm.model.Model<Mon
 	* <li><B>remarks:</B> JDBC-URL
 	* @param defaultValue  Return the default value if url is null.
 	*/
-	@Column(table=M.TABLE, jdbcType=12, name=M.url$name, key=M.url$key, auto=M.url$auto, notnull=M.url$notnull, length=M.url$length, value=M.url$value, remarks=M.url$remarks) 
+	@Column(table=M.TABLE, jdbcType=12, name=M.url$name, key=M.url$key, auto=M.url$auto, seq=M.url$seq, notnull=M.url$notnull, length=M.url$length, value=M.url$value, remarks=M.url$remarks) 
 	public String getUrl(String defaultValue){
 		String r=this.getUrl();
 		
@@ -404,7 +404,7 @@ public class MonalisaServiceDbs extends com.tsc9526.monalisa.orm.model.Model<Mon
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 64<br>
 	* <li><B>remarks:</B> database username
 	*/
-	@Column(table=M.TABLE, jdbcType=12, name=M.username$name, key=M.username$key, auto=M.username$auto, notnull=M.username$notnull, length=M.username$length, value=M.username$value, remarks=M.username$remarks) 
+	@Column(table=M.TABLE, jdbcType=12, name=M.username$name, key=M.username$key, auto=M.username$auto, seq=M.username$seq, notnull=M.username$notnull, length=M.username$length, value=M.username$value, remarks=M.username$remarks) 
 	public String getUsername(){
 		return this.username;
  
@@ -417,7 +417,7 @@ public class MonalisaServiceDbs extends com.tsc9526.monalisa.orm.model.Model<Mon
 	* <li><B>remarks:</B> database username
 	* @param defaultValue  Return the default value if username is null.
 	*/
-	@Column(table=M.TABLE, jdbcType=12, name=M.username$name, key=M.username$key, auto=M.username$auto, notnull=M.username$notnull, length=M.username$length, value=M.username$value, remarks=M.username$remarks) 
+	@Column(table=M.TABLE, jdbcType=12, name=M.username$name, key=M.username$key, auto=M.username$auto, seq=M.username$seq, notnull=M.username$notnull, length=M.username$length, value=M.username$value, remarks=M.username$remarks) 
 	public String getUsername(String defaultValue){
 		String r=this.getUsername();
 		
@@ -437,7 +437,7 @@ public class MonalisaServiceDbs extends com.tsc9526.monalisa.orm.model.Model<Mon
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 64<br>
 	* <li><B>remarks:</B> database password
 	*/
-	@Column(table=M.TABLE, jdbcType=12, name=M.password$name, key=M.password$key, auto=M.password$auto, notnull=M.password$notnull, length=M.password$length, value=M.password$value, remarks=M.password$remarks) 
+	@Column(table=M.TABLE, jdbcType=12, name=M.password$name, key=M.password$key, auto=M.password$auto, seq=M.password$seq, notnull=M.password$notnull, length=M.password$length, value=M.password$value, remarks=M.password$remarks) 
 	public String getPassword(){
 		return this.password;
  
@@ -450,7 +450,7 @@ public class MonalisaServiceDbs extends com.tsc9526.monalisa.orm.model.Model<Mon
 	* <li><B>remarks:</B> database password
 	* @param defaultValue  Return the default value if password is null.
 	*/
-	@Column(table=M.TABLE, jdbcType=12, name=M.password$name, key=M.password$key, auto=M.password$auto, notnull=M.password$notnull, length=M.password$length, value=M.password$value, remarks=M.password$remarks) 
+	@Column(table=M.TABLE, jdbcType=12, name=M.password$name, key=M.password$key, auto=M.password$auto, seq=M.password$seq, notnull=M.password$notnull, length=M.password$length, value=M.password$value, remarks=M.password$remarks) 
 	public String getPassword(String defaultValue){
 		String r=this.getPassword();
 		
@@ -470,7 +470,7 @@ public class MonalisaServiceDbs extends com.tsc9526.monalisa.orm.model.Model<Mon
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 10 &nbsp;<B>value:</B> 1<br>
 	* <li><B>remarks:</B> status: 1-enable database service, 0-disable
 	*/
-	@Column(table=M.TABLE, jdbcType=4, name=M.status$name, key=M.status$key, auto=M.status$auto, notnull=M.status$notnull, length=M.status$length, value=M.status$value, remarks=M.status$remarks) 
+	@Column(table=M.TABLE, jdbcType=4, name=M.status$name, key=M.status$key, auto=M.status$auto, seq=M.status$seq, notnull=M.status$notnull, length=M.status$length, value=M.status$value, remarks=M.status$remarks) 
 	public Integer getStatus(){
 		return this.status;
  
@@ -483,7 +483,7 @@ public class MonalisaServiceDbs extends com.tsc9526.monalisa.orm.model.Model<Mon
 	* <li><B>remarks:</B> status: 1-enable database service, 0-disable
 	* @param defaultValue  Return the default value if status is null.
 	*/
-	@Column(table=M.TABLE, jdbcType=4, name=M.status$name, key=M.status$key, auto=M.status$auto, notnull=M.status$notnull, length=M.status$length, value=M.status$value, remarks=M.status$remarks) 
+	@Column(table=M.TABLE, jdbcType=4, name=M.status$name, key=M.status$key, auto=M.status$auto, seq=M.status$seq, notnull=M.status$notnull, length=M.status$length, value=M.status$value, remarks=M.status$remarks) 
 	public Integer getStatus(Integer defaultValue){
 		Integer r=this.getStatus();
 		
@@ -503,7 +503,7 @@ public class MonalisaServiceDbs extends com.tsc9526.monalisa.orm.model.Model<Mon
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 19<br>
 	* <li><B>remarks:</B> create time
 	*/
-	@Column(table=M.TABLE, jdbcType=93, name=M.createTime$name, key=M.createTime$key, auto=M.createTime$auto, notnull=M.createTime$notnull, length=M.createTime$length, value=M.createTime$value, remarks=M.createTime$remarks) 
+	@Column(table=M.TABLE, jdbcType=93, name=M.createTime$name, key=M.createTime$key, auto=M.createTime$auto, seq=M.createTime$seq, notnull=M.createTime$notnull, length=M.createTime$length, value=M.createTime$value, remarks=M.createTime$remarks) 
 	public java.util.Date getCreateTime(){
 		return this.createTime;
  
@@ -516,7 +516,7 @@ public class MonalisaServiceDbs extends com.tsc9526.monalisa.orm.model.Model<Mon
 	* <li><B>remarks:</B> create time
 	* @param defaultValue  Return the default value if createTime is null.
 	*/
-	@Column(table=M.TABLE, jdbcType=93, name=M.createTime$name, key=M.createTime$key, auto=M.createTime$auto, notnull=M.createTime$notnull, length=M.createTime$length, value=M.createTime$value, remarks=M.createTime$remarks) 
+	@Column(table=M.TABLE, jdbcType=93, name=M.createTime$name, key=M.createTime$key, auto=M.createTime$auto, seq=M.createTime$seq, notnull=M.createTime$notnull, length=M.createTime$length, value=M.createTime$value, remarks=M.createTime$remarks) 
 	public java.util.Date getCreateTime(java.util.Date defaultValue){
 		java.util.Date r=this.getCreateTime();
 		
@@ -536,7 +536,7 @@ public class MonalisaServiceDbs extends com.tsc9526.monalisa.orm.model.Model<Mon
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 19<br>
 	* <li><B>remarks:</B> update time
 	*/
-	@Column(table=M.TABLE, jdbcType=93, name=M.updateTime$name, key=M.updateTime$key, auto=M.updateTime$auto, notnull=M.updateTime$notnull, length=M.updateTime$length, value=M.updateTime$value, remarks=M.updateTime$remarks) 
+	@Column(table=M.TABLE, jdbcType=93, name=M.updateTime$name, key=M.updateTime$key, auto=M.updateTime$auto, seq=M.updateTime$seq, notnull=M.updateTime$notnull, length=M.updateTime$length, value=M.updateTime$value, remarks=M.updateTime$remarks) 
 	public java.util.Date getUpdateTime(){
 		return this.updateTime;
  
@@ -549,7 +549,7 @@ public class MonalisaServiceDbs extends com.tsc9526.monalisa.orm.model.Model<Mon
 	* <li><B>remarks:</B> update time
 	* @param defaultValue  Return the default value if updateTime is null.
 	*/
-	@Column(table=M.TABLE, jdbcType=93, name=M.updateTime$name, key=M.updateTime$key, auto=M.updateTime$auto, notnull=M.updateTime$notnull, length=M.updateTime$length, value=M.updateTime$value, remarks=M.updateTime$remarks) 
+	@Column(table=M.TABLE, jdbcType=93, name=M.updateTime$name, key=M.updateTime$key, auto=M.updateTime$auto, seq=M.updateTime$seq, notnull=M.updateTime$notnull, length=M.updateTime$length, value=M.updateTime$value, remarks=M.updateTime$remarks) 
 	public java.util.Date getUpdateTime(java.util.Date defaultValue){
 		java.util.Date r=this.getUpdateTime();
 		
@@ -747,7 +747,7 @@ public class MonalisaServiceDbs extends com.tsc9526.monalisa.orm.model.Model<Mon
 		* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 64<br>
 		* <li><B>remarks:</B> database service name
 		*/
-		@Column(table=M.TABLE, jdbcType=12, name=M.dbs$name, key=M.dbs$key, auto=M.dbs$auto, notnull=M.dbs$notnull, length=M.dbs$length, value=M.dbs$value, remarks=M.dbs$remarks)
+		@Column(table=M.TABLE, jdbcType=12, name=M.dbs$name, key=M.dbs$key, auto=M.dbs$auto, seq=M.dbs$seq, notnull=M.dbs$notnull, length=M.dbs$length, value=M.dbs$value, remarks=M.dbs$remarks)
 		public com.tsc9526.monalisa.orm.criteria.Field.FieldString<$Criteria> dbs = new com.tsc9526.monalisa.orm.criteria.Field.FieldString<$Criteria>("dbs", this);
 			
 		/**
@@ -756,7 +756,7 @@ public class MonalisaServiceDbs extends com.tsc9526.monalisa.orm.model.Model<Mon
 		* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 64<br>
 		* <li><B>remarks:</B> database schema name
 		*/
-		@Column(table=M.TABLE, jdbcType=12, name=M.schema$name, key=M.schema$key, auto=M.schema$auto, notnull=M.schema$notnull, length=M.schema$length, value=M.schema$value, remarks=M.schema$remarks)
+		@Column(table=M.TABLE, jdbcType=12, name=M.schema$name, key=M.schema$key, auto=M.schema$auto, seq=M.schema$seq, notnull=M.schema$notnull, length=M.schema$length, value=M.schema$value, remarks=M.schema$remarks)
 		public com.tsc9526.monalisa.orm.criteria.Field.FieldString<$Criteria> schema = new com.tsc9526.monalisa.orm.criteria.Field.FieldString<$Criteria>("schema", this);
 			
 		/**
@@ -765,7 +765,7 @@ public class MonalisaServiceDbs extends com.tsc9526.monalisa.orm.model.Model<Mon
 		* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 512<br>
 		* <li><B>remarks:</B> JDBC-URL
 		*/
-		@Column(table=M.TABLE, jdbcType=12, name=M.url$name, key=M.url$key, auto=M.url$auto, notnull=M.url$notnull, length=M.url$length, value=M.url$value, remarks=M.url$remarks)
+		@Column(table=M.TABLE, jdbcType=12, name=M.url$name, key=M.url$key, auto=M.url$auto, seq=M.url$seq, notnull=M.url$notnull, length=M.url$length, value=M.url$value, remarks=M.url$remarks)
 		public com.tsc9526.monalisa.orm.criteria.Field.FieldString<$Criteria> url = new com.tsc9526.monalisa.orm.criteria.Field.FieldString<$Criteria>("url", this);
 			
 		/**
@@ -774,7 +774,7 @@ public class MonalisaServiceDbs extends com.tsc9526.monalisa.orm.model.Model<Mon
 		* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 64<br>
 		* <li><B>remarks:</B> database username
 		*/
-		@Column(table=M.TABLE, jdbcType=12, name=M.username$name, key=M.username$key, auto=M.username$auto, notnull=M.username$notnull, length=M.username$length, value=M.username$value, remarks=M.username$remarks)
+		@Column(table=M.TABLE, jdbcType=12, name=M.username$name, key=M.username$key, auto=M.username$auto, seq=M.username$seq, notnull=M.username$notnull, length=M.username$length, value=M.username$value, remarks=M.username$remarks)
 		public com.tsc9526.monalisa.orm.criteria.Field.FieldString<$Criteria> username = new com.tsc9526.monalisa.orm.criteria.Field.FieldString<$Criteria>("username", this);
 			
 		/**
@@ -783,7 +783,7 @@ public class MonalisaServiceDbs extends com.tsc9526.monalisa.orm.model.Model<Mon
 		* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 64<br>
 		* <li><B>remarks:</B> database password
 		*/
-		@Column(table=M.TABLE, jdbcType=12, name=M.password$name, key=M.password$key, auto=M.password$auto, notnull=M.password$notnull, length=M.password$length, value=M.password$value, remarks=M.password$remarks)
+		@Column(table=M.TABLE, jdbcType=12, name=M.password$name, key=M.password$key, auto=M.password$auto, seq=M.password$seq, notnull=M.password$notnull, length=M.password$length, value=M.password$value, remarks=M.password$remarks)
 		public com.tsc9526.monalisa.orm.criteria.Field.FieldString<$Criteria> password = new com.tsc9526.monalisa.orm.criteria.Field.FieldString<$Criteria>("password", this);
 			
 		/**
@@ -792,7 +792,7 @@ public class MonalisaServiceDbs extends com.tsc9526.monalisa.orm.model.Model<Mon
 		* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 10 &nbsp;<B>value:</B> 1<br>
 		* <li><B>remarks:</B> status: 1-enable database service, 0-disable
 		*/
-		@Column(table=M.TABLE, jdbcType=4, name=M.status$name, key=M.status$key, auto=M.status$auto, notnull=M.status$notnull, length=M.status$length, value=M.status$value, remarks=M.status$remarks)
+		@Column(table=M.TABLE, jdbcType=4, name=M.status$name, key=M.status$key, auto=M.status$auto, seq=M.status$seq, notnull=M.status$notnull, length=M.status$length, value=M.status$value, remarks=M.status$remarks)
 		public com.tsc9526.monalisa.orm.criteria.Field.FieldInteger<$Criteria> status = new com.tsc9526.monalisa.orm.criteria.Field.FieldInteger<$Criteria>("status", this);
 			
 		/**
@@ -801,7 +801,7 @@ public class MonalisaServiceDbs extends com.tsc9526.monalisa.orm.model.Model<Mon
 		* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 19<br>
 		* <li><B>remarks:</B> create time
 		*/
-		@Column(table=M.TABLE, jdbcType=93, name=M.createTime$name, key=M.createTime$key, auto=M.createTime$auto, notnull=M.createTime$notnull, length=M.createTime$length, value=M.createTime$value, remarks=M.createTime$remarks)
+		@Column(table=M.TABLE, jdbcType=93, name=M.createTime$name, key=M.createTime$key, auto=M.createTime$auto, seq=M.createTime$seq, notnull=M.createTime$notnull, length=M.createTime$length, value=M.createTime$value, remarks=M.createTime$remarks)
 		public com.tsc9526.monalisa.orm.criteria.Field<java.util.Date,$Criteria> createTime = new com.tsc9526.monalisa.orm.criteria.Field<java.util.Date,$Criteria>("create_time", this, 93);		 
 			
 		/**
@@ -810,7 +810,7 @@ public class MonalisaServiceDbs extends com.tsc9526.monalisa.orm.model.Model<Mon
 		* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 19<br>
 		* <li><B>remarks:</B> update time
 		*/
-		@Column(table=M.TABLE, jdbcType=93, name=M.updateTime$name, key=M.updateTime$key, auto=M.updateTime$auto, notnull=M.updateTime$notnull, length=M.updateTime$length, value=M.updateTime$value, remarks=M.updateTime$remarks)
+		@Column(table=M.TABLE, jdbcType=93, name=M.updateTime$name, key=M.updateTime$key, auto=M.updateTime$auto, seq=M.updateTime$seq, notnull=M.updateTime$notnull, length=M.updateTime$length, value=M.updateTime$value, remarks=M.updateTime$remarks)
 		public com.tsc9526.monalisa.orm.criteria.Field<java.util.Date,$Criteria> updateTime = new com.tsc9526.monalisa.orm.criteria.Field<java.util.Date,$Criteria>("update_time", this, 93);		 
 			
 	}
@@ -832,6 +832,7 @@ public class MonalisaServiceDbs extends com.tsc9526.monalisa.orm.model.Model<Mon
 		public final static String  dbs$remarks = "database service name";
 		public final static boolean dbs$auto    = false;
 		public final static boolean dbs$notnull = true;
+		public final static String  dbs$seq     = "";
 		
 		
 		public final static String  schema$name    = "schema";
@@ -841,6 +842,7 @@ public class MonalisaServiceDbs extends com.tsc9526.monalisa.orm.model.Model<Mon
 		public final static String  schema$remarks = "database schema name";
 		public final static boolean schema$auto    = false;
 		public final static boolean schema$notnull = true;
+		public final static String  schema$seq     = "";
 		
 		
 		public final static String  url$name    = "url";
@@ -850,6 +852,7 @@ public class MonalisaServiceDbs extends com.tsc9526.monalisa.orm.model.Model<Mon
 		public final static String  url$remarks = "JDBC-URL";
 		public final static boolean url$auto    = false;
 		public final static boolean url$notnull = true;
+		public final static String  url$seq     = "";
 		
 		
 		public final static String  username$name    = "username";
@@ -859,6 +862,7 @@ public class MonalisaServiceDbs extends com.tsc9526.monalisa.orm.model.Model<Mon
 		public final static String  username$remarks = "database username";
 		public final static boolean username$auto    = false;
 		public final static boolean username$notnull = true;
+		public final static String  username$seq     = "";
 		
 		
 		public final static String  password$name    = "password";
@@ -868,6 +872,7 @@ public class MonalisaServiceDbs extends com.tsc9526.monalisa.orm.model.Model<Mon
 		public final static String  password$remarks = "database password";
 		public final static boolean password$auto    = false;
 		public final static boolean password$notnull = true;
+		public final static String  password$seq     = "";
 		
 		
 		public final static String  status$name    = "status";
@@ -877,6 +882,7 @@ public class MonalisaServiceDbs extends com.tsc9526.monalisa.orm.model.Model<Mon
 		public final static String  status$remarks = "status: 1-enable database service, 0-disable";
 		public final static boolean status$auto    = false;
 		public final static boolean status$notnull = true;
+		public final static String  status$seq     = "";
 		
 		
 		public final static String  createTime$name    = "create_time";
@@ -886,6 +892,7 @@ public class MonalisaServiceDbs extends com.tsc9526.monalisa.orm.model.Model<Mon
 		public final static String  createTime$remarks = "create time";
 		public final static boolean createTime$auto    = false;
 		public final static boolean createTime$notnull = true;
+		public final static String  createTime$seq     = "";
 		
 		
 		public final static String  updateTime$name    = "update_time";
@@ -895,6 +902,7 @@ public class MonalisaServiceDbs extends com.tsc9526.monalisa.orm.model.Model<Mon
 		public final static String  updateTime$remarks = "update time";
 		public final static boolean updateTime$auto    = false;
 		public final static boolean updateTime$notnull = false;
+		public final static String  updateTime$seq     = "";
 		
 			
 		
@@ -905,7 +913,7 @@ public class MonalisaServiceDbs extends com.tsc9526.monalisa.orm.model.Model<Mon
 		* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 64<br>
 		* <li><B>remarks:</B> database service name
 		*/
-		@Column(table=M.TABLE, jdbcType=12, name=M.dbs$name, key=M.dbs$key, auto=M.dbs$auto, notnull=M.dbs$notnull, length=M.dbs$length, value=M.dbs$value, remarks=M.dbs$remarks)
+		@Column(table=M.TABLE, jdbcType=12, name=M.dbs$name, key=M.dbs$key, auto=M.dbs$auto, seq=M.dbs$seq, notnull=M.dbs$notnull, length=M.dbs$length, value=M.dbs$value, remarks=M.dbs$remarks)
 		public final static String  dbs         = "dbs";
 		
 		/**
@@ -914,7 +922,7 @@ public class MonalisaServiceDbs extends com.tsc9526.monalisa.orm.model.Model<Mon
 		* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 64<br>
 		* <li><B>remarks:</B> database schema name
 		*/
-		@Column(table=M.TABLE, jdbcType=12, name=M.schema$name, key=M.schema$key, auto=M.schema$auto, notnull=M.schema$notnull, length=M.schema$length, value=M.schema$value, remarks=M.schema$remarks)
+		@Column(table=M.TABLE, jdbcType=12, name=M.schema$name, key=M.schema$key, auto=M.schema$auto, seq=M.schema$seq, notnull=M.schema$notnull, length=M.schema$length, value=M.schema$value, remarks=M.schema$remarks)
 		public final static String  schema         = "schema";
 		
 		/**
@@ -923,7 +931,7 @@ public class MonalisaServiceDbs extends com.tsc9526.monalisa.orm.model.Model<Mon
 		* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 512<br>
 		* <li><B>remarks:</B> JDBC-URL
 		*/
-		@Column(table=M.TABLE, jdbcType=12, name=M.url$name, key=M.url$key, auto=M.url$auto, notnull=M.url$notnull, length=M.url$length, value=M.url$value, remarks=M.url$remarks)
+		@Column(table=M.TABLE, jdbcType=12, name=M.url$name, key=M.url$key, auto=M.url$auto, seq=M.url$seq, notnull=M.url$notnull, length=M.url$length, value=M.url$value, remarks=M.url$remarks)
 		public final static String  url         = "url";
 		
 		/**
@@ -932,7 +940,7 @@ public class MonalisaServiceDbs extends com.tsc9526.monalisa.orm.model.Model<Mon
 		* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 64<br>
 		* <li><B>remarks:</B> database username
 		*/
-		@Column(table=M.TABLE, jdbcType=12, name=M.username$name, key=M.username$key, auto=M.username$auto, notnull=M.username$notnull, length=M.username$length, value=M.username$value, remarks=M.username$remarks)
+		@Column(table=M.TABLE, jdbcType=12, name=M.username$name, key=M.username$key, auto=M.username$auto, seq=M.username$seq, notnull=M.username$notnull, length=M.username$length, value=M.username$value, remarks=M.username$remarks)
 		public final static String  username         = "username";
 		
 		/**
@@ -941,7 +949,7 @@ public class MonalisaServiceDbs extends com.tsc9526.monalisa.orm.model.Model<Mon
 		* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 64<br>
 		* <li><B>remarks:</B> database password
 		*/
-		@Column(table=M.TABLE, jdbcType=12, name=M.password$name, key=M.password$key, auto=M.password$auto, notnull=M.password$notnull, length=M.password$length, value=M.password$value, remarks=M.password$remarks)
+		@Column(table=M.TABLE, jdbcType=12, name=M.password$name, key=M.password$key, auto=M.password$auto, seq=M.password$seq, notnull=M.password$notnull, length=M.password$length, value=M.password$value, remarks=M.password$remarks)
 		public final static String  password         = "password";
 		
 		/**
@@ -950,7 +958,7 @@ public class MonalisaServiceDbs extends com.tsc9526.monalisa.orm.model.Model<Mon
 		* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 10 &nbsp;<B>value:</B> 1<br>
 		* <li><B>remarks:</B> status: 1-enable database service, 0-disable
 		*/
-		@Column(table=M.TABLE, jdbcType=4, name=M.status$name, key=M.status$key, auto=M.status$auto, notnull=M.status$notnull, length=M.status$length, value=M.status$value, remarks=M.status$remarks)
+		@Column(table=M.TABLE, jdbcType=4, name=M.status$name, key=M.status$key, auto=M.status$auto, seq=M.status$seq, notnull=M.status$notnull, length=M.status$length, value=M.status$value, remarks=M.status$remarks)
 		public final static String  status         = "status";
 		
 		/**
@@ -959,7 +967,7 @@ public class MonalisaServiceDbs extends com.tsc9526.monalisa.orm.model.Model<Mon
 		* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 19<br>
 		* <li><B>remarks:</B> create time
 		*/
-		@Column(table=M.TABLE, jdbcType=93, name=M.createTime$name, key=M.createTime$key, auto=M.createTime$auto, notnull=M.createTime$notnull, length=M.createTime$length, value=M.createTime$value, remarks=M.createTime$remarks)
+		@Column(table=M.TABLE, jdbcType=93, name=M.createTime$name, key=M.createTime$key, auto=M.createTime$auto, seq=M.createTime$seq, notnull=M.createTime$notnull, length=M.createTime$length, value=M.createTime$value, remarks=M.createTime$remarks)
 		public final static String  createTime         = "create_time";
 		
 		/**
@@ -968,7 +976,7 @@ public class MonalisaServiceDbs extends com.tsc9526.monalisa.orm.model.Model<Mon
 		* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 19<br>
 		* <li><B>remarks:</B> update time
 		*/
-		@Column(table=M.TABLE, jdbcType=93, name=M.updateTime$name, key=M.updateTime$key, auto=M.updateTime$auto, notnull=M.updateTime$notnull, length=M.updateTime$length, value=M.updateTime$value, remarks=M.updateTime$remarks)
+		@Column(table=M.TABLE, jdbcType=93, name=M.updateTime$name, key=M.updateTime$key, auto=M.updateTime$auto, seq=M.updateTime$seq, notnull=M.updateTime$notnull, length=M.updateTime$length, value=M.updateTime$value, remarks=M.updateTime$remarks)
 		public final static String  updateTime         = "update_time";
 		 
 	}

@@ -43,7 +43,7 @@ public class KeysExecutor extends RelationExecutor implements Execute<Integer>{
 	}
 	
 	public PreparedStatement preparedStatement(Connection conn, String sql)throws SQLException {
-		if(autoKey){
+		if(autoKey && model.dialect().supportAutoIncrease()){
 			return conn.prepareStatement(sql,Statement.RETURN_GENERATED_KEYS);
 		}else{
 			return conn.prepareStatement(sql);
@@ -53,7 +53,7 @@ public class KeysExecutor extends RelationExecutor implements Execute<Integer>{
 	public Integer execute(Connection conn,PreparedStatement pst) throws SQLException {
 		int r=pst.executeUpdate();
 	 
-		if(autoKey){
+		if(autoKey && model.dialect().supportAutoIncrease()){
 			ResultSet rs = pst.getGeneratedKeys();   
             if (rs.next()) {  
                 Long id = rs.getLong(1);   

@@ -14,10 +14,11 @@
  *	You should have received a copy of the GNU Lesser General Public License
  *	along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************************/
-package test.com.tsc9526.monalisa.orm.mysql;
+package test.com.tsc9526.monalisa.orm.dialect.oracle;
 
 import test.com.tsc9526.monalisa.TestConstants;
 
+import com.tsc9526.monalisa.main.DBModelGenerateMain;
 import com.tsc9526.monalisa.orm.annotation.DB;
 import com.tsc9526.monalisa.orm.datasource.DBConfig;
 
@@ -25,16 +26,20 @@ import com.tsc9526.monalisa.orm.datasource.DBConfig;
  * 
  * @author zzg.zhou(11039850@qq.com)
  */
+//@DB(url="jdbc:oracle:thin:@//172.16.95.218/qndbzhu",username="clound",password="S8N*[$4g", datasourceClass="C3p0DataSource")
 @DB(
-		url=TestConstants.mysqlUrl, 
-		username=TestConstants.username, 
-		password=TestConstants.password,
-		partitions="test_logyyyymm_{DatePartitionTable(yyyyMM,log_time)}"
-		,datasourceClass="C3p0DataSource"
-		,properties={
-				"sql.debug=true",
-				"version.name.test_table_2=v1"
-		})
-public interface MysqlDB {
-	public static DBConfig DB=DBConfig.fromClass(MysqlDB.class);
+	url=TestConstants.oracleUrl,
+	username=TestConstants.username,
+	password=TestConstants.password, 
+	datasourceClass="C3p0DataSource",properties={
+		"sql.debug = true"	
+	})
+public interface OracleDB {
+	public static DBConfig DB=DBConfig.fromClass(OracleDB.class);
+	
+	public static class Generate{
+		public static void main(String[] args) throws Exception{
+			DBModelGenerateMain.generateModelClass(OracleDB.class,"src/test/java");
+		}
+	}
 }

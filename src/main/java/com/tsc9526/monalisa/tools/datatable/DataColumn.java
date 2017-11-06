@@ -41,6 +41,11 @@ public class DataColumn {
 		this.name=name;
 	}
 	
+	public DataColumn(String name,int jdbcType) {
+		this.name=name;
+		this.jdbcType=jdbcType;
+	}
+	
 	public DataColumn(String name, Class<?> type) {
 		this.name=name;
 		this.type=type;

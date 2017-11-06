@@ -28,7 +28,6 @@ import java.util.Collection;
 import java.util.List;
 
 import com.tsc9526.monalisa.orm.datasource.DBConfig;
-import com.tsc9526.monalisa.orm.datasource.DataSourceManager;
 import com.tsc9526.monalisa.orm.datasource.DbProp;
 import com.tsc9526.monalisa.orm.dialect.Dialect;
 import com.tsc9526.monalisa.orm.executor.BatchSqlExecutor;
@@ -95,11 +94,9 @@ public class Query {
 	 * Weather if show the running sql, default: false
 	 */
 	private Boolean debugSql=null;
-	 
-	protected DataSourceManager dsm=DataSourceManager.getInstance();
-	
-	protected StringBuffer  sql=new StringBuffer();
-	protected List<Object>  parameters=new ArrayList<Object>();
+	  	
+	protected StringBuilder  sql       = new StringBuilder();
+	protected List<Object>  parameters = new ArrayList<Object>();
  	 
 	protected DBConfig      db;
  	
@@ -113,17 +110,18 @@ public class Query {
 	protected Object tag;
 	
 	protected PrintWriter writer=null;
-	
-	
+	 
 	protected Cache cache;
 	
+	protected Dialect dialect;
+ 
 	public Query(){		 
 	}
 	
 	public Query(DBConfig db){
-		 this.db=db;
+		 use(db);
 	}	 
-	  
+	
 	public Query setDebugSql(boolean debugSql){
 		this.debugSql=debugSql;
 		return this;
@@ -143,8 +141,7 @@ public class Query {
 	
 	public long count(){
 		Query countQuery=getDialect().getCountQuery(this);			
-		long total=countQuery.getResult(Long.class);
-		return total;
+		return countQuery.getResult(Long.class); 
 	}
 	 
 	public Query notin(Object value,Object... otherValues){
@@ -183,31 +180,31 @@ public class Query {
 	}	
   
 	/**
-	 * Add segment to SQL only if the args is not empty
+	 * Add segment to SQL only if the arg is not empty
 	 * 
 	 * @param segment the SQL segment
-	 * @param args  the SQL parameters
+	 * @param arg  the SQL parameter
 	 * @return  this Query
 	 */
-	public Query addIfNotEmpty(String segment,Object ... args){
-		if(args!=null && args.length==1){
-			if(args[0]==null){
+	public Query addIfArgNotEmpty(String segment,Object arg){
+		if(arg==null){
+			return this;
+		}
+		
+		if(arg instanceof String){
+			String s=(String)arg;
+			if(s.trim().length()<1){
 				return this;
-			}else if(args[0] instanceof String){
-				String s=(String)args[0];
-				if(s.trim().length()<1){
-					return this;
-				}
 			}
 		}
 		
-		return add(segment, args);
+		return add(segment, arg);
 	}
 	
 	/**
 	 * Add segment to SQL only if 'condition' is true
 	 * 
-	 * @param condition true: add the segment and args to SQL otherwise ignore.
+	 * @param condition true: add the segment and args to SQL, otherwise ignore.
 	 * @param segment the SQL segment
 	 * @param args the SQL parameters
 	 * @return this Query
@@ -228,8 +225,7 @@ public class Query {
 	 * @return Original SQL, maybe "?" in it.
 	 */
 	public String getSql() {
-		String r=sql.toString();
-		return r;
+		return sql.toString(); 
 	}
 	
 	/**
@@ -239,7 +235,7 @@ public class Query {
 	 * @return the executable SQL
 	 */
 	public String getExecutableSQL() {
-		 return MelpSQL.getExecutableSQL(getSql(), parameters);
+		 return MelpSQL.getExecutableSQL(getDialect(),getSql(), parameters);
 	}
 
 	/**
@@ -277,7 +273,7 @@ public class Query {
 	}
 	
 	public Query addBatch(Object... parameters) {
-		if(this.parameters!=null && this.parameters.size()>0){
+		if(this.parameters!=null && !this.parameters.isEmpty()){
 			this.batchParameters.add(this.parameters);
 		}
 		
@@ -360,7 +356,7 @@ public class Query {
 			String executeSQL=sql.toString();
 			try{
 				executeSQL=getExecutableSQL();
-			}catch(Exception ex){}
+			}catch(Exception ex){MelpClose.close(ex);}
 			
 			throw new RuntimeException("SQL Exception: "+e.getMessage()+"\r\n========================================================================\r\n"
 					                  +executeSQL+"\r\n========================================================================",e);
@@ -472,9 +468,7 @@ public class Query {
 	 */
 	public <T> DataTable<T> getList(ResultHandler<T> resultHandler,int limit,int offset) {
 		Query listQuery=getDialect().getLimitQuery(this, limit, offset);
-		DataTable<T>  list=listQuery.getList(resultHandler);
-			
-		return list;
+		return listQuery.getList(resultHandler); 
 	}	 
 
 	/**
@@ -529,9 +523,7 @@ public class Query {
 			Query listQuery=getDialect().getLimitQuery(this, limit, offset);
 			DataTable<T>  list=listQuery.getList(resultHandler);
 			 
-			Page<T> page=new Page<T>(list,total,limit,offset);
-		
-			return page;
+			return new Page<T>(list,total,limit,offset); 
 		}else{
 			return new Page<T>();		 
 		}
@@ -561,7 +553,7 @@ public class Query {
  	
 	protected void queryCheck(){
 		if(db==null){
-			throw new RuntimeException("Query must use db!");
+			checkDbAndThrowException();
 		}
 	}
 	
@@ -571,10 +563,9 @@ public class Query {
 				public void write(char[] cbuf, int off, int len) throws IOException {
 					 add(new String(cbuf,off,len));
 				}
-
-				public void flush() throws IOException {}
+				public void flush() throws IOException {MelpClose.close();}
 	
-				public void close() throws IOException {}
+				public void close() throws IOException {MelpClose.close();}
 			});
 		}
 		return writer;
@@ -611,9 +602,7 @@ public class Query {
 		if(this.cache!=null){
 			return this.cache;
 		}else if(ttlInSeconds!=0 || DbProp.CFG_CACHE_GLOABLE_ENABLE){
-			if(db==null){
-				throw new RuntimeException("Query must use db!");
-			}
+			checkDbAndThrowException();
 			
 			return getDb().getCfg().getCache();
 		}else{
@@ -631,15 +620,22 @@ public class Query {
 
 	public Query use(DBConfig db) {
 		this.db = db;
+		this.dialect=db.getDialect();
 		return this;
 	}
 	
 	public Dialect getDialect(){
+		return this.dialect;
+	}
+	
+	public void setDialect(Dialect dialect){
+		this.dialect=dialect;
+	}
+	
+	protected void checkDbAndThrowException(){
 		if(db==null){
 			throw new RuntimeException("Query must use db!");
 		}
-		
-		return dsm.getDialect(db);
 	}
       
 	public void setReadonly(Boolean readonly) {

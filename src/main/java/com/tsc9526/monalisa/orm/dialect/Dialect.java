@@ -16,11 +16,15 @@
  *******************************************************************************************/
 package com.tsc9526.monalisa.orm.dialect;
 
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+
+import javax.sql.DataSource;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -30,11 +34,12 @@ import com.tsc9526.monalisa.orm.annotation.Column;
 import com.tsc9526.monalisa.orm.annotation.Table;
 import com.tsc9526.monalisa.orm.datasource.DBConfig;
 import com.tsc9526.monalisa.orm.datasource.DbProp;
+import com.tsc9526.monalisa.orm.meta.MetaTable;
 import com.tsc9526.monalisa.orm.meta.MetaTable.CreateTable;
 import com.tsc9526.monalisa.orm.model.Model;
 import com.tsc9526.monalisa.orm.model.ModelIndex;
-import com.tsc9526.monalisa.tools.clazz.MelpEnum;
 import com.tsc9526.monalisa.tools.clazz.MelpClass.FGS;
+import com.tsc9526.monalisa.tools.clazz.MelpEnum;
 import com.tsc9526.monalisa.tools.converters.impl.ArrayTypeConversion;
 import com.tsc9526.monalisa.tools.datatable.DataMap;
 import com.tsc9526.monalisa.tools.datatable.DataTable;
@@ -76,10 +81,10 @@ public abstract class Dialect{
 			return null;
 		}
 
-		public Query getLimitQuery(Query origin, int limit, int offset) {
+		public String getLimitSql(String origin, int limit, int offset) {
 			return null;
 		}
-
+	 
 		public CreateTable getCreateTable(DBConfig db, String tableName) {
 			return null;
 		}
@@ -102,13 +107,19 @@ public abstract class Dialect{
 	
 	public abstract String getTableName(String name);
  	
-	public abstract Query getLimitQuery(Query origin,int limit ,int offset);
-	 
+	public abstract String getLimitSql(String orignSql, int limit,int offset);
+ 
+	
 	public abstract CreateTable getCreateTable(DBConfig db,String tableName);
 	
-	public DataTable<DataMap> getTableDesription(DBConfig db,String schema){
+	public DataTable<DataMap> getTableDesription(DBConfig db,String schemaPattern){
 		return null;
 	}
+
+	public String getFieldDateValue(String yyyy_MM_dd_HH_mm_ss){
+		return yyyy_MM_dd_HH_mm_ss;
+	}
+	
 	
 	public boolean tableExist(DBConfig db,String name,boolean includeView){
 	 	Set<String> names=db.getTables(includeView);
@@ -123,6 +134,39 @@ public abstract class Dialect{
 	 * @return 在定时检查时需执行的SQL语句
 	 */
 	public abstract String getIdleValidationQuery();
+	
+	
+	public boolean supportAutoIncrease(){
+		return true;
+	}
+	
+	public boolean supportSequence(){
+		return false; 
+	}
+	
+
+	public String getSequenceNext(String seq){
+		return null;
+	}
+	
+	public void setupMetaConnection(Connection conn) {
+	}
+	
+	public String getMetaCatalogPattern(DBConfig db){
+		return db.getCfg().getCatalog();
+	}
+	
+	public String getMetaSchemaPattern(DBConfig db){
+		return db.getCfg().getSchema();
+	}
+	
+	public String getMetaTablePattern(DBConfig db){
+		return db.getCfg().getTables();
+	}
+	
+	public String getMetaTablePattern(DBConfig db,MetaTable table){
+		return table.getName();
+	}
 	
 	public synchronized void createTable(DBConfig db,CreateTable table){
 		String key=db.getKey()+":"+table.getTableName();
@@ -145,8 +189,42 @@ public abstract class Dialect{
 		return getTableName(tableName);
 	}
 	
+	public String getCountSql(String sql){
+    	String cql=sql;
+    	
+    	String loweredString = sql.toLowerCase();
+     
+    	int orderByIndex = loweredString.indexOf("order by");
+    	if(orderByIndex>0){
+    		cql=sql.substring(0,orderByIndex);
+    	}
+    	
+    	int groupByIndex=loweredString.indexOf("group by");
+    	if(groupByIndex>0){
+    		return "SELECT COUNT(*) AS cnt FROM( "+cql+") AS tmp";
+    	}else{    		
+	    	int p=loweredString.indexOf("from");
+	    	while(p>0){	    		
+	    		char left =loweredString.charAt(p-1);
+	    		char right=loweredString.charAt(p+4);
+	    		if(isSplitChar(left) && isSplitChar(right)){
+	    			break;
+	    		}else{
+	    			p=loweredString.indexOf("from",p+4);
+	    		}	    			
+	    	}
+	    	
+	    	if(p>0){
+	    		cql="SELECT COUNT(*) AS cnt "+cql.substring(p);
+	    		return cql;
+	    	}else{
+	    		return sql;
+	    	}
+    	}
+    }
+	
 	public Query insert(Model model,boolean updateOnDuplicateKey){
-		Query query=new Query();
+		Query query=createQuery();
 		
 		if(updateOnDuplicateKey){
 			query.add("REPLACE ");
@@ -154,7 +232,15 @@ public abstract class Dialect{
 			query.add("INSERT "); 
 		}		 
 		
-		query.add("INTO "+getTableName(model.table())+"(");
+		query.add("INTO "+getTableName(model.table()));
+		
+		addNameValues(query,model);
+	  	 
+		return query;		 
+	}	
+	
+	protected void addNameValues(Query query,Model model){
+		query.add("(");
 		
 		for(Object o:model.changedFields()){
 			FGS fgs=(FGS)o;
@@ -162,7 +248,7 @@ public abstract class Dialect{
 			Column c=fgs.getAnnotation(Column.class);
 			Object v=getValue(fgs,model);
 			 
-			if(c.auto()==false || v!=null){
+			if(!c.auto() || v!=null){
 				if(query.parameterCount()>0){
 					query.add(", ");
 				}
@@ -175,21 +261,18 @@ public abstract class Dialect{
 			query.add(i>0?", ?":"?");
 		}
 		query.add(")");
-	 
-		 
-		return query;		 
-	}	 
+	}
 	
 	
 	public Query deleteAll(Model model){
-		Query query=new Query();
+		Query query=createQuery();
 		
 		query.add("DELETE FROM "+getTableName(model.table()));
 		return query;
 	}
 	
 	public Query truncate(Model model){
-		Query query=new Query();
+		Query query=createQuery();
 		
 		query.add("TRUNCATE TABLE "+getTableName(model.table()));
 		return query;
@@ -207,7 +290,7 @@ public abstract class Dialect{
 			throw new RuntimeException("Model: "+model.getClass()+" delete fail, no where cause.");
 		}
 		
-		Query query=new Query();
+		Query query=createQuery();
 		
 		query.add("DELETE FROM "+getTableName(model.table())+" ");
 		if(whereStatement.toUpperCase().trim().startsWith("WHERE")){
@@ -242,7 +325,7 @@ public abstract class Dialect{
 		
 		String versionField=getVersionField(model);
 		
-		Query query=new Query();
+		Query query=createQuery();
 		
 		query.add("UPDATE "+getTableName(model.table())+" SET ");
 		for(Object o:model.changedFields()){
@@ -302,7 +385,7 @@ public abstract class Dialect{
 	 
 	
 	public Query load(Model model){
-		Query query=new Query();
+		Query query=createQuery();
 		 
 		query.add("SELECT "+model.filterFields()+" FROM ").add(getTableName(model.table())).add(" WHERE ");
 		
@@ -322,8 +405,22 @@ public abstract class Dialect{
 		return getLimitQuery(query,1,0); 
 	}
  	
+	public Query getLimitQuery(Query origin, int limit, int offset) {
+		String limitSql=getLimitSql(origin.getSql(),limit,offset);
+		
+		Query query = createQuery();
+
+		query.use(origin.getDb());
+		query.add(limitSql);
+		query.setParameters(origin.getParameters());
+		 
+
+		return query;
+	}
+	
+	
 	public Query select(final Model model,String whereStatement,Object ... args){
-		Query query=new Query();
+		Query query=createQuery();
 		
 		if(isJoinStatement(whereStatement)){
 			String x=model.filterFields();
@@ -366,7 +463,7 @@ public abstract class Dialect{
 	}
 	
 	public Query count(Model model,String whereStatement,Object ... args){
-		Query query=new Query();
+		Query query=createQuery();
 		if(isJoinStatement(whereStatement)){
 			query.add("SELECT COUNT(*) FROM ").add(getTableName(model.table()));
 			
@@ -450,7 +547,7 @@ public abstract class Dialect{
 	}
 	
 	protected Query getWhereByPrimaryKey(Model model){
-		Query query=new Query();
+		Query query=createQuery();
 		
 		int keyType=-1; //-1: 初始化, 0-无匹配的键, 1-primary key, 2-unique key	 
 		for(Object o:model.fields()){
@@ -484,7 +581,7 @@ public abstract class Dialect{
 		for(Object x:model.uniqueIndexes()){
 			ModelIndex index=(ModelIndex)x;
 			
-			Query query=new Query();
+			Query query=createQuery();
 			 
 			List<FGS> fs=index.getFields();
 			boolean keyExists=fs.size()>0;
@@ -608,50 +705,22 @@ public abstract class Dialect{
 	}
 	
 	public Query getCountQuery(Query origin){
-		Query query=new Query();
+		Query query=createQuery();
 		query.use(origin.getDb());
 		String sql=origin.getSql().toLowerCase();
 	 	query.add(getCountSql(sql), origin.getParameters());
 		
 		return query;
 	} 
+ 
 	
+	protected Query createQuery(){
+		Query query=new Query();
+		query.setDialect(this);
+		
+		return query;
+	}
 	
-	
-	protected String getCountSql(String sql){
-    	String cql=sql;
-    	
-    	String loweredString = sql.toLowerCase();
-     
-    	int orderByIndex = loweredString.indexOf("order by");
-    	if(orderByIndex>0){
-    		cql=sql.substring(0,orderByIndex);
-    	}
-    	
-    	int groupByIndex=loweredString.indexOf("group by");
-    	if(groupByIndex>0){
-    		return "SELECT COUNT(*) AS cnt FROM( "+cql+") AS tmp";
-    	}else{    		
-	    	int p=loweredString.indexOf("from");
-	    	while(p>0){	    		
-	    		char left =loweredString.charAt(p-1);
-	    		char right=loweredString.charAt(p+4);
-	    		if(isSplitChar(left) && isSplitChar(right)){
-	    			break;
-	    		}else{
-	    			p=loweredString.indexOf("from",p+4);
-	    		}	    			
-	    	}
-	    	
-	    	if(p>0){
-	    		cql="SELECT COUNT(*) AS cnt "+cql.substring(p);
-	    		return cql;
-	    	}else{
-	    		return sql;
-	    	}
-    	}
-    }
-    
     protected boolean isSplitChar(char c){
     	return c==' '|| c=='\t' || c=='\r' || c=='\n';
     }
@@ -673,4 +742,9 @@ public abstract class Dialect{
     	
 		return name;
 	}
+
+	public Connection getMetaConnection(DataSource ds)throws SQLException {
+		return ds.getConnection();
+	}
+
 }

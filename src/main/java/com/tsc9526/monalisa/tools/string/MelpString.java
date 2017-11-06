@@ -23,6 +23,7 @@ import java.io.StringWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -32,6 +33,7 @@ import org.xml.sax.InputSource;
 
 import com.google.gson.Gson;
 import com.tsc9526.monalisa.tools.datatable.DataMap;
+import com.tsc9526.monalisa.tools.datatable.DataTable;
 import com.tsc9526.monalisa.tools.json.MelpJson;
 import com.tsc9526.monalisa.tools.xml.XMLDocument;
 import com.tsc9526.monalisa.tools.xml.XMLObject;
@@ -55,10 +57,10 @@ public class MelpString {
 		
 		if(bean instanceof Throwable){
 			StringWriter w = new StringWriter();
-	
 			((Throwable)bean).printStackTrace(new PrintWriter(w));
-	
 			return w.toString();
+		}if(bean instanceof ResultSet){
+			return DataTable.fromResultSet((ResultSet)bean).toString();
 		}else if(MelpTypes.isPrimitiveOrString(bean) || bean.getClass().isEnum()){
 			return bean.toString();
 		}else{
@@ -66,6 +68,46 @@ public class MelpString {
 		}
 	}
 	 
+	public static String leftPadding(String source,int size){
+		return leftPadding(source,' ',size);
+	}
+	
+	public static String leftPadding(String source,char padChar,int size){
+		StringBuilder sb=new StringBuilder();
+		if(isEmpty(source)){
+			for(int i=0;i < size; i++){
+				sb.append(padChar);
+			}
+		}else{
+			int p = size - source.length();
+			for(int i=0;i < p; i++){
+				sb.append(padChar);
+			}
+			sb.append(source);
+		}
+		return sb.toString();
+	}
+	
+	public static String rightPadding(String source,int size){
+		return rightPadding(source,' ',size);
+	}
+	
+	public static String rightPadding(String source,char padChar,int size){
+		StringBuilder sb=new StringBuilder();
+		if(isEmpty(source)){
+			for(int i=0;i < size; i++){
+				sb.append(padChar);
+			}
+		}else{
+			sb.append(source);
+			
+			int p = size - source.length();
+			for(int i=0;i < p; i++){
+				sb.append(padChar);
+			}
+		}
+		return sb.toString();
+	}
 	
 	public static String toJson(Object bean) {
 		Gson gson=MelpJson.getGson();

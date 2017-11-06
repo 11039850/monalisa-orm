@@ -75,5 +75,11 @@ public @interface Column {
 	 * @return JDBC type, Default is INTEGER
 	 */
 	int jdbcType() default Types.INTEGER;
+	
+	
+	/**
+	 * @return sequence
+	 */
+	String seq() default "";
 		
 }

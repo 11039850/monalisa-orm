@@ -24,6 +24,7 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import com.tsc9526.monalisa.orm.datasource.DBConfig;
+import com.tsc9526.monalisa.orm.dialect.Dialect;
 import com.tsc9526.monalisa.orm.meta.MetaColumn;
 import com.tsc9526.monalisa.orm.meta.MetaIndex;
 import com.tsc9526.monalisa.orm.meta.MetaTable;
@@ -34,13 +35,21 @@ import com.tsc9526.monalisa.tools.io.MelpClose;
  * @author zzg.zhou(11039850@qq.com)
  */
 public class TableHelper {
+	private TableHelper(){}
+	
 	public static MetaTable getMetaTable(DBConfig db,String tableName)throws SQLException{
 		MTable mTable=new MTable(db,tableName);
 		return mTable.getMetaTable();		  
 	}
 	 
 	public static void getTableIndexes(DBConfig db,DatabaseMetaData dbm,MetaTable table)throws SQLException{
-		ResultSet rs = dbm.getIndexInfo(db.getCfg().getCatalog(), db.getCfg().getSchema(), table.getName(), false, true);  
+		Dialect dialect         = db.getDialect();
+		
+		String catalogPattern   = dialect.getMetaCatalogPattern(db);
+		String schemaPattern    = dialect.getMetaSchemaPattern(db);
+		String tablePattern     = dialect.getMetaTablePattern(db,table);
+		
+		ResultSet rs = dbm.getIndexInfo(catalogPattern, schemaPattern, tablePattern, false, true);  
 	    while(rs.next()){
 	    	short type=rs.getShort("TYPE");
 	    	if(type != DatabaseMetaData.tableIndexStatistic){		    	
@@ -74,19 +83,33 @@ public class TableHelper {
 	}
 	
 	private static void getTableAllColumns(DBConfig db,DatabaseMetaData dbm,MetaTable table)throws SQLException{
-		ResultSet rs = dbm.getColumns(db.getCfg().getCatalog(), db.getCfg().getSchema(),table.getName(), null);
+		Dialect dialect=db.getDialect();
+		
+		String catalogPattern = dialect.getMetaCatalogPattern(db);
+		String schemaPattern  = dialect.getMetaSchemaPattern(db);
+		String tablePattern   = dialect.getMetaTablePattern(db, table);
+		
+		ResultSet rs = dbm.getColumns(catalogPattern, schemaPattern,tablePattern, null);
 	    while(rs.next()){
 	    	boolean auto=false;
-	    	String ai=(""+rs.getString("IS_AUTOINCREMENT")).toUpperCase();
-	    	if("Y".equals(ai) || "YES".equals(ai) || "TRUE".equals(ai) || "1".equals(ai)){			    		 
-	    		auto=true;
-	    	}			    				    	
-	    	  
+	    	
+	    	if(dialect.supportAutoIncrease()){
+		    	String ai=(""+rs.getString("IS_AUTOINCREMENT")).toUpperCase();
+		    	if("Y".equals(ai) || "YES".equals(ai) || "TRUE".equals(ai) || "1".equals(ai)){			    		 
+		    		auto=true;
+		    	}		
+	    	}
+	    	
+	    	String value=rs.getString("COLUMN_DEF");
+	    	if(value!=null && value.startsWith("'")){
+	    		value=value.substring(1,value.length()-2);
+	    	}
+	    	
 	    	MetaColumn column=new MetaColumn();		
 	    	column.setTable(table);
 	    	
 	    	column.setName(rs.getString("COLUMN_NAME"));
-	    	column.setValue(rs.getString("COLUMN_DEF"));
+	    	column.setValue(value);
 	    	column.setKey(false);
 	    	column.setJdbcType(rs.getInt("DATA_TYPE"));
 	    	column.setLength(rs.getInt("COLUMN_SIZE"));
@@ -101,11 +124,17 @@ public class TableHelper {
 	}
 
 	private static void getTableKeyColumns(DBConfig db,DatabaseMetaData dbm,MetaTable table)throws SQLException{
+		Dialect dialect         = db.getDialect();
+		
+		String catalogPattern   = dialect.getMetaCatalogPattern(db);
+		String schemaPattern    = dialect.getMetaSchemaPattern(db);
+		String tablePattern     = dialect.getMetaTablePattern(db,table);
+		
 		Map<Short, MetaColumn> keyColumns = new TreeMap<Short, MetaColumn>();
-	    ResultSet rs = dbm.getPrimaryKeys(db.getCfg().getCatalog(),db.getCfg().getSchema(), table.getName());
+	    ResultSet rs = dbm.getPrimaryKeys(catalogPattern,schemaPattern, tablePattern);
 	    while(rs.next()){
 	    	String columnName = rs.getString("COLUMN_NAME"); //$NON-NLS-1$
-	    	short keyseq = rs.getShort("KEY_SEQ"); //$NON-NLS-1$
+	    	short keyseq      = rs.getShort("KEY_SEQ"); //$NON-NLS-1$
 	    	
 	    	MetaColumn column=table.getColumn(columnName);
 	    	column.setKey(true);
@@ -140,10 +169,10 @@ public class TableHelper {
 				getTableColumns(db,dbm,table);								 
 				getTableIndexes(db,dbm,table);
 				
-				if(table.getColumns().size()>0){
-					return table;
-				}else{				
+				if(table.getColumns().isEmpty()){
 					return null;
+				}else{				
+					return table;
 				}
 			}finally{
 				MelpClose.close(conn);

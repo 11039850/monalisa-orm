@@ -29,9 +29,11 @@ import javax.sql.DataSource;
 import com.tsc9526.monalisa.orm.annotation.DB;
 import com.tsc9526.monalisa.orm.dialect.Dialect;
 import com.tsc9526.monalisa.orm.dialect.MysqlDialect;
+import com.tsc9526.monalisa.orm.dialect.OracleDialect;
 import com.tsc9526.monalisa.orm.dialect.SQLServerDialect;
 import com.tsc9526.monalisa.tools.Tasks;
 import com.tsc9526.monalisa.tools.clazz.MelpClass;
+import com.tsc9526.monalisa.tools.io.MelpClose;
 import com.tsc9526.monalisa.tools.logger.Logger;
 
 /**
@@ -60,6 +62,14 @@ public class DataSourceManager {
 	
 	
 	private DataSourceManager(){
+		registerShutdown();
+		
+		registerDialect(new MysqlDialect());
+		registerDialect(new SQLServerDialect());
+		registerDialect(new OracleDialect());
+	}
+	
+	private void registerShutdown(){
 		Tasks.instance.addShutdown(new Runnable() {
 			public void run(){
 				Set<String> jdbsURLs=new LinkedHashSet<String>();
@@ -75,16 +85,15 @@ public class DataSourceManager {
 				for(String url:jdbsURLs){
 					try{
 						DriverManager.deregisterDriver(DriverManager.getDriver(url));
-					}catch(SQLException e){}
+					}catch(SQLException e){
+						MelpClose.close(e);
+					}
 				}
 				 
 				shutdownMysqlThreads();
 			}
 		});
-		
-		registerDialect(new MysqlDialect());
-		registerDialect(new SQLServerDialect());
-	}	
+	}
 	
 	private void shutdownMysqlThreads(){
 		try {
@@ -94,8 +103,8 @@ public class DataSourceManager {
 		        mth.invoke(null);
 		    }
 		}catch(ClassNotFoundException e){
-			//Do nothing
-		}catch (Throwable t) {
+			MelpClose.close(e);
+		}catch (Exception t) {
 			logger.error(""+t,t);
 		}
 	}

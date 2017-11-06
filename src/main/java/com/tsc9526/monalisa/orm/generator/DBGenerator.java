@@ -52,7 +52,7 @@ public abstract class DBGenerator {
 	public void generateFiles(){					
 		List<MetaTable> tables=dbmetadata.getTables();
 		
-		plogger.info("Loaded tables: "+tables.size()+", package: "+javaPackage);
+		plogger.info("Create java & resource files, package: "+javaPackage);
 		
 		generateJavaFiles(tables);		 
 		generateResources(tables);

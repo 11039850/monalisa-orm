@@ -71,17 +71,18 @@ public class MetaTable extends Name implements Cloneable{
 	
 	public long getSerialID(){
 		if(serialID==0){
-			StringBuffer sb=new StringBuffer();
+			StringBuilder sb=new StringBuilder();
 			sb.append(name).append("-").append(getJavaName()).append("-").append(getJavaPackage()).append("-").append(": {\r\n");
 			for(MetaColumn c:columns){
 				sb.append(c.name).append(c.getJavaType()).append("\r\n");
 			}
 			sb.append("}");
 			
-			serialID=( ((long)sb.length()) << 32 ) + Math.abs(sb.toString().hashCode());
+			int hashcode=sb.toString().hashCode();
+			serialID=( ((long)sb.length()) << 32 ) + Math.abs(hashcode);
 		}
 		
-		return serialID;
+		return serialID; 
 	}
 	
 	public List<MetaColumn> getColumns() {
@@ -113,7 +114,7 @@ public class MetaTable extends Name implements Cloneable{
 	 
 	
 	public String toString(){
-		StringBuffer sb=new StringBuffer();
+		StringBuilder sb=new StringBuilder();
 		sb.append(name).append(": {\r\n");
 		for(MetaColumn c:columns){
 			sb.append(c.toString()).append("\r\n");

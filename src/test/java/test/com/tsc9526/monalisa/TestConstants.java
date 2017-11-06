@@ -21,7 +21,10 @@ package test.com.tsc9526.monalisa;
  * @author zzg.zhou(11039850@qq.com)
  */
 public class TestConstants {
-	public final static String url="jdbc:mysql://127.0.0.1:3306/test_monalisa?allowMultiQueries=true";
-	public final static String username="monalisa";
-	public final static String password="monalisa";
+	public final static String database  = "test_monalisa";
+	public final static String username  = "monalisa";
+	public final static String password  = "monalisa";
+	
+	public final static String mysqlUrl  = "jdbc:mysql://127.0.0.1:3306/"+database+"?allowMultiQueries=true";
+	public final static String oracleUrl = "jdbc:oracle:thin:@//127.0.0.1:1521/ORCL";
 }

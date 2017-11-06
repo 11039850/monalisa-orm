@@ -17,9 +17,13 @@
 package com.tsc9526.monalisa.orm.dao;
 
 import com.tsc9526.monalisa.orm.Query;
+import com.tsc9526.monalisa.orm.annotation.Column;
 import com.tsc9526.monalisa.orm.datasource.DBConfig;
+import com.tsc9526.monalisa.orm.dialect.Dialect;
 import com.tsc9526.monalisa.orm.executor.KeysExecutor;
 import com.tsc9526.monalisa.orm.model.Model;
+import com.tsc9526.monalisa.tools.clazz.MelpClass.FGS;
+import com.tsc9526.monalisa.tools.string.MelpString;
 
 /**
  * 
@@ -65,7 +69,6 @@ public class Insert<T extends Model>{
 		return insert(false);
 	}
 	
-	
 	/**
 	 * insert到数据库
 	 * 
@@ -74,8 +77,27 @@ public class Insert<T extends Model>{
 	 * @return 成功变更的记录数
 	 */
 	public int insert(boolean updateOnDuplicateKey){	 
-		Query query=model.dialect().insert(model, updateOnDuplicateKey);
+		Dialect dialect=model.dialect();
+		 
+		FGS fgs=model.autoField();
+		if(fgs!=null && fgs.getObject(model)==null && !dialect.supportAutoIncrease() && dialect.supportSequence()){
+			Column c = fgs.getAnnotation(Column.class);
+			String seq      = c==null? null : c.seq();
+			if(!MelpString.isEmpty(seq)){
+				String seqNextSql=dialect.getSequenceNext(seq);
+				
+				Query q=new Query(db());
+				q.add(seqNextSql);
+				Long seqNextNo = q.getResult(Long.class);
+				fgs.setObject(model, seqNextNo);
+			}	
+		}
+		
+		Query query=dialect.insert(model, updateOnDuplicateKey);
 		query.use(db());
 		return query.execute(new KeysExecutor(model));  
 	}
+	
+	 
+	 
 }

@@ -34,12 +34,15 @@ import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.Semaphore;
 
 import com.tsc9526.monalisa.tools.clazz.MelpClass;
+import com.tsc9526.monalisa.tools.logger.Logger;
 
 /**
  *  
  * @author zzg.zhou(11039850@qq.com)
  */
 public class SimpleDataSource implements PooledDataSource {	 
+	static Logger logger=Logger.getLogger(SimpleDataSource.class);
+	
 	private ConcurrentMap<Connection, Date> pool = new ConcurrentHashMap<Connection, Date>();
 	
 	private String url;
@@ -67,12 +70,14 @@ public class SimpleDataSource implements PooledDataSource {
 	}
 	
 	private void initConnections(DBConfig db){
-		maxSize = db.getCfg().getProperty("pool.max", 20);
-		minSize = db.getCfg().getProperty("pool.min", 1);
+		maxSize = db.getCfg().getProperty("pool.max", 50);
+		minSize = db.getCfg().getProperty("pool.min", 3);
 		
 		if(maxSize<1){
 			maxSize=1;
 		}		
+		
+		logger.info("Initializing simple data source{ pool.max = "+maxSize+", pool.min = "+minSize+", jdbcUrl = "+db.getCfg().getUrl()+", username = "+ db.getCfg().getUsername() +"}");
 		
 		semaphore = new Semaphore(maxSize, false);
 		
@@ -153,6 +158,8 @@ public class SimpleDataSource implements PooledDataSource {
 				Object ret = null;
 				if ("close".equals(method.getName())) {
 					closeConnection(realConnection);
+				}else if ("unwrap".equals(method.getName())) {
+					ret=realConnection;
 				} else {
 					ret = method.invoke(realConnection, params);
 				}

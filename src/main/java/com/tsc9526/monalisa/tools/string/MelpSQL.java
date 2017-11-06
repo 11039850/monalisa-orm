@@ -25,27 +25,30 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import com.tsc9526.monalisa.orm.dialect.Dialect;
  
 /**
  * 
  * @author zzg.zhou(11039850@qq.com)
  */
 public class MelpSQL {	
+	private MelpSQL(){}
 	
-	public static String getExecutableSQL(String original,List<Object> parameters) {		 
-		if(parameters==null || parameters.size()==0){
+	public static String getExecutableSQL(Dialect dialect,String original,List<Object> parameters) {		 
+		if(parameters==null || parameters.isEmpty()){
 			return original;
 		}else{	
 			 try{
-				 return toSQL(original,parameters);
+				 return toSQL(dialect,original,parameters);
 			 }catch(IOException e){
 				 throw new RuntimeException(e);
 			 }
 		}
 	}
 	
-	private static String toSQL(String original,List<Object> parameters)throws IOException{
-		StringBuffer sb = new StringBuffer();
+	private static String toSQL(Dialect dialect,String original,List<Object> parameters)throws IOException{
+		StringBuilder sb = new StringBuilder();
 		int x=0;
 		for(int i=0;i<original.length();i++){
 			char c=original.charAt(i);
@@ -60,7 +63,11 @@ public class MelpSQL {
 				}else if(p instanceof Number || p instanceof Boolean){
 					sb.append(p);
 				}else if(p instanceof Date){
-					sb.append("'").append(MelpDate.toTime((Date)p)).append("'");
+					String dateString="'"+MelpDate.toTime((Date)p)+"'";
+					if(dialect!=null){
+						dateString = dialect.getFieldDateValue(dateString);
+					}
+					sb.append(dateString);
 				}else if(p.getClass() == byte[].class || p.getClass() == Byte[].class){
 					appendBytes(sb,(byte[])p);
 				}else if(p instanceof InputStream){
@@ -80,7 +87,7 @@ public class MelpSQL {
 		return sb.toString();
 	}
 	
-	public static void appendStream(StringBuffer sb,InputStream r)throws IOException{
+	public static void appendStream(StringBuilder sb,InputStream r)throws IOException{
 		ByteArrayOutputStream tmp=new ByteArrayOutputStream();
 		
 		byte[] buf=new byte[16*1024];
@@ -95,8 +102,8 @@ public class MelpSQL {
 		appendBytes(sb,tmp.toByteArray());
 	}
 	
-	private static void appendReader(StringBuffer sb,Reader r)throws IOException{
-		StringBuffer tmp=new StringBuffer();
+	private static void appendReader(StringBuilder sb,Reader r)throws IOException{
+		StringBuilder tmp=new StringBuilder();
 		
 		char[] buf=new char[16*1024];
 		int len=r.read(buf);
@@ -109,7 +116,7 @@ public class MelpSQL {
 		sb.append(escapeSqlValue(tmp.toString()));
 	}
 	
-	public static void appendBytes(StringBuffer sb,byte[] bytes){
+	public static void appendBytes(StringBuilder sb,byte[] bytes){
 		String s=MelpString.bytesToHexString(bytes,"\\x");
 		
 		sb.append("'");
@@ -123,7 +130,7 @@ public class MelpSQL {
 			return null;
 		}
 		
-		StringBuffer r=new StringBuffer();
+		StringBuilder r=new StringBuilder();
 		r.append("'");
 		for(int i=0;i<v.length();i++){
 			char c=v.charAt(i);
@@ -139,7 +146,7 @@ public class MelpSQL {
 	}
 	
 	public static void setPreparedParameters(PreparedStatement pst,List<Object> parameters)throws SQLException{
-		if(parameters!=null && parameters.size()>0){
+		if(parameters!=null && !parameters.isEmpty()){
 			int parameterIndex=1;
 			for(Object p:parameters){
 				if(p==null){
@@ -171,7 +178,7 @@ public class MelpSQL {
 	public static List<String> splitKeyWords(String sql){
 		List<String> kws=new ArrayList<String>();
 		
-		StringBuffer word=new StringBuffer();
+		StringBuilder word=new StringBuilder();
 		for(int i=0;i<sql.length();i++){
 			char c=sql.charAt(i);
 			if(c==' ' || c=='\t' || c=='\r' || c=='\n' ){

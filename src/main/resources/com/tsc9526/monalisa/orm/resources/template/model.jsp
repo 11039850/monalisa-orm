@@ -515,6 +515,7 @@ public class <%=table.getJavaName()%> extends <%=modelClass%><<%=table.getJavaNa
 		public final static String  <%=f.getJavaName()%>$remarks = "<%=toJavaString(f.getRemarks())%>";
 		public final static boolean <%=f.getJavaName()%>$auto    = <%=f.isAuto()?"true":"false"%>;
 		public final static boolean <%=f.getJavaName()%>$notnull = <%=f.isNotnull()?"true":"false"%>;
+		public final static String  <%=f.getJavaName()%>$seq     = "<%=f.getSeq()==null?"":f.getSeq()%>";
 		
 		<%}%>	
 		
@@ -609,7 +610,7 @@ public class <%=table.getJavaName()%> extends <%=modelClass%><<%=table.getJavaNa
 		 		f="M.";
 		 	}
 			 	
-			String[] names=new String[]{"name","key","auto","notnull","length","value","remarks"};
+			String[] names=new String[]{"name","key","auto","seq","notnull","length","value","remarks"};
 			
 			r+="@Column(table="+f+"TABLE, jdbcType="+c.getJdbcType();
 			for(String n:names){

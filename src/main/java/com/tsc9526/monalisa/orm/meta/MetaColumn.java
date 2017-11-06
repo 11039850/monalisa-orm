@@ -63,6 +63,8 @@ public class MetaColumn extends Name{
 	private boolean auto;
 	
 	
+	private String seq;
+	
 	/**
 	 * Set方法
 	 */
@@ -422,6 +424,14 @@ public class MetaColumn extends Name{
 		}
 		
 		return false;
+	}
+
+	public void setSeq(String seq) {
+		this.seq=seq;
+	}
+	
+	public String getSeq() {
+		return seq;
 	}
  
 }

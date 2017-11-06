@@ -19,6 +19,9 @@ package com.tsc9526.monalisa.tools.datatable;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.StringWriter;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -28,11 +31,13 @@ import com.google.gson.stream.JsonWriter;
 import com.tsc9526.monalisa.orm.annotation.Column;
 import com.tsc9526.monalisa.orm.datasource.DbProp;
 import com.tsc9526.monalisa.tools.clazz.MelpClass;
-import com.tsc9526.monalisa.tools.clazz.MelpLib;
-import com.tsc9526.monalisa.tools.clazz.MelpClass.FGS;
 import com.tsc9526.monalisa.tools.clazz.MelpClass.ClassHelper;
+import com.tsc9526.monalisa.tools.clazz.MelpClass.FGS;
+import com.tsc9526.monalisa.tools.clazz.MelpLib;
 import com.tsc9526.monalisa.tools.json.MelpJson;
+import com.tsc9526.monalisa.tools.misc.MelpException;
 import com.tsc9526.monalisa.tools.string.MelpSQL;
+import com.tsc9526.monalisa.tools.string.MelpString;
 
  /**
   *  
@@ -47,6 +52,36 @@ public class DataTable<E> extends ArrayList<E> {
 	 
 	public static DataTable<DataMap> fromCsv(String csvString){
 		return MelpLib.createCsv().fromCsv(csvString, CsvOptions.createDefaultOptions());
+	}
+	
+	public static DataTable<DataMap> fromResultSet(ResultSet rs){
+		DataTable<DataMap> table=new DataTable<DataMap>();
+		List<DataColumn> headers=new ArrayList<DataColumn>();
+		
+		try{
+			ResultSetMetaData rsmd=rs.getMetaData();
+		 
+			for(int i=1;i<=rsmd.getColumnCount();i++){
+				String title = rsmd.getColumnLabel(i);
+				if(MelpString.isEmpty(title)){
+					title  = rsmd.getColumnName(i);
+				}
+				headers.add(new DataColumn(title,rsmd.getColumnType(i)));
+			}
+			table.setHeaders(headers);
+			
+			while (rs.next()) {
+				DataMap row=new DataMap();
+				for(int i=1;i<=rsmd.getColumnCount();i++){
+					row.put(headers.get(i-1).getName(), rs.getObject(i));
+				}
+				table.add(row);
+			}
+		
+			return table;
+		}catch(SQLException e){
+			return MelpException.throwRuntimeException(e);
+		}
 	}
 	
 	protected List<DataColumn> headers=new ArrayList<DataColumn>();
@@ -222,7 +257,7 @@ public class DataTable<E> extends ArrayList<E> {
 		}
 		
 		DataTable<T> r=new DataTable<T>();
-		r.headers=headers;
+		r.headers.addAll(headers);
 		
 		for(int i=0;i<size();i++){
 			E from=this.get(i);
@@ -252,42 +287,51 @@ public class DataTable<E> extends ArrayList<E> {
 	 */
 	public synchronized List<DataColumn> getHeaders() {
 		if(headers.size()==0 && this.size()>0){
-			Object v=this.get(0);
-			if(v!=null){
-				if(v instanceof Map){
-					int index=0;
-					for(Object key:((Map<?,?>)v).keySet()){
-					 	headers.add(new DataColumn(""+key).setIndex(index++));
-					}
-				}else{
-					int index=0;
-					if(v.getClass().isPrimitive() || v.getClass().getName().startsWith("java.")){
-						headers.add(new DataColumn("c0").setIndex(index++));
-					}else if(v.getClass().isArray()){
-						Object[] xs=(Object[])v;
-						for(int k=0;k<xs.length;k++){
-							headers.add(new DataColumn("c"+k).setIndex(index++));
-						}
-					}else{					
-						ClassHelper mc=MelpClass.getClassHelper(v.getClass());
-						for(FGS fgs:mc.getFields()){
-							String fname=fgs.getFieldName();
-							String cname=null;
-							
-							Column column=fgs.getAnnotation(Column.class);
-							if(column!=null){
-								cname=column.name();
-							}
-							
-							headers.add(new DataColumn(fname).setLabel(cname).setIndex(index++));
-						}
-					}
-				}
-			}
+			headers.addAll(createHeader());
 		}
 		return headers;
 	}
 
+	
+	protected List<DataColumn> createHeader(){
+		List<DataColumn> headers=new ArrayList<DataColumn>();
+		
+ 		Object v=this.get(0);
+		if(v!=null){
+			if(v instanceof Map){
+				int index=0;
+				for(Object key:((Map<?,?>)v).keySet()){
+				 	headers.add(new DataColumn(""+key).setIndex(index++));
+				}
+			}else{
+				int index=0;
+				if(v.getClass().isPrimitive() || v.getClass().getName().startsWith("java.")){
+					headers.add(new DataColumn("c0").setIndex(index++));
+				}else if(v.getClass().isArray()){
+					Object[] xs=(Object[])v;
+					for(int k=0;k<xs.length;k++){
+						headers.add(new DataColumn("c"+k).setIndex(index++));
+					}
+				}else{					
+					ClassHelper mc=MelpClass.getClassHelper(v.getClass());
+					for(FGS fgs:mc.getFields()){
+						String fname=fgs.getFieldName();
+						String cname=null;
+						
+						Column column=fgs.getAnnotation(Column.class);
+						if(column!=null){
+							cname=column.name();
+						}
+						
+						headers.add(new DataColumn(fname).setLabel(cname).setIndex(index++));
+					}
+				}
+			}
+		}
+		
+		return headers;
+	}
+	
 	/**
 	 * 指定列名
 	 * 
@@ -395,5 +439,57 @@ public class DataTable<E> extends ArrayList<E> {
 		MelpJson.writeJson(w,this,true);
 		 
 		return buffer.toString();
+	}
+	
+	public String format(){
+		DataTable<DataMap> ts = this.as(DataMap.class);
+		
+		ts.headers = createHeader();
+		 
+		int cols = ts.headers.size();
+		  		
+		List<String[]> rs=new ArrayList<String[]>();
+		if(!headers.isEmpty()){
+			String[] cs=new String[cols];
+			for(int i=0;i<cols;i++){
+				cs[i] = ""+ts.headers.get(i).getName();
+			}
+			rs.add(cs);
+		}
+		
+		for(DataMap m:ts){
+			String[] cs=new String[cols];
+			for(int i=0;i<cols;i++){
+				DataColumn c=ts.headers.get(i);
+				 
+				Object v = m.containsKey(c.getName()) ? m.gets(c.getName()) : m.gets(c.getLabel());
+				  
+				cs[i]    = v==null? "" : (""+v);
+			}
+			rs.add(cs);
+		}
+		
+		
+		int[] widths=new int[cols]; 
+		for(String[] row:rs){
+			for(int i=0;i<row.length;i++){
+				if(widths[i] < row[i].length()){
+					widths[i] = row[i].length();
+				}
+			}
+		} 
+		
+		StringBuilder sb=new StringBuilder();
+		for(String[] row:rs){
+			if(sb.length()>0){
+				sb.append("\r\n");
+			}
+			
+			for(int i=0;i<row.length;i++){
+				sb.append(MelpString.rightPadding(row[i],widths[i]+1));
+			}
+		}
+		
+		return sb.toString();
 	}
 }

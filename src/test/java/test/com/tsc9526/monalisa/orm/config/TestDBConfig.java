@@ -40,7 +40,7 @@ public class TestDBConfig {
 	public static class DB01 extends ConfigClass{
 	 	public Properties getConfigProperties() {
 			Properties p=new Properties();
-			p.put(DbProp.PROP_DB_URL.getFullKey(),        TestConstants.url);
+			p.put(DbProp.PROP_DB_URL.getFullKey(),        TestConstants.mysqlUrl);
 			p.put(DbProp.PROP_DB_USERNAME.getFullKey(),   TestConstants.username);
 			p.put(DbProp.PROP_DB_PASSWORD.getFullKey(),   TestConstants.password);
 			p.put(DbProp.PROP_DB_PARTITIONS.getFullKey(), "test_logyyyymm_{DatePartitionTable(yyyyMM,log_time)}");
@@ -59,7 +59,7 @@ public class TestDBConfig {
 	}
 	
 	public void testFromJdbcUrl(){
-		DBConfig db=DBConfig.fromJdbcUrl(TestConstants.url, TestConstants.username, TestConstants.password);
+		DBConfig db=DBConfig.fromJdbcUrl(TestConstants.mysqlUrl, TestConstants.username, TestConstants.password);
 		
 		Record record=new Record("test_table_1");
 		record.use(db);

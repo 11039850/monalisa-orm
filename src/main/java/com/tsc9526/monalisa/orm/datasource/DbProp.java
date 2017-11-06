@@ -176,6 +176,8 @@ public class DbProp {
 	public final static DbProp PROP_TABLE_VALIDATE 		      = new DbProp("validate",false);
 	public final static DbProp PROP_TABLE_VALIDATOR		      = new DbProp("validator");
 	
+	public final static DbProp PROP_TABLE_SEQ		          = new DbProp("seq");
+	
 	public final static DbProp PROP_TABLE_CACHE_CLASS         = new DbProp("cache.class");
 	public final static DbProp PROP_TABLE_CACHE_NAME	  	  = new DbProp("cache.name","default");
 	public final static DbProp PROP_TABLE_CACHE_EVICTION      = new DbProp("cache.eviction","LRU");
@@ -300,19 +302,7 @@ public class DbProp {
 			return defaultValue;
 		}
 	}
-	
-	public String getValue(DBConfig db,String tableName){
-		tableName=Dialect.getRealname(tableName);
-		String v=db.getCfg().getProperty(key+"."+tableName);
-		if(v!=null){
-			return v;
-		}else{
-			return db.getCfg().getProperty(key, value);
-		}
-	}
-	
-	
-
+	 
 	public int getIntValue(DBConfig db,String tableName, int defaultValue){
 		if(tableName==null || tableName.length()==0){
 			return getIntValue(db,defaultValue);
@@ -325,4 +315,24 @@ public class DbProp {
 			}
 		}
 	}
+	
+	public String getValue(DBConfig db,String tableName,String defaultValue){
+		String v=getValue(db, tableName);
+		if(v==null){
+			v=defaultValue;
+		}
+		return v;
+	}
+	
+	public String getValue(DBConfig db,String theTableName){
+		String tableName=Dialect.getRealname(theTableName);
+		String v=db.getCfg().getProperty(key+"."+tableName);
+		if(v!=null){
+			return v;
+		}else{
+			return db.getCfg().getProperty(key, value);
+		}
+	}
+	
+	
 }

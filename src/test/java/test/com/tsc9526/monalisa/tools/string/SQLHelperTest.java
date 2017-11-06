@@ -23,6 +23,7 @@ import junit.framework.Assert;
 
 import org.testng.annotations.Test;
 
+import com.tsc9526.monalisa.orm.dialect.MysqlDialect;
 import com.tsc9526.monalisa.tools.string.MelpSQL;
 
 /**
@@ -89,7 +90,7 @@ public class SQLHelperTest {
 		String original="INSERT INTO TABLE T1(bytes)VALUES(?)";
 		parameters.add(new byte[]{(byte)0x95,(byte)0x26});
 		
-		String v=MelpSQL.getExecutableSQL(original, parameters);
+		String v=MelpSQL.getExecutableSQL(new MysqlDialect(),original, parameters);
 		
 		String expected="INSERT INTO TABLE T1(bytes)VALUES('\\x95\\x26')";
 		Assert.assertEquals(expected, v);
@@ -103,7 +104,7 @@ public class SQLHelperTest {
 		parameters.add(9526);
 		parameters.add(new byte[]{(byte)0x95,(byte)0x26});
 		
-		String v=MelpSQL.getExecutableSQL(original, parameters);
+		String v=MelpSQL.getExecutableSQL(new MysqlDialect(),original, parameters);
 		
 		String expected="INSERT INTO TABLE T1(f1,f2,bytes)VALUES('1.5',9526,'\\x95\\x26')";
 		Assert.assertEquals(expected, v);

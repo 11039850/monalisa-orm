@@ -618,6 +618,10 @@ public class ModelMeta{
 			public boolean auto() {				 
 				return c.isAuto();
 			}
+			
+			public String seq() {				 
+				return c.getSeq();
+			}
 		};
 	}
 	

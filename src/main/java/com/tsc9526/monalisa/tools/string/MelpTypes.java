@@ -50,47 +50,47 @@ public class MelpTypes {
 		return false;
 	}
 
-	private static Map<Integer, String> typeToName;
+	private static Map<Integer, String> jdbcTypeToName;
 	private static Map<String, Integer> nameToType;
 	private static Map<Integer, String> typeToJava;
 	private static Set<String> javaKeywords=new HashSet<String>();
  	 	
 	static {
-		typeToName = new HashMap<Integer, String>();
-		typeToName.put(Types.ARRAY, "ARRAY"); //$NON-NLS-1$
-		typeToName.put(Types.BIGINT, "BIGINT"); //$NON-NLS-1$
-		typeToName.put(Types.BINARY, "BINARY"); //$NON-NLS-1$
-		typeToName.put(Types.BIT, "BIT"); //$NON-NLS-1$
-		typeToName.put(Types.BLOB, "BLOB"); //$NON-NLS-1$
-		typeToName.put(Types.BOOLEAN, "BOOLEAN"); //$NON-NLS-1$
-		typeToName.put(Types.CHAR, "CHAR"); //$NON-NLS-1$
-		typeToName.put(Types.CLOB, "CLOB"); //$NON-NLS-1$
-		typeToName.put(Types.DATALINK, "DATALINK"); //$NON-NLS-1$
-		typeToName.put(Types.DATE, "DATE"); //$NON-NLS-1$
-		typeToName.put(Types.DECIMAL, "DECIMAL"); //$NON-NLS-1$
-		typeToName.put(Types.DISTINCT, "DISTINCT"); //$NON-NLS-1$
-		typeToName.put(Types.DOUBLE, "DOUBLE"); //$NON-NLS-1$
-		typeToName.put(Types.FLOAT, "FLOAT"); //$NON-NLS-1$
-		typeToName.put(Types.INTEGER, "INTEGER"); //$NON-NLS-1$
-		typeToName.put(Types.JAVA_OBJECT, "JAVA_OBJECT"); //$NON-NLS-1$
-		typeToName.put(Types.LONGVARBINARY, "LONGVARBINARY"); //$NON-NLS-1$
-		typeToName.put(Types.LONGVARCHAR, "LONGVARCHAR"); //$NON-NLS-1$
-		typeToName.put(Types.NCHAR, "NCHAR"); //$NON-NLS-1$
-		typeToName.put(Types.NCLOB, "NCLOB"); //$NON-NLS-1$
-		typeToName.put(Types.NVARCHAR, "NVARCHAR"); //$NON-NLS-1$
-		typeToName.put(Types.LONGNVARCHAR, "LONGNVARCHAR"); //$NON-NLS-1$
-		typeToName.put(Types.NULL, "NULL"); //$NON-NLS-1$
-		typeToName.put(Types.NUMERIC, "NUMERIC"); //$NON-NLS-1$
-		typeToName.put(Types.OTHER, "OTHER"); //$NON-NLS-1$
-		typeToName.put(Types.REAL, "REAL"); //$NON-NLS-1$
-		typeToName.put(Types.REF, "REF"); //$NON-NLS-1$
-		typeToName.put(Types.SMALLINT, "SMALLINT"); //$NON-NLS-1$
-		typeToName.put(Types.STRUCT, "STRUCT"); //$NON-NLS-1$
-		typeToName.put(Types.TIME, "TIME"); //$NON-NLS-1$
-		typeToName.put(Types.TIMESTAMP, "TIMESTAMP"); //$NON-NLS-1$
-		typeToName.put(Types.TINYINT, "TINYINT"); //$NON-NLS-1$
-		typeToName.put(Types.VARBINARY, "VARBINARY"); //$NON-NLS-1$
-		typeToName.put(Types.VARCHAR, "VARCHAR"); //$NON-NLS-1$
+		jdbcTypeToName = new HashMap<Integer, String>();
+		jdbcTypeToName.put(Types.ARRAY, "ARRAY"); //$NON-NLS-1$
+		jdbcTypeToName.put(Types.BIGINT, "BIGINT"); //$NON-NLS-1$
+		jdbcTypeToName.put(Types.BINARY, "BINARY"); //$NON-NLS-1$
+		jdbcTypeToName.put(Types.BIT, "BIT"); //$NON-NLS-1$
+		jdbcTypeToName.put(Types.BLOB, "BLOB"); //$NON-NLS-1$
+		jdbcTypeToName.put(Types.BOOLEAN, "BOOLEAN"); //$NON-NLS-1$
+		jdbcTypeToName.put(Types.CHAR, "CHAR"); //$NON-NLS-1$
+		jdbcTypeToName.put(Types.CLOB, "CLOB"); //$NON-NLS-1$
+		jdbcTypeToName.put(Types.DATALINK, "DATALINK"); //$NON-NLS-1$
+		jdbcTypeToName.put(Types.DATE, "DATE"); //$NON-NLS-1$
+		jdbcTypeToName.put(Types.DECIMAL, "DECIMAL"); //$NON-NLS-1$
+		jdbcTypeToName.put(Types.DISTINCT, "DISTINCT"); //$NON-NLS-1$
+		jdbcTypeToName.put(Types.DOUBLE, "DOUBLE"); //$NON-NLS-1$
+		jdbcTypeToName.put(Types.FLOAT, "FLOAT"); //$NON-NLS-1$
+		jdbcTypeToName.put(Types.INTEGER, "INTEGER"); //$NON-NLS-1$
+		jdbcTypeToName.put(Types.JAVA_OBJECT, "JAVA_OBJECT"); //$NON-NLS-1$
+		jdbcTypeToName.put(Types.LONGVARBINARY, "LONGVARBINARY"); //$NON-NLS-1$
+		jdbcTypeToName.put(Types.LONGVARCHAR, "LONGVARCHAR"); //$NON-NLS-1$
+		jdbcTypeToName.put(Types.NCHAR, "NCHAR"); //$NON-NLS-1$
+		jdbcTypeToName.put(Types.NCLOB, "NCLOB"); //$NON-NLS-1$
+		jdbcTypeToName.put(Types.NVARCHAR, "NVARCHAR"); //$NON-NLS-1$
+		jdbcTypeToName.put(Types.LONGNVARCHAR, "LONGNVARCHAR"); //$NON-NLS-1$
+		jdbcTypeToName.put(Types.NULL, "NULL"); //$NON-NLS-1$
+		jdbcTypeToName.put(Types.NUMERIC, "NUMERIC"); //$NON-NLS-1$
+		jdbcTypeToName.put(Types.OTHER, "OTHER"); //$NON-NLS-1$
+		jdbcTypeToName.put(Types.REAL, "REAL"); //$NON-NLS-1$
+		jdbcTypeToName.put(Types.REF, "REF"); //$NON-NLS-1$
+		jdbcTypeToName.put(Types.SMALLINT, "SMALLINT"); //$NON-NLS-1$
+		jdbcTypeToName.put(Types.STRUCT, "STRUCT"); //$NON-NLS-1$
+		jdbcTypeToName.put(Types.TIME, "TIME"); //$NON-NLS-1$
+		jdbcTypeToName.put(Types.TIMESTAMP, "TIMESTAMP"); //$NON-NLS-1$
+		jdbcTypeToName.put(Types.TINYINT, "TINYINT"); //$NON-NLS-1$
+		jdbcTypeToName.put(Types.VARBINARY, "VARBINARY"); //$NON-NLS-1$
+		jdbcTypeToName.put(Types.VARCHAR, "VARCHAR"); //$NON-NLS-1$
 
 		nameToType = new HashMap<String, Integer>();
 		nameToType.put("ARRAY", Types.ARRAY); //$NON-NLS-1$
@@ -192,7 +192,7 @@ public class MelpTypes {
 	}
 	
 	public static String getTypeName(int jdbcType) {
-		String answer = typeToName.get(jdbcType);
+		String answer = jdbcTypeToName.get(jdbcType);
 		if (answer == null) {
 			answer = "OTHER";
 		}
@@ -267,6 +267,11 @@ public class MelpTypes {
 		}
 		
 		return false;
+	}
+
+
+	public static boolean isDateType(int jdbcType) {
+		return jdbcType==Types.DATE || jdbcType==Types.TIMESTAMP;
 	}
 
 }
