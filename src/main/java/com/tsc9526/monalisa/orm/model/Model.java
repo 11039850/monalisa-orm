@@ -588,18 +588,17 @@ public abstract class Model<T extends Model> implements Serializable ,Shallowabl
 	 */
 	public T defaults() {
 		for (FGS fgs : fields()) {
-			Column c = fgs.getAnnotation(Column.class);
-			if(!c.auto()){
-				String v = c.value();
-				if ("NULL".equalsIgnoreCase(v)) {
-					if (c.notnull()) {
-						Object x = MelpJavaBeans.getDefaultValue(c.jdbcType(), fgs.getType());
-						if(x!=null){
-							fgs.setObject(this, x);
-						}
-					}
-				} else {
-					fgs.setObject(this, v);
+			Column c   = fgs.getAnnotation(Column.class);
+			String def = c.value();
+			
+			if(!c.auto() && fgs.getObject(this) == null){
+				if ("NULL".equalsIgnoreCase(def) && c.notnull()) {
+					Object x = MelpJavaBeans.getDefaultValue(c.jdbcType(), fgs.getType());
+					if(x!=null){
+						fgs.setObject(this, x);
+					}	
+				} else if(!"NULL".equalsIgnoreCase(def)){
+					fgs.setObject(this, def);
 				}
 			}
 		}

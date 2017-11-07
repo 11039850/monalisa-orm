@@ -14,24 +14,15 @@
  *	You should have received a copy of the GNU Lesser General Public License
  *	along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************************/
-package test.com.tsc9526.monalisa.orm.query;
+package test.com.tsc9526.monalisa.orm.dialect.basic;
+
+import com.tsc9526.monalisa.orm.annotation.DB;
 
 /**
  * 
  * @author zzg.zhou(11039850@qq.com)
  */
-public enum StatusB {
-	B1(1),B2(2),B3(3);
-	
-	private int value;	
-	
-	StatusB(int value){
-		this.value=value;		
-	}
-	
-	
-	public int getValue() {
-		return value;
-	}
-	
+@DB(key="test.simple_db", url="jdbc:mysql://x.x.x.x:port/xxx_db")
+public interface TestSimpleDB {
+
 }

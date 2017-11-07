@@ -14,12 +14,43 @@
  *	You should have received a copy of the GNU Lesser General Public License
  *	along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************************/
-package test.com.tsc9526.monalisa.orm.query;
+package test.com.tsc9526.monalisa.orm.meta;
+
+import org.testng.Assert;
+import org.testng.annotations.Test;
+
+import com.tsc9526.monalisa.orm.meta.MetaColumn;
 
 /**
  * 
  * @author zzg.zhou(11039850@qq.com)
  */
-public enum StatusC {
-	CC1,CC2,CC3;	 	
+@Test
+public class MetaColumnTest {
+  
+  public void testParseRemark()throws Exception {
+	  MetaColumn c=new MetaColumn();
+	  c.setRemarks(
+			  "#annotation"
+			  +"\r\n{ "
+			  +"\r\n@regex(\"[0-9]+\",\"Error message!\")"
+			  +"\r\n@min(10)"
+			  +"\r\n@max(256)"
+			  +"\r\n}"
+			  +"\r\n"			 
+			  +"\r\n#bool{}"
+			  
+			  +"\r\n#value{"
+			  +"\r\nx+y"
+  			  +"\r\n}");
+	  
+	  Assert.assertEquals(c.getCode("Bool"),"");
+	  Assert.assertEquals(c.getJavaType(),"Boolean");
+	  
+	  c.setRemarks("#enum{com.xx.Status}");
+	  Assert.assertEquals(c.getJavaType(),"Status");
+	  
+	  c.setRemarks("#json{com.xx.Js}");
+	  Assert.assertEquals(c.getJavaType(),"Js");
+  }
 }

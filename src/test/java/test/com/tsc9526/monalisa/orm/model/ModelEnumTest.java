@@ -19,9 +19,9 @@ package test.com.tsc9526.monalisa.orm.model;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import test.com.tsc9526.monalisa.orm.query.StatusA;
-import test.com.tsc9526.monalisa.orm.query.StatusB;
-import test.com.tsc9526.monalisa.orm.query.TestSimpleModel;
+import test.com.tsc9526.monalisa.orm.dialect.basic.StatusA;
+import test.com.tsc9526.monalisa.orm.dialect.basic.StatusB;
+import test.com.tsc9526.monalisa.orm.dialect.basic.TestSimpleModel;
 
 import com.tsc9526.monalisa.tools.clazz.MelpClass;
 import com.tsc9526.monalisa.tools.clazz.MelpClass.ClassHelper;

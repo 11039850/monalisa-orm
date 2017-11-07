@@ -1,4 +1,4 @@
-package test.com.tsc9526.monalisa.orm.query;
+package test.com.tsc9526.monalisa.orm.dialect.mysql.cases;
 
 import java.util.List;
 

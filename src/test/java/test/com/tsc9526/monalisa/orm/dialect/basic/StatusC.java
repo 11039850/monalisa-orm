@@ -14,15 +14,12 @@
  *	You should have received a copy of the GNU Lesser General Public License
  *	along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************************/
-package test.com.tsc9526.monalisa.orm.query;
-
-import com.tsc9526.monalisa.orm.annotation.DB;
+package test.com.tsc9526.monalisa.orm.dialect.basic;
 
 /**
  * 
  * @author zzg.zhou(11039850@qq.com)
  */
-@DB(key="test.simple_db", url="jdbc:mysql://x.x.x.x:port/xxx_db")
-public interface TestSimpleDB {
-
+public enum StatusC {
+	CC1,CC2,CC3;	 	
 }

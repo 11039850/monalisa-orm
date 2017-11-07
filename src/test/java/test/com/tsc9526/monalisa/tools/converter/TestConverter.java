@@ -25,7 +25,7 @@ import java.util.Map;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import test.com.tsc9526.monalisa.orm.query.TestSimpleModel;
+import test.com.tsc9526.monalisa.orm.dialect.basic.TestSimpleModel;
 
 import com.google.gson.JsonPrimitive;
 import com.tsc9526.monalisa.tools.converters.TypeConverter;

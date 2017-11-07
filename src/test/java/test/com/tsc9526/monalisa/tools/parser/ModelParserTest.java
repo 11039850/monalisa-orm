@@ -23,10 +23,10 @@ import java.util.Date;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import test.com.tsc9526.monalisa.orm.query.StatusA;
-import test.com.tsc9526.monalisa.orm.query.TestSimpleModel;
-import test.com.tsc9526.monalisa.orm.query.TestSimpleObject;
-import test.com.tsc9526.monalisa.orm.query.TestSimpleObjectTwo;
+import test.com.tsc9526.monalisa.orm.dialect.basic.StatusA;
+import test.com.tsc9526.monalisa.orm.dialect.basic.TestSimpleModel;
+import test.com.tsc9526.monalisa.orm.dialect.basic.TestSimpleObject;
+import test.com.tsc9526.monalisa.orm.dialect.basic.TestSimpleObjectTwo;
 
 import com.tsc9526.monalisa.orm.Query;
 import com.tsc9526.monalisa.tools.clazz.MelpClass.FGS;

@@ -14,7 +14,7 @@
  *	You should have received a copy of the GNU Lesser General Public License
  *	along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************************/
-package test.com.tsc9526.monalisa.orm.model;
+package test.com.tsc9526.monalisa.orm.dialect.mysql.cases;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -40,6 +40,7 @@ import com.tsc9526.monalisa.tools.string.MelpDate;
 public class ModelTest {
 	public void testInsertDate() throws Exception{
 		TestTable1 table1=new TestTable1();
+		table1.setName("xyz"+System.currentTimeMillis());
 		table1.defaults();
 		table1.save();
 		

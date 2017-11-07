@@ -19,7 +19,7 @@ package test.com.tsc9526.monalisa.tools.datatable;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import test.com.tsc9526.monalisa.orm.query.TestSimpleModel;
+import test.com.tsc9526.monalisa.orm.dialect.basic.TestSimpleModel;
 
 import com.tsc9526.monalisa.tools.datatable.DataMap;
 import com.tsc9526.monalisa.tools.datatable.DataTable;

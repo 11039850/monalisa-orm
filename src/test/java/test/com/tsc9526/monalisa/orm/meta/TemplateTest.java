@@ -14,43 +14,36 @@
  *	You should have received a copy of the GNU Lesser General Public License
  *	along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************************/
-package test.com.tsc9526.monalisa.orm.query;
+package test.com.tsc9526.monalisa.orm.meta;
+
+import java.io.ByteArrayOutputStream;
 
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import com.tsc9526.monalisa.orm.meta.MetaColumn;
+import com.tsc9526.monalisa.orm.generator.DBTableGenerator;
+import com.tsc9526.monalisa.orm.meta.MetaTable;
+import com.tsc9526.monalisa.orm.model.Model;
 
 /**
  * 
  * @author zzg.zhou(11039850@qq.com)
  */
 @Test
-public class MetaColumnTest {
-  
-  public void testParseRemark()throws Exception {
-	  MetaColumn c=new MetaColumn();
-	  c.setRemarks(
-			  "#annotation"
-			  +"\r\n{ "
-			  +"\r\n@regex(\"[0-9]+\",\"Error message!\")"
-			  +"\r\n@min(10)"
-			  +"\r\n@max(256)"
-			  +"\r\n}"
-			  +"\r\n"			 
-			  +"\r\n#bool{}"
-			  
-			  +"\r\n#value{"
-			  +"\r\nx+y"
-  			  +"\r\n}");
-	  
-	  Assert.assertEquals(c.getCode("Bool"),"");
-	  Assert.assertEquals(c.getJavaType(),"Boolean");
-	  
-	  c.setRemarks("#enum{com.xx.Status}");
-	  Assert.assertEquals(c.getJavaType(),"Status");
-	  
-	  c.setRemarks("#json{com.xx.Js}");
-	  Assert.assertEquals(c.getJavaType(),"Js");
-  }
+public class TemplateTest {
+
+	 
+	public void testGenerateModel()throws Exception{
+		MetaTable mTable=new MetaTable("test_table");
+		String modelClass=Model.class.getName();
+		String dbi="test.dbi";
+		mTable.setJavaPackage("test");
+		
+		ByteArrayOutputStream bos=new ByteArrayOutputStream();
+		DBTableGenerator tpl=new DBTableGenerator(mTable,modelClass,dbi);
+		tpl.generate(bos);
+		
+		Assert.assertTrue(bos.size()>500);
+		
+	}
 }

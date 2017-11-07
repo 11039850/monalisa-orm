@@ -14,33 +14,24 @@
  *	You should have received a copy of the GNU Lesser General Public License
  *	along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************************/
-package test.com.tsc9526.monalisa.orm.query;
+package test.com.tsc9526.monalisa.orm.dialect.basic;
 
 /**
  * 
  * @author zzg.zhou(11039850@qq.com)
  */
-public class TestSimpleObjectTwo {
-	private String fs;
+public enum StatusB {
+	B1(1),B2(2),B3(3);
 	
-	private TestSimpleObject obj;
-
-	public String getFs() {
-		return fs;
-	}
-
-	public void setFs(String fs) {
-		this.fs = fs;
-	}
-
-	public TestSimpleObject getObj() {
-		return obj;
-	}
-
-	public void setObj(TestSimpleObject obj) {
-		this.obj = obj;
-	}
-	 
+	private int value;	
 	
+	StatusB(int value){
+		this.value=value;		
+	}
+	
+	
+	public int getValue() {
+		return value;
+	}
 	
 }
