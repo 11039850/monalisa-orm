@@ -14,38 +14,30 @@
  *	You should have received a copy of the GNU Lesser General Public License
  *	along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************************/
-package com.tsc9526.monalisa.orm.meta;
+package test.com.tsc9526.monalisa.plugin;
+ 
+import test.com.tsc9526.monalisa.orm.dialect.oracle.OracleDB;
+import test.com.tsc9526.monalisa.plugin.mysqldbgen.ResultFindOne;
 
-import java.util.HashSet;
-import java.util.Set;
+import com.tsc9526.monalisa.orm.Query;
+import com.tsc9526.monalisa.orm.annotation.Select;
 
 /**
  * 
  * @author zzg.zhou(11039850@qq.com)
  */
-public class Keywords {	
-	private static Set<String> javaKeywords=new HashSet<String>();
+public class OracleDBGen {
 	
-	
-	static{
-		String[] kws=new String[]{
-				"public", "private", "protected",
-				"default", "switch", "case",
-				"for", "do", "goto", "const", "strictfp", "while", "if", "else",
-				"byte", "short", "int", "long", "float", "double", "void", "boolean", "char", 
-				"null", "false", "true",
-				"continue", "break", "return", "instanceof",
-				"synchronized", "volatile", "transient", "final", "static",
-				"interface", "class", "extends", "implements", "throws",
-				"throw", "catch", "try", "finally", "abstract", "assert",
-				"enum", "import", "package", "native", "new", "super", "this"
-		};
-		for(String k:kws){
-			javaKeywords.add(k);
-		}
-	} 	
-	
-	public static boolean isJavaKeyword(String word){
-		return javaKeywords.contains(word);
+	@Select
+	public ResultFindOne findOne(int id){
+		Query query=OracleDB.DB.createQuery();
+		
+		query.add(""+/**~!{*/""
+			+ "SELECT * "
+			+ "\r\n	FROM test_table_1 "
+			+ "\r\n	WHERE id=? "
+		+ "\r\n"/**}*/, id);
+		
+		return query.getResult(ResultFindOne.class);
 	}
 }

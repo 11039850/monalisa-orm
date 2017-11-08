@@ -95,6 +95,10 @@ public class TestGenterator {
 			}else{
 				logger.error("Check[FAIL] generate java file: "+fs.getName()+expectMessage);
 			}
+			
+			String regex="Auto generated code by monalisa.*";
+			ss=ss.replaceAll(regex, "").trim();
+			se=se.replaceAll(regex, "").trim();
 			Assert.assertTrue(ss.equals(se),"Generate: "+fs.getAbsolutePath()+expectMessage);
 		}
 		

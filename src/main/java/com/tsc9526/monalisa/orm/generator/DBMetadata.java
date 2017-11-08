@@ -212,6 +212,7 @@ public class DBMetadata {
 
 	public List<MetaTable> getTables() {
 		DBGenerator.plogger.info("Loading tables from db-key: " + dbcfg.getKey() + ", url: " + dbcfg.getCfg().getUrl());
+		
 		DataSource ds = new SimpleDataSource(dbcfg);
 
 		Connection conn = null;
@@ -301,7 +302,9 @@ public class DBMetadata {
 				new File(DbProp.TMP_WORK_DIR_METATABLE).mkdirs();
 			}
 			String metafile = MelpFile.combinePath(DbProp.TMP_WORK_DIR_METATABLE, "/" +getMetaFilename(dbKey));
-
+			
+			DBGenerator.plogger.info("Save meta-file: "+metafile);
+			
 			saveTables(hTables, new FileOutputStream(metafile));
 		}
 	}

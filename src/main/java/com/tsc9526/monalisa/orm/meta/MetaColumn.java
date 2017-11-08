@@ -51,7 +51,7 @@ public class MetaColumn extends Name{
 	private int length; 	
   
 	private String value;
-	
+
 	/**
 	 * 是否主键
 	 */
@@ -80,6 +80,8 @@ public class MetaColumn extends Name{
 	
 	protected Set<String> imports=new HashSet<String>();
 	
+	
+	private int decimalDigits;
 	
 	public MetaColumn(){
 		super(false);
@@ -133,7 +135,17 @@ public class MetaColumn extends Name{
 	 
 	public String getJavaType(){
 		if(javaType==null){
-			return MelpTypes.getJavaType(jdbcType);
+			String type=MelpTypes.getJavaType(jdbcType);
+			
+			if("java.math.BigDecimal".equals(type) && getDecimalDigits()==0){
+				if(length<=10){
+					type= "Integer";
+				}else if(length<=22){
+					type= "Long";
+				}
+			}
+			
+			return type;
 		}else{
 			return javaType;
 		}
@@ -432,6 +444,14 @@ public class MetaColumn extends Name{
 	
 	public String getSeq() {
 		return seq;
+	}
+
+	public int getDecimalDigits() {
+		return decimalDigits;
+	}
+
+	public void setDecimalDigits(int decimalDigits) {
+		this.decimalDigits = decimalDigits;
 	}
  
 }

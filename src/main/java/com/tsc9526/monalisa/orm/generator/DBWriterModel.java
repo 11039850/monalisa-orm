@@ -115,7 +115,7 @@ public class DBWriterModel{
 		 		f="M.";
 		 	}
 			 	
-			String[] names=new String[]{"name","key","auto","seq","notnull","length","value","remarks"};
+			String[] names=new String[]{"name","key","auto","seq","notnull","length","decimalDigits","value","remarks"};
 			
 			r+="@Column(table="+f+"TABLE, jdbcType="+c.getJdbcType();
 			for(String n:names){
@@ -1174,42 +1174,47 @@ public class DBWriterModel{
 			for(MetaColumn f:table.getColumns()){ 		out.println("");
 			out.print("		public final static String  ");
 			out.print(f.getJavaName());
-			out.print("$name    = \"");
+			out.print("$name          = \"");
 			out.print(f.getName());
 			out.println("\";");
 			out.print("		public final static boolean ");
 			out.print(f.getJavaName());
-			out.print("$key     = ");
+			out.print("$key           = ");
 			out.print(f.isKey()?"true":"false");
 			out.println(";");
 			out.print("		public final static int     ");
 			out.print(f.getJavaName());
-			out.print("$length  = ");
+			out.print("$length        = ");
 			out.print(f.getLength());
+			out.println(";");
+			out.print("		public final static int     ");
+			out.print(f.getJavaName());
+			out.print("$decimalDigits = ");
+			out.print(f.getDecimalDigits());
 			out.println(";");
 			out.print("		public final static String  ");
 			out.print(f.getJavaName());
-			out.print("$value   = \"");
+			out.print("$value         = \"");
 			out.print(f.getValue()==null?"NULL":toJavaString(f.getValue()));
 			out.println("\";");
 			out.print("		public final static String  ");
 			out.print(f.getJavaName());
-			out.print("$remarks = \"");
+			out.print("$remarks       = \"");
 			out.print(toJavaString(f.getRemarks()));
 			out.println("\";");
 			out.print("		public final static boolean ");
 			out.print(f.getJavaName());
-			out.print("$auto    = ");
+			out.print("$auto          = ");
 			out.print(f.isAuto()?"true":"false");
 			out.println(";");
 			out.print("		public final static boolean ");
 			out.print(f.getJavaName());
-			out.print("$notnull = ");
+			out.print("$notnull       = ");
 			out.print(f.isNotnull()?"true":"false");
 			out.println(";");
 			out.print("		public final static String  ");
 			out.print(f.getJavaName());
-			out.print("$seq     = \"");
+			out.print("$seq           = \"");
 			out.print(f.getSeq()==null?"":f.getSeq());
 			out.println("\";");
 			out.println("		");
@@ -1223,7 +1228,7 @@ public class DBWriterModel{
 			out.println("");
 			out.print("		public final static String  ");
 			out.print(f.getJavaName());
-			out.print("         = \"");
+			out.print("                     = \"");
 			out.print(f.getName());
 			out.println("\";");
 			out.print("		");

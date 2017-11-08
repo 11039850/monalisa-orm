@@ -52,7 +52,7 @@ public class MelpTypes {
 
 	private static Map<Integer, String> jdbcTypeToName;
 	private static Map<String, Integer> nameToType;
-	private static Map<Integer, String> typeToJava;
+	private static Map<Integer, String> jdbcTypeToJava;
 	private static Set<String> javaKeywords=new HashSet<String>();
  	 	
 	static {
@@ -128,41 +128,41 @@ public class MelpTypes {
 		nameToType.put("VARBINARY", Types.VARBINARY); //$NON-NLS-1$
 		nameToType.put("VARCHAR", Types.VARCHAR); //$NON-NLS-1$
 
-		typeToJava = new HashMap<Integer, String>();
-		typeToJava.put(Types.ARRAY, Object.class.getName());
-		typeToJava.put(Types.BIGINT, Long.class.getName());
-		typeToJava.put(Types.BINARY, "byte[]");
-		typeToJava.put(Types.BIT, Boolean.class.getName());
-		typeToJava.put(Types.BLOB, "byte[]");
-		typeToJava.put(Types.BOOLEAN, Boolean.class.getName());
-		typeToJava.put(Types.CHAR, String.class.getName());
-		typeToJava.put(Types.CLOB, String.class.getName());
-		typeToJava.put(Types.DATALINK, Object.class.getName());
-		typeToJava.put(Types.DATE, Date.class.getName());
-		typeToJava.put(Types.DISTINCT, Object.class.getName());
-		typeToJava.put(Types.DOUBLE, Double.class.getName());
-		typeToJava.put(Types.FLOAT, Double.class.getName());
-		typeToJava.put(Types.INTEGER, Integer.class.getName());
-		typeToJava.put(Types.JAVA_OBJECT, Object.class.getName());
-		typeToJava.put(Types.LONGNVARCHAR, String.class.getName());
-		typeToJava.put(Types.LONGVARBINARY, "byte[]");
-		typeToJava.put(Types.LONGVARCHAR, String.class.getName());
-		typeToJava.put(Types.NCHAR, String.class.getName());
-		typeToJava.put(Types.NCLOB, String.class.getName());
-		typeToJava.put(Types.NVARCHAR, String.class.getName());
-		typeToJava.put(Types.NULL, Object.class.getName());
-		typeToJava.put(Types.OTHER, Object.class.getName());
-		typeToJava.put(Types.REAL, Float.class.getName());
-		typeToJava.put(Types.REF, Object.class.getName());
-		typeToJava.put(Types.SMALLINT, Integer.class.getName());
-		typeToJava.put(Types.STRUCT, Object.class.getName());
-		typeToJava.put(Types.TIME, Date.class.getName());
-		typeToJava.put(Types.TIMESTAMP, Date.class.getName());
-		typeToJava.put(Types.TINYINT, Integer.class.getName());
-		typeToJava.put(Types.VARBINARY, "byte[]");
-		typeToJava.put(Types.VARCHAR, String.class.getName());
-		typeToJava.put(Types.DECIMAL, BigDecimal.class.getName());
-		typeToJava.put(Types.NUMERIC, BigDecimal.class.getName());
+		jdbcTypeToJava = new HashMap<Integer, String>();
+		jdbcTypeToJava.put(Types.ARRAY, Object.class.getName());
+		jdbcTypeToJava.put(Types.BIGINT, Long.class.getName());
+		jdbcTypeToJava.put(Types.BINARY, "byte[]");
+		jdbcTypeToJava.put(Types.BIT, Boolean.class.getName());
+		jdbcTypeToJava.put(Types.BLOB, "byte[]");
+		jdbcTypeToJava.put(Types.BOOLEAN, Boolean.class.getName());
+		jdbcTypeToJava.put(Types.CHAR, String.class.getName());
+		jdbcTypeToJava.put(Types.CLOB, String.class.getName());
+		jdbcTypeToJava.put(Types.DATALINK, Object.class.getName());
+		jdbcTypeToJava.put(Types.DATE, Date.class.getName());
+		jdbcTypeToJava.put(Types.DISTINCT, Object.class.getName());
+		jdbcTypeToJava.put(Types.DOUBLE, Double.class.getName());
+		jdbcTypeToJava.put(Types.FLOAT, Double.class.getName());
+		jdbcTypeToJava.put(Types.INTEGER, Integer.class.getName());
+		jdbcTypeToJava.put(Types.JAVA_OBJECT, Object.class.getName());
+		jdbcTypeToJava.put(Types.LONGNVARCHAR, String.class.getName());
+		jdbcTypeToJava.put(Types.LONGVARBINARY, "byte[]");
+		jdbcTypeToJava.put(Types.LONGVARCHAR, String.class.getName());
+		jdbcTypeToJava.put(Types.NCHAR, String.class.getName());
+		jdbcTypeToJava.put(Types.NCLOB, String.class.getName());
+		jdbcTypeToJava.put(Types.NVARCHAR, String.class.getName());
+		jdbcTypeToJava.put(Types.NULL, Object.class.getName());
+		jdbcTypeToJava.put(Types.OTHER, Object.class.getName());
+		jdbcTypeToJava.put(Types.REAL, Float.class.getName());
+		jdbcTypeToJava.put(Types.REF, Object.class.getName());
+		jdbcTypeToJava.put(Types.SMALLINT, Integer.class.getName());
+		jdbcTypeToJava.put(Types.STRUCT, Object.class.getName());
+		jdbcTypeToJava.put(Types.TIME, Date.class.getName());
+		jdbcTypeToJava.put(Types.TIMESTAMP, Date.class.getName());
+		jdbcTypeToJava.put(Types.TINYINT, Integer.class.getName());
+		jdbcTypeToJava.put(Types.VARBINARY, "byte[]");
+		jdbcTypeToJava.put(Types.VARCHAR, String.class.getName());
+		jdbcTypeToJava.put(Types.DECIMAL, BigDecimal.class.getName());
+		jdbcTypeToJava.put(Types.NUMERIC, BigDecimal.class.getName());
 
 		
 		String[] kws=new String[]{
@@ -210,7 +210,7 @@ public class MelpTypes {
 	}
 
 	public static String getJavaType(int jdbcType) {
-		String java = typeToJava.get(jdbcType);
+		String java = jdbcTypeToJava.get(jdbcType);
 		if (java == null) {
 			java = String.class.getName();			 
 		}
@@ -223,7 +223,7 @@ public class MelpTypes {
 	}
 	
 	public static boolean isString(int jdbcType){
-		String java = typeToJava.get(jdbcType);
+		String java = jdbcTypeToJava.get(jdbcType);
 		if(java==null || java.equals(String.class.getName())){
 			return true;
 		}else{
@@ -232,7 +232,7 @@ public class MelpTypes {
 	}
 	
 	public static boolean isBoolean(int jdbcType){
-		String java = typeToJava.get(jdbcType);
+		String java = jdbcTypeToJava.get(jdbcType);
 		if(java!=null){
 			if(java.equals(Boolean.class.getName())){
 				return true;
@@ -243,7 +243,7 @@ public class MelpTypes {
 	}
 	
 	public static boolean isNumber(int jdbcType){
-		String java = typeToJava.get(jdbcType);
+		String java = jdbcTypeToJava.get(jdbcType);
 		if(java!=null){
 			if(java.equals(Integer.class.getName())){
 				return true;

@@ -190,7 +190,7 @@ public class <%=table.getJavaName()%> implements java.io.Serializable{
 		 		f="M.";
 		 	}
 			 	
-			String[] names=new String[]{"name","key","auto","seq","notnull","length","value","remarks"};
+			String[] names=new String[]{"name","key","auto","seq","notnull","length","decimalDigits","value","remarks"};
 			
 			r+="@Column(table="+f+"TABLE, jdbcType="+c.getJdbcType();
 			for(String n:names){

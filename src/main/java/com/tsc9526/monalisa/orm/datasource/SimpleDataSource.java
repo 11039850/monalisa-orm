@@ -34,6 +34,7 @@ import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.Semaphore;
 
 import com.tsc9526.monalisa.tools.clazz.MelpClass;
+import com.tsc9526.monalisa.tools.clazz.MelpLib;
 import com.tsc9526.monalisa.tools.logger.Logger;
 
 /**
@@ -65,6 +66,8 @@ public class SimpleDataSource implements PooledDataSource {
 		setUrl(db.getCfg().getUrl());
 		setUsername(db.getCfg().getUsername());
 		setPassword(db.getCfg().getPassword());
+		
+		MelpLib.loadClass(driver);
 		
 		initConnections(db);
 	}

@@ -47,18 +47,22 @@ public class MelpLib {
 	public final static String libCsvjdbcClass   = "org.relique.jdbc.csv.CsvDriver";
 	
 	public final static String libMysqlClass     = "com.mysql.jdbc.Driver";
+	public final static String libOracleClass    = "oracle.jdbc.driver.OracleDriver";
+	public final static String libSqlServerClass = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
 	
  	public static Map<String, String[]> hLibClasses=new LinkedHashMap<String, String[]>(){
  		private static final long serialVersionUID = 1L;
 		{
-			put(libGsonClass,    new String[]{"com.google.code.gson:gson:2.3.1"});
+			put(libGsonClass,        new String[]{"com.google.code.gson:gson:2.3.1"});
 			 
- 			put(libCglibClass,   new String[]{"cglib:cglib:3.2.0"});
- 			put(libAsmClass,     new String[]{"org.ow2.asm:asm:5.0.3"});
- 			put(libC3p0Class,    new String[]{"c3p0:c3p0:0.9.1.2"});
- 			put(libDruidClass,   new String[]{"com.alibaba:druid:0.2.9"});
- 			put(libMysqlClass,   new String[]{"mysql:mysql-connector-java:5.1.24"});
- 			put(libCsvjdbcClass, new String[]{"net.sourceforge.csvjdbc:csvjdbc:1.0.28"});
+ 			put(libCglibClass,       new String[]{"cglib:cglib:3.2.0"});
+ 			put(libAsmClass,         new String[]{"org.ow2.asm:asm:5.0.3"});
+ 			put(libC3p0Class,        new String[]{"c3p0:c3p0:0.9.1.2"});
+ 			put(libDruidClass,       new String[]{"com.alibaba:druid:0.2.9"});
+ 			put(libMysqlClass,       new String[]{"mysql:mysql-connector-java:5.1.24"});
+ 			put(libOracleClass,      new String[]{"com.oracle:ojdbc14:10.2.0.5.0"});
+ 			put(libSqlServerClass,   new String[]{"com.microsoft.sqlserver:sqljdbc4:4.0"});
+ 			put(libCsvjdbcClass,     new String[]{"net.sourceforge.csvjdbc:csvjdbc:1.0.28"});
  		}
  	};
  	

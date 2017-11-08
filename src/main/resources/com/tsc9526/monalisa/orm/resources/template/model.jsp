@@ -508,20 +508,21 @@ public class <%=table.getJavaName()%> extends <%=modelClass%><<%=table.getJavaNa
 		public final static String TABLE ="<%=table.getName()%>";
 	 	
 	 	<%for(MetaColumn f:table.getColumns()){ %>
-		public final static String  <%=f.getJavaName()%>$name    = "<%=f.getName()%>";
-		public final static boolean <%=f.getJavaName()%>$key     = <%=f.isKey()?"true":"false"%>;
-		public final static int     <%=f.getJavaName()%>$length  = <%=f.getLength()%>;
-		public final static String  <%=f.getJavaName()%>$value   = "<%=f.getValue()==null?"NULL":toJavaString(f.getValue())%>";
-		public final static String  <%=f.getJavaName()%>$remarks = "<%=toJavaString(f.getRemarks())%>";
-		public final static boolean <%=f.getJavaName()%>$auto    = <%=f.isAuto()?"true":"false"%>;
-		public final static boolean <%=f.getJavaName()%>$notnull = <%=f.isNotnull()?"true":"false"%>;
-		public final static String  <%=f.getJavaName()%>$seq     = "<%=f.getSeq()==null?"":f.getSeq()%>";
+		public final static String  <%=f.getJavaName()%>$name          = "<%=f.getName()%>";
+		public final static boolean <%=f.getJavaName()%>$key           = <%=f.isKey()?"true":"false"%>;
+		public final static int     <%=f.getJavaName()%>$length        = <%=f.getLength()%>;
+		public final static int     <%=f.getJavaName()%>$decimalDigits = <%=f.getDecimalDigits()%>;
+		public final static String  <%=f.getJavaName()%>$value         = "<%=f.getValue()==null?"NULL":toJavaString(f.getValue())%>";
+		public final static String  <%=f.getJavaName()%>$remarks       = "<%=toJavaString(f.getRemarks())%>";
+		public final static boolean <%=f.getJavaName()%>$auto          = <%=f.isAuto()?"true":"false"%>;
+		public final static boolean <%=f.getJavaName()%>$notnull       = <%=f.isNotnull()?"true":"false"%>;
+		public final static String  <%=f.getJavaName()%>$seq           = "<%=f.getSeq()==null?"":f.getSeq()%>";
 		
 		<%}%>	
 		
 		<%for(MetaColumn f:table.getColumns()){ %>
 		<%=getComments(table, f, "		","\t\t")%>
-		public final static String  <%=f.getJavaName()%>         = "<%=f.getName()%>";
+		public final static String  <%=f.getJavaName()%>                     = "<%=f.getName()%>";
 		<%}%> 
 	}
 	
@@ -610,7 +611,7 @@ public class <%=table.getJavaName()%> extends <%=modelClass%><<%=table.getJavaNa
 		 		f="M.";
 		 	}
 			 	
-			String[] names=new String[]{"name","key","auto","seq","notnull","length","value","remarks"};
+			String[] names=new String[]{"name","key","auto","seq","notnull","length","decimalDigits","value","remarks"};
 			
 			r+="@Column(table="+f+"TABLE, jdbcType="+c.getJdbcType();
 			for(String n:names){

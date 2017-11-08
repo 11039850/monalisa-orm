@@ -92,7 +92,7 @@ public class TableHelper {
 		ResultSet rs = dbm.getColumns(catalogPattern, schemaPattern,tablePattern, null);
 	    while(rs.next()){
 	    	boolean auto=false;
-	    	
+	    	 
 	    	if(dialect.supportAutoIncrease()){
 		    	String ai=(""+rs.getString("IS_AUTOINCREMENT")).toUpperCase();
 		    	if("Y".equals(ai) || "YES".equals(ai) || "TRUE".equals(ai) || "1".equals(ai)){			    		 
@@ -113,6 +113,7 @@ public class TableHelper {
 	    	column.setKey(false);
 	    	column.setJdbcType(rs.getInt("DATA_TYPE"));
 	    	column.setLength(rs.getInt("COLUMN_SIZE"));
+	    	column.setDecimalDigits(rs.getInt("DECIMAL_DIGITS"));
 	    	column.setNotnull(rs.getInt("NULLABLE") != DatabaseMetaData.columnNullable);
 	    	column.setRemarks(rs.getString("REMARKS"));
 	    	column.setAuto(auto);

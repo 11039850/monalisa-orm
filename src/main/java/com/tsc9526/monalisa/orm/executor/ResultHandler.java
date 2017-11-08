@@ -256,6 +256,7 @@ public class ResultHandler<T> {
 				MetaColumn cd = columnTable.getColumn(c.getName());
 				if (cd != null) {
 					c.setAuto(cd.isAuto());
+					c.setDecimalDigits(cd.getDecimalDigits());
 					c.setJavaType(cd.getJavaType());
 					c.setJdbcType(cd.getJdbcType());
 					c.setKey(cd.isKey());

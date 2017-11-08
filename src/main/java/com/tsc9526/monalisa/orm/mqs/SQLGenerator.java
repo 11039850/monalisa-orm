@@ -217,6 +217,7 @@ public class SQLGenerator {
 						}
 					}
 					c.setJavaType(javaType);
+					c.setDecimalDigits(cd.getDecimalDigits());
 					
 					imps.add(columnTable.getJavaPackage()+"."+columnTable.getJavaName());
 					imps.addAll(c.getImports());

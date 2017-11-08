@@ -538,9 +538,10 @@ public class ModelMeta{
 	 
 
 	protected static FGS createFGS(final MetaColumn c,final FGS mfd){	
-		
-		FGS fgs=new FGS(mfd==null?null:mfd.getType(),c.getJavaName(),c.getName()){
+		return new FGS(mfd==null?null:mfd.getType(),c.getJavaName(),c.getName()){
 			private Column columnAnnotation;
+			
+			@Override
 			public void setObject(Object bean,Object v){
 				if(mfd!=null){
 					mfd.setObject(bean, v);
@@ -568,6 +569,7 @@ public class ModelMeta{
 				}				
 			}
 			
+			@Override
 			public Object getObject(Object bean){
 				if(mfd!=null){
 					return mfd.getObject(bean);
@@ -581,10 +583,12 @@ public class ModelMeta{
 				}
 			}
 			
+			@Override
 			public Field getField(){
 				return mfd==null?null:mfd.getField();
 			}
 			
+			@Override
 			@SuppressWarnings("unchecked")
 			public <T extends Annotation> T getAnnotation(Class<T> annotationClass) {				
 				if(annotationClass==Column.class){
@@ -597,8 +601,6 @@ public class ModelMeta{
 				}
 			}
 		};
-		
-		return fgs;
 	}
 	
 	protected static Column createColumn(final MetaColumn c){
@@ -649,6 +651,10 @@ public class ModelMeta{
 			public String seq() {				 
 				return c.getSeq();
 			}
+			
+			public int decimalDigits(){
+				return c.getDecimalDigits();
+			}
 		};
 	}
 	
@@ -681,7 +687,7 @@ public class ModelMeta{
 	}
 	
 	public static Table createTable(final String tableName,final String ...primaryKeys){
-		Table tb=new Table(){ 
+		return new Table(){ 
 			public Class<? extends Annotation> annotationType() {
 				return Table.class;
 			}
@@ -707,7 +713,5 @@ public class ModelMeta{
 				return new Index[0];
 			}			
 		};
-		
-		return tb;
 	}
 }

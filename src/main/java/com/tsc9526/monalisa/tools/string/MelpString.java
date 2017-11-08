@@ -60,7 +60,7 @@ public class MelpString {
 			((Throwable)bean).printStackTrace(new PrintWriter(w));
 			return w.toString();
 		}if(bean instanceof ResultSet){
-			return DataTable.fromResultSet((ResultSet)bean).toString();
+			return DataTable.fromResultSet((ResultSet)bean).format();
 		}else if(MelpTypes.isPrimitiveOrString(bean) || bean.getClass().isEnum()){
 			return bean.toString();
 		}else{

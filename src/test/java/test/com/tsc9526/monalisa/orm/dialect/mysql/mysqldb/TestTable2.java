@@ -14,7 +14,7 @@ import java.util.LinkedHashMap;
  
 /**
  *
- * Auto generated code by monalisa 2.0.1-SNAPSHOT
+ * Auto generated code by monalisa 2.1.0
  *
  */
 @Table(
@@ -85,7 +85,7 @@ public class TestTable2 extends com.tsc9526.monalisa.orm.model.Model<TestTable2>
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 10<br>
 	* <li><B>remarks:</B> primary key
 	*/
-	@Column(table=M.TABLE, jdbcType=4, name=M.id$name, key=M.id$key, auto=M.id$auto, seq=M.id$seq, notnull=M.id$notnull, length=M.id$length, value=M.id$value, remarks=M.id$remarks)
+	@Column(table=M.TABLE, jdbcType=4, name=M.id$name, key=M.id$key, auto=M.id$auto, seq=M.id$seq, notnull=M.id$notnull, length=M.id$length, decimalDigits=M.id$decimalDigits, value=M.id$value, remarks=M.id$remarks)
 	private Integer id;	
 	
 	/**
@@ -94,7 +94,7 @@ public class TestTable2 extends com.tsc9526.monalisa.orm.model.Model<TestTable2>
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 128 &nbsp;<B>value:</B> N0001<br>
 	* <li><B>remarks:</B> the name
 	*/
-	@Column(table=M.TABLE, jdbcType=12, name=M.name$name, key=M.name$key, auto=M.name$auto, seq=M.name$seq, notnull=M.name$notnull, length=M.name$length, value=M.name$value, remarks=M.name$remarks)
+	@Column(table=M.TABLE, jdbcType=12, name=M.name$name, key=M.name$key, auto=M.name$auto, seq=M.name$seq, notnull=M.name$notnull, length=M.name$length, decimalDigits=M.name$decimalDigits, value=M.name$value, remarks=M.name$remarks)
 	private String name;	
 	
 	/**
@@ -103,7 +103,7 @@ public class TestTable2 extends com.tsc9526.monalisa.orm.model.Model<TestTable2>
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 128<br>
 	* <li><B>remarks:</B> the title
 	*/
-	@Column(table=M.TABLE, jdbcType=12, name=M.title$name, key=M.title$key, auto=M.title$auto, seq=M.title$seq, notnull=M.title$notnull, length=M.title$length, value=M.title$value, remarks=M.title$remarks)
+	@Column(table=M.TABLE, jdbcType=12, name=M.title$name, key=M.title$key, auto=M.title$auto, seq=M.title$seq, notnull=M.title$notnull, length=M.title$length, decimalDigits=M.title$decimalDigits, value=M.title$value, remarks=M.title$remarks)
 	private String title;	
 	
 	/**
@@ -112,7 +112,7 @@ public class TestTable2 extends com.tsc9526.monalisa.orm.model.Model<TestTable2>
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 10 &nbsp;<B>value:</B> 0<br>
 	* <li><B>remarks:</B> enum fields A  #enum{{V0,V1}}
 	*/
-	@Column(table=M.TABLE, jdbcType=4, name=M.enumIntA$name, key=M.enumIntA$key, auto=M.enumIntA$auto, seq=M.enumIntA$seq, notnull=M.enumIntA$notnull, length=M.enumIntA$length, value=M.enumIntA$value, remarks=M.enumIntA$remarks)
+	@Column(table=M.TABLE, jdbcType=4, name=M.enumIntA$name, key=M.enumIntA$key, auto=M.enumIntA$auto, seq=M.enumIntA$seq, notnull=M.enumIntA$notnull, length=M.enumIntA$length, decimalDigits=M.enumIntA$decimalDigits, value=M.enumIntA$value, remarks=M.enumIntA$remarks)
 	@Alias("enum_int_a")
 	private EnumIntA enumIntA;	
 	
@@ -122,7 +122,7 @@ public class TestTable2 extends com.tsc9526.monalisa.orm.model.Model<TestTable2>
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 64 &nbsp;<B>value:</B> TRUE<br>
 	* <li><B>remarks:</B> #enum{{ TRUE, FALSE}}
 	*/
-	@Column(table=M.TABLE, jdbcType=12, name=M.enumStringA$name, key=M.enumStringA$key, auto=M.enumStringA$auto, seq=M.enumStringA$seq, notnull=M.enumStringA$notnull, length=M.enumStringA$length, value=M.enumStringA$value, remarks=M.enumStringA$remarks)
+	@Column(table=M.TABLE, jdbcType=12, name=M.enumStringA$name, key=M.enumStringA$key, auto=M.enumStringA$auto, seq=M.enumStringA$seq, notnull=M.enumStringA$notnull, length=M.enumStringA$length, decimalDigits=M.enumStringA$decimalDigits, value=M.enumStringA$value, remarks=M.enumStringA$remarks)
 	@Alias("enum_string_a")
 	private EnumStringA enumStringA;	
 	
@@ -132,7 +132,7 @@ public class TestTable2 extends com.tsc9526.monalisa.orm.model.Model<TestTable2>
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 256<br>
 	* <li><B>remarks:</B> array of int. #array{int}
 	*/
-	@Column(table=M.TABLE, jdbcType=12, name=M.arrayInt$name, key=M.arrayInt$key, auto=M.arrayInt$auto, seq=M.arrayInt$seq, notnull=M.arrayInt$notnull, length=M.arrayInt$length, value=M.arrayInt$value, remarks=M.arrayInt$remarks)
+	@Column(table=M.TABLE, jdbcType=12, name=M.arrayInt$name, key=M.arrayInt$key, auto=M.arrayInt$auto, seq=M.arrayInt$seq, notnull=M.arrayInt$notnull, length=M.arrayInt$length, decimalDigits=M.arrayInt$decimalDigits, value=M.arrayInt$value, remarks=M.arrayInt$remarks)
 	@Alias("array_int")
 	private int[] arrayInt;	
 	
@@ -142,7 +142,7 @@ public class TestTable2 extends com.tsc9526.monalisa.orm.model.Model<TestTable2>
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 256<br>
 	* <li><B>remarks:</B> array of string. #array{}
 	*/
-	@Column(table=M.TABLE, jdbcType=12, name=M.arrayString$name, key=M.arrayString$key, auto=M.arrayString$auto, seq=M.arrayString$seq, notnull=M.arrayString$notnull, length=M.arrayString$length, value=M.arrayString$value, remarks=M.arrayString$remarks)
+	@Column(table=M.TABLE, jdbcType=12, name=M.arrayString$name, key=M.arrayString$key, auto=M.arrayString$auto, seq=M.arrayString$seq, notnull=M.arrayString$notnull, length=M.arrayString$length, decimalDigits=M.arrayString$decimalDigits, value=M.arrayString$value, remarks=M.arrayString$remarks)
 	@Alias("array_string")
 	private String[] arrayString;	
 	
@@ -152,7 +152,7 @@ public class TestTable2 extends com.tsc9526.monalisa.orm.model.Model<TestTable2>
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 1024<br>
 	* <li><B>remarks:</B> Json object. #json{}
 	*/
-	@Column(table=M.TABLE, jdbcType=12, name=M.json$name, key=M.json$key, auto=M.json$auto, seq=M.json$seq, notnull=M.json$notnull, length=M.json$length, value=M.json$value, remarks=M.json$remarks)
+	@Column(table=M.TABLE, jdbcType=12, name=M.json$name, key=M.json$key, auto=M.json$auto, seq=M.json$seq, notnull=M.json$notnull, length=M.json$length, decimalDigits=M.json$decimalDigits, value=M.json$value, remarks=M.json$remarks)
 	private JsonObject json;	
 	
 	/**
@@ -161,7 +161,7 @@ public class TestTable2 extends com.tsc9526.monalisa.orm.model.Model<TestTable2>
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 1024<br>
 	* <li><B>remarks:</B> Json object with given class.  #json{test.com.tsc9526.monalisa.orm.data.ColumnData}
 	*/
-	@Column(table=M.TABLE, jdbcType=12, name=M.obj$name, key=M.obj$key, auto=M.obj$auto, seq=M.obj$seq, notnull=M.obj$notnull, length=M.obj$length, value=M.obj$value, remarks=M.obj$remarks)
+	@Column(table=M.TABLE, jdbcType=12, name=M.obj$name, key=M.obj$key, auto=M.obj$auto, seq=M.obj$seq, notnull=M.obj$notnull, length=M.obj$length, decimalDigits=M.obj$decimalDigits, value=M.obj$value, remarks=M.obj$remarks)
 	private ColumnData obj;	
 	
 	/**
@@ -170,7 +170,7 @@ public class TestTable2 extends com.tsc9526.monalisa.orm.model.Model<TestTable2>
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 19<br>
 	* <li><B>remarks:</B> 
 	*/
-	@Column(table=M.TABLE, jdbcType=93, name=M.tsA$name, key=M.tsA$key, auto=M.tsA$auto, seq=M.tsA$seq, notnull=M.tsA$notnull, length=M.tsA$length, value=M.tsA$value, remarks=M.tsA$remarks)
+	@Column(table=M.TABLE, jdbcType=93, name=M.tsA$name, key=M.tsA$key, auto=M.tsA$auto, seq=M.tsA$seq, notnull=M.tsA$notnull, length=M.tsA$length, decimalDigits=M.tsA$decimalDigits, value=M.tsA$value, remarks=M.tsA$remarks)
 	@Alias("ts_a")
 	private java.util.Date tsA;	
 	
@@ -180,7 +180,7 @@ public class TestTable2 extends com.tsc9526.monalisa.orm.model.Model<TestTable2>
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 19<br>
 	* <li><B>remarks:</B> 
 	*/
-	@Column(table=M.TABLE, jdbcType=93, name=M.createTime$name, key=M.createTime$key, auto=M.createTime$auto, seq=M.createTime$seq, notnull=M.createTime$notnull, length=M.createTime$length, value=M.createTime$value, remarks=M.createTime$remarks)
+	@Column(table=M.TABLE, jdbcType=93, name=M.createTime$name, key=M.createTime$key, auto=M.createTime$auto, seq=M.createTime$seq, notnull=M.createTime$notnull, length=M.createTime$length, decimalDigits=M.createTime$decimalDigits, value=M.createTime$value, remarks=M.createTime$remarks)
 	@Alias("create_time")
 	private java.util.Date createTime;	
 	
@@ -190,7 +190,7 @@ public class TestTable2 extends com.tsc9526.monalisa.orm.model.Model<TestTable2>
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 64<br>
 	* <li><B>remarks:</B> 
 	*/
-	@Column(table=M.TABLE, jdbcType=12, name=M.createBy$name, key=M.createBy$key, auto=M.createBy$auto, seq=M.createBy$seq, notnull=M.createBy$notnull, length=M.createBy$length, value=M.createBy$value, remarks=M.createBy$remarks)
+	@Column(table=M.TABLE, jdbcType=12, name=M.createBy$name, key=M.createBy$key, auto=M.createBy$auto, seq=M.createBy$seq, notnull=M.createBy$notnull, length=M.createBy$length, decimalDigits=M.createBy$decimalDigits, value=M.createBy$value, remarks=M.createBy$remarks)
 	@Alias("create_by")
 	private String createBy;	
 	
@@ -200,7 +200,7 @@ public class TestTable2 extends com.tsc9526.monalisa.orm.model.Model<TestTable2>
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 19<br>
 	* <li><B>remarks:</B> 
 	*/
-	@Column(table=M.TABLE, jdbcType=93, name=M.updateTime$name, key=M.updateTime$key, auto=M.updateTime$auto, seq=M.updateTime$seq, notnull=M.updateTime$notnull, length=M.updateTime$length, value=M.updateTime$value, remarks=M.updateTime$remarks)
+	@Column(table=M.TABLE, jdbcType=93, name=M.updateTime$name, key=M.updateTime$key, auto=M.updateTime$auto, seq=M.updateTime$seq, notnull=M.updateTime$notnull, length=M.updateTime$length, decimalDigits=M.updateTime$decimalDigits, value=M.updateTime$value, remarks=M.updateTime$remarks)
 	@Alias("update_time")
 	private java.util.Date updateTime;	
 	
@@ -210,7 +210,7 @@ public class TestTable2 extends com.tsc9526.monalisa.orm.model.Model<TestTable2>
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 64<br>
 	* <li><B>remarks:</B> 
 	*/
-	@Column(table=M.TABLE, jdbcType=12, name=M.updateBy$name, key=M.updateBy$key, auto=M.updateBy$auto, seq=M.updateBy$seq, notnull=M.updateBy$notnull, length=M.updateBy$length, value=M.updateBy$value, remarks=M.updateBy$remarks)
+	@Column(table=M.TABLE, jdbcType=12, name=M.updateBy$name, key=M.updateBy$key, auto=M.updateBy$auto, seq=M.updateBy$seq, notnull=M.updateBy$notnull, length=M.updateBy$length, decimalDigits=M.updateBy$decimalDigits, value=M.updateBy$value, remarks=M.updateBy$remarks)
 	@Alias("update_by")
 	private String updateBy;	
 	
@@ -220,7 +220,7 @@ public class TestTable2 extends com.tsc9526.monalisa.orm.model.Model<TestTable2>
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 10 &nbsp;<B>value:</B> 0<br>
 	* <li><B>remarks:</B> version
 	*/
-	@Column(table=M.TABLE, jdbcType=4, name=M.v1$name, key=M.v1$key, auto=M.v1$auto, seq=M.v1$seq, notnull=M.v1$notnull, length=M.v1$length, value=M.v1$value, remarks=M.v1$remarks)
+	@Column(table=M.TABLE, jdbcType=4, name=M.v1$name, key=M.v1$key, auto=M.v1$auto, seq=M.v1$seq, notnull=M.v1$notnull, length=M.v1$length, decimalDigits=M.v1$decimalDigits, value=M.v1$value, remarks=M.v1$remarks)
 	private Integer v1;	
 	
 	
@@ -232,7 +232,7 @@ public class TestTable2 extends com.tsc9526.monalisa.orm.model.Model<TestTable2>
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 10<br>
 	* <li><B>remarks:</B> primary key
 	*/
-	@Column(table=M.TABLE, jdbcType=4, name=M.id$name, key=M.id$key, auto=M.id$auto, seq=M.id$seq, notnull=M.id$notnull, length=M.id$length, value=M.id$value, remarks=M.id$remarks) 
+	@Column(table=M.TABLE, jdbcType=4, name=M.id$name, key=M.id$key, auto=M.id$auto, seq=M.id$seq, notnull=M.id$notnull, length=M.id$length, decimalDigits=M.id$decimalDigits, value=M.id$value, remarks=M.id$remarks) 
 	public TestTable2 setId(Integer id){
 		this.id = id;  
 		
@@ -250,7 +250,7 @@ public class TestTable2 extends com.tsc9526.monalisa.orm.model.Model<TestTable2>
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 128 &nbsp;<B>value:</B> N0001<br>
 	* <li><B>remarks:</B> the name
 	*/
-	@Column(table=M.TABLE, jdbcType=12, name=M.name$name, key=M.name$key, auto=M.name$auto, seq=M.name$seq, notnull=M.name$notnull, length=M.name$length, value=M.name$value, remarks=M.name$remarks) 
+	@Column(table=M.TABLE, jdbcType=12, name=M.name$name, key=M.name$key, auto=M.name$auto, seq=M.name$seq, notnull=M.name$notnull, length=M.name$length, decimalDigits=M.name$decimalDigits, value=M.name$value, remarks=M.name$remarks) 
 	public TestTable2 setName(String name){
 		this.name = name;  
 		
@@ -268,7 +268,7 @@ public class TestTable2 extends com.tsc9526.monalisa.orm.model.Model<TestTable2>
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 128<br>
 	* <li><B>remarks:</B> the title
 	*/
-	@Column(table=M.TABLE, jdbcType=12, name=M.title$name, key=M.title$key, auto=M.title$auto, seq=M.title$seq, notnull=M.title$notnull, length=M.title$length, value=M.title$value, remarks=M.title$remarks) 
+	@Column(table=M.TABLE, jdbcType=12, name=M.title$name, key=M.title$key, auto=M.title$auto, seq=M.title$seq, notnull=M.title$notnull, length=M.title$length, decimalDigits=M.title$decimalDigits, value=M.title$value, remarks=M.title$remarks) 
 	public TestTable2 setTitle(String title){
 		this.title = title;  
 		
@@ -286,7 +286,7 @@ public class TestTable2 extends com.tsc9526.monalisa.orm.model.Model<TestTable2>
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 10 &nbsp;<B>value:</B> 0<br>
 	* <li><B>remarks:</B> enum fields A  #enum{{V0,V1}}
 	*/
-	@Column(table=M.TABLE, jdbcType=4, name=M.enumIntA$name, key=M.enumIntA$key, auto=M.enumIntA$auto, seq=M.enumIntA$seq, notnull=M.enumIntA$notnull, length=M.enumIntA$length, value=M.enumIntA$value, remarks=M.enumIntA$remarks) 
+	@Column(table=M.TABLE, jdbcType=4, name=M.enumIntA$name, key=M.enumIntA$key, auto=M.enumIntA$auto, seq=M.enumIntA$seq, notnull=M.enumIntA$notnull, length=M.enumIntA$length, decimalDigits=M.enumIntA$decimalDigits, value=M.enumIntA$value, remarks=M.enumIntA$remarks) 
 	public TestTable2 setEnumIntA(EnumIntA enumIntA){
 		this.enumIntA = enumIntA;  
 		
@@ -304,7 +304,7 @@ public class TestTable2 extends com.tsc9526.monalisa.orm.model.Model<TestTable2>
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 64 &nbsp;<B>value:</B> TRUE<br>
 	* <li><B>remarks:</B> #enum{{ TRUE, FALSE}}
 	*/
-	@Column(table=M.TABLE, jdbcType=12, name=M.enumStringA$name, key=M.enumStringA$key, auto=M.enumStringA$auto, seq=M.enumStringA$seq, notnull=M.enumStringA$notnull, length=M.enumStringA$length, value=M.enumStringA$value, remarks=M.enumStringA$remarks) 
+	@Column(table=M.TABLE, jdbcType=12, name=M.enumStringA$name, key=M.enumStringA$key, auto=M.enumStringA$auto, seq=M.enumStringA$seq, notnull=M.enumStringA$notnull, length=M.enumStringA$length, decimalDigits=M.enumStringA$decimalDigits, value=M.enumStringA$value, remarks=M.enumStringA$remarks) 
 	public TestTable2 setEnumStringA(EnumStringA enumStringA){
 		this.enumStringA = enumStringA;  
 		
@@ -322,7 +322,7 @@ public class TestTable2 extends com.tsc9526.monalisa.orm.model.Model<TestTable2>
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 256<br>
 	* <li><B>remarks:</B> array of int. #array{int}
 	*/
-	@Column(table=M.TABLE, jdbcType=12, name=M.arrayInt$name, key=M.arrayInt$key, auto=M.arrayInt$auto, seq=M.arrayInt$seq, notnull=M.arrayInt$notnull, length=M.arrayInt$length, value=M.arrayInt$value, remarks=M.arrayInt$remarks) 
+	@Column(table=M.TABLE, jdbcType=12, name=M.arrayInt$name, key=M.arrayInt$key, auto=M.arrayInt$auto, seq=M.arrayInt$seq, notnull=M.arrayInt$notnull, length=M.arrayInt$length, decimalDigits=M.arrayInt$decimalDigits, value=M.arrayInt$value, remarks=M.arrayInt$remarks) 
 	public TestTable2 setArrayInt(int[] arrayInt){
 		this.arrayInt = arrayInt;  
 		
@@ -340,7 +340,7 @@ public class TestTable2 extends com.tsc9526.monalisa.orm.model.Model<TestTable2>
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 256<br>
 	* <li><B>remarks:</B> array of string. #array{}
 	*/
-	@Column(table=M.TABLE, jdbcType=12, name=M.arrayString$name, key=M.arrayString$key, auto=M.arrayString$auto, seq=M.arrayString$seq, notnull=M.arrayString$notnull, length=M.arrayString$length, value=M.arrayString$value, remarks=M.arrayString$remarks) 
+	@Column(table=M.TABLE, jdbcType=12, name=M.arrayString$name, key=M.arrayString$key, auto=M.arrayString$auto, seq=M.arrayString$seq, notnull=M.arrayString$notnull, length=M.arrayString$length, decimalDigits=M.arrayString$decimalDigits, value=M.arrayString$value, remarks=M.arrayString$remarks) 
 	public TestTable2 setArrayString(String[] arrayString){
 		this.arrayString = arrayString;  
 		
@@ -358,7 +358,7 @@ public class TestTable2 extends com.tsc9526.monalisa.orm.model.Model<TestTable2>
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 1024<br>
 	* <li><B>remarks:</B> Json object. #json{}
 	*/
-	@Column(table=M.TABLE, jdbcType=12, name=M.json$name, key=M.json$key, auto=M.json$auto, seq=M.json$seq, notnull=M.json$notnull, length=M.json$length, value=M.json$value, remarks=M.json$remarks) 
+	@Column(table=M.TABLE, jdbcType=12, name=M.json$name, key=M.json$key, auto=M.json$auto, seq=M.json$seq, notnull=M.json$notnull, length=M.json$length, decimalDigits=M.json$decimalDigits, value=M.json$value, remarks=M.json$remarks) 
 	public TestTable2 setJson(JsonObject json){
 		this.json = json;  
 		
@@ -376,7 +376,7 @@ public class TestTable2 extends com.tsc9526.monalisa.orm.model.Model<TestTable2>
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 1024<br>
 	* <li><B>remarks:</B> Json object with given class.  #json{test.com.tsc9526.monalisa.orm.data.ColumnData}
 	*/
-	@Column(table=M.TABLE, jdbcType=12, name=M.obj$name, key=M.obj$key, auto=M.obj$auto, seq=M.obj$seq, notnull=M.obj$notnull, length=M.obj$length, value=M.obj$value, remarks=M.obj$remarks) 
+	@Column(table=M.TABLE, jdbcType=12, name=M.obj$name, key=M.obj$key, auto=M.obj$auto, seq=M.obj$seq, notnull=M.obj$notnull, length=M.obj$length, decimalDigits=M.obj$decimalDigits, value=M.obj$value, remarks=M.obj$remarks) 
 	public TestTable2 setObj(ColumnData obj){
 		this.obj = obj;  
 		
@@ -394,7 +394,7 @@ public class TestTable2 extends com.tsc9526.monalisa.orm.model.Model<TestTable2>
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 19<br>
 	* <li><B>remarks:</B> 
 	*/
-	@Column(table=M.TABLE, jdbcType=93, name=M.tsA$name, key=M.tsA$key, auto=M.tsA$auto, seq=M.tsA$seq, notnull=M.tsA$notnull, length=M.tsA$length, value=M.tsA$value, remarks=M.tsA$remarks) 
+	@Column(table=M.TABLE, jdbcType=93, name=M.tsA$name, key=M.tsA$key, auto=M.tsA$auto, seq=M.tsA$seq, notnull=M.tsA$notnull, length=M.tsA$length, decimalDigits=M.tsA$decimalDigits, value=M.tsA$value, remarks=M.tsA$remarks) 
 	public TestTable2 setTsA(java.util.Date tsA){
 		this.tsA = tsA;  
 		
@@ -412,7 +412,7 @@ public class TestTable2 extends com.tsc9526.monalisa.orm.model.Model<TestTable2>
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 19<br>
 	* <li><B>remarks:</B> 
 	*/
-	@Column(table=M.TABLE, jdbcType=93, name=M.createTime$name, key=M.createTime$key, auto=M.createTime$auto, seq=M.createTime$seq, notnull=M.createTime$notnull, length=M.createTime$length, value=M.createTime$value, remarks=M.createTime$remarks) 
+	@Column(table=M.TABLE, jdbcType=93, name=M.createTime$name, key=M.createTime$key, auto=M.createTime$auto, seq=M.createTime$seq, notnull=M.createTime$notnull, length=M.createTime$length, decimalDigits=M.createTime$decimalDigits, value=M.createTime$value, remarks=M.createTime$remarks) 
 	public TestTable2 setCreateTime(java.util.Date createTime){
 		this.createTime = createTime;  
 		
@@ -430,7 +430,7 @@ public class TestTable2 extends com.tsc9526.monalisa.orm.model.Model<TestTable2>
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 64<br>
 	* <li><B>remarks:</B> 
 	*/
-	@Column(table=M.TABLE, jdbcType=12, name=M.createBy$name, key=M.createBy$key, auto=M.createBy$auto, seq=M.createBy$seq, notnull=M.createBy$notnull, length=M.createBy$length, value=M.createBy$value, remarks=M.createBy$remarks) 
+	@Column(table=M.TABLE, jdbcType=12, name=M.createBy$name, key=M.createBy$key, auto=M.createBy$auto, seq=M.createBy$seq, notnull=M.createBy$notnull, length=M.createBy$length, decimalDigits=M.createBy$decimalDigits, value=M.createBy$value, remarks=M.createBy$remarks) 
 	public TestTable2 setCreateBy(String createBy){
 		this.createBy = createBy;  
 		
@@ -448,7 +448,7 @@ public class TestTable2 extends com.tsc9526.monalisa.orm.model.Model<TestTable2>
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 19<br>
 	* <li><B>remarks:</B> 
 	*/
-	@Column(table=M.TABLE, jdbcType=93, name=M.updateTime$name, key=M.updateTime$key, auto=M.updateTime$auto, seq=M.updateTime$seq, notnull=M.updateTime$notnull, length=M.updateTime$length, value=M.updateTime$value, remarks=M.updateTime$remarks) 
+	@Column(table=M.TABLE, jdbcType=93, name=M.updateTime$name, key=M.updateTime$key, auto=M.updateTime$auto, seq=M.updateTime$seq, notnull=M.updateTime$notnull, length=M.updateTime$length, decimalDigits=M.updateTime$decimalDigits, value=M.updateTime$value, remarks=M.updateTime$remarks) 
 	public TestTable2 setUpdateTime(java.util.Date updateTime){
 		this.updateTime = updateTime;  
 		
@@ -466,7 +466,7 @@ public class TestTable2 extends com.tsc9526.monalisa.orm.model.Model<TestTable2>
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 64<br>
 	* <li><B>remarks:</B> 
 	*/
-	@Column(table=M.TABLE, jdbcType=12, name=M.updateBy$name, key=M.updateBy$key, auto=M.updateBy$auto, seq=M.updateBy$seq, notnull=M.updateBy$notnull, length=M.updateBy$length, value=M.updateBy$value, remarks=M.updateBy$remarks) 
+	@Column(table=M.TABLE, jdbcType=12, name=M.updateBy$name, key=M.updateBy$key, auto=M.updateBy$auto, seq=M.updateBy$seq, notnull=M.updateBy$notnull, length=M.updateBy$length, decimalDigits=M.updateBy$decimalDigits, value=M.updateBy$value, remarks=M.updateBy$remarks) 
 	public TestTable2 setUpdateBy(String updateBy){
 		this.updateBy = updateBy;  
 		
@@ -484,7 +484,7 @@ public class TestTable2 extends com.tsc9526.monalisa.orm.model.Model<TestTable2>
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 10 &nbsp;<B>value:</B> 0<br>
 	* <li><B>remarks:</B> version
 	*/
-	@Column(table=M.TABLE, jdbcType=4, name=M.v1$name, key=M.v1$key, auto=M.v1$auto, seq=M.v1$seq, notnull=M.v1$notnull, length=M.v1$length, value=M.v1$value, remarks=M.v1$remarks) 
+	@Column(table=M.TABLE, jdbcType=4, name=M.v1$name, key=M.v1$key, auto=M.v1$auto, seq=M.v1$seq, notnull=M.v1$notnull, length=M.v1$length, decimalDigits=M.v1$decimalDigits, value=M.v1$value, remarks=M.v1$remarks) 
 	public TestTable2 setV1(Integer v1){
 		this.v1 = v1;  
 		
@@ -503,7 +503,7 @@ public class TestTable2 extends com.tsc9526.monalisa.orm.model.Model<TestTable2>
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 10<br>
 	* <li><B>remarks:</B> primary key
 	*/
-	@Column(table=M.TABLE, jdbcType=4, name=M.id$name, key=M.id$key, auto=M.id$auto, seq=M.id$seq, notnull=M.id$notnull, length=M.id$length, value=M.id$value, remarks=M.id$remarks) 
+	@Column(table=M.TABLE, jdbcType=4, name=M.id$name, key=M.id$key, auto=M.id$auto, seq=M.id$seq, notnull=M.id$notnull, length=M.id$length, decimalDigits=M.id$decimalDigits, value=M.id$value, remarks=M.id$remarks) 
 	public Integer getId(){
 		return this.id;
  
@@ -516,7 +516,7 @@ public class TestTable2 extends com.tsc9526.monalisa.orm.model.Model<TestTable2>
 	* <li><B>remarks:</B> primary key
 	* @param defaultValue  Return the default value if id is null.
 	*/
-	@Column(table=M.TABLE, jdbcType=4, name=M.id$name, key=M.id$key, auto=M.id$auto, seq=M.id$seq, notnull=M.id$notnull, length=M.id$length, value=M.id$value, remarks=M.id$remarks) 
+	@Column(table=M.TABLE, jdbcType=4, name=M.id$name, key=M.id$key, auto=M.id$auto, seq=M.id$seq, notnull=M.id$notnull, length=M.id$length, decimalDigits=M.id$decimalDigits, value=M.id$value, remarks=M.id$remarks) 
 	public Integer getId(Integer defaultValue){
 		Integer r=this.getId();
 		
@@ -536,7 +536,7 @@ public class TestTable2 extends com.tsc9526.monalisa.orm.model.Model<TestTable2>
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 128 &nbsp;<B>value:</B> N0001<br>
 	* <li><B>remarks:</B> the name
 	*/
-	@Column(table=M.TABLE, jdbcType=12, name=M.name$name, key=M.name$key, auto=M.name$auto, seq=M.name$seq, notnull=M.name$notnull, length=M.name$length, value=M.name$value, remarks=M.name$remarks) 
+	@Column(table=M.TABLE, jdbcType=12, name=M.name$name, key=M.name$key, auto=M.name$auto, seq=M.name$seq, notnull=M.name$notnull, length=M.name$length, decimalDigits=M.name$decimalDigits, value=M.name$value, remarks=M.name$remarks) 
 	public String getName(){
 		return this.name;
  
@@ -549,7 +549,7 @@ public class TestTable2 extends com.tsc9526.monalisa.orm.model.Model<TestTable2>
 	* <li><B>remarks:</B> the name
 	* @param defaultValue  Return the default value if name is null.
 	*/
-	@Column(table=M.TABLE, jdbcType=12, name=M.name$name, key=M.name$key, auto=M.name$auto, seq=M.name$seq, notnull=M.name$notnull, length=M.name$length, value=M.name$value, remarks=M.name$remarks) 
+	@Column(table=M.TABLE, jdbcType=12, name=M.name$name, key=M.name$key, auto=M.name$auto, seq=M.name$seq, notnull=M.name$notnull, length=M.name$length, decimalDigits=M.name$decimalDigits, value=M.name$value, remarks=M.name$remarks) 
 	public String getName(String defaultValue){
 		String r=this.getName();
 		
@@ -569,7 +569,7 @@ public class TestTable2 extends com.tsc9526.monalisa.orm.model.Model<TestTable2>
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 128<br>
 	* <li><B>remarks:</B> the title
 	*/
-	@Column(table=M.TABLE, jdbcType=12, name=M.title$name, key=M.title$key, auto=M.title$auto, seq=M.title$seq, notnull=M.title$notnull, length=M.title$length, value=M.title$value, remarks=M.title$remarks) 
+	@Column(table=M.TABLE, jdbcType=12, name=M.title$name, key=M.title$key, auto=M.title$auto, seq=M.title$seq, notnull=M.title$notnull, length=M.title$length, decimalDigits=M.title$decimalDigits, value=M.title$value, remarks=M.title$remarks) 
 	public String getTitle(){
 		return this.title;
  
@@ -582,7 +582,7 @@ public class TestTable2 extends com.tsc9526.monalisa.orm.model.Model<TestTable2>
 	* <li><B>remarks:</B> the title
 	* @param defaultValue  Return the default value if title is null.
 	*/
-	@Column(table=M.TABLE, jdbcType=12, name=M.title$name, key=M.title$key, auto=M.title$auto, seq=M.title$seq, notnull=M.title$notnull, length=M.title$length, value=M.title$value, remarks=M.title$remarks) 
+	@Column(table=M.TABLE, jdbcType=12, name=M.title$name, key=M.title$key, auto=M.title$auto, seq=M.title$seq, notnull=M.title$notnull, length=M.title$length, decimalDigits=M.title$decimalDigits, value=M.title$value, remarks=M.title$remarks) 
 	public String getTitle(String defaultValue){
 		String r=this.getTitle();
 		
@@ -602,7 +602,7 @@ public class TestTable2 extends com.tsc9526.monalisa.orm.model.Model<TestTable2>
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 10 &nbsp;<B>value:</B> 0<br>
 	* <li><B>remarks:</B> enum fields A  #enum{{V0,V1}}
 	*/
-	@Column(table=M.TABLE, jdbcType=4, name=M.enumIntA$name, key=M.enumIntA$key, auto=M.enumIntA$auto, seq=M.enumIntA$seq, notnull=M.enumIntA$notnull, length=M.enumIntA$length, value=M.enumIntA$value, remarks=M.enumIntA$remarks) 
+	@Column(table=M.TABLE, jdbcType=4, name=M.enumIntA$name, key=M.enumIntA$key, auto=M.enumIntA$auto, seq=M.enumIntA$seq, notnull=M.enumIntA$notnull, length=M.enumIntA$length, decimalDigits=M.enumIntA$decimalDigits, value=M.enumIntA$value, remarks=M.enumIntA$remarks) 
 	public EnumIntA getEnumIntA(){
 		return this.enumIntA;
  
@@ -615,7 +615,7 @@ public class TestTable2 extends com.tsc9526.monalisa.orm.model.Model<TestTable2>
 	* <li><B>remarks:</B> enum fields A  #enum{{V0,V1}}
 	* @param defaultValue  Return the default value if enumIntA is null.
 	*/
-	@Column(table=M.TABLE, jdbcType=4, name=M.enumIntA$name, key=M.enumIntA$key, auto=M.enumIntA$auto, seq=M.enumIntA$seq, notnull=M.enumIntA$notnull, length=M.enumIntA$length, value=M.enumIntA$value, remarks=M.enumIntA$remarks) 
+	@Column(table=M.TABLE, jdbcType=4, name=M.enumIntA$name, key=M.enumIntA$key, auto=M.enumIntA$auto, seq=M.enumIntA$seq, notnull=M.enumIntA$notnull, length=M.enumIntA$length, decimalDigits=M.enumIntA$decimalDigits, value=M.enumIntA$value, remarks=M.enumIntA$remarks) 
 	public EnumIntA getEnumIntA(EnumIntA defaultValue){
 		EnumIntA r=this.getEnumIntA();
 		
@@ -635,7 +635,7 @@ public class TestTable2 extends com.tsc9526.monalisa.orm.model.Model<TestTable2>
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 64 &nbsp;<B>value:</B> TRUE<br>
 	* <li><B>remarks:</B> #enum{{ TRUE, FALSE}}
 	*/
-	@Column(table=M.TABLE, jdbcType=12, name=M.enumStringA$name, key=M.enumStringA$key, auto=M.enumStringA$auto, seq=M.enumStringA$seq, notnull=M.enumStringA$notnull, length=M.enumStringA$length, value=M.enumStringA$value, remarks=M.enumStringA$remarks) 
+	@Column(table=M.TABLE, jdbcType=12, name=M.enumStringA$name, key=M.enumStringA$key, auto=M.enumStringA$auto, seq=M.enumStringA$seq, notnull=M.enumStringA$notnull, length=M.enumStringA$length, decimalDigits=M.enumStringA$decimalDigits, value=M.enumStringA$value, remarks=M.enumStringA$remarks) 
 	public EnumStringA getEnumStringA(){
 		return this.enumStringA;
  
@@ -648,7 +648,7 @@ public class TestTable2 extends com.tsc9526.monalisa.orm.model.Model<TestTable2>
 	* <li><B>remarks:</B> #enum{{ TRUE, FALSE}}
 	* @param defaultValue  Return the default value if enumStringA is null.
 	*/
-	@Column(table=M.TABLE, jdbcType=12, name=M.enumStringA$name, key=M.enumStringA$key, auto=M.enumStringA$auto, seq=M.enumStringA$seq, notnull=M.enumStringA$notnull, length=M.enumStringA$length, value=M.enumStringA$value, remarks=M.enumStringA$remarks) 
+	@Column(table=M.TABLE, jdbcType=12, name=M.enumStringA$name, key=M.enumStringA$key, auto=M.enumStringA$auto, seq=M.enumStringA$seq, notnull=M.enumStringA$notnull, length=M.enumStringA$length, decimalDigits=M.enumStringA$decimalDigits, value=M.enumStringA$value, remarks=M.enumStringA$remarks) 
 	public EnumStringA getEnumStringA(EnumStringA defaultValue){
 		EnumStringA r=this.getEnumStringA();
 		
@@ -668,7 +668,7 @@ public class TestTable2 extends com.tsc9526.monalisa.orm.model.Model<TestTable2>
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 256<br>
 	* <li><B>remarks:</B> array of int. #array{int}
 	*/
-	@Column(table=M.TABLE, jdbcType=12, name=M.arrayInt$name, key=M.arrayInt$key, auto=M.arrayInt$auto, seq=M.arrayInt$seq, notnull=M.arrayInt$notnull, length=M.arrayInt$length, value=M.arrayInt$value, remarks=M.arrayInt$remarks) 
+	@Column(table=M.TABLE, jdbcType=12, name=M.arrayInt$name, key=M.arrayInt$key, auto=M.arrayInt$auto, seq=M.arrayInt$seq, notnull=M.arrayInt$notnull, length=M.arrayInt$length, decimalDigits=M.arrayInt$decimalDigits, value=M.arrayInt$value, remarks=M.arrayInt$remarks) 
 	public int[] getArrayInt(){
 		return this.arrayInt;
  
@@ -681,7 +681,7 @@ public class TestTable2 extends com.tsc9526.monalisa.orm.model.Model<TestTable2>
 	* <li><B>remarks:</B> array of int. #array{int}
 	* @param defaultValue  Return the default value if arrayInt is null.
 	*/
-	@Column(table=M.TABLE, jdbcType=12, name=M.arrayInt$name, key=M.arrayInt$key, auto=M.arrayInt$auto, seq=M.arrayInt$seq, notnull=M.arrayInt$notnull, length=M.arrayInt$length, value=M.arrayInt$value, remarks=M.arrayInt$remarks) 
+	@Column(table=M.TABLE, jdbcType=12, name=M.arrayInt$name, key=M.arrayInt$key, auto=M.arrayInt$auto, seq=M.arrayInt$seq, notnull=M.arrayInt$notnull, length=M.arrayInt$length, decimalDigits=M.arrayInt$decimalDigits, value=M.arrayInt$value, remarks=M.arrayInt$remarks) 
 	public int[] getArrayInt(int[] defaultValue){
 		int[] r=this.getArrayInt();
 		
@@ -701,7 +701,7 @@ public class TestTable2 extends com.tsc9526.monalisa.orm.model.Model<TestTable2>
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 256<br>
 	* <li><B>remarks:</B> array of string. #array{}
 	*/
-	@Column(table=M.TABLE, jdbcType=12, name=M.arrayString$name, key=M.arrayString$key, auto=M.arrayString$auto, seq=M.arrayString$seq, notnull=M.arrayString$notnull, length=M.arrayString$length, value=M.arrayString$value, remarks=M.arrayString$remarks) 
+	@Column(table=M.TABLE, jdbcType=12, name=M.arrayString$name, key=M.arrayString$key, auto=M.arrayString$auto, seq=M.arrayString$seq, notnull=M.arrayString$notnull, length=M.arrayString$length, decimalDigits=M.arrayString$decimalDigits, value=M.arrayString$value, remarks=M.arrayString$remarks) 
 	public String[] getArrayString(){
 		return this.arrayString;
  
@@ -714,7 +714,7 @@ public class TestTable2 extends com.tsc9526.monalisa.orm.model.Model<TestTable2>
 	* <li><B>remarks:</B> array of string. #array{}
 	* @param defaultValue  Return the default value if arrayString is null.
 	*/
-	@Column(table=M.TABLE, jdbcType=12, name=M.arrayString$name, key=M.arrayString$key, auto=M.arrayString$auto, seq=M.arrayString$seq, notnull=M.arrayString$notnull, length=M.arrayString$length, value=M.arrayString$value, remarks=M.arrayString$remarks) 
+	@Column(table=M.TABLE, jdbcType=12, name=M.arrayString$name, key=M.arrayString$key, auto=M.arrayString$auto, seq=M.arrayString$seq, notnull=M.arrayString$notnull, length=M.arrayString$length, decimalDigits=M.arrayString$decimalDigits, value=M.arrayString$value, remarks=M.arrayString$remarks) 
 	public String[] getArrayString(String[] defaultValue){
 		String[] r=this.getArrayString();
 		
@@ -734,7 +734,7 @@ public class TestTable2 extends com.tsc9526.monalisa.orm.model.Model<TestTable2>
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 1024<br>
 	* <li><B>remarks:</B> Json object. #json{}
 	*/
-	@Column(table=M.TABLE, jdbcType=12, name=M.json$name, key=M.json$key, auto=M.json$auto, seq=M.json$seq, notnull=M.json$notnull, length=M.json$length, value=M.json$value, remarks=M.json$remarks) 
+	@Column(table=M.TABLE, jdbcType=12, name=M.json$name, key=M.json$key, auto=M.json$auto, seq=M.json$seq, notnull=M.json$notnull, length=M.json$length, decimalDigits=M.json$decimalDigits, value=M.json$value, remarks=M.json$remarks) 
 	public JsonObject getJson(){
 		return this.json;
  
@@ -747,7 +747,7 @@ public class TestTable2 extends com.tsc9526.monalisa.orm.model.Model<TestTable2>
 	* <li><B>remarks:</B> Json object. #json{}
 	* @param defaultValue  Return the default value if json is null.
 	*/
-	@Column(table=M.TABLE, jdbcType=12, name=M.json$name, key=M.json$key, auto=M.json$auto, seq=M.json$seq, notnull=M.json$notnull, length=M.json$length, value=M.json$value, remarks=M.json$remarks) 
+	@Column(table=M.TABLE, jdbcType=12, name=M.json$name, key=M.json$key, auto=M.json$auto, seq=M.json$seq, notnull=M.json$notnull, length=M.json$length, decimalDigits=M.json$decimalDigits, value=M.json$value, remarks=M.json$remarks) 
 	public JsonObject getJson(JsonObject defaultValue){
 		JsonObject r=this.getJson();
 		
@@ -767,7 +767,7 @@ public class TestTable2 extends com.tsc9526.monalisa.orm.model.Model<TestTable2>
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 1024<br>
 	* <li><B>remarks:</B> Json object with given class.  #json{test.com.tsc9526.monalisa.orm.data.ColumnData}
 	*/
-	@Column(table=M.TABLE, jdbcType=12, name=M.obj$name, key=M.obj$key, auto=M.obj$auto, seq=M.obj$seq, notnull=M.obj$notnull, length=M.obj$length, value=M.obj$value, remarks=M.obj$remarks) 
+	@Column(table=M.TABLE, jdbcType=12, name=M.obj$name, key=M.obj$key, auto=M.obj$auto, seq=M.obj$seq, notnull=M.obj$notnull, length=M.obj$length, decimalDigits=M.obj$decimalDigits, value=M.obj$value, remarks=M.obj$remarks) 
 	public ColumnData getObj(){
 		return this.obj;
  
@@ -780,7 +780,7 @@ public class TestTable2 extends com.tsc9526.monalisa.orm.model.Model<TestTable2>
 	* <li><B>remarks:</B> Json object with given class.  #json{test.com.tsc9526.monalisa.orm.data.ColumnData}
 	* @param defaultValue  Return the default value if obj is null.
 	*/
-	@Column(table=M.TABLE, jdbcType=12, name=M.obj$name, key=M.obj$key, auto=M.obj$auto, seq=M.obj$seq, notnull=M.obj$notnull, length=M.obj$length, value=M.obj$value, remarks=M.obj$remarks) 
+	@Column(table=M.TABLE, jdbcType=12, name=M.obj$name, key=M.obj$key, auto=M.obj$auto, seq=M.obj$seq, notnull=M.obj$notnull, length=M.obj$length, decimalDigits=M.obj$decimalDigits, value=M.obj$value, remarks=M.obj$remarks) 
 	public ColumnData getObj(ColumnData defaultValue){
 		ColumnData r=this.getObj();
 		
@@ -800,7 +800,7 @@ public class TestTable2 extends com.tsc9526.monalisa.orm.model.Model<TestTable2>
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 19<br>
 	* <li><B>remarks:</B> 
 	*/
-	@Column(table=M.TABLE, jdbcType=93, name=M.tsA$name, key=M.tsA$key, auto=M.tsA$auto, seq=M.tsA$seq, notnull=M.tsA$notnull, length=M.tsA$length, value=M.tsA$value, remarks=M.tsA$remarks) 
+	@Column(table=M.TABLE, jdbcType=93, name=M.tsA$name, key=M.tsA$key, auto=M.tsA$auto, seq=M.tsA$seq, notnull=M.tsA$notnull, length=M.tsA$length, decimalDigits=M.tsA$decimalDigits, value=M.tsA$value, remarks=M.tsA$remarks) 
 	public java.util.Date getTsA(){
 		return this.tsA;
  
@@ -813,7 +813,7 @@ public class TestTable2 extends com.tsc9526.monalisa.orm.model.Model<TestTable2>
 	* <li><B>remarks:</B> 
 	* @param defaultValue  Return the default value if tsA is null.
 	*/
-	@Column(table=M.TABLE, jdbcType=93, name=M.tsA$name, key=M.tsA$key, auto=M.tsA$auto, seq=M.tsA$seq, notnull=M.tsA$notnull, length=M.tsA$length, value=M.tsA$value, remarks=M.tsA$remarks) 
+	@Column(table=M.TABLE, jdbcType=93, name=M.tsA$name, key=M.tsA$key, auto=M.tsA$auto, seq=M.tsA$seq, notnull=M.tsA$notnull, length=M.tsA$length, decimalDigits=M.tsA$decimalDigits, value=M.tsA$value, remarks=M.tsA$remarks) 
 	public java.util.Date getTsA(java.util.Date defaultValue){
 		java.util.Date r=this.getTsA();
 		
@@ -833,7 +833,7 @@ public class TestTable2 extends com.tsc9526.monalisa.orm.model.Model<TestTable2>
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 19<br>
 	* <li><B>remarks:</B> 
 	*/
-	@Column(table=M.TABLE, jdbcType=93, name=M.createTime$name, key=M.createTime$key, auto=M.createTime$auto, seq=M.createTime$seq, notnull=M.createTime$notnull, length=M.createTime$length, value=M.createTime$value, remarks=M.createTime$remarks) 
+	@Column(table=M.TABLE, jdbcType=93, name=M.createTime$name, key=M.createTime$key, auto=M.createTime$auto, seq=M.createTime$seq, notnull=M.createTime$notnull, length=M.createTime$length, decimalDigits=M.createTime$decimalDigits, value=M.createTime$value, remarks=M.createTime$remarks) 
 	public java.util.Date getCreateTime(){
 		return this.createTime;
  
@@ -846,7 +846,7 @@ public class TestTable2 extends com.tsc9526.monalisa.orm.model.Model<TestTable2>
 	* <li><B>remarks:</B> 
 	* @param defaultValue  Return the default value if createTime is null.
 	*/
-	@Column(table=M.TABLE, jdbcType=93, name=M.createTime$name, key=M.createTime$key, auto=M.createTime$auto, seq=M.createTime$seq, notnull=M.createTime$notnull, length=M.createTime$length, value=M.createTime$value, remarks=M.createTime$remarks) 
+	@Column(table=M.TABLE, jdbcType=93, name=M.createTime$name, key=M.createTime$key, auto=M.createTime$auto, seq=M.createTime$seq, notnull=M.createTime$notnull, length=M.createTime$length, decimalDigits=M.createTime$decimalDigits, value=M.createTime$value, remarks=M.createTime$remarks) 
 	public java.util.Date getCreateTime(java.util.Date defaultValue){
 		java.util.Date r=this.getCreateTime();
 		
@@ -866,7 +866,7 @@ public class TestTable2 extends com.tsc9526.monalisa.orm.model.Model<TestTable2>
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 64<br>
 	* <li><B>remarks:</B> 
 	*/
-	@Column(table=M.TABLE, jdbcType=12, name=M.createBy$name, key=M.createBy$key, auto=M.createBy$auto, seq=M.createBy$seq, notnull=M.createBy$notnull, length=M.createBy$length, value=M.createBy$value, remarks=M.createBy$remarks) 
+	@Column(table=M.TABLE, jdbcType=12, name=M.createBy$name, key=M.createBy$key, auto=M.createBy$auto, seq=M.createBy$seq, notnull=M.createBy$notnull, length=M.createBy$length, decimalDigits=M.createBy$decimalDigits, value=M.createBy$value, remarks=M.createBy$remarks) 
 	public String getCreateBy(){
 		return this.createBy;
  
@@ -879,7 +879,7 @@ public class TestTable2 extends com.tsc9526.monalisa.orm.model.Model<TestTable2>
 	* <li><B>remarks:</B> 
 	* @param defaultValue  Return the default value if createBy is null.
 	*/
-	@Column(table=M.TABLE, jdbcType=12, name=M.createBy$name, key=M.createBy$key, auto=M.createBy$auto, seq=M.createBy$seq, notnull=M.createBy$notnull, length=M.createBy$length, value=M.createBy$value, remarks=M.createBy$remarks) 
+	@Column(table=M.TABLE, jdbcType=12, name=M.createBy$name, key=M.createBy$key, auto=M.createBy$auto, seq=M.createBy$seq, notnull=M.createBy$notnull, length=M.createBy$length, decimalDigits=M.createBy$decimalDigits, value=M.createBy$value, remarks=M.createBy$remarks) 
 	public String getCreateBy(String defaultValue){
 		String r=this.getCreateBy();
 		
@@ -899,7 +899,7 @@ public class TestTable2 extends com.tsc9526.monalisa.orm.model.Model<TestTable2>
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 19<br>
 	* <li><B>remarks:</B> 
 	*/
-	@Column(table=M.TABLE, jdbcType=93, name=M.updateTime$name, key=M.updateTime$key, auto=M.updateTime$auto, seq=M.updateTime$seq, notnull=M.updateTime$notnull, length=M.updateTime$length, value=M.updateTime$value, remarks=M.updateTime$remarks) 
+	@Column(table=M.TABLE, jdbcType=93, name=M.updateTime$name, key=M.updateTime$key, auto=M.updateTime$auto, seq=M.updateTime$seq, notnull=M.updateTime$notnull, length=M.updateTime$length, decimalDigits=M.updateTime$decimalDigits, value=M.updateTime$value, remarks=M.updateTime$remarks) 
 	public java.util.Date getUpdateTime(){
 		return this.updateTime;
  
@@ -912,7 +912,7 @@ public class TestTable2 extends com.tsc9526.monalisa.orm.model.Model<TestTable2>
 	* <li><B>remarks:</B> 
 	* @param defaultValue  Return the default value if updateTime is null.
 	*/
-	@Column(table=M.TABLE, jdbcType=93, name=M.updateTime$name, key=M.updateTime$key, auto=M.updateTime$auto, seq=M.updateTime$seq, notnull=M.updateTime$notnull, length=M.updateTime$length, value=M.updateTime$value, remarks=M.updateTime$remarks) 
+	@Column(table=M.TABLE, jdbcType=93, name=M.updateTime$name, key=M.updateTime$key, auto=M.updateTime$auto, seq=M.updateTime$seq, notnull=M.updateTime$notnull, length=M.updateTime$length, decimalDigits=M.updateTime$decimalDigits, value=M.updateTime$value, remarks=M.updateTime$remarks) 
 	public java.util.Date getUpdateTime(java.util.Date defaultValue){
 		java.util.Date r=this.getUpdateTime();
 		
@@ -932,7 +932,7 @@ public class TestTable2 extends com.tsc9526.monalisa.orm.model.Model<TestTable2>
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 64<br>
 	* <li><B>remarks:</B> 
 	*/
-	@Column(table=M.TABLE, jdbcType=12, name=M.updateBy$name, key=M.updateBy$key, auto=M.updateBy$auto, seq=M.updateBy$seq, notnull=M.updateBy$notnull, length=M.updateBy$length, value=M.updateBy$value, remarks=M.updateBy$remarks) 
+	@Column(table=M.TABLE, jdbcType=12, name=M.updateBy$name, key=M.updateBy$key, auto=M.updateBy$auto, seq=M.updateBy$seq, notnull=M.updateBy$notnull, length=M.updateBy$length, decimalDigits=M.updateBy$decimalDigits, value=M.updateBy$value, remarks=M.updateBy$remarks) 
 	public String getUpdateBy(){
 		return this.updateBy;
  
@@ -945,7 +945,7 @@ public class TestTable2 extends com.tsc9526.monalisa.orm.model.Model<TestTable2>
 	* <li><B>remarks:</B> 
 	* @param defaultValue  Return the default value if updateBy is null.
 	*/
-	@Column(table=M.TABLE, jdbcType=12, name=M.updateBy$name, key=M.updateBy$key, auto=M.updateBy$auto, seq=M.updateBy$seq, notnull=M.updateBy$notnull, length=M.updateBy$length, value=M.updateBy$value, remarks=M.updateBy$remarks) 
+	@Column(table=M.TABLE, jdbcType=12, name=M.updateBy$name, key=M.updateBy$key, auto=M.updateBy$auto, seq=M.updateBy$seq, notnull=M.updateBy$notnull, length=M.updateBy$length, decimalDigits=M.updateBy$decimalDigits, value=M.updateBy$value, remarks=M.updateBy$remarks) 
 	public String getUpdateBy(String defaultValue){
 		String r=this.getUpdateBy();
 		
@@ -965,7 +965,7 @@ public class TestTable2 extends com.tsc9526.monalisa.orm.model.Model<TestTable2>
 	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 10 &nbsp;<B>value:</B> 0<br>
 	* <li><B>remarks:</B> version
 	*/
-	@Column(table=M.TABLE, jdbcType=4, name=M.v1$name, key=M.v1$key, auto=M.v1$auto, seq=M.v1$seq, notnull=M.v1$notnull, length=M.v1$length, value=M.v1$value, remarks=M.v1$remarks) 
+	@Column(table=M.TABLE, jdbcType=4, name=M.v1$name, key=M.v1$key, auto=M.v1$auto, seq=M.v1$seq, notnull=M.v1$notnull, length=M.v1$length, decimalDigits=M.v1$decimalDigits, value=M.v1$value, remarks=M.v1$remarks) 
 	public Integer getV1(){
 		return this.v1;
  
@@ -978,7 +978,7 @@ public class TestTable2 extends com.tsc9526.monalisa.orm.model.Model<TestTable2>
 	* <li><B>remarks:</B> version
 	* @param defaultValue  Return the default value if v1 is null.
 	*/
-	@Column(table=M.TABLE, jdbcType=4, name=M.v1$name, key=M.v1$key, auto=M.v1$auto, seq=M.v1$seq, notnull=M.v1$notnull, length=M.v1$length, value=M.v1$value, remarks=M.v1$remarks) 
+	@Column(table=M.TABLE, jdbcType=4, name=M.v1$name, key=M.v1$key, auto=M.v1$auto, seq=M.v1$seq, notnull=M.v1$notnull, length=M.v1$length, decimalDigits=M.v1$decimalDigits, value=M.v1$value, remarks=M.v1$remarks) 
 	public Integer getV1(Integer defaultValue){
 		Integer r=this.getV1();
 		
@@ -1176,7 +1176,7 @@ public class TestTable2 extends com.tsc9526.monalisa.orm.model.Model<TestTable2>
 		* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 10<br>
 		* <li><B>remarks:</B> primary key
 		*/
-		@Column(table=M.TABLE, jdbcType=4, name=M.id$name, key=M.id$key, auto=M.id$auto, seq=M.id$seq, notnull=M.id$notnull, length=M.id$length, value=M.id$value, remarks=M.id$remarks)
+		@Column(table=M.TABLE, jdbcType=4, name=M.id$name, key=M.id$key, auto=M.id$auto, seq=M.id$seq, notnull=M.id$notnull, length=M.id$length, decimalDigits=M.id$decimalDigits, value=M.id$value, remarks=M.id$remarks)
 		public com.tsc9526.monalisa.orm.criteria.Field.FieldInteger<$Criteria> id = new com.tsc9526.monalisa.orm.criteria.Field.FieldInteger<$Criteria>("id", this);
 			
 		/**
@@ -1185,7 +1185,7 @@ public class TestTable2 extends com.tsc9526.monalisa.orm.model.Model<TestTable2>
 		* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 128 &nbsp;<B>value:</B> N0001<br>
 		* <li><B>remarks:</B> the name
 		*/
-		@Column(table=M.TABLE, jdbcType=12, name=M.name$name, key=M.name$key, auto=M.name$auto, seq=M.name$seq, notnull=M.name$notnull, length=M.name$length, value=M.name$value, remarks=M.name$remarks)
+		@Column(table=M.TABLE, jdbcType=12, name=M.name$name, key=M.name$key, auto=M.name$auto, seq=M.name$seq, notnull=M.name$notnull, length=M.name$length, decimalDigits=M.name$decimalDigits, value=M.name$value, remarks=M.name$remarks)
 		public com.tsc9526.monalisa.orm.criteria.Field.FieldString<$Criteria> name = new com.tsc9526.monalisa.orm.criteria.Field.FieldString<$Criteria>("name", this);
 			
 		/**
@@ -1194,7 +1194,7 @@ public class TestTable2 extends com.tsc9526.monalisa.orm.model.Model<TestTable2>
 		* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 128<br>
 		* <li><B>remarks:</B> the title
 		*/
-		@Column(table=M.TABLE, jdbcType=12, name=M.title$name, key=M.title$key, auto=M.title$auto, seq=M.title$seq, notnull=M.title$notnull, length=M.title$length, value=M.title$value, remarks=M.title$remarks)
+		@Column(table=M.TABLE, jdbcType=12, name=M.title$name, key=M.title$key, auto=M.title$auto, seq=M.title$seq, notnull=M.title$notnull, length=M.title$length, decimalDigits=M.title$decimalDigits, value=M.title$value, remarks=M.title$remarks)
 		public com.tsc9526.monalisa.orm.criteria.Field.FieldString<$Criteria> title = new com.tsc9526.monalisa.orm.criteria.Field.FieldString<$Criteria>("title", this);
 			
 		/**
@@ -1203,7 +1203,7 @@ public class TestTable2 extends com.tsc9526.monalisa.orm.model.Model<TestTable2>
 		* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 10 &nbsp;<B>value:</B> 0<br>
 		* <li><B>remarks:</B> enum fields A  #enum{{V0,V1}}
 		*/
-		@Column(table=M.TABLE, jdbcType=4, name=M.enumIntA$name, key=M.enumIntA$key, auto=M.enumIntA$auto, seq=M.enumIntA$seq, notnull=M.enumIntA$notnull, length=M.enumIntA$length, value=M.enumIntA$value, remarks=M.enumIntA$remarks)
+		@Column(table=M.TABLE, jdbcType=4, name=M.enumIntA$name, key=M.enumIntA$key, auto=M.enumIntA$auto, seq=M.enumIntA$seq, notnull=M.enumIntA$notnull, length=M.enumIntA$length, decimalDigits=M.enumIntA$decimalDigits, value=M.enumIntA$value, remarks=M.enumIntA$remarks)
 		public com.tsc9526.monalisa.orm.criteria.Field<EnumIntA,$Criteria> enumIntA = new com.tsc9526.monalisa.orm.criteria.Field<EnumIntA,$Criteria>("enum_int_a", this, 4);		 
 			
 		/**
@@ -1212,7 +1212,7 @@ public class TestTable2 extends com.tsc9526.monalisa.orm.model.Model<TestTable2>
 		* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 64 &nbsp;<B>value:</B> TRUE<br>
 		* <li><B>remarks:</B> #enum{{ TRUE, FALSE}}
 		*/
-		@Column(table=M.TABLE, jdbcType=12, name=M.enumStringA$name, key=M.enumStringA$key, auto=M.enumStringA$auto, seq=M.enumStringA$seq, notnull=M.enumStringA$notnull, length=M.enumStringA$length, value=M.enumStringA$value, remarks=M.enumStringA$remarks)
+		@Column(table=M.TABLE, jdbcType=12, name=M.enumStringA$name, key=M.enumStringA$key, auto=M.enumStringA$auto, seq=M.enumStringA$seq, notnull=M.enumStringA$notnull, length=M.enumStringA$length, decimalDigits=M.enumStringA$decimalDigits, value=M.enumStringA$value, remarks=M.enumStringA$remarks)
 		public com.tsc9526.monalisa.orm.criteria.Field<EnumStringA,$Criteria> enumStringA = new com.tsc9526.monalisa.orm.criteria.Field<EnumStringA,$Criteria>("enum_string_a", this, 12);		 
 			
 		/**
@@ -1221,7 +1221,7 @@ public class TestTable2 extends com.tsc9526.monalisa.orm.model.Model<TestTable2>
 		* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 256<br>
 		* <li><B>remarks:</B> array of int. #array{int}
 		*/
-		@Column(table=M.TABLE, jdbcType=12, name=M.arrayInt$name, key=M.arrayInt$key, auto=M.arrayInt$auto, seq=M.arrayInt$seq, notnull=M.arrayInt$notnull, length=M.arrayInt$length, value=M.arrayInt$value, remarks=M.arrayInt$remarks)
+		@Column(table=M.TABLE, jdbcType=12, name=M.arrayInt$name, key=M.arrayInt$key, auto=M.arrayInt$auto, seq=M.arrayInt$seq, notnull=M.arrayInt$notnull, length=M.arrayInt$length, decimalDigits=M.arrayInt$decimalDigits, value=M.arrayInt$value, remarks=M.arrayInt$remarks)
 		public com.tsc9526.monalisa.orm.criteria.Field<int[],$Criteria> arrayInt = new com.tsc9526.monalisa.orm.criteria.Field<int[],$Criteria>("array_int", this, 12);		 
 			
 		/**
@@ -1230,7 +1230,7 @@ public class TestTable2 extends com.tsc9526.monalisa.orm.model.Model<TestTable2>
 		* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 256<br>
 		* <li><B>remarks:</B> array of string. #array{}
 		*/
-		@Column(table=M.TABLE, jdbcType=12, name=M.arrayString$name, key=M.arrayString$key, auto=M.arrayString$auto, seq=M.arrayString$seq, notnull=M.arrayString$notnull, length=M.arrayString$length, value=M.arrayString$value, remarks=M.arrayString$remarks)
+		@Column(table=M.TABLE, jdbcType=12, name=M.arrayString$name, key=M.arrayString$key, auto=M.arrayString$auto, seq=M.arrayString$seq, notnull=M.arrayString$notnull, length=M.arrayString$length, decimalDigits=M.arrayString$decimalDigits, value=M.arrayString$value, remarks=M.arrayString$remarks)
 		public com.tsc9526.monalisa.orm.criteria.Field<String[],$Criteria> arrayString = new com.tsc9526.monalisa.orm.criteria.Field<String[],$Criteria>("array_string", this, 12);		 
 			
 		/**
@@ -1239,7 +1239,7 @@ public class TestTable2 extends com.tsc9526.monalisa.orm.model.Model<TestTable2>
 		* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 1024<br>
 		* <li><B>remarks:</B> Json object. #json{}
 		*/
-		@Column(table=M.TABLE, jdbcType=12, name=M.json$name, key=M.json$key, auto=M.json$auto, seq=M.json$seq, notnull=M.json$notnull, length=M.json$length, value=M.json$value, remarks=M.json$remarks)
+		@Column(table=M.TABLE, jdbcType=12, name=M.json$name, key=M.json$key, auto=M.json$auto, seq=M.json$seq, notnull=M.json$notnull, length=M.json$length, decimalDigits=M.json$decimalDigits, value=M.json$value, remarks=M.json$remarks)
 		public com.tsc9526.monalisa.orm.criteria.Field<JsonObject,$Criteria> json = new com.tsc9526.monalisa.orm.criteria.Field<JsonObject,$Criteria>("json", this, 12);		 
 			
 		/**
@@ -1248,7 +1248,7 @@ public class TestTable2 extends com.tsc9526.monalisa.orm.model.Model<TestTable2>
 		* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 1024<br>
 		* <li><B>remarks:</B> Json object with given class.  #json{test.com.tsc9526.monalisa.orm.data.ColumnData}
 		*/
-		@Column(table=M.TABLE, jdbcType=12, name=M.obj$name, key=M.obj$key, auto=M.obj$auto, seq=M.obj$seq, notnull=M.obj$notnull, length=M.obj$length, value=M.obj$value, remarks=M.obj$remarks)
+		@Column(table=M.TABLE, jdbcType=12, name=M.obj$name, key=M.obj$key, auto=M.obj$auto, seq=M.obj$seq, notnull=M.obj$notnull, length=M.obj$length, decimalDigits=M.obj$decimalDigits, value=M.obj$value, remarks=M.obj$remarks)
 		public com.tsc9526.monalisa.orm.criteria.Field<ColumnData,$Criteria> obj = new com.tsc9526.monalisa.orm.criteria.Field<ColumnData,$Criteria>("obj", this, 12);		 
 			
 		/**
@@ -1257,7 +1257,7 @@ public class TestTable2 extends com.tsc9526.monalisa.orm.model.Model<TestTable2>
 		* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 19<br>
 		* <li><B>remarks:</B> 
 		*/
-		@Column(table=M.TABLE, jdbcType=93, name=M.tsA$name, key=M.tsA$key, auto=M.tsA$auto, seq=M.tsA$seq, notnull=M.tsA$notnull, length=M.tsA$length, value=M.tsA$value, remarks=M.tsA$remarks)
+		@Column(table=M.TABLE, jdbcType=93, name=M.tsA$name, key=M.tsA$key, auto=M.tsA$auto, seq=M.tsA$seq, notnull=M.tsA$notnull, length=M.tsA$length, decimalDigits=M.tsA$decimalDigits, value=M.tsA$value, remarks=M.tsA$remarks)
 		public com.tsc9526.monalisa.orm.criteria.Field<java.util.Date,$Criteria> tsA = new com.tsc9526.monalisa.orm.criteria.Field<java.util.Date,$Criteria>("ts_a", this, 93);		 
 			
 		/**
@@ -1266,7 +1266,7 @@ public class TestTable2 extends com.tsc9526.monalisa.orm.model.Model<TestTable2>
 		* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 19<br>
 		* <li><B>remarks:</B> 
 		*/
-		@Column(table=M.TABLE, jdbcType=93, name=M.createTime$name, key=M.createTime$key, auto=M.createTime$auto, seq=M.createTime$seq, notnull=M.createTime$notnull, length=M.createTime$length, value=M.createTime$value, remarks=M.createTime$remarks)
+		@Column(table=M.TABLE, jdbcType=93, name=M.createTime$name, key=M.createTime$key, auto=M.createTime$auto, seq=M.createTime$seq, notnull=M.createTime$notnull, length=M.createTime$length, decimalDigits=M.createTime$decimalDigits, value=M.createTime$value, remarks=M.createTime$remarks)
 		public com.tsc9526.monalisa.orm.criteria.Field<java.util.Date,$Criteria> createTime = new com.tsc9526.monalisa.orm.criteria.Field<java.util.Date,$Criteria>("create_time", this, 93);		 
 			
 		/**
@@ -1275,7 +1275,7 @@ public class TestTable2 extends com.tsc9526.monalisa.orm.model.Model<TestTable2>
 		* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 64<br>
 		* <li><B>remarks:</B> 
 		*/
-		@Column(table=M.TABLE, jdbcType=12, name=M.createBy$name, key=M.createBy$key, auto=M.createBy$auto, seq=M.createBy$seq, notnull=M.createBy$notnull, length=M.createBy$length, value=M.createBy$value, remarks=M.createBy$remarks)
+		@Column(table=M.TABLE, jdbcType=12, name=M.createBy$name, key=M.createBy$key, auto=M.createBy$auto, seq=M.createBy$seq, notnull=M.createBy$notnull, length=M.createBy$length, decimalDigits=M.createBy$decimalDigits, value=M.createBy$value, remarks=M.createBy$remarks)
 		public com.tsc9526.monalisa.orm.criteria.Field.FieldString<$Criteria> createBy = new com.tsc9526.monalisa.orm.criteria.Field.FieldString<$Criteria>("create_by", this);
 			
 		/**
@@ -1284,7 +1284,7 @@ public class TestTable2 extends com.tsc9526.monalisa.orm.model.Model<TestTable2>
 		* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 19<br>
 		* <li><B>remarks:</B> 
 		*/
-		@Column(table=M.TABLE, jdbcType=93, name=M.updateTime$name, key=M.updateTime$key, auto=M.updateTime$auto, seq=M.updateTime$seq, notnull=M.updateTime$notnull, length=M.updateTime$length, value=M.updateTime$value, remarks=M.updateTime$remarks)
+		@Column(table=M.TABLE, jdbcType=93, name=M.updateTime$name, key=M.updateTime$key, auto=M.updateTime$auto, seq=M.updateTime$seq, notnull=M.updateTime$notnull, length=M.updateTime$length, decimalDigits=M.updateTime$decimalDigits, value=M.updateTime$value, remarks=M.updateTime$remarks)
 		public com.tsc9526.monalisa.orm.criteria.Field<java.util.Date,$Criteria> updateTime = new com.tsc9526.monalisa.orm.criteria.Field<java.util.Date,$Criteria>("update_time", this, 93);		 
 			
 		/**
@@ -1293,7 +1293,7 @@ public class TestTable2 extends com.tsc9526.monalisa.orm.model.Model<TestTable2>
 		* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 64<br>
 		* <li><B>remarks:</B> 
 		*/
-		@Column(table=M.TABLE, jdbcType=12, name=M.updateBy$name, key=M.updateBy$key, auto=M.updateBy$auto, seq=M.updateBy$seq, notnull=M.updateBy$notnull, length=M.updateBy$length, value=M.updateBy$value, remarks=M.updateBy$remarks)
+		@Column(table=M.TABLE, jdbcType=12, name=M.updateBy$name, key=M.updateBy$key, auto=M.updateBy$auto, seq=M.updateBy$seq, notnull=M.updateBy$notnull, length=M.updateBy$length, decimalDigits=M.updateBy$decimalDigits, value=M.updateBy$value, remarks=M.updateBy$remarks)
 		public com.tsc9526.monalisa.orm.criteria.Field.FieldString<$Criteria> updateBy = new com.tsc9526.monalisa.orm.criteria.Field.FieldString<$Criteria>("update_by", this);
 			
 		/**
@@ -1302,7 +1302,7 @@ public class TestTable2 extends com.tsc9526.monalisa.orm.model.Model<TestTable2>
 		* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 10 &nbsp;<B>value:</B> 0<br>
 		* <li><B>remarks:</B> version
 		*/
-		@Column(table=M.TABLE, jdbcType=4, name=M.v1$name, key=M.v1$key, auto=M.v1$auto, seq=M.v1$seq, notnull=M.v1$notnull, length=M.v1$length, value=M.v1$value, remarks=M.v1$remarks)
+		@Column(table=M.TABLE, jdbcType=4, name=M.v1$name, key=M.v1$key, auto=M.v1$auto, seq=M.v1$seq, notnull=M.v1$notnull, length=M.v1$length, decimalDigits=M.v1$decimalDigits, value=M.v1$value, remarks=M.v1$remarks)
 		public com.tsc9526.monalisa.orm.criteria.Field.FieldInteger<$Criteria> v1 = new com.tsc9526.monalisa.orm.criteria.Field.FieldInteger<$Criteria>("v1", this);
 			
 	}
@@ -1321,154 +1321,169 @@ public class TestTable2 extends com.tsc9526.monalisa.orm.model.Model<TestTable2>
 		public final static String TABLE ="test_table_2";
 	 	
 	 	
-		public final static String  id$name    = "id";
-		public final static boolean id$key     = true;
-		public final static int     id$length  = 10;
-		public final static String  id$value   = "NULL";
-		public final static String  id$remarks = "primary key";
-		public final static boolean id$auto    = true;
-		public final static boolean id$notnull = true;
-		public final static String  id$seq     = "";
+		public final static String  id$name          = "id";
+		public final static boolean id$key           = true;
+		public final static int     id$length        = 10;
+		public final static int     id$decimalDigits = 0;
+		public final static String  id$value         = "NULL";
+		public final static String  id$remarks       = "primary key";
+		public final static boolean id$auto          = true;
+		public final static boolean id$notnull       = true;
+		public final static String  id$seq           = "";
 		
 		
-		public final static String  name$name    = "name";
-		public final static boolean name$key     = false;
-		public final static int     name$length  = 128;
-		public final static String  name$value   = "N0001";
-		public final static String  name$remarks = "the name";
-		public final static boolean name$auto    = false;
-		public final static boolean name$notnull = true;
-		public final static String  name$seq     = "";
+		public final static String  name$name          = "name";
+		public final static boolean name$key           = false;
+		public final static int     name$length        = 128;
+		public final static int     name$decimalDigits = 0;
+		public final static String  name$value         = "N0001";
+		public final static String  name$remarks       = "the name";
+		public final static boolean name$auto          = false;
+		public final static boolean name$notnull       = true;
+		public final static String  name$seq           = "";
 		
 		
-		public final static String  title$name    = "title";
-		public final static boolean title$key     = false;
-		public final static int     title$length  = 128;
-		public final static String  title$value   = "NULL";
-		public final static String  title$remarks = "the title";
-		public final static boolean title$auto    = false;
-		public final static boolean title$notnull = false;
-		public final static String  title$seq     = "";
+		public final static String  title$name          = "title";
+		public final static boolean title$key           = false;
+		public final static int     title$length        = 128;
+		public final static int     title$decimalDigits = 0;
+		public final static String  title$value         = "NULL";
+		public final static String  title$remarks       = "the title";
+		public final static boolean title$auto          = false;
+		public final static boolean title$notnull       = false;
+		public final static String  title$seq           = "";
 		
 		
-		public final static String  enumIntA$name    = "enum_int_a";
-		public final static boolean enumIntA$key     = false;
-		public final static int     enumIntA$length  = 10;
-		public final static String  enumIntA$value   = "0";
-		public final static String  enumIntA$remarks = "enum fields A  #enum{{V0,V1}}";
-		public final static boolean enumIntA$auto    = false;
-		public final static boolean enumIntA$notnull = true;
-		public final static String  enumIntA$seq     = "";
+		public final static String  enumIntA$name          = "enum_int_a";
+		public final static boolean enumIntA$key           = false;
+		public final static int     enumIntA$length        = 10;
+		public final static int     enumIntA$decimalDigits = 0;
+		public final static String  enumIntA$value         = "0";
+		public final static String  enumIntA$remarks       = "enum fields A  #enum{{V0,V1}}";
+		public final static boolean enumIntA$auto          = false;
+		public final static boolean enumIntA$notnull       = true;
+		public final static String  enumIntA$seq           = "";
 		
 		
-		public final static String  enumStringA$name    = "enum_string_a";
-		public final static boolean enumStringA$key     = false;
-		public final static int     enumStringA$length  = 64;
-		public final static String  enumStringA$value   = "TRUE";
-		public final static String  enumStringA$remarks = "#enum{{ TRUE, FALSE}}";
-		public final static boolean enumStringA$auto    = false;
-		public final static boolean enumStringA$notnull = true;
-		public final static String  enumStringA$seq     = "";
+		public final static String  enumStringA$name          = "enum_string_a";
+		public final static boolean enumStringA$key           = false;
+		public final static int     enumStringA$length        = 64;
+		public final static int     enumStringA$decimalDigits = 0;
+		public final static String  enumStringA$value         = "TRUE";
+		public final static String  enumStringA$remarks       = "#enum{{ TRUE, FALSE}}";
+		public final static boolean enumStringA$auto          = false;
+		public final static boolean enumStringA$notnull       = true;
+		public final static String  enumStringA$seq           = "";
 		
 		
-		public final static String  arrayInt$name    = "array_int";
-		public final static boolean arrayInt$key     = false;
-		public final static int     arrayInt$length  = 256;
-		public final static String  arrayInt$value   = "NULL";
-		public final static String  arrayInt$remarks = "array of int. #array{int}";
-		public final static boolean arrayInt$auto    = false;
-		public final static boolean arrayInt$notnull = false;
-		public final static String  arrayInt$seq     = "";
+		public final static String  arrayInt$name          = "array_int";
+		public final static boolean arrayInt$key           = false;
+		public final static int     arrayInt$length        = 256;
+		public final static int     arrayInt$decimalDigits = 0;
+		public final static String  arrayInt$value         = "NULL";
+		public final static String  arrayInt$remarks       = "array of int. #array{int}";
+		public final static boolean arrayInt$auto          = false;
+		public final static boolean arrayInt$notnull       = false;
+		public final static String  arrayInt$seq           = "";
 		
 		
-		public final static String  arrayString$name    = "array_string";
-		public final static boolean arrayString$key     = false;
-		public final static int     arrayString$length  = 256;
-		public final static String  arrayString$value   = "NULL";
-		public final static String  arrayString$remarks = "array of string. #array{}";
-		public final static boolean arrayString$auto    = false;
-		public final static boolean arrayString$notnull = false;
-		public final static String  arrayString$seq     = "";
+		public final static String  arrayString$name          = "array_string";
+		public final static boolean arrayString$key           = false;
+		public final static int     arrayString$length        = 256;
+		public final static int     arrayString$decimalDigits = 0;
+		public final static String  arrayString$value         = "NULL";
+		public final static String  arrayString$remarks       = "array of string. #array{}";
+		public final static boolean arrayString$auto          = false;
+		public final static boolean arrayString$notnull       = false;
+		public final static String  arrayString$seq           = "";
 		
 		
-		public final static String  json$name    = "json";
-		public final static boolean json$key     = false;
-		public final static int     json$length  = 1024;
-		public final static String  json$value   = "NULL";
-		public final static String  json$remarks = "Json object. #json{}";
-		public final static boolean json$auto    = false;
-		public final static boolean json$notnull = false;
-		public final static String  json$seq     = "";
+		public final static String  json$name          = "json";
+		public final static boolean json$key           = false;
+		public final static int     json$length        = 1024;
+		public final static int     json$decimalDigits = 0;
+		public final static String  json$value         = "NULL";
+		public final static String  json$remarks       = "Json object. #json{}";
+		public final static boolean json$auto          = false;
+		public final static boolean json$notnull       = false;
+		public final static String  json$seq           = "";
 		
 		
-		public final static String  obj$name    = "obj";
-		public final static boolean obj$key     = false;
-		public final static int     obj$length  = 1024;
-		public final static String  obj$value   = "NULL";
-		public final static String  obj$remarks = "Json object with given class.  #json{test.com.tsc9526.monalisa.orm.data.ColumnData}";
-		public final static boolean obj$auto    = false;
-		public final static boolean obj$notnull = false;
-		public final static String  obj$seq     = "";
+		public final static String  obj$name          = "obj";
+		public final static boolean obj$key           = false;
+		public final static int     obj$length        = 1024;
+		public final static int     obj$decimalDigits = 0;
+		public final static String  obj$value         = "NULL";
+		public final static String  obj$remarks       = "Json object with given class.  #json{test.com.tsc9526.monalisa.orm.data.ColumnData}";
+		public final static boolean obj$auto          = false;
+		public final static boolean obj$notnull       = false;
+		public final static String  obj$seq           = "";
 		
 		
-		public final static String  tsA$name    = "ts_a";
-		public final static boolean tsA$key     = false;
-		public final static int     tsA$length  = 19;
-		public final static String  tsA$value   = "NULL";
-		public final static String  tsA$remarks = "";
-		public final static boolean tsA$auto    = false;
-		public final static boolean tsA$notnull = true;
-		public final static String  tsA$seq     = "";
+		public final static String  tsA$name          = "ts_a";
+		public final static boolean tsA$key           = false;
+		public final static int     tsA$length        = 19;
+		public final static int     tsA$decimalDigits = 0;
+		public final static String  tsA$value         = "NULL";
+		public final static String  tsA$remarks       = "";
+		public final static boolean tsA$auto          = false;
+		public final static boolean tsA$notnull       = true;
+		public final static String  tsA$seq           = "";
 		
 		
-		public final static String  createTime$name    = "create_time";
-		public final static boolean createTime$key     = false;
-		public final static int     createTime$length  = 19;
-		public final static String  createTime$value   = "NULL";
-		public final static String  createTime$remarks = "";
-		public final static boolean createTime$auto    = false;
-		public final static boolean createTime$notnull = true;
-		public final static String  createTime$seq     = "";
+		public final static String  createTime$name          = "create_time";
+		public final static boolean createTime$key           = false;
+		public final static int     createTime$length        = 19;
+		public final static int     createTime$decimalDigits = 0;
+		public final static String  createTime$value         = "NULL";
+		public final static String  createTime$remarks       = "";
+		public final static boolean createTime$auto          = false;
+		public final static boolean createTime$notnull       = true;
+		public final static String  createTime$seq           = "";
 		
 		
-		public final static String  createBy$name    = "create_by";
-		public final static boolean createBy$key     = false;
-		public final static int     createBy$length  = 64;
-		public final static String  createBy$value   = "NULL";
-		public final static String  createBy$remarks = "";
-		public final static boolean createBy$auto    = false;
-		public final static boolean createBy$notnull = false;
-		public final static String  createBy$seq     = "";
+		public final static String  createBy$name          = "create_by";
+		public final static boolean createBy$key           = false;
+		public final static int     createBy$length        = 64;
+		public final static int     createBy$decimalDigits = 0;
+		public final static String  createBy$value         = "NULL";
+		public final static String  createBy$remarks       = "";
+		public final static boolean createBy$auto          = false;
+		public final static boolean createBy$notnull       = false;
+		public final static String  createBy$seq           = "";
 		
 		
-		public final static String  updateTime$name    = "update_time";
-		public final static boolean updateTime$key     = false;
-		public final static int     updateTime$length  = 19;
-		public final static String  updateTime$value   = "NULL";
-		public final static String  updateTime$remarks = "";
-		public final static boolean updateTime$auto    = false;
-		public final static boolean updateTime$notnull = false;
-		public final static String  updateTime$seq     = "";
+		public final static String  updateTime$name          = "update_time";
+		public final static boolean updateTime$key           = false;
+		public final static int     updateTime$length        = 19;
+		public final static int     updateTime$decimalDigits = 0;
+		public final static String  updateTime$value         = "NULL";
+		public final static String  updateTime$remarks       = "";
+		public final static boolean updateTime$auto          = false;
+		public final static boolean updateTime$notnull       = false;
+		public final static String  updateTime$seq           = "";
 		
 		
-		public final static String  updateBy$name    = "update_by";
-		public final static boolean updateBy$key     = false;
-		public final static int     updateBy$length  = 64;
-		public final static String  updateBy$value   = "NULL";
-		public final static String  updateBy$remarks = "";
-		public final static boolean updateBy$auto    = false;
-		public final static boolean updateBy$notnull = false;
-		public final static String  updateBy$seq     = "";
+		public final static String  updateBy$name          = "update_by";
+		public final static boolean updateBy$key           = false;
+		public final static int     updateBy$length        = 64;
+		public final static int     updateBy$decimalDigits = 0;
+		public final static String  updateBy$value         = "NULL";
+		public final static String  updateBy$remarks       = "";
+		public final static boolean updateBy$auto          = false;
+		public final static boolean updateBy$notnull       = false;
+		public final static String  updateBy$seq           = "";
 		
 		
-		public final static String  v1$name    = "v1";
-		public final static boolean v1$key     = false;
-		public final static int     v1$length  = 10;
-		public final static String  v1$value   = "0";
-		public final static String  v1$remarks = "version";
-		public final static boolean v1$auto    = false;
-		public final static boolean v1$notnull = true;
-		public final static String  v1$seq     = "";
+		public final static String  v1$name          = "v1";
+		public final static boolean v1$key           = false;
+		public final static int     v1$length        = 10;
+		public final static int     v1$decimalDigits = 0;
+		public final static String  v1$value         = "0";
+		public final static String  v1$remarks       = "version";
+		public final static boolean v1$auto          = false;
+		public final static boolean v1$notnull       = true;
+		public final static String  v1$seq           = "";
 		
 			
 		
@@ -1479,8 +1494,8 @@ public class TestTable2 extends com.tsc9526.monalisa.orm.model.Model<TestTable2>
 		* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 10<br>
 		* <li><B>remarks:</B> primary key
 		*/
-		@Column(table=M.TABLE, jdbcType=4, name=M.id$name, key=M.id$key, auto=M.id$auto, seq=M.id$seq, notnull=M.id$notnull, length=M.id$length, value=M.id$value, remarks=M.id$remarks)
-		public final static String  id         = "id";
+		@Column(table=M.TABLE, jdbcType=4, name=M.id$name, key=M.id$key, auto=M.id$auto, seq=M.id$seq, notnull=M.id$notnull, length=M.id$length, decimalDigits=M.id$decimalDigits, value=M.id$value, remarks=M.id$remarks)
+		public final static String  id                     = "id";
 		
 		/**
 		* @Column
@@ -1488,8 +1503,8 @@ public class TestTable2 extends com.tsc9526.monalisa.orm.model.Model<TestTable2>
 		* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 128 &nbsp;<B>value:</B> N0001<br>
 		* <li><B>remarks:</B> the name
 		*/
-		@Column(table=M.TABLE, jdbcType=12, name=M.name$name, key=M.name$key, auto=M.name$auto, seq=M.name$seq, notnull=M.name$notnull, length=M.name$length, value=M.name$value, remarks=M.name$remarks)
-		public final static String  name         = "name";
+		@Column(table=M.TABLE, jdbcType=12, name=M.name$name, key=M.name$key, auto=M.name$auto, seq=M.name$seq, notnull=M.name$notnull, length=M.name$length, decimalDigits=M.name$decimalDigits, value=M.name$value, remarks=M.name$remarks)
+		public final static String  name                     = "name";
 		
 		/**
 		* @Column
@@ -1497,8 +1512,8 @@ public class TestTable2 extends com.tsc9526.monalisa.orm.model.Model<TestTable2>
 		* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 128<br>
 		* <li><B>remarks:</B> the title
 		*/
-		@Column(table=M.TABLE, jdbcType=12, name=M.title$name, key=M.title$key, auto=M.title$auto, seq=M.title$seq, notnull=M.title$notnull, length=M.title$length, value=M.title$value, remarks=M.title$remarks)
-		public final static String  title         = "title";
+		@Column(table=M.TABLE, jdbcType=12, name=M.title$name, key=M.title$key, auto=M.title$auto, seq=M.title$seq, notnull=M.title$notnull, length=M.title$length, decimalDigits=M.title$decimalDigits, value=M.title$value, remarks=M.title$remarks)
+		public final static String  title                     = "title";
 		
 		/**
 		* @Column
@@ -1506,8 +1521,8 @@ public class TestTable2 extends com.tsc9526.monalisa.orm.model.Model<TestTable2>
 		* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 10 &nbsp;<B>value:</B> 0<br>
 		* <li><B>remarks:</B> enum fields A  #enum{{V0,V1}}
 		*/
-		@Column(table=M.TABLE, jdbcType=4, name=M.enumIntA$name, key=M.enumIntA$key, auto=M.enumIntA$auto, seq=M.enumIntA$seq, notnull=M.enumIntA$notnull, length=M.enumIntA$length, value=M.enumIntA$value, remarks=M.enumIntA$remarks)
-		public final static String  enumIntA         = "enum_int_a";
+		@Column(table=M.TABLE, jdbcType=4, name=M.enumIntA$name, key=M.enumIntA$key, auto=M.enumIntA$auto, seq=M.enumIntA$seq, notnull=M.enumIntA$notnull, length=M.enumIntA$length, decimalDigits=M.enumIntA$decimalDigits, value=M.enumIntA$value, remarks=M.enumIntA$remarks)
+		public final static String  enumIntA                     = "enum_int_a";
 		
 		/**
 		* @Column
@@ -1515,8 +1530,8 @@ public class TestTable2 extends com.tsc9526.monalisa.orm.model.Model<TestTable2>
 		* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 64 &nbsp;<B>value:</B> TRUE<br>
 		* <li><B>remarks:</B> #enum{{ TRUE, FALSE}}
 		*/
-		@Column(table=M.TABLE, jdbcType=12, name=M.enumStringA$name, key=M.enumStringA$key, auto=M.enumStringA$auto, seq=M.enumStringA$seq, notnull=M.enumStringA$notnull, length=M.enumStringA$length, value=M.enumStringA$value, remarks=M.enumStringA$remarks)
-		public final static String  enumStringA         = "enum_string_a";
+		@Column(table=M.TABLE, jdbcType=12, name=M.enumStringA$name, key=M.enumStringA$key, auto=M.enumStringA$auto, seq=M.enumStringA$seq, notnull=M.enumStringA$notnull, length=M.enumStringA$length, decimalDigits=M.enumStringA$decimalDigits, value=M.enumStringA$value, remarks=M.enumStringA$remarks)
+		public final static String  enumStringA                     = "enum_string_a";
 		
 		/**
 		* @Column
@@ -1524,8 +1539,8 @@ public class TestTable2 extends com.tsc9526.monalisa.orm.model.Model<TestTable2>
 		* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 256<br>
 		* <li><B>remarks:</B> array of int. #array{int}
 		*/
-		@Column(table=M.TABLE, jdbcType=12, name=M.arrayInt$name, key=M.arrayInt$key, auto=M.arrayInt$auto, seq=M.arrayInt$seq, notnull=M.arrayInt$notnull, length=M.arrayInt$length, value=M.arrayInt$value, remarks=M.arrayInt$remarks)
-		public final static String  arrayInt         = "array_int";
+		@Column(table=M.TABLE, jdbcType=12, name=M.arrayInt$name, key=M.arrayInt$key, auto=M.arrayInt$auto, seq=M.arrayInt$seq, notnull=M.arrayInt$notnull, length=M.arrayInt$length, decimalDigits=M.arrayInt$decimalDigits, value=M.arrayInt$value, remarks=M.arrayInt$remarks)
+		public final static String  arrayInt                     = "array_int";
 		
 		/**
 		* @Column
@@ -1533,8 +1548,8 @@ public class TestTable2 extends com.tsc9526.monalisa.orm.model.Model<TestTable2>
 		* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 256<br>
 		* <li><B>remarks:</B> array of string. #array{}
 		*/
-		@Column(table=M.TABLE, jdbcType=12, name=M.arrayString$name, key=M.arrayString$key, auto=M.arrayString$auto, seq=M.arrayString$seq, notnull=M.arrayString$notnull, length=M.arrayString$length, value=M.arrayString$value, remarks=M.arrayString$remarks)
-		public final static String  arrayString         = "array_string";
+		@Column(table=M.TABLE, jdbcType=12, name=M.arrayString$name, key=M.arrayString$key, auto=M.arrayString$auto, seq=M.arrayString$seq, notnull=M.arrayString$notnull, length=M.arrayString$length, decimalDigits=M.arrayString$decimalDigits, value=M.arrayString$value, remarks=M.arrayString$remarks)
+		public final static String  arrayString                     = "array_string";
 		
 		/**
 		* @Column
@@ -1542,8 +1557,8 @@ public class TestTable2 extends com.tsc9526.monalisa.orm.model.Model<TestTable2>
 		* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 1024<br>
 		* <li><B>remarks:</B> Json object. #json{}
 		*/
-		@Column(table=M.TABLE, jdbcType=12, name=M.json$name, key=M.json$key, auto=M.json$auto, seq=M.json$seq, notnull=M.json$notnull, length=M.json$length, value=M.json$value, remarks=M.json$remarks)
-		public final static String  json         = "json";
+		@Column(table=M.TABLE, jdbcType=12, name=M.json$name, key=M.json$key, auto=M.json$auto, seq=M.json$seq, notnull=M.json$notnull, length=M.json$length, decimalDigits=M.json$decimalDigits, value=M.json$value, remarks=M.json$remarks)
+		public final static String  json                     = "json";
 		
 		/**
 		* @Column
@@ -1551,8 +1566,8 @@ public class TestTable2 extends com.tsc9526.monalisa.orm.model.Model<TestTable2>
 		* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 1024<br>
 		* <li><B>remarks:</B> Json object with given class.  #json{test.com.tsc9526.monalisa.orm.data.ColumnData}
 		*/
-		@Column(table=M.TABLE, jdbcType=12, name=M.obj$name, key=M.obj$key, auto=M.obj$auto, seq=M.obj$seq, notnull=M.obj$notnull, length=M.obj$length, value=M.obj$value, remarks=M.obj$remarks)
-		public final static String  obj         = "obj";
+		@Column(table=M.TABLE, jdbcType=12, name=M.obj$name, key=M.obj$key, auto=M.obj$auto, seq=M.obj$seq, notnull=M.obj$notnull, length=M.obj$length, decimalDigits=M.obj$decimalDigits, value=M.obj$value, remarks=M.obj$remarks)
+		public final static String  obj                     = "obj";
 		
 		/**
 		* @Column
@@ -1560,8 +1575,8 @@ public class TestTable2 extends com.tsc9526.monalisa.orm.model.Model<TestTable2>
 		* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 19<br>
 		* <li><B>remarks:</B> 
 		*/
-		@Column(table=M.TABLE, jdbcType=93, name=M.tsA$name, key=M.tsA$key, auto=M.tsA$auto, seq=M.tsA$seq, notnull=M.tsA$notnull, length=M.tsA$length, value=M.tsA$value, remarks=M.tsA$remarks)
-		public final static String  tsA         = "ts_a";
+		@Column(table=M.TABLE, jdbcType=93, name=M.tsA$name, key=M.tsA$key, auto=M.tsA$auto, seq=M.tsA$seq, notnull=M.tsA$notnull, length=M.tsA$length, decimalDigits=M.tsA$decimalDigits, value=M.tsA$value, remarks=M.tsA$remarks)
+		public final static String  tsA                     = "ts_a";
 		
 		/**
 		* @Column
@@ -1569,8 +1584,8 @@ public class TestTable2 extends com.tsc9526.monalisa.orm.model.Model<TestTable2>
 		* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 19<br>
 		* <li><B>remarks:</B> 
 		*/
-		@Column(table=M.TABLE, jdbcType=93, name=M.createTime$name, key=M.createTime$key, auto=M.createTime$auto, seq=M.createTime$seq, notnull=M.createTime$notnull, length=M.createTime$length, value=M.createTime$value, remarks=M.createTime$remarks)
-		public final static String  createTime         = "create_time";
+		@Column(table=M.TABLE, jdbcType=93, name=M.createTime$name, key=M.createTime$key, auto=M.createTime$auto, seq=M.createTime$seq, notnull=M.createTime$notnull, length=M.createTime$length, decimalDigits=M.createTime$decimalDigits, value=M.createTime$value, remarks=M.createTime$remarks)
+		public final static String  createTime                     = "create_time";
 		
 		/**
 		* @Column
@@ -1578,8 +1593,8 @@ public class TestTable2 extends com.tsc9526.monalisa.orm.model.Model<TestTable2>
 		* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 64<br>
 		* <li><B>remarks:</B> 
 		*/
-		@Column(table=M.TABLE, jdbcType=12, name=M.createBy$name, key=M.createBy$key, auto=M.createBy$auto, seq=M.createBy$seq, notnull=M.createBy$notnull, length=M.createBy$length, value=M.createBy$value, remarks=M.createBy$remarks)
-		public final static String  createBy         = "create_by";
+		@Column(table=M.TABLE, jdbcType=12, name=M.createBy$name, key=M.createBy$key, auto=M.createBy$auto, seq=M.createBy$seq, notnull=M.createBy$notnull, length=M.createBy$length, decimalDigits=M.createBy$decimalDigits, value=M.createBy$value, remarks=M.createBy$remarks)
+		public final static String  createBy                     = "create_by";
 		
 		/**
 		* @Column
@@ -1587,8 +1602,8 @@ public class TestTable2 extends com.tsc9526.monalisa.orm.model.Model<TestTable2>
 		* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 19<br>
 		* <li><B>remarks:</B> 
 		*/
-		@Column(table=M.TABLE, jdbcType=93, name=M.updateTime$name, key=M.updateTime$key, auto=M.updateTime$auto, seq=M.updateTime$seq, notnull=M.updateTime$notnull, length=M.updateTime$length, value=M.updateTime$value, remarks=M.updateTime$remarks)
-		public final static String  updateTime         = "update_time";
+		@Column(table=M.TABLE, jdbcType=93, name=M.updateTime$name, key=M.updateTime$key, auto=M.updateTime$auto, seq=M.updateTime$seq, notnull=M.updateTime$notnull, length=M.updateTime$length, decimalDigits=M.updateTime$decimalDigits, value=M.updateTime$value, remarks=M.updateTime$remarks)
+		public final static String  updateTime                     = "update_time";
 		
 		/**
 		* @Column
@@ -1596,8 +1611,8 @@ public class TestTable2 extends com.tsc9526.monalisa.orm.model.Model<TestTable2>
 		* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 64<br>
 		* <li><B>remarks:</B> 
 		*/
-		@Column(table=M.TABLE, jdbcType=12, name=M.updateBy$name, key=M.updateBy$key, auto=M.updateBy$auto, seq=M.updateBy$seq, notnull=M.updateBy$notnull, length=M.updateBy$length, value=M.updateBy$value, remarks=M.updateBy$remarks)
-		public final static String  updateBy         = "update_by";
+		@Column(table=M.TABLE, jdbcType=12, name=M.updateBy$name, key=M.updateBy$key, auto=M.updateBy$auto, seq=M.updateBy$seq, notnull=M.updateBy$notnull, length=M.updateBy$length, decimalDigits=M.updateBy$decimalDigits, value=M.updateBy$value, remarks=M.updateBy$remarks)
+		public final static String  updateBy                     = "update_by";
 		
 		/**
 		* @Column
@@ -1605,8 +1620,8 @@ public class TestTable2 extends com.tsc9526.monalisa.orm.model.Model<TestTable2>
 		* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 10 &nbsp;<B>value:</B> 0<br>
 		* <li><B>remarks:</B> version
 		*/
-		@Column(table=M.TABLE, jdbcType=4, name=M.v1$name, key=M.v1$key, auto=M.v1$auto, seq=M.v1$seq, notnull=M.v1$notnull, length=M.v1$length, value=M.v1$value, remarks=M.v1$remarks)
-		public final static String  v1         = "v1";
+		@Column(table=M.TABLE, jdbcType=4, name=M.v1$name, key=M.v1$key, auto=M.v1$auto, seq=M.v1$seq, notnull=M.v1$notnull, length=M.v1$length, decimalDigits=M.v1$decimalDigits, value=M.v1$value, remarks=M.v1$remarks)
+		public final static String  v1                     = "v1";
 		 
 	}
 	

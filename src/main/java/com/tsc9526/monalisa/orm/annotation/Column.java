@@ -81,5 +81,10 @@ public @interface Column {
 	 * @return sequence
 	 */
 	String seq() default "";
+	
+	/**
+	 * @return decimal digits
+	 */
+	int decimalDigits() default 0;
 		
 }
