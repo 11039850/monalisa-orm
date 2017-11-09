@@ -33,9 +33,9 @@ public class OracleDBGen {
 		Query query=OracleDB.DB.createQuery();
 		
 		query.add(""+/**~!{*/""
-			+ "SELECT * "
-			+ "\r\n	FROM test_table_1 "
-			+ "\r\n	WHERE id=? "
+			+ "SELECT *   "
+			+ "\r\n	FROM test_table_1  "
+			+ "\r\n	WHERE id=?      "
 		+ "\r\n"/**}*/, id);
 		
 		return query.getResult(ResultFindOne.class);

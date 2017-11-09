@@ -9,7 +9,7 @@ package test.com.tsc9526.monalisa.plugin.oracledbgen;
  */
 public class ResultFindOne implements java.io.Serializable{
 	private static final long serialVersionUID = 1461209103720L;	
-	final static String  FINGERPRINT = "000000EFF67F407D";
+	final static String  FINGERPRINT = "000000F7A08E8837";
 	  
 	 
 	

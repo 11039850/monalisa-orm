@@ -36,6 +36,7 @@ import com.tsc9526.monalisa.orm.datasource.DBConfig;
 import com.tsc9526.monalisa.orm.datasource.DbProp;
 import com.tsc9526.monalisa.orm.dialect.Dialect;
 import com.tsc9526.monalisa.orm.meta.MetaColumn;
+import com.tsc9526.monalisa.orm.meta.MetaIndex;
 import com.tsc9526.monalisa.orm.meta.MetaPartition;
 import com.tsc9526.monalisa.orm.meta.MetaTable;
 import com.tsc9526.monalisa.orm.utils.TableHelper;
@@ -328,7 +329,7 @@ public class ModelMeta{
 	protected List<FGS> loadModelFields(Model<?> model){
 		ClassHelper metaClass=MelpClass.getClassHelper(model.getClass());
 		List<FGS> fields=metaClass.getFieldsWithAnnotation(Column.class);						
-		if(fields.size()==0){
+		if(fields.isEmpty()){
 			record=true;
 			fields=loadFieldsFromDB(metaClass);	
 			
@@ -402,11 +403,13 @@ public class ModelMeta{
 					if(mfd==null){
 						mfd=metaClass.getField(c.getName());
 					}
-					 
+					
 					FGS fgs=createFGS(c,mfd);	
 					fs.add(fgs);								 
 				}		
 				 
+				this.table=createTable(tableName,mTable);
+						
 				return fs;
 			}else{
 				throw new RuntimeException("Table not found: "+tableName+", DB: "+db.getKey());
@@ -612,13 +615,11 @@ public class ModelMeta{
 			public String value() {							 
 				return c.getValue();
 			}
-			
-			 
+		 	 
 			public String table() {							 
 				return c.getTable().getName();
 			}
-			
-			 
+		 	 
 			public String remarks() {							 
 				return c.getRemarks();
 			}
@@ -654,6 +655,45 @@ public class ModelMeta{
 			
 			public int decimalDigits(){
 				return c.getDecimalDigits();
+			}
+		};
+	}
+	
+	
+	public static Table createTable(final String tableName,final MetaTable metaTable){
+		return new Table(){  
+			public String name() {					 
+				return tableName;
+			}
+			
+			public String value() {					 
+				return tableName;
+			}
+	 			
+			public String remarks() {
+				return metaTable.getRemarks();
+			}
+			
+			public String[] primaryKeys(){
+				List<String> pks=new ArrayList<String>();
+				for(MetaColumn c:metaTable.getKeyColumns()){
+					pks.add(c.getName());
+				}
+				
+				return pks.toArray(new String[0]);
+			}
+			
+			public Index[] indexes(){
+				List<Index> indexes=new ArrayList<Index>();
+				for(MetaIndex index:metaTable.getIndexes()){
+					indexes.add(index.toIndexAnnotation());
+				}
+				
+				return indexes.toArray(new Index[0]);
+			}
+			
+			public Class<? extends Annotation> annotationType() {
+				return Table.class;
 			}
 		};
 	}

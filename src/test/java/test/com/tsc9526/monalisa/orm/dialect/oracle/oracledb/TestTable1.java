@@ -13,13 +13,13 @@ import java.util.LinkedHashMap;
  
 /**
  *
- * Auto generated code by monalisa 2.0.1-SNAPSHOT
+ * Auto generated code by monalisa 2.1.0
  *
  */
 @Table(
 	name="TEST_TABLE_1",
 	primaryKeys={"ID"},
-	remarks="",
+	remarks="测试表",
 	indexes={
 		  @Index(name="PK_SEQ_TEST_TABLE_1", type=1, unique=true, fields={"ID"}) 
 		, @Index(name="UK_NAME_TITLE", type=1, unique=true, fields={"NAME", "TITLE"}) 
@@ -56,7 +56,7 @@ public class TestTable1 extends com.tsc9526.monalisa.orm.model.Model<TestTable1>
 	/**
 	 * name: <b>TEST_TABLE_1</b> <br>
 	 * primaryKeys: "ID" <br>
-	 * remarks: 
+	 * remarks: 测试表
 	 */ 
 	public TestTable1(){
 		super("TEST_TABLE_1", "ID");		
@@ -67,7 +67,7 @@ public class TestTable1 extends com.tsc9526.monalisa.orm.model.Model<TestTable1>
 	 * Constructor use primary keys.<br><br>
 	 * name: <b>TEST_TABLE_1</b> <br>
 	 * primaryKeys: "ID" <br>
-	 * remarks: <br><br>
+	 * remarks: 测试表<br><br>
 	 *
 	 * @param id  primary key	 
 	 */
@@ -880,7 +880,7 @@ public class TestTable1 extends com.tsc9526.monalisa.orm.model.Model<TestTable1>
 			
 			c.id.eq(id);			 
 			 
-			return super.selectOneByExample(c.$example);
+			return super.selectByKeyExample(c.$example);
 		}			 
 		
 		/**
@@ -921,7 +921,7 @@ public class TestTable1 extends com.tsc9526.monalisa.orm.model.Model<TestTable1>
 			c.name.eq(name);
 			c.title.eq(title);			 
 			 
-			return super.selectOneByExample(c.$example);
+			return super.selectByKeyExample(c.$example);
 		}			 
 		
 				

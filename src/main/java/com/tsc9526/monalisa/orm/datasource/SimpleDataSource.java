@@ -55,17 +55,33 @@ public class SimpleDataSource implements PooledDataSource {
 	private int minSize;
 	private Semaphore semaphore;
 
+	private Properties connProps=new Properties();
+	
 	public SimpleDataSource(DBConfig db) {
+		this(db, null);
+	}
+	
+	public SimpleDataSource(DBConfig db,Properties poolProperties) {
 		String driver=db.getDialect().getDriver();
 		String v=db.getCfg().getDriver();
 		if(v!=null && v.length()>1){
 			driver=v;
 		}
-		setDriver(driver);
 		
+		setDriver(driver);
 		setUrl(db.getCfg().getUrl());
 		setUsername(db.getCfg().getUsername());
 		setPassword(db.getCfg().getPassword());
+		 
+		connProps.put("user",getUsername());     
+		connProps.put("password",getPassword());     
+		connProps.putAll(db.getCfg().getPoolProperties() );
+		if(poolProperties!=null){
+			connProps.putAll(poolProperties);
+		}
+
+		maxSize = db.getCfg().getProperty("pool.max", 50);
+		minSize = db.getCfg().getProperty("pool.min", 3);
 		
 		MelpLib.loadClass(driver);
 		
@@ -73,13 +89,6 @@ public class SimpleDataSource implements PooledDataSource {
 	}
 	
 	private void initConnections(DBConfig db){
-		maxSize = db.getCfg().getProperty("pool.max", 50);
-		minSize = db.getCfg().getProperty("pool.min", 3);
-		
-		if(maxSize<1){
-			maxSize=1;
-		}		
-		
 		logger.info("Initializing simple data source{ pool.max = "+maxSize+", pool.min = "+minSize+", jdbcUrl = "+db.getCfg().getUrl()+", username = "+ db.getCfg().getUsername() +"}");
 		
 		semaphore = new Semaphore(maxSize, false);
@@ -174,18 +183,21 @@ public class SimpleDataSource implements PooledDataSource {
 
 	
 
-	private Connection getRealConnection(String username, String password) throws SQLException {
+	protected Connection getRealConnection(String username, String password) throws SQLException {
 		try {
 			MelpClass.forName(driver);
-			 
-			return DriverManager.getConnection(url, username, password);
+			
+			this.connProps.put ("user",username);
+			this.connProps.put ("password",password);
+			
+			return DriverManager.getConnection(url, connProps);
 		} catch (ClassNotFoundException e) {
 			throw new RuntimeException(e);
 		}
 	}
 
 	public void setProperties(Properties properties){
-		
+		this.connProps.putAll(properties);
 	}
 	
 	public PrintWriter getLogWriter() throws SQLException {

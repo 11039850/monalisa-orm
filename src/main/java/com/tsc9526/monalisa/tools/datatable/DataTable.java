@@ -441,6 +441,9 @@ public class DataTable<E> extends ArrayList<E> {
 		return buffer.toString();
 	}
 	
+	/**
+	 * @return format string table
+	 */
 	public String format(){
 		DataTable<DataMap> ts = this.as(DataMap.class);
 		
@@ -474,7 +477,7 @@ public class DataTable<E> extends ArrayList<E> {
 		for(String[] row:rs){
 			for(int i=0;i<row.length;i++){
 				if(widths[i] < row[i].length()){
-					widths[i] = row[i].length();
+					widths[i] = MelpString.getCharWidth(row[i]);
 				}
 			}
 		} 
@@ -492,4 +495,5 @@ public class DataTable<E> extends ArrayList<E> {
 		
 		return sb.toString();
 	}
+	
 }

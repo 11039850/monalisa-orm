@@ -173,6 +173,23 @@ public class Select<T extends Model,S extends Select> {
 		T r= (T)query.getResult(getResultCreator(query));
 		return r;
 	}
+	
+	/**
+	 * 
+	 * @param example Example
+	 * @return the first record
+	 * 
+	 * @see com.tsc9526.monalisa.orm.resources.HelpDoc#helpQuery(int,int,Example,String, Object...)
+	 */
+	public T selectByKeyExample(Example example){
+		Query w=QEH.getQuery(example);
+		
+		Query query=model.dialect().select(model,w.getSql(), w.getParameters());
+		setup(query);
+		
+		T r= (T)query.getResult(getResultCreator(query));
+		return r;
+	}
  	
 	/**
 	 * 

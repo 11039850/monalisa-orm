@@ -213,7 +213,6 @@ public class ResultHandler<T> {
 			MetaTable table = new MetaTable();
 			int cc = rsmd.getColumnCount();
 			for (int i = 1; i <= cc; i++) {
-				String type = MelpTypes.getJavaType(rsmd.getColumnType(i));
 				String name = rsmd.getColumnName(i);
 				String label = rsmd.getColumnLabel(i);
 
@@ -226,8 +225,11 @@ public class ResultHandler<T> {
 				if (label != null && label.trim().length() > 0) {
 					column.setJavaName(MelpJavaBeans.getJavaName(label, false));
 				}
-
-				column.setJavaType(type);
+				
+				column.setJdbcType(rsmd.getColumnType(i));
+				column.setLength(rsmd.getColumnDisplaySize(i));
+				column.setDecimalDigits(rsmd.getScale(i)); 
+				 
 				table.addColumn(column);
 			}
 

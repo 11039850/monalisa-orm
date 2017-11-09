@@ -81,7 +81,7 @@ public class Insert<T extends Model>{
 		Dialect dialect=model.dialect();
 		 
 		FGS fgs=model.autoField();
-		if(fgs!=null && fgs.getObject(model)==null && !dialect.supportAutoIncrease() && dialect.supportSequence()){
+		if(fgs!=null && fgs.getObject(model)==null && dialect.supportSequence()){
 			Column c = fgs.getAnnotation(Column.class);
 			String seq      = c==null? null : c.seq();
 			if(!MelpString.isEmpty(seq)){

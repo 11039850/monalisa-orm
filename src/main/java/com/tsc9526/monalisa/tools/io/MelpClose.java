@@ -54,16 +54,24 @@ public class MelpClose {
 			}else if(x instanceof HttpURLConnection){
 				close((HttpURLConnection)x);
 			}else if(x!=null){		
-				try{
-					Method m=x.getClass().getMethod("close");
-					m.setAccessible(true);
-					m.invoke(x);
-				}catch(NoSuchMethodException e){
-					//do nothing
-				}catch(Exception e){
-					throw new RuntimeException(e);
-				}
+				close(x);
 			}
+		}
+	}
+	
+	public static void close(Object objectWithCloseMethod){
+		if(objectWithCloseMethod==null){
+			return;
+		}
+		
+		try{
+			Method m=objectWithCloseMethod.getClass().getMethod("close");
+			m.setAccessible(true);
+			m.invoke(objectWithCloseMethod);
+		}catch(NoSuchMethodException e){
+			//do nothing
+		}catch(Exception e){
+			throw new RuntimeException(e);
 		}
 	}
 	

@@ -17,8 +17,11 @@
 package com.tsc9526.monalisa.orm.meta;
 
 import java.io.Serializable;
+import java.lang.annotation.Annotation;
 import java.util.ArrayList;
 import java.util.List;
+
+import com.tsc9526.monalisa.orm.annotation.Index;
 
 /**
  * 
@@ -84,6 +87,42 @@ public class MetaIndex implements Serializable{
 
 	public void setColumns(List<MetaColumn> columns) {
 		this.columns = columns;
+	}
+
+	public Index toIndexAnnotation() {
+		return new Index() {
+			
+			@Override
+			public Class<? extends Annotation> annotationType() {
+				return Index.class;
+			}
+			
+			@Override
+			public boolean unique() {
+				return isUnique();
+			}
+			
+			@Override
+			public int type() {
+				return getType();
+			}
+			
+			@Override
+			public String name() {
+				return getName();
+			}
+			
+			@Override
+			public String[] fields() {
+				List<String> fs=new ArrayList<String>();
+				for(MetaColumn c:getColumns()){
+					fs.add(c.getName());
+				}
+				
+				return fs.toArray(new String[0]);
+			}
+		};
+	 
 	}
 
 }

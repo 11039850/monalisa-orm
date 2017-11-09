@@ -782,7 +782,7 @@ public class DBWriterModel{
 			out.print(");");
 			} 		out.println("			 ");
 			out.println("			 ");
-			out.println("			return super.selectOneByExample(c.$example);");
+			out.println("			return super.selectByKeyExample(c.$example);");
 			out.println("		}			 ");
 			out.print("		");
 			

@@ -567,7 +567,7 @@ public class MelpClass {
 		}
 	 
 		public Class<?> getType() {
-		    return field.getType();
+		    return field==null?null:field.getType();
 		}
 		
 		public Object getObject(Object bean){

@@ -168,7 +168,7 @@ public class DbProp {
   
 	public final static DbProp PROP_DB_CACHE_TABLES	  		  = new DbProp("cache.tables");
 	 
-	public final static DbProp PROP_TABLE_VERSION_FIELD       = new DbProp("version.name","version");
+	public final static DbProp PROP_TABLE_VERSION_FIELD       = new DbProp("version.name","VERSION");
 	 
 	public final static DbProp PROP_TABLE_MODEL_CLASS         = new DbProp("modelClass");
 	public final static DbProp PROP_TABLE_MODEL_LISTENER      = new DbProp("modelListener");
@@ -216,9 +216,9 @@ public class DbProp {
 	public static String TMP_WORK_DIR_METATABLE = TMP_ROOT_PATH+"/_meta";
 	public static String TMP_WORK_DIR_GEN       = TMP_ROOT_PATH+"/_gen";
 	
-	public static int   CFG_RELOAD_CLASS_INTERVAL =10; 
+	public static int   CFG_RELOAD_CLASS_INTERVAL =15; 
 	
-	public static int 	CFG_RELOAD_MODEL_INTERVAL =10;
+	public static int 	CFG_RELOAD_MODEL_INTERVAL =15;
 	
 	/**
 	 * 全局Cache开关， 一个Query在未指定Cache时，允许读取另一个Query对象的缓存数据.  默认关闭

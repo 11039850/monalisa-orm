@@ -305,7 +305,7 @@ public class <%=table.getJavaName()%> extends <%=modelClass%><<%=table.getJavaNa
 			<%for(MetaColumn k:index.getColumns()){ %>
 			c.<%=k.getJavaName()%>.eq(<%=k.getJavaName()%>);<%} %>			 
 			 
-			return super.selectOneByExample(c.$example);
+			return super.selectByKeyExample(c.$example);
 		}			 
 		<%
 		if(index.getColumns().size()==1){

@@ -60,7 +60,7 @@ public class MelpLib {
  			put(libC3p0Class,        new String[]{"c3p0:c3p0:0.9.1.2"});
  			put(libDruidClass,       new String[]{"com.alibaba:druid:0.2.9"});
  			put(libMysqlClass,       new String[]{"mysql:mysql-connector-java:5.1.24"});
- 			put(libOracleClass,      new String[]{"com.oracle:ojdbc14:10.2.0.5.0"});
+ 			put(libOracleClass,      new String[]{"com.oracle:ojdbc14:10.2.0.4.0"});
  			put(libSqlServerClass,   new String[]{"com.microsoft.sqlserver:sqljdbc4:4.0"});
  			put(libCsvjdbcClass,     new String[]{"net.sourceforge.csvjdbc:csvjdbc:1.0.28"});
  		}

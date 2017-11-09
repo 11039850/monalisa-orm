@@ -838,7 +838,7 @@ public class TestTable1 extends com.tsc9526.monalisa.orm.model.Model<TestTable1>
 			c.name.eq(name);
 			c.createTime.eq(createTime);			 
 			 
-			return super.selectOneByExample(c.$example);
+			return super.selectByKeyExample(c.$example);
 		}			 
 		
 		

@@ -49,7 +49,7 @@ public class LongTypeConversion implements Conversion<Long> {
 		}
 		
 		if (!(value instanceof Long)) {
-			String v=value.toString();
+			String v=value.toString().trim();
 			if (v.trim().length()==0) {
 				value=null;
 			}else {

@@ -1160,7 +1160,7 @@ public class DBConfig implements Closeable{
 		}
 		
 		public String toString(){
-			StringBuffer sb=new StringBuffer();
+			StringBuilder sb=new StringBuilder();
 			
 			sb.append("datasourceClass:").append(datasourceClass);
 			sb.append(",validationgQuery:").append(validationgQuery);

@@ -336,4 +336,22 @@ public class MelpString {
 			}
 		}
 	}
+
+	public static int getCharWidth(String s) {
+		if(s==null || s.length()==0){
+			return 0;
+		}
+		
+		int w=0;
+		for(int i=0;i<s.length();i++){
+			char c=s.charAt(i);
+			if(c>255){
+				w+=2;
+			}else{
+				w++;
+			}
+		}
+		
+		return w;
+	}
 }

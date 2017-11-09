@@ -51,7 +51,7 @@ public class IntegerTypeConversion implements Conversion<Integer> {
 		}
 		
 		if (!(value instanceof Integer)) {
-			String v=value.toString();
+			String v=value.toString().trim();
 			if (v.trim().length()==0) {
 				value=null;
 			}else {

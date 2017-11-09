@@ -17,7 +17,6 @@
 package com.tsc9526.monalisa.orm.dialect;
 
 import java.sql.Connection;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -35,6 +34,7 @@ import com.tsc9526.monalisa.orm.annotation.Column;
 import com.tsc9526.monalisa.orm.annotation.Table;
 import com.tsc9526.monalisa.orm.datasource.DBConfig;
 import com.tsc9526.monalisa.orm.datasource.DbProp;
+import com.tsc9526.monalisa.orm.datasource.SimpleDataSource;
 import com.tsc9526.monalisa.orm.meta.MetaTable;
 import com.tsc9526.monalisa.orm.meta.MetaTable.CreateTable;
 import com.tsc9526.monalisa.orm.model.Model;
@@ -777,8 +777,8 @@ public abstract class Dialect{
 		return name;
 	}
 
-	public Connection getMetaConnection(DataSource ds)throws SQLException {
-		return ds.getConnection();
+	public DataSource getMetaDataSource(DBConfig dbcfg){
+		return new SimpleDataSource(dbcfg);
 	}
 
 }

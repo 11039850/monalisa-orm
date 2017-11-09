@@ -40,9 +40,7 @@ import javax.sql.DataSource;
 
 import com.tsc9526.monalisa.orm.datasource.DBConfig;
 import com.tsc9526.monalisa.orm.datasource.DbProp;
-import com.tsc9526.monalisa.orm.datasource.SimpleDataSource;
 import com.tsc9526.monalisa.orm.dialect.Dialect;
-import com.tsc9526.monalisa.orm.meta.MetaColumn;
 import com.tsc9526.monalisa.orm.meta.MetaPartition;
 import com.tsc9526.monalisa.orm.meta.MetaTable;
 import com.tsc9526.monalisa.orm.meta.MetaTable.CreateTable;
@@ -198,8 +196,8 @@ public class DBMetadata {
 		dialect = dbcfg.getDialect();
 
 		catalogPattern = dialect.getMetaCatalogPattern(dbcfg);
-		schemaPattern = dialect.getMetaSchemaPattern(dbcfg);
-		tablePattern = dialect.getMetaTablePattern(dbcfg);
+		schemaPattern  = dialect.getMetaSchemaPattern(dbcfg);
+		tablePattern   = dialect.getMetaTablePattern(dbcfg);
 
 		if (catalogPattern == null || catalogPattern.length() == 0) {
 			catalogPattern = dialect.geCatalog(dbcfg.getCfg().getUrl());
@@ -213,11 +211,10 @@ public class DBMetadata {
 	public List<MetaTable> getTables() {
 		DBGenerator.plogger.info("Loading tables from db-key: " + dbcfg.getKey() + ", url: " + dbcfg.getCfg().getUrl());
 		
-		DataSource ds = new SimpleDataSource(dbcfg);
-
+		DataSource ds = dialect.getMetaDataSource(dbcfg);
 		Connection conn = null;
 		try {
-			conn = dialect.getMetaConnection(ds);
+			conn = ds.getConnection();
 
 			DatabaseMetaData dbm = conn.getMetaData();
 			List<MetaTable> tables = getTables(dbm);
@@ -249,40 +246,7 @@ public class DBMetadata {
 			}
 		}
 	}
-
-	protected void setupSequence(DatabaseMetaData dbm, List<MetaTable> tables) throws SQLException {
-		DataMap seqs=new DataMap();
-		ResultSet rs=dbm.getTables(catalogPattern, schemaPattern, "%", new String[] { "SEQUENCE" });
-		while(rs.next()){
-			//SEQ_TASK_ID_DELETE  
-			String seq=rs.getString(COLUMN_TABLE_NAME);
-			seqs.put(seq,seq);
-		}
-		
-		for(MetaTable table:tables){
-			String tableName=table.getName().toUpperCase();
-			
-			String seq=DbProp.PROP_TABLE_SEQ.getValue(dbcfg, tableName,"SEQ_"+tableName);
-			
-			String cname = null;
-			int x=seq.indexOf('@');
-			if(x>0){
-				cname = seq.substring(x+1);
-				seq   = seq.substring(0,x);
-			}
-			
-			if(seqs.containsKey(seq)){
-				MetaColumn c= cname == null ? table.getColumns().get(0) : table.getColumn(cname);
-				c.setAuto(true);
-				c.setSeq(seq);
-				
-				DBGenerator.plogger.info("Sequence: "+ MelpString.rightPadding(seq,26)+ " -> "+tableName+"."+c.getName());
-			}
-		}
-		
-		MelpClose.close(rs);
-	}
-
+  
 	protected void saveMetadata(List<MetaTable> tables) throws IOException {
 		String dbKey = dbcfg.getCfg().getKey();
 		Map<String, MetaTable> hTables = hDBMetaTables.get(dbKey);
@@ -367,7 +331,7 @@ public class DBMetadata {
 		setupCreateTable(tables);
 		
 		if(dialect.supportSequence()){
-			setupSequence(dbm, tables);
+			TableHelper.setupSequence(dbcfg,dbm, tables);
 		}
 
 		return tables;

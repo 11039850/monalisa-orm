@@ -21,6 +21,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Properties;
 import java.util.Set;
 
 import javax.sql.DataSource;
@@ -30,6 +31,7 @@ import oracle.jdbc.driver.OracleConnection;
 import com.tsc9526.monalisa.orm.Query;
 import com.tsc9526.monalisa.orm.annotation.Column;
 import com.tsc9526.monalisa.orm.datasource.DBConfig;
+import com.tsc9526.monalisa.orm.datasource.SimpleDataSource;
 import com.tsc9526.monalisa.orm.meta.MetaTable.CreateTable;
 import com.tsc9526.monalisa.orm.model.Model;
 import com.tsc9526.monalisa.tools.clazz.MelpClass.FGS;
@@ -215,13 +217,18 @@ public class OracleDialect extends Dialect{
 	}
 	
 	@Override
-	public Connection getMetaConnection(DataSource ds)throws SQLException {
-		Connection conn= ds.getConnection();
+	public DataSource getMetaDataSource(DBConfig dbcfg){
+		Properties props=new Properties();
+		props.put("ResultSetMetaDataOptions","1");  
 		
-		OracleConnection oraCon=conn.unwrap(OracleConnection.class);
-		oraCon.setRemarksReporting(true);
-		
-		return conn;
+		return new SimpleDataSource(dbcfg,props){
+			@Override
+			protected Connection getRealConnection(String username, String password) throws SQLException {
+				OracleConnection conn=(OracleConnection)super.getRealConnection(username, password);
+				conn.setRemarksReporting(true);
+				return conn;
+			}
+		};
 	}
 	
 	@Override

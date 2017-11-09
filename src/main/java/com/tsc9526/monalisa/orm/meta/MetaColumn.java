@@ -138,7 +138,7 @@ public class MetaColumn extends Name{
 			String type=MelpTypes.getJavaType(jdbcType);
 			
 			if("java.math.BigDecimal".equals(type) && getDecimalDigits()==0){
-				if(length<=10){
+				if(length<=11){
 					type= "Integer";
 				}else if(length<=22){
 					type= "Long";
@@ -401,10 +401,13 @@ public class MetaColumn extends Name{
 	}
 	
 	public String toString(){
-		StringBuffer sb=new StringBuffer();
+		StringBuilder sb=new StringBuilder();
 		sb.append("NAME: ").append(name)
 		  .append(", KEY: ").append(key)
-		  .append(", TYPE: ").append(MelpTypes.getTypeName(jdbcType))
+		  .append(", JDBC_TYPE: ").append(jdbcType)
+		  .append(", JDBC_TYPE_NAME: ").append(MelpTypes.getTypeName(jdbcType))
+		  .append(", JAVA_TYPE: ").append(getJavaType())
+		  .append(", DECIMALDIGITS: ").append(decimalDigits)
 		  .append(", LENGTH: ").append(length)
 		  .append(", NOTNULL: ").append(notnull)		  
 		  .append(", AUTO: ").append(auto)

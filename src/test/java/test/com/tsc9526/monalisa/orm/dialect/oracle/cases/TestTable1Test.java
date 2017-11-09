@@ -16,6 +16,7 @@
  *******************************************************************************************/
 package test.com.tsc9526.monalisa.orm.dialect.oracle.cases;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -28,6 +29,7 @@ import org.testng.annotations.Test;
 import test.com.tsc9526.monalisa.TestConstants;
 import test.com.tsc9526.monalisa.orm.dialect.oracle.oracledb.TestTable1;
 
+import com.tsc9526.monalisa.orm.model.Record;
 import com.tsc9526.monalisa.tools.datatable.DataTable;
 import com.tsc9526.monalisa.tools.datatable.Page;
 import com.tsc9526.monalisa.tools.logger.Logger;
@@ -58,24 +60,6 @@ public class TestTable1Test {
 		Assert.assertEquals(0, r);
 	}
  
-	@Test(invocationCount = SingleThreadInvocationCount)
-	public void testInsert(){
-		long tx = totalInserts.addAndGet(1);
-		TestTable1 table1=new TestTable1();
-		table1.defaults();
-		table1.setName("jjyy-"+MelpString.leftPadding(String.valueOf(tx),'0',10));
-		table1.setTitle("single-thread-count-"+SingleThreadInvocationCount);
-		table1.setUpdateBy(String.valueOf(tx));
-		int r=table1.save();
-		
-		Assert.assertEquals(1,r);
-		Assert.assertTrue(table1.getId().longValue()>0);
-
-		TestTable1 t1=TestTable1.SELECT().selectById(table1.getId());
-		Assert.assertEquals(table1.getTitle(),t1.getTitle());
-		Assert.assertNotNull(t1.getCreateTime());
-	}
-	
 	@AfterClass
 	public void afterClass(){
 		long c=TestTable1.SELECT().count();
@@ -84,6 +68,31 @@ public class TestTable1Test {
 		Assert.assertEquals(expect, c);
 		 
 	}
+	
+
+	@Test(invocationCount = SingleThreadInvocationCount)
+	public void testInsert(){
+		long tx = totalInserts.addAndGet(1);
+		TestTable1 table1=new TestTable1();
+		table1.defaults();
+		table1.setName("jjyy-"+MelpString.leftPadding(String.valueOf(tx),'0',10));
+		table1.setTitle("single-thread-count-"+SingleThreadInvocationCount);
+		table1.setUpdateBy(String.valueOf(tx));
+		table1.setNumberV1(new BigDecimal(226));
+		int r=table1.save();
+		
+		long id=table1.getId();
+		Assert.assertTrue(id>0);
+	 	
+		Assert.assertEquals(1,r);
+		Assert.assertTrue(table1.getId().longValue()>0);
+
+		TestTable1 t1=TestTable1.SELECT().selectById(table1.getId());
+		Assert.assertEquals(table1.getTitle(),t1.getTitle());
+		Assert.assertNotNull(t1.getCreateTime());
+		Assert.assertEquals(table1.getNumberV1(),new BigDecimal(226)) ;
+	}
+	
 	
 	@Test(dependsOnMethods={"testInsert","testMultiInserts","testSelect"})
 	public void testUpdate(){
@@ -103,24 +112,107 @@ public class TestTable1Test {
 		Assert.assertEquals(t1.getTitle(),t2.getTitle());
 	 
 	}
+	 
+	public void testUpdateByVersion(){
+		TestTable1 x=new TestTable1();
+		x.defaults().setName("tsc9526-0");
+		x.setTitle("REMOVE-0");
+		x.setTsA(new Date());
+		x.setVersion(0);
+		int r=x.save();
+		Assert.assertEquals(1,r);
+		
+		TestTable1 t1=TestTable1.SELECT().selectById(x.getId());
+		TestTable1 t2=TestTable1.SELECT().selectById(x.getId());
+		
+		r=t1.setUpdateBy("zzg-1").updateByVersion();
+		Assert.assertEquals(1,r);
+		
+		r=t2.setUpdateBy("zzg-2").updateByVersion();
+		Assert.assertEquals(0,r);
+		
+		TestTable1 z=TestTable1.SELECT().selectById(x.getId());
+		Assert.assertEquals(z.getUpdateBy(),"zzg-1");
+	}
 	
-	@Test(dependsOnMethods="testSaveOrUpdate")
+	public void testSaveOrUpdate(){
+		TestTable1 x=new TestTable1();
+		x.defaults().setName("tsc9526-1");
+		x.setTitle("REMOVE-1");
+		x.setTsA(new Date());
+		
+		x.saveOrUpdate();
+		Assert.assertTrue(x.getId()>0);
+		
+		Date tsa=new Date();
+		TestTable1 y=TestTable1.SELECT().selectById(x.getId());
+		Assert.assertEquals(x.getName(),y.getName());
+		y.setTsA(tsa);
+		int r=y.saveOrUpdate();
+		Assert.assertEquals(1,r);
+		
+		TestTable1 z=new TestTable1();
+		z.setName("tsc9526-1");
+		z.setTitle("REMOVE-1");
+		z.setUpdateBy("xyz");
+		r=z.saveOrUpdate();
+		Assert.assertEquals(1,r);
+		
+		TestTable1 m=TestTable1.SELECT().selectById(x.getId());
+		Assert.assertEquals("xyz",m.getUpdateBy());
+		Assert.assertEquals(x.getId(),m.getId());
+	}
+	
+	@Test(dependsOnMethods={"testSaveOrUpdate"})
 	public void testDeleteByUniqueKey(){
 		TestTable1 z=new TestTable1();
-		z.setName("tsc9526");
-		z.setTitle("REMOVE");
+		z.setName("tsc9526-1");
+		z.setTitle("REMOVE-1");
 		z.setTsA(new Date());
 		
 		int r=z.delete();
 		Assert.assertEquals(1,r);
-		
+		 
 	}
 	
-	@Test(dependsOnMethods="testSaveOrUpdate")
+	@Test(dependsOnMethods={"testUpdateByVersion"})
+	public void testDeleteUsingRecord(){
+		Record z=createRecord();
+		z.set("name","tsc9526-0");
+		z.set("title","REMOVE-0");
+	  	int r=z.delete();
+		Assert.assertEquals(1,r);
+	}
+	 
+	 
+	public void testRecord(){
+		Record x=createRecord();
+		x.defaults();
+		x.set("name","record-0");
+		x.set("title","REMOVE-0");
+		int r=x.save();
+		Assert.assertEquals(1,r);
+		Assert.assertTrue(x.getLong("ID")>0);
+		
+		
+		Record z=createRecord()
+				.set("name", "record-0")
+				.set("title", "REMOVE-0")
+				.load();
+		Assert.assertTrue(z.entity());
+		
+		r=z.delete();
+		Assert.assertEquals(1, r);		
+	}
+	
+	private Record createRecord(){
+		return new TestTable1().db().createRecord("TEST_TABLE_1","id");
+	}
+	
 	public void testDeleteByPk(){
 		TestTable1 z=new TestTable1();
-		z.setName("tsc9526-1");
-		z.setTitle("REMOVE-1");
+		z.setName("tsc9526-2");
+		z.setTitle("REMOVE-2");
 		z.setTsA(new Date());
 		
 		int r=z.delete();
@@ -131,34 +223,6 @@ public class TestTable1Test {
 		
 		r=new TestTable1(z.getId()).delete();
 		Assert.assertEquals(1,r);
-	}
-	
-	public void testSaveOrUpdate(){
-		TestTable1 x=new TestTable1();
-		x.defaults().setName("tsc9526");
-		x.setTitle("REMOVE");
-		x.setTsA(new Date());
-		
-		x.saveOrUpdate();
-		Assert.assertNotNull(x.getId());
-		
-		Date tsa=new Date();
-		TestTable1 y=TestTable1.SELECT().selectById(x.getId());
-		Assert.assertEquals(x.getName(),y.getName());
-		y.setTsA(tsa);
-		int r=y.saveOrUpdate();
-		Assert.assertEquals(1,r);
-		
-		TestTable1 z=new TestTable1();
-		z.setName("tsc9526");
-		z.setTitle("REMOVE");
-		z.setUpdateBy("xyz");
-		r=z.saveOrUpdate();
-		Assert.assertEquals(1,r);
-		
-		TestTable1 m=TestTable1.SELECT().selectById(x.getId());
-		Assert.assertEquals("xyz",m.getUpdateBy());
-		Assert.assertEquals(x.getId(),m.getId());
 	}
 	
 	@Test(dependsOnMethods={"testInsert","testMultiInserts"})

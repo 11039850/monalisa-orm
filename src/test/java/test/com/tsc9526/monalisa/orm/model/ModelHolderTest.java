@@ -70,7 +70,7 @@ public class ModelHolderTest {
 		table3.setName("n3");
 		 
 		String sql=MysqlDB.DB.getDialect().updateByVersion(table2).getExecutableSQL();
-		String expect="UPDATE `test_table_1` SET `name`='n2', `title`='title_v1', `enum_int_a`=0, `enum_string_a`='TRUE', `ts_a`='"+ts+"', `create_time`='"+ts+"', `create_by`=null, `update_time`=null, `update_by`=null, `version` = `version` + 1 WHERE `id` = "+table1.getId()+" AND `version` = 1";
+		String expect="UPDATE `test_table_1` SET `name`='n2', `title`='title_v1', `enum_int_a`=0, `enum_string_a`='TRUE', `ts_a`='"+ts+"', `create_time`='"+ts+"', `create_by`=null, `update_time`=null, `update_by`=null, `VERSION` = `VERSION` + 1 WHERE `id` = "+table1.getId()+" AND `VERSION` = 1";
 		Assert.assertEquals(sql,expect);
 		
 		

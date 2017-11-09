@@ -20,15 +20,22 @@ import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
 import com.tsc9526.monalisa.orm.datasource.DBConfig;
+import com.tsc9526.monalisa.orm.datasource.DbProp;
 import com.tsc9526.monalisa.orm.dialect.Dialect;
+import com.tsc9526.monalisa.orm.generator.DBGenerator;
+import com.tsc9526.monalisa.orm.generator.DBMetadata;
 import com.tsc9526.monalisa.orm.meta.MetaColumn;
 import com.tsc9526.monalisa.orm.meta.MetaIndex;
 import com.tsc9526.monalisa.orm.meta.MetaTable;
+import com.tsc9526.monalisa.tools.datatable.DataMap;
 import com.tsc9526.monalisa.tools.io.MelpClose;
+import com.tsc9526.monalisa.tools.string.MelpString;
 
 /**
  * 
@@ -37,17 +44,17 @@ import com.tsc9526.monalisa.tools.io.MelpClose;
 public class TableHelper {
 	private TableHelper(){}
 	
-	public static MetaTable getMetaTable(DBConfig db,String tableName)throws SQLException{
-		MTable mTable=new MTable(db,tableName);
+	public static MetaTable getMetaTable(DBConfig dbcfg,String tableName)throws SQLException{
+		MTable mTable=new MTable(dbcfg,tableName);
 		return mTable.getMetaTable();		  
 	}
 	 
-	public static void getTableIndexes(DBConfig db,DatabaseMetaData dbm,MetaTable table)throws SQLException{
-		Dialect dialect         = db.getDialect();
+	public static void getTableIndexes(DBConfig dbcfg,DatabaseMetaData dbm,MetaTable table)throws SQLException{
+		Dialect dialect         = dbcfg.getDialect();
 		
-		String catalogPattern   = dialect.getMetaCatalogPattern(db);
-		String schemaPattern    = dialect.getMetaSchemaPattern(db);
-		String tablePattern     = dialect.getMetaTablePattern(db,table);
+		String catalogPattern   = dialect.getMetaCatalogPattern(dbcfg);
+		String schemaPattern    = dialect.getMetaSchemaPattern(dbcfg);
+		String tablePattern     = dialect.getMetaTablePattern(dbcfg,table);
 		
 		ResultSet rs = dbm.getIndexInfo(catalogPattern, schemaPattern, tablePattern, false, true);  
 	    while(rs.next()){
@@ -77,17 +84,17 @@ public class TableHelper {
 	    rs.close(); 	 					    		    		 
 	}
 	
-	public static void getTableColumns(DBConfig db,DatabaseMetaData dbm,MetaTable table)throws SQLException{
-		getTableAllColumns(db,dbm,table);
-		getTableKeyColumns(db,dbm,table);
+	public static void getTableColumns(DBConfig dbcfg,DatabaseMetaData dbm,MetaTable table)throws SQLException{
+		getTableAllColumns(dbcfg,dbm,table);
+		getTableKeyColumns(dbcfg,dbm,table);
 	}
 	
-	private static void getTableAllColumns(DBConfig db,DatabaseMetaData dbm,MetaTable table)throws SQLException{
-		Dialect dialect=db.getDialect();
+	private static void getTableAllColumns(DBConfig dbcfg,DatabaseMetaData dbm,MetaTable table)throws SQLException{
+		Dialect dialect=dbcfg.getDialect();
 		
-		String catalogPattern = dialect.getMetaCatalogPattern(db);
-		String schemaPattern  = dialect.getMetaSchemaPattern(db);
-		String tablePattern   = dialect.getMetaTablePattern(db, table);
+		String catalogPattern = dialect.getMetaCatalogPattern(dbcfg);
+		String schemaPattern  = dialect.getMetaSchemaPattern(dbcfg);
+		String tablePattern   = dialect.getMetaTablePattern(dbcfg, table);
 		
 		ResultSet rs = dbm.getColumns(catalogPattern, schemaPattern,tablePattern, null);
 	    while(rs.next()){
@@ -103,6 +110,9 @@ public class TableHelper {
 	    	String value=rs.getString("COLUMN_DEF");
 	    	if(value!=null && value.startsWith("'")){
 	    		value=value.substring(1,value.length()-2);
+	    	}
+	    	if(value!=null){
+	    		value=value.trim();
 	    	}
 	    	
 	    	MetaColumn column=new MetaColumn();		
@@ -124,12 +134,12 @@ public class TableHelper {
 	    rs.close();		    	   
 	}
 
-	private static void getTableKeyColumns(DBConfig db,DatabaseMetaData dbm,MetaTable table)throws SQLException{
-		Dialect dialect         = db.getDialect();
+	private static void getTableKeyColumns(DBConfig dbcfg,DatabaseMetaData dbm,MetaTable table)throws SQLException{
+		Dialect dialect         = dbcfg.getDialect();
 		
-		String catalogPattern   = dialect.getMetaCatalogPattern(db);
-		String schemaPattern    = dialect.getMetaSchemaPattern(db);
-		String tablePattern     = dialect.getMetaTablePattern(db,table);
+		String catalogPattern   = dialect.getMetaCatalogPattern(dbcfg);
+		String schemaPattern    = dialect.getMetaSchemaPattern(dbcfg);
+		String tablePattern     = dialect.getMetaTablePattern(dbcfg,table);
 		
 		Map<Short, MetaColumn> keyColumns = new TreeMap<Short, MetaColumn>();
 	    ResultSet rs = dbm.getPrimaryKeys(catalogPattern,schemaPattern, tablePattern);
@@ -147,28 +157,72 @@ public class TableHelper {
 	    }
 	    rs.close();
 	}
+	
+
+	public static void setupSequence(DBConfig dbcfg,DatabaseMetaData dbm, List<MetaTable> tables) throws SQLException {
+		Dialect dialect         = dbcfg.getDialect();
+		
+		String catalogPattern   = dialect.getMetaCatalogPattern(dbcfg);
+		String schemaPattern    = dialect.getMetaSchemaPattern(dbcfg);
+		
+		DataMap seqs=new DataMap();
+		ResultSet rs=dbm.getTables(catalogPattern, schemaPattern, "%", new String[] { "SEQUENCE" });
+		while(rs.next()){
+			//SEQ_TASK_ID_DELETE  
+			String seq=rs.getString(DBMetadata.COLUMN_TABLE_NAME);
+			seqs.put(seq,seq);
+		}
+		MelpClose.close(rs);
+		
+		for(MetaTable table:tables){
+			String tableName=table.getName().toUpperCase();
+			
+			String seq=DbProp.PROP_TABLE_SEQ.getValue(dbcfg, tableName,"SEQ_"+tableName);
+			
+			String cname = null;
+			int x=seq.indexOf('@');
+			if(x>0){
+				cname = seq.substring(x+1);
+				seq   = seq.substring(0,x);
+			}
+			
+			if(seqs.containsKey(seq)){
+				MetaColumn c= cname == null ? table.getColumns().get(0) : table.getColumn(cname);
+				c.setAuto(true);
+				c.setSeq(seq);
+				
+				DBGenerator.plogger.info("Sequence: "+ MelpString.rightPadding(seq,26)+ " -> "+tableName+"."+c.getName());
+			}
+		}
+	}
 	 
 	private static class MTable{
-		private DBConfig db;
+		private DBConfig dbcfg;
 		private String tableName;
-		private DatabaseMetaData dbm;
-		private MetaTable table;
-		
-		public MTable(DBConfig db,String tableName){
-			this.db=db; 
+	 	
+		public MTable(DBConfig dbcfg,String tableName){
+			this.dbcfg=dbcfg; 
 			this.tableName=tableName;
 		}
 		
 		public MetaTable getMetaTable()throws SQLException{
 			Connection conn=null;
 			try{
-				conn=db.getDataSource().getConnection();
-				dbm=conn.getMetaData();
+				Dialect dialect=dbcfg.getDialect();
+			 	
+				conn=dbcfg.getDataSource().getConnection();
+				DatabaseMetaData dbm=conn.getMetaData();
 				
-				table=new MetaTable(tableName);
+				MetaTable table=new MetaTable(tableName);
 				
-				getTableColumns(db,dbm,table);								 
-				getTableIndexes(db,dbm,table);
+				getTableColumns(dbcfg,dbm,table);								 
+				getTableIndexes(dbcfg,dbm,table);
+				
+				if(dialect.supportSequence()){
+					List<MetaTable> tables=new ArrayList<MetaTable>();
+					tables.add(table);
+					setupSequence(dbcfg,dbm,tables);
+				}
 				
 				if(table.getColumns().isEmpty()){
 					return null;
@@ -176,6 +230,7 @@ public class TableHelper {
 					return table;
 				}
 			}finally{
+				
 				MelpClose.close(conn);
 			}			  
 		}
