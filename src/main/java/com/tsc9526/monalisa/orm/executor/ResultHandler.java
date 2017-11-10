@@ -227,8 +227,14 @@ public class ResultHandler<T> {
 				}
 				
 				column.setJdbcType(rsmd.getColumnType(i));
-				column.setLength(rsmd.getColumnDisplaySize(i));
-				column.setDecimalDigits(rsmd.getScale(i)); 
+				column.setDecimalDigits(rsmd.getScale(i));
+				
+				if("NUMBER".equalsIgnoreCase( rsmd.getColumnTypeName(i)) ){
+					int len=Math.min(rsmd.getColumnDisplaySize(i),rsmd.getPrecision(i));
+					column.setLength(len);
+				}else{
+					column.setLength(rsmd.getColumnDisplaySize(i));
+				}
 				 
 				table.addColumn(column);
 			}
