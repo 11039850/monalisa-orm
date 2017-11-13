@@ -275,10 +275,14 @@ Output will be:
 	<dependency>
 		<groupId>com.tsc9526</groupId>
 		<artifactId>monalisa-orm</artifactId>
-		<version>2.0.0</version>
+		<version>2.1.0</version>
 	</dependency>
 ``` 
 
+# Change Log
+
+* 2.1.0  Add oracle dialect
+* 2.0.0  Only Mysql     
     
 # TODO list
 
