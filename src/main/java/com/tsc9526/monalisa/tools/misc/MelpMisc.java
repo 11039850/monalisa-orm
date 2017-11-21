@@ -24,7 +24,8 @@ import java.util.List;
  * @author zzg.zhou(11039850@qq.com)
  */
 public class MelpMisc {
- 
+	private MelpMisc(){}
+	
 	public static String getPid() {
 		String vmName = ManagementFactory.getRuntimeMXBean().getName();
 		int p = vmName.indexOf('@');
@@ -40,5 +41,13 @@ public class MelpMisc {
 			}
 		}
 		return false;
+	}
+	
+	public static void sleep(long millis){
+		try {
+			Thread.sleep(millis);
+		} catch (InterruptedException e) {
+			Thread.currentThread().interrupt();
+		}
 	}
 }
