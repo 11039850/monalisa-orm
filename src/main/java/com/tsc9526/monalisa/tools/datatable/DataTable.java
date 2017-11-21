@@ -296,7 +296,7 @@ public class DataTable<E> extends ArrayList<E> {
 	protected List<DataColumn> createHeader(){
 		List<DataColumn> headers=new ArrayList<DataColumn>();
 		
- 		Object v=this.get(0);
+ 		Object v=size()>0?this.get(0):null;
 		if(v!=null){
 			if(v instanceof Map){
 				int index=0;
@@ -447,8 +447,10 @@ public class DataTable<E> extends ArrayList<E> {
 	public String format(){
 		DataTable<DataMap> ts = this.as(DataMap.class);
 		
-		ts.headers = createHeader();
-		 
+		if(ts.size()>0){
+			ts.headers = createHeader();
+		}
+		
 		int cols = ts.headers.size();
 		  		
 		List<String[]> rs=new ArrayList<String[]>();

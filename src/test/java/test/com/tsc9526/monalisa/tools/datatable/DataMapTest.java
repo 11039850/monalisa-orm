@@ -383,4 +383,27 @@ public class DataMapTest {
 		Assert.assertEquals(m.getByPath("f1/f2[-3]"), "a");
 	}
 	
+	
+	public void testParseFromArray(){
+		String json=""+/**~!{*/""
+				+ "["
+				+ "\r\n	{"
+				+ "\r\n		\"f\":'x1'"
+				+ "\r\n	},"
+				+ "\r\n	{"
+				+ "\r\n		\"f\":\"x2\""
+				+ "\r\n	}"
+				+ "\r\n]	"
+			+ "\r\n"/**}*/;
+		
+		DataMap m=DataMap.fromJson(json);
+		Assert.assertEquals(m.size(), 2);
+		
+		for(int i=1;i<=2;i++){
+			DataMap f=m.gets(i-1);
+			Assert.assertEquals(f.getString("f"), "x"+i);
+		}
+		
+		
+	}
 }

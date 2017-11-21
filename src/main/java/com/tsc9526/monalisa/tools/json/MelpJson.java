@@ -187,9 +187,32 @@ public class MelpJson {
 	}	
 	
 	public static DataMap parseToDataMap(String json){
-		JsonElement je=new JsonParser().parse(json);
+		if(json==null || json.length()<1){
+			throw new RuntimeException("Invalid json string: "+json);
+		}
+		  
+		JsonElement je=null;
+		try{
+			je=new JsonParser().parse(json);
+		}catch(Exception e){
+			throw new RuntimeException("Invalid json string: \r\n"+json,e);
+		}
+		
 		if(je.isJsonObject()){
 			return parseToDataMap(je.getAsJsonObject());
+		}else if(je.isJsonArray()){
+			DataMap ret=new DataMap();
+			
+			JsonArray array=(JsonArray)je;
+    		for(int i=0;i<array.size();i++){
+    			JsonElement e=array.get(i);
+    			
+    			Object v=toObject(e);
+    			
+    			ret.put(String.valueOf(i),v);
+    		}
+    		
+			return ret;
 		}else{
 			return null;
 		}
