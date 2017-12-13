@@ -42,7 +42,7 @@ public class Validator {
 		for(FGS fgs:mc.getFields()){
 			NotNull notnull=fgs.getAnnotation(NotNull.class);
 			 
-			Object v=fgs.getObject(this);
+			Object v=fgs.getObject(bean);
 			
 			if(notnull!=null && v==null ){
 				result.add(fgs.getFieldName()+": CAN NOT BE NULL");
