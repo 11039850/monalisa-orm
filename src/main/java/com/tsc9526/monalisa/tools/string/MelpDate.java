@@ -124,6 +124,10 @@ public class MelpDate {
 		if (v == null) {
 			return defaultValue;
 		} else {
+			if("".equals(v)){
+				return null;
+			}
+			 
 			if (v instanceof Date) {
 				return (Date) v;
 			} else if (v.getClass() == Long.class || v.getClass() == long.class) {

@@ -26,6 +26,7 @@ import com.tsc9526.monalisa.orm.model.Model;
 import com.tsc9526.monalisa.tools.clazz.MelpClass;
 import com.tsc9526.monalisa.tools.clazz.MelpClass.ClassHelper;
 import com.tsc9526.monalisa.tools.clazz.MelpClass.FGS;
+import com.tsc9526.monalisa.tools.converters.impl.ArrayTypeConversion;
 import com.tsc9526.monalisa.tools.json.MelpJson;
 import com.tsc9526.monalisa.tools.misc.MelpException;
 import com.tsc9526.monalisa.tools.string.MelpDate;
@@ -225,9 +226,20 @@ public class DataMap extends CaseInsensitiveMap<Object>{
 		Object v=get(key);
 		
 		if(v!=null && v.getClass().isArray() ) {
-			Object[] os=(Object[])v;
-			
-			return os[0];
+			Object[] vs = null;
+			if(v.getClass().getComponentType().isPrimitive()){
+				ArrayTypeConversion conversion = new ArrayTypeConversion();
+				
+				vs = (Object[])conversion.convert(v, Object[].class);
+			}else {
+				vs = (Object[]) v;
+			}
+			 
+			if(vs!=null && vs.length>0){
+				return vs[0];
+			}else{
+				return "";
+			}
 		}else{
 			return v;
 		}
@@ -301,6 +313,10 @@ public class DataMap extends CaseInsensitiveMap<Object>{
 		if(v==null){
 			return Boolean.FALSE;
 		}else{
+			if("".equals(v)){
+				return null;
+			}
+			
 			if(v instanceof Boolean){
 				return (Boolean)v;
 			}else{
@@ -324,6 +340,10 @@ public class DataMap extends CaseInsensitiveMap<Object>{
 		if(v==null){
 			return null;
 		}else{
+			if("".equals(v)){
+				return null;
+			}
+			
 			if(v instanceof Integer){
 				return (Integer)v;
 			}else if(v instanceof Double){
@@ -349,6 +369,10 @@ public class DataMap extends CaseInsensitiveMap<Object>{
 		if(v==null){
 			return null;
 		}else{
+			if("".equals(v)){
+				return null;
+			}
+			
 			if(v instanceof Long){
 				return (Long)v;
 			}else if(v instanceof Double){
@@ -375,6 +399,10 @@ public class DataMap extends CaseInsensitiveMap<Object>{
 		if(v==null){
 			return null;
 		}else{
+			if("".equals(v)){
+				return null;
+			}
+			
 			if(v instanceof Float){
 				return (Float)v;
 			}else if(v instanceof Double){
@@ -399,6 +427,10 @@ public class DataMap extends CaseInsensitiveMap<Object>{
 		if(v==null){
 			return null;
 		}else{
+			if("".equals(v)){
+				return null;
+			}
+			
 			if(v instanceof Double){
 				return (Double)v;
 			}else{

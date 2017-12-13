@@ -403,7 +403,67 @@ public class DataMapTest {
 			DataMap f=m.gets(i-1);
 			Assert.assertEquals(f.getString("f"), "x"+i);
 		}
+	}
+	
+	
+	public void testEmptyBooleanArray(){
+		DataMap m =new DataMap();
+		m.put("a",new boolean[0]);
 		
+		Boolean x=m.getBoolean("a");
+		Assert.assertNull(x);
+	}
+	
+	public void testEmptyDateArray(){
+		DataMap m =new DataMap();
+		m.put("a",new Date[0]);
 		
+		Date x=m.getDate("a");
+		Assert.assertNull(x);
+	}
+	
+	public void testEmptyDoubleArray(){
+		DataMap m =new DataMap();
+		m.put("a",new double[0]);
+		
+		Double x=m.getDouble("a");
+		Assert.assertNull(x);
+	}
+	
+	public void testEmptyFloatArray(){
+		DataMap m =new DataMap();
+		m.put("a",new float[0]);
+		
+		Float x=m.getFloat("a");
+		Assert.assertNull(x);
+	}
+	
+	public void testEmptyIntegerArray(){
+		DataMap m =new DataMap();
+		m.put("a",new int[0]);
+		m.put("b",null);
+		m.put("c",1);
+		m.put("d",new int[]{9});
+		
+		Assert.assertNull(m.getInteger("a"));
+		Assert.assertNull(m.getInteger("b"));
+		Assert.assertEquals(m.getInteger("c"),Integer.valueOf(1));
+		Assert.assertEquals(m.getInteger("d"),Integer.valueOf(9));
+	}
+	
+	public void testEmptyLongArray(){
+		DataMap m =new DataMap();
+		m.put("a",new int[0]);
+		
+		Long x=m.getLong("a");
+		Assert.assertNull(x);
+	}
+	
+	public void testEmptyStringArray(){
+		DataMap m =new DataMap();
+		m.put("a",new String[0]);
+		
+		String x=m.getString("a");
+		Assert.assertEquals(x, "");
 	}
 }
