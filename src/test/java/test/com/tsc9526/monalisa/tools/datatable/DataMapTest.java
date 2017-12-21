@@ -22,6 +22,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 
 import org.testng.Assert;
@@ -38,6 +39,25 @@ import com.tsc9526.monalisa.tools.datatable.DataMap;
 @Test
 public class DataMapTest {
 
+	public void testEquals(){
+		DataMap a = new DataMap();
+		a.put("A", "a1");
+		a.put("B", "b1");
+		
+		DataMap b = new DataMap();
+		b.put("b", "b1");
+		b.put("a", "a1");
+		Assert.assertTrue(a.equals(b));
+	}
+	
+	public void testFromMap(){
+		Map<String, String> x = new HashMap<String, String>();
+		x.put("A", "a");
+		 
+		DataMap r = DataMap.fromMap(x);
+		Assert.assertEquals(r.getString("a"),"a");
+	}
+	
 	public void testAsDataMap(){
 		DataMap x=new DataMap();
 		x.put("a","a");
@@ -57,9 +77,13 @@ public class DataMapTest {
 	public void testAsTestSimpleModel(){
 		DataMap x=new DataMap();
 		x.put("intField1",226);
+		x.put("INTFIELD2",227); //upper case
+		x.put("string_field1","zzg");
 		
 		TestSimpleModel t1=x.as(TestSimpleModel.class);
 		Assert.assertEquals(t1.getIntField1().intValue(),226);
+		Assert.assertEquals(t1.getIntField2().intValue(),227);
+		Assert.assertEquals(t1.getStringField1(),"zzg"); 
 	}
 	
 

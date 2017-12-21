@@ -50,8 +50,21 @@ public class DataMap extends CaseInsensitiveMap<Object>{
 		return MelpString.json2Map(json);
 	}
 	
+	public static DataMap fromMap(Map<String,?> map){
+		return new DataMap(map);
+	}
+	
 	public DataMap(){
+	}
+	 
+	public DataMap(int initialCapacity) {
+        super(initialCapacity);
+    }
+	
+	public DataMap(Map<String,?> m){
+		super();
 		
+		putAll(m);
 	}
 	
 	public String toJson() {
@@ -67,10 +80,7 @@ public class DataMap extends CaseInsensitiveMap<Object>{
 		
 		return gb.create().toJson(this);
 	}
-	
-	public DataMap(Map<String, Object> m){
-		putAll(m);
-	}
+	 
 	
 	@SuppressWarnings("unchecked")
 	public <T> T gets(Object key){
@@ -88,12 +98,9 @@ public class DataMap extends CaseInsensitiveMap<Object>{
 			
 			ClassHelper mc=MelpClass.getClassHelper(toClass);
 			for(FGS fgs:mc.getFields()){
-				String name=fgs.getFieldName();
-				if(containsKey(name)){
-					fgs.setObject(r, get(name));
-				}
-			} 
-			 
+				fgs.mapto(this,r);
+			}  
+			
 			return r;
 		}catch(Exception e) {
 			return MelpException.throwRuntimeException(e);

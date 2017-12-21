@@ -25,10 +25,16 @@ import java.util.Map;
  * @author zzg.zhou(11039850@qq.com)
  */
 public class CaseInsensitiveMap<T> extends LinkedHashMap<String, T> {
-
 	private static final long serialVersionUID = -5859767087732654080L;
 
 	private transient Map<String,String> keys=new HashMap<String,String>();
+	
+	public CaseInsensitiveMap(){
+	}
+	
+	public CaseInsensitiveMap(int initialCapacity) {
+        super(initialCapacity);
+    }
 	
 	public T put(String key, T value) {
 		if(key==null){
@@ -45,7 +51,18 @@ public class CaseInsensitiveMap<T> extends LinkedHashMap<String, T> {
 			return super.put(origin, value);
 		}
 	}
-
+	
+	
+	public void putAll(Map<? extends String,? extends T> m) {
+		for(Map.Entry<? extends String,? extends T> entry:m.entrySet()){
+			String key   = entry.getKey();
+			T      value = entry.getValue();
+			
+			put(key, value);
+		}      
+	}
+	 
+	@Override
 	public T get(Object key) {
 		return super.get(convertKey(key));
 	}
@@ -83,5 +100,15 @@ public class CaseInsensitiveMap<T> extends LinkedHashMap<String, T> {
 			}
 		}
 		return keys;
+	}
+	
+	@Override
+	public boolean equals(Object other){
+		return super.equals(other);
+	}
+	
+	@Override
+	public int hashCode(){
+		return super.hashCode();
 	}
 }
