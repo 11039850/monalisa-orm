@@ -17,14 +17,53 @@
 package com.tsc9526.monalisa.tools.misc;
 
 import java.lang.management.ManagementFactory;
+import java.util.Collection;
 import java.util.List;
+
+import com.tsc9526.monalisa.tools.converters.impl.ArrayTypeConversion;
 
 /**
  * 
  * @author zzg.zhou(11039850@qq.com)
  */
 public class MelpMisc {
-	private MelpMisc(){}
+	private MelpMisc() {}
+	
+	/**
+	 * Empty checking:  
+	 * <ol>
+	 * 	<li> null object </li>
+	 * 	<li> empty collection</li>
+	 * 	<li> empty array: array[0]</li>
+	 * 	<li> empty string: "" ,  "  " , "null"</li>
+	 * </ol> 
+	 * @param obj : the object to check
+	 * @return true if the object is empty
+	 */
+	public static boolean isEmpty(Object obj) {
+		if (obj == null) {
+			return true;
+		} else if (obj instanceof Collection) {
+			return  ((Collection<?>) obj).isEmpty();
+		} else if (obj.getClass().isArray()) {
+			Object[] vs = null;
+			if(obj.getClass().getComponentType().isPrimitive()){
+				ArrayTypeConversion conversion = new ArrayTypeConversion();
+				
+				vs = (Object[])conversion.convert(obj, Object[].class);
+			}else {
+				vs = (Object[]) obj;
+			}
+					
+			return vs.length == 0;
+		}else if (obj instanceof String) {
+			String x = obj.toString();
+
+			return "null".equalsIgnoreCase(x) || x.trim().length()==0;
+		}
+
+		return false;
+	}
 	
 	public static String getPid() {
 		String vmName = ManagementFactory.getRuntimeMXBean().getName();
@@ -42,8 +81,8 @@ public class MelpMisc {
 		}
 		return false;
 	}
-	
-	public static void sleep(long millis){
+
+	public static void sleep(long millis) {
 		try {
 			Thread.sleep(millis);
 		} catch (InterruptedException e) {

@@ -34,7 +34,7 @@ import com.tsc9526.monalisa.tools.string.MelpString;
 
 /**
  *  
- * case insensitive map
+ * case insensitive and linked hash map
  * 
  * @author zzg.zhou(11039850@qq.com)
  */
@@ -52,6 +52,10 @@ public class DataMap extends CaseInsensitiveMap<Object>{
 	
 	public static DataMap fromMap(Map<String,?> map){
 		return new DataMap(map);
+	}
+	
+	public static DataMap fromBean(Object bean){
+		return MelpClass.convert(bean, DataMap.class); 
 	}
 	
 	public DataMap(){

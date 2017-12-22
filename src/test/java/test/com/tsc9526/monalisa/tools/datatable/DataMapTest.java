@@ -21,9 +21,15 @@ import java.io.ByteArrayOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
+import java.util.Map.Entry;
 
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -31,6 +37,7 @@ import org.testng.annotations.Test;
 import test.com.tsc9526.monalisa.orm.dialect.basic.TestSimpleModel;
 
 import com.tsc9526.monalisa.tools.datatable.DataMap;
+import com.tsc9526.monalisa.tools.string.MelpString;
 
 /**
  * 
@@ -39,6 +46,93 @@ import com.tsc9526.monalisa.tools.datatable.DataMap;
 @Test
 public class DataMapTest {
 
+	public void testTree(){
+		DataMap m = new DataMap();
+		m.put("A","a");
+		m.put("c2","c2");
+		m.put("C1","C1");
+		m.put("b","b");
+		
+		TreeMap<String, Object> tree = new TreeMap<String, Object>(m);
+		String keys =MelpString.join(tree.keySet().toArray(new String[0]),",");
+		
+		String[] array = new String[]{"A","c2","C1","b"};
+		Arrays.sort(array);
+		Assert.assertEquals(keys,MelpString.join(array, ","));
+	}
+	
+	public void testLinked(){
+		DataMap m = new DataMap();
+		m.put("A","a");
+		m.put("c2","c2");
+		m.put("C1","C1");
+		m.put("b","b");
+		
+		String keys =MelpString.join(m.keySet().toArray(new String[0]),",");
+		Assert.assertEquals(keys, "A,c2,C1,b");
+		
+		String k2 = "";
+		for(Entry<String, Object> entry:m.entrySet()){
+			if(k2 .length() ==0 ){
+				k2 = entry.getKey();
+			}else {
+				k2+="," + entry.getKey();
+			}
+		}
+		Assert.assertEquals(k2, "A,c2,C1,b");
+	}
+	
+	public void testFromBean(){
+		TestSimpleModel t = new TestSimpleModel();
+		t.setIntField1(1);
+		 
+		DataMap m =DataMap.fromBean(t);
+		Assert.assertEquals(m.getInt("intField1",0), 1);
+	}
+	
+	public void testEmpty(){
+		Map<String, Object> x = new LinkedHashMap<String, Object>(100);
+		x.put("A", null);
+		x.put("a", new int[0]);
+		
+		x.put("B1", "b1");
+		x.put("b1", null);
+		
+		x.put("C1", "c1");
+		x.put("c1", "");
+		
+		x.put("D1", "123");
+		x.put("d1", "");
+		 
+		
+		x.put("E1", "  ");
+		x.put("e1", "456");
+		
+		x.put("F1", "null");
+		x.put("f1", "789");
+		
+		List<String> xs=new ArrayList<String>();
+		xs.add("xyz");
+		x.put("G1", xs);
+		x.put("g1", new ArrayList<String>());
+		
+		DataMap r = DataMap.fromMap(x);
+		
+		int[] a = r.gets("a");
+		Assert.assertEquals(a.length,0);
+		
+		Assert.assertEquals(r.getString("b1"),"b1");
+		Assert.assertEquals(r.getString("c1"),"c1");
+		
+		Assert.assertEquals(r.getString("d1"),"123");
+		Assert.assertEquals(r.getString("e1"),"456");
+		Assert.assertEquals(r.getString("f1"),"789");
+		
+		List<String> rs = r.gets("g1");
+		Assert.assertEquals(rs.size(),1);
+		Assert.assertEquals(rs.get(0),"xyz");
+	}
+	
 	public void testEquals(){
 		DataMap a = new DataMap();
 		a.put("A", "a1");
@@ -47,6 +141,7 @@ public class DataMapTest {
 		DataMap b = new DataMap();
 		b.put("b", "b1");
 		b.put("a", "a1");
+		
 		Assert.assertTrue(a.equals(b));
 	}
 	
@@ -55,7 +150,8 @@ public class DataMapTest {
 		x.put("A", "a");
 		 
 		DataMap r = DataMap.fromMap(x);
-		Assert.assertEquals(r.getString("a"),"a");
+		
+		Assert.assertEquals(r.getString("a"),"a"); 
 	}
 	
 	public void testAsDataMap(){

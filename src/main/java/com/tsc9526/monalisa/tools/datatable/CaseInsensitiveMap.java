@@ -20,6 +20,8 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import com.tsc9526.monalisa.tools.misc.MelpMisc;
+
 /**
  * 
  * @author zzg.zhou(11039850@qq.com)
@@ -52,16 +54,23 @@ public class CaseInsensitiveMap<T> extends LinkedHashMap<String, T> {
 		}
 	}
 	
-	
-	public void putAll(Map<? extends String,? extends T> m) {
-		for(Map.Entry<? extends String,? extends T> entry:m.entrySet()){
+	public void putAll(Map<? extends String, ? extends T> m) {
+		for (Map.Entry<? extends String, ? extends T> entry : m.entrySet()) {
 			String key   = entry.getKey();
 			T      value = entry.getValue();
-			
-			put(key, value);
-		}      
+
+			if (containsKey(key)) {
+				T old = get(key);
+
+				if ((old == null && value != null) || (MelpMisc.isEmpty(old) && !MelpMisc.isEmpty(value))) {
+					put(key, value);
+				}
+			} else {
+				put(key, value);
+			}
+		}
 	}
-	 
+
 	@Override
 	public T get(Object key) {
 		return super.get(convertKey(key));
