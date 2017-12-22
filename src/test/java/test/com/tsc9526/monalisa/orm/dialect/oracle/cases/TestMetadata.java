@@ -23,8 +23,6 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.util.Properties;
 
-import junit.framework.Assert;
-
 import org.testng.annotations.Test;
 
 import test.com.tsc9526.monalisa.TestConstants;
