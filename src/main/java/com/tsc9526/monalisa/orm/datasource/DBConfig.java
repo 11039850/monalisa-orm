@@ -770,7 +770,13 @@ public class DBConfig implements Closeable{
 		}
 		
 		protected String findCfgBasePath(String configFile){
-			String basepath=System.getProperty("DB@"+key);
+			String basepath = System.getProperty("DB@"+key);
+			 
+			if(basepath == null && key.indexOf('.') >= 0){
+				String pkey = key.substring(0,key.lastIndexOf('.'));
+				basepath    = System.getProperty("DB@"+pkey);
+			}
+			
 			if(basepath==null){
 				String defpath=MelpFile.combinePath(DbProp.CFG_ROOT_PATH,configFile);
 				if(new File(defpath).exists()==false && annotationClass!=null){
