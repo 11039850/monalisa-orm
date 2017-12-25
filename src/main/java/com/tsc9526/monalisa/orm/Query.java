@@ -581,7 +581,7 @@ public class Query {
 		
 		if(debug){
 			String sql=getExecutableSQL();
-			logger.info(sql);
+			logger.info("\r\n"+sql);
 		}
 	}
 	  
