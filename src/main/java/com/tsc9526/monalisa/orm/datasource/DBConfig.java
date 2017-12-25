@@ -770,11 +770,12 @@ public class DBConfig implements Closeable{
 		}
 		
 		protected String findCfgBasePath(String configFile){
-			String basepath = System.getProperty("DB@"+key);
+			String syskey   = "DB@"+key;
+			String basepath = System.getProperty(syskey);
 			 
 			if(basepath == null && key.indexOf('.') >= 0){
-				String pkey = key.substring(0,key.lastIndexOf('.'));
-				basepath    = System.getProperty("DB@"+pkey);
+				syskey   = "DB@"+key.substring(0,key.lastIndexOf('.'));
+				basepath = System.getProperty(syskey);
 			}
 			
 			if(basepath==null){
@@ -796,7 +797,7 @@ public class DBConfig implements Closeable{
 					return DbProp.CFG_ROOT_PATH;
 				}
 			}else{
-				logger.info("Search("+key+") base path by system property: DB@"+key+", path: "+basepath+", file: "+configFile);
+				logger.info("Search("+key+") base path by system property: "+syskey+", path: "+basepath+", file: "+configFile);
 				
 				return basepath;
 			}
@@ -804,14 +805,14 @@ public class DBConfig implements Closeable{
 		
 		protected boolean loadCfg(CfgFile cf,Properties prop){
 			if(cf.cfgFile.exists()){
-				logger.info("Found ("+key+") base path from: "+cf.cfgFile.getAbsolutePath());				
+				logger.info("{DB@"+key+"} load config file: "+cf.cfgFile.getAbsolutePath());
+			 	 
 				try{
 					cf.lastModified=cf.cfgFile.lastModified();
 					 
-					InputStreamReader reader=new InputStreamReader(new FileInputStream(cf.cfgFile),"utf-8");					 
-					prop.load(reader);
-					reader.close();
-					
+					Properties p = MelpFile.loadProperties(new FileInputStream(cf.cfgFile), "utf-8");
+					prop.putAll(p);
+					 
 					return true;
 				}catch(IOException e){
 					throw new RuntimeException("Load db config file: "+cf.cfgFile.getAbsolutePath()+", exception: "+e,e);
