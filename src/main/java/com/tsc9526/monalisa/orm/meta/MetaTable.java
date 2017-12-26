@@ -40,6 +40,8 @@ public class MetaTable extends Name implements Cloneable{
 	private MetaPartition partition;
 	
 	private CreateTable createTable;
+	 
+	private String type;
 	
 	public MetaTable(){
 		super(true);
@@ -225,5 +227,14 @@ public class MetaTable extends Name implements Cloneable{
 			table.refTable=this;
 			return table;
 		}
+	}
+
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
 	}
 }

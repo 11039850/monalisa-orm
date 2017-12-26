@@ -157,6 +157,8 @@ public class DbProp {
 	public final static DbProp PROP_DB_PARTITIONS       = new DbProp("partitions");			
 	public final static DbProp PROP_DB_DATASOURCE_CLASS = new DbProp("datasourceClass");
 	
+	public final static DbProp PROP_DB_TABLE_TYPE   		  = new DbProp("tableType","TABLE");
+	
 	public final static DbProp PROP_DB_DATASOURCE_DELAY_CLOSE = new DbProp("datasourceDelayClose",30);
 	
 	public final static DbProp PROP_DB_HISTORY_DB             = new DbProp("history.db");

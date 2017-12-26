@@ -303,14 +303,20 @@ public class DBMetadata {
 		}
 
 		List<MetaTable> tables = new ArrayList<MetaTable>();
+		
+		String type = DbProp.PROP_DB_TABLE_TYPE.getValue(dbcfg);
+		if(MelpString.isEmpty(type)){
+			type = "TABLE";
+		}
 
-		ResultSet rs = dbm.getTables(catalogPattern, schemaPattern, tablePattern, new String[] { "TABLE" });
+		ResultSet rs = dbm.getTables(catalogPattern, schemaPattern, tablePattern, type.split(","));
 		while (rs.next()) {
 			MetaTable table = new MetaTable();
 			table.setName(rs.getString(COLUMN_TABLE_NAME));
 			table.setRemarks(rs.getString(COLUMN_REMARKS));
-
-			DBGenerator.plogger.info("Load: "+MelpString.rightPadding(table.getName(),26)+" { "+table.getRemarks()+" }");
+			table.setType(rs.getString(COLUMN_TABLE_TYPE));
+			 
+			DBGenerator.plogger.info("Load "+table.getType()+": "+MelpString.rightPadding(table.getName(),26)+" { "+table.getRemarks()+" }");
 			
 			MetaPartition partition = findPartition(partitions, table);
 			if (partition != null) {
@@ -398,4 +404,5 @@ public class DBMetadata {
 	public final static String COLUMN_TABLE_NAME     = "TABLE_NAME";
 	public final static String COLUMN_TABLE_COMMENT  = "TABLE_COMMENT";
 	public final static String COLUMN_REMARKS  		 = "REMARKS";
+	public final static String COLUMN_TABLE_TYPE     = "TABLE_TYPE";
 }
