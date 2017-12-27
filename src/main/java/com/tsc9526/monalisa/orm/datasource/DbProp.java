@@ -179,6 +179,7 @@ public class DbProp {
 	public final static DbProp PROP_TABLE_VALIDATOR		      = new DbProp("validator");
 	
 	public final static DbProp PROP_TABLE_SEQ		          = new DbProp("seq");
+	public final static DbProp PROP_TABLE_PRIMARY_KEYS		  = new DbProp("primaryKeys");
 	
 	public final static DbProp PROP_TABLE_CACHE_CLASS         = new DbProp("cache.class");
 	public final static DbProp PROP_TABLE_CACHE_NAME	  	  = new DbProp("cache.name","default");
@@ -328,7 +329,7 @@ public class DbProp {
 	
 	public String getValue(DBConfig db,String theTableName){
 		String tableName=Dialect.getRealname(theTableName);
-		String v=db.getCfg().getProperty(key+"."+tableName);
+		String v=db.getCfg().getProperty(key+"."+tableName.toUpperCase());
 		if(v!=null){
 			return v;
 		}else{

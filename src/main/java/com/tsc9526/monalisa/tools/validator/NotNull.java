@@ -32,5 +32,5 @@ public @interface NotNull {
 	 * 
 	 * @return the error message if the field is null
 	 */
-	String message();	
+	String message() default "";	
 }

@@ -152,6 +152,18 @@ public class TableHelper {
 	    	keyColumns.put(keyseq, column);
 	    }
 	  
+	    if(keyColumns.isEmpty()){
+	    	String pks = DbProp.PROP_TABLE_PRIMARY_KEYS.getValue(dbcfg, table.getName());
+	    	if(!MelpString.isEmpty(pks)){
+	    		String[] ks = pks.split(",");
+	    		for(short i=0;i<ks.length;i++){
+	    			MetaColumn column=table.getColumn(ks[i]);
+	    	    	column.setKey(true);
+	    	    	keyColumns.put(i, column);
+	    		}
+	    	}
+	    }
+	    
 	    for(MetaColumn c:keyColumns.values()){
 	    	table.addKeyColumn(c);
 	    }

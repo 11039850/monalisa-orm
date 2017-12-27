@@ -33,7 +33,7 @@ import com.tsc9526.monalisa.orm.datasource.DBConfig;
 		,datasourceClass="C3p0DataSource"
 		,properties={
 				"sql.debug="+TestConstants.DEBUG_SQL,
-				"version.name.test_table_2=v1"
+				"version.name.TEST_TABLE_2=v1"
 		})
 public interface MysqlDB {
 	public static DBConfig DB=DBConfig.fromClass(MysqlDB.class);
