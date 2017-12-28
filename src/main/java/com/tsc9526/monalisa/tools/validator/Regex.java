@@ -16,7 +16,12 @@
  *******************************************************************************************/
 package com.tsc9526.monalisa.tools.validator;
 
-import java.lang.annotation.ElementType;
+import static java.lang.annotation.ElementType.ANNOTATION_TYPE;
+import static java.lang.annotation.ElementType.CONSTRUCTOR;
+import static java.lang.annotation.ElementType.FIELD;
+import static java.lang.annotation.ElementType.METHOD;
+import static java.lang.annotation.ElementType.PARAMETER;
+
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
@@ -25,7 +30,7 @@ import java.lang.annotation.Target;
  * 
  * @author zzg.zhou(11039850@qq.com)
  */
-@Target({ElementType.METHOD,ElementType.FIELD})
+@Target({METHOD, FIELD, ANNOTATION_TYPE, CONSTRUCTOR, PARAMETER})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Regex {
 	public final static String EMAIL   = "[\\w[.-]]+@[\\w[.-]]+\\.[\\w]+";
@@ -43,5 +48,5 @@ public @interface Regex {
 	 * 
 	 * @return 匹配错误时提示的信息
 	 */
-	String message();	
+	String message() default "";	
 }

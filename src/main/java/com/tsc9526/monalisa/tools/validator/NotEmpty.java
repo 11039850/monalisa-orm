@@ -32,16 +32,10 @@ import java.lang.annotation.Target;
  */
 @Target({METHOD, FIELD, ANNOTATION_TYPE, CONSTRUCTOR, PARAMETER})
 @Retention(RetentionPolicy.RUNTIME)
-public @interface Min {	 
-	/**
-	 * @return 最小值
-	 */
-	long value();
-	
+public @interface NotEmpty {	 
 	/**
 	 * 
-	 * @return 匹配错误时提示的信息
+	 * @return the error message if the field is null
 	 */
 	String message() default "";	
-		 
 }

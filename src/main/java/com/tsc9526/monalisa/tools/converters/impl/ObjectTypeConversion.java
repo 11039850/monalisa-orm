@@ -18,7 +18,9 @@ package com.tsc9526.monalisa.tools.converters.impl;
 
 import java.io.ByteArrayInputStream;
 import java.io.ObjectInputStream;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import com.google.gson.Gson;
@@ -99,13 +101,20 @@ public class ObjectTypeConversion implements Conversion<Object> {
 	}
 	
 	protected Object convertObject(Object value,Class<?> type){
-		Object r=null;
+		Object r = null;
 		
 		Gson gson=MelpJson.getGson();
 		if(value instanceof JsonElement){
 			r= gson.fromJson((JsonElement)value, type);
 		}else if(value instanceof String){
-			r= gson.fromJson(value.toString(), type);
+			String s = (String) value;
+			if(s.startsWith("{") || s.startsWith("[") ){
+				r = gson.fromJson(value.toString(), type);
+			}else if(type.isAssignableFrom(List.class)){
+				r = Arrays.asList(s.split(",")); 
+			}else{
+				r = null;
+			}
 		}else{
 			JsonElement json=gson.toJsonTree(value);
 			r= gson.fromJson(json, type);

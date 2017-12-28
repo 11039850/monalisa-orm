@@ -53,17 +53,17 @@ public class ArrayTypeConversion implements Conversion<Object>{
 		}
 		  
 		if(value instanceof JsonArray){
-			JsonArray array=(JsonArray)value;
+			JsonArray array = (JsonArray)value;
 			return convertJsonToArray(array,type);
 		}else{
 			if(value instanceof String && ((String)value).startsWith("[")){
-				JsonElement json=new JsonParser().parse(value.toString());
+				JsonElement json = new JsonParser().parse(value.toString());
 				if(json.isJsonArray()){
 					return convertJsonToArray(json.getAsJsonArray(),type);
 				}
 			}
 			
-			Object[] vs=toObjectArray(value,type);
+			Object[] vs = toObjectArray(value,type);
 			
 			if(type.isArray() && type.getComponentType().isPrimitive()){
 				return toPrimitiveArray(vs, type);
@@ -125,8 +125,7 @@ public class ArrayTypeConversion implements Conversion<Object>{
 	}
 	
 	 
-	
-	protected Object[] toObjectArray(Object value,Class<?> type){
+	public Object[] toObjectArray(Object value,Class<?> type){
 		if (!(value instanceof Object[])) {
 			List<Object> vs = new ArrayList<Object>();
 
@@ -163,12 +162,14 @@ public class ArrayTypeConversion implements Conversion<Object>{
 					vs.add(new Boolean(i));
 				}
 			}else if(value instanceof Collection){
-				vs.addAll((Collection<?>)value);	
+				return ((Collection<?>)value).toArray();	
+			}else if(value instanceof String){
+				return value.toString().split(",");
 			}else{
 				vs.add(value);
 			}
-			
-			return vs.toArray(new Object[] {});
+			 
+			return vs.toArray();
 		} else {
 			return (Object[]) value;
 		}

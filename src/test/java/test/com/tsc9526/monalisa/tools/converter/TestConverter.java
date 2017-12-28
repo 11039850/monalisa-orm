@@ -38,6 +38,24 @@ import com.tsc9526.monalisa.tools.converters.TypeConverter;
 public class TestConverter {
 	private TypeConverter converter=new TypeConverter();
 	
+	public void testListString(){
+		List<?> rs = converter.convert("a,b,c", List.class);
+		
+		Assert.assertEquals(rs.size(), 3 );
+		Assert.assertEquals(rs.get(0),"a");
+		Assert.assertEquals(rs.get(1),"b");
+		Assert.assertEquals(rs.get(2),"c");
+	}
+	
+	public void testArrayString(){
+		String[] rs = converter.convert("a,b,c", String[].class);
+		
+		Assert.assertEquals(rs.length, 3 );
+		Assert.assertEquals(rs[0],"a");
+		Assert.assertEquals(rs[1],"b");
+		Assert.assertEquals(rs[2],"c");
+	}
+	
 	public void testArray001(){
 		int[] a1=new int[]{1,2,3};
 		

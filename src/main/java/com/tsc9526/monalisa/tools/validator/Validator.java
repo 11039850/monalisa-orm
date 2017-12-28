@@ -20,8 +20,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.tsc9526.monalisa.tools.clazz.MelpClass;
-import com.tsc9526.monalisa.tools.clazz.MelpClass.FGS;
 import com.tsc9526.monalisa.tools.clazz.MelpClass.ClassHelper;
+import com.tsc9526.monalisa.tools.clazz.MelpClass.FGS;
+import com.tsc9526.monalisa.tools.misc.MelpMisc;
 
 /**
  * 
@@ -71,7 +72,7 @@ public class Validator {
 						}
 					}
 					
-					Min min=fgs.getAnnotation(Min.class);
+					Min min = fgs.getAnnotation(Min.class);
 					if(min!=null){
 						Long x=(Long)MelpClass.convert(v,Long.class);
 						if(x < min.value()){
@@ -80,6 +81,17 @@ public class Validator {
 								msg="CAN NOT < "+min.value();
 							}
 							result.add(fgs.getFieldName()+": "+msg);						
+						}
+					}
+					
+					NotEmpty notEmpty = fgs.getAnnotation(NotEmpty.class);
+					if(notEmpty!=null){
+						if(MelpMisc.isEmpty(v)){
+							String msg = notEmpty.message();
+							if(msg==null || msg.length()==0){
+								msg="CAN NOT BE EMPTY";
+							}
+							result.add(fgs.getFieldName()+": "+msg);	
 						}
 					}
 				}
