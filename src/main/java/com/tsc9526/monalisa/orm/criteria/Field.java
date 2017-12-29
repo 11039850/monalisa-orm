@@ -18,6 +18,7 @@ package com.tsc9526.monalisa.orm.criteria;
 
 import java.sql.Types;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import com.tsc9526.monalisa.orm.Query;
@@ -189,6 +190,16 @@ public class Field<X,Y extends Criteria<?>>{
 	}
 	
 	/**
+	 * SQL: <code>IN(...)</code>
+	 * 
+	 * @param values array values
+	 * @return this
+	 */
+	public Y in(X[] values){
+		return in(Arrays.asList(values));
+	}
+	
+	/**
 	 * SQL: <code>NOT IN (...)</code>
 	 * 
 	 * @param value the value
@@ -206,6 +217,16 @@ public class Field<X,Y extends Criteria<?>>{
 	 		 
 		q.add(getColumnName()).notin(getValues(value,values));
 		return criteria;
+	}
+	
+	/**
+	 * SQL: <code>NOT IN(...)</code>
+	 * 
+	 * @param values array values
+	 * @return this
+	 */
+	public Y notin(X[] values){
+		return notin(Arrays.asList(values));
 	}
 	
 	/**
@@ -230,7 +251,7 @@ public class Field<X,Y extends Criteria<?>>{
 	 * @return this
 	 */
 	public Y notin(List<X> values){
-		if(q.isEmpty()==false){
+		if(!q.isEmpty()){
 			q.add(" AND ");
 		}
 		  
