@@ -668,6 +668,12 @@ public abstract class Model<T extends Model> implements Serializable ,Shallowabl
 	}
 
 	public T set(String name, Object value) {
+		String throwException = DbProp.PROP_TABLE_EXCEPTION_IF_SET_FIELD_NOT_FOUND.getValue(mm().db, mm().tableName);
+
+		return set(name,value,Boolean.valueOf(throwException));
+	}
+	
+	public T set(String name, Object value, boolean throwExceptionIfNotExists) {
 		FGS fgs = field(name);
 		if (fgs != null) {
 			fgs.setObject(this, value);
@@ -675,11 +681,8 @@ public abstract class Model<T extends Model> implements Serializable ,Shallowabl
 			if (fgs.getSetMethod() == null) {
 				holder().fieldChanged(fgs.getFieldName());
 			}
-		} else {
-			String throwException = DbProp.PROP_TABLE_EXCEPTION_IF_SET_FIELD_NOT_FOUND.getValue(mm().db, mm().tableName);
-			if ("true".equalsIgnoreCase(throwException)) {
-				throw new RuntimeException("Field not found: " + name);
-			}
+		} else  if(throwExceptionIfNotExists){
+			throw new RuntimeException("Field not found: " + name);
 		}
 
 		return (T) this;
