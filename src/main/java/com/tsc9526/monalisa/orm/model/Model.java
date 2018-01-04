@@ -72,10 +72,9 @@ public abstract class Model<T extends Model> implements Serializable ,Shallowabl
 	private   static Map<String, Table>  hCachePartitionTables = new ConcurrentHashMap<String, Table>();
 	private   static Map<String, String> hCacheHistoryTables   = new ConcurrentHashMap<String, String>();
 
-	protected ModelHolder $modelHolder;
-	protected String      $tableName;
-	protected String[]    $primaryKeys;
-	
+	protected transient String      $tableName;
+	protected transient String[]    $primaryKeys;
+	protected transient ModelHolder $modelHolder;
 	protected transient ModelMeta   $modelMeta;
 	protected transient DBConfig    $db;
  

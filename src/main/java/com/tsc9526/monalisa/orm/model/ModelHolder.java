@@ -40,6 +40,8 @@ public class ModelHolder implements Serializable {
 	
 	public final static String PROP_SEQ_FIELD      = "SEQ_FIELD";
 	
+	protected boolean     enableHistory         = true;
+	
 	protected boolean     fieldFilterExcludeMode = true;	
 	protected Set<String> fieldFilterSets		 = new LinkedHashSet<String>();
 	
@@ -47,6 +49,8 @@ public class ModelHolder implements Serializable {
 	protected boolean     readonly  = false;
 	protected boolean     dirty     = true;
 	protected boolean     entity    = false;
+	
+	
 	
 	protected CaseInsensitiveMap<Object> hModelValues=null; 
 	
@@ -267,6 +271,14 @@ public class ModelHolder implements Serializable {
 		changedFields.clear();
 		
 		dirty=false;
+	}
+	
+	public void enableHistory(boolean enabled){
+		this.enableHistory = enabled;
+	}
+	
+	public boolean isEnableHistory(){
+		return this.enableHistory;
 	}
 	
 }
