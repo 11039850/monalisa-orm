@@ -114,20 +114,20 @@ public class DataMap extends CaseInsensitiveMap<Object>{
 	}
 	 	
 	/**
-	 * Join key & value, default charset is utf-8
+	 * Join key and value, default charset is utf-8
 	 * 
-	 * @return key1=v1&key2=v2&key3=v3...
+	 * @return key1=v1&amp;key2=v2&amp;key3=v3...
 	 */
 	public String toUrlQuery(){
 		return toUrlQuery("utf-8");
 	}
 	
 	/**
-	 * Join key & value using the charset
+	 * Join key and value using the charset
 	 * 
 	 * @param charset encode values using the charset
 	 * 
-	 * @return key1=v1&key2=v2&key3=v3...
+	 * @return key1=v1&amp;key2=v2&amp;key3=v3...
 	 */
 	public String toUrlQuery(String charset){
 		String split="&";
