@@ -16,6 +16,8 @@
  *******************************************************************************************/
 package com.tsc9526.monalisa.tools.datatable;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -111,6 +113,84 @@ public class DataMap extends CaseInsensitiveMap<Object>{
 		}
 	}
 	 	
+	/**
+	 * Join key & value, default charset is utf-8
+	 * 
+	 * @return key1=v1&key2=v2&key3=v3...
+	 */
+	public String toUrlQuery(){
+		return toUrlQuery("utf-8");
+	}
+	
+	/**
+	 * Join key & value using the charset
+	 * 
+	 * @param charset encode values using the charset
+	 * 
+	 * @return key1=v1&key2=v2&key3=v3...
+	 */
+	public String toUrlQuery(String charset){
+		String split="&";
+		
+		StringBuilder sb = new StringBuilder();
+		
+		for(java.util.Map.Entry<String,Object> entry:entrySet()){
+			String key   = entry.getKey();
+			Object value = entry.getValue();
+			 
+			if(value == null){
+				joinAppend(sb,charset,split,key,"");
+			}else{
+				if(value.getClass().isArray()){
+					Object[] vs = null;
+					if(value.getClass().getComponentType().isPrimitive()){
+						ArrayTypeConversion conversion = new ArrayTypeConversion();
+						
+						vs = (Object[])conversion.convert(value, Object[].class);
+					}else {
+						vs = (Object[]) value;
+					}
+					
+					joinAppend(sb,charset,split,key,vs);
+					
+				}else if(value instanceof List){
+					joinAppend(sb,charset,split,key,(List<?>)value);
+				}else{
+					joinAppend(sb,charset,split,key,value.toString());
+				}
+			}
+			
+		}
+		
+		return sb.toString();
+	}
+	
+	private void joinAppend(StringBuilder sb,String charset,String split,String key,Object[] vs){
+		for(Object o:vs){
+			joinAppend(sb,charset,split,key,o==null?"":o.toString());
+		}
+	}
+	
+	private void joinAppend(StringBuilder sb,String charset,String split,String key,List<?> vs){
+		for(Object o:vs){
+			joinAppend(sb,charset,split,key,o==null?"":o.toString());
+		}
+	}
+	
+	private void joinAppend(StringBuilder sb,String charset,String split,String key,String value){
+		if(sb.length()>0){
+			sb.append(split);
+		}
+		
+		try{
+			String v = URLEncoder.encode(value, charset);
+			
+			sb.append(key).append("=").append(v);
+		} catch (UnsupportedEncodingException e) {
+			throw new RuntimeException(e);
+		}
+	}
+	
 	
 	/**
 	 * 
@@ -322,10 +402,10 @@ public class DataMap extends CaseInsensitiveMap<Object>{
 	public Boolean getBoolean(String key){
 		Object v=getOne(key);
 		if(v==null){
-			return Boolean.FALSE;
+			return (Boolean)v;
 		}else{
 			if("".equals(v)){
-				return null;
+				return Boolean.FALSE;
 			}
 			
 			if(v instanceof Boolean){

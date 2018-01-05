@@ -20,6 +20,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -46,6 +47,19 @@ import com.tsc9526.monalisa.tools.string.MelpString;
 @Test
 public class DataMapTest {
 
+	public void testToUrlQuery()throws Exception{
+		DataMap m = new DataMap();
+		Assert.assertEquals(m.toUrlQuery(),"");
+		
+		m.put("X",null);
+		m.put("a","");
+		m.put("B","b 0");
+		Assert.assertEquals(m.toUrlQuery(),"X=&a=&B="+URLEncoder.encode("b 0","utf-8"));
+		
+		m.put("a",new String[]{"a2","a1"});
+		Assert.assertEquals(m.toUrlQuery(),"X=&a=a2&a=a1&B="+URLEncoder.encode("b 0","utf-8"));
+	}
+	
 	public void testTree(){
 		DataMap m = new DataMap();
 		m.put("A","a");
@@ -531,7 +545,7 @@ public class DataMapTest {
 		m.put("a",new boolean[0]);
 		
 		Boolean x=m.getBoolean("a");
-		Assert.assertNull(x);
+		Assert.assertFalse(x);
 	}
 	
 	public void testEmptyDateArray(){
