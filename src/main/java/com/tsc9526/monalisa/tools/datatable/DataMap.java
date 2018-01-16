@@ -19,8 +19,10 @@ package com.tsc9526.monalisa.tools.datatable;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.Date;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
@@ -52,7 +54,7 @@ public class DataMap extends CaseInsensitiveMap<Object>{
 		return MelpString.json2Map(json);
 	}
 	
-	public static DataMap fromMap(Map<String,?> map){
+	public static DataMap fromMap(Map<?,?> map){
 		return new DataMap(map);
 	}
 	
@@ -67,10 +69,10 @@ public class DataMap extends CaseInsensitiveMap<Object>{
         super(initialCapacity);
     }
 	
-	public DataMap(Map<String,?> m){
+	public DataMap(Map<?,?> m){
 		super();
 		
-		putAll(m);
+		replace(m);
 	}
 	
 	public String toJson() {
@@ -86,7 +88,68 @@ public class DataMap extends CaseInsensitiveMap<Object>{
 		
 		return gb.create().toJson(this);
 	}
-	 
+	
+	public void replace(Map<?, ?> other){
+		clear();
+		
+		if(other!=null){
+			Map<String, Object> tmp = new LinkedHashMap<String, Object>();
+			for(Entry<?, ?> entry:other.entrySet()){
+				Object key   = entry.getKey();
+				Object value = entry.getValue();
+				
+				tmp.put(key==null?null:key.toString(), value);
+			}
+			
+			this.putAll(tmp);
+		}
+	}
+	
+	/**
+	 * all keys will be added to this prefix
+	 * 
+	 * @param prefix the prefix key
+	 * @return a new DataMap
+	 */
+	public DataMap addPrefix(String prefix){
+		DataMap x = new DataMap();
+		
+		for(Entry<String, Object> entry:entrySet()){
+			String key   = entry.getKey();
+			Object value = entry.getValue();
+			
+			if(key==null){
+				x.put(key, value);
+			}else{
+				x.put(prefix+key, value);
+			}
+		}
+		return x;
+	}
+	
+	/**
+	 * all the keys that contain a given prefix will be truncated 
+	 * 
+	 * @param prefix the prefix key
+	 * @return a new DataMap
+	 */
+	public DataMap removePrefix(String prefix){
+		DataMap x = new DataMap();
+		
+		int len = prefix.length();
+		for(Entry<String, Object> entry:entrySet()){
+			String key   = entry.getKey();
+			Object value = entry.getValue();
+			
+			if(key!=null && key.startsWith(prefix)){
+				x.put(key.substring(len), value);
+			}else{
+				x.put(key, value);
+			}
+		}
+		
+		return x;
+	}
 	
 	@SuppressWarnings("unchecked")
 	public <T> T gets(Object key){

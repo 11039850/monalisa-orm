@@ -47,6 +47,32 @@ import com.tsc9526.monalisa.tools.string.MelpString;
 @Test
 public class DataMapTest {
 
+	public void testAddPrefix(){
+		DataMap m = new DataMap();
+		m.put("x", "x1");
+		m.put(null, "x2");
+		m.put("", "x3");
+		
+		DataMap newMap = m.addPrefix("p_");
+		
+		Assert.assertEquals(newMap.get("p_x"), "x1");
+		Assert.assertEquals(newMap.get(null), "x2");
+		Assert.assertEquals(newMap.get("p_"), "x3");
+	}
+	
+	public void testRemovePrefix(){
+		DataMap m = new DataMap();
+		m.put("p_x", "x1");
+		m.put(null, "x2");
+		m.put("", "x3");
+		
+		DataMap newMap = m.removePrefix("p_");
+		
+		Assert.assertEquals(newMap.get("x"), "x1");
+		Assert.assertEquals(newMap.get(null), "x2");
+		Assert.assertEquals(newMap.get(""), "x3");
+	}
+	
 	public void testToUrlQuery()throws Exception{
 		DataMap m = new DataMap();
 		Assert.assertEquals(m.toUrlQuery(),"");
