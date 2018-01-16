@@ -267,6 +267,20 @@ public class ModelHolder implements Serializable {
 		return true;
 	}
 	
+	public void clearChangesNull(){
+		List<String> nullFields = new ArrayList<String>();
+		for(String name:changedFields){
+			FGS fgs=model.field(name);
+			if(fgs!=null && isInclude(fgs)){
+				if(fgs.getObject(model)==null){
+					nullFields.add(name);
+				}
+			}
+		}
+		
+		changedFields.removeAll(nullFields);
+	}
+	
 	public void clearChanges(){
 		changedFields.clear();
 		

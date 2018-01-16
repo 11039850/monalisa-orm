@@ -581,6 +581,16 @@ public abstract class Model<T extends Model> implements Serializable ,Shallowabl
 	}
 	
 	/**
+	 * Clean the changed fields which value is null
+	 * 
+	 * @return this
+	 */
+	public T clearChangesNull(){
+		holder().clearChangesNull();
+		return (T) this;
+	}
+	
+	/**
 	 * Set all fields to the default value 
 	 * 
 	 * @return this
