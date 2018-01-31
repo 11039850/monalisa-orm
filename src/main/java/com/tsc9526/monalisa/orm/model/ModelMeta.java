@@ -261,31 +261,65 @@ public class ModelMeta{
 	
 	protected void initIndexes(Model<?> model) {
 		Index[] tbIndexes=table.indexes();
+		
+		boolean primaryKey=false;
 		if(tbIndexes!=null && tbIndexes.length>0){
 			for(Index index:tbIndexes){ 
-				ModelIndex mIndex=new ModelIndex();
-				mIndex.setName(index.name());
-				mIndex.setType(index.type());
-				mIndex.setUnique(index.unique());
-				
-				List<FGS> fs=new ArrayList<MelpClass.FGS>();
-				for(String f:index.fields()){
-					FGS x=findFieldByName(f);
-					
-					assert x!=null;
-					
-					fs.add(x);
-				}
-				mIndex.setFields(fs);
-				mIndex.setPrimary(isPrimary(fs));
+				ModelIndex mIndex=createModelIndexByIndex(index);
 				
 				if(mIndex.isPrimary()){
+					primaryKey=true;
 					indexes.add(0, mIndex);
 				}else{
 					indexes.add(mIndex);
 				}
 			}
 		}
+		
+		String[] pks=table.primaryKeys();
+		if(!primaryKey && pks!=null && pks.length>0){
+			indexes.add(0, createModelIndexByPrimary(pks));
+		}
+	}
+	
+	protected ModelIndex createModelIndexByIndex(Index index) {
+		ModelIndex mIndex=new ModelIndex();
+		mIndex.setName(index.name());
+		mIndex.setType(index.type());
+		mIndex.setUnique(index.unique());
+		
+		List<FGS> fs=new ArrayList<MelpClass.FGS>();
+		for(String f:index.fields()){
+			FGS x=findFieldByName(f);
+			
+			assert x!=null;
+			
+			fs.add(x);
+		}
+		mIndex.setFields(fs);
+		mIndex.setPrimary(isPrimary(fs));
+		
+		return mIndex;
+	}
+	
+	protected ModelIndex createModelIndexByPrimary(String[] pks){
+		ModelIndex mIndex=new ModelIndex();
+		mIndex.setName("__primaryIndex__");
+		mIndex.setType(0);
+		mIndex.setUnique(true);
+		
+		List<FGS> fs=new ArrayList<MelpClass.FGS>();
+		for(String f:pks){
+			FGS x=findFieldByName(f);
+			
+			assert x!=null;
+			
+			fs.add(x);
+		}
+		mIndex.setFields(fs);
+		mIndex.setPrimary(true);
+		
+		return mIndex;
 	}
 	
 	protected boolean isPrimary(List<FGS> fs){

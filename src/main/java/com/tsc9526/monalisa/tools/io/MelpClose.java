@@ -58,16 +58,20 @@ public class MelpClose {
 			}
 		}
 	}
-	
+	 
 	public static void close(Object objectWithCloseMethod){
-		if(objectWithCloseMethod==null){
+		close(objectWithCloseMethod,"close");
+	}
+	 
+	public static void close(Object object,String closeMethodName){
+		if(object==null){
 			return;
 		}
 		
 		try{
-			Method m=objectWithCloseMethod.getClass().getMethod("close");
+			Method m=object.getClass().getMethod(closeMethodName);
 			m.setAccessible(true);
-			m.invoke(objectWithCloseMethod);
+			m.invoke(object);
 		}catch(NoSuchMethodException e){
 			//do nothing
 		}catch(Exception e){
