@@ -156,6 +156,14 @@ public class DataMap extends CaseInsensitiveMap<Object>{
 		return (T)super.get(key);
 	}
 	
+	public <T> T gets(Object key,T defaultValue){
+		T ret = gets(key);
+		if(ret == null){
+			ret =  defaultValue;
+		}
+		return ret;
+	}
+	
 	@SuppressWarnings("unchecked")
  	public <T> T as(Class<T> toClass){
 		try {

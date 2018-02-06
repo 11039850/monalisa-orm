@@ -571,6 +571,8 @@ public class Query {
 		return writer;
 	}
 	
+	static ThreadLocal<List<String>> diagnosis = new ThreadLocal<List<String>>();
+	 
 	protected void logExcecutableSql(){
 		boolean debug=false;
 		if(debugSql==null){
@@ -578,13 +580,24 @@ public class Query {
 		}else{
 			debug = debugSql.booleanValue();
 		}
-		
-		if(debug){
+		 
+		List<String> sqls = diagnosis.get();
+		if(debug || sqls!=null){
 			String sql=getExecutableSQL();
-			logger.info("\r\n"+sql);
+			
+			if(debug){
+				logger.info("\r\n"+sql);
+			}
+			 
+			if(sqls!=null){
+				sqls.add(sql);
+			}
 		}
 	}
-	  
+	
+	
+	
+	
 	public CacheKey getCacheKey(){
 		 CacheKey cacheKey = new CacheKey();
 		    

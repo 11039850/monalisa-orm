@@ -28,7 +28,7 @@ public class TestConstants {
 	public final static boolean ENABLE_TEST_WITH_MYSQL  = true;
 	
 	/** Test with oracle db */
-	public final static boolean ENABLE_TEST_WITH_ORACLE = true;
+	public final static boolean ENABLE_TEST_WITH_ORACLE = false;
 	
 	
 	public final static String database  = "test_monalisa";

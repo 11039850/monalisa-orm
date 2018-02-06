@@ -70,7 +70,7 @@ public class TestTable1Test {
 	}
 	
 
-	@Test(invocationCount = SingleThreadInvocationCount)
+	@Test(invocationCount = SingleThreadInvocationCount,enabled=TestConstants.ENABLE_TEST_WITH_ORACLE)
 	public void testInsert(){
 		long tx = totalInserts.addAndGet(1);
 		TestTable1 table1=new TestTable1();
@@ -94,7 +94,7 @@ public class TestTable1Test {
 	}
 	
 	
-	@Test(dependsOnMethods={"testInsert","testMultiInserts","testSelect"})
+	@Test(dependsOnMethods={"testInsert","testMultiInserts","testSelect"},enabled=TestConstants.ENABLE_TEST_WITH_ORACLE)
 	public void testUpdate(){
 		DataTable<TestTable1> tx=TestTable1.WHERE().name.like("jjyy%").SELECT().select(10,0);
 		
@@ -163,7 +163,7 @@ public class TestTable1Test {
 		Assert.assertEquals(x.getId(),m.getId());
 	}
 	
-	@Test(dependsOnMethods={"testSaveOrUpdate"})
+	@Test(dependsOnMethods={"testSaveOrUpdate"},enabled=TestConstants.ENABLE_TEST_WITH_ORACLE)
 	public void testDeleteByUniqueKey(){
 		TestTable1 z=new TestTable1();
 		z.setName("tsc9526-1");
@@ -175,7 +175,7 @@ public class TestTable1Test {
 		 
 	}
 	
-	@Test(dependsOnMethods={"testUpdateByVersion"})
+	@Test(dependsOnMethods={"testUpdateByVersion"},enabled=TestConstants.ENABLE_TEST_WITH_ORACLE)
 	public void testDeleteUsingRecord(){
 		Record z=createRecord();
 		z.set("name","tsc9526-0");
@@ -225,7 +225,7 @@ public class TestTable1Test {
 		Assert.assertEquals(1,r);
 	}
 	
-	@Test(dependsOnMethods={"testInsert","testMultiInserts"})
+	@Test(dependsOnMethods={"testInsert","testMultiInserts"},enabled=TestConstants.ENABLE_TEST_WITH_ORACLE)
 	public void testSelect(){
 		long c=TestTable1.WHERE().name.like("jjyy%").SELECT().count();
 		Assert.assertEquals(SingleThreadInvocationCount, c);
@@ -256,7 +256,7 @@ public class TestTable1Test {
 		
 	}
 	
-	@Test(threadPoolSize = MultiThreadInvocationThreads, invocationCount = MultiThreadInvocationCount)
+	@Test(threadPoolSize = MultiThreadInvocationThreads, invocationCount = MultiThreadInvocationCount,enabled=TestConstants.ENABLE_TEST_WITH_ORACLE)
 	public void testMultiInserts(){
 		TestTable1 table1=new TestTable1();
 		table1.defaults();
