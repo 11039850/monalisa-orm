@@ -93,8 +93,8 @@ public class DataTable<E> extends ArrayList<E> {
 		super(cs);
 	}
 	 
-	public void saveCsv(OutputStream csvOutputStream){ 
-		MelpLib.createCsv().writeToCsv(this, csvOutputStream,CsvOptions.createDefaultOptions());
+	public void saveCsv(OutputStream csvOutputStream,String charset){ 
+		MelpLib.createCsv().writeToCsv(this, csvOutputStream,charset,CsvOptions.createDefaultOptions());
 	}
  
 	/**

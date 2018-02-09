@@ -1,6 +1,7 @@
 package test.com.tsc9526.monalisa.tools.datatable;
 
 import java.io.ByteArrayOutputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -27,6 +28,7 @@ import com.tsc9526.monalisa.tools.datatable.DataTable;
  */
 @Test
 public class DataTableTest {
+	 
 	public void testDataTableMapDefaultHeader() {
 		DataTable<DataMap> table = new DataTable<DataMap>();
 	 
@@ -117,14 +119,58 @@ public class DataTableTest {
 		Assert.assertEquals(rs.get(0).getInt("s1",0),5);
 	}
 	
-	public void testDataTableWrite()throws IOException{
+	public void testDataTableWriteArrayString()throws Exception{
+		DataTable<String[]> table = new DataTable<String[]>();
+		table.setHeaders("A","B","C");
+		for(int i=0;i<10;i++){
+			table.add(new String[]{"测试A-"+i,"测试B-"+i,"测试C-"+i});
+		}
+		
+		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+		table.saveCsv(outputStream,"utf-8");
+		
+		String csv=new String(outputStream.toByteArray(),"utf-8");
+		DataTable<DataMap> rs=DataTable.fromCsv(csv);
+		Assert.assertEquals(rs.size(),10);
+		for(int i=0;i<10;i++){
+			Assert.assertEquals(rs.get(i).getString("A"),"测试A-"+i);
+			Assert.assertEquals(rs.get(i).getString("B"),"测试B-"+i);
+			Assert.assertEquals(rs.get(i).getString("C"),"测试C-"+i);
+		} 
+		
+		table.saveCsv(new FileOutputStream("logs/test-string.csv"),"GBK");
+		
+	}
+	
+	public void testDataTableWriteArrayInt()throws Exception{
+		DataTable<int[]> table = new DataTable<int[]>();
+		table.setHeaders("A","B","C");
+		for(int i=0;i<10;i++){
+			table.add(new int[]{i,i,i});
+		}
+		
+		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+		table.saveCsv(outputStream,"utf-8");
+		
+		String csv=new String(outputStream.toByteArray(),"utf-8");
+		DataTable<DataMap> rs=DataTable.fromCsv(csv);
+		Assert.assertEquals(rs.size(),10);
+		for(int i=0;i<10;i++){
+			Assert.assertEquals(rs.get(i).getInteger("A"),Integer.valueOf(i));
+			Assert.assertEquals(rs.get(i).getInteger("B"),Integer.valueOf(i));
+			Assert.assertEquals(rs.get(i).getInteger("C"),Integer.valueOf(i));
+		} 
+		
+	}
+	
+	public void testDataTableWriteBean()throws IOException{
 		DataTable<TestSimpleModel> table=new DataTable<TestSimpleModel>();
 		table.add(new TestSimpleModel().setIntField1(1).setStringField1("\"s1"));
 		table.add(new TestSimpleModel().setIntField1(2).setStringField1("s2"));
 		table.add(new TestSimpleModel().setIntField1(3).setStringField1("s3"));
 		
 		ByteArrayOutputStream bos=new ByteArrayOutputStream();
-		table.saveCsv(bos);
+		table.saveCsv(bos,"utf-8");
 		
 		String csv=new String(bos.toByteArray());
 		Assert.assertTrue(csv.indexOf("stringField1")>0  && csv.indexOf("intField1")>0);

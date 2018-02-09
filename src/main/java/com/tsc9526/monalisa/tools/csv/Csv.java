@@ -16,12 +16,12 @@
  *******************************************************************************************/
 package com.tsc9526.monalisa.tools.csv;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.LineNumberReader;
 import java.io.OutputStream;
 import java.io.PrintStream;
 import java.io.StringReader;
+import java.io.UnsupportedEncodingException;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
@@ -34,13 +34,15 @@ import org.relique.jdbc.csv.CsvRawReader;
 import org.relique.jdbc.csv.SqlParser;
 
 import com.tsc9526.monalisa.tools.clazz.MelpClass;
-import com.tsc9526.monalisa.tools.clazz.MelpClass.FGS;
 import com.tsc9526.monalisa.tools.clazz.MelpClass.ClassHelper;
+import com.tsc9526.monalisa.tools.clazz.MelpClass.FGS;
+import com.tsc9526.monalisa.tools.converters.impl.ArrayTypeConversion;
 import com.tsc9526.monalisa.tools.datatable.CsvOptions;
 import com.tsc9526.monalisa.tools.datatable.DataColumn;
 import com.tsc9526.monalisa.tools.datatable.DataMap;
 import com.tsc9526.monalisa.tools.datatable.DataTable;
 import com.tsc9526.monalisa.tools.io.MelpFile;
+import com.tsc9526.monalisa.tools.misc.MelpException;
 
 /**
  * 
@@ -81,12 +83,17 @@ public class Csv{
 		}
 	}
 	
-	public void writeToCsv(DataTable<?> table, OutputStream outputStream, CsvOptions options){
-		PrintStream out=null;
-		
+	public void writeToCsv(DataTable<?> table,OutputStream outputStream,String charset, CsvOptions options){
 		try{ 
-			out=new PrintStream(outputStream,true,options.getCharset());
-			
+			PrintStream out=new PrintStream(outputStream,true,charset!=null?charset: options.getCharset());
+			writeToCsv(table,out,options);
+		}catch(UnsupportedEncodingException e){
+			MelpException.throwRuntimeException(e);
+		}
+	}
+	
+	public void writeToCsv(DataTable<?> table, PrintStream out,  CsvOptions options){ 
+		try{ 
 			String separator = options.getSeparator();
 			Character quoteChar = options.getQuotechar();
 			String quoteStyle = options.getQuoteStyle();
@@ -106,6 +113,10 @@ public class Csv{
 			}
 	
 			for(Object row:table){
+				if(row==null){
+					continue;
+				}
+				
 				Object[] vs=new Object[headers.size()];
 				
 				int i=0;
@@ -117,6 +128,9 @@ public class Csv{
 				}else{
 					if(row.getClass().isPrimitive() || row.getClass().getName().startsWith("java.")){
 						vs[i++]=row;
+					}else if(row.getClass().isArray()){
+						ArrayTypeConversion conversion = new ArrayTypeConversion();
+						vs = (Object[])conversion.convert(row, Object[].class);
 					}else{					
 						ClassHelper mc=MelpClass.getClassHelper(row.getClass());
 						for(DataColumn column:headers){
@@ -147,8 +161,6 @@ public class Csv{
 			}
 	
 			out.flush();
-		}catch(IOException e){
-			throw new RuntimeException(e);
 		}finally{
 			if(out!=null)out.close();
 		}
