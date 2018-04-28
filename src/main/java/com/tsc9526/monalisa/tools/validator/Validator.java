@@ -46,7 +46,11 @@ public class Validator {
 			Object v=fgs.getObject(bean);
 			
 			if(notnull!=null && v==null ){
-				result.add(fgs.getFieldName()+": CAN NOT BE NULL");
+				String msg = notnull.message();
+				if(msg==null || msg.length()==0){
+					msg="CAN NOT BE NULL";
+				}
+				result.add(fgs.getFieldName()+": "+msg);
 			}else{			
 				if(v!=null){
 					Regex regex=fgs.getAnnotation(Regex.class);
