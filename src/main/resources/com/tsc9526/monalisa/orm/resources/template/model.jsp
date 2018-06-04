@@ -105,6 +105,26 @@ public class <%=table.getJavaName()%> extends <%=modelClass%><<%=table.getJavaNa
 		return this;
 	}
 	
+	<%if(f.getJavaType().equals("java.math.BigDecimal") ){%>
+	<%=getComments(table,f,"	","\t")%> 
+	public <%=table.getJavaName()%> <%=f.getJavaNameSet()%>(Integer <%=f.getJavaName()%>){
+		 return <%=f.getJavaNameSet()%>(<%=f.getJavaName()%> ==null? (java.math.BigDecimal)null : new java.math.BigDecimal(<%=f.getJavaName()%>));
+	}
+	
+	<%=getComments(table,f,"	","\t")%> 
+	public <%=table.getJavaName()%> <%=f.getJavaNameSet()%>(Long <%=f.getJavaName()%>){
+		 return <%=f.getJavaNameSet()%>(<%=f.getJavaName()%> ==null? (java.math.BigDecimal)null: new java.math.BigDecimal(<%=f.getJavaName()%>));
+	}
+	<%} %>
+	
+	<%if(f.getJavaType().equals("Long") ){%>
+	<%=getComments(table,f,"	","\t")%> 
+	public <%=table.getJavaName()%> <%=f.getJavaNameSet()%>(Integer <%=f.getJavaName()%>){
+		 return <%=f.getJavaNameSet()%>(<%=f.getJavaName()%> ==null? (Long)null: new Long(<%=f.getJavaName()%>));
+	}
+	<%} %>
+	
+	
 	<%String file=f.getCode("file"); if(file!=null){%>
 	<%=getComments(table,f,"@param "+f.getJavaName()+" the relative path. \r\n\t* @param data the file data bytes","\t")%> 
 	public <%=table.getJavaName()%> <%=f.getJavaNameSet()%>(<%=f.getJavaType()%> <%=f.getJavaName()%>,byte[] data){
@@ -159,6 +179,41 @@ public class <%=table.getJavaName()%> extends <%=modelClass%><<%=table.getJavaNa
 		
 		return r;
 	}
+	
+	<%if(f.getJavaType().equals("java.math.BigDecimal") ){%>
+	<%=getComments(table,f,"	","\t")%> 
+	public Integer <%=f.getJavaNameGet()%>AsInt(Integer defaultValue){
+		java.math.BigDecimal r = <%=f.getJavaNameGet()%>();
+		if(r!=null){
+			return r.intValue();
+		}else{
+			return defaultValue;
+		}
+	}
+	 
+	 
+	<%=getComments(table,f,"	","\t")%> 
+	public Long <%=f.getJavaNameGet()%>AsLong(Long defaultValue){
+		java.math.BigDecimal r = <%=f.getJavaNameGet()%>();
+		if(r!=null){
+			return r.longValue();
+		}else{
+			return defaultValue;
+		}
+	}
+	<%} %>
+	
+	<%if(f.getJavaType().equals("Long") ){%>
+	<%=getComments(table,f,"	","\t")%> 
+	public Integer <%=f.getJavaNameGet()%>AsInt(Integer defaultValue){
+		Long r = <%=f.getJavaNameGet()%>();
+		if(r!=null){
+			return r.intValue();
+		}else{
+			return defaultValue;
+		}
+	}	  
+	<%} %>
 	 	
 	<%String file=f.getCode("file"); if(file!=null){%>
 	<%=getComments(table,f,"@param charset  read file content using this charset.","\t")%> 
@@ -483,12 +538,13 @@ public class <%=table.getJavaName()%> extends <%=modelClass%><<%=table.getJavaNa
 			return this.$example.or();
 		}
 		
-		<%for(MetaColumn f:table.getColumns()){ %>
+		<%for(MetaColumn f:table.getColumns()){%>
 		<%=getComments(table, f, "		","\t\t")%>
 		<%if(f.getJavaType().equals("Integer")){      %>public com.tsc9526.monalisa.orm.criteria.Field.FieldInteger<$Criteria> <%=f.getJavaName()%> = new com.tsc9526.monalisa.orm.criteria.Field.FieldInteger<$Criteria>("<%=f.getName()%>", this);
 		<%}else if(f.getJavaType().equals("Short")){  %>public com.tsc9526.monalisa.orm.criteria.Field.FieldShort<$Criteria> <%=f.getJavaName()%> = new com.tsc9526.monalisa.orm.criteria.Field.FieldShort<$Criteria>("<%=f.getName()%>", this);
 		<%}else if(f.getJavaType().equals("Long")){   %>public com.tsc9526.monalisa.orm.criteria.Field.FieldLong<$Criteria> <%=f.getJavaName()%> = new com.tsc9526.monalisa.orm.criteria.Field.FieldLong<$Criteria>("<%=f.getName()%>", this); 
 		<%}else if(f.getJavaType().equals("String")){ %>public com.tsc9526.monalisa.orm.criteria.Field.FieldString<$Criteria> <%=f.getJavaName()%> = new com.tsc9526.monalisa.orm.criteria.Field.FieldString<$Criteria>("<%=f.getName()%>", this);
+		<%}else if(f.getJavaType().equals("java.math.BigDecimal")){ %>public com.tsc9526.monalisa.orm.criteria.Field.FieldBigDecimal<$Criteria> <%=f.getJavaName()%> = new com.tsc9526.monalisa.orm.criteria.Field.FieldBigDecimal<$Criteria>("<%=f.getName()%>", this);
 		<%}else{                                      %>public com.tsc9526.monalisa.orm.criteria.Field<<%=f.getJavaType()%>,$Criteria> <%=f.getJavaName()%> = new com.tsc9526.monalisa.orm.criteria.Field<<%=f.getJavaType()%>,$Criteria>("<%=f.getName()%>", this, <%=f.getJdbcType()%>);		 
 		<%} %>	<%}%>
 	}

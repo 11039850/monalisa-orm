@@ -16,6 +16,7 @@
  *******************************************************************************************/
 package com.tsc9526.monalisa.orm.criteria;
 
+import java.math.BigDecimal;
 import java.sql.Types;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -53,7 +54,7 @@ public class Field<X,Y extends Criteria<?>>{
 		
 		this.type=MelpTypes.getJavaType(jdbcType);		
 	}	
-		 
+ 	 
 	/**
 	 * SQL: <code>=</code>
 	 * 
@@ -549,6 +550,22 @@ public class Field<X,Y extends Criteria<?>>{
 			super(name, criteria);		
 		}
 		
+		private Long create(String value){
+			if(value==null || value.trim().length()==0){
+				return null;
+			}else{
+				return Long.parseLong(value.trim()); 
+			}	
+		}
+		
+		private Long create(Integer value){
+			if(value==null){
+				return null;
+			}else{
+				return value.longValue(); 
+			}	
+		}
+		
 		/**
 		 * SQL: <code>=</code>
 		 * 
@@ -556,11 +573,7 @@ public class Field<X,Y extends Criteria<?>>{
 		 * @return this
 		 */	 
 		public Y eq(String value){			 
-			if(value==null || value.trim().length()==0){
-				return super.eq((Long)null);
-			}else{
-				return super.eq(Long.parseLong(value.trim())); 
-			}			 
+			return super.eq(create(value));			 
 		}
 		
 		/**
@@ -570,11 +583,7 @@ public class Field<X,Y extends Criteria<?>>{
 		 * @return this
 		 */	
 		public Y ne(String value){
-			if(value==null || value.trim().length()==0){
-				return super.ne((Long)null);
-			}else{
-				return super.ne(Long.parseLong(value.trim())); 
-			}
+			return super.ne(create(value));		
 		}
 		
 		/**
@@ -584,11 +593,7 @@ public class Field<X,Y extends Criteria<?>>{
 		 * @return this
 		 */
 		public Y gt(String value){
-			if(value==null || value.trim().length()==0){
-				return super.gt((Long)null);
-			}else{
-				return super.gt(Long.parseLong(value.trim())); 
-			}
+			return super.gt(create(value));		
 		}
 		
 		/**
@@ -598,11 +603,7 @@ public class Field<X,Y extends Criteria<?>>{
 		 * @return this
 		 */
 		public Y ge(String value){
-			if(value==null || value.trim().length()==0){
-				return super.ge((Long)null);
-			}else{
-				return super.ge(Long.parseLong(value.trim())); 
-			}
+			return super.ge(create(value));		
 		}
 		
 		/**
@@ -612,11 +613,7 @@ public class Field<X,Y extends Criteria<?>>{
 		 * @return this
 		 */
 		public Y lt(String value){
-			if(value==null || value.trim().length()==0){
-				return super.lt((Long)null);
-			}else{
-				return super.lt(Long.parseLong(value.trim())); 
-			}
+			return super.lt(create(value));		
 		}
 		
 		/**
@@ -626,12 +623,84 @@ public class Field<X,Y extends Criteria<?>>{
 		 * @return this
 		 */
 		public Y le(String value){
-			if(value==null || value.trim().length()==0){
-				return super.le((Long)null);
-			}else{
-				return super.le(Long.parseLong(value.trim())); 
-			}
+			return super.le(create(value));		
 		}
+		
+		
+		
+		/**
+		 * SQL: <code>=</code>
+		 * 
+		 * @param value the value
+		 * @return this
+		 */	 
+		public Y eq(Integer value){			 
+			return super.eq(create(value));			 
+		}
+		
+		/**
+		 * SQL: <code>&lt;&gt;</code>
+		 * 
+		 * @param value the value
+		 * @return this
+		 */	
+		public Y ne(Integer value){
+			return super.ne(create(value));		
+		}
+		
+		/**
+		 *  SQL: <code>&gt;</code>
+		 *  
+		 * @param value the value
+		 * @return this
+		 */
+		public Y gt(Integer value){
+			return super.gt(create(value));		
+		}
+		
+		/**
+		 * SQL: <code>&gt;=</code>
+		 * 
+		 * @param value the value
+		 * @return this
+		 */
+		public Y ge(Integer value){
+			return super.ge(create(value));		
+		}
+		
+		/**
+		 * SQL: <code>&lt;</code>
+		 * 
+		 * @param value the value
+		 * @return this
+		 */
+		public Y lt(Integer value){
+			return super.lt(create(value));		
+		}
+		
+		/**
+		 * SQL: <code>&lt;=</code>
+		 * 
+		 * @param value the value
+		 * @return this
+		 */
+		public Y le(Integer value){
+			return super.le(create(value));		
+		}
+		
+		
+		/**
+		 * 
+		 * SQL: <code>BETWEEN ? AND ?</code>
+		 *  
+		 * @param from  &gt;= from
+		 * @param to    &lt;= to
+		 * @return this
+		 */
+		public Y between(Integer from,Integer to){
+			return super.between(create(from),create(to));
+		}
+		
 		
 		/**
 		 * @param valueSplitByComma  逗号分隔的长整型列表
@@ -656,8 +725,7 @@ public class Field<X,Y extends Criteria<?>>{
 		public Y in(String[] values){			 
 			return super.in(toLongs(values));
 		}
-		
-		
+		 
 		/**
 		 * @param values  长整型字符串数字
 		 * @return this
@@ -665,30 +733,14 @@ public class Field<X,Y extends Criteria<?>>{
 		public Y notin(String[] values){			 
 			return super.notin(toLongs(values));
 		}
-		
-		public Y in(long[] values){			 
-			return super.in(toLongs(values));
-		}
-	  
-		public Y notin(long[] values){			 
-			return super.notin(toLongs(values));
-		}
-		
+	 
 		private List<Long> toLongs(String[] values){
 			List<Long> xs=new ArrayList<Long>();
 			for(int i=0;i<values.length;i++){
 				xs.add(Long.parseLong(values[i].trim()));
 			}
 			return xs;
-		}
-		
-		private List<Long> toLongs(long[] values){
-			List<Long> xs=new ArrayList<Long>();
-			for(int i=0;i<values.length;i++){
-				xs.add(values[i]);
-			}
-			return xs;
-		}
+		}	 
 	}
 	
 	public static class FieldShort<Y extends Criteria<?>> extends Field<Short,Y>{
@@ -752,6 +804,412 @@ public class Field<X,Y extends Criteria<?>>{
 			}
 			return xs;
 		}
+	}
+	
+	 	
+	public static class FieldBigDecimal<Y extends Criteria<?>> extends Field<BigDecimal,Y>{
+		public FieldBigDecimal(String name, Y criteria) {
+			super(name, criteria);		
+		}
+		
+		private BigDecimal create(String value) {
+			if(value==null || value.trim().length()==0){
+				return null;
+			}else {
+				return new BigDecimal(value.trim());
+			}
+		}
+		
+		private BigDecimal create(Long value) {
+			if(value==null){
+				return null;
+			}else {
+				return new BigDecimal(value);
+			}
+		}
+		
+		private BigDecimal create(Integer value) {
+			if(value==null){
+				return null;
+			}else {
+				return new BigDecimal(value);
+			}
+		}
+		
+		/**
+		 * SQL: <code>=</code>
+		 * 
+		 * @param value the value
+		 * @return this
+		 */	 
+		public Y eq(String value){	
+			return super.eq(create(value)); 
+		}
+		
+		/**
+		 * SQL: <code>&lt;&gt;</code>
+		 * 
+		 * @param value the value
+		 * @return this
+		 */	
+		public Y ne(String value){
+			return super.ne(create(value));
+		}
+		
+		/**
+		 *  SQL: <code>&gt;</code>
+		 *  
+		 * @param value the value
+		 * @return this
+		 */
+		public Y gt(String value){
+			return super.gt(create(value));
+		}
+		
+		/**
+		 * SQL: <code>&gt;=</code>
+		 * 
+		 * @param value the value
+		 * @return this
+		 */
+		public Y ge(String value){
+			return super.ge(create(value)); 
+		}
+		
+		/**
+		 * SQL: <code>&lt;</code>
+		 * 
+		 * @param value the value
+		 * @return this
+		 */
+		public Y lt(String value){
+			return super.lt(create(value));
+		}
+		
+		/**
+		 * SQL: <code>&lt;=</code>
+		 * 
+		 * @param value the value
+		 * @return this
+		 */
+		public Y le(String value){
+			return super.le(create(value));
+		}
+		
+		
+		
+		
+
+		/**
+		 * SQL: <code>=</code>
+		 * 
+		 * @param value the value
+		 * @return this
+		 */	 
+		public Y eq(Integer value){	
+			return super.eq(create(value)); 
+		}
+		
+		/**
+		 * SQL: <code>&lt;&gt;</code>
+		 * 
+		 * @param value the value
+		 * @return this
+		 */	
+		public Y ne(Integer value){
+			return super.ne(create(value));
+		}
+		
+		/**
+		 *  SQL: <code>&gt;</code>
+		 *  
+		 * @param value the value
+		 * @return this
+		 */
+		public Y gt(Integer value){
+			return super.gt(create(value));
+		}
+		
+		/**
+		 * SQL: <code>&gt;=</code>
+		 * 
+		 * @param value the value
+		 * @return this
+		 */
+		public Y ge(Integer value){
+			return super.ge(create(value)); 
+		}
+		
+		/**
+		 * SQL: <code>&lt;</code>
+		 * 
+		 * @param value the value
+		 * @return this
+		 */
+		public Y lt(Integer value){
+			return super.lt(create(value));
+		}
+		
+		/**
+		 * SQL: <code>&lt;=</code>
+		 * 
+		 * @param value the value
+		 * @return this
+		 */
+		public Y le(Integer value){
+			return super.le(create(value));
+		}
+		
+		/**
+		 * SQL: <code>IN(...)</code>
+		 * 
+		 * @param values array values
+		 * @return this
+		 */
+		public Y in(Integer[] values){
+			BigDecimal[] xs = new BigDecimal[values.length];
+			for(int i=0;i<values.length;i++){
+				xs[i]=create(values[i]);
+			}
+			return super.in(xs);
+		}
+		
+		/**
+		 * SQL: <code>IN(...)</code>
+		 * 
+		 * @param value the value
+		 * @param values other values
+		 * @return this
+		 */
+		public Y in(Integer value,Integer... values){
+			BigDecimal[] xs = new BigDecimal[values.length+1];
+			xs[0] = create(value);
+			for(int i=0;i<values.length;i++){
+				xs[i+1]=create(values[i]);
+			}
+			return super.in(xs); 
+		}
+	 
+		/**
+		 * SQL: <code>NOT IN (...)</code>
+		 * 
+		 * @param values array values
+		 * @return this
+		 */
+		public Y notin(Integer[] values){
+			BigDecimal[] xs = new BigDecimal[values.length];
+			for(int i=0;i<values.length;i++){
+				xs[i]=create(values[i]);
+			}
+			return super.notin(xs);
+		}
+		
+		/**
+		 * SQL: <code>NOT IN (...)</code>
+		 * 
+		 * @param value the value
+		 * @param values other values
+		 * @return this
+		 */
+		public Y notin(Integer value,Integer... values){
+			BigDecimal[] xs = new BigDecimal[values.length+1];
+			xs[0] = create(value);
+			for(int i=0;i<values.length;i++){
+				xs[i+1]=create(values[i]);
+			}
+			return super.notin(xs); 
+		}
+		
+		/**
+		 * 
+		 * SQL: <code>BETWEEN ? AND ?</code>
+		 *  
+		 * @param from  &gt;= from
+		 * @param to    &lt;= to
+		 * @return this
+		 */
+		public Y between(Integer from ,Integer to){
+			return super.between(create(from), create(to));
+		}
+		
+		
+		
+		
+		/**
+		 * SQL: <code>=</code>
+		 * 
+		 * @param value the value
+		 * @return this
+		 */	 
+		public Y eq(Long value){	
+			return super.eq(create(value)); 
+		}
+		
+		/**
+		 * SQL: <code>&lt;&gt;</code>
+		 * 
+		 * @param value the value
+		 * @return this
+		 */	
+		public Y ne(Long value){
+			return super.ne(create(value));
+		}
+		
+		/**
+		 *  SQL: <code>&gt;</code>
+		 *  
+		 * @param value the value
+		 * @return this
+		 */
+		public Y gt(Long value){
+			return super.gt(create(value));
+		}
+		
+		/**
+		 * SQL: <code>&gt;=</code>
+		 * 
+		 * @param value the value
+		 * @return this
+		 */
+		public Y ge(Long value){
+			return super.ge(create(value)); 
+		}
+		
+		/**
+		 * SQL: <code>&lt;</code>
+		 * 
+		 * @param value the value
+		 * @return this
+		 */
+		public Y lt(Long value){
+			return super.lt(create(value));
+		}
+		
+		/**
+		 * SQL: <code>&lt;=</code>
+		 * 
+		 * @param value the value
+		 * @return this
+		 */
+		public Y le(Long value){
+			return super.le(create(value));
+		}
+		
+		/**
+		 * SQL: <code>IN(...)</code>
+		 * 
+		 * @param values array values
+		 * @return this
+		 */
+		public Y in(Long[] values){
+			BigDecimal[] xs = new BigDecimal[values.length];
+			for(int i=0;i<values.length;i++){
+				xs[i]=create(values[i]);
+			}
+			return super.in(xs);
+		}
+		
+		/**
+		 * SQL: <code>IN(...)</code>
+		 * 
+		 * @param value the value
+		 * @param values other values
+		 * @return this
+		 */
+		public Y in(Long value,Long... values){
+			BigDecimal[] xs = new BigDecimal[values.length+1];
+			xs[0] = create(value);
+			for(int i=0;i<values.length;i++){
+				xs[i+1]=create(values[i]);
+			}
+			return super.in(xs); 
+		}
+	 
+		/**
+		 * SQL: <code>NOT IN (...)</code>
+		 * 
+		 * @param values array values
+		 * @return this
+		 */
+		public Y notin(Long[] values){
+			BigDecimal[] xs = new BigDecimal[values.length];
+			for(int i=0;i<values.length;i++){
+				xs[i]=create(values[i]);
+			}
+			return super.notin(xs);
+		}
+		
+		/**
+		 * SQL: <code>NOT IN (...)</code>
+		 * 
+		 * @param value the value
+		 * @param values other values
+		 * @return this
+		 */
+		public Y notin(Long value,Long... values){
+			BigDecimal[] xs = new BigDecimal[values.length+1];
+			xs[0] = create(value);
+			for(int i=0;i<values.length;i++){
+				xs[i+1]=create(values[i]);
+			}
+			return super.notin(xs); 
+		}
+		
+		/**
+		 * 
+		 * SQL: <code>BETWEEN ? AND ?</code>
+		 *  
+		 * @param from  &gt;= from
+		 * @param to    &lt;= to
+		 * @return this
+		 */
+		public Y between(Long from ,Long to){
+			return super.between(create(from), create(to));
+		}
+		
+		
+		
+		
+		/**
+		 * @param valueSplitByComma  逗号分隔的长整型列表
+		 * @return this
+		 */
+		public Y in(String valueSplitByComma){
+			return in(valueSplitByComma.split(","));
+		}
+		
+		/**
+		 * @param valueSplitByComma  逗号分隔的长整型列表
+		 * @return this
+		 */
+		public Y notin(String valueSplitByComma){
+			return notin(valueSplitByComma.split(","));
+		}
+		
+		/**
+		 * @param values  长整型字符串数字
+		 * @return this
+		 */
+		public Y in(String[] values){			 
+			return super.in(fromStringArray(values));
+		}
+	 	
+		/**
+		 * @param values  长整型字符串数字
+		 * @return this
+		 */
+		public Y notin(String[] values){			 
+			return super.notin(fromStringArray(values));
+		}
+		 
+		private List<BigDecimal> fromStringArray(String[] values){
+			List<BigDecimal> xs=new ArrayList<BigDecimal>();
+			for(int i=0;i<values.length;i++){
+				xs.add(create(values[i].trim()));
+			}
+			return xs;
+		}
+		 
 	}
 	
 	public static class FieldString<Y extends Criteria<?>> extends Field<String,Y>{

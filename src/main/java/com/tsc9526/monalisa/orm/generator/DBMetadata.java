@@ -32,8 +32,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 import javax.sql.DataSource;
@@ -206,6 +208,10 @@ public class DBMetadata {
 		if (schemaPattern == null || schemaPattern.length() == 0) {
 			schemaPattern = dialect.getSchema(dbcfg.getCfg().getUrl());
 		}
+		
+		if (tablePattern == null || tablePattern.length() == 0) {
+			tablePattern="%";
+		}
 	}
 
 	public List<MetaTable> getTables() {
@@ -230,10 +236,20 @@ public class DBMetadata {
 	}
 
 	protected void setupColumnIndexes(DatabaseMetaData dbm, List<MetaTable> tables) throws SQLException {
+		int index = 0; 
 		for (MetaTable table : tables) {
+			index++;
+			boolean isView      = "VIEW".equalsIgnoreCase( table.getType() );
+			String  viewIndexes = DbProp.PROP_TABLE_VIEW_INDEXES.getValue(dbcfg, table.getName(),"false");
+			boolean loadIndexes = !isView || viewIndexes.equalsIgnoreCase("true");
+			 
+			DBGenerator.plogger.info("Load ["+index+"/"+tables.size()+"] "+(loadIndexes?"columns&indexes":"columns")+" of table: "+table.getName());
+			
 			TableHelper.getTableColumns(dbcfg, dbm, table);
-			TableHelper.getTableIndexes(dbcfg, dbm, table);
-
+			
+			if(loadIndexes){
+				TableHelper.getTableIndexes(dbcfg, dbm, table);
+			}
 			table.setJavaPackage(javaPackage);
 		}
 	}
@@ -309,20 +325,45 @@ public class DBMetadata {
 			type = "TABLE";
 		}
 
-		ResultSet rs = dbm.getTables(catalogPattern, schemaPattern, tablePattern, type.split(","));
+		String tableQuery=tablePattern;
+		Set<String> filterTables=null;
+		if(tablePattern.indexOf('%')<0) {
+			filterTables = new HashSet<String>();
+			tableQuery="%";
+			
+			for(String table:tablePattern.split(",")) {
+				filterTables.add(table.trim().toLowerCase());
+			}
+		}
+		
+		ResultSet rs = dbm.getTables(catalogPattern, schemaPattern, tableQuery, type.split(","));
 		while (rs.next()) {
 			MetaTable table = new MetaTable();
 			table.setName(rs.getString(COLUMN_TABLE_NAME));
 			table.setRemarks(rs.getString(COLUMN_REMARKS));
 			table.setType(rs.getString(COLUMN_TABLE_TYPE));
-			 
-			DBGenerator.plogger.info("Load "+table.getType()+": "+MelpString.rightPadding(table.getName(),26)+" { "+table.getRemarks()+" }");
 			
-			MetaPartition partition = findPartition(partitions, table);
-			if (partition != null) {
-				partition.addTable(table);
-			} else {
-				tables.add(table);
+			boolean skip =false;
+			if(filterTables!=null) {
+				skip=true;
+				
+				String tableName = table.getName().toLowerCase();
+				for(String regex: filterTables) {
+					if( tableName.matches(regex) ) {
+						skip = false;
+						break;
+					}
+				}
+			}
+			
+			DBGenerator.plogger.info( (skip?"Skip ":"Load ")+table.getType()+": "+MelpString.rightPadding(table.getName(),26)+" { "+table.getRemarks()+" }");
+			if(!skip) {
+				MetaPartition partition = findPartition(partitions, table);
+				if (partition != null) {
+					partition.addTable(table);
+				} else {
+					tables.add(table);
+				}
 			}
 		}
 		rs.close();
@@ -337,7 +378,10 @@ public class DBMetadata {
 		setupCreateTable(tables);
 		
 		if(dialect.supportSequence()){
-			TableHelper.setupSequence(dbcfg,dbm, tables);
+			List<String[]> seqMappings = TableHelper.setupSequence(dbcfg,dbm, tables);
+			for(String[] sm:seqMappings) {
+				DBGenerator.plogger.info("Sequence: "+ MelpString.rightPadding(sm[0],26)+ " -> "+sm[1]+"."+sm[2]);
+			}
 		}
 
 		return tables;

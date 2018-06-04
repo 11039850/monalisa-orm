@@ -366,15 +366,6 @@ public class ModelMeta{
 		if(fields.isEmpty()){
 			record=true;
 			fields=loadFieldsFromDB(metaClass);	
-			
-			StringBuilder sb=new StringBuilder();
-			for(FGS f:fields){
-				if(sb.length()>0){
-					sb.append(", ");
-				}
-				sb.append(f.getFieldName());
-			}
-			logger.info("Load table: "+tableName+"{"+sb.toString()+"}");
 		}
 		
 		return fields;		
@@ -442,8 +433,10 @@ public class ModelMeta{
 					fs.add(fgs);								 
 				}		
 				 
-				this.table=createTable(tableName,mTable);
-						
+				this.table = createTable(tableName,mTable);
+				
+				logMetaTable(mTable,fs);
+				
 				return fs;
 			}else{
 				throw new RuntimeException("Table not found: "+tableName+", DB: "+db.getKey());
@@ -451,6 +444,26 @@ public class ModelMeta{
 		}catch(SQLException e){
 			throw new RuntimeException(e);
 		}
+	}
+	
+	private void logMetaTable(MetaTable mTable,List<FGS> fs) {
+		StringBuilder sb=new StringBuilder();
+		for(FGS f:fs){
+			if(sb.length()>0){
+				sb.append(", ");
+			}
+			sb.append(f.getFieldName());
+		}
+		sb.insert(0,"Load table: "+tableName+" {");
+		
+		String[] seqMapping = mTable.getSeqMapping();
+		if(seqMapping!=null && seqMapping.length > 2) {
+			sb.append(" : "+seqMapping[0]+" -> " +seqMapping[1]+"."+seqMapping[2]);
+		}
+		sb.append("}");
+		
+		logger.info(sb.toString());
+		
 	}
 	 
 	public FGS findFieldByName(String theFieldName){

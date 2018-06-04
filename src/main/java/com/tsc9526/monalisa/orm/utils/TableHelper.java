@@ -24,11 +24,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.concurrent.ConcurrentHashMap;
 
 import com.tsc9526.monalisa.orm.datasource.DBConfig;
 import com.tsc9526.monalisa.orm.datasource.DbProp;
 import com.tsc9526.monalisa.orm.dialect.Dialect;
-import com.tsc9526.monalisa.orm.generator.DBGenerator;
 import com.tsc9526.monalisa.orm.generator.DBMetadata;
 import com.tsc9526.monalisa.orm.meta.MetaColumn;
 import com.tsc9526.monalisa.orm.meta.MetaIndex;
@@ -128,8 +128,7 @@ public class TableHelper {
 	    	column.setRemarks(rs.getString("REMARKS"));
 	    	column.setAuto(auto);
 	    	 
-	    	table.addColumn(column);
-	    	
+	    	table.addColumn(column);  	
 		}
 	    rs.close();		    	   
 	}
@@ -171,7 +170,7 @@ public class TableHelper {
 	}
 	
 
-	public static void setupSequence(DBConfig dbcfg,DatabaseMetaData dbm, List<MetaTable> tables) throws SQLException {
+	public static List<String[]> setupSequence(DBConfig dbcfg,DatabaseMetaData dbm, List<MetaTable> tables) throws SQLException {
 		Dialect dialect         = dbcfg.getDialect();
 		
 		String catalogPattern   = dialect.getMetaCatalogPattern(dbcfg);
@@ -186,6 +185,7 @@ public class TableHelper {
 		}
 		MelpClose.close(rs);
 		
+		List<String[]> seqMappings = new ArrayList<String[]>();
 		for(MetaTable table:tables){
 			String tableName=table.getName().toUpperCase();
 			
@@ -203,10 +203,14 @@ public class TableHelper {
 				c.setAuto(true);
 				c.setSeq(seq);
 				
-				DBGenerator.plogger.info("Sequence: "+ MelpString.rightPadding(seq,26)+ " -> "+tableName+"."+c.getName());
+				seqMappings.add(new String[] {seq,tableName,c.getName()});
 			}
 		}
+		
+		return seqMappings;
 	}
+	
+	public static ConcurrentHashMap<String,String> hCachedLogSeqKey = new ConcurrentHashMap<String,String>();
 	 
 	private static class MTable{
 		private DBConfig dbcfg;
@@ -233,7 +237,10 @@ public class TableHelper {
 				if(dialect.supportSequence()){
 					List<MetaTable> tables=new ArrayList<MetaTable>();
 					tables.add(table);
-					setupSequence(dbcfg,dbm,tables);
+					List<String[]> seqMappings = setupSequence(dbcfg,dbm,tables);
+					if(seqMappings.size()>0) {
+						table.setSeqMapping(seqMappings.get(0));
+					}
 				}
 				
 				if(table.getColumns().isEmpty()){

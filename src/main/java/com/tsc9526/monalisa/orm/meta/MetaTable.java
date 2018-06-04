@@ -43,6 +43,8 @@ public class MetaTable extends Name implements Cloneable{
 	 
 	private String type;
 	
+	private String[] seqMapping;
+	
 	public MetaTable(){
 		super(true);
 	}
@@ -236,5 +238,13 @@ public class MetaTable extends Name implements Cloneable{
 
 	public void setType(String type) {
 		this.type = type;
+	}
+
+	public String[] getSeqMapping() {
+		return seqMapping;
+	}
+
+	public void setSeqMapping(String[] seqMapping) {
+		this.seqMapping = seqMapping;
 	}
 }

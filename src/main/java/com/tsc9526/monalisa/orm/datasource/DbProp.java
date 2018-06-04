@@ -177,6 +177,7 @@ public class DbProp {
 	
 	public final static DbProp PROP_TABLE_VALIDATE 		      = new DbProp("validate",false);
 	public final static DbProp PROP_TABLE_VALIDATOR		      = new DbProp("validator");
+	public final static DbProp PROP_TABLE_VIEW_INDEXES		  = new DbProp("view.indexes",false);
 	
 	public final static DbProp PROP_TABLE_SEQ		          = new DbProp("seq");
 	public final static DbProp PROP_TABLE_PRIMARY_KEYS		  = new DbProp("primaryKeys");

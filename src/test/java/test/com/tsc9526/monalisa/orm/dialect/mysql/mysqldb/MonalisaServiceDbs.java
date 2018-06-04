@@ -12,7 +12,7 @@ import java.util.LinkedHashMap;
  
 /**
  *
- * Auto generated code by monalisa 2.1.0
+ * Auto generated code by monalisa 2.1.1-SNAPSHOT
  *
  */
 @Table(
@@ -172,6 +172,11 @@ public class MonalisaServiceDbs extends com.tsc9526.monalisa.orm.model.Model<Mon
 	
 	
 	
+	
+	
+	
+	
+	
 	/**
 	* @Column
 	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> monalisa_service_dbs&nbsp;<B>name:</B> schema &nbsp;[<font color=red>NOTNULL</font>]
@@ -186,6 +191,11 @@ public class MonalisaServiceDbs extends com.tsc9526.monalisa.orm.model.Model<Mon
 		
 		return this;
 	}
+	
+	
+	
+	
+	
 	
 	
 	
@@ -208,6 +218,11 @@ public class MonalisaServiceDbs extends com.tsc9526.monalisa.orm.model.Model<Mon
 	
 	
 	
+	
+	
+	
+	
+	
 	/**
 	* @Column
 	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> monalisa_service_dbs&nbsp;<B>name:</B> username &nbsp;[<font color=red>NOTNULL</font>]
@@ -222,6 +237,11 @@ public class MonalisaServiceDbs extends com.tsc9526.monalisa.orm.model.Model<Mon
 		
 		return this;
 	}
+	
+	
+	
+	
+	
 	
 	
 	
@@ -244,6 +264,11 @@ public class MonalisaServiceDbs extends com.tsc9526.monalisa.orm.model.Model<Mon
 	
 	
 	
+	
+	
+	
+	
+	
 	/**
 	* @Column
 	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> monalisa_service_dbs&nbsp;<B>name:</B> status &nbsp;[<font color=red>NOTNULL</font>]
@@ -258,6 +283,11 @@ public class MonalisaServiceDbs extends com.tsc9526.monalisa.orm.model.Model<Mon
 		
 		return this;
 	}
+	
+	
+	
+	
+	
 	
 	
 	
@@ -280,6 +310,11 @@ public class MonalisaServiceDbs extends com.tsc9526.monalisa.orm.model.Model<Mon
 	
 	
 	
+	
+	
+	
+	
+	
 	/**
 	* @Column
 	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> monalisa_service_dbs&nbsp;<B>name:</B> update_time
@@ -294,6 +329,11 @@ public class MonalisaServiceDbs extends com.tsc9526.monalisa.orm.model.Model<Mon
 		
 		return this;
 	}
+	
+	
+	
+	
+	
 	
 	
 	
@@ -328,6 +368,10 @@ public class MonalisaServiceDbs extends com.tsc9526.monalisa.orm.model.Model<Mon
 		
 		return r;
 	}
+	
+	
+	
+	
 	 	
 	
 	
@@ -361,6 +405,10 @@ public class MonalisaServiceDbs extends com.tsc9526.monalisa.orm.model.Model<Mon
 		
 		return r;
 	}
+	
+	
+	
+	
 	 	
 	
 	
@@ -394,6 +442,10 @@ public class MonalisaServiceDbs extends com.tsc9526.monalisa.orm.model.Model<Mon
 		
 		return r;
 	}
+	
+	
+	
+	
 	 	
 	
 	
@@ -427,6 +479,10 @@ public class MonalisaServiceDbs extends com.tsc9526.monalisa.orm.model.Model<Mon
 		
 		return r;
 	}
+	
+	
+	
+	
 	 	
 	
 	
@@ -460,6 +516,10 @@ public class MonalisaServiceDbs extends com.tsc9526.monalisa.orm.model.Model<Mon
 		
 		return r;
 	}
+	
+	
+	
+	
 	 	
 	
 	
@@ -493,6 +553,10 @@ public class MonalisaServiceDbs extends com.tsc9526.monalisa.orm.model.Model<Mon
 		
 		return r;
 	}
+	
+	
+	
+	
 	 	
 	
 	
@@ -526,6 +590,10 @@ public class MonalisaServiceDbs extends com.tsc9526.monalisa.orm.model.Model<Mon
 		
 		return r;
 	}
+	
+	
+	
+	
 	 	
 	
 	
@@ -559,6 +627,10 @@ public class MonalisaServiceDbs extends com.tsc9526.monalisa.orm.model.Model<Mon
 		
 		return r;
 	}
+	
+	
+	
+	
 	 	
 	
 	

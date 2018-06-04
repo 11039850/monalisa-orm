@@ -13,7 +13,7 @@ import java.util.LinkedHashMap;
  
 /**
  *
- * Auto generated code by monalisa 2.1.0
+ * Auto generated code by monalisa 2.1.1-SNAPSHOT
  *
  */
 @Table(
@@ -207,6 +207,11 @@ public class TestTable1 extends com.tsc9526.monalisa.orm.model.Model<TestTable1>
 	
 	
 	
+	
+	
+	
+	
+	
 	/**
 	* @Column
 	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_1&nbsp;<B>name:</B> name &nbsp;[<font color=red>NOTNULL</font>]
@@ -221,6 +226,11 @@ public class TestTable1 extends com.tsc9526.monalisa.orm.model.Model<TestTable1>
 		
 		return this;
 	}
+	
+	
+	
+	
+	
 	
 	
 	
@@ -243,6 +253,11 @@ public class TestTable1 extends com.tsc9526.monalisa.orm.model.Model<TestTable1>
 	
 	
 	
+	
+	
+	
+	
+	
 	/**
 	* @Column
 	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_1&nbsp;<B>name:</B> enum_int_a &nbsp;[<font color=red>NOTNULL</font>|<font color=red>ENUM</font>]
@@ -257,6 +272,11 @@ public class TestTable1 extends com.tsc9526.monalisa.orm.model.Model<TestTable1>
 		
 		return this;
 	}
+	
+	
+	
+	
+	
 	
 	
 	
@@ -279,6 +299,11 @@ public class TestTable1 extends com.tsc9526.monalisa.orm.model.Model<TestTable1>
 	
 	
 	
+	
+	
+	
+	
+	
 	/**
 	* @Column
 	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_1&nbsp;<B>name:</B> ts_a &nbsp;[<font color=red>NOTNULL</font>]
@@ -293,6 +318,11 @@ public class TestTable1 extends com.tsc9526.monalisa.orm.model.Model<TestTable1>
 		
 		return this;
 	}
+	
+	
+	
+	
+	
 	
 	
 	
@@ -315,6 +345,11 @@ public class TestTable1 extends com.tsc9526.monalisa.orm.model.Model<TestTable1>
 	
 	
 	
+	
+	
+	
+	
+	
 	/**
 	* @Column
 	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_1&nbsp;<B>name:</B> create_by
@@ -329,6 +364,11 @@ public class TestTable1 extends com.tsc9526.monalisa.orm.model.Model<TestTable1>
 		
 		return this;
 	}
+	
+	
+	
+	
+	
 	
 	
 	
@@ -351,6 +391,11 @@ public class TestTable1 extends com.tsc9526.monalisa.orm.model.Model<TestTable1>
 	
 	
 	
+	
+	
+	
+	
+	
 	/**
 	* @Column
 	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_1&nbsp;<B>name:</B> update_by
@@ -369,6 +414,11 @@ public class TestTable1 extends com.tsc9526.monalisa.orm.model.Model<TestTable1>
 	
 	
 	
+	
+	
+	
+	
+	
 	/**
 	* @Column
 	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_1&nbsp;<B>name:</B> version &nbsp;[<font color=red>NOTNULL</font>]
@@ -383,6 +433,11 @@ public class TestTable1 extends com.tsc9526.monalisa.orm.model.Model<TestTable1>
 		
 		return this;
 	}
+	
+	
+	
+	
+	
 	
 	
 	
@@ -417,6 +472,10 @@ public class TestTable1 extends com.tsc9526.monalisa.orm.model.Model<TestTable1>
 		
 		return r;
 	}
+	
+	
+	
+	
 	 	
 	
 	
@@ -450,6 +509,10 @@ public class TestTable1 extends com.tsc9526.monalisa.orm.model.Model<TestTable1>
 		
 		return r;
 	}
+	
+	
+	
+	
 	 	
 	
 	
@@ -483,6 +546,10 @@ public class TestTable1 extends com.tsc9526.monalisa.orm.model.Model<TestTable1>
 		
 		return r;
 	}
+	
+	
+	
+	
 	 	
 	
 	
@@ -516,6 +583,10 @@ public class TestTable1 extends com.tsc9526.monalisa.orm.model.Model<TestTable1>
 		
 		return r;
 	}
+	
+	
+	
+	
 	 	
 	
 	
@@ -549,6 +620,10 @@ public class TestTable1 extends com.tsc9526.monalisa.orm.model.Model<TestTable1>
 		
 		return r;
 	}
+	
+	
+	
+	
 	 	
 	
 	
@@ -582,6 +657,10 @@ public class TestTable1 extends com.tsc9526.monalisa.orm.model.Model<TestTable1>
 		
 		return r;
 	}
+	
+	
+	
+	
 	 	
 	
 	
@@ -615,6 +694,10 @@ public class TestTable1 extends com.tsc9526.monalisa.orm.model.Model<TestTable1>
 		
 		return r;
 	}
+	
+	
+	
+	
 	 	
 	
 	
@@ -648,6 +731,10 @@ public class TestTable1 extends com.tsc9526.monalisa.orm.model.Model<TestTable1>
 		
 		return r;
 	}
+	
+	
+	
+	
 	 	
 	
 	
@@ -681,6 +768,10 @@ public class TestTable1 extends com.tsc9526.monalisa.orm.model.Model<TestTable1>
 		
 		return r;
 	}
+	
+	
+	
+	
 	 	
 	
 	
@@ -714,6 +805,10 @@ public class TestTable1 extends com.tsc9526.monalisa.orm.model.Model<TestTable1>
 		
 		return r;
 	}
+	
+	
+	
+	
 	 	
 	
 	
@@ -747,6 +842,10 @@ public class TestTable1 extends com.tsc9526.monalisa.orm.model.Model<TestTable1>
 		
 		return r;
 	}
+	
+	
+	
+	
 	 	
 	
 	

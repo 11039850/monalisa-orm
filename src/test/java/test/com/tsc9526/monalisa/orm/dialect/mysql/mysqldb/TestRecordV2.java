@@ -12,7 +12,7 @@ import java.util.LinkedHashMap;
  
 /**
  *
- * Auto generated code by monalisa 2.1.0
+ * Auto generated code by monalisa 2.1.1-SNAPSHOT
  *
  */
 @Table(
@@ -176,6 +176,11 @@ public class TestRecordV2 extends com.tsc9526.monalisa.orm.model.Model<TestRecor
 	
 	
 	
+	
+	
+	
+	
+	
 	/**
 	* @Column
 	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record_v2&nbsp;<B>name:</B> name &nbsp;[<font color=red>NOTNULL</font>]
@@ -190,6 +195,11 @@ public class TestRecordV2 extends com.tsc9526.monalisa.orm.model.Model<TestRecor
 		
 		return this;
 	}
+	
+	
+	
+	
+	
 	
 	
 	
@@ -212,6 +222,11 @@ public class TestRecordV2 extends com.tsc9526.monalisa.orm.model.Model<TestRecor
 	
 	
 	
+	
+	
+	
+	
+	
 	/**
 	* @Column
 	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record_v2&nbsp;<B>name:</B> ts_a
@@ -226,6 +241,11 @@ public class TestRecordV2 extends com.tsc9526.monalisa.orm.model.Model<TestRecor
 		
 		return this;
 	}
+	
+	
+	
+	
+	
 	
 	
 	
@@ -248,6 +268,11 @@ public class TestRecordV2 extends com.tsc9526.monalisa.orm.model.Model<TestRecor
 	
 	
 	
+	
+	
+	
+	
+	
 	/**
 	* @Column
 	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record_v2&nbsp;<B>name:</B> create_by
@@ -262,6 +287,11 @@ public class TestRecordV2 extends com.tsc9526.monalisa.orm.model.Model<TestRecor
 		
 		return this;
 	}
+	
+	
+	
+	
+	
 	
 	
 	
@@ -284,6 +314,11 @@ public class TestRecordV2 extends com.tsc9526.monalisa.orm.model.Model<TestRecor
 	
 	
 	
+	
+	
+	
+	
+	
 	/**
 	* @Column
 	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record_v2&nbsp;<B>name:</B> update_by
@@ -298,6 +333,11 @@ public class TestRecordV2 extends com.tsc9526.monalisa.orm.model.Model<TestRecor
 		
 		return this;
 	}
+	
+	
+	
+	
+	
 	
 	
 	
@@ -332,6 +372,10 @@ public class TestRecordV2 extends com.tsc9526.monalisa.orm.model.Model<TestRecor
 		
 		return r;
 	}
+	
+	
+	
+	
 	 	
 	
 	
@@ -365,6 +409,10 @@ public class TestRecordV2 extends com.tsc9526.monalisa.orm.model.Model<TestRecor
 		
 		return r;
 	}
+	
+	
+	
+	
 	 	
 	
 	
@@ -398,6 +446,10 @@ public class TestRecordV2 extends com.tsc9526.monalisa.orm.model.Model<TestRecor
 		
 		return r;
 	}
+	
+	
+	
+	
 	 	
 	
 	
@@ -431,6 +483,10 @@ public class TestRecordV2 extends com.tsc9526.monalisa.orm.model.Model<TestRecor
 		
 		return r;
 	}
+	
+	
+	
+	
 	 	
 	
 	
@@ -464,6 +520,10 @@ public class TestRecordV2 extends com.tsc9526.monalisa.orm.model.Model<TestRecor
 		
 		return r;
 	}
+	
+	
+	
+	
 	 	
 	
 	
@@ -497,6 +557,10 @@ public class TestRecordV2 extends com.tsc9526.monalisa.orm.model.Model<TestRecor
 		
 		return r;
 	}
+	
+	
+	
+	
 	 	
 	
 	
@@ -530,6 +594,10 @@ public class TestRecordV2 extends com.tsc9526.monalisa.orm.model.Model<TestRecor
 		
 		return r;
 	}
+	
+	
+	
+	
 	 	
 	
 	
@@ -563,6 +631,10 @@ public class TestRecordV2 extends com.tsc9526.monalisa.orm.model.Model<TestRecor
 		
 		return r;
 	}
+	
+	
+	
+	
 	 	
 	
 	
