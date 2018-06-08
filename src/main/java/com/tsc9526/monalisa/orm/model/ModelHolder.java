@@ -81,11 +81,16 @@ public class ModelHolder implements Serializable {
 	}
 	
 	protected void set(String name,Object value){
+		name = model.field(name).getFieldName();
+		
 		getModelValues().put(name, value);		
 		fieldChanged(name);
+		
 	}
 	
 	protected Object get(String name){
+		name = model.field(name).getFieldName();
+		
 		return getModelValues().get(name);
 	}
 	
