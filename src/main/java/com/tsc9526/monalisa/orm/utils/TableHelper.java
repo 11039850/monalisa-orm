@@ -109,7 +109,10 @@ public class TableHelper {
 	    	
 	    	String value=rs.getString("COLUMN_DEF");
 	    	if(value!=null && value.startsWith("'")){
-	    		value=value.substring(1,value.length()-2);
+	    		value=value.substring(1);
+	    		if(value.endsWith("'")) {
+	    			value=value.substring(0,value.length()-1);
+	    		}
 	    	}
 	    	if(value!=null){
 	    		value=value.trim();
