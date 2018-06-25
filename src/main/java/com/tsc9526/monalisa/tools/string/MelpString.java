@@ -336,6 +336,24 @@ public class MelpString {
 			}
 		}
 	}
+	
+	public static String fromBytesUtf8(byte[] data) {
+		return fromBytes(data, "utf-8");
+	}
+	
+	public static String fromBytes(byte[] data,String charset) {
+		if(data==null){
+			return null;
+		}else if(data.length==0) {
+			return "";
+		}else{
+			try{
+				return new String(data,charset);
+			}catch(UnsupportedEncodingException e){
+				throw new RuntimeException(e);
+			}
+		}
+	}
 
 	public static int getCharWidth(String s) {
 		if(s==null || s.length()==0){

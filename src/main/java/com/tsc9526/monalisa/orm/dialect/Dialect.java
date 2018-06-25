@@ -131,7 +131,7 @@ public abstract class Dialect{
 	public boolean tableExist(DBConfig db,String name,boolean includeView){
 	 	Set<String> names=db.getTables(includeView);
 		
-		return names.contains(getRealname(name));
+		return names.contains(getRealname(name).toUpperCase());
 	}
 	
 	/**

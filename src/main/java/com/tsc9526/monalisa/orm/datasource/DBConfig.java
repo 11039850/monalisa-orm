@@ -347,7 +347,7 @@ public class DBConfig implements Closeable{
 				String table=rs.getString("TABLE_NAME");
 				table=Dialect.getRealname(table);
 				
-				tables.add(table);
+				tables.add(table.toUpperCase());
 			}
 			return tables;
 		}catch(SQLException e){
