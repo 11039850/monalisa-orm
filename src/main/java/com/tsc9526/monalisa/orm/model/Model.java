@@ -779,6 +779,29 @@ public abstract class Model<T extends Model> implements Serializable ,Shallowabl
 	public boolean readonly() {
 		return holder().readonly;
 	}
+	
+	/**
+	 * 
+	 * According to the length specified by the field,  cut out the string and add ... at the end if exceeds the length.
+	 * 
+	 * @return this model
+	 */
+	public T cut(){
+		for(FGS fgs:fields()) {
+			Column column = fgs.getAnnotation(Column.class);
+			if(column!=null && column.length() > 5) {
+				Object v = fgs.getObject(this);
+				if(v!=null && v instanceof String) {
+					String x = (String)v;
+					if( x.length() > column.length() ) {
+						x = x.substring(0, column.length() -4)+" ...";
+						fgs.setObject(this,x);
+					}
+				}
+			}
+		}
+		return (T)this;
+	}
 
 	public void readonly(boolean readonly) {
 		holder().readonly = readonly;
