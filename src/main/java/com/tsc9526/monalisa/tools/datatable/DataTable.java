@@ -366,69 +366,93 @@ public class DataTable<E> extends ArrayList<E> {
 	}
 	
 	public DataMap toDataMap(String ... keyNames){
+		return toDataMap(false,keyNames);
+	}
+ 
+	public DataMap toDataMapList(String ... keyNames){
+		return toDataMap(true,keyNames);
+	}
+	
+	private DataMap toDataMap(boolean valueAsList, String ... keyNames){
 		DataMap m=new DataMap();
 		
 		String splitKey=DbProp.CFG_DATATABLE_KEY_SPLIT;
 		for(int i=0;i<size();i++){
-			String mkey="";
-			
 			Object v=get(i);
-			if(v!=null){
-				if(v instanceof Map){
-					for(Object key:((Map<?,?>)v).keySet()){
+			
+			String mkey=getMKey(v,splitKey,keyNames);
+			 
+			if(valueAsList) {
+				List<Object> vs = m.gets(mkey);
+				if(vs==null) {
+					vs = new DataTable<Object>();
+					m.put(mkey,vs);
+				} 
+				vs.add(v);
+			}else {
+				if(!m.containsKey(mkey)){
+					m.put(mkey, v);
+				}else{
+					throw new RuntimeException("Key existed: "+mkey+", value： "+v);
+				}
+			}
+		}
+		
+		return m;
+	}
+	
+	private String getMKey(Object v,String splitKey,String... keyNames) {
+		String mkey="";
+		  
+		if(v!=null){
+			if(v instanceof Map){
+				for(Object key:((Map<?,?>)v).keySet()){
+					for(String kn:keyNames){
+						if( (""+key).equalsIgnoreCase(kn) ){
+							mkey+=splitKey+((Map<?,?>)v).get(key);
+						}
+					}
+				}
+			}else{
+				if(v.getClass().isPrimitive() || v.getClass().getName().startsWith("java.")){
+					mkey=splitKey+v.toString();
+				}else if(v.getClass().isArray()){
+					Object[] xs=(Object[])v;
+					for(int k=0;k<xs.length;k++){
 						for(String kn:keyNames){
-							if( (""+key).equalsIgnoreCase(kn) ){
-								mkey+=splitKey+((Map<?,?>)v).get(key);
+							if( ("c"+k).equalsIgnoreCase(kn) || (""+k).equals(kn)){
+								mkey+=splitKey+xs[k];
 							}
 						}
 					}
-				}else{
-					if(v.getClass().isPrimitive() || v.getClass().getName().startsWith("java.")){
-						mkey=splitKey+v.toString();
-					}else if(v.getClass().isArray()){
-						Object[] xs=(Object[])v;
-						for(int k=0;k<xs.length;k++){
-							for(String kn:keyNames){
-								if( ("c"+k).equalsIgnoreCase(kn) || (""+k).equals(kn)){
-									mkey+=splitKey+xs[k];
-								}
-							}
+				}else{					
+					ClassHelper mc=MelpClass.getClassHelper(v.getClass());
+					for(FGS fgs:mc.getFields()){
+						String fname=fgs.getFieldName();
+						String cname=null;
+						
+						Column column=fgs.getAnnotation(Column.class);
+						if(column!=null){
+							cname=column.name();
 						}
-					}else{					
-						ClassHelper mc=MelpClass.getClassHelper(v.getClass());
-						for(FGS fgs:mc.getFields()){
-							String fname=fgs.getFieldName();
-							String cname=null;
-							
-							Column column=fgs.getAnnotation(Column.class);
-							if(column!=null){
-								cname=column.name();
-							}
-							
-							for(String kn:keyNames){
-								if(fname.equalsIgnoreCase(kn) || (cname!=null && cname.equalsIgnoreCase(kn)) ){
-									mkey+=splitKey+fgs.getObject(v);
-								}
+						
+						for(String kn:keyNames){
+							if(fname.equalsIgnoreCase(kn) || (cname!=null && cname.equalsIgnoreCase(kn)) ){
+								mkey+=splitKey+fgs.getObject(v);
 							}
 						}
 					}
 				}
 			}
-			
-			if(mkey.length()>0){
-				mkey=mkey.substring(splitKey.length());
-			}else{
-				mkey=null;
-			}
-			
-			if(!m.containsKey(mkey)){
-				m.put(mkey, v);
-			}else{
-				throw new RuntimeException("Key existed: "+mkey+", value： "+v);
-			}
 		}
 		
-		return m;
+		if(mkey.length()>0){
+			mkey=mkey.substring(splitKey.length());
+		}else{
+			mkey=null;
+		}
+		
+		return mkey;
 	}
 	
 	public String toJson(){

@@ -11,8 +11,6 @@ import java.util.Map;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import test.com.tsc9526.monalisa.orm.dialect.basic.TestSimpleModel;
-
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -22,6 +20,8 @@ import com.tsc9526.monalisa.tools.datatable.DataColumn;
 import com.tsc9526.monalisa.tools.datatable.DataMap;
 import com.tsc9526.monalisa.tools.datatable.DataTable;
 
+import test.com.tsc9526.monalisa.orm.dialect.basic.TestSimpleModel;
+
 /**
  * 
  * @author zzg.zhou(11039850@qq.com)
@@ -29,6 +29,38 @@ import com.tsc9526.monalisa.tools.datatable.DataTable;
 @Test
 public class DataTableTest {
 	 
+	public void testToListDataMap() {
+		DataTable<DataMap> table = new DataTable<DataMap>();
+		 
+		//创建测试数据
+		for(int userId=1;userId<=6;userId++){
+			DataMap row = new DataMap();
+			row.put("user", 1);
+			row.put("area", "guangdong-"+(userId%2));
+			row.put("rank"  ,90+userId);
+			table.add(row);
+		}
+		
+		for(int userId=1;userId<=5;userId++){
+			DataMap row = new DataMap();
+			row.put("user", 2);
+			row.put("area", "guangdongx-"+(userId%2));
+			row.put("rank"  ,90+userId);
+			table.add(row);
+		}
+		
+		DataMap m = table.toDataMapList("user");
+		Assert.assertEquals(m.size(), 2); 
+		
+		DataTable<DataMap> s1 = m.gets(1);
+		Assert.assertEquals(s1.size(), 6); 
+		Assert.assertTrue(s1.get(0).getString("area").startsWith("guangdong-")); 
+		
+		DataTable<DataMap> s2 = m.gets(2);
+		Assert.assertEquals(s2.size(), 5); 
+		Assert.assertTrue(s2.get(0).getString("area").startsWith("guangdongx-")); 
+	}
+	
 	public void testDataTableMapDefaultHeader() {
 		DataTable<DataMap> table = new DataTable<DataMap>();
 	 
@@ -510,7 +542,7 @@ public class DataTableTest {
 			} 
 		}
 	}
-
+ 	
 	
 	static class TestUserAreaRank{
 		int user;
