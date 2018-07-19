@@ -383,11 +383,7 @@ public class DataTable<E> extends ArrayList<E> {
 			String mkey=getMKey(v,splitKey,keyNames);
 			 
 			if(valueAsList) {
-				List<Object> vs = m.gets(mkey);
-				if(vs==null) {
-					vs = new DataTable<Object>();
-					m.put(mkey,vs);
-				} 
+				List<Object> vs = m.getsPut(mkey,new DataTable<Object>());
 				vs.add(v);
 			}else {
 				if(!m.containsKey(mkey)){

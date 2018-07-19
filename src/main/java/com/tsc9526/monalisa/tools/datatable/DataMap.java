@@ -164,10 +164,29 @@ public class DataMap extends CaseInsensitiveMap<Object>{
 		return ret;
 	}
 	
+	/**
+	 * if the value associated with the key is null and defaultValue is not null, put defaultValue.
+	 * 
+	 * @param key the map key
+	 * @param defaultValue the default value
+	 * @return the value associated with the key. 
+	 */
+	public <T> T getsPut(Object key,T defaultValue){
+		T ret = gets(key);
+		if(ret == null){
+			ret =  defaultValue;
+			
+			if(defaultValue!=null) {
+				put(key.toString(), defaultValue);
+			}
+		}
+		return ret;
+	}
+	
 	@SuppressWarnings("unchecked")
  	public <T> T as(Class<T> toClass){
 		try {
-			if(toClass.isAssignableFrom(DataMap.class)){
+			if(Map.class.isAssignableFrom(toClass)){
 				return (T)this;
 			}
 			
@@ -183,7 +202,7 @@ public class DataMap extends CaseInsensitiveMap<Object>{
 			return MelpException.throwRuntimeException(e);
 		}
 	}
-	 	
+	
 	/**
 	 * Join key and value, default charset is utf-8
 	 * 

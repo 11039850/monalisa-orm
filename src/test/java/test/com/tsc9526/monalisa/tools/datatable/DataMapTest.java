@@ -38,6 +38,7 @@ import org.testng.annotations.Test;
 import test.com.tsc9526.monalisa.orm.dialect.basic.TestSimpleModel;
 
 import com.tsc9526.monalisa.tools.datatable.DataMap;
+import com.tsc9526.monalisa.tools.datatable.DataTable;
 import com.tsc9526.monalisa.tools.string.MelpString;
 
 /**
@@ -625,5 +626,19 @@ public class DataMapTest {
 		
 		String x=m.getString("a");
 		Assert.assertEquals(x, "");
+	}
+	
+	public void testGets(){
+		DataTable<TestSimpleModel> table = new DataTable<TestSimpleModel>();
+		TestSimpleModel t = new TestSimpleModel();
+		t.setIntField1(1);
+		table.add(t);
+		
+		DataMap m = new DataMap();
+		m.put("x",table);
+		
+		@SuppressWarnings("unchecked")
+		Map<String,List<TestSimpleModel>> rs = m.as(Map.class);
+		Assert.assertEquals(rs.get("x"),table);
 	}
 }
