@@ -16,11 +16,15 @@
  *******************************************************************************************/
 package com.tsc9526.monalisa.tools.datatable;
 
+import java.io.Serializable;
+
 /**
  *  
  * @author zzg.zhou(11039850@qq.com)
  */
-public class DataColumn {
+public class DataColumn implements Serializable{
+	private static final long serialVersionUID = 4472740716668557178L;
+
 	private String name;
 	
 	private String label;
