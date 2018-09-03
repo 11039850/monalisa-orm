@@ -624,24 +624,37 @@ public class DBConfig implements Closeable{
 		}
 		
 		private void loadProperties(){
-			if(cfgBasePath!=null){
+			if(cfgBasePath != null){
+				logger.info("load cfg from file, base path: "+cfgBasePath);
 				loadCfgFromFile();
 			}else{
 				Class<? extends ConfigClass> clazz=DBGeneratorProcessing.getDBConfigClass(db); 
 				String cff=db.configFile();
 				
+				boolean loadedFromConfigClass = false;
 				if(clazz!=null && clazz != ConfigClass.class){
 					try{
 						configClass=clazz.newInstance();
 						this.p=configClass.getConfigProperties();
+						
+						if(this.p!=null) {
+							loadedFromConfigClass = true;
+							logger.info("load cfg from config class: "+clazz.getName());
+						}
 					}catch(Exception e){
 						throw new RuntimeException("Load config exception, class: "+clazz.getName()+", "+e, e);
 					}
-				}else if(cff!=null && cff.startsWith("classpath:")){
-					String resource=cff.substring("classpath:".length());
-					loadCfgFromClassResource(clazz,resource);
-				}else{
-					loadCfgFromFile();
+				}
+				
+				if(!loadedFromConfigClass) {
+					if(cff!=null && cff.startsWith("classpath:")){
+						logger.info("load cfg from resource: "+cff);
+						String resource=cff.substring("classpath:".length());
+						loadCfgFromClassResource(clazz,resource);
+					}else{
+						logger.info("load cfg from file, search ...");
+						loadCfgFromFile();
+					}
 				}
 			}
 			
@@ -931,7 +944,7 @@ public class DBConfig implements Closeable{
 		}
 		
 		public boolean isCfgFileChanged(){
-			if(configClass!=null){
+			if(configClass != null && configClass.getConfigProperties() != null){
 				return configClass.isCfgChanged();
 			}else if(configFile!=null){
 				if(cfgFile!=null && cfgFile.lastModified>0){
