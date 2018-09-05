@@ -26,7 +26,6 @@ import com.tsc9526.monalisa.orm.datasource.DBConfig;
  * 
  * @author zzg.zhou(11039850@qq.com)
  */
-//@DB(url="jdbc:oracle:thin:@//172.16.95.218/qndbzhu",username="clound",password="S8N*[$4g", datasourceClass="C3p0DataSource")
 @DB(
 	url=TestConstants.oracleUrl,
 	username=TestConstants.username,

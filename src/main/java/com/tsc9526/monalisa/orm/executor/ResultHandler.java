@@ -190,8 +190,11 @@ public class ResultHandler<T> {
 
 			FGS fgs = metaClass.getField(nColumn.getJavaName());
 			if (fgs != null) {
-				Object v = rs.getObject(i);
-				fgs.setObject(result, v);
+				if(MelpTypes.isDateType(rsmd.getColumnType(i))){
+					fgs.setObject(result,  rs.getTimestamp(i));
+				}else{
+					fgs.setObject(result, rs.getObject(i));
+				}
 			}
 		}
 		return result;
