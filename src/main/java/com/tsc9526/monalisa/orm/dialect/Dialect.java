@@ -388,7 +388,7 @@ public abstract class Dialect{
 			
 			addWhereCause(query,whereStatement,args);
 			
-			int versionValue=(Integer)model.get(versionField);
+			long versionValue=((Number)model.get(versionField)).longValue();
 			query.add(" AND ").add(vfn).add(" = ").add(String.valueOf(versionValue));
 		}else{
 		
