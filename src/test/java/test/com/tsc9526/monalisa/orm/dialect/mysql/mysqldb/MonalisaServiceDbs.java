@@ -12,7 +12,7 @@ import java.util.LinkedHashMap;
  
 /**
  *
- * Auto generated code by monalisa 2.1.1-SNAPSHOT
+ * Auto generated code by monalisa 2.1.2
  *
  */
 @Table(
@@ -556,6 +556,22 @@ public class MonalisaServiceDbs extends com.tsc9526.monalisa.orm.model.Model<Mon
 	
 	
 	
+	
+	/**
+	* @Column
+	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> monalisa_service_dbs&nbsp;<B>name:</B> status &nbsp;[<font color=red>NOTNULL</font>]
+	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 10 &nbsp;<B>value:</B> 1<br>
+	* <li><B>remarks:</B> status: 1-enable database service, 0-disable
+	*/
+	@Column(table=M.TABLE, jdbcType=4, name=M.status$name, key=M.status$key, auto=M.status$auto, seq=M.status$seq, notnull=M.status$notnull, length=M.status$length, decimalDigits=M.status$decimalDigits, value=M.status$value, remarks=M.status$remarks) 
+	public Integer getStatusAsInt(Integer defaultValue){
+		Number r = getStatus();
+		if(r!=null){
+			return r.intValue();
+		}else{
+			return defaultValue;
+		}
+	}	  
 	
 	 	
 	

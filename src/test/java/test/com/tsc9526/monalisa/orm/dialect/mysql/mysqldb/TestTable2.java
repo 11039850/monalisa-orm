@@ -14,7 +14,7 @@ import java.util.LinkedHashMap;
  
 /**
  *
- * Auto generated code by monalisa 2.1.1-SNAPSHOT
+ * Auto generated code by monalisa 2.1.2
  *
  */
 @Table(
@@ -605,6 +605,22 @@ public class TestTable2 extends com.tsc9526.monalisa.orm.model.Model<TestTable2>
 	
 	
 	
+	/**
+	* @Column
+	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_2&nbsp;<B>name:</B> id &nbsp;[<font color=red>KEY</font>|<font color=red>AUTO</font>|<font color=red>NOTNULL</font>]
+	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 10<br>
+	* <li><B>remarks:</B> primary key
+	*/
+	@Column(table=M.TABLE, jdbcType=4, name=M.id$name, key=M.id$key, auto=M.id$auto, seq=M.id$seq, notnull=M.id$notnull, length=M.id$length, decimalDigits=M.id$decimalDigits, value=M.id$value, remarks=M.id$remarks) 
+	public Integer getIdAsInt(Integer defaultValue){
+		Number r = getId();
+		if(r!=null){
+			return r.intValue();
+		}else{
+			return defaultValue;
+		}
+	}	  
+	
 	 	
 	
 	
@@ -1122,6 +1138,22 @@ public class TestTable2 extends com.tsc9526.monalisa.orm.model.Model<TestTable2>
 	
 	
 	
+	
+	/**
+	* @Column
+	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_table_2&nbsp;<B>name:</B> v1 &nbsp;[<font color=red>NOTNULL</font>]
+	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 10 &nbsp;<B>value:</B> 0<br>
+	* <li><B>remarks:</B> version
+	*/
+	@Column(table=M.TABLE, jdbcType=4, name=M.v1$name, key=M.v1$key, auto=M.v1$auto, seq=M.v1$seq, notnull=M.v1$notnull, length=M.v1$length, decimalDigits=M.v1$decimalDigits, value=M.v1$value, remarks=M.v1$remarks) 
+	public Integer getV1AsInt(Integer defaultValue){
+		Number r = getV1();
+		if(r!=null){
+			return r.intValue();
+		}else{
+			return defaultValue;
+		}
+	}	  
 	
 	 	
 	

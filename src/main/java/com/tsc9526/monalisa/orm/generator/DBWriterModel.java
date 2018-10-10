@@ -603,14 +603,14 @@ public class DBWriterModel{
 			} 		out.println("");
 			out.println("	");
 			out.print("	");
-			if(f.getJavaType().equals("Long") ){		out.println("");
+			if(f.getJavaType().equals("Long") || f.getJavaType().equals("Integer")){		out.println("");
 			out.print("	");
 			out.print(getComments(table,f,"	","\t"));
 			out.println(" ");
 			out.print("	public Integer ");
 			out.print(f.getJavaNameGet());
 			out.println("AsInt(Integer defaultValue){");
-			out.print("		Long r = ");
+			out.print("		Number r = ");
 			out.print(f.getJavaNameGet());
 			out.println("();");
 			out.println("		if(r!=null){");

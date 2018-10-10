@@ -13,7 +13,7 @@ import java.util.LinkedHashMap;
  
 /**
  *
- * Auto generated code by monalisa 2.1.1-SNAPSHOT
+ * Auto generated code by monalisa 2.1.2
  *
  */
 @Table(
@@ -504,6 +504,22 @@ public class MonalisaServiceDbq extends com.tsc9526.monalisa.orm.model.Model<Mon
 	
 	
 	
+	/**
+	* @Column
+	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> monalisa_service_dbq&nbsp;<B>name:</B> id &nbsp;[<font color=red>KEY</font>|<font color=red>AUTO</font>|<font color=red>NOTNULL</font>]
+	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 10<br>
+	* <li><B>remarks:</B> 自增主键
+	*/
+	@Column(table=M.TABLE, jdbcType=4, name=M.id$name, key=M.id$key, auto=M.id$auto, seq=M.id$seq, notnull=M.id$notnull, length=M.id$length, decimalDigits=M.id$decimalDigits, value=M.id$value, remarks=M.id$remarks) 
+	public Integer getIdAsInt(Integer defaultValue){
+		Number r = getId();
+		if(r!=null){
+			return r.intValue();
+		}else{
+			return defaultValue;
+		}
+	}	  
+	
 	 	
 	
 	
@@ -688,6 +704,22 @@ public class MonalisaServiceDbq extends com.tsc9526.monalisa.orm.model.Model<Mon
 	
 	
 	
+	
+	/**
+	* @Column
+	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> monalisa_service_dbq&nbsp;<B>name:</B> status &nbsp;[<font color=red>NOTNULL</font>]
+	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 10 &nbsp;<B>value:</B> 1<br>
+	* <li><B>remarks:</B> 状态（1-启用，0-禁用）
+	*/
+	@Column(table=M.TABLE, jdbcType=4, name=M.status$name, key=M.status$key, auto=M.status$auto, seq=M.status$seq, notnull=M.status$notnull, length=M.status$length, decimalDigits=M.status$decimalDigits, value=M.status$value, remarks=M.status$remarks) 
+	public Integer getStatusAsInt(Integer defaultValue){
+		Number r = getStatus();
+		if(r!=null){
+			return r.intValue();
+		}else{
+			return defaultValue;
+		}
+	}	  
 	
 	 	
 	

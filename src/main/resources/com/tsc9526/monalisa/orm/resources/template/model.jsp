@@ -203,10 +203,10 @@ public class <%=table.getJavaName()%> extends <%=modelClass%><<%=table.getJavaNa
 	}
 	<%} %>
 	
-	<%if(f.getJavaType().equals("Long") ){%>
+	<%if(f.getJavaType().equals("Long") || f.getJavaType().equals("Integer")){%>
 	<%=getComments(table,f,"	","\t")%> 
 	public Integer <%=f.getJavaNameGet()%>AsInt(Integer defaultValue){
-		Long r = <%=f.getJavaNameGet()%>();
+		Number r = <%=f.getJavaNameGet()%>();
 		if(r!=null){
 			return r.intValue();
 		}else{

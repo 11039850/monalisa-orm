@@ -12,7 +12,7 @@ import java.util.LinkedHashMap;
  
 /**
  *
- * Auto generated code by monalisa 2.1.1-SNAPSHOT
+ * Auto generated code by monalisa 2.1.2
  *
  */
 @Table(
@@ -375,6 +375,22 @@ public class TestRecord extends com.tsc9526.monalisa.orm.model.Model<TestRecord>
 	
 	
 	
+	
+	/**
+	* @Column
+	* <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>table:</B> test_record&nbsp;<B>name:</B> record_id &nbsp;[<font color=red>KEY</font>|<font color=red>AUTO</font>|<font color=red>NOTNULL</font>]
+	* <li>&nbsp;&nbsp;&nbsp;<B>length:</B> 10<br>
+	* <li><B>remarks:</B> primary key
+	*/
+	@Column(table=M.TABLE, jdbcType=4, name=M.recordId$name, key=M.recordId$key, auto=M.recordId$auto, seq=M.recordId$seq, notnull=M.recordId$notnull, length=M.recordId$length, decimalDigits=M.recordId$decimalDigits, value=M.recordId$value, remarks=M.recordId$remarks) 
+	public Integer getRecordIdAsInt(Integer defaultValue){
+		Number r = getRecordId();
+		if(r!=null){
+			return r.intValue();
+		}else{
+			return defaultValue;
+		}
+	}	  
 	
 	 	
 	
