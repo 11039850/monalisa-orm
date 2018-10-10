@@ -275,11 +275,6 @@ public abstract class Model<T extends Model> implements Serializable ,Shallowabl
 		return r;
 	}
 
-	/**
-	 * 更新对象到数据库
-	 * 
-	 * @return 成功变更的记录数
-	 */
 	public int update() {
 		if (history()) {
 			return Tx.execute(new Atom<Integer>() {
@@ -293,6 +288,27 @@ public abstract class Model<T extends Model> implements Serializable ,Shallowabl
 			return doUpdate();
 		}
 	}
+	
+	/**
+	 * 更新对象到数据库
+	 * 
+	 * @param where SQL: update ... set ... where {where}
+	 * @return 成功变更的记录数
+	 */
+	public int updateByWhere(final String where,final Object... args) {
+		if (history()) {
+			return Tx.execute(new Atom<Integer>() {
+				public Integer execute() {
+					int r= doUpdate(where,args);
+					saveHistory(ModelEvent.UPDATE);
+					return r;
+				}
+			});
+		} else {
+			return doUpdate(where,args);
+		}
+	}
+	 
 	
 	/**
 	 * The default version column's name is: <b>version</b> <br>
@@ -341,6 +357,15 @@ public abstract class Model<T extends Model> implements Serializable ,Shallowabl
 		before(ModelEvent.UPDATE);
 		doValidate();
 		r = new Update(this).update();
+		after(ModelEvent.UPDATE, r);
+		return r;
+	}
+	
+	protected int doUpdate(String where,Object... args) {
+		int r = -1;
+		before(ModelEvent.UPDATE);
+		doValidate();
+		r = new Update(this).update(where,args);
 		after(ModelEvent.UPDATE, r);
 		return r;
 	}

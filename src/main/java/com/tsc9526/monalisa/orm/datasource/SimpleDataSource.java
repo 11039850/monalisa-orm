@@ -32,6 +32,7 @@ import java.util.Properties;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.Semaphore;
+import java.util.concurrent.TimeUnit;
 
 import com.tsc9526.monalisa.tools.clazz.MelpClass;
 import com.tsc9526.monalisa.tools.clazz.MelpLib;
@@ -53,6 +54,8 @@ public class SimpleDataSource implements PooledDataSource {
  	
 	private int maxSize;
 	private int minSize;
+	private int waitTime;
+	
 	private Semaphore semaphore;
 
 	private Properties connProps=new Properties();
@@ -80,8 +83,9 @@ public class SimpleDataSource implements PooledDataSource {
 			connProps.putAll(poolProperties);
 		}
 
-		maxSize = db.getCfg().getProperty("pool.max", 50);
-		minSize = db.getCfg().getProperty("pool.min", 3);
+		maxSize  = db.getCfg().getProperty("pool.max", 50);
+		minSize  = db.getCfg().getProperty("pool.min", 3);
+		waitTime = db.getCfg().getProperty("pool.waitTime", 5);
 		
 		MelpLib.loadClass(driver);
 		
@@ -114,6 +118,7 @@ public class SimpleDataSource implements PooledDataSource {
 				conn.close();
 			}
 			pool.clear();
+		 	
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		}
@@ -121,13 +126,14 @@ public class SimpleDataSource implements PooledDataSource {
 	}
 	
 	private void closeConnection(Connection realConnection) throws SQLException {
-		try {
-			synchronized (pool) {
-				if (pool.size() < maxSize) {
-					pool.put(realConnection, new Date());
-					return;
-				}
+		synchronized (pool) {
+			if (pool.size() <= maxSize) {
+				pool.put(realConnection, new Date());
+				return;
 			}
+		}
+			
+		try {
 			realConnection.close();
 		} finally {
 			semaphore.release();
@@ -139,29 +145,29 @@ public class SimpleDataSource implements PooledDataSource {
 	}
 
 	public Connection getConnection(String username, String password) throws SQLException {		 
-		try {
-			semaphore.acquire();
-		}catch (InterruptedException e) {			
-		}
-
 		synchronized (pool) {
 			if (!pool.isEmpty()) {
 				Connection realConn = pool.keySet().iterator().next();
 				pool.remove(realConn);
-				
-				try {
-					realConn.setAutoCommit(true);
-				} catch (SQLException e) {
-					pool.clear();
-					
-					realConn = getRealConnection(username,password);
-				}
+				  
+				realConn.setAutoCommit(true);
+				 
 				return getProxyConnection(realConn);
 			}
 		}
-
-		return getProxyConnection(getRealConnection(username, password));
-
+		 	
+		try {
+			if(semaphore.tryAcquire(waitTime,TimeUnit.SECONDS)) {
+				return getProxyConnection(getRealConnection(username, password));
+			}else {
+				throw new RuntimeException("Connection pool is full: "+maxSize);
+			}
+		}catch(SQLException e) {
+			semaphore.release();
+			throw e;
+		} catch (InterruptedException e) {
+			throw new RuntimeException(e); 
+		}
 	}
 	
 	private Connection getProxyConnection(final Connection realConnection) {		

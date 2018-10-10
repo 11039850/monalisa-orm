@@ -8,7 +8,7 @@ import test.com.tsc9526.monalisa.orm.data.ColumnData;
 import com.tsc9526.monalisa.orm.annotation.Column;
   
 /**
- * Auto generated code by monalisa 2.1.1
+ * Auto generated code by monalisa 2.1.2
  *
  * @see 
  */
