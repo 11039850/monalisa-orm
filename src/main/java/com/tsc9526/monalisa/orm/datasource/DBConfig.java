@@ -561,9 +561,12 @@ public class DBConfig implements Closeable{
 		private List<MetaPartition> metaPartitions;
 		
 		private ConfigClass configClass;
-	 	
+		private long lastestLoadConfigClass=0L;
+		
 		private Map<String,String> cacheModels=new ConcurrentHashMap<String,String>();
 		private String      cacheTables;
+		
+		
 		
 		synchronized void init(){
 			loadProperties();
@@ -625,7 +628,7 @@ public class DBConfig implements Closeable{
 		
 		private void loadProperties(){
 			if(cfgBasePath != null){
-				logger.info("load cfg from file, base path: "+cfgBasePath);
+				logger.info("load cfg from file, base path: "+cfgBasePath+", configName: "+configName);
 				loadCfgFromFile();
 			}else{
 				Class<? extends ConfigClass> clazz=DBGeneratorProcessing.getDBConfigClass(db); 
@@ -635,11 +638,15 @@ public class DBConfig implements Closeable{
 				if(clazz!=null && clazz != ConfigClass.class){
 					try{
 						configClass=clazz.newInstance();
+						
+						Long ts = System.currentTimeMillis();
 						this.p=configClass.getConfigProperties();
 						
 						if(this.p!=null) {
-							loadedFromConfigClass = true;
-							logger.info("load cfg from config class: "+clazz.getName());
+							loadedFromConfigClass  = true;
+							lastestLoadConfigClass =  ts;
+							
+							logger.info("load cfg from config class: "+clazz.getName()+", configName: "+configName);
 						}
 					}catch(Exception e){
 						throw new RuntimeException("Load config exception, class: "+clazz.getName()+", "+e, e);
@@ -648,11 +655,11 @@ public class DBConfig implements Closeable{
 				
 				if(!loadedFromConfigClass) {
 					if(cff!=null && cff.startsWith("classpath:")){
-						logger.info("load cfg from resource: "+cff);
+						logger.info("load cfg from resource: "+cff+", configName: "+configName);
 						String resource=cff.substring("classpath:".length());
 						loadCfgFromClassResource(clazz,resource);
 					}else{
-						logger.info("load cfg from file, search ...");
+						logger.info("load cfg from file, configName: "+configName+", search ...");
 						loadCfgFromFile();
 					}
 				}
@@ -945,7 +952,7 @@ public class DBConfig implements Closeable{
 		
 		public boolean isCfgFileChanged(){
 			if(configClass != null && configClass.getConfigProperties() != null){
-				return configClass.isCfgChanged();
+				return configClass.isCfgChanged(lastestLoadConfigClass);
 			}else if(configFile!=null){
 				if(cfgFile!=null && cfgFile.lastModified>0){
 					if( cfgFile.lastModified < cfgFile.cfgFile.lastModified()){

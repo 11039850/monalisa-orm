@@ -28,15 +28,23 @@ public abstract class ConfigClass {
 	 */
 	public abstract Properties getConfigProperties();
 	
-	public boolean isCfgChanged(){
+	public boolean isCfgChanged(long lastestLoadTime){
 		return false;
 	}
 	
 	public String getKey(String key){
-		return DBConfig.PREFIX_DB+"."+DBConfig.CFG_DEFAULT_NAME+"."+key;
+		return getKey(key,DBConfig.CFG_DEFAULT_NAME);
 	}
 	
 	public String getPoolKey(String key){
-		return DBConfig.PREFIX_DB+"."+DBConfig.CFG_DEFAULT_NAME+".pool."+key;
+		return getPoolKey(key,DBConfig.CFG_DEFAULT_NAME);
+	}
+	
+	public String getKey(String key,String cfgName){
+		return DBConfig.PREFIX_DB+"."+cfgName+"."+key;
+	}
+	
+	public String getPoolKey(String key,String cfgName){
+		return DBConfig.PREFIX_DB+"."+cfgName+".pool."+key;
 	}
 }
