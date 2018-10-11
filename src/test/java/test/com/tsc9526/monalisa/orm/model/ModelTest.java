@@ -40,4 +40,27 @@ public class ModelTest {
 		Assert.assertEquals(record.getName().length(),128);
 		Assert.assertTrue(record.getName().endsWith(" ..."));
 	}
+	
+	
+	public void testUpdateByWhere() {
+		TestRecord.DELETE().delete("name=? AND title=?", "where-name"  ,"where-title");
+		TestRecord.DELETE().delete("name=? AND title=?", "where-name-1","where-title-1");
+		
+		TestRecord record =  new TestRecord();
+		record.defaults().setName("where-name").setTitle("where-title");
+		Assert.assertEquals(record.save(),1);
+		
+		TestRecord record1 =  new TestRecord();
+		record1.defaults().setName("where-name-1").setTitle("where-title-1");
+		Assert.assertEquals(record1.save(),1);
+		
+		record.setUpdateBy("mis-xxx");
+		int r = TestRecord.UPDATE(record).update("name=? AND title=?", "where-name","where-title");
+		Assert.assertEquals(r,1);
+		Assert.assertEquals(new TestRecord(record.getRecordId()).load().getUpdateBy(),"mis-xxx");
+		
+		TestRecord x1=new TestRecord(record1.getRecordId()).load();
+		Assert.assertEquals(x1.getName(),"where-name-1");
+		Assert.assertEquals(x1.getTitle(),"where-title-1");
+	}
 }

@@ -288,27 +288,7 @@ public abstract class Model<T extends Model> implements Serializable ,Shallowabl
 			return doUpdate();
 		}
 	}
-	
-	/**
-	 * 更新对象到数据库
-	 * 
-	 * @param where SQL: update ... set ... where {where}
-	 * @return 成功变更的记录数
-	 */
-	public int updateByWhere(final String where,final Object... args) {
-		if (history()) {
-			return Tx.execute(new Atom<Integer>() {
-				public Integer execute() {
-					int r= doUpdate(where,args);
-					saveHistory(ModelEvent.UPDATE);
-					return r;
-				}
-			});
-		} else {
-			return doUpdate(where,args);
-		}
-	}
-	 
+	  
 	
 	/**
 	 * The default version column's name is: <b>version</b> <br>
@@ -360,16 +340,7 @@ public abstract class Model<T extends Model> implements Serializable ,Shallowabl
 		after(ModelEvent.UPDATE, r);
 		return r;
 	}
-	
-	protected int doUpdate(String where,Object... args) {
-		int r = -1;
-		before(ModelEvent.UPDATE);
-		doValidate();
-		r = new Update(this).update(where,args);
-		after(ModelEvent.UPDATE, r);
-		return r;
-	}
-
+	 
 	/**
 	 * 从数据库删除该记录
 	 * 
@@ -678,7 +649,7 @@ public abstract class Model<T extends Model> implements Serializable ,Shallowabl
 		return mm().findFieldByName(name);
 	}
 
-	public boolean updateKey() {
+	public boolean enableUpdateKey() {
 		return holder().updateKey;
 	}
 
@@ -686,7 +657,7 @@ public abstract class Model<T extends Model> implements Serializable ,Shallowabl
 	 * How to update the model's primary key:<br><br>
 	 * <code>
 	 *   Update update=new Update(model); <br>
-	 *   model.updateKey(true); //Set enable update primary key! <br>
+	 *   model.enableUpdateKey(true); //Set enable update primary key! <br>
 	 *   model.setId(newId);    //Set new primary key <br>
 	 *   model.setXxx ...       //Set other fields ...<br>
 	 *   update.update("id=?",oldId);<br>
@@ -696,7 +667,7 @@ public abstract class Model<T extends Model> implements Serializable ,Shallowabl
 	 * 
 	 * @return Enable update the model's primary key, default is: false
 	 */
-	public T updateKey(boolean updateKey) {
+	public T enableUpdateKey(boolean updateKey) {
 		holder().updateKey=updateKey;
 		return (T) this;
 	}

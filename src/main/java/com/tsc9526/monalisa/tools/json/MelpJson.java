@@ -37,6 +37,7 @@ import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
 import com.google.gson.internal.LazilyParsedNumber;
 import com.google.gson.stream.JsonWriter;
+import com.tsc9526.monalisa.orm.model.Model;
 import com.tsc9526.monalisa.tools.clazz.MelpClass;
 import com.tsc9526.monalisa.tools.clazz.MelpClass.ClassHelper;
 import com.tsc9526.monalisa.tools.clazz.MelpClass.FGS;
@@ -57,9 +58,7 @@ public class MelpJson {
 	}
 	
 	private MelpJson(){}
-	
-	private static GsonBuilder gb=createGsonBuilder();
-	
+	  
 	public static GsonBuilder createGsonBuilder(){
 		return new GsonBuilder()
 			.registerTypeAdapter(Double.class,  new JsonSerializer<Double>() {   
@@ -82,8 +81,11 @@ public class MelpJson {
 			.setDateFormat(Conversion.DEFAULT_DATETIME_FORMAT);
 	}
 	
+	private static Gson gsonNormal =createGsonBuilder().create();
+	private static Gson gsonPretty =createGsonBuilder().setPrettyPrinting().create();
+	
 	public static Gson getGson(){	
-		return gb.create();   
+		return gsonNormal;   
 	}
 	
 	/**
@@ -107,29 +109,36 @@ public class MelpJson {
 	 * @see #toJson(Object)
 	 */
 	public static String toJsonPretty(Object bean) {
-		return toJson(gb.setPrettyPrinting().create(),bean); 
+		return toJson(gsonPretty,bean); 
 	}
 	
 	public static String toJson(Gson gson,Object bean) {
-		JsonObject json=new JsonObject(); 
+		if(bean==null) {
+			return null;
+		}
 		
-		ClassHelper mc=MelpClass.getClassHelper(bean);
-		
-		for (FGS fgs : mc.getFields()) {
-			String name=fgs.getFieldName();
-			 
-			Object v = fgs.getObject(bean);
-			if (v != null) {
-				JsonElement e=null;
-				if(v instanceof JsonElement){
-					e=(JsonElement)v;
-				}else{
-					e=gson.toJsonTree(v);					 
-				}				
-				json.add(name, e);
-			}			 
-		} 		
-		return gson.toJson(json);	
+		if(bean instanceof Model<?>) {
+			JsonObject json=new JsonObject(); 
+			
+			ClassHelper mc=MelpClass.getClassHelper(bean);
+			for (FGS fgs : mc.getFields()) {
+				String name=fgs.getFieldName();
+				 
+				Object v = fgs.getObject(bean);
+				if (v != null) {
+					JsonElement e=null;
+					if(v instanceof JsonElement){
+						e=(JsonElement)v;
+					}else{
+						e=gson.toJsonTree(v);					 
+					}				
+					json.add(name, e);
+				}			 
+			}
+			return gson.toJson(json);
+		}else {
+			return gson.toJson(bean);
+		}
 	}
 	
 	public static String getString(JsonObject json,String name){

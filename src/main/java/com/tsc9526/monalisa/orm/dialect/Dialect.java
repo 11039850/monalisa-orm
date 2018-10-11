@@ -367,7 +367,7 @@ public abstract class Dialect{
 			Column c=fgs.getAnnotation(Column.class);
 			Object v=getValue(fgs,model);
 			 
-			boolean updateField = !c.key() || (model.updateKey() && v!=null);
+			boolean updateField = !c.key() || (model.enableUpdateKey() && v!=null);
 			if(updateField && updateByVersion &&  c.name().equalsIgnoreCase(versionField) ){
 				updateField=false;
 			}
