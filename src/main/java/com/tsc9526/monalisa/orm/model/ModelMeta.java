@@ -60,35 +60,41 @@ public class ModelMeta{
 	private static Map<String, ModelMeta> hMetas       =new ConcurrentHashMap<String, ModelMeta>();
 	
 	public static ModelMeta getModelMeta(Model<?> model){
-		synchronized(model){
-			String key=getModelKey(model);
-			
-			ModelMeta mm=hMetas.get(key);
-		 	if(mm==null || mm.iChanged()){
-				mm=createModelMeta(model,key);
-			}
-		 	
-	 	 	return mm;
-		}	
+		String key=getModelKey(model);
+		
+		ModelMeta mm=hMetas.get(key);
+	 	if(mm==null || mm.isChanged()){
+			mm=createModelMeta(model,key);
+		}
+	 	
+ 	 	return mm;
 	}
 	
 	private static ModelMeta createModelMeta(Model<?> model,String key){
-		ModelMeta mm=new ModelMeta(key);
-		mm.init(model);
-		
-		if(mm.record){
-			if(!hMonitorMetas.containsKey(key)){
-				logger.info("Add dynamic table: "+mm.tableName+", dbkey: "+mm.db.getKey());
-			}
-			hMonitorMetas.put(key, mm);
+		synchronized(model.getClass()){
+			ModelMeta mm=hMetas.get(key);
+		 	if(mm!=null && !mm.isChanged()){
+		 		return mm;
+		 	}
+		 	 
+			mm=new ModelMeta(key);
+			mm.init(model);
 			
-			if(!modelReloadRunning){
-				modelReloadRunning=true;
-				startReloadModelMetas();
+			if(mm.record){
+				if(!hMonitorMetas.containsKey(key)){
+					logger.info("Add dynamic table: "+mm.tableName+", dbkey: "+mm.db.getKey());
+				}
+				hMonitorMetas.put(key, mm);
+				
+				if(!modelReloadRunning){
+					modelReloadRunning=true;
+					startReloadModelMetas();
+				}
 			}
+			hMetas.put(key, mm);
+		 	 
+			return mm;
 		}
-		hMetas.put(key, mm);
-		return mm;
 	}
 	
 	private static void startReloadModelMetas(){
@@ -371,18 +377,22 @@ public class ModelMeta{
 		return fields;		
 	}
 	
-	public void checkChanged(){
+	public boolean checkChanged(){
 		if(mTable!=null && changed==false){
 			try{
 				MetaTable t2=TableHelper.getMetaTable(db, tableName);
 				if(isTableFieldChanged(this.mTable,t2)){
 					logger.info("Table struct changed: "+tableName);
 					this.changed=true;
+					
+					return true;
 				}
 			}catch(Exception e){
 				logger.error("Check table: "+tableName+" exception: "+e,e);
 			}
 		}
+		
+		return false;
 	}
 	
 	private boolean isTableFieldChanged(MetaTable t1,MetaTable t2){
@@ -410,6 +420,18 @@ public class ModelMeta{
 			}else{
 				return true;
 			}
+		}
+		 
+		String[] s1=t1.getSeqMapping();
+		String[] s2=t2.getSeqMapping();
+		if(s1==null && s2==null) {
+			return false;
+		}else if(s1==null && s2!=null) {
+			return true;
+		}else if(s1!=null && s2==null) {
+			return true;
+		}else if(!MelpString.join(s1,"&").equalsIgnoreCase(MelpString.join(s2,"&"))) {
+			return true;
 		}
 		
 		return false;
@@ -546,6 +568,11 @@ public class ModelMeta{
 	}
    
 	
+	public boolean isClearChangesAfterLoad() {
+		String value = DbProp.PROP_TABLE_CLEAR_CHANGES_AFTER_LOAD.getValue(db, tableName, "false");
+		return "true".equalsIgnoreCase(value);
+	}
+	
 	/**
 	 * 校验字段数据的是否合法.
 	 * 
@@ -582,7 +609,7 @@ public class ModelMeta{
 	}
 	
 	
-	boolean iChanged(){
+	boolean isChanged(){
 		return changed;
 	}
 	 

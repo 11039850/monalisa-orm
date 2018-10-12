@@ -102,7 +102,7 @@ public abstract class Model<T extends Model> implements Serializable ,Shallowabl
 	}
 	
 	protected ModelMeta mm() {
-		if ($modelMeta == null) {
+		if ($modelMeta == null || $modelMeta.isChanged()) {
 			$modelMeta = ModelMeta.getModelMeta(this);
 		}
 		return $modelMeta;
@@ -541,10 +541,15 @@ public abstract class Model<T extends Model> implements Serializable ,Shallowabl
 				break;
 			case LOAD:
 				entity(true);
+				
+				if( mm().isClearChangesAfterLoad() ) {
+					clearChanges();
+				}
+				
 				break;
 			}
 		}
- 
+		 
 		if (mm().listener != null) {
 			mm().listener.after(event, this, r);
 		}

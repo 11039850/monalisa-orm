@@ -78,7 +78,7 @@ public class SimpleDataSource implements PooledDataSource {
 		 
 		connProps.put("user",getUsername());     
 		connProps.put("password",getPassword());     
-		connProps.putAll(db.getCfg().getPoolProperties() );
+		 
 		if(poolProperties!=null){
 			connProps.putAll(poolProperties);
 		}
@@ -271,5 +271,21 @@ public class SimpleDataSource implements PooledDataSource {
 
 	public void setIdleValidationQuery(int idleInSeconds,String validationQuery){
 		//do noting
+	}
+
+	public int getMaxSize() {
+		return maxSize;
+	}
+
+	public int getMinSize() {
+		return minSize;
+	}
+
+	public int getWaitTime() {
+		return waitTime;
+	}
+
+	public Properties getConnProps() {
+		return connProps;
 	}
 }

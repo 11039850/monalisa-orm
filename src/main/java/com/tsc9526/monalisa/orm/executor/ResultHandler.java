@@ -35,6 +35,8 @@ import com.tsc9526.monalisa.orm.meta.MetaColumn;
 import com.tsc9526.monalisa.orm.meta.MetaTable;
 import com.tsc9526.monalisa.orm.meta.Name;
 import com.tsc9526.monalisa.orm.model.Model;
+import com.tsc9526.monalisa.orm.model.ModelEvent;
+import com.tsc9526.monalisa.orm.model.QMH;
 import com.tsc9526.monalisa.tools.clazz.MelpClass;
 import com.tsc9526.monalisa.tools.clazz.MelpClass.ClassHelper;
 import com.tsc9526.monalisa.tools.clazz.MelpClass.FGS;
@@ -94,7 +96,20 @@ public class ResultHandler<T> {
 			if (Map.class.isAssignableFrom(resultClass)) {
 				return (T) loadToMap(rs, new DataMap());
 			} else {
-				return (T) load(rs, resultClass.newInstance());
+				T x = resultClass.newInstance();
+				
+				boolean isModelClass = x instanceof Model<?>;
+				if(isModelClass) {
+					QMH.before((Model<?>)x,ModelEvent.LOAD);
+				}
+				
+				T result= (T) load(rs, x);
+				
+				if(isModelClass) {
+					QMH.after((Model<?>)x,ModelEvent.LOAD,result!=null?1:-1);
+				}
+				
+				return result;
 			}
 		} catch (IllegalAccessException e) {
 			throw new RuntimeException(e);

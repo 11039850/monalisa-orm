@@ -60,7 +60,7 @@ public class OracleDialect extends Dialect{
 
 	@Override
 	public String getSchema(String jdbcUrl) {
-		//jdbc:oracle:thin:@//172.16.95.218/qndbzhu
+		//jdbc:oracle:thin:@//localhost/orcl
 		String schema = "";
 
 		String prefix = getUrlPrefix();

@@ -22,7 +22,7 @@ import java.util.List;
 import com.tsc9526.monalisa.orm.Query;
 
 /**
- * Do not use this class
+ * !!! Do not use this class !!! 
  *
  * @author zzg.zhou(11039850@qq.com)
  */

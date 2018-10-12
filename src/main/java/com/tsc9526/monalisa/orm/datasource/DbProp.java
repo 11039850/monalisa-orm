@@ -182,6 +182,7 @@ public class DbProp {
 	public final static DbProp PROP_TABLE_SEQ		          = new DbProp("seq");
 	public final static DbProp PROP_TABLE_PRIMARY_KEYS		  = new DbProp("primaryKeys");
 	
+	
 	public final static DbProp PROP_TABLE_CACHE_CLASS         = new DbProp("cache.class");
 	public final static DbProp PROP_TABLE_CACHE_NAME	  	  = new DbProp("cache.name","default");
 	public final static DbProp PROP_TABLE_CACHE_EVICTION      = new DbProp("cache.eviction","LRU");
@@ -191,10 +192,11 @@ public class DbProp {
 	public final static DbProp PROP_TABLE_AUTO_SET_CREATE_BY  =new DbProp("auto.create_by","create_by");
 	public final static DbProp PROP_TABLE_AUTO_SET_UPDATE_BY  =new DbProp("auto.update_by","update_by");
 	  
-	public final static DbProp PROP_TABLE_EXCEPTION_IF_SET_FIELD_NOT_FOUND=new DbProp("exception_if_set_field_not_found",false);
-	
+	public final static DbProp PROP_TABLE_EXCEPTION_IF_SET_FIELD_NOT_FOUND = new DbProp("exception_if_set_field_not_found",false);
+	public final static DbProp PROP_TABLE_CLEAR_CHANGES_AFTER_LOAD         = new DbProp("event.load.clear_changes"        ,false);
 	
 	public final static DbProp PROP_TABLE_DBS_MAX_ROWS  =new DbProp("dbs.max.rows",10000);
+	
 	
 	public static String CFG_FIELD_VERSION        ="$VERSION";
 	

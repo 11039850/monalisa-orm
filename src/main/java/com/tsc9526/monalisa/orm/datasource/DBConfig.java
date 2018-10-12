@@ -31,6 +31,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Properties;
 import java.util.Set;
 import java.util.TreeMap;
@@ -640,13 +641,14 @@ public class DBConfig implements Closeable{
 						configClass=clazz.newInstance();
 						
 						Long ts = System.currentTimeMillis();
-						this.p=configClass.getConfigProperties();
-						
-						if(this.p!=null) {
+						Properties cp = configClass.getConfigProperties();
+
+						if(cp!=null) {
+							this.p = copyProperties(cp);
 							loadedFromConfigClass  = true;
 							lastestLoadConfigClass =  ts;
 							
-							logger.info("load cfg from config class: "+clazz.getName()+", configName: "+configName);
+							logger.info("load cfg from config class: "+clazz.getName()+", configName: "+configName+", props: "+cp);
 						}
 					}catch(Exception e){
 						throw new RuntimeException("Load config exception, class: "+clazz.getName()+", "+e, e);
@@ -671,7 +673,7 @@ public class DBConfig implements Closeable{
 					if(pv!=null){
 						int x=pv.indexOf("=");
 						if(x>0){
-							String name=pv.substring(0,x).trim();
+							String name=PREFIX_DB+"."+CFG_DEFAULT_NAME+"."+pv.substring(0,x).trim();
 							String value=pv.substring(x+1).trim();
 							if(!p.containsKey(name)){
 								p.put(name, value);
@@ -683,6 +685,19 @@ public class DBConfig implements Closeable{
 		}
 		
 		
+		private Properties copyProperties(Properties cp) {
+			Properties x=new Properties(); 
+			for(Entry<Object,Object> entry:cp.entrySet()) {
+				Object key    = entry.getKey();
+				Object value  = entry.getValue();
+				if(key!=null && value!=null) {
+					x.put(key, value.toString());
+				}
+			}
+			
+			return x;
+		}
+
 		protected void processUrlHosts() {
 			int x1=url.indexOf("[");
 			if(x1>0){
