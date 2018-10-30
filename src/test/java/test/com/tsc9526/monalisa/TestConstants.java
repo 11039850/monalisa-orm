@@ -35,6 +35,8 @@ public class TestConstants {
 	public final static String username  = "monalisa";
 	public final static String password  = "monalisa";
 	
+	public final static String datasourceClass = "C3p0DataSource";
+	
 	public final static String mysqlUrl    = "jdbc:mysql://127.0.0.1:3306/"+database+"?allowMultiQueries=true";
 	public final static String oracleUrl   = "jdbc:oracle:thin:@//127.0.0.1:1521/ORCL";
 	public final static String postgresUrl = "jdbc:postgresql://127.0.0.1:5432/"+database;

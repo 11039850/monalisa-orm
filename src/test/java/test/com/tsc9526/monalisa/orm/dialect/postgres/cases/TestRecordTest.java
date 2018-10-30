@@ -16,31 +16,30 @@
  *******************************************************************************************/
 package test.com.tsc9526.monalisa.orm.dialect.postgres.cases;
 
+import java.util.Date;
+
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import com.tsc9526.monalisa.orm.model.Record;
-
-import test.com.tsc9526.monalisa.orm.dialect.postgres.PostgresDB;
+import test.com.tsc9526.monalisa.orm.dialect.postgres.postgresdb.TestRecord;
 
 /**
  * 
  * @author zzg.zhou(11039850@qq.com)
  */
 @Test
-public class InsertTests {
-
-	public void testInsert1() {
-		Record r = PostgresDB.DB.createRecord("test","id");
-		r.set("id","3");
-		r.set("name","xx0");
-		r.saveOrUpdate();
+public class TestRecordTest {
+ 
+	public void testSave() {
+		TestRecord r = new TestRecord();
 		
-		String content = r.SELECT().select(2, 0).format();
-		Assert.assertTrue(content.length()>1);
+		r.setTsA(new Date());
 		
-		Assert.assertTrue(content.indexOf("id")>=0);
-		Assert.assertTrue(content.indexOf("name")>=0);
-		Assert.assertTrue(content.indexOf("\n")>=0);
+		Assert.assertEquals(r.defaults().save(),1);
+		Assert.assertTrue(r.getRecordId()>0);
+		
+		TestRecord x = TestRecord.SELECT().selectByRecordId(r.getRecordId());
+		Assert.assertEquals(r.getCreateTime().getTime(), x.getCreateTime().getTime());
+		Assert.assertEquals(r.getTsA().getTime()       , x.getTsA().getTime());
 	}
 }

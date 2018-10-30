@@ -17,12 +17,15 @@
 package test.com.tsc9526.monalisa.orm.dialect.basic;
  
 import java.util.Date;
+import java.util.Properties;
 
 import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
+import com.tsc9526.monalisa.orm.annotation.DB;
+import com.tsc9526.monalisa.orm.datasource.ConfigClass;
 import com.tsc9526.monalisa.orm.datasource.DBConfig;
 import com.tsc9526.monalisa.orm.model.Model;
 import com.tsc9526.monalisa.orm.model.Record;
@@ -68,6 +71,16 @@ public abstract class BaseRecordTest extends Model<BaseRecordTest>{
 	public abstract String    getInitSqls(); 
 	public abstract String    getCleanSqls(); 
 	
+	protected abstract Properties getConfigProperties(); 
+	
+	@DB(configClass=BaseDbConfigTest.class)
+	public class BaseDbConfigTest extends ConfigClass{
+	 	public Properties getConfigProperties() {
+	 		return BaseRecordTest.this.getConfigProperties();
+		}
+	}
+	
+	
 	@BeforeClass
 	public void setUp(){
 		for(String sql:getCleanSqls().split(";")) {
@@ -97,6 +110,14 @@ public abstract class BaseRecordTest extends Model<BaseRecordTest>{
 		return tx;
 	}
 	 
+	
+	@Test
+	public void testTableExists()throws Exception{
+		Assert.assertTrue ( getDB().tableExist("test_record") );
+		
+		Assert.assertTrue (! getDB().tableExist("test_record_failed") );
+	}
+	
 
 	@Test
 	public void testRecordAutoTime()throws Exception{

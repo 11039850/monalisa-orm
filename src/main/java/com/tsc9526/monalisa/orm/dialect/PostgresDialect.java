@@ -165,7 +165,7 @@ public class PostgresDialect extends Dialect {
 			+ "\r\n		WHERE table_schema = ? AND table_name = ? "
 			+ "\r\n)"
 		+ "\r\n"/**}*/, db.getSchema(),name);
-		return rs!=null && "t".equalsIgnoreCase( rs.getString("exists") );
+		return rs!=null && "true".equalsIgnoreCase( rs.getString("exists") );
 	}
 	
 	public CreateTable getCreateTable(DBConfig db, String tableName) {

@@ -16,8 +16,12 @@
  *******************************************************************************************/
 package test.com.tsc9526.monalisa.orm.dialect.mysql.cases;
 
-import com.tsc9526.monalisa.orm.datasource.DBConfig;
+import java.util.Properties;
 
+import com.tsc9526.monalisa.orm.datasource.DBConfig;
+import com.tsc9526.monalisa.orm.datasource.DbProp;
+
+import test.com.tsc9526.monalisa.TestConstants;
 import test.com.tsc9526.monalisa.orm.dialect.basic.BaseRecordTest;
 import test.com.tsc9526.monalisa.orm.dialect.mysql.MysqlDB;
 
@@ -59,6 +63,18 @@ public class MysqlRecordTest extends BaseRecordTest implements MysqlDB{
 		return ""+/**~!{*/""
 			+ "DROP TABLE IF EXISTS `test_record`"
 		+ "\r\n"/**}*/ ;
+	}
+	
+	
+	protected Properties getConfigProperties() {
+		Properties p=new Properties();
+		p.put(DbProp.PROP_DB_URL.getFullKey(),                TestConstants.mysqlUrl);
+		p.put(DbProp.PROP_DB_DATASOURCE_CLASS.getFullKey(),   TestConstants.datasourceClass);
+		p.put(DbProp.PROP_DB_USERNAME.getFullKey(),           TestConstants.username);
+		p.put(DbProp.PROP_DB_PASSWORD.getFullKey(),           TestConstants.password);
+		
+		p.put("sql.debug", TestConstants.DEBUG_SQL);
+		return p;
 	}
 	 
 }

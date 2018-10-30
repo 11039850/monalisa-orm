@@ -16,8 +16,12 @@
  *******************************************************************************************/
 package test.com.tsc9526.monalisa.orm.dialect.postgres.cases;
 
-import com.tsc9526.monalisa.orm.datasource.DBConfig;
+import java.util.Properties;
 
+import com.tsc9526.monalisa.orm.datasource.DBConfig;
+import com.tsc9526.monalisa.orm.datasource.DbProp;
+
+import test.com.tsc9526.monalisa.TestConstants;
 import test.com.tsc9526.monalisa.orm.dialect.basic.BaseRecordTest;
 import test.com.tsc9526.monalisa.orm.dialect.postgres.PostgresDB;
 
@@ -64,4 +68,15 @@ public class PostgresRecordTest extends BaseRecordTest implements PostgresDB{
 		+ "\r\n"/**}*/;
 	}
 	 
+	
+	protected Properties getConfigProperties() {
+		Properties p=new Properties();
+		p.put(DbProp.PROP_DB_URL.getFullKey(),                TestConstants.postgresUrl);
+		p.put(DbProp.PROP_DB_DATASOURCE_CLASS.getFullKey(),   TestConstants.datasourceClass);
+		p.put(DbProp.PROP_DB_USERNAME.getFullKey(),           TestConstants.username);
+		p.put(DbProp.PROP_DB_PASSWORD.getFullKey(),           TestConstants.password);
+		
+		p.put("sql.debug", TestConstants.DEBUG_SQL);
+		return p;
+	}
 }
