@@ -31,7 +31,9 @@ import oracle.jdbc.driver.OracleConnection;
 import com.tsc9526.monalisa.orm.Query;
 import com.tsc9526.monalisa.orm.annotation.Column;
 import com.tsc9526.monalisa.orm.datasource.DBConfig;
+import com.tsc9526.monalisa.orm.datasource.DbProp;
 import com.tsc9526.monalisa.orm.datasource.SimpleDataSource;
+import com.tsc9526.monalisa.orm.meta.MetaTable;
 import com.tsc9526.monalisa.orm.meta.MetaTable.CreateTable;
 import com.tsc9526.monalisa.orm.model.Model;
 import com.tsc9526.monalisa.tools.clazz.MelpClass.FGS;
@@ -90,7 +92,7 @@ public class OracleDialect extends Dialect{
 
 	@Override
 	public String getTableName(String name) {
-		return getColumnName(name);
+		return getColumnName(name).toUpperCase();
 	}
  
 	public String getLimitSql(String orignSql, int limit,int offset){
@@ -185,7 +187,8 @@ public class OracleDialect extends Dialect{
 		
 		return query;
 	}
-	 
+
+	
 	@Override
 	public CreateTable getCreateTable(DBConfig db, String tableName) {
 		throw new RuntimeException("Not implement!");
@@ -235,4 +238,15 @@ public class OracleDialect extends Dialect{
 	public String getMetaSchemaPattern(DBConfig db) {
 		return db.getCfg().getUsername().toUpperCase();
 	}
+	
+	public String getMetaTablePattern(DBConfig db,MetaTable table){
+		return super.getMetaTablePattern(db,table).toUpperCase();
+	}
+	
+	
+	protected String getVersionField(Model model){
+		return DbProp.PROP_TABLE_VERSION_FIELD.getValue(model.db(),model.table().name()).toUpperCase();
+	}
+	 
+	
 }

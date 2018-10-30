@@ -41,6 +41,8 @@ import com.tsc9526.monalisa.tools.string.MelpDate;
 public abstract class BaseRecordTest extends Model<BaseRecordTest>{ 
 	private static final long serialVersionUID = -1974865252589672370L;
 
+	public final static String SQL_SPLIT = "##";
+	
 	String title;
 	int version;
 	
@@ -83,18 +85,30 @@ public abstract class BaseRecordTest extends Model<BaseRecordTest>{
 	
 	@BeforeClass
 	public void setUp(){
-		for(String sql:getCleanSqls().split(";")) {
+		for(String sql: splitSqls(getCleanSqls())) {
 			sql = sql.trim();
 			if(sql.length()>1) {
 				getDB().execute(sql);
 			}
 		}
 		
-		for(String sql:getInitSqls().split(";")) {
+		for(String sql: splitSqls(getInitSqls())) {
 			sql = sql.trim();
 			if(sql.length()>1) {
 				getDB().execute(sql);
 			}
+		}
+	}
+	
+	private String[] splitSqls(String s) {
+		if(s==null) {
+			return new String[0];
+		}
+		
+		if(s.indexOf(SQL_SPLIT)>0) {
+			return s.split(SQL_SPLIT);
+		}else {
+			return s.split(";");
 		}
 	}
 	
@@ -230,7 +244,7 @@ public abstract class BaseRecordTest extends Model<BaseRecordTest>{
 		Assert.assertTrue(tx.field("title")!=null);
 		Assert.assertEquals(tx.entity(),false); 
 		 	
-		tx.set("record_id", 1);
+		tx.set("RECORD_ID", 1);
 		tx.load();
 		Assert.assertEquals(tx.entity(),true); 
 		Assert.assertEquals(tx.get("title"),"record"); 
@@ -329,8 +343,8 @@ public abstract class BaseRecordTest extends Model<BaseRecordTest>{
 		
 		Record record = getDB().createRecord("test_record","record_id");
 		 
-		Record r1 = record.SELECT().selectOne("record_id =? ",x.get("record_id"));
-		Record r2 = record.SELECT().selectOne("record_id =? ",x.get("record_id"));
+		Record r1 = record.SELECT().selectOne("RECORD_ID =? ",x.get("record_id"));
+		Record r2 = record.SELECT().selectOne("RECORD_ID =? ",x.get("record_id"));
 		
 		r=r1.set("update_by","zzg-1").updateByVersion();
 		Assert.assertEquals(1,r);
@@ -338,7 +352,7 @@ public abstract class BaseRecordTest extends Model<BaseRecordTest>{
 		r=r2.set("update_by","zzg-2").updateByVersion();
 		Assert.assertEquals(0,r);
 		
-		Record rx = record.SELECT().selectOne("record_id =? ",x.get("record_id"));
+		Record rx = record.SELECT().selectOne("RECORD_ID =? ",x.get("record_id"));
 		Assert.assertEquals(rx.get("update_by"),"zzg-1");
 	}
 	

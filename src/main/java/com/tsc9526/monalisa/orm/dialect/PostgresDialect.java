@@ -75,7 +75,18 @@ public class PostgresDialect extends Dialect {
 	}
 	
 	public String getSchema(String jdbcUrl) {
-		return "public";
+		String schema = "public";
+	
+		int p1 = jdbcUrl.indexOf("currentSchema="); 
+		if(p1>0) {
+			int p2 = jdbcUrl.indexOf("&",p1);
+			if(p2<0) {
+				p2=jdbcUrl.length();
+			}
+			
+			schema=jdbcUrl.substring(p1,p2);
+		}
+		return schema;
 	}
 
 	public String getColumnName(String name) {
