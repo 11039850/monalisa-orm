@@ -83,8 +83,7 @@ public class SQLServerDialect extends Dialect {
 			return "[" + name + "]";
 		}
 	}
-
-	@Override
+ 
 	public Query getLimitQuery(Query origin, int limit, int offset) {
 		throw new RuntimeException("Not implement!");
 	}

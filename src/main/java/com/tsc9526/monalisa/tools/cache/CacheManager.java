@@ -18,8 +18,10 @@ package com.tsc9526.monalisa.tools.cache;
 
 import java.lang.reflect.Constructor;
 import java.util.Map;
+import java.util.TimerTask;
 import java.util.concurrent.ConcurrentHashMap;
 
+import com.tsc9526.monalisa.tools.Tasks;
 import com.tsc9526.monalisa.tools.cache.decorators.FifoCache;
 import com.tsc9526.monalisa.tools.cache.decorators.LruCache;
 import com.tsc9526.monalisa.tools.cache.decorators.SoftCache;
@@ -40,7 +42,13 @@ public class CacheManager {
 	private Map<String, Cache> hCaches=new ConcurrentHashMap<String, Cache>();
 	  
 	private CacheManager(){ 
-		
+		Tasks.instance.addSchedule("monalisa-cache-refresh", new TimerTask() {
+			@Override
+			public void run() {
+			 
+				
+			}
+		}, 0, 300*1000);
 	}
 	 
 	public Cache getCache(String cacheClass,String eviction,String name){
@@ -84,22 +92,13 @@ public class CacheManager {
 	
 	private Cache createEvicate(Cache cache, String eviction){
 		if(eviction.equalsIgnoreCase("FIFO")){
-			cache=new FifoCache(cache);
+			return new FifoCache(cache);
 		}else if(eviction.equalsIgnoreCase("LRU")){
-			cache=new LruCache(cache);
+			return new LruCache(cache);
 		}else if(eviction.equalsIgnoreCase("SOFT")){
-			cache=new SoftCache(cache);
+			return new SoftCache(cache);
 		}else if(eviction.equalsIgnoreCase("WEAK")){
-			cache=new WeakCache(cache);
-		}else{
-			try{
-				Class<?> clazzEviction=Class.forName(eviction);
-				
-				Constructor<?> cs=clazzEviction.getConstructor(Cache.class);
-				cache=(Cache)cs.newInstance(cache);
-			}catch(Exception e){
-				throw new RuntimeException(e);
-			}
+			return new WeakCache(cache);
 		}
 		
 		return cache;

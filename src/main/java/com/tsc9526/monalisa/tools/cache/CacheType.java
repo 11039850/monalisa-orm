@@ -14,28 +14,15 @@
  *	You should have received a copy of the GNU Lesser General Public License
  *	along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************************/
-package test.com.tsc9526.monalisa;
+package com.tsc9526.monalisa.tools.cache;
 
 /**
  * 
  * @author zzg.zhou(11039850@qq.com)
  */
-public class TestConstants {
-	/** Print sql statements to console */
-	public final static boolean DEBUG_SQL               = true;
-	
-	/** Test with mysql db */
-	public final static boolean ENABLE_TEST_WITH_MYSQL  = true;
-	
-	/** Test with oracle db */
-	public final static boolean ENABLE_TEST_WITH_ORACLE = true;
-	
-	
-	public final static String database  = "test_monalisa";
-	public final static String username  = "monalisa";
-	public final static String password  = "monalisa";
-	
-	public final static String mysqlUrl    = "jdbc:mysql://127.0.0.1:3306/"+database+"?allowMultiQueries=true";
-	public final static String oracleUrl   = "jdbc:oracle:thin:@//127.0.0.1:1521/ORCL";
-	public final static String postgresUrl = "jdbc:postgresql://127.0.0.1:5432/"+database;
+public enum CacheType {
+	FIFO,
+	LRU,
+	SOFT,
+	WEAK; 
 }

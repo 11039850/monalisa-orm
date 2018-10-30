@@ -28,9 +28,10 @@ public class TransactionalCache implements Cache {
 		return delegate.getSize();
 	}
 
-	public Object getObject(Object key) {
+	@SuppressWarnings("unchecked")
+	public <T> T getObject(Object key) {
 		if(entriesToAddOnCommit.containsKey(key)){
-			return entriesToAddOnCommit.get(key).value;
+			return (T)entriesToAddOnCommit.get(key).value;
 		}
 		
 		return delegate.getObject(key);
@@ -40,12 +41,13 @@ public class TransactionalCache implements Cache {
 		return delegate.getReadWriteLock();
 	}
 
-	public void putObject(Object key, Object object,long ttlInSeconds) {
+	public <T> T putObject(Object key, T value,long ttlInSeconds) {
 		entriesToRemoveOnCommit.remove(key);
-		entriesToAddOnCommit.put(key, new AddEntry(delegate, key, object,ttlInSeconds));
+		entriesToAddOnCommit.put(key, new AddEntry(delegate, key, value,ttlInSeconds));
+		return value;
 	}
 
-	public Object removeObject(Object key) {
+	public <T> T removeObject(Object key) {
 		entriesToAddOnCommit.remove(key);
 		entriesToRemoveOnCommit.put(key, new RemoveEntry(delegate, key));
 		return delegate.getObject(key);

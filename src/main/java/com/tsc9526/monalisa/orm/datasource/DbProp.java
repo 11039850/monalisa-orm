@@ -170,7 +170,7 @@ public class DbProp {
   
 	public final static DbProp PROP_DB_CACHE_TABLES	  		  = new DbProp("cache.tables");
 	 
-	public final static DbProp PROP_TABLE_VERSION_FIELD       = new DbProp("version.name","VERSION");
+	public final static DbProp PROP_TABLE_VERSION_FIELD       = new DbProp("version.name","version");
 	 
 	public final static DbProp PROP_TABLE_MODEL_CLASS         = new DbProp("modelClass");
 	public final static DbProp PROP_TABLE_MODEL_LISTENER      = new DbProp("modelListener");

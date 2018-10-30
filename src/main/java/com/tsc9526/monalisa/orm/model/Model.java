@@ -922,15 +922,21 @@ public abstract class Model<T extends Model> implements Serializable ,Shallowabl
 	public DataMap toMap(boolean usingFieldName){
 		DataMap m=new DataMap();
 		
-		Map<String,FGS> hs=usingFieldName?mm().hFieldsByJavaName:mm().hFieldsByColumnName;
+		Map<String,FGS> hs=mm().hFieldsByJavaName;
 	 
 		for(Entry<String,FGS> entry:hs.entrySet()) {
-			String column=entry.getKey();
-			FGS fgs      =entry.getValue();
+			FGS fgs       = entry.getValue();
+			String name = fgs.getFieldName();
+			if(!usingFieldName) {
+				Column c = fgs.getAnnotation(Column.class);
+				if(c!=null) {
+					name = c.name();
+				}
+			}
 			
 			Object v = fgs.getObject(this);
 			if (v != null) {
-				m.put(column,v);
+				m.put(name,v);
 			}			 
 		} 		
 		

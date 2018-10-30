@@ -61,7 +61,7 @@ public class TestTable1Test {
 	}
  
 	@AfterClass
-	public void afterClass(){
+	public void afterClass(){ 
 		long c=TestTable1.SELECT().count();
 		
 		long expect = MultiThreadInvocationCount + SingleThreadInvocationCount;

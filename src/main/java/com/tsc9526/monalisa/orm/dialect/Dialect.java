@@ -258,7 +258,7 @@ public abstract class Dialect{
     }
 	
 	public Query insert(Model model){
-		Query query=createQuery();
+		Query query=createQuery(model);
 		
 		query.add("INSERT "); 
 		 
@@ -298,14 +298,14 @@ public abstract class Dialect{
 	
 	
 	public Query deleteAll(Model model){
-		Query query=createQuery();
+		Query query=createQuery(model);
 		
 		query.add("DELETE FROM "+getTableName(model.table()));
 		return query;
 	}
 	
 	public Query truncate(Model model){
-		Query query=createQuery();
+		Query query=createQuery(model);
 		
 		query.add("TRUNCATE TABLE "+getTableName(model.table()));
 		return query;
@@ -323,7 +323,7 @@ public abstract class Dialect{
 			throw new RuntimeException("Model: "+model.getClass()+" delete fail, no where cause.");
 		}
 		
-		Query query=createQuery();
+		Query query=createQuery(model);
 		
 		query.add("DELETE FROM "+getTableName(model.table())+" ");
 		if(whereStatement.toUpperCase().trim().startsWith("WHERE")){
@@ -358,7 +358,7 @@ public abstract class Dialect{
 		
 		String versionField=getVersionField(model);
 		
-		Query query=createQuery();
+		Query query=createQuery(model);
 		
 		query.add("UPDATE "+getTableName(model.table())+" SET ");
 		for(Object o:model.changedFields()){
@@ -418,7 +418,7 @@ public abstract class Dialect{
 	 
 	
 	public Query load(Model model){
-		Query query=createQuery();
+		Query query=createQuery(model);
 		 
 		query.add("SELECT "+model.filterFields()+" FROM ").add(getTableName(model.table())).add(" WHERE ");
 		
@@ -435,13 +435,17 @@ public abstract class Dialect{
 	
 	public Query selectOne(Model model,String whereStatement,Object ... args){
 		Query query=select(model, whereStatement, args);
-		return getLimitQuery(query,1,0); 
+		return getLimitQuery(query,1,0,model); 
 	}
  	
 	public Query getLimitQuery(Query origin, int limit, int offset) {
+		return getLimitQuery(origin, limit, offset, null);
+	}
+	
+	public Query getLimitQuery(Query origin, int limit, int offset,Model<?> model) {
 		String limitSql=getLimitSql(origin.getSql(),limit,offset);
 		
-		Query query = createQuery();
+		Query query = createQuery(model);
 
 		query.use(origin.getDb());
 		query.add(limitSql);
@@ -453,7 +457,7 @@ public abstract class Dialect{
 	
 	
 	public Query select(final Model model,String whereStatement,Object ... args){
-		Query query=createQuery();
+		Query query=createQuery(model);
 		
 		if(isJoinStatement(whereStatement)){
 			String x=model.filterFields();
@@ -496,7 +500,7 @@ public abstract class Dialect{
 	}
 	
 	public Query count(Model model,String whereStatement,Object ... args){
-		Query query=createQuery();
+		Query query=createQuery(model);
 		if(isJoinStatement(whereStatement)){
 			query.add("SELECT COUNT(*) FROM ").add(getTableName(model.table()));
 			
@@ -580,7 +584,7 @@ public abstract class Dialect{
 	}
 	
 	protected Query getWhereByPrimaryKey(Model model){
-		Query query=createQuery();
+		Query query=createQuery(model);
 		
 		int keyType=-1; //-1: 初始化, 0-无匹配的键, 1-primary key, 2-unique key	 
 		for(Object o:model.fields()){
@@ -614,7 +618,7 @@ public abstract class Dialect{
 		for(Object x:model.uniqueIndexes()){
 			ModelIndex index=(ModelIndex)x;
 			
-			Query query=createQuery();
+			Query query=createQuery(model);
 			 
 			List<FGS> fs=index.getFields();
 			boolean keyExists=fs.size()>0;
@@ -737,20 +741,34 @@ public abstract class Dialect{
 		return false;
 	}
 	
-	public Query getCountQuery(Query origin){
+	public Query getCountQuery(Query origin) {
+		return getCountQuery(origin,null);
+	}
+	
+	public Query getCountQuery(Query origin,Model<?> model){
 		String sql=getCountSql(origin.getSql());
 		
-		Query query=createQuery();
+		Query query=createQuery(model);
 		query.use(origin.getDb());
 	 	query.add(sql, origin.getParameters());
 		
+	 	String originTag = origin.getTag()==null? "": origin.getTag().toString();
+	 	
+	 	query.setCache(origin.getCache());
+	 	query.setCacheTime(origin.getCacheTime());
+	 	query.setTag(originTag+"-count");
+	 	
 		return query;
 	} 
  
 	
-	protected Query createQuery(){
+	protected Query createQuery(Model<?> model){
 		Query query=new Query();
 		query.setDialect(this);
+		
+		if(model!=null) {
+			//TODO: xx
+		}
 		
 		return query;
 	}

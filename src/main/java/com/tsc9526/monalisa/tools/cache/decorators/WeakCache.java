@@ -38,16 +38,17 @@ public class WeakCache implements Cache {
 		this.numberOfHardLinks = size;
 	}
 
-	public void putObject(Object key, Object value,long ttlInSeconds) {
+	public <T> T putObject(Object key, T value,long ttlInSeconds) {
 		removeGarbageCollectedItems();
 		delegate.putObject(key, new WeakEntry(key, value, queueOfGarbageCollectedEntries),ttlInSeconds);
+		return value;
 	}
 
-	public Object getObject(Object key) {
-		Object result = null;
+	public <T> T getObject(Object key) {
+		T result = null;
 		WeakReference weakReference = (WeakReference) delegate.getObject(key);
 		if (weakReference != null) {
-			result = weakReference.get();
+			result = (T)weakReference.get();
 			if (result == null) {
 				delegate.removeObject(key);
 			} else {
@@ -60,7 +61,7 @@ public class WeakCache implements Cache {
 		return result;
 	}
 
-	public Object removeObject(Object key) {
+	public <T> T removeObject(Object key) {
 		removeGarbageCollectedItems();
 		return delegate.removeObject(key);
 	}

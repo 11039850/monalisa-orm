@@ -14,28 +14,28 @@
  *	You should have received a copy of the GNU Lesser General Public License
  *	along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************************/
-package test.com.tsc9526.monalisa;
+package test.com.tsc9526.monalisa.tools.string;
+
+import org.testng.Assert;
+import org.testng.annotations.Test;
+
+import com.tsc9526.monalisa.tools.string.MelpString;
 
 /**
  * 
  * @author zzg.zhou(11039850@qq.com)
  */
-public class TestConstants {
-	/** Print sql statements to console */
-	public final static boolean DEBUG_SQL               = true;
-	
-	/** Test with mysql db */
-	public final static boolean ENABLE_TEST_WITH_MYSQL  = true;
-	
-	/** Test with oracle db */
-	public final static boolean ENABLE_TEST_WITH_ORACLE = true;
-	
-	
-	public final static String database  = "test_monalisa";
-	public final static String username  = "monalisa";
-	public final static String password  = "monalisa";
-	
-	public final static String mysqlUrl    = "jdbc:mysql://127.0.0.1:3306/"+database+"?allowMultiQueries=true";
-	public final static String oracleUrl   = "jdbc:oracle:thin:@//127.0.0.1:1521/ORCL";
-	public final static String postgresUrl = "jdbc:postgresql://127.0.0.1:5432/"+database;
+@Test
+public class MelpStringTest {
+
+	public void testUrlEncode() {
+		String s1 = "%123";
+		
+		String result = MelpString.urlEncodeUtf8(s1);
+		Assert.assertEquals(result,"%25123");
+		
+		String s2 = MelpString.urlDecodeUtf8(result);
+		Assert.assertEquals(s2,s1);
+		
+	}
 }

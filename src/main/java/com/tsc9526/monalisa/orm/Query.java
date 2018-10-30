@@ -249,6 +249,7 @@ public class Query {
 			this.sql.delete(0,this.sql.length());
 		}		 
 		this.parameters.clear();
+		this.batchParameters.clear();
 		
 		return this;
 	}
@@ -263,6 +264,7 @@ public class Query {
 	 
 	public Query clearParameters(){
 		this.parameters.clear();
+		this.batchParameters.clear();
 		return this;
 	}
 	

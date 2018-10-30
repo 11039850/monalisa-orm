@@ -105,7 +105,7 @@ public class MysqlDialect extends Dialect {
 			unames.add(fgs.getFieldName());
 		}
 		
-		Query query=createQuery();
+		Query query=createQuery(model);
 		
 		query.add("INSERT INTO ").add(getTableName(model.table()));
 		 

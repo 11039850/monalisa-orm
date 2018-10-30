@@ -28,11 +28,11 @@ public interface Cache {
 
 	int getSize();
 
-	void putObject(Object key, Object value,long ttlInSeconds);
+	<T> T putObject(Object key, T value,long ttlInSeconds);
 
-	Object getObject(Object key);
+	<T> T getObject(Object key);
 
-	Object removeObject(Object key);
+	<T> T removeObject(Object key);
 
 	void clear();
 

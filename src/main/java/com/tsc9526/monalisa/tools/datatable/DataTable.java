@@ -30,6 +30,7 @@ import java.util.Map;
 import com.google.gson.stream.JsonWriter;
 import com.tsc9526.monalisa.orm.annotation.Column;
 import com.tsc9526.monalisa.orm.datasource.DbProp;
+import com.tsc9526.monalisa.orm.model.Model;
 import com.tsc9526.monalisa.tools.clazz.MelpClass;
 import com.tsc9526.monalisa.tools.clazz.MelpClass.ClassHelper;
 import com.tsc9526.monalisa.tools.clazz.MelpClass.FGS;
@@ -264,6 +265,8 @@ public class DataTable<E> extends ArrayList<E> {
 			
 			if(from instanceof DataMap){
 				r.add(((DataMap)from).as(toClass));
+			}else if(from instanceof Model<?>){
+				r.add(((Model<?>) from).toMap(true).as(toClass));
 			}else{
 				T to=(T)MelpClass.convert(from, toClass);
 				r.add(to);
@@ -313,8 +316,8 @@ public class DataTable<E> extends ArrayList<E> {
 						headers.add(new DataColumn("c"+k).setIndex(index++));
 					}
 				}else{					
-					ClassHelper mc=MelpClass.getClassHelper(v.getClass());
-					for(FGS fgs:mc.getFields()){
+					Collection<FGS> fs=MelpClass.getFields(v);
+					for(FGS fgs:fs){
 						String fname=fgs.getFieldName();
 						String cname=null;
 						

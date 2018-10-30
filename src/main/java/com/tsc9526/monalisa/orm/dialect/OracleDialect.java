@@ -130,7 +130,7 @@ public class OracleDialect extends Dialect{
 			return insert(model);
 		}
 		 
-		Query query=createQuery();
+		Query query=createQuery(model);
 		
 		query.add("MERGE INTO ").add(getTableName(model.table())).add(" m USING dual ON (");
 		

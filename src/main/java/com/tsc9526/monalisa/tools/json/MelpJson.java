@@ -196,16 +196,7 @@ public class MelpJson {
 	}	
 	
 	public static DataMap parseToDataMap(String json){
-		if(json==null || json.length()<1){
-			throw new RuntimeException("Invalid json string: "+json);
-		}
-		  
-		JsonElement je=null;
-		try{
-			je=new JsonParser().parse(json);
-		}catch(Exception e){
-			throw new RuntimeException("Invalid json string: \r\n"+json,e);
-		}
+		JsonElement je = parseJson(json);
 		
 		if(je.isJsonObject()){
 			return parseToDataMap(je.getAsJsonObject());
@@ -224,6 +215,36 @@ public class MelpJson {
 			return ret;
 		}else{
 			return null;
+		}
+	}
+	
+	public static JsonObject parseJsonAsObject(String json) {
+		JsonElement je=parseJson(json);
+		if(je!=null) {
+			return je.getAsJsonObject();
+		}
+		
+		return null;
+	}
+	
+	public static JsonArray parseJsonAsArray(String json) {
+		JsonElement je=parseJson(json);
+		if(je!=null) {
+			return je.getAsJsonArray();
+		}
+		
+		return null;
+	}
+	
+	public static JsonElement parseJson(String json) {
+		if(json==null || json.length()<1){
+			throw new RuntimeException("Invalid json string: "+json);
+		}
+		   
+		try{
+			return new JsonParser().parse(json);
+		}catch(Exception e){
+			throw new RuntimeException("Invalid json string: \r\n"+json,e);
 		}
 	}
  	

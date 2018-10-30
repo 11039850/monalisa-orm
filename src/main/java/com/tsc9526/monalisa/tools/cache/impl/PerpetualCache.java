@@ -1,17 +1,18 @@
 package com.tsc9526.monalisa.tools.cache.impl;
-
-import java.util.HashMap;
+ 
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 import com.tsc9526.monalisa.tools.cache.Cache;
 
+@SuppressWarnings("unchecked")
 public class PerpetualCache implements Cache {
 
 	private String id;
 
-	private Map<Object, Object> cache = new HashMap<Object, Object>();
+	private Map<Object, CacheObject> cache = new ConcurrentHashMap<Object, CacheObject>();
 
 	private ReadWriteLock readWriteLock = new ReentrantReadWriteLock();
 
@@ -27,16 +28,23 @@ public class PerpetualCache implements Cache {
 		return cache.size();
 	}
 
-	public void putObject(Object key, Object value,long ttlInSeconds) {
-		cache.put(key, value);
+	public <T> T putObject(Object key, T value,long ttlInSeconds) {
+		cache.put(key, new CacheObject(value,ttlInSeconds));
+		return value;
 	}
 
-	public Object getObject(Object key) {
-		return cache.get(key);
+	public <T> T getObject(Object key) {
+		CacheObject o =  cache.get(key);
+		if(o!=null && !o.isExpired()) {
+			return (T)o.data;	
+		}
+		
+		return null;	
 	}
 
-	public Object removeObject(Object key) {
-		return cache.remove(key);
+	
+	public <T> T removeObject(Object key) {
+		return (T)cache.remove(key);
 	}
 
 	public void clear() {
@@ -70,6 +78,22 @@ public class PerpetualCache implements Cache {
 		}
 		
 		return getId().hashCode();
+	}
+	
+	static class CacheObject{
+		Object data;
+		long   expiredTime;
+		long   createTime;
+		
+		CacheObject(Object data,long ttlInSeconds){
+			this.data         = data;
+			this.createTime   = System.currentTimeMillis();
+			this.expiredTime  = createTime + ttlInSeconds*1000;	
+		}
+		
+		public boolean isExpired() {
+			return expiredTime < System.currentTimeMillis();
+		}
 	}
 
 }

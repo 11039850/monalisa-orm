@@ -42,18 +42,19 @@ public class LruCache implements Cache {
 		};
 	}
 
-	public void putObject(Object key, Object value,long ttlInSeconds) {
+	public <T> T putObject(Object key, T value,long ttlInSeconds) {
 		delegate.putObject(key, value,ttlInSeconds);
 		cycleKeyList(key);
+		return value;
 	}
 
-	public Object getObject(Object key) {
+	public <T> T getObject(Object key) {
 		keyMap.get(key); // touch
 		return delegate.getObject(key);
 
 	}
 
-	public Object removeObject(Object key) {
+	public <T> T removeObject(Object key) {
 		return delegate.removeObject(key);
 	}
 

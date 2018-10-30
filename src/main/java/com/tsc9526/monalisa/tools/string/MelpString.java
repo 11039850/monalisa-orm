@@ -23,6 +23,8 @@ import java.io.StringWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -59,12 +61,12 @@ public class MelpString {
 			StringWriter w = new StringWriter();
 			((Throwable)bean).printStackTrace(new PrintWriter(w));
 			return w.toString();
-		}if(bean instanceof ResultSet){
+		}else if(bean instanceof ResultSet){
 			return DataTable.fromResultSet((ResultSet)bean).format();
 		}else if(MelpTypes.isPrimitiveOrString(bean) || bean.getClass().isEnum()){
 			return bean.toString();
 		}else{
-			return MelpJson.getGson().toJson(bean);
+			return MelpJson.toJson(bean);
 		}
 	}
 	 
@@ -352,6 +354,53 @@ public class MelpString {
 			}catch(UnsupportedEncodingException e){
 				throw new RuntimeException(e);
 			}
+		}
+	}
+	
+	/**
+	 * Translates a string into URL parameter value
+	 * @param s source string
+	 * @return  the translated String using charset: UTF-8.
+	 */
+	public static String urlEncodeUtf8(String s) {
+		return urlEncode(s,"utf-8");
+	}
+	
+	/**
+	 * Translates a string into URL parameter value
+	 * 
+	 * @param s        source string
+	 * @param charset  the encode charset
+	 * @return         the translated String using the charset.
+	 */
+	public static String urlEncode(String s,String charset) {
+		try {
+			return URLEncoder.encode(s,charset);
+		} catch (UnsupportedEncodingException e) {
+			throw new RuntimeException("Invalid url encode("+charset+"): "+s,e);
+		}
+	}
+	
+	/**
+	 * Decodes a application/x-www-form-urlencoded string using a specific encoding scheme
+	 * @param s  source string
+	 * @return  the newly decoded String using charset: UTF-8.
+	 */
+	public static String urlDecodeUtf8(String s) {
+		return urlDecode(s,"utf-8");
+	}
+	
+	/**
+     * Decodes a application/x-www-form-urlencoded string using a specific encoding scheme
+	 * @param s  source string
+	 * @param charset  the decode charset
+	 * @return   the newly decoded String using the charset
+	 */
+	public static String urlDecode(String s,String charset) {
+		try {
+			return URLDecoder.decode(s, charset);
+		} catch (UnsupportedEncodingException e) {
+			throw new RuntimeException("Invalid url decode("+charset+"): "+s,e);
 		}
 	}
 

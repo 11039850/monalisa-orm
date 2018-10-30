@@ -38,16 +38,17 @@ public class SoftCache implements Cache {
 		this.numberOfHardLinks = size;
 	}
 
-	public void putObject(Object key, Object value,long ttlInSeconds) {
+	public <T> T putObject(Object key, T value,long ttlInSeconds) {
 		removeGarbageCollectedItems();
 		delegate.putObject(key, new SoftEntry(key, value, queueOfGarbageCollectedEntries), ttlInSeconds);
+		return value;
 	}
  
-	public Object getObject(Object key) {
-		Object result = null;
+	public <T> T getObject(Object key) {
+		T result = null;
 		SoftReference softReference = (SoftReference) delegate.getObject(key);
 		if (softReference != null) {
-			result = softReference.get();
+			result = (T)softReference.get();
 			if (result == null) {
 				delegate.removeObject(key);
 			} else {
@@ -60,7 +61,7 @@ public class SoftCache implements Cache {
 		return result;
 	}
 
-	public Object removeObject(Object key) {
+	public <T> T removeObject(Object key) {
 		removeGarbageCollectedItems();
 		return delegate.removeObject(key);
 	}

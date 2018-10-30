@@ -30,6 +30,7 @@ import com.tsc9526.monalisa.orm.annotation.DB;
 import com.tsc9526.monalisa.orm.dialect.Dialect;
 import com.tsc9526.monalisa.orm.dialect.MysqlDialect;
 import com.tsc9526.monalisa.orm.dialect.OracleDialect;
+import com.tsc9526.monalisa.orm.dialect.PostgresDialect;
 import com.tsc9526.monalisa.orm.dialect.SQLServerDialect;
 import com.tsc9526.monalisa.tools.Tasks;
 import com.tsc9526.monalisa.tools.clazz.MelpClass;
@@ -48,7 +49,7 @@ public class DataSourceManager {
 	public static DataSourceManager getInstance(){
 		return dm;
 	}	
-	
+	 
 	/**
 	 * close data source, daemon thread ...
 	 */
@@ -67,6 +68,7 @@ public class DataSourceManager {
 		registerDialect(new MysqlDialect());
 		registerDialect(new SQLServerDialect());
 		registerDialect(new OracleDialect());
+		registerDialect(new PostgresDialect());
 	}
 	
 	private void registerShutdown(){
