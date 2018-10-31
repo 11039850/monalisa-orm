@@ -764,11 +764,22 @@ public class DBConfig implements Closeable{
 				if(configFile.startsWith("classpath:")){
 					configFile=configFile.substring("classpath:".length());
 				}
+				
+				configFile=findConfigFile(configFile);
 			}else{
-				configFile=key+".cfg";
+				configFile = key+".cfg";
+				
+				String xf = findConfigFile(key+".cfg");
+				if(new File(xf).exists()) {
+					configFile = xf;
+				}else {
+					xf = findConfigFile("monalisa-db.cfg");
+					if(new File(xf).exists()) {
+						configFile = xf;
+					}
+				}
 			}
-				 
-			configFile=findConfigFile(configFile);
+		 	
 			 	
 			Properties prop=new Properties();
 			
@@ -793,23 +804,23 @@ public class DBConfig implements Closeable{
 			if(cfgBasePath!=null){
 				configFile=MelpFile.combinePath(cfgBasePath,configFile);
 				
-				logger.info("find("+key+") cfg base path by cfgBasePath: "+cfgBasePath+", file: "+configFile);
+				logger.debug("find("+key+") cfg base path by cfgBasePath: "+cfgBasePath+", file: "+configFile);
 			}else{
 				if(configFile.startsWith("/")==false){
 					if(configFile.length()>1 && configFile.charAt(1)==':'){
 						//Windows ROOT C: D: E: ...
-						logger.info("find("+key+") cfg base path by win-root config file: "+configFile); 
+						logger.debug("find("+key+") cfg base path by win-root config file: "+configFile); 
 					}else{
 						configFile=MelpFile.combinePath(findCfgBasePath(configFile),configFile);
 					}				
 				}else{
-					logger.info("find("+key+") cfg base path by root config file: "+configFile); 
+					logger.debug("find("+key+") cfg base path by root config file: "+configFile); 
 				}
 			}
 			
 			return configFile;
 		}
-		
+	 
 		protected String findCfgBasePath(String configFile){
 			String syskey   = "DB@"+key;
 			String basepath = System.getProperty(syskey);
@@ -819,26 +830,30 @@ public class DBConfig implements Closeable{
 				basepath = System.getProperty(syskey);
 			}
 			
+			if(basepath == null) {
+				basepath = System.getProperty("DB@path");
+			}
+			
 			if(basepath==null){
 				String defpath=MelpFile.combinePath(DbProp.CFG_ROOT_PATH,configFile);
 				if(new File(defpath).exists()==false && annotationClass!=null){
 					basepath=MelpEclipse.findCfgBasePathByClass(annotationClass,configFile);
 					if(basepath!=null){
-						logger.info("Search("+key+") base path from class: "+annotationClass.getName()+", path: "+basepath+", file: "+configFile);
+						logger.debug("Search("+key+") base path from class: "+annotationClass.getName()+", path: "+basepath+", file: "+configFile);
 						
 						return basepath;
 					}else{
-						logger.info("Search("+key+") base path use default path: "+DbProp.CFG_ROOT_PATH+", file: "+configFile);
+						logger.debug("Search("+key+") base path use default path: "+DbProp.CFG_ROOT_PATH+", file: "+configFile);
 						
 						return DbProp.CFG_ROOT_PATH;
 					}
 				}else{
-					logger.info("Search("+key+") base path by default path: "+DbProp.CFG_ROOT_PATH+", file: "+configFile);
+					logger.debug("Search("+key+") base path by default path: "+DbProp.CFG_ROOT_PATH+", file: "+configFile);
 					
 					return DbProp.CFG_ROOT_PATH;
 				}
 			}else{
-				logger.info("Search("+key+") base path by system property: "+syskey+", path: "+basepath+", file: "+configFile);
+				logger.debug("Search("+key+") base path by system property: "+syskey+", path: "+basepath+", file: "+configFile);
 				
 				return basepath;
 			}
