@@ -196,7 +196,20 @@ public class AgentClass {
 		if(compilePackage==null){
 			compilePackage=new CompilePackage(DbProp.CFG_AGENT_PATH,DbProp.TMP_WORK_DIR_JAVA);
 			
-			if (ClassLoader.getSystemClassLoader() != AgentClass.class.getClassLoader()){
+			ClassLoader systemClassLoader = ClassLoader.getSystemClassLoader();
+			ClassLoader agentClassLoader  = AgentClass.class.getClassLoader();
+			
+			boolean loadedAgentClass = false;
+			for(int i=0;agentClassLoader!=null && i<3;i++) {
+				if(agentClassLoader == systemClassLoader) {
+					loadedAgentClass =true;
+					break;
+				}else {
+					agentClassLoader = agentClassLoader.getParent();
+				}
+			}
+			
+			if (!loadedAgentClass){
 	            MelpClasspath.appendToSystemPath(AgentClass.class);
 	        }
 		}

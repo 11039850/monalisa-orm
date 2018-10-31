@@ -22,13 +22,16 @@ package test.com.tsc9526.monalisa;
  */
 public class TestConstants {
 	/** Print sql statements to console */
-	public final static boolean DEBUG_SQL               = true;
+	public final static boolean DEBUG_SQL                 = true;
 	
 	/** Test with mysql db */
-	public final static boolean ENABLE_TEST_WITH_MYSQL  = true;
+	public final static boolean ENABLE_TEST_WITH_MYSQL    = true;
 	
 	/** Test with oracle db */
-	public final static boolean ENABLE_TEST_WITH_ORACLE = true;
+	public final static boolean ENABLE_TEST_WITH_ORACLE   = true;
+	
+	/** Test with postgres db */
+	public final static boolean ENABLE_TEST_WITH_POSTGRES = true;
 	
 	
 	public final static String database  = "test_monalisa";

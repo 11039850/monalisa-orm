@@ -32,7 +32,7 @@ import com.tsc9526.monalisa.orm.datasource.DBConfig;
 		partitions="test_logyyyymm_{DatePartitionTable(yyyyMM,log_time)}"
 		,datasourceClass="C3p0DataSource"
 		,properties={
-				"sql.debug="+TestConstants.DEBUG_SQL,
+				"debug="+TestConstants.DEBUG_SQL,
 				"version.name.TEST_TABLE_2=v1"
 		})
 public interface MysqlDB {

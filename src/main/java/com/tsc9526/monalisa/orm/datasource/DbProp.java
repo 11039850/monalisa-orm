@@ -16,11 +16,15 @@
  *******************************************************************************************/
 package com.tsc9526.monalisa.orm.datasource;
 
+import java.util.HashSet;
+import java.util.Properties;
+import java.util.Set;
+
 import com.tsc9526.monalisa.orm.dialect.Dialect;
 
 /**
  * Database properties: <br><ul>
-   <li><b>sql.debug = false </b> [scope: DB]<br>
+   <li><b>debug = false </b> [scope: DB]<br>
  * &nbsp;&nbsp;&nbsp;&nbsp; If show running SQL statements
  * 
    <li><b>url = </b> [scope: DB]<br>
@@ -141,7 +145,19 @@ import com.tsc9526.monalisa.orm.dialect.Dialect;
 public class DbProp {
 	public static boolean ProcessingEnvironment=false;
 	
-	public final static DbProp PROP_DB_SQL_DEBUG 		= new DbProp("sql.debug",false);
+	static long lastestCfgTime = 0L;
+	private static Properties dbCfgProps = null;
+	public static Properties getDbCfgProps() {
+		return dbCfgProps;
+	}
+	
+	public static Properties setDbCfgProps(Properties dbCfgProps) {
+		DbProp.dbCfgProps = dbCfgProps;
+		lastestCfgTime    = System.currentTimeMillis();		
+		return dbCfgProps;
+	}
+	
+	public final static DbProp PROP_DB_SQL_DEBUG 		= new DbProp("debug",false,"sql.debug");
  	
 	public final static DbProp PROP_DB_URL	   			= new DbProp("url");
 	public final static DbProp PROP_DB_DRIVER  			= new DbProp("driver");
@@ -264,23 +280,38 @@ public class DbProp {
 	
 	private String key;
 	private String value;
+	
+	private Set<String> alias= new HashSet<String>();
+	
 	public DbProp(String key){
 		this.key=key;
 	}
 	
-	public DbProp(String key,String value){
+	public DbProp(String key,String value,String ... alias){
 		this.key=key;
 		this.value=value;
+		
+		for(String x:alias) {
+			this.alias.add(x);
+		}
 	}
 	
-	public DbProp(String key,boolean value){
+	public DbProp(String key,boolean value,String ... alias){
 		this.key=key;
 		this.value=value?"true":"false";
+		
+		for(String x:alias) {
+			this.alias.add(x);
+		}
 	}
-	
-	public DbProp(String key,int value){
+	 
+	public DbProp(String key,int value,String ... alias){
 		this.key=key;
 		this.value=""+value;
+		
+		for(String x:alias) {
+			this.alias.add(x);
+		}
 	}
 	
 	public String getKey(){
@@ -296,12 +327,27 @@ public class DbProp {
 	}
 	
 	public String getValue(DBConfig db){
-		return db.getCfg().getProperty(key, value);
+		String ret = db.getCfg().getProperty(key);
+		
+		if(ret==null && alias.size()>0 ) {
+			for(String aKey:alias) {
+				ret = db.getCfg().getProperty(aKey);
+				if(ret!=null) {
+					break;
+				}
+			}
+		}
+		
+		if(ret == null) {
+			ret =value;
+		}
+		
+		return ret;
 	}
 	
 
 	public int getIntValue(DBConfig db,int defaultValue){
-		String v=db.getCfg().getProperty(key, value);
+		String v=getValue(db);
 		if(v!=null && v.trim().length()>0){
 			return Integer.parseInt(v);
 		}else{
@@ -336,7 +382,7 @@ public class DbProp {
 		if(v!=null){
 			return v;
 		}else{
-			return db.getCfg().getProperty(key, value);
+			return getValue(db);
 		}
 	}
 	

@@ -18,6 +18,8 @@ package test.com.tsc9526.monalisa.orm.dialect.postgres.cases;
 
 import java.util.Properties;
 
+import org.testng.annotations.Test;
+
 import com.tsc9526.monalisa.orm.datasource.DBConfig;
 import com.tsc9526.monalisa.orm.datasource.DbProp;
 
@@ -29,6 +31,7 @@ import test.com.tsc9526.monalisa.orm.dialect.postgres.PostgresDB;
  * 
  * @author zzg.zhou(11039850@qq.com)
  */
+@Test(enabled=TestConstants.ENABLE_TEST_WITH_POSTGRES)
 public class PostgresRecordTest extends BaseRecordTest implements PostgresDB{ 
 	private static final long serialVersionUID = -1974865252589672370L;
   

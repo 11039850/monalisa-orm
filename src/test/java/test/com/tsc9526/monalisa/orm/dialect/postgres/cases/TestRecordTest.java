@@ -21,13 +21,14 @@ import java.util.Date;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import test.com.tsc9526.monalisa.TestConstants;
 import test.com.tsc9526.monalisa.orm.dialect.postgres.postgresdb.TestRecord;
 
 /**
  * 
  * @author zzg.zhou(11039850@qq.com)
  */
-@Test
+@Test(enabled=TestConstants.ENABLE_TEST_WITH_POSTGRES)
 public class TestRecordTest {
  
 	public void testSave() {

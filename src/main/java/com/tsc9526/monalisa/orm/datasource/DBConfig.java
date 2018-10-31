@@ -71,6 +71,8 @@ import com.tsc9526.monalisa.tools.template.VarTemplate;
 public class DBConfig implements Closeable{ 	
 	static Logger logger=Logger.getLogger(DBConfig.class);
 	
+
+	
 	public final static String PREFIX_DB       ="DB";
 	public final static String CFG_DEFAULT_NAME="cfg";
 	
@@ -253,7 +255,7 @@ public class DBConfig implements Closeable{
 		return query.getPage(limit, offset);
 	}
 	
-	public List<DataMap> selectList(int limit, int offset,String sql,Object... args){
+	public DataTable<DataMap> selectList(int limit, int offset,String sql,Object... args){
 		Query query=createQuery().add(sql,args);
 		return query.getList(limit, offset);
 	}
@@ -562,16 +564,13 @@ public class DBConfig implements Closeable{
 		private List<MetaPartition> metaPartitions;
 		
 		private ConfigClass configClass;
-		private long lastestLoadConfigClass=0L;
-		
+		 
 		private Map<String,String> cacheModels=new ConcurrentHashMap<String,String>();
-		private String      cacheTables;
-		
-		
+		private String cacheTables;
+	 
+		private long lastestLoadCfgTime = 0L;
 		
 		synchronized void init(){
-			loadProperties();
-			
 			if(configName==null){
 				configName=db.configName();
 			}
@@ -583,7 +582,9 @@ public class DBConfig implements Closeable{
 				
 				prefixs=new String[]{PREFIX_DB+"."+configName.trim(), PREFIX_DB+"."+CFG_DEFAULT_NAME};
 			}		
-		
+			
+			loadProperties();
+			 
 			this.url             = getValue(p,DbProp.PROP_DB_URL.getKey(),               db.url(),            prefixs);
 			this.driver          = getValue(p,DbProp.PROP_DB_DRIVER.getKey(),            db.driver(),         prefixs);
 			this.catalog         = getValue(p,DbProp.PROP_DB_CATALOG.getKey(),           db.catalog(),        prefixs);
@@ -628,40 +629,45 @@ public class DBConfig implements Closeable{
 		}
 		
 		private void loadProperties(){
-			if(cfgBasePath != null){
-				logger.info("load cfg from file, base path: "+cfgBasePath+", configName: "+configName);
+			lastestLoadCfgTime = System.currentTimeMillis();
+			
+			Properties staticProps = DbProp.getDbCfgProps();
+			if(staticProps != null) {
+				logger.info("load cfg("+key+") from static properties: DbProp.getDbCfgProps(), configName: "+configName);
+				lastestLoadCfgTime = DbProp.lastestCfgTime;
+				this.p = copyProperties(staticProps);
+			}else if(cfgBasePath != null){
+				logger.info("load cfg("+key+") from file, base path: "+cfgBasePath+", configName: "+configName);
 				loadCfgFromFile();
 			}else{
 				Class<? extends ConfigClass> clazz=DBGeneratorProcessing.getDBConfigClass(db); 
-				String cff=db.configFile();
-				
+
 				boolean loadedFromConfigClass = false;
 				if(clazz!=null && clazz != ConfigClass.class){
 					try{
 						configClass=clazz.newInstance();
 						
-						Long ts = System.currentTimeMillis();
 						Properties cp = configClass.getConfigProperties();
 
 						if(cp!=null) {
 							this.p = copyProperties(cp);
 							loadedFromConfigClass  = true;
-							lastestLoadConfigClass =  ts;
-							
-							logger.info("load cfg from config class: "+clazz.getName()+", configName: "+configName+", props: "+cp);
+							 
+							logger.info("load cfg("+key+") from config class: "+clazz.getName()+", configName: "+configName+", props: "+cp);
 						}
 					}catch(Exception e){
-						throw new RuntimeException("Load config exception, class: "+clazz.getName()+", "+e, e);
+						throw new RuntimeException("Load cfg("+key+") exception, class: "+clazz.getName()+", "+e, e);
 					}
 				}
 				
 				if(!loadedFromConfigClass) {
+					String cff=db.configFile();
 					if(cff!=null && cff.startsWith("classpath:")){
-						logger.info("load cfg from resource: "+cff+", configName: "+configName);
+						logger.info("load cfg("+key+") from resource: "+cff+", configName: "+configName);
 						String resource=cff.substring("classpath:".length());
 						loadCfgFromClassResource(clazz,resource);
 					}else{
-						logger.info("load cfg from file, configName: "+configName+", search ...");
+						logger.info("load cfg("+key+") from file, configName: "+configName+", search ...");
 						loadCfgFromFile();
 					}
 				}
@@ -861,13 +867,19 @@ public class DBConfig implements Closeable{
 			String r=null;
 			if(prefixs.length>0){
 				for(String prefix:prefixs){
-					String v=p.getProperty(prefix+"."+key);
+					String pk = prefix+"."+key;
+					if(!p.containsKey(pk)) {
+						pk = prefix.toLowerCase()+"."+key;
+					}
+					
+					String v=p.getProperty(pk);
 					if(v!=null){
 						r=v;
 						break;
 					}
 				}
 			}
+			
 			if(r==null){
 				r= p.getProperty(key, defaultValue);
 			}
@@ -934,8 +946,9 @@ public class DBConfig implements Closeable{
 				String key=o.toString();
 				
 				for(String px:prefixs){
-					String flag=px+"."+prefix+".";
-					if(key.startsWith(flag)){
+					String flag      = px+"."+prefix+".";
+					String flagLower = px.toLowerCase()+"."+prefix+".";
+					if(key.startsWith(flag) || key.startsWith(flagLower)){
 						dbps.put(key.substring(flag.length()), p.get(key));
 					}
 				}
@@ -955,8 +968,9 @@ public class DBConfig implements Closeable{
 					String key=o.toString();
 				 	
 					for(String px:prefixs){
-						String flag=px+".dbs.";
-						if(key.startsWith(flag)){
+					 	String flag      = px+".dbs.";
+						String flagLower = px.toLowerCase()+".dbs.";
+						if(key.startsWith(flag) || key.startsWith(flagLower)){
 							dbps.put(key.substring(flag.length()), p.get(key));
 						}
 					}
@@ -965,9 +979,13 @@ public class DBConfig implements Closeable{
 			return dbps;
 		}
 		
+		
 		public boolean isCfgFileChanged(){
-			if(configClass != null && configClass.getConfigProperties() != null){
-				return configClass.isCfgChanged(lastestLoadConfigClass);
+			if(DbProp.lastestCfgTime > lastestLoadCfgTime) {
+				lastestLoadCfgTime = DbProp.lastestCfgTime;
+				return true;
+			}else if(configClass != null && configClass.getConfigProperties() != null){
+				return configClass.isCfgChanged(lastestLoadCfgTime);
 			}else if(configFile!=null){
 				if(cfgFile!=null && cfgFile.lastModified>0){
 					if( cfgFile.lastModified < cfgFile.cfgFile.lastModified()){
