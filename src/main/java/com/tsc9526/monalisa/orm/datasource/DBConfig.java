@@ -779,8 +779,7 @@ public class DBConfig implements Closeable{
 					}
 				}
 			}
-		 	
-			 	
+		  	 	
 			Properties prop=new Properties();
 			
 			cfgFile=new CfgFile(configFile);
@@ -793,8 +792,12 @@ public class DBConfig implements Closeable{
 				cfgFileLocal=null;
 			}
 			
-			if(definedCfgFile && (cfgFile==null && cfgFileLocal==null) ){
-				throw new RuntimeException("DB config file: "+new File(configFile).getAbsolutePath()+" not found!");				
+			if(cfgFile==null && cfgFileLocal==null){
+				if(definedCfgFile) {
+					throw new RuntimeException("DB config file: "+new File(configFile).getAbsolutePath()+" not found!");
+				}else {
+					logger.error("DB config file: "+new File(configFile).getAbsolutePath()+" not found!");
+				}
 			} 		
 			
 			this.p=prop;
