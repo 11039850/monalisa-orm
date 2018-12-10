@@ -16,29 +16,10 @@
  *******************************************************************************************/
 package com.tsc9526.monalisa.tools.cache;
 
-import java.util.List;
-import java.util.concurrent.locks.ReadWriteLock;
-
 /**
  * 
  * @author zzg.zhou(11039850@qq.com)
  */
-public interface Cache {
-
-	String getId();
-
-	int getSize();
-
-	<T> T putObject(Object key, T value,long ttlInSeconds);
-
-	<T> T getObject(Object key);
-
-	<T> T removeObject(Object key);
-
-	void clear();
-
-	ReadWriteLock getReadWriteLock();
-	
-	List<Object> keys();
-
+public interface Cacheable {
+	public Object execute();
 }

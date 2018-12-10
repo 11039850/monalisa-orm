@@ -1,6 +1,7 @@
 package com.tsc9526.monalisa.tools.cache.decorators;
 
 import java.util.LinkedList;
+import java.util.List;
 import java.util.concurrent.locks.ReadWriteLock;
 
 import com.tsc9526.monalisa.tools.cache.Cache;
@@ -28,6 +29,10 @@ public class FifoCache implements Cache {
 		return delegate.getSize();
 	}
 
+	public List<Object> keys(){
+		return delegate.keys();
+	}
+	
 	public void setSize(int size) {
 		this.size = size;
 	}

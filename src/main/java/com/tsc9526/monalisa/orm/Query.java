@@ -43,7 +43,7 @@ import com.tsc9526.monalisa.tools.agent.AgentClass;
 import com.tsc9526.monalisa.tools.cache.Cache;
 import com.tsc9526.monalisa.tools.cache.CacheKey;
 import com.tsc9526.monalisa.tools.cache.CacheManager;
-import com.tsc9526.monalisa.tools.cache.TransactionalCacheManager;
+import com.tsc9526.monalisa.tools.cache.Cacheable;
 import com.tsc9526.monalisa.tools.datatable.DataMap;
 import com.tsc9526.monalisa.tools.datatable.DataTable;
 import com.tsc9526.monalisa.tools.datatable.Page;
@@ -322,44 +322,50 @@ public class Query {
 	public <X> X execute(Execute<X> execute){
 		return doExecute(execute,getSql(),queryArgs);
 	}	
-	 
-	
-	
-	protected <X> X doCacheExecute(Execute<X> execute,Object extraTag){
-		Tx tx=Tx.getTx();
-		
-		TransactionalCacheManager tcm = tx==null?null:tx.getTxCacheManager();
-
-		long ttlInSeconds = getCacheTime();
+ 	
+	protected <X> X doCacheExecute(final Execute<X> execute,Object extraTag){
+	 	int ttlInSeconds = getCacheTime();
+	 	
 		if(ttlInSeconds > 0 ){
 			Cache cache   = getCache();
 			CacheKey key  = new CacheKey(getCacheKey());
 			if(extraTag!=null) {
 				key.update("extra:"+extraTag);
 			}
+	 
+			X value=(X) cache.getObject(key);
 			
-			//cache.getReadWriteLock().readLock().lock();
-			//try{
-				X x=(X)(tcm==null?cache.getObject(key):tcm.getObject(cache, key));
+			if(value==null){
+				value = doExecute(execute, getSql(),queryArgs);
 				
-				if(x==null){
-					x = doExecute(execute, getSql(),queryArgs);
-					
-					if(tcm==null){
-						cache.putObject(key, x,ttlInSeconds);
-					}else{
-						tcm.putObject(cache, key, x,ttlInSeconds);
+				cache.putObject(key, value,ttlInSeconds); 
+				
+				if(isDebug()){
+					logger.info("Cached, "+CacheManager.getCachedInfo(key, value, ttlInSeconds));
+				}
+			}else {
+				if(isDebug()){
+					logger.info("Loaded from cache, "+CacheManager.getCachedInfo(key, value, ttlInSeconds));
+				}
+			} 
+			
+			if(autoRefreshInSeconds>0) {
+				boolean ok = CacheManager.getInstance().addAutoRefreshCache(key,cache,new Cacheable() {
+					@Override
+					public Object execute() {
+						return doExecute(execute,getSql(),queryArgs);
 					}
-				}else {
+				}, ttlInSeconds, autoRefreshInSeconds);
+				
+				if(ok) {
 					if(isDebug()){
-						logger.debug("Load cache: "+key);
+						logger.info("Add auto refresh("+autoRefreshInSeconds+"s): "+key);
 					}
 				}
-				
-				return x;
-			//}finally{
-			//	cache.getReadWriteLock().readLock().unlock();
-			//}	
+			}
+			
+			return value;	
+			 
 		}
 		
 		return doExecute(execute,getSql(),queryArgs);

@@ -358,7 +358,7 @@ public abstract class Dialect{
 		
 		String versionField=getVersionField(model);
 		
-		Query query=createQuery(model);
+		Query query = createQuery(model);
 		
 		query.add("UPDATE "+getTableName(model.table())+" SET ");
 		for(Object o:model.changedFields()){
@@ -410,6 +410,31 @@ public abstract class Dialect{
 	
 	protected String getVersionField(Model model){
 		return DbProp.PROP_TABLE_VERSION_FIELD.getValue(model.db(),model.table().name());
+	}
+	
+	/**
+	 * Update by model's primary key & whereStatement
+	 * 
+	 * @param model  the model
+	 * @param whereStatement where cause
+	 * @param args sql parameters
+	 * @return the query
+	 */
+	public Query updateBy(Model model,String whereStatement,Object ... args){	
+		Query q = findWhereKey(model);
+		 
+		String       where  = q.getSql();
+		List<Object> params = new ArrayList<Object>();
+		params.addAll(q.getParameters());
+		
+		if(whereStatement!=null && whereStatement.length()>0) {
+			 where  += " AND "+whereStatement;
+			 
+			for(Object x:args) {
+				params.add(x);
+			}
+		}
+		return update(model, where,params);	 				 
 	}
 	
 	public Query update(Model model,String whereStatement,Object ... args){		

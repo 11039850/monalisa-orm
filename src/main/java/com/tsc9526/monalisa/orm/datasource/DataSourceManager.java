@@ -33,6 +33,7 @@ import com.tsc9526.monalisa.orm.dialect.OracleDialect;
 import com.tsc9526.monalisa.orm.dialect.PostgresDialect;
 import com.tsc9526.monalisa.orm.dialect.SQLServerDialect;
 import com.tsc9526.monalisa.tools.Tasks;
+import com.tsc9526.monalisa.tools.cache.CacheManager;
 import com.tsc9526.monalisa.tools.clazz.MelpClass;
 import com.tsc9526.monalisa.tools.io.MelpClose;
 import com.tsc9526.monalisa.tools.logger.Logger;
@@ -55,6 +56,7 @@ public class DataSourceManager {
 	 */
 	public static void shutdown(){
 		Tasks.instance.destory();
+		CacheManager.getInstance().shutdown();
 	}
 	 
 	private Map<String, DBConfig> dss=new ConcurrentHashMap<String,DBConfig>();

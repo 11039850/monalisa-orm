@@ -1,6 +1,7 @@
 package com.tsc9526.monalisa.tools.cache.decorators;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.locks.ReadWriteLock;
 
@@ -28,6 +29,11 @@ public class TransactionalCache implements Cache {
 		return delegate.getSize();
 	}
 
+	public List<Object> keys(){
+		return delegate.keys();
+	}
+	
+	
 	@SuppressWarnings("unchecked")
 	public <T> T getObject(Object key) {
 		if(entriesToAddOnCommit.containsKey(key)){

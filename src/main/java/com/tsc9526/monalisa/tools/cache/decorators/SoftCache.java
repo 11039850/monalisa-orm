@@ -3,6 +3,7 @@ package com.tsc9526.monalisa.tools.cache.decorators;
 import java.lang.ref.ReferenceQueue;
 import java.lang.ref.SoftReference;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.concurrent.locks.ReadWriteLock;
 
 import com.tsc9526.monalisa.tools.cache.Cache;
@@ -38,6 +39,10 @@ public class SoftCache implements Cache {
 		this.numberOfHardLinks = size;
 	}
 
+	public List<Object> keys(){
+		return delegate.keys();
+	}
+	
 	public <T> T putObject(Object key, T value,long ttlInSeconds) {
 		removeGarbageCollectedItems();
 		delegate.putObject(key, new SoftEntry(key, value, queueOfGarbageCollectedEntries), ttlInSeconds);

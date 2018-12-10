@@ -16,6 +16,7 @@
  *******************************************************************************************/
 package com.tsc9526.monalisa.tools.cache;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,7 +24,9 @@ import java.util.List;
  * 
  * @author zzg.zhou(11039850@qq.com)
  */
-public class CacheKey {
+public class CacheKey implements Serializable{
+	private static final long serialVersionUID = 1L;
+	
 	private static final int DEFAULT_MULTIPLYER = 37;
 	private static final int DEFAULT_HASHCODE = 17;
 

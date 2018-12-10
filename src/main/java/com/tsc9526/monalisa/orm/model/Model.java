@@ -274,18 +274,34 @@ public abstract class Model<T extends Model> implements Serializable ,Shallowabl
 		after(ModelEvent.REPLACE, r);
 		return r;
 	}
-
+	
+	/**
+	 * Update by primary key
+	 * 
+	 * @return 成功变更的记录数
+	 */
 	public int update() {
+		return updateBy(null);
+	}
+
+	/**
+	 * Update by primary key & whereStatement 
+	 * 
+	 * @param whereStatement
+	 * @param args
+	 * @return 成功变更的记录数
+	 */
+	public int updateBy(final String whereStatement,final Object ... args) {
 		if (history()) {
 			return Tx.execute(new Atom<Integer>() {
 				public Integer execute() {
-					int r= doUpdate();
+					int r= doUpdateBy(whereStatement,args);
 					saveHistory(ModelEvent.UPDATE);
 					return r;
 				}
 			});
 		} else {
-			return doUpdate();
+			return doUpdateBy(whereStatement,args);
 		}
 	}
 	  
@@ -332,11 +348,11 @@ public abstract class Model<T extends Model> implements Serializable ,Shallowabl
 		return r;
 	}
 	
-	protected int doUpdate() {
+	protected int doUpdateBy(String whereStatement,Object ... args) {
 		int r = -1;
 		before(ModelEvent.UPDATE);
 		doValidate();
-		r = new Update(this).update();
+		r = new Update(this).updateBy(whereStatement,args);
 		after(ModelEvent.UPDATE, r);
 		return r;
 	}

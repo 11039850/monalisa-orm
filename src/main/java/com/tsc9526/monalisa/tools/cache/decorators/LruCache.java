@@ -1,6 +1,7 @@
 package com.tsc9526.monalisa.tools.cache.decorators;
 
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.locks.ReadWriteLock;
 
@@ -26,6 +27,10 @@ public class LruCache implements Cache {
 
 	public int getSize() {
 		return delegate.getSize();
+	}
+	
+	public List<Object> keys(){
+		return delegate.keys();
 	}
 
 	public void setSize(final int size) {

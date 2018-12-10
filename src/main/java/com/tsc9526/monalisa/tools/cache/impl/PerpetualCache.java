@@ -1,5 +1,7 @@
 package com.tsc9526.monalisa.tools.cache.impl;
  
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.locks.ReadWriteLock;
@@ -42,6 +44,11 @@ public class PerpetualCache implements Cache {
 		return null;	
 	}
 
+	public List<Object> keys(){
+		List<Object> s = new ArrayList<Object>();
+		s.addAll( cache.keySet() );
+		return s;
+	}
 	
 	public <T> T removeObject(Object key) {
 		return (T)cache.remove(key);

@@ -51,6 +51,41 @@ public class ModelTest {
 		Assert.assertNotEquals(time, "00:00:00");
 	}
 	
+	public void testUpdateBy() {
+		int r = TestTable1.WHERE()
+			.name.eq("mm-test-update-by-01")
+			.OR()
+			.name.eq("mm-test-update-by-02")
+			.delete();
+		Assert.assertTrue(r<=2);
+		
+		TestTable1 t1 = new TestTable1().defaults().setName("mm-test-update-by-01").setTitle("x1");
+		int r1 = t1.save();
+		Assert.assertEquals(r1,1);
+		
+		TestTable1 t2 = new TestTable1().defaults().setName("mm-test-update-by-02").setTitle("x2");
+		int r2 = t2.save();
+		Assert.assertEquals(r2,1);
+		
+		Assert.assertEquals(t1.setTitle("y1").update(),1);
+		Assert.assertEquals(t2.setTitle("y2").update(),1);
+		 
+		Assert.assertEquals("y1",TestTable1.SELECT().selectByPrimaryKey(t1.getId()).getTitle());
+		Assert.assertEquals("y2",TestTable1.SELECT().selectByPrimaryKey(t2.getId()).getTitle());
+		
+		Assert.assertEquals(t1.setTitle("z1").updateBy("title=?","x1"),0);
+		Assert.assertEquals(t1.setTitle("z1").updateBy("title=?","y1"),1);
+		Assert.assertEquals(t2.setTitle("z1").updateBy("title=?","y1"),0);
+		Assert.assertEquals(t2.setTitle("z1").updateBy("title=?","y2"),1);
+		
+		Assert.assertEquals("z1",TestTable1.SELECT().selectByPrimaryKey(t1.getId()).getTitle());
+		Assert.assertEquals("z1",TestTable1.SELECT().selectByPrimaryKey(t2.getId()).getTitle());
+		
+		Assert.assertEquals(t1.setTitle("zx1").updateBy("title=?","y1"),0);
+		Assert.assertEquals(t1.setTitle("zx1").updateBy("title=?","z1"),1);
+		Assert.assertEquals("zx1",TestTable1.SELECT().selectByPrimaryKey(t1.getId()).getTitle());
+		
+	}
 	
 	public void testPartition()throws Exception{
 		TestLogyyyymm log=new TestLogyyyymm();

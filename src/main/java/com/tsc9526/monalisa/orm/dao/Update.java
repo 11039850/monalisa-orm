@@ -60,6 +60,13 @@ public class Update<T extends Model>{
 		return query.execute();
 	}
 	
+	public int updateBy(String whereStatement,Object ... args){
+		Query query=model.dialect().updateBy(model,whereStatement,args);
+		query.use(db());
+		return query.execute();	 				 
+	}
+	
+	
 	public int updateByVersion() {
 		Query query=model.dialect().updateByVersion(model);
 		query.use(db());
