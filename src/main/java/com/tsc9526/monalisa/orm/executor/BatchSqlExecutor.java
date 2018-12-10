@@ -17,7 +17,6 @@
 package com.tsc9526.monalisa.orm.executor;
 
 import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
@@ -30,21 +29,26 @@ import com.tsc9526.monalisa.tools.logger.Logger;
  * 
  * @author zzg.zhou(11039850@qq.com)
  */
-public class BatchSqlExecutor extends RelationExecutor implements Execute<int[]>{
+public class BatchSqlExecutor extends HandlerRelation implements Execute<int[]>{
 	static Logger logger=Logger.getLogger(BatchSqlExecutor.class);
-	
-	protected List<String> sqls=new ArrayList<String>();
- 	
-	public BatchSqlExecutor(String[] sqls){
-		for(String s:sqls){
-			s=s.trim();
-			if(s.length()>0){
-				this.sqls.add(s);
-			}
-		}
+	  
+	public BatchSqlExecutor(){
 	}
 	
-	public int[] execute(Connection conn,PreparedStatement pst) throws SQLException {
+	public int[] execute(Connection conn,String sqlOne,List<?> parameters) throws SQLException {
+		List<String> sqls=new ArrayList<String>();
+		if(sqlOne!=null && sqlOne.trim().length()>1) {
+			sqls.add(sqlOne.trim());
+		}
+		
+		for(Object p:parameters) {
+			String sql = (String)p;
+			
+			if(sql!=null && sql.trim().length()>1) {
+				sqls.add(sql);
+			}
+		}
+		
 		Statement st=null;
 		try{
 			st=conn.createStatement();
@@ -60,8 +64,4 @@ public class BatchSqlExecutor extends RelationExecutor implements Execute<int[]>
 			MelpClose.close(st);
 		}
 	}
-
-	public PreparedStatement preparedStatement(Connection conn,String sql)throws SQLException {	
-		return null;
-	}	 
 }

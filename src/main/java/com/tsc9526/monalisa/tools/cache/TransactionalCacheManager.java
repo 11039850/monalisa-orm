@@ -17,7 +17,7 @@ public class TransactionalCacheManager {
 		getTransactionalCache(cache).putObject(key, value,ttlInSeconds);
 	}
 	
-	public Object getObject(Cache cache, CacheKey key) {
+	public <T> T getObject(Cache cache, CacheKey key) {
 		return getTransactionalCache(cache).getObject(key);
 	}
 

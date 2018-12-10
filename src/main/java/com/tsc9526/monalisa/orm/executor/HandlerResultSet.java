@@ -52,15 +52,19 @@ import com.tsc9526.monalisa.tools.string.MelpTypes;
  * @author zzg.zhou(11039850@qq.com)
  */
 @SuppressWarnings("unchecked")
-public class ResultHandler<T> {
+public class HandlerResultSet<T> {
 	protected static DataSourceManager dsm=DataSourceManager.getInstance();
 	
 	protected Query query;
 	protected Class<T> resultClass;
 	
-	public ResultHandler(Query query, Class<T> resultClass) {
+	public HandlerResultSet(Query query, Class<T> resultClass) {
 		this.query = query;
 		this.resultClass = resultClass;
+	}
+	
+	public Class<T> getResultClass(){
+		 return resultClass;
 	}
 
 	public T createResult(ResultSet rs) throws SQLException {

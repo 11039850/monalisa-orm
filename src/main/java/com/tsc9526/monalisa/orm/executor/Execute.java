@@ -17,14 +17,13 @@
 package com.tsc9526.monalisa.orm.executor;
 
 import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.List;
 
 /**
  * 
  * @author zzg.zhou(11039850@qq.com)
  */
 public interface Execute<X>{
-	public PreparedStatement preparedStatement(Connection conn,String sql)throws SQLException;
-	public X execute(Connection conn,PreparedStatement pst)throws SQLException;
+	public X execute(Connection conn,String sql,List<?> parameters)throws SQLException;
 }

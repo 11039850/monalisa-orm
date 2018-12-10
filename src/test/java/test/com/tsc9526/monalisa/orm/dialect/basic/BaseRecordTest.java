@@ -356,4 +356,13 @@ public abstract class BaseRecordTest extends Model<BaseRecordTest>{
 		Assert.assertEquals(rx.get("update_by"),"zzg-1");
 	}
 	
+	@Test
+	public void testToString() {
+		Record tx=new Record("test_record").use(getDB());
+		 
+		tx.set("RECORD_ID", 1).load();
+		Assert.assertTrue(tx.toString().indexOf("recordId:1")>0);
+		System.out.println(tx.toString());
+	}
+	
 }

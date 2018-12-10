@@ -19,11 +19,12 @@ package test.com.tsc9526.monalisa.tools.cache;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import test.com.tsc9526.monalisa.orm.dialect.mysql.MysqlDB;
-
 import com.tsc9526.monalisa.orm.Query;
 import com.tsc9526.monalisa.tools.datatable.DataMap;
 import com.tsc9526.monalisa.tools.datatable.DataTable;
+
+import test.com.tsc9526.monalisa.orm.dialect.mysql.MysqlDB;
+import test.com.tsc9526.monalisa.orm.dialect.mysql.mysqldb.TestTable1;
 
 /**
  * 
@@ -32,10 +33,30 @@ import com.tsc9526.monalisa.tools.datatable.DataTable;
 @Test
 public class CacheTest {
 	
+	public void testSelect() {
+		TestTable1.WHERE().name.like("mm-test-cache-%").delete();
+		
+		for(int i=0;i<5;i++) {
+			TestTable1 x = new TestTable1().defaults();
+			x.setName("mm-test-cache-"+i);
+			x.save();
+		}
+		
+		DataTable<TestTable1> rs=findCacheMMTestCache(10,0);
+		Assert.assertEquals(rs.size(),5);
+		
+		Assert.assertTrue(findCacheMMTestCache(10,0) == rs);
+		
+		Assert.assertTrue(findCacheMMTestCache(5,0) != rs);
+	}
+	
+	private DataTable<TestTable1> findCacheMMTestCache(int limit,int offset){
+		DataTable<TestTable1> rs=TestTable1.WHERE().name.like("mm-test-cache-%").SELECT().setCacheTime(10,0).select(limit,offset);
+		return rs;
+	}
 	
 	public void testLRU(){
-		Query q=MysqlDB.DB.createQuery().setCacheTime(100);
-		
+		Query q = MysqlDB.DB.createQuery().setCacheTime(10);
 		q.add("SELECT * FROM test_table_1");
 		
 		DataTable<DataMap> rs=q.getList();
@@ -49,15 +70,26 @@ public class CacheTest {
 				rs0=q.getList();
 			}else{
 				q.getList();
-			} 
+			}
 			
 			Query qx=MysqlDB.DB.createQuery().setCacheTime(10);
 			qx.add("SELECT * FROM test_table_1");
 			Assert.assertTrue(rs==qx.getList(),"loop "+i);
 		}
 		
+		Assert.assertTrue(rs!=MysqlDB.DB.select("SELECT * FROM test_table_1"));
+		Assert.assertTrue(rs!=MysqlDB.DB.select(1,1,"SELECT * FROM test_table_1"));
+		
+		Assert.assertTrue(rs==q.clear().add("SELECT * FROM test_table_1").getList());
+		
 		q.clear();
 		q.add("SELECT * FROM test_table_1 a0");
 		Assert.assertTrue(rs0!=q.getList());
+	}
+	
+	public void testCacheDefaultMax1024() {
+		Query q=MysqlDB.DB.createQuery().setCacheTime(100);
+		q.add("SELECT * FROM test_table_1");
+		q.getAllResults();
 	}
 }

@@ -446,15 +446,21 @@ public abstract class Dialect{
 		String limitSql=getLimitSql(origin.getSql(),limit,offset);
 		
 		Query query = createQuery(model);
-
-		query.use(origin.getDb());
+		copy(query, origin);
+		
 		query.add(limitSql);
-		query.setParameters(origin.getParameters());
 		 
-
 		return query;
 	}
 	
+	
+	protected void copy(Query newQuery, Query origin) {
+		newQuery.use(origin.getDb());
+		newQuery.setCache(origin.getCache());
+		newQuery.setCacheTime(origin.getCacheTime());
+		newQuery.setAutoRefreshInSeconds(origin.getAutoRefreshInSeconds());
+		newQuery.setParameters(origin.getParameters());
+	}
 	
 	public Query select(final Model model,String whereStatement,Object ... args){
 		Query query=createQuery(model);
@@ -749,14 +755,12 @@ public abstract class Dialect{
 		String sql=getCountSql(origin.getSql());
 		
 		Query query=createQuery(model);
-		query.use(origin.getDb());
-	 	query.add(sql, origin.getParameters());
-		
+		copy(query, origin);
+	  
 	 	String originTag = origin.getTag()==null? "": origin.getTag().toString();
-	 	
-	 	query.setCache(origin.getCache());
-	 	query.setCacheTime(origin.getCacheTime());
 	 	query.setTag(originTag+"-count");
+	 	
+	 	query.add(sql);
 	 	
 		return query;
 	} 

@@ -16,14 +16,17 @@
  *******************************************************************************************/
 package test.com.tsc9526.monalisa.orm.dialect.mysql.cases;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+import com.tsc9526.monalisa.orm.Query;
+
 import test.com.tsc9526.monalisa.orm.dialect.mysql.MysqlDB;
 import test.com.tsc9526.monalisa.orm.dialect.mysql.mysqldb.TestTable1;
-
-import com.tsc9526.monalisa.orm.Query;
 
 /**
  * 
@@ -44,7 +47,7 @@ public class BatchQueryTest {
 			+ "INSERT INTO `test_table_1`(`name`, `enum_int_a`, `enum_string_a`, `ts_a`, `create_time`)VALUES('A1', 0, 'TRUE', '2017-02-24 17:32:26', '2017-02-24 17:32:26');"
 			+ "\r\nINSERT INTO `test_table_1`(`name`, `enum_int_a`, `enum_string_a`, `ts_a`, `create_time`)VALUES('B1', 0, 'TRUE', '2017-02-24 17:32:26', '2017-02-24 17:32:26');"
 			+ "\r\nINSERT INTO `test_table_1`(`name`, `enum_int_a`, `enum_string_a`, `ts_a`, `create_time`)VALUES('C1', 0, 'TRUE', '2017-02-24 17:32:26', '2017-02-24 17:32:26');"
-		+ "\r\n"/**}*/).split(";");
+		+ "\r\n"/**}*/).trim().split(";");
 		
 		Query q=MysqlDB.DB.createQuery();
 		int[] rs=q.executeBatch(sqls);
@@ -109,10 +112,12 @@ public class BatchQueryTest {
 	public void testBatch(){
 		Query q=MysqlDB.DB.createQuery();
 		q.add("INSERT INTO `test_table_1`(`name`, `enum_int_a`, `enum_string_a`, `ts_a`, `create_time`)VALUES(?,?,?,?,?)");
+		
+		List<Object[]> args = new ArrayList<Object[]>();
 		for(int i=0;i<5;i++){
-			q.addBatch("X-"+i, 0, "TRUE", "2017-02-24 17:32:26", "2017-02-24 17:32:26");
+			args.add(new Object[] {"X-"+i, 0, "TRUE", "2017-02-24 17:32:26", "2017-02-24 17:32:26"});
 		}
-		int[] rs=q.executeBatch();
+		int[] rs=q.executeBatch(args);
 		Assert.assertEquals(rs.length,5); 
 		for(int i=0;i<5;i++){
 			Assert.assertEquals(rs[i],1);
@@ -123,11 +128,15 @@ public class BatchQueryTest {
 		try{
 			Query q=MysqlDB.DB.createQuery();
 			q.add("INSERT INTO `test_table_1`(`name`, `enum_int_a`, `enum_string_a`, `ts_a`, `create_time`)VALUES(?,?,?,?,?)");
+			
+			List<Object[]> args = new ArrayList<Object[]>();
 			for(int i=0;i<5;i++){
-				q.addBatch("X-"+i, 0, "TRUE", "2017-02-24 17:32:26", "2017-02-24 17:32:26");
+				args.add(new Object[] {"X-"+i, 0, "TRUE", "2017-02-24 17:32:26", "2017-02-24 17:32:26"});
 			}
-			q.addBatch("X-y", 0, "TRUE", "xxx-02-24 17:32:26", "2017-02-24 17:32:26");
-			q.executeBatch();
+			
+			args.add(new Object[] {"X-y", 0, "TRUE", "xxx-02-24 17:32:26", "2017-02-24 17:32:26"});
+			
+			q.executeBatch(args);
 			 
 			Assert.fail("Exception not found!");
 		}catch(Exception e){

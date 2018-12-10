@@ -38,6 +38,13 @@ public class CacheKey {
 	
 	public CacheKey() {
 	}
+	
+	public CacheKey(CacheKey key) {
+		this.tag = key.tag;
+		for (Object o : key.updateList) {
+			updateKey(o);
+		}
+	}
 
 	public CacheKey(Object... objects) {
 		update(objects);

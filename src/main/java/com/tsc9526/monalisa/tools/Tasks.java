@@ -54,9 +54,8 @@ public class Tasks {
 		}
 		
 		public void interrupt(){
-			super.interrupt();
-			
 			running=false;
+			super.interrupt();
 		}
 		
 		public void run(){

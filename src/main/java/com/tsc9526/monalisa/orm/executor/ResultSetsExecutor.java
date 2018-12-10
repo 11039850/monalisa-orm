@@ -24,51 +24,66 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.tsc9526.monalisa.tools.datatable.DataTable;
+import com.tsc9526.monalisa.tools.io.MelpClose;
+import com.tsc9526.monalisa.tools.string.MelpSQL;
 
 /**
  * 
  * @author zzg.zhou(11039850@qq.com)
  */
-public class ResultSetsExecutor<T>  extends RelationExecutor implements Execute<List<DataTable<T>>>,Cacheable { 
-	private int deepth;
-	 
-	private ResultHandler<T> resultHandler;
+public class ResultSetsExecutor<T>  extends HandlerRelation implements Execute<List<DataTable<T>>> { 
+	private int deepth;	 
+	private HandlerResultSet<T> resultHandler;
 	
-	public ResultSetsExecutor(ResultHandler<T> resultHandler,int deepth){
-		this.resultHandler=resultHandler;
-		this.deepth=deepth;
+	public ResultSetsExecutor(HandlerResultSet<T> resultHandler,int deepth){
+		this.resultHandler = resultHandler;
+		this.deepth        = deepth;
 	}
 	
-	public List<DataTable<T>>  execute(Connection conn,PreparedStatement pst) throws SQLException {	
+	public List<DataTable<T>>  execute(Connection conn,String sql,List<?> parameters) throws SQLException {				 
+		PreparedStatement pst = null;
+		ResultSet         rs  = null;		
+		
 		List<DataTable<T>> result=new ArrayList<DataTable<T>>();
 		
-		boolean x=pst.execute();
-		
-		if(deepth>0){
-			ResultSet rs=pst.getResultSet();
+		try {
+			pst = conn.prepareStatement(sql);
+			MelpSQL.setPreparedParameters(pst, parameters);
 			
-			for(int i=0;i<deepth;i++){
-				if(rs!=null){
-					addResult(result,rs);
-					  
-					rs=null;
-				}
-
-				if(pst.getMoreResults()){
-					rs = pst.getResultSet();
-				}
-			}
-		}else if(deepth==0){
-			while(x){
-				ResultSet rs=pst.getResultSet();
+			boolean x=pst.execute();
+			
+			if(deepth>0){
+				rs=pst.getResultSet();
 				
-				addResult(result,rs);
-			 		
-				x=pst.getMoreResults();
+				for(int i=0;i<deepth;i++){
+					if(rs!=null){
+						addResult(result,rs);
+						
+						rs.close();
+						rs=null;
+					}
+	
+					if(pst.getMoreResults()){
+						rs = pst.getResultSet();
+					}
+				}
+			}else if(deepth==0){
+				while(x){
+					rs=pst.getResultSet();
+					
+					addResult(result,rs);
+				 	
+					rs.close();
+					rs=null;
+					
+					x=pst.getMoreResults();
+				}
 			}
+			
+			return result;
+		}finally {
+			MelpClose.close(pst,rs);
 		}
-		
-		return result;
 	}
 	
 	private void addResult(List<DataTable<T>> result,ResultSet rs)throws SQLException{
@@ -81,8 +96,5 @@ public class ResultSetsExecutor<T>  extends RelationExecutor implements Execute<
 		}	
 		result.add(r);
 	}
-
-	public PreparedStatement preparedStatement(Connection conn,String sql)throws SQLException {				 
-		return conn.prepareStatement(sql);
-	}	 
+ 
 }

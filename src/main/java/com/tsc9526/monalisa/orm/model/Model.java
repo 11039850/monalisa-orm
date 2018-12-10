@@ -375,7 +375,7 @@ public abstract class Model<T extends Model> implements Serializable ,Shallowabl
 			return;
 		}
 		
-		DBConfig db = mm().db;
+		DBConfig db  = mm().db;
 		String table = mm().tableName;
 		
 		DBConfig historyDB = db;
@@ -393,7 +393,7 @@ public abstract class Model<T extends Model> implements Serializable ,Shallowabl
 		String historyTableName = DbProp.PROP_DB_HISTORY_PREFIX_TABLE.getValue(db) + table;
 		String key=historyDB.getKey()+":"+historyTableName;
 		if(!hCacheHistoryTables.containsKey(key)){
-			CreateTable createTable = dialect().getCreateTable(db, table);
+			CreateTable createTable  = dialect().getCreateTable(db, table);
 			CreateTable historyTable = createTable.createTable(TableType.HISTORY, historyTableName);
 			dialect().createTable(historyDB, historyTable);			
 			hCacheHistoryTables.put(key, key);

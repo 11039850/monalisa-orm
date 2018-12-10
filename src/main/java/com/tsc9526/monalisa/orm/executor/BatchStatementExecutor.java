@@ -22,29 +22,42 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.tsc9526.monalisa.tools.io.MelpClose;
 import com.tsc9526.monalisa.tools.string.MelpSQL;
 
 /**
  * 
  * @author zzg.zhou(11039850@qq.com)
  */
-public class BatchStatementExecutor extends RelationExecutor implements Execute<int[]>{
-	protected List<List<Object>> batchParameters=new ArrayList<List<Object>>();
-	
-	public BatchStatementExecutor(List<List<Object>> batchParameters){
-		this.batchParameters=batchParameters;
+public class BatchStatementExecutor extends HandlerRelation implements Execute<int[]>{
+ 
+	public BatchStatementExecutor(){ 
 	}
 	
-	public int[] execute(Connection conn,PreparedStatement pst) throws SQLException {
-		for(List<Object> p:batchParameters){
-			MelpSQL.setPreparedParameters(pst, p);
-			pst.addBatch();
-		}		 
-		int[] result=pst.executeBatch();
-		return result;
+	@SuppressWarnings("unchecked")
+	public int[] execute(Connection conn,String sql,List<?> parameters) throws SQLException {
+		PreparedStatement pst = null;
+		try {
+			pst = conn.prepareStatement(sql);
+			for(Object px:parameters){
+				if(px.getClass().isArray()) {
+					List<Object> xs=new ArrayList<Object>();
+					Object[] os = (Object[])px;
+					for(Object o:os) {
+						xs.add(o);
+					}
+					MelpSQL.setPreparedParameters(pst, xs);
+				}else if(px instanceof List) {
+					MelpSQL.setPreparedParameters(pst, (List<Object>)px);
+				}else {
+					throw new SQLException("Invalid paramete type: "+px.getClass().getName()+", array or list required!");
+				}
+				pst.addBatch();
+			}		 
+			int[] result=pst.executeBatch();
+			return result;
+		}finally {
+			MelpClose.close(pst);
+		}
 	}
-
-	public PreparedStatement preparedStatement(Connection conn,String sql)throws SQLException {	
-		return conn.prepareStatement(sql);
-	}	 
 }

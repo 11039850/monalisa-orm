@@ -16,11 +16,35 @@
  *******************************************************************************************/
 package com.tsc9526.monalisa.orm.executor;
 
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
+import java.util.HashSet;
+import java.util.Set;
+
+import com.tsc9526.monalisa.tools.cache.CacheTableRow;
 
 /**
  * 
  * @author zzg.zhou(11039850@qq.com)
  */
-public interface Cacheable {
+public abstract class HandlerRelation {
+	protected Set<CacheTableRow> relationTables=new HashSet<CacheTableRow>();
 	 
+	protected ResultSet setupRelationTables(ResultSet rs)throws SQLException{
+		ResultSetMetaData rsmd= rs.getMetaData();
+		for(int i=1;i<=rsmd.getColumnCount();i++){
+			String catalog=rsmd.getCatalogName(i);
+			String schema=rsmd.getSchemaName(i);
+			String table =rsmd.getTableName(i);
+			
+			relationTables.add(new CacheTableRow(catalog,schema,table));
+		}
+		
+		return rs;
+	}
+	
+	public Set<CacheTableRow> getRelationTables(){
+		return relationTables;
+	}
 }

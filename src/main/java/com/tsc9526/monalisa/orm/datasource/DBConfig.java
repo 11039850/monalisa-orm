@@ -70,9 +70,7 @@ import com.tsc9526.monalisa.tools.template.VarTemplate;
  */
 public class DBConfig implements Closeable{ 	
 	static Logger logger=Logger.getLogger(DBConfig.class);
-	
-
-	
+	 
 	public final static String PREFIX_DB       ="DB";
 	public final static String CFG_DEFAULT_NAME="cfg";
 	
@@ -240,24 +238,45 @@ public class DBConfig implements Closeable{
 		return new Query(this);
 	}
 	 
-	public DataMap selectOne(String sql,Object... args){
-		Query query=createQuery().add(sql,args);
-		return query.getResult();
-	}
-	
 	public DataTable<DataMap> select(String sql,Object... args){
 		Query query=createQuery().add(sql,args);
 		return query.getList();
 	}
+	 
+	public DataTable<DataMap> select(int limit, int offset,String sql,Object... args){
+		Query query=createQuery().add(sql,args);
+		return query.getList(limit, offset);
+	}
 	
-	public Page<DataMap> select(int limit, int offset,String sql,Object... args){
+	public <T> DataTable<T> select(Class<T> resultClass,String sql,Object... args){
+		Query query=createQuery().add(sql,args);
+		return query.getList(resultClass);
+	}
+	
+	public <T> Page<T> select(Class<T> resultClass,int limit, int offset,String sql,Object... args){
+		Query query=createQuery().add(sql,args);
+		return query.getPage(resultClass,limit, offset);
+	}
+	
+	
+	public DataMap selectOne(String sql,Object... args){
+		Query query=createQuery().add(sql,args);
+		return query.getResult();
+	}
+	 
+	public <T> T selectOne(Class<T> resultClass,String sql,Object... args){
+		Query query=createQuery().add(sql,args);
+		return query.getResult(resultClass);
+	}
+	
+	public Page<DataMap> selectPage(int limit, int offset,String sql,Object... args){
 		Query query=createQuery().add(sql,args);
 		return query.getPage(limit, offset);
 	}
-	
-	public DataTable<DataMap> selectList(int limit, int offset,String sql,Object... args){
+	 
+	public <T> Page<T> selectPage(Class<T> resultClass,int limit, int offset,String sql,Object... args){
 		Query query=createQuery().add(sql,args);
-		return query.getList(limit, offset);
+		return query.getPage(resultClass,limit, offset);
 	}
 	
 	public int execute(String sql,Object... args){
@@ -273,11 +292,8 @@ public class DBConfig implements Closeable{
 	public int[] executeBatch(String sql,List<Object[]> args){
 		Query query=createQuery();
 		query.add(sql);
-		
-		for(Object[] os:args){
-			query.addBatch(os);
-		}
-		return query.executeBatch();
+		 
+		return query.executeBatch(args);
 	}
 	
 	

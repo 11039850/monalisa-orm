@@ -20,7 +20,6 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.Writer;
 import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -32,10 +31,9 @@ import com.tsc9526.monalisa.orm.datasource.DbProp;
 import com.tsc9526.monalisa.orm.dialect.Dialect;
 import com.tsc9526.monalisa.orm.executor.BatchSqlExecutor;
 import com.tsc9526.monalisa.orm.executor.BatchStatementExecutor;
-import com.tsc9526.monalisa.orm.executor.CacheExecutor;
 import com.tsc9526.monalisa.orm.executor.Execute;
+import com.tsc9526.monalisa.orm.executor.HandlerResultSet;
 import com.tsc9526.monalisa.orm.executor.ResultExecutor;
-import com.tsc9526.monalisa.orm.executor.ResultHandler;
 import com.tsc9526.monalisa.orm.executor.ResultLoadExecutor;
 import com.tsc9526.monalisa.orm.executor.ResultSetExecutor;
 import com.tsc9526.monalisa.orm.executor.ResultSetsExecutor;
@@ -44,6 +42,8 @@ import com.tsc9526.monalisa.orm.generator.DBExchange;
 import com.tsc9526.monalisa.tools.agent.AgentClass;
 import com.tsc9526.monalisa.tools.cache.Cache;
 import com.tsc9526.monalisa.tools.cache.CacheKey;
+import com.tsc9526.monalisa.tools.cache.CacheManager;
+import com.tsc9526.monalisa.tools.cache.TransactionalCacheManager;
 import com.tsc9526.monalisa.tools.datatable.DataMap;
 import com.tsc9526.monalisa.tools.datatable.DataTable;
 import com.tsc9526.monalisa.tools.datatable.Page;
@@ -95,18 +95,18 @@ public class Query {
 	 */
 	private Boolean debugSql=null;
 	  	
-	protected StringBuilder  sql       = new StringBuilder();
-	protected List<Object>  parameters = new ArrayList<Object>();
+	protected StringBuilder sql       = new StringBuilder();
+	protected List<Object>  queryArgs = new ArrayList<Object>();
  	 
 	protected DBConfig      db;
  	
 	//0: no cache, -1: no expired
-	protected long ttlInSeconds=0;
+	protected int ttlInSeconds=0;
+	
+	protected int autoRefreshInSeconds = 0;
 	
 	protected Boolean readonly;
- 	
-	protected List<List<Object>> batchParameters=new ArrayList<List<Object>>();
-	
+ 	 
 	protected Object tag;
 	
 	protected PrintWriter writer=null;
@@ -169,10 +169,10 @@ public class Query {
 			for(Object arg:args){
 				if(arg instanceof Collection){
 					for(Object x:((Collection<?>)arg)){
-						parameters.add(x);
+						queryArgs.add(x);
 					}
 				}else{
-					parameters.add(arg);
+					queryArgs.add(arg);
 				}
 			}
 		}
@@ -235,7 +235,7 @@ public class Query {
 	 * @return the executable SQL
 	 */
 	public String getExecutableSQL() {
-		 return MelpSQL.getExecutableSQL(getDialect(),getSql(), parameters);
+		 return MelpSQL.getExecutableSQL(getDialect(),getSql(),queryArgs);
 	}
 
 	/**
@@ -248,42 +248,31 @@ public class Query {
 		if(this.sql.length()>0){
 			this.sql.delete(0,this.sql.length());
 		}		 
-		this.parameters.clear();
-		this.batchParameters.clear();
+		this.queryArgs.clear(); 
 		
 		return this;
 	}
 
 	public int parameterCount(){
-		return parameters.size();
+		return queryArgs.size();
 	}
  
 	public List<Object> getParameters() {
-		return parameters;
+		return queryArgs;
 	}
 	 
 	public Query clearParameters(){
-		this.parameters.clear();
-		this.batchParameters.clear();
+		this.queryArgs.clear();
+	 
 		return this;
 	}
 	
 	public Query setParameters(List<Object> parameters) {
-		this.parameters = parameters;
+		this.queryArgs = parameters;
 		
 		return this;
 	}
-	
-	public Query addBatch(Object... parameters) {
-		if(this.parameters!=null && !this.parameters.isEmpty()){
-			this.batchParameters.add(this.parameters);
-		}
-		
-		this.batchParameters.add(Arrays.asList(parameters));
-				
-		return this;
-	}
-	
+	 
 	protected Connection getConnectionFromTx(Tx tx) throws SQLException{
 		return tx.getConnection(db);		 
 	}
@@ -301,7 +290,7 @@ public class Query {
 	 * @return the effected number of rows
 	 */
 	public int execute(){
-		return doExecute(new UpdateExecutor());
+		return doExecute(new UpdateExecutor(),getSql(),queryArgs);
 	}
 	  
 	/**
@@ -312,7 +301,7 @@ public class Query {
 	public int[] executeBatch(final String[] sqls){
 		return Tx.execute(new Tx.Atom<int[]>() {
 			public int[] execute() throws Throwable {
-				return doExecute(new BatchSqlExecutor(sqls));
+				return doExecute(new BatchSqlExecutor(),null,Arrays.asList(sqls));
 			}
 		});
 	}
@@ -322,49 +311,84 @@ public class Query {
 	 * 
 	 * @return each result of sql statements
 	 */
-	public int[] executeBatch(){
+	public int[] executeBatch(final List<Object[]> batchParameters ){
 		return Tx.execute(new Tx.Atom<int[]>() {
 			public int[] execute() throws Throwable {
-				return doExecute(new BatchStatementExecutor(batchParameters));
+				return doExecute(new BatchStatementExecutor(),getSql(),batchParameters);
 			}
 		});
 	}
 	 
-
 	public <X> X execute(Execute<X> execute){
-		return doExecute(execute);
+		return doExecute(execute,getSql(),queryArgs);
 	}	
+	 
 	
-	protected <X> X doCacheExecute(Execute<X> x){
-		CacheExecutor<X> ce=new CacheExecutor<X>(this, x);
-		return doExecute(ce);
-	}
 	
-	protected <X> X doExecute(Execute<X> x){
+	protected <X> X doCacheExecute(Execute<X> execute,Object extraTag){
 		Tx tx=Tx.getTx();
 		
-		Connection conn=null;
-		PreparedStatement pst=null;
+		TransactionalCacheManager tcm = tx==null?null:tx.getTxCacheManager();
+
+		long ttlInSeconds = getCacheTime();
+		if(ttlInSeconds > 0 ){
+			Cache cache   = getCache();
+			CacheKey key  = new CacheKey(getCacheKey());
+			if(extraTag!=null) {
+				key.update("extra:"+extraTag);
+			}
+			
+			//cache.getReadWriteLock().readLock().lock();
+			//try{
+				X x=(X)(tcm==null?cache.getObject(key):tcm.getObject(cache, key));
+				
+				if(x==null){
+					x = doExecute(execute, getSql(),queryArgs);
+					
+					if(tcm==null){
+						cache.putObject(key, x,ttlInSeconds);
+					}else{
+						tcm.putObject(cache, key, x,ttlInSeconds);
+					}
+				}else {
+					if(isDebug()){
+						logger.debug("Load cache: "+key);
+					}
+				}
+				
+				return x;
+			//}finally{
+			//	cache.getReadWriteLock().readLock().unlock();
+			//}	
+		}
+		
+		return doExecute(execute,getSql(),queryArgs);
+	}
+	
+	protected <X> X doExecute(Execute<X> x,String sql,List<?> parameters){
+		Tx tx=Tx.getTx();
+		
+		Connection conn=null; 
 		try{
 			conn= tx==null?getConnectionFromDB(true):getConnectionFromTx(tx);
-			 
-			pst=x.preparedStatement(conn,getSql());
-			if(pst!=null){ 
-				MelpSQL.setPreparedParameters(pst, parameters);
-				logExcecutableSql();
+			  
+			if(sql!=null) {
+				logExecutableSql(sql,parameters);
 			}
-			return x.execute(conn,pst);
+			
+			return x.execute(conn, sql, parameters);
+			 
 		}catch(SQLException e){
 			String executeSQL=sql.toString();
 			try{
-				executeSQL=getExecutableSQL();
-			}catch(Exception ex){MelpClose.close(ex);}
+				executeSQL=MelpSQL.getExecutableSQL(getDialect(),sql,parameters);
+			}catch(Exception ex){
+				MelpClose.close(ex);
+			}
 			
 			throw new RuntimeException("SQL Exception: "+e.getMessage()+"\r\n========================================================================\r\n"
 					                  +executeSQL+"\r\n========================================================================",e);
 		}finally{
-			MelpClose.close(pst);
-			
 			if(tx==null){
 				MelpClose.close(conn);
 			}
@@ -391,9 +415,9 @@ public class Query {
 		queryCheck();
 		 
 		int deepth = DbProp.PROP_DB_MULTI_RESULTSET_DEEPTH.getIntValue(db,100);
-		ResultHandler<DataMap> resultHandler=new ResultHandler<DataMap>(this,DataMap.class);
+		HandlerResultSet<DataMap> resultHandler=new HandlerResultSet<DataMap>(this,DataMap.class);
 		
-		return doCacheExecute(new ResultSetsExecutor<DataMap>(resultHandler,deepth));  
+		return doCacheExecute(new ResultSetsExecutor<DataMap>(resultHandler,deepth),"getAllResults-"+DataMap.class.getName());  
 	}
 	 
 	/**
@@ -404,7 +428,7 @@ public class Query {
 	 * @return the result object
 	 */
 	public <T> T getResult(final Class<T> resultClass){
-		return getResult(new ResultHandler<T>(this,resultClass));
+		return getResult(new HandlerResultSet<T>(this,resultClass));
 	}
 	
 	/**
@@ -414,11 +438,11 @@ public class Query {
 	 * @param <T> result type
 	 * @return the result object
 	 */
-	public <T> T getResult(final ResultHandler<T> resultHandler){
+	public <T> T getResult(final HandlerResultSet<T> resultHandler){
 		if(!doExchange()){			
 			queryCheck();
 			
-			return doCacheExecute(new ResultExecutor<T>(resultHandler));	 
+			return doCacheExecute(new ResultExecutor<T>(resultHandler),"getResult-"+resultHandler.getClass().getName());	 
 		}else{
 			return null;
 		}
@@ -437,7 +461,7 @@ public class Query {
 	 * @return List Data
 	 */
 	public <T> DataTable<T> getList(final Class<T> resultClass) {
-		return getList(new ResultHandler<T>(this, resultClass));
+		return getList(new HandlerResultSet<T>(this, resultClass));
 	}
 	
 	
@@ -458,7 +482,7 @@ public class Query {
 	 * @return List Data
 	 */
 	public <T> DataTable<T> getList(Class<T> resultClass,int limit,int offset) {		 
-		return getList(new ResultHandler<T>(this,resultClass),limit,offset);
+		return getList(new HandlerResultSet<T>(this,resultClass),limit,offset);
 	}	
 	
 	/**
@@ -468,7 +492,7 @@ public class Query {
 	 * @param <T> result type
 	 * @return List Data
 	 */
-	public <T> DataTable<T> getList(ResultHandler<T> resultHandler,int limit,int offset) {
+	public <T> DataTable<T> getList(HandlerResultSet<T> resultHandler,int limit,int offset) {
 		Query listQuery=getDialect().getLimitQuery(this, limit, offset);
 		return listQuery.getList(resultHandler); 
 	}	 
@@ -478,11 +502,11 @@ public class Query {
 	 * @param <T> result type
 	 * @return List Data
 	 */
-	public <T> DataTable<T> getList(final ResultHandler<T> resultHandler) {
+	public <T> DataTable<T> getList(final HandlerResultSet<T> resultHandler) {
 		if(!doExchange()){		 
 			queryCheck();
 			
-			return doCacheExecute(new ResultSetExecutor<T>(resultHandler));
+			return doCacheExecute(new ResultSetExecutor<T>(resultHandler),"getList-"+resultHandler.getClass().getName());
 		}else{
 			return new DataTable<T>();
 		}
@@ -505,7 +529,7 @@ public class Query {
 	 * @return Page Data
 	 */
 	public <T> Page<T> getPage(Class<T> resultClass,int limit,int offset) {
-		return getPage(new ResultHandler<T>(this,resultClass), limit, offset);
+		return getPage(new HandlerResultSet<T>(this,resultClass), limit, offset);
 	}
 	
 	/**
@@ -515,7 +539,7 @@ public class Query {
 	 * @param <T> result type
 	 * @return Page Data
 	 */
-	public <T> Page<T> getPage(ResultHandler<T> resultHandler,int limit,int offset) {
+	public <T> Page<T> getPage(HandlerResultSet<T> resultHandler,int limit,int offset) {
 		if(!doExchange()){			
 			queryCheck();
 			
@@ -535,9 +559,9 @@ public class Query {
 		if(!doExchange()){			 
 			queryCheck();
 			
-			ResultHandler<T> resultHandler=new ResultHandler<T>(this,(Class<T>)result.getClass());
+			HandlerResultSet<T> resultHandler=new HandlerResultSet<T>(this,(Class<T>)result.getClass());
 			
-			return doCacheExecute(new ResultLoadExecutor<T>(resultHandler, result)); 
+			return doCacheExecute(new ResultLoadExecutor<T>(resultHandler, result),"load-"+result.getClass().getName()); 
 		}else{
 			return result;
 		}
@@ -546,7 +570,7 @@ public class Query {
 	protected boolean doExchange(){
 		DBExchange exchange=DBExchange.getExchange(false);
 		if(exchange!=null){
-			ResultHandler.processExchange(this,exchange);
+			HandlerResultSet.processExchange(this,exchange);
 			return true;
 		}else{
 			return false;
@@ -572,58 +596,53 @@ public class Query {
 		}
 		return writer;
 	}
-	
-	static ThreadLocal<List<String>> diagnosis = new ThreadLocal<List<String>>();
-	 
-	protected void logExcecutableSql(){
-		boolean debug=false;
-		if(debugSql==null){
-			debug =  "true".equalsIgnoreCase( DbProp.PROP_DB_SQL_DEBUG.getValue(db));
-		}else{
-			debug = debugSql.booleanValue();
-		}
-		 
-		List<String> sqls = diagnosis.get();
-		if(debug || sqls!=null){
-			String sql=getExecutableSQL();
-			
-			if(debug){
-				logger.info("\r\n"+sql);
-			}
+	   
+	protected void logExecutableSql(String sql,List<?> parameters){
+		if(isDebug()){
+			String executableSQL = MelpSQL.getExecutableSQL(getDialect(),sql,parameters);
 			 
-			if(sqls!=null){
-				sqls.add(sql);
-			}
-		}
+			logger.info("Executable SQL:\r\n"+executableSQL);
+		} 		 
 	}
 	
+	protected boolean isDebug() {
+		boolean debug=false;
+		if(debugSql==null){
+			debug  = "true".equalsIgnoreCase( DbProp.PROP_DB_SQL_DEBUG.getValue(db));
+		}else{
+			debug  = debugSql.booleanValue();
+		}
+		
+		return debug;
+	}
+ 
 	
-	
-	
-	public CacheKey getCacheKey(){
-		 CacheKey cacheKey = new CacheKey();
-		    
-		 cacheKey.update(db.getKey());
-		 cacheKey.update(""+tag);
-		 cacheKey.update(getSql());
-		 
-		 for(Object p:this.getParameters()){
-			 cacheKey.update(p);
-		 } 
-		    
-		return cacheKey;    
+	public CacheKey getCacheKey() {
+		CacheKey cacheKey = new CacheKey();
+
+		cacheKey.update("dbkey:" + db.getKey());
+		cacheKey.update("tag:" + (tag == null ? "" : tag.toString()));
+		cacheKey.update("sql:" + getSql());
+
+		for (Object p : this.getParameters()) {
+			cacheKey.update(p);
+		}
+
+		return cacheKey;
 	}
 	
 	public Cache getCache(){
 		if(this.cache!=null){
 			return this.cache;
-		}else if(ttlInSeconds!=0 || DbProp.CFG_CACHE_GLOABLE_ENABLE){
-			checkDbAndThrowException();
-			
-			return getDb().getCfg().getCache();
-		}else{
+		}else if(ttlInSeconds > 0){
+			if(db!=null) {
+				return getDb().getCfg().getCache();
+			}else {
+				return CacheManager.getInstance().getDefaultCache();
+			}
+		}else {
 			return null;
-		}
+		}	
 	}
 	
 	public void setCache(Cache cache){
@@ -662,16 +681,63 @@ public class Query {
 		this.readonly = readonly;
 	}
 
-	public long getCacheTime() {
+	public int getCacheTime() {
 		return ttlInSeconds;
 	}
 
-	public Query setCacheTime(long ttlInSeconds) {
-		this.ttlInSeconds = ttlInSeconds;
+	/**
+	 * Cache all query results returned by this query. eg: 
+	 *                              <li> getResult(...)
+	 *                              <li> getList(...)
+	 *                              <li> getPage(...)
+	 *                              <li> load()
+	 * 
+	 * @param ttlInSeconds         	cache time in seconds. 
+	 * 								<li> >0: expired time.
+	 *            					<li>  0: no cache
+	 *            					<li> -1: never expired
+	 * @return this
+	 * 
+	 * @see #setCacheTime(long, int)
+	 */
+	public Query setCacheTime(int ttlInSeconds) {
+		return setCacheTime(ttlInSeconds,0);
+	}
+	
+	/**
+	 * Cache all query results returned by this query. eg: 
+	 *                              <li> getResult(...)
+	 *                              <li> getList(...)
+	 *                              <li> getPage(...)
+	 *                              <li> load()
+	 *                              
+	 *                              
+	 * @param ttlInSeconds         	cache time in seconds. 
+	 * 								<li> >0: expired time.
+	 *            					<li>  0: no cache
+	 *            					<li> -1: never expired
+	 * @param autoRefreshInSeconds  auto refresh cache in background.
+	 * 								<li> 0 : no refresh
+	 * 								<li> >0: auto refresh
+	 * @return this
+	 */
+	public Query setCacheTime(int ttlInSeconds, int autoRefreshInSeconds) {
+		this.ttlInSeconds         = ttlInSeconds;
+		this.autoRefreshInSeconds = autoRefreshInSeconds;
 		return this;
+	}
+	
+	public int getAutoRefreshInSeconds() {
+		return autoRefreshInSeconds;
+	}
+
+	public void setAutoRefreshInSeconds(int autoRefreshInSeconds) {
+		this.autoRefreshInSeconds = autoRefreshInSeconds;
 	}
 	
 	public String toString(){
 		return "SQL: "+getSql();
 	}
+
+	
 }

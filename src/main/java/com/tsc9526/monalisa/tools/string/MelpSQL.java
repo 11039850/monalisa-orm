@@ -35,7 +35,7 @@ import com.tsc9526.monalisa.orm.dialect.Dialect;
 public class MelpSQL {	
 	private MelpSQL(){}
 	
-	public static String getExecutableSQL(Dialect dialect,String original,List<Object> parameters) {		 
+	public static String getExecutableSQL(Dialect dialect,String original,List<?> parameters) {		 
 		if(parameters==null || parameters.isEmpty()){
 			return original;
 		}else{	
@@ -47,7 +47,7 @@ public class MelpSQL {
 		}
 	}
 	
-	private static String toSQL(Dialect dialect,String original,List<Object> parameters)throws IOException{
+	private static String toSQL(Dialect dialect,String original,List<?> parameters)throws IOException{
 		StringBuilder sb = new StringBuilder();
 		int x=0;
 		for(int i=0;i<original.length();i++){
@@ -145,7 +145,7 @@ public class MelpSQL {
 		return r.toString();		 
 	}
 	
-	public static void setPreparedParameters(PreparedStatement pst,List<Object> parameters)throws SQLException{
+	public static void setPreparedParameters(PreparedStatement pst,List<?> parameters)throws SQLException{
 		if(parameters!=null && !parameters.isEmpty()){
 			int parameterIndex=1;
 			for(Object p:parameters){

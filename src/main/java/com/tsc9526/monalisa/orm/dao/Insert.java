@@ -97,7 +97,7 @@ public class Insert<T extends Model>{
 		}
 		
 		Query query= updateOnDuplicateKey ? dialect.insertOrUpdate(model) : dialect.insert(model);
-		query.use(db());
+		query.use(db()); 
 		return query.execute(new KeysExecutor(model));  
 	}
 	

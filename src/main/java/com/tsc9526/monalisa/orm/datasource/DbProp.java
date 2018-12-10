@@ -241,12 +241,7 @@ public class DbProp {
 	public static int   CFG_RELOAD_CLASS_INTERVAL =15; 
 	
 	public static int 	CFG_RELOAD_MODEL_INTERVAL =15;
-	
-	/**
-	 * 全局Cache开关， 一个Query在未指定Cache时，允许读取另一个Query对象的缓存数据.  默认关闭
-	 */
-	public static boolean CFG_CACHE_GLOABLE_ENABLE=false; 
-	 
+	  
 	/**
 	 * 默认连接空闲1分钟时，执行保持连接检查的SQL
 	 */

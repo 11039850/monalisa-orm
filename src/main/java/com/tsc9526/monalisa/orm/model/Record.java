@@ -309,4 +309,17 @@ public class Record extends Model<Record>{
 		return MelpDate.getDate(get(key), format, defaultValue); 
 	}
 
+	
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append("{");
+		for(FGS fgs:fields()) {
+			if(sb.length()>1) {
+				sb.append(", ");
+			}
+			sb.append(fgs.getFieldName()+":"+fgs.getObject(this));
+		}
+		sb.append("}");
+		return sb.toString();
+	}
 }

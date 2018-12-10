@@ -75,6 +75,10 @@ public class DataMap extends CaseInsensitiveMap<Object>{
 		replace(m);
 	}
 	
+	public DataMap(String key,Object value){
+		this.put(key, value);
+	}
+	
 	public String toJson() {
 		return toJson(true);
 	}

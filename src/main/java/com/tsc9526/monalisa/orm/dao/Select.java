@@ -23,7 +23,7 @@ import com.tsc9526.monalisa.orm.Query;
 import com.tsc9526.monalisa.orm.criteria.Example;
 import com.tsc9526.monalisa.orm.criteria.QEH;
 import com.tsc9526.monalisa.orm.datasource.DBConfig;
-import com.tsc9526.monalisa.orm.executor.ResultHandler;
+import com.tsc9526.monalisa.orm.executor.HandlerResultSet;
 import com.tsc9526.monalisa.orm.model.Model;
 import com.tsc9526.monalisa.tools.datatable.DataTable;
 import com.tsc9526.monalisa.tools.datatable.Page;
@@ -34,9 +34,10 @@ import com.tsc9526.monalisa.tools.datatable.Page;
  */
 @SuppressWarnings({"rawtypes","unchecked"})
 public class Select<T extends Model,S extends Select> {
-	protected T model;
-	
+	protected T        model;
 	protected DBConfig db;
+	protected int      ttlInSeconds=0;
+	protected int      autoRefreshInSeconds = 0;
 	
 	public Select(T model){
 		this.model=model;		 
@@ -330,8 +331,32 @@ public class Select<T extends Model,S extends Select> {
 	} 
 	
 	
-	protected ResultHandler getResultCreator(Query query) {
-		return new ResultHandler(query,model.getClass()){
+	public long getCacheTime() {
+		return ttlInSeconds;
+	}
+
+	public S setCacheTime(int ttlInSeconds) {
+		this.ttlInSeconds = ttlInSeconds;
+		return (S)this;
+	}
+
+	public S setCacheTime(int ttlInSeconds, int autoRefreshInSeconds) {
+		this.ttlInSeconds = ttlInSeconds;
+		this.autoRefreshInSeconds = autoRefreshInSeconds;
+		return (S)this;
+	}
+	
+	public int getAutoRefreshInSeconds() {
+		return autoRefreshInSeconds;
+	}
+
+	public S setAutoRefreshInSeconds(int autoRefreshInSeconds) {
+		this.autoRefreshInSeconds = autoRefreshInSeconds;
+		return (S)this;
+	}
+	
+	protected HandlerResultSet getResultCreator(Query query) {
+		return new HandlerResultSet(query,model.getClass()){
 			public  T createResult(ResultSet rs)throws SQLException{
 				Model result=model.shallow();
 				loadModel(rs, result);				
@@ -347,9 +372,10 @@ public class Select<T extends Model,S extends Select> {
 		query.use(db);
 		
 		query.setTag("@"+db.getKey()+"#"+model.table().name());
-		 
-		
+		  
 		query.setCache(db.getCfg().getCache(model));	
+		query.setCacheTime(ttlInSeconds);
+		query.setAutoRefreshInSeconds(autoRefreshInSeconds);
 	}
 	
 	public class $SelectForExample{
@@ -409,6 +435,21 @@ public class Select<T extends Model,S extends Select> {
 			return this;
 		}
 		
+		/**
+		 * @param ttlInSeconds         	cache time in seconds. 
+		 * 								<li> >0: expired time.
+		 *            					<li>  0: no cache
+		 *            					<li> -1: never expired
+		 * @param autoRefreshInSeconds  auto refresh cache in background.
+		 * 								<li> 0 : no refresh
+		 * 								<li> >0: auto refresh
+		 * @return this
+		 */ 
+		public $SelectForExample setCacheTime(int ttlInSeconds, int autoRefreshInSeconds ){
+			Select.this.setCacheTime(ttlInSeconds, autoRefreshInSeconds);
+			return this;
+		}
+		
 		public long count(){
 			return Select.this.count(example);	 
 		}
@@ -445,4 +486,6 @@ public class Select<T extends Model,S extends Select> {
 			return Select.this.selectPageByExample(limit, offset, example);
 		}
 	}
+
+	
 }

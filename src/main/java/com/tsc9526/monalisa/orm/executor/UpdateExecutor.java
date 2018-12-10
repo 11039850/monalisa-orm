@@ -19,17 +19,25 @@ package com.tsc9526.monalisa.orm.executor;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.List;
+
+import com.tsc9526.monalisa.tools.io.MelpClose;
+import com.tsc9526.monalisa.tools.string.MelpSQL;
 
 /**
  * 
  * @author zzg.zhou(11039850@qq.com)
  */
-public class UpdateExecutor extends RelationExecutor implements Execute<Integer>{
-	public Integer execute(Connection conn,PreparedStatement pst) throws SQLException {	
-		return pst.executeUpdate();
-	}
-
-	public PreparedStatement preparedStatement(Connection conn,String sql)throws SQLException {				 
-		return conn.prepareStatement(sql);
-	}	 
+public class UpdateExecutor extends HandlerRelation implements Execute<Integer>{
+	public Integer execute(Connection conn,String sql,List<?> parameters) throws SQLException {	
+		PreparedStatement pst = null;
+		try{
+			pst= conn.prepareStatement(sql);
+			MelpSQL.setPreparedParameters(pst, parameters);
+			
+			return pst.executeUpdate();
+		}finally{
+			MelpClose.close(pst);
+		}
+	} 
 }

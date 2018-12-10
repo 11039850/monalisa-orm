@@ -21,15 +21,18 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.List;
 
 import com.tsc9526.monalisa.orm.model.Model;
 import com.tsc9526.monalisa.tools.clazz.MelpClass.FGS;
+import com.tsc9526.monalisa.tools.io.MelpClose;
+import com.tsc9526.monalisa.tools.string.MelpSQL;
 
 /**
  * 
  * @author zzg.zhou(11039850@qq.com)
  */
-public class KeysExecutor extends RelationExecutor implements Execute<Integer>{
+public class KeysExecutor extends HandlerRelation implements Execute<Integer>{
 	private boolean autoKey=false;
 	private Model<?> model;
 	
@@ -41,28 +44,35 @@ public class KeysExecutor extends RelationExecutor implements Execute<Integer>{
 			autoKey=true;
 		}
 	}
+	 
+	 
+	public Integer execute(Connection conn,String sql,List<?> parameters) throws SQLException {
+		PreparedStatement pst = null;
+		ResultSet         rs  = null;
+		
+		try {
+			if(autoKey && model.dialect().supportAutoIncrease()){
+				pst = conn.prepareStatement(sql,Statement.RETURN_GENERATED_KEYS);
+			}else{
+				pst = conn.prepareStatement(sql);
+			}
+			
+			MelpSQL.setPreparedParameters(pst, parameters);
+			
+			int r=pst.executeUpdate();
+		 
+			if(autoKey && model.dialect().supportAutoIncrease()){
+				rs = pst.getGeneratedKeys();   
+	            if (rs.next()) {  
+	                Long id = rs.getLong(1);   
+	                model.autoField().setObject(model, id.intValue()); 
+	            }  
+			}			
 	
-	public PreparedStatement preparedStatement(Connection conn, String sql)throws SQLException {
-		if(autoKey && model.dialect().supportAutoIncrease()){
-			return conn.prepareStatement(sql,Statement.RETURN_GENERATED_KEYS);
-		}else{
-			return conn.prepareStatement(sql);
+			return r;
+		}finally {
+			MelpClose.close(pst,rs);
 		}
-	}
-	 
-	public Integer execute(Connection conn,PreparedStatement pst) throws SQLException {
-		int r=pst.executeUpdate();
-	 
-		if(autoKey && model.dialect().supportAutoIncrease()){
-			ResultSet rs = pst.getGeneratedKeys();   
-            if (rs.next()) {  
-                Long id = rs.getLong(1);   
-                model.autoField().setObject(model, id.intValue()); 
-            }  
-            rs.close();
-		}			
-
-		return r;
 	}
 	 
 }

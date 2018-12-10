@@ -29,23 +29,30 @@ import java.util.Map;
 import com.tsc9526.monalisa.tools.datatable.DataColumn;
 import com.tsc9526.monalisa.tools.datatable.DataTable;
 import com.tsc9526.monalisa.tools.io.MelpClose;
+import com.tsc9526.monalisa.tools.string.MelpSQL;
 import com.tsc9526.monalisa.tools.string.MelpTypes;
 
 /**
  * 
  * @author zzg.zhou(11039850@qq.com)
  */
-public class ResultSetExecutor<T>  extends RelationExecutor implements Execute<DataTable<T>>,Cacheable{
-	private ResultHandler<T> resultHandler;
+public class ResultSetExecutor<T>  extends HandlerRelation implements Execute<DataTable<T>>{
+	private HandlerResultSet<T> resultHandler;
 	
-	public ResultSetExecutor(ResultHandler<T> resultHandler){
+	public ResultSetExecutor(HandlerResultSet<T> resultHandler){
 		this.resultHandler=resultHandler;
 	}
 	
-	public DataTable<T> execute(Connection conn,PreparedStatement pst) throws SQLException {		
+  
+	public DataTable<T> execute(Connection conn,String sql,List<?> parameters) throws SQLException {				 
+		PreparedStatement pst = null;
+		ResultSet         rs  = null;		
+		
 		DataTable<T> result=new DataTable<T>();
-		ResultSet rs=null;
 		try{
+			pst = conn.prepareStatement(sql);
+			MelpSQL.setPreparedParameters(pst, parameters);
+			
 			rs=setupRelationTables(pst.executeQuery());	
 			
 			result.setHeaders(getHeaders(rs));
@@ -56,7 +63,7 @@ public class ResultSetExecutor<T>  extends RelationExecutor implements Execute<D
 			}
 			return result;
 		}finally{
-			MelpClose.close(rs);
+			MelpClose.close(pst,rs);
 		}
 	} 
 	
@@ -94,8 +101,4 @@ public class ResultSetExecutor<T>  extends RelationExecutor implements Execute<D
 		
 		return ls;
 	}
-	
-	public PreparedStatement preparedStatement(Connection conn,String sql)throws SQLException {				 
-		return conn.prepareStatement(sql);
-	}	
 }

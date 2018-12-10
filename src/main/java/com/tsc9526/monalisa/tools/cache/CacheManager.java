@@ -39,8 +39,11 @@ public class CacheManager {
 		return cm;
 	}
 	 
+	 
 	private Map<String, Cache> hCaches=new ConcurrentHashMap<String, Cache>();
-	  
+	
+	private Cache defaultCache = getCache(PerpetualCache.class.getName(), "LRU", "default");
+	
 	private CacheManager(){ 
 		Tasks.instance.addSchedule("monalisa-cache-refresh", new TimerTask() {
 			@Override
@@ -49,6 +52,15 @@ public class CacheManager {
 				
 			}
 		}, 0, 300*1000);
+	}
+	
+	
+	public void setDefaultCache(Cache cache) {
+		defaultCache = cache;
+	}
+	
+	public Cache getDefaultCache() {
+		return defaultCache;
 	}
 	 
 	public Cache getCache(String cacheClass,String eviction,String name){
@@ -76,7 +88,7 @@ public class CacheManager {
 	
 	
 	private Cache createCache(String cacheClass,String eviction,String name){
-		if(cacheClass!=null){
+		if(cacheClass!=null && cacheClass.length()>0){
 			try{
 				Class<?> clazzCache=Class.forName(cacheClass);
 				
@@ -85,9 +97,9 @@ public class CacheManager {
 			}catch(Exception e){
 				throw new RuntimeException(e);
 			}
-		}else{
-			return createEvicate(new PerpetualCache(name),eviction);
 		}
+
+		return defaultCache;
 	}
 	
 	private Cache createEvicate(Cache cache, String eviction){

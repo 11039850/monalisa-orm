@@ -20,25 +20,32 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 
 import com.tsc9526.monalisa.tools.io.MelpClose;
+import com.tsc9526.monalisa.tools.string.MelpSQL;
 
 /**
  * 
  * @author zzg.zhou(11039850@qq.com)
  */
-public class ResultLoadExecutor<T>  extends RelationExecutor implements Execute<T>,Cacheable{
-	private ResultHandler<T> resultHandler;
+public class ResultLoadExecutor<T>  extends HandlerRelation implements Execute<T>{ 
+	private HandlerResultSet<T> resultHandler;
 	private T result;
 	
-	public ResultLoadExecutor(ResultHandler<T> resultHandler,T result){
+	public ResultLoadExecutor(HandlerResultSet<T> resultHandler,T result){
 		this.resultHandler=resultHandler;
 		this.result=result;
 	}
 	
-	public T execute(Connection conn,PreparedStatement pst) throws SQLException {		
-		ResultSet rs=null;
+	public T execute(Connection conn,String sql,List<?> parameters) throws SQLException {				 
+		PreparedStatement pst = null;
+		ResultSet         rs  = null;	
+		 
 		try{
+			pst = conn.prepareStatement(sql);
+			MelpSQL.setPreparedParameters(pst, parameters);
+			
 			rs=setupRelationTables(pst.executeQuery());	
 			
 			if(rs.next()){
@@ -48,13 +55,7 @@ public class ResultLoadExecutor<T>  extends RelationExecutor implements Execute<
 				return null;
 			}
 		}finally{
-			MelpClose.close(rs);
+			MelpClose.close(pst,rs);
 		}
 	}
-	
-	public PreparedStatement preparedStatement(Connection conn,String sql)throws SQLException {				 
-		return conn.prepareStatement(sql);
-	}	
- 
-
 }
