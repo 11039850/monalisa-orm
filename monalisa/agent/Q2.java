@@ -24,10 +24,10 @@ import test.com.tsc9526.monalisa.orm.dialect.mysql.MysqlDB;
  * @author zzg.zhou(11039850@qq.com)
  */
 public class Q2 implements MysqlDB {
-	final static long $VERSION$= 4L;
+	final static long $VERSION$= 6L;
 	 
 	public int findOne(){ 
-		return 1;
+		return 4;
 	}
 
 }

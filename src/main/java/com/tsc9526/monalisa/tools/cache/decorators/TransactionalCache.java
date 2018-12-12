@@ -47,9 +47,9 @@ public class TransactionalCache implements Cache {
 		return delegate.getReadWriteLock();
 	}
 
-	public <T> T putObject(Object key, T value,long ttlInSeconds) {
+	public <T> T putObject(Object key, T value,long ttlInMillis) {
 		entriesToRemoveOnCommit.remove(key);
-		entriesToAddOnCommit.put(key, new AddEntry(delegate, key, value,ttlInSeconds));
+		entriesToAddOnCommit.put(key, new AddEntry(delegate, key, value,ttlInMillis));
 		return value;
 	}
 

@@ -36,8 +36,8 @@ import com.tsc9526.monalisa.tools.datatable.Page;
 public class Select<T extends Model,S extends Select> {
 	protected T        model;
 	protected DBConfig db;
-	protected int      ttlInSeconds=0;
-	protected int      autoRefreshInSeconds = 0;
+	protected long      ttlInMillis=0;
+	protected long      autoRefreshInMillis = 0;
 	
 	public Select(T model){
 		this.model=model;		 
@@ -332,26 +332,26 @@ public class Select<T extends Model,S extends Select> {
 	
 	
 	public long getCacheTime() {
-		return ttlInSeconds;
+		return ttlInMillis;
 	}
 
-	public S setCacheTime(int ttlInSeconds) {
-		this.ttlInSeconds = ttlInSeconds;
+	public S setCacheTime(long ttlInMillis) {
+		this.ttlInMillis = ttlInMillis;
 		return (S)this;
 	}
 
-	public S setCacheTime(int ttlInSeconds, int autoRefreshInSeconds) {
-		this.ttlInSeconds = ttlInSeconds;
-		this.autoRefreshInSeconds = autoRefreshInSeconds;
+	public S setCacheTime(int ttlInMillis, int autoRefreshInMillis) {
+		this.ttlInMillis         = ttlInMillis;
+		this.autoRefreshInMillis = autoRefreshInMillis;
 		return (S)this;
 	}
 	
-	public int getAutoRefreshInSeconds() {
-		return autoRefreshInSeconds;
+	public long getAutoRefreshInMillis() {
+		return autoRefreshInMillis;
 	}
 
-	public S setAutoRefreshInSeconds(int autoRefreshInSeconds) {
-		this.autoRefreshInSeconds = autoRefreshInSeconds;
+	public S setAutoRefreshInMillis(long autoRefreshInMillis) {
+		this.autoRefreshInMillis = autoRefreshInMillis;
 		return (S)this;
 	}
 	
@@ -374,8 +374,7 @@ public class Select<T extends Model,S extends Select> {
 		query.setTag("@"+db.getKey()+"#"+model.table().name());
 		  
 		query.setCache(db.getCfg().getCache(model));	
-		query.setCacheTime(ttlInSeconds);
-		query.setAutoRefreshInSeconds(autoRefreshInSeconds);
+		query.setCacheTime(ttlInMillis,autoRefreshInMillis);
 	}
 	
 	public class $SelectForExample{
@@ -436,17 +435,22 @@ public class Select<T extends Model,S extends Select> {
 		}
 		
 		/**
-		 * @param ttlInSeconds         	cache time in seconds. 
-		 * 								<li> >0: expired time.
-		 *            					<li>  0: no cache
-		 *            					<li> -1: never expired
-		 * @param autoRefreshInSeconds  auto refresh cache in background.
-		 * 								<li> 0 : no refresh
-		 * 								<li> >0: auto refresh
+		 * @param ttlInMillis         	cache time in millis. 
+		 * 								<ul>
+		 * 									<li> &gt;0: expired time.</li>
+		 *            						<li>  0: no cache</li>
+		 *            						<li> -1: never expired</li>
+		 *            					</ul>
+		 *            
+		 * @param autoRefreshInMillis   auto refresh cache in background in millis.
+		 * 								<ul>
+		 * 									<li> 0 : no refresh</li>
+		 * 									<li> &gt;0: auto refresh</li>
+		 * 								</ul>
 		 * @return this
 		 */ 
-		public $SelectForExample setCacheTime(int ttlInSeconds, int autoRefreshInSeconds ){
-			Select.this.setCacheTime(ttlInSeconds, autoRefreshInSeconds);
+		public $SelectForExample setCacheTime(int ttlInMillis, int autoRefreshInMillis ){
+			Select.this.setCacheTime(ttlInMillis, autoRefreshInMillis);
 			return this;
 		}
 		

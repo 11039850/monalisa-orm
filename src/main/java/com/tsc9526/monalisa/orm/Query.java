@@ -31,11 +31,12 @@ import com.tsc9526.monalisa.orm.datasource.DbProp;
 import com.tsc9526.monalisa.orm.dialect.Dialect;
 import com.tsc9526.monalisa.orm.executor.BatchSqlExecutor;
 import com.tsc9526.monalisa.orm.executor.BatchStatementExecutor;
+import com.tsc9526.monalisa.orm.executor.CacheableExecute;
+import com.tsc9526.monalisa.orm.executor.CacheableResultExecutor;
+import com.tsc9526.monalisa.orm.executor.CacheableResultLoadExecutor;
+import com.tsc9526.monalisa.orm.executor.CacheableResultSetExecutor;
 import com.tsc9526.monalisa.orm.executor.Execute;
 import com.tsc9526.monalisa.orm.executor.HandlerResultSet;
-import com.tsc9526.monalisa.orm.executor.ResultExecutor;
-import com.tsc9526.monalisa.orm.executor.ResultLoadExecutor;
-import com.tsc9526.monalisa.orm.executor.ResultSetExecutor;
 import com.tsc9526.monalisa.orm.executor.ResultSetsExecutor;
 import com.tsc9526.monalisa.orm.executor.UpdateExecutor;
 import com.tsc9526.monalisa.orm.generator.DBExchange;
@@ -50,6 +51,7 @@ import com.tsc9526.monalisa.tools.datatable.Page;
 import com.tsc9526.monalisa.tools.io.MelpClose;
 import com.tsc9526.monalisa.tools.logger.Logger;
 import com.tsc9526.monalisa.tools.string.MelpSQL;
+import com.tsc9526.monalisa.tools.string.MelpString;
  
 
 /**
@@ -90,10 +92,20 @@ public class Query {
 		 return AgentClass.createAgent(theQueryClass);
 	}
  	
+	private static ThreadLocal<Boolean> putCacheMode = new ThreadLocal<Boolean>();
+	
+	public static void setCachePutMode() {
+		putCacheMode.set(true);
+	}
+	
+	public static void removeCachePutMode() {
+		putCacheMode.remove();
+	}
+	
 	/**
 	 * Weather if show the running sql, default: false
 	 */
-	private Boolean debugSql=null;
+	private Boolean debugSql = null;
 	  	
 	protected StringBuilder sql       = new StringBuilder();
 	protected List<Object>  queryArgs = new ArrayList<Object>();
@@ -101,9 +113,9 @@ public class Query {
 	protected DBConfig      db;
  	
 	//0: no cache, -1: no expired
-	protected int ttlInSeconds=0;
+	protected long ttlInMillis=0;
 	
-	protected int autoRefreshInSeconds = 0;
+	protected long autoRefreshInMillis = 0;
 	
 	protected Boolean readonly;
  	 
@@ -290,7 +302,7 @@ public class Query {
 	 * @return the effected number of rows
 	 */
 	public int execute(){
-		return doExecute(new UpdateExecutor(),getSql(),queryArgs);
+		return doExecute(new UpdateExecutor(),getSql(),queryArgs,false);
 	}
 	  
 	/**
@@ -301,65 +313,72 @@ public class Query {
 	public int[] executeBatch(final String[] sqls){
 		return Tx.execute(new Tx.Atom<int[]>() {
 			public int[] execute() throws Throwable {
-				return doExecute(new BatchSqlExecutor(),null,Arrays.asList(sqls));
+				return doExecute(new BatchSqlExecutor(),null,Arrays.asList(sqls),true);
 			}
 		});
 	}
 	
 	/**
+	 *  
 	 * Execute in transaction
-	 * 
+	 * @param batchParameters  the batch sql parameters to execute
 	 * @return each result of sql statements
 	 */
 	public int[] executeBatch(final List<Object[]> batchParameters ){
 		return Tx.execute(new Tx.Atom<int[]>() {
 			public int[] execute() throws Throwable {
-				return doExecute(new BatchStatementExecutor(),getSql(),batchParameters);
+				return doExecute(new BatchStatementExecutor(),getSql(),batchParameters,true);
 			}
 		});
 	}
 	 
 	public <X> X execute(Execute<X> execute){
-		return doExecute(execute,getSql(),queryArgs);
+		if(execute instanceof CacheableExecute) {
+			return doCacheExecute( (CacheableExecute<X>) execute);
+		}else {
+			return doExecute(execute,getSql(),queryArgs,false);
+		}
 	}	
  	
-	protected <X> X doCacheExecute(final Execute<X> execute,Object extraTag){
-	 	int ttlInSeconds = getCacheTime();
+	protected <X> X doCacheExecute(final CacheableExecute<X> execute){
+		Object extraTag = execute.getCacheExtraTag();
+	 	long ttlInMillis = getCacheTime();
 	 	
-		if(ttlInSeconds > 0 ){
+	 	if(ttlInMillis == -1 ) {
+	 		ttlInMillis = 10*365*24*3600*1000L;
+	 	}
+	 	
+		if(ttlInMillis > 0 ){
 			Cache cache   = getCache();
-			CacheKey key  = new CacheKey(getCacheKey());
-			if(extraTag!=null) {
-				key.update("extra:"+extraTag);
-			}
-	 
-			X value=(X) cache.getObject(key);
+			CacheKey key  = createCacheKey(extraTag);
+			 
+			X value = getCachedObject(cache,key);
 			
 			if(value==null){
-				value = doExecute(execute, getSql(),queryArgs);
+				value = doExecute(execute, getSql(),queryArgs,false);
 				
-				cache.putObject(key, value,ttlInSeconds); 
+				cache.putObject(key, value,ttlInMillis); 
 				
 				if(isDebug()){
-					logger.info("Cached, "+CacheManager.getCachedInfo(key, value, ttlInSeconds));
+					logger.info("Cached, "+CacheManager.getCachedInfo(key, value, ttlInMillis));
 				}
 			}else {
 				if(isDebug()){
-					logger.info("Loaded from cache, "+CacheManager.getCachedInfo(key, value, ttlInSeconds));
+					logger.info("Loaded from cache, "+CacheManager.getCachedInfo(key, value, ttlInMillis));
 				}
 			} 
 			
-			if(autoRefreshInSeconds>0) {
+			if(autoRefreshInMillis>0) {
 				boolean ok = CacheManager.getInstance().addAutoRefreshCache(key,cache,new Cacheable() {
 					@Override
 					public Object execute() {
-						return doExecute(execute,getSql(),queryArgs);
+						return doExecute(execute,getSql(),queryArgs,false); 
 					}
-				}, ttlInSeconds, autoRefreshInSeconds);
+				}, ttlInMillis, autoRefreshInMillis);
 				
 				if(ok) {
 					if(isDebug()){
-						logger.info("Add auto refresh("+autoRefreshInSeconds+"s): "+key);
+						logger.info("Add auto refresh("+autoRefreshInMillis+"ms): "+key);
 					}
 				}
 			}
@@ -368,18 +387,35 @@ public class Query {
 			 
 		}
 		
-		return doExecute(execute,getSql(),queryArgs);
+		return doExecute(execute,getSql(),queryArgs,false);
 	}
 	
-	protected <X> X doExecute(Execute<X> x,String sql,List<?> parameters){
+	protected <X> X getCachedObject(Cache cache,CacheKey key) {
+		Boolean isPutCacheMode = putCacheMode.get();
+		if(isPutCacheMode != null) {
+			return null;
+		}
+		
+		X value= cache.getObject(key);
+		return value;
+	}
+	
+	protected CacheKey createCacheKey(Object extraTag) {
+		CacheKey key  = new CacheKey(getCacheKey());
+		key.update("extra:"+extraTag);
+		 
+		return key;
+	}
+	
+	protected <X> X doExecute(Execute<X> x,String sql,List<?> parameters, boolean isBatchQuery){
 		Tx tx=Tx.getTx();
 		
 		Connection conn=null; 
 		try{
 			conn= tx==null?getConnectionFromDB(true):getConnectionFromTx(tx);
 			  
-			if(sql!=null) {
-				logExecutableSql(sql,parameters);
+			if(!MelpString.isEmpty(sql) || isBatchQuery) {
+				logExecutableSql(sql,parameters,isBatchQuery);
 			}
 			
 			return x.execute(conn, sql, parameters);
@@ -423,7 +459,7 @@ public class Query {
 		int deepth = DbProp.PROP_DB_MULTI_RESULTSET_DEEPTH.getIntValue(db,100);
 		HandlerResultSet<DataMap> resultHandler=new HandlerResultSet<DataMap>(this,DataMap.class);
 		
-		return doCacheExecute(new ResultSetsExecutor<DataMap>(resultHandler,deepth),"getAllResults-"+DataMap.class.getName());  
+		return execute(new ResultSetsExecutor<DataMap>(resultHandler,deepth));  
 	}
 	 
 	/**
@@ -448,7 +484,7 @@ public class Query {
 		if(!doExchange()){			
 			queryCheck();
 			
-			return doCacheExecute(new ResultExecutor<T>(resultHandler),"getResult-"+resultHandler.getClass().getName());	 
+			return execute(new CacheableResultExecutor<T>(resultHandler));	 
 		}else{
 			return null;
 		}
@@ -512,7 +548,7 @@ public class Query {
 		if(!doExchange()){		 
 			queryCheck();
 			
-			return doCacheExecute(new ResultSetExecutor<T>(resultHandler),"getList-"+resultHandler.getClass().getName());
+			return execute(new CacheableResultSetExecutor<T>(resultHandler));
 		}else{
 			return new DataTable<T>();
 		}
@@ -567,7 +603,7 @@ public class Query {
 			
 			HandlerResultSet<T> resultHandler=new HandlerResultSet<T>(this,(Class<T>)result.getClass());
 			
-			return doCacheExecute(new ResultLoadExecutor<T>(resultHandler, result),"load-"+result.getClass().getName()); 
+			return execute(new CacheableResultLoadExecutor<T>(resultHandler, result)); 
 		}else{
 			return result;
 		}
@@ -603,11 +639,37 @@ public class Query {
 		return writer;
 	}
 	   
-	protected void logExecutableSql(String sql,List<?> parameters){
+	protected void logExecutableSql(String sql,List<?> parameters,boolean isBatchQuery){
 		if(isDebug()){
-			String executableSQL = MelpSQL.getExecutableSQL(getDialect(),sql,parameters);
-			 
-			logger.info("Executable SQL:\r\n"+executableSQL);
+			StringBuilder sb = new StringBuilder();
+			if(isBatchQuery) {
+				if(sql == null) { //batch sql
+					for(Object s:parameters) {
+						if(sb.length()>0) {
+							sb.append(";\r\n");
+						}
+						sb.append(s);
+					}
+					
+					logger.info("Executable batch SQL:\r\n"+ sb.toString());
+				}else { //batch statement
+					for(Object p:parameters) {
+						Object[] args = (Object[]) p;
+						
+						String s = MelpSQL.getExecutableSQL(getDialect(),sql,Arrays.asList(args));
+						
+						if(sb.length()>0) {
+							sb.append(";\r\n");
+						}
+						sb.append(s);
+					}
+					logger.info("Executable batch statement SQL:\r\n"+ sb.toString());
+				}
+			}else {
+				String s = MelpSQL.getExecutableSQL(getDialect(),sql,parameters);
+				sb.append(s);
+				logger.info("Executable SQL:\r\n"+ sb.toString());
+			}
 		} 		 
 	}
 	
@@ -640,7 +702,7 @@ public class Query {
 	public Cache getCache(){
 		if(this.cache!=null){
 			return this.cache;
-		}else if(ttlInSeconds > 0){
+		}else if(ttlInMillis > 0){
 			if(db!=null) {
 				return getDb().getCfg().getCache();
 			}else {
@@ -687,58 +749,71 @@ public class Query {
 		this.readonly = readonly;
 	}
 
-	public int getCacheTime() {
-		return ttlInSeconds;
+	public long getCacheTime() {
+		return ttlInMillis;
 	}
 
 	/**
 	 * Cache all query results returned by this query. eg: 
-	 *                              <li> getResult(...)
-	 *                              <li> getList(...)
-	 *                              <li> getPage(...)
-	 *                              <li> load()
+	 * 								<ul>
+	 *                              	<li> getResult(...)</li>
+	 *                              	<li> getList(...)</li>
+	 *                              	<li> getPage(...)</li>
+	 *                              	<li> load()</li> 
+	 *                              </ul>
 	 * 
-	 * @param ttlInSeconds         	cache time in seconds. 
-	 * 								<li> >0: expired time.
-	 *            					<li>  0: no cache
-	 *            					<li> -1: never expired
+	 * @param ttlInMillis         	cache time in millis. 
+	 * 								<ul>
+		 * 								<li> &gt;0: expired time.</li>
+		 *            					<li>  0: no cache</li>
+		 *            					<li> -1: never expired</li>
+		 *            				</ul>
 	 * @return this
 	 * 
-	 * @see #setCacheTime(long, int)
+	 * @see #setCacheTime(long, long)
 	 */
-	public Query setCacheTime(int ttlInSeconds) {
-		return setCacheTime(ttlInSeconds,0);
+	public Query setCacheTime(long ttlInMillis) {
+		return setCacheTime(ttlInMillis,0);
 	}
 	
 	/**
 	 * Cache all query results returned by this query. eg: 
-	 *                              <li> getResult(...)
-	 *                              <li> getList(...)
-	 *                              <li> getPage(...)
-	 *                              <li> load()
+	 * 								<ul>
+	 *                              	<li> getResult(...)</li>
+	 *                              	<li> getList(...)</li>
+	 *                              	<li> getPage(...)</li>
+	 *                              	<li> load()</li>
+	 *                              </ul>
 	 *                              
 	 *                              
-	 * @param ttlInSeconds         	cache time in seconds. 
-	 * 								<li> >0: expired time.
-	 *            					<li>  0: no cache
-	 *            					<li> -1: never expired
-	 * @param autoRefreshInSeconds  auto refresh cache in background.
-	 * 								<li> 0 : no refresh
-	 * 								<li> >0: auto refresh
+	 * @param ttlInMillis         	cache time in millis. 
+	 * 								<ul>
+	 * 									<li> &gt;0: expired time.</li>
+	 *            						<li>  0: no cache</li>
+	 *            						<li> -1: never expired</li>
+	 *            					</ul>	
+	 * @param autoRefreshInMillis   auto refresh cache in background in millis.
+	 * 								<ul>
+	 * 									<li> 0 : no refresh</li>
+	 * 									<li> &gt;0: auto refresh</li>
+	 * 								</ul>
+	 * 
 	 * @return this
 	 */
-	public Query setCacheTime(int ttlInSeconds, int autoRefreshInSeconds) {
-		this.ttlInSeconds         = ttlInSeconds;
-		this.autoRefreshInSeconds = autoRefreshInSeconds;
+	public Query setCacheTime(long ttlInMillis,long autoRefreshInMillis) {
+		this.ttlInMillis         = ttlInMillis;
+		this.autoRefreshInMillis = autoRefreshInMillis;
+		 
 		return this;
 	}
 	
-	public int getAutoRefreshInSeconds() {
-		return autoRefreshInSeconds;
+	public long getAutoRefreshInMillis() {
+		return autoRefreshInMillis;
 	}
 
-	public void setAutoRefreshInSeconds(int autoRefreshInSeconds) {
-		this.autoRefreshInSeconds = autoRefreshInSeconds;
+	public Query setAutoRefreshInSeconds(long autoRefreshInMillis) {
+		this.autoRefreshInMillis = autoRefreshInMillis;
+		return this;
 	}
 	
 	public String toString(){

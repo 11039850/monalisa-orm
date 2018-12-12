@@ -413,7 +413,7 @@ public abstract class Dialect{
 	}
 	
 	/**
-	 * Update by model's primary key & whereStatement
+	 * Update by model's primary key and whereStatement
 	 * 
 	 * @param model  the model
 	 * @param whereStatement where cause
@@ -482,8 +482,7 @@ public abstract class Dialect{
 	protected void copy(Query newQuery, Query origin) {
 		newQuery.use(origin.getDb());
 		newQuery.setCache(origin.getCache());
-		newQuery.setCacheTime(origin.getCacheTime());
-		newQuery.setAutoRefreshInSeconds(origin.getAutoRefreshInSeconds());
+		newQuery.setCacheTime(origin.getCacheTime(),origin.getAutoRefreshInMillis());		                                                   
 		newQuery.setParameters(origin.getParameters());
 	}
 	

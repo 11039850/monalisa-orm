@@ -285,10 +285,10 @@ public abstract class Model<T extends Model> implements Serializable ,Shallowabl
 	}
 
 	/**
-	 * Update by primary key & whereStatement 
+	 * Update by primary key and whereStatement 
 	 * 
-	 * @param whereStatement
-	 * @param args
+	 * @param whereStatement sql: field1=1 AND field2=s2 ...
+	 * @param args the parameter vars
 	 * @return 成功变更的记录数
 	 */
 	public int updateBy(final String whereStatement,final Object ... args) {

@@ -36,10 +36,10 @@ import com.tsc9526.monalisa.tools.string.MelpTypes;
  * 
  * @author zzg.zhou(11039850@qq.com)
  */
-public class ResultSetExecutor<T>  extends HandlerRelation implements Execute<DataTable<T>>{
+public class CacheableResultSetExecutor<T>  extends HandlerRelation implements CacheableExecute<DataTable<T>>{
 	private HandlerResultSet<T> resultHandler;
 	
-	public ResultSetExecutor(HandlerResultSet<T> resultHandler){
+	public CacheableResultSetExecutor(HandlerResultSet<T> resultHandler){
 		this.resultHandler=resultHandler;
 	}
 	
@@ -101,4 +101,8 @@ public class ResultSetExecutor<T>  extends HandlerRelation implements Execute<Da
 		
 		return ls;
 	}
+	
+	 public String getCacheExtraTag() {
+		 return getClass().getName()+"/"+resultHandler.getClass().getName();
+	 }
 }

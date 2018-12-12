@@ -25,7 +25,7 @@ import test.com.tsc9526.monalisa.orm.dialect.mysql.MysqlDB;
 public class Q1 implements MysqlDB {
 	 
 	public int findOne(){ 
-		return 1;
+		return 3;
 	}
 
 }

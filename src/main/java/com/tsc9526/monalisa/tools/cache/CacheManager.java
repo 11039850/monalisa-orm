@@ -17,6 +17,7 @@
 package com.tsc9526.monalisa.tools.cache;
 
 import java.lang.reflect.Constructor;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Timer;
@@ -24,6 +25,7 @@ import java.util.TimerTask;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadPoolExecutor;
 
 import com.tsc9526.monalisa.tools.cache.decorators.FifoCache;
 import com.tsc9526.monalisa.tools.cache.decorators.LruCache;
@@ -37,10 +39,10 @@ import com.tsc9526.monalisa.tools.logger.Logger;
  * 
  * @author zzg.zhou(11039850@qq.com)
  */
-public class CacheManager {
+public class CacheManager { 
 	static Logger logger = Logger.getLogger(CacheManager.class);
 	
-	public static String getCachedInfo(CacheKey key,Object value,int ttlInSeconds) {
+	public static String getCachedInfo(CacheKey key,Object value,long ttlInMillis) {
 		String vm ="";
 		if(value instanceof List) {
 			vm = "list("+((List<?>)value).size()+")";
@@ -51,7 +53,7 @@ public class CacheManager {
 			vm = ""+value;
 		}
 		
-		return "ttl: "+ttlInSeconds+"s, key: "+key+", value: "+vm;
+		return "ttl: "+ttlInMillis+" ms, key: "+key+", value: "+vm;
 	}
 	
 	private static CacheManager cm=new CacheManager();
@@ -60,18 +62,19 @@ public class CacheManager {
 		return cm;
 	}
 	
-	private ExecutorService pool;
+	private ThreadPoolExecutor pool;
 	
-	private int refreshCachePoolSize = 3;
+	private int refreshCachePoolSize = 5;
 	
 	private Map<String, Cache> hCaches = new ConcurrentHashMap<String, Cache>();
 	
 	protected Timer   timer = new Timer("Monalisa-CacheRefresh-Timer",true);
 	 
 	private Map<CacheKey,String> refreshCacheKeys = new ConcurrentHashMap<CacheKey,String>(); 
-		
-	private Cache defaultCache = getCache(PerpetualCache.class.getName(), "LRU", "default"); 
+	private Map<CacheKey,String> runningCacheKeys = new ConcurrentHashMap<CacheKey,String>(); 
 	
+	private Cache defaultCache = getCache(PerpetualCache.class.getName(), "LRU", "default"); 
+	 
 	private CacheManager(){  
 	}
 	
@@ -81,44 +84,73 @@ public class CacheManager {
 	
 	protected synchronized ExecutorService getExecutorPool() {
 		if(pool==null) {
-			pool = Executors.newFixedThreadPool(refreshCachePoolSize);
+			logger.info("Init refresh cache thread pool size: "+refreshCachePoolSize);
+			
+			pool = (ThreadPoolExecutor)Executors.newFixedThreadPool(refreshCachePoolSize);
 		}
 		
 		return pool;
 	}
 	
-	public boolean addAutoRefreshCache(final CacheKey key,final Cache cache, final Cacheable cacheable,final int ttlInSeconds, int autoRefreshInSeconds) {
-		String cacheTime = ttlInSeconds+":"+autoRefreshInSeconds;
+	public boolean addAutoRefreshCache(CacheKey key,Cache cache, Cacheable cacheable,long ttlInMillis, long autoRefreshInMillis) {
+		String cacheTime = ttlInMillis+":"+autoRefreshInMillis;
 		String old       = refreshCacheKeys.putIfAbsent(key, cacheTime);
 		
 		if(old == null) {
-			final Runnable r = new Runnable() {
-				@Override
-				public void run() {
-					Object value = cacheable.execute();
-					cache.putObject(key, value, ttlInSeconds);
-					
-					if(logger.isDebugEnabled()) {
-						logger.debug("Auto refresh cache, "+getCachedInfo(key, value,ttlInSeconds));
-					}
-				}
-			};
-			
-			long period = autoRefreshInSeconds *1000;
-			timer.schedule(new TimerTask() {
-				@Override
-				public void run() {
-					getExecutorPool().submit(r);
-				}
-			}, period, period);
-			
-			return true;
+			Runnable r = createRefreshRunnable(key, cache, cacheable, ttlInMillis);
+			addRefreshSchedule(key, r, autoRefreshInMillis); 
 		}
 		
 		return false;
 	}
 	
+	protected void addRefreshSchedule(final CacheKey key, final Runnable r,long autoRefreshInMillis) {
+		long period = autoRefreshInMillis;
+		
+		timer.schedule(new TimerTask() {
+			@Override
+			public void run() {
+				String exists = runningCacheKeys.putIfAbsent(key, key.toString());
+				if(exists==null) {
+					getExecutorPool().submit(r);
+				}
+			}
+		}, period, period);
+	}
 	
+	
+	protected Runnable createRefreshRunnable(final CacheKey key,final Cache cache, final Cacheable cacheable,final long ttlInMillis) {
+		return new Runnable() {
+			@Override
+			public void run() {
+				try {
+					long ts = System.currentTimeMillis();
+					
+					Object value = cacheable.execute();
+					cache.putObject(key, value, ttlInMillis);
+					
+					long delta = System.currentTimeMillis() -ts;
+					
+					if(logger.isDebugEnabled()) {
+						logger.debug("Auto refresh cache("+ delta+" ms), "+getCachedInfo(key, value,ttlInMillis));
+					}
+				}finally {
+					runningCacheKeys.remove(key);
+				}
+			}
+		};	
+	}
+	
+	
+	public List<CacheKey> getAutoRefreshKeys() {
+		List<CacheKey> keys = new ArrayList<CacheKey>();
+		keys.addAll( refreshCacheKeys.keySet() );
+		return keys;
+	}
+	
+	public int getAutoRefreshActiveCount(){
+		return pool.getActiveCount();
+	}
 	
 	public void shutdown() {
 		timer.cancel();
@@ -161,8 +193,7 @@ public class CacheManager {
 		  
 		return cache;
 	}
-	
-	
+	 
 	
 	private Cache createCache(String cacheClass,String eviction,String name){
 		if(cacheClass!=null && cacheClass.length()>0){

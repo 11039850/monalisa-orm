@@ -18,7 +18,7 @@ public class LruCache implements Cache {
 
 	public LruCache(Cache delegate) {
 		this.delegate = delegate;
-		setSize(1024);
+		setSize(5*1024);
 	}
 
 	public String getId() {
@@ -47,8 +47,8 @@ public class LruCache implements Cache {
 		};
 	}
 
-	public <T> T putObject(Object key, T value,long ttlInSeconds) {
-		delegate.putObject(key, value,ttlInSeconds);
+	public <T> T putObject(Object key, T value,long ttlInMillis) {
+		delegate.putObject(key, value,ttlInMillis);
 		cycleKeyList(key);
 		return value;
 	}

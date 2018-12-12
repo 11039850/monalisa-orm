@@ -66,9 +66,11 @@ public class MelpAsm {
 						if (Modifier.isStatic(m.getModifiers())) {
 							i = index;
 						}
-						if (i >= 0 && i < paramNames.length) {
-							paramNames[i] = name;
+						
+						if (i >= 0 ) {
+							setParamName(paramNames,name);
 						}
+						 
 						super.visitLocalVariable(name, desc, signature, start, end, index);
 					}
 
@@ -77,6 +79,15 @@ public class MelpAsm {
 		}, 0);
 
 		return paramNames;
+	}
+	
+	private static void setParamName(String[] paramNames,String name) {
+		for(int i=0;i<paramNames.length;i++) {
+			if(paramNames[i]==null) {
+				paramNames[i] = name;
+				return;
+			}
+		}
 	}
 
 	private static boolean sameType(Type[] types, Class<?>[] clazzes) {

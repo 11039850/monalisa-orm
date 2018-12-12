@@ -21,7 +21,6 @@ import java.sql.SQLException;
 import java.util.List;
 
 import org.testng.Assert;
-import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 import com.tsc9526.monalisa.orm.Query;
@@ -30,72 +29,32 @@ import com.tsc9526.monalisa.orm.executor.Execute;
 import com.tsc9526.monalisa.tools.misc.MelpMisc;
 
 import test.com.tsc9526.monalisa.orm.dialect.mysql.MysqlDB;
-import test.com.tsc9526.monalisa.orm.dialect.mysql.mysqldb.TestTable1;
 
 /**
  * 
  * @author zzg.zhou(11039850@qq.com)
  */
 @Test
-public class AutoRefreshCacheTest {
-	int testRecordSize = 3;
-	
-	@BeforeClass
-	public void beforeClass() {
-		TestTable1.WHERE().name.like("auto-test-cache-%").delete();
-		
-		for(int i=0;i<testRecordSize;i++) {
-			TestTable1 x = new TestTable1().defaults();
-			x.setName("auto-test-cache-"+i);
-			x.setTitle("t"+i);
-			x.save();
-		}
-	}
-	
-	public void testAutoRefresh() {
-		TestTable1 t1= getTestTable1AutoRefresh("auto-test-cache-"+0);
-		Assert.assertEquals(t1.getTitle(),"t0");
-		Assert.assertTrue(getTestTable1AutoRefresh("auto-test-cache-"+0) == t1);
-		
-		//update title, not update cache
-		TestTable1.SELECT().selectByPrimaryKey(t1.getId()).setTitle("tx").update();
-		Assert.assertEquals(getTestTable1AutoRefresh("auto-test-cache-"+0).getTitle(),"t0");
-		
-		MelpMisc.sleep(200);
-		Assert.assertTrue(getTestTable1AutoRefresh("auto-test-cache-"+0) == t1);
-		Assert.assertEquals(getTestTable1AutoRefresh("auto-test-cache-"+0).getTitle(),"t0");
-		
-		MelpMisc.sleep(1000);
-		Assert.assertTrue(getTestTable1AutoRefresh("auto-test-cache-"+0) != t1);
-		Assert.assertEquals(getTestTable1AutoRefresh("auto-test-cache-"+0).getTitle(),"tx");
-	}
-	
-
-	private TestTable1 getTestTable1AutoRefresh(String name) {
-		TestTable1 t1= TestTable1.WHERE()
-				.name.eq(name)
-				.SELECT().setCacheTime(5000, 1000).selectOne();
-		return t1;
-	}
-	
-	
-	public void testCacheExecuteLong() {
+public class CachePutTest {
+	public void testPutCache() {
 		Query q = MysqlDB.DB.createQuery();
-		
-		q.setCacheTime(500,50);
+		q.setCacheTime(5000);
 		 
 		CacheObject<Integer> value = q.execute(getLongExecute());
 		Assert.assertEquals(value, new CacheObject<Integer>(9526));
-		cachedLongValue = new CacheObject<Integer>(9527);
 		
-		long t1 = System.currentTimeMillis();
-		for(int i=0;i<100;i++) {
-			q.execute(getLongExecute());
+		cachedLongValue =new CacheObject<Integer>(9527);
+		
+		for(int i=0;i<10;i++) {
+			MelpMisc.sleep(10);
+			Assert.assertEquals(q.execute(getLongExecute()).getValue(), new Integer(9526));
 		}
-		long delta = System.currentTimeMillis() - t1;
-		Assert.assertTrue(delta < 100,"Too long: "+delta);
+		 
+		Query.setCachePutMode(); 
+		Assert.assertEquals(q.execute(getLongExecute()).getValue(), new Integer(9527));
 		
-		MelpMisc.sleep(1600);
+		Query.removeCachePutMode();
+		cachedLongValue = new CacheObject<Integer>(9528);
 		Assert.assertEquals(q.execute(getLongExecute()).getValue(), new Integer(9527));
 	}
 	
@@ -105,14 +64,15 @@ public class AutoRefreshCacheTest {
 		return new CacheableExecute<CacheObject<Integer>>() {
 			@Override
 			public CacheObject<Integer> execute(Connection conn, String sql, List<?> parameters) throws SQLException {
-				MelpMisc.sleep(1000);
 				return cachedLongValue;
 			}
 
 			@Override
 			public String getCacheExtraTag() {
-				return "test-auto-refresh";
+				return "test-put-cache";
 			}
 		};
 	}
+	
+	
 }

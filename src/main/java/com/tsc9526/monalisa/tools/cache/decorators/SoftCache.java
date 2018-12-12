@@ -43,9 +43,9 @@ public class SoftCache implements Cache {
 		return delegate.keys();
 	}
 	
-	public <T> T putObject(Object key, T value,long ttlInSeconds) {
+	public <T> T putObject(Object key, T value,long ttlInMillis) {
 		removeGarbageCollectedItems();
-		delegate.putObject(key, new SoftEntry(key, value, queueOfGarbageCollectedEntries), ttlInSeconds);
+		delegate.putObject(key, new SoftEntry(key, value, queueOfGarbageCollectedEntries), ttlInMillis);
 		return value;
 	}
  

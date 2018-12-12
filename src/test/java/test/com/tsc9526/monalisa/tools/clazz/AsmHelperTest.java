@@ -31,15 +31,28 @@ import com.tsc9526.monalisa.tools.clazz.MelpAsm;
 @Test
 public class AsmHelperTest {
 	
-	public void testGetParameter()throws Exception{
+	public void testGetParameter1()throws Exception{
+		Method m = Query.class.getMethod("setCacheTime", long.class);
+		String[] ns=MelpAsm.getMethodParamNames(m);
+		Assert.assertEquals(ns.length,1); 
+		Assert.assertEquals(ns[0],"ttlInMillis");
+	}
+	 
+	public void testGetParameter2()throws Exception{
+		Method m = Query.class.getMethod("setCacheTime", long.class,long.class);
+		String[] ns=MelpAsm.getMethodParamNames(m);
+		Assert.assertEquals(ns.length,2); 
+		Assert.assertEquals(ns[0],"ttlInMillis","autoRefreshInMillis");
+	}
+		
+	public void testGetParameter3()throws Exception{
 		for(Method m:Query.class.getDeclaredMethods()){
 			String[] ns=MelpAsm.getMethodParamNames(m);
 			if(ns!=null && ns.length>0){
 				for(String n:ns){
 					Assert.assertNotNull(n,"Failed get parameter's name of method: "+m.getName());
 				}
-			}
-			 
+			}		
 		}
 	}
 	 

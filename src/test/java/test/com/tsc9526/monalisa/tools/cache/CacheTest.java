@@ -82,13 +82,13 @@ public class CacheTest {
 		Page<TestTable1> rs=TestTable1.WHERE()
 				.name.like("mm-test-cache-%")
 				.SELECT()
-				.setCacheTime(10,0)
+				.setCacheTime(10*1000,0)
 				.selectPage(limit,offset);
 		return rs;
 	}
 	
 	public void testLRU(){
-		Query q = MysqlDB.DB.createQuery().setCacheTime(10);
+		Query q = MysqlDB.DB.createQuery().setCacheTime(10*1000);
 		q.add("SELECT * FROM test_table_1");
 		
 		DataTable<DataMap> rs=q.getList();
@@ -104,7 +104,7 @@ public class CacheTest {
 				q.getList();
 			}
 			
-			Query qx=MysqlDB.DB.createQuery().setCacheTime(10);
+			Query qx=MysqlDB.DB.createQuery().setCacheTime(10*1000);
 			qx.add("SELECT * FROM test_table_1");
 			Assert.assertTrue(rs==qx.getList(),"loop "+i);
 		}
@@ -116,11 +116,11 @@ public class CacheTest {
 		
 		q.clear();
 		q.add("SELECT * FROM test_table_1 a0");
-		Assert.assertTrue(rs0!=q.getList());
+		Assert.assertTrue(rs0==q.getList());
 	}
 	
 	public void testCacheDefaultMax1024() {
-		Query q=MysqlDB.DB.createQuery().setCacheTime(100);
+		Query q=MysqlDB.DB.createQuery().setCacheTime(100*1000);
 		q.add("SELECT * FROM test_table_1");
 		q.getAllResults();
 	}

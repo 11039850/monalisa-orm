@@ -111,17 +111,21 @@ public class BatchQueryTest {
 	
 	public void testBatch(){
 		Query q=MysqlDB.DB.createQuery();
-		q.add("INSERT INTO `test_table_1`(`name`, `enum_int_a`, `enum_string_a`, `ts_a`, `create_time`)VALUES(?,?,?,?,?)");
+		q.add("INSERT INTO `test_table_1`(`name`, `title`, `enum_int_a`, `enum_string_a`, `ts_a`, `create_time`)VALUES(?,?,?,?,?,?)");
 		
 		List<Object[]> args = new ArrayList<Object[]>();
 		for(int i=0;i<5;i++){
-			args.add(new Object[] {"X-"+i, 0, "TRUE", "2017-02-24 17:32:26", "2017-02-24 17:32:26"});
+			args.add(new Object[] {"X-"+i, "title-"+i, 0, "TRUE", "2017-02-24 17:32:26", "2017-02-24 17:32:26"});
 		}
 		int[] rs=q.executeBatch(args);
 		Assert.assertEquals(rs.length,5); 
 		for(int i=0;i<5;i++){
 			Assert.assertEquals(rs[i],1);
 		} 
+		
+		for(int i=0;i<5;i++) {
+			Assert.assertEquals(TestTable1.WHERE().name.eq("X-"+i).SELECT().selectOne().getTitle(),"title-"+i);
+		}
  	}
 	
 	public void testBatchWithException(){

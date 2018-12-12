@@ -29,30 +29,37 @@ import com.tsc9526.monalisa.tools.string.MelpSQL;
  * 
  * @author zzg.zhou(11039850@qq.com)
  */
-public class ResultExecutor<T> extends HandlerRelation implements Execute<T>{ 
+public class CacheableResultLoadExecutor<T>  extends HandlerRelation implements CacheableExecute<T>{ 
 	private HandlerResultSet<T> resultHandler;
-	 
-	public ResultExecutor(HandlerResultSet<T> resultHandler){
+	private T result;
+	
+	public CacheableResultLoadExecutor(HandlerResultSet<T> resultHandler,T result){
 		this.resultHandler=resultHandler;
+		this.result=result;
 	}
 	
 	public T execute(Connection conn,String sql,List<?> parameters) throws SQLException {				 
 		PreparedStatement pst = null;
-		ResultSet         rs  = null;
-		
-		T result=null;
+		ResultSet         rs  = null;	
+		 
 		try{
-			pst= conn.prepareStatement(sql);
+			pst = conn.prepareStatement(sql);
 			MelpSQL.setPreparedParameters(pst, parameters);
 			
-			rs = setupRelationTables(pst.executeQuery());	
-			   
-			if(rs.next()){	
-				result=resultHandler.createResult(rs); 											
-			}	
-			return result;
+			rs=setupRelationTables(pst.executeQuery());	
+			
+			if(rs.next()){
+				resultHandler.load(rs, result);	
+				return result;
+			}else{
+				return null;
+			}
 		}finally{
 			MelpClose.close(pst,rs);
 		}
 	}
+	
+	 public String getCacheExtraTag() {
+		 return getClass().getName()+"/"+resultHandler.getClass().getName();
+	 }
 }

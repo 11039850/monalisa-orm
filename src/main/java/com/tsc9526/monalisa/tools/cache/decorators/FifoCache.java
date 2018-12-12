@@ -18,7 +18,7 @@ public class FifoCache implements Cache {
 	public FifoCache(Cache delegate) {
 		this.delegate = delegate;
 		this.keyList = new LinkedList<Object>();
-		this.size = 1024;
+		this.size = 5*1024;
 	}
 
 	public String getId() {
@@ -37,9 +37,9 @@ public class FifoCache implements Cache {
 		this.size = size;
 	}
 
-	public <T> T putObject(Object key, T value,long ttlInSeconds) {
+	public <T> T putObject(Object key, T value,long ttlInMillis) {
 		cycleKeyList(key);
-		delegate.putObject(key, value,ttlInSeconds);
+		delegate.putObject(key, value,ttlInMillis);
 		return value;
 	}
 

@@ -30,8 +30,8 @@ public class PerpetualCache implements Cache {
 		return cache.size();
 	}
 
-	public <T> T putObject(Object key, T value,long ttlInSeconds) {
-		cache.put(key, new CacheObject(value,ttlInSeconds));
+	public <T> T putObject(Object key, T value,long ttlInMillis) {
+		cache.put(key, new CacheObject(value,ttlInMillis));
 		return value;
 	}
 
@@ -92,10 +92,10 @@ public class PerpetualCache implements Cache {
 		long   expiredTime;
 		long   createTime;
 		
-		CacheObject(Object data,long ttlInSeconds){
+		CacheObject(Object data,long ttlInMillis){
 			this.data         = data;
 			this.createTime   = System.currentTimeMillis();
-			this.expiredTime  = createTime + ttlInSeconds*1000;	
+			this.expiredTime  = createTime + ttlInMillis;	
 		}
 		
 		public boolean isExpired() {
