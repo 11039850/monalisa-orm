@@ -15,7 +15,7 @@
  *	along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************************/
 package com.tsc9526.monalisa.tools.cache;
-
+ 
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,12 +27,12 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadPoolExecutor;
 
+import com.tsc9526.monalisa.tools.Tools;
 import com.tsc9526.monalisa.tools.cache.decorators.FifoCache;
 import com.tsc9526.monalisa.tools.cache.decorators.LruCache;
 import com.tsc9526.monalisa.tools.cache.decorators.SoftCache;
 import com.tsc9526.monalisa.tools.cache.decorators.WeakCache;
 import com.tsc9526.monalisa.tools.cache.impl.PerpetualCache;
-import com.tsc9526.monalisa.tools.datatable.Page;
 import com.tsc9526.monalisa.tools.logger.Logger;
 
 /**
@@ -41,21 +41,7 @@ import com.tsc9526.monalisa.tools.logger.Logger;
  */
 public class CacheManager { 
 	static Logger logger = Logger.getLogger(CacheManager.class);
-	
-	public static String getCachedInfo(CacheKey key,Object value,long ttlInMillis) {
-		String vm ="";
-		if(value instanceof List) {
-			vm = "list("+((List<?>)value).size()+")";
-		}else if(value instanceof Page) {
-			Page<?> page = (Page<?>)value;
-			vm = "page("+page.getPage()+"/"+page.getTotal()+": "+(page.getRows()==null?0:page.getRows().size());
-		}else {
-			vm = ""+value;
-		}
-		
-		return "ttl: "+ttlInMillis+" ms, key: "+key+", value: "+vm;
-	}
-	
+	 
 	private static CacheManager cm=new CacheManager();
  
 	public static CacheManager getInstance(){
@@ -68,10 +54,10 @@ public class CacheManager {
 	
 	private Map<String, Cache> hCaches = new ConcurrentHashMap<String, Cache>();
 	
-	protected Timer   timer = new Timer("Monalisa-CacheRefresh-Timer",true);
+	protected Timer                 autoRefreshTimer = new Timer("Monalisa-CacheRefresh-Timer",true);
 	 
-	private Map<CacheKey,String> refreshCacheKeys = new ConcurrentHashMap<CacheKey,String>(); 
-	private Map<CacheKey,String> runningCacheKeys = new ConcurrentHashMap<CacheKey,String>(); 
+	private Map<CacheKey,TimerTask> refreshCacheKeys = new ConcurrentHashMap<CacheKey,TimerTask>(); 
+	private Map<CacheKey,String>    runningCacheKeys = new ConcurrentHashMap<CacheKey,String>(); 
 	
 	private Cache defaultCache = getCache(PerpetualCache.class.getName(), "LRU", "default"); 
 	 
@@ -93,34 +79,25 @@ public class CacheManager {
 	}
 	
 	public boolean addAutoRefreshCache(CacheKey key,Cache cache, Cacheable cacheable,long ttlInMillis, long autoRefreshInMillis) {
-		String cacheTime = ttlInMillis+":"+autoRefreshInMillis;
-		String old       = refreshCacheKeys.putIfAbsent(key, cacheTime);
-		
-		if(old == null) {
-			Runnable r = createRefreshRunnable(key, cache, cacheable, ttlInMillis);
-			addRefreshSchedule(key, r, autoRefreshInMillis); 
+		if(!refreshCacheKeys.containsKey(key)) { 
+		 	TimerTask timerTask = createRefreshTimerTask(key, cache, cacheable, ttlInMillis);
+		 	TimerTask existTask = refreshCacheKeys.putIfAbsent(key, timerTask);
+			
+		 	if(existTask == null ) { 
+		 		logger.debug("Add auto refresh cache key: "+key);
+		 		
+				autoRefreshTimer.schedule(timerTask, autoRefreshInMillis, autoRefreshInMillis);
+				
+				return true;
+			}
 		}
 		
 		return false;
 	}
+ 
 	
-	protected void addRefreshSchedule(final CacheKey key, final Runnable r,long autoRefreshInMillis) {
-		long period = autoRefreshInMillis;
-		
-		timer.schedule(new TimerTask() {
-			@Override
-			public void run() {
-				String exists = runningCacheKeys.putIfAbsent(key, key.toString());
-				if(exists==null) {
-					getExecutorPool().submit(r);
-				}
-			}
-		}, period, period);
-	}
-	
-	
-	protected Runnable createRefreshRunnable(final CacheKey key,final Cache cache, final Cacheable cacheable,final long ttlInMillis) {
-		return new Runnable() {
+	protected TimerTask createRefreshTimerTask(final CacheKey key,final Cache cache, final Cacheable cacheable,final long ttlInMillis) {
+		final Runnable r= new Runnable() {
 			@Override
 			public void run() {
 				try {
@@ -132,20 +109,90 @@ public class CacheManager {
 					long delta = System.currentTimeMillis() -ts;
 					
 					if(logger.isDebugEnabled()) {
-						logger.debug("Auto refresh cache("+ delta+" ms), "+getCachedInfo(key, value,ttlInMillis));
+						logger.debug("Auto refresh cache("+ delta+" ms), "+Tools.getCachedInfo(key, value,ttlInMillis));
 					}
 				}finally {
 					runningCacheKeys.remove(key);
 				}
 			}
 		};	
+		
+		return new TimerTask() {
+			@Override
+			public void run() {
+				String exists = runningCacheKeys.putIfAbsent(key, key.toString());
+				if(exists==null) {
+					getExecutorPool().submit(r);
+				}
+			}
+		};
+	}
+	 
+	public boolean removeAutoRefreshCache(CacheKey key) {
+		TimerTask task = refreshCacheKeys.remove(key);
+		if(task!=null) {
+			logger.debug("Remove auto refresh cache key: "+key);
+			
+			task.cancel();
+			
+			autoRefreshTimer.purge();
+			
+			return true;
+		}
+		
+		return false;
 	}
 	
-	
-	public List<CacheKey> getAutoRefreshKeys() {
+	public List<CacheKey> getAutoRefreshCacheKeys() {
 		List<CacheKey> keys = new ArrayList<CacheKey>();
 		keys.addAll( refreshCacheKeys.keySet() );
 		return keys;
+	}
+	  
+	
+	public CacheKey getCacheKeyByTag(Object tag){
+		 List<CacheKey> rs = findCacheKeysByTag(tag);
+		 if(rs.size()>0) {
+			 return rs.get(0);
+		 }
+		 
+		 return null;
+	}
+	
+	public List<CacheKey> findCacheKeysByTag(Object tag){
+		List<CacheKey> rs = new ArrayList<CacheKey>();
+		
+		List<Object> keys = new ArrayList<Object>();
+		keys.addAll(getCacheKeys());
+		
+		for(Object key:keys) {
+			if(key instanceof CacheKey) {
+				CacheKey cacheKey     = (CacheKey)key;
+				Object   cacheKeyTag  = cacheKey.getTag();
+				
+				if(tag==null) {
+					if(cacheKeyTag==null) {
+						rs.add(cacheKey);
+					}
+				}else if(tag.equals(cacheKeyTag)) {
+					rs.add(cacheKey);
+				}
+			}
+		}
+		
+		return rs;
+	}
+	
+	public List<Object> evictCacheKeys(List<Object> keys) {
+		return evictCacheKeys ( keys.toArray(new Object[keys.size()]) );
+	}
+	
+	public List<Object> evictCacheKeys(Object... keys) {
+		List<Object> rs = new ArrayList<Object>();
+		for(Object key:keys) {
+			rs.add ( defaultCache.removeObject(key) );
+		}
+		return rs;
 	}
 	
 	public int getAutoRefreshActiveCount(){
@@ -153,14 +200,14 @@ public class CacheManager {
 	}
 	
 	public void shutdown() {
-		timer.cancel();
+		autoRefreshTimer.cancel();
 		
 		if(pool!=null) {
 			pool.shutdownNow();
 		}
 	}
 	
-	public List<Object> keys(){
+	public List<Object> getCacheKeys(){
 		return defaultCache.keys();
 	}
 	
@@ -201,7 +248,7 @@ public class CacheManager {
 				Class<?> clazzCache=Class.forName(cacheClass);
 				
 				Constructor<?> cs=clazzCache.getConstructor(String.class);
-				return createEvicate((Cache)cs.newInstance(name),eviction);
+				return createEvictCache((Cache)cs.newInstance(name),eviction);
 			}catch(Exception e){
 				throw new RuntimeException(e);
 			}
@@ -210,7 +257,7 @@ public class CacheManager {
 		return defaultCache;
 	}
 	
-	private Cache createEvicate(Cache cache, String eviction){
+	private Cache createEvictCache(Cache cache, String eviction){
 		if(eviction.equalsIgnoreCase("FIFO")){
 			return new FifoCache(cache);
 		}else if(eviction.equalsIgnoreCase("LRU")){

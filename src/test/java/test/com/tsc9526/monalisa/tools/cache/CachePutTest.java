@@ -50,10 +50,10 @@ public class CachePutTest {
 			Assert.assertEquals(q.execute(getLongExecute()).getValue(), new Integer(9526));
 		}
 		 
-		Query.setCachePutMode(); 
+		Query.setPutCacheMode(true); 
 		Assert.assertEquals(q.execute(getLongExecute()).getValue(), new Integer(9527));
 		
-		Query.removeCachePutMode();
+		Query.setPutCacheMode(false); 
 		cachedLongValue = new CacheObject<Integer>(9528);
 		Assert.assertEquals(q.execute(getLongExecute()).getValue(), new Integer(9527));
 	}

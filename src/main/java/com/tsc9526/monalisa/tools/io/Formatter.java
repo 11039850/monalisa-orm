@@ -14,20 +14,12 @@
  *	You should have received a copy of the GNU Lesser General Public License
  *	along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************************/
-package test.com.tsc9526.monalisa.orm.sqlfiles;
+package com.tsc9526.monalisa.tools.io;
 
- 
-import test.com.tsc9526.monalisa.orm.dialect.mysql.MysqlDB;
- 
 /**
  * 
  * @author zzg.zhou(11039850@qq.com)
  */
-public class Q2 implements MysqlDB {
-	final static long $VERSION$= 4L;
-	 
-	public int findOne(){ 
-		return 1;
-	}
+public class Formatter {
 
 }

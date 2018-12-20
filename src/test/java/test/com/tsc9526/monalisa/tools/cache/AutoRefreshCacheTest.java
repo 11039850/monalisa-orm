@@ -21,12 +21,14 @@ import java.sql.SQLException;
 import java.util.List;
 
 import org.testng.Assert;
-import org.testng.annotations.BeforeClass;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import com.tsc9526.monalisa.orm.Query;
 import com.tsc9526.monalisa.orm.executor.CacheableExecute;
 import com.tsc9526.monalisa.orm.executor.Execute;
+import com.tsc9526.monalisa.tools.cache.CacheKey;
+import com.tsc9526.monalisa.tools.cache.CacheManager;
 import com.tsc9526.monalisa.tools.misc.MelpMisc;
 
 import test.com.tsc9526.monalisa.orm.dialect.mysql.MysqlDB;
@@ -38,10 +40,12 @@ import test.com.tsc9526.monalisa.orm.dialect.mysql.mysqldb.TestTable1;
  */
 @Test
 public class AutoRefreshCacheTest {
+	CacheManager cm = CacheManager.getInstance();
+	
 	int testRecordSize = 3;
 	
-	@BeforeClass
-	public void beforeClass() {
+	@BeforeMethod
+	public void beforeMethod() {
 		TestTable1.WHERE().name.like("auto-test-cache-%").delete();
 		
 		for(int i=0;i<testRecordSize;i++) {
@@ -67,7 +71,7 @@ public class AutoRefreshCacheTest {
 		
 		MelpMisc.sleep(1000);
 		Assert.assertTrue(getTestTable1AutoRefresh("auto-test-cache-"+0) != t1);
-		Assert.assertEquals(getTestTable1AutoRefresh("auto-test-cache-"+0).getTitle(),"tx");
+		Assert.assertEquals(getTestTable1AutoRefresh("auto-test-cache-"+0).getTitle(),"tx"); //expect: changed
 	}
 	
 
@@ -75,6 +79,47 @@ public class AutoRefreshCacheTest {
 		TestTable1 t1= TestTable1.WHERE()
 				.name.eq(name)
 				.SELECT().setCacheTime(5000, 1000).selectOne();
+		return t1;
+	}
+	
+	
+	
+	
+	public void testAutoRefreshRemove1() {
+		TestTable1 t1= getTestTable1AutoRefreshRemove1("auto-test-cache-"+0);
+		Assert.assertEquals(t1.getTitle(),"t0");
+		Assert.assertTrue(getTestTable1AutoRefreshRemove1("auto-test-cache-"+0) == t1);
+		
+		//update title, not update cache
+		TestTable1.SELECT().selectByPrimaryKey(t1.getId()).setTitle("tx").update();
+		Assert.assertEquals(getTestTable1AutoRefreshRemove1("auto-test-cache-"+0).getTitle(),"t0");
+		
+		MelpMisc.sleep(200);
+		Assert.assertTrue(getTestTable1AutoRefreshRemove1("auto-test-cache-"+0) == t1);
+		Assert.assertEquals(getTestTable1AutoRefreshRemove1("auto-test-cache-"+0).getTitle(),"t0");
+		
+		//remove auto refresh
+		CacheKey cacheKey = cm.getCacheKeyByTag("test-remove-1");
+		Assert.assertTrue ( cm.removeAutoRefreshCache(cacheKey) );
+		Assert.assertFalse( cm.removeAutoRefreshCache(cacheKey) );
+		
+		MelpMisc.sleep(1000);
+		Assert.assertTrue(getTestTable1AutoRefreshRemove1("auto-test-cache-"+0) == t1);
+		Assert.assertEquals(getTestTable1AutoRefreshRemove1("auto-test-cache-"+0).getTitle(),"t0"); //expect: not changed
+		
+		//cache expired
+		MelpMisc.sleep(2000);
+		Assert.assertTrue(getTestTable1AutoRefresh("auto-test-cache-"+0) != t1);
+		Assert.assertEquals(getTestTable1AutoRefresh("auto-test-cache-"+0).getTitle(),"tx"); //expect: changed
+	}
+	
+
+	private TestTable1 getTestTable1AutoRefreshRemove1(String name) {
+		TestTable1 t1= TestTable1.WHERE()
+				.name.eq(name).id.asc()
+				.SELECT()
+				.setCacheTime(2500, 1000).setCacheTag("test-remove-1")
+				.selectOne();
 		return t1;
 	}
 	

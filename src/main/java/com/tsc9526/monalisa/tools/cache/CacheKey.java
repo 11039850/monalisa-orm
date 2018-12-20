@@ -44,6 +44,7 @@ public class CacheKey implements Serializable{
 	
 	public CacheKey(CacheKey key) {
 		this.tag = key.tag;
+		
 		for (Object o : key.updateList) {
 			updateKey(o);
 		}

@@ -14,20 +14,31 @@
  *	You should have received a copy of the GNU Lesser General Public License
  *	along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************************/
-package test.com.tsc9526.monalisa.orm.sqlfiles;
+package com.tsc9526.monalisa.tools;
 
- 
-import test.com.tsc9526.monalisa.orm.dialect.mysql.MysqlDB;
- 
+import java.util.List;
+
+import com.tsc9526.monalisa.tools.cache.CacheKey;
+import com.tsc9526.monalisa.tools.datatable.Page;
+
 /**
  * 
  * @author zzg.zhou(11039850@qq.com)
  */
-public class Q2 implements MysqlDB {
-	final static long $VERSION$= 4L;
-	 
-	public int findOne(){ 
-		return 1;
+public class Tools {
+	private Tools() {}
+	
+	public static String getCachedInfo(CacheKey key,Object value,long ttlInMillis) {
+		String vm ="";
+		if(value instanceof List) {
+			vm = "list("+((List<?>)value).size()+")";
+		}else if(value instanceof Page) {
+			Page<?> page = (Page<?>)value;
+			vm = "page("+page.getPage()+"/"+page.getTotal()+": "+(page.getRows()==null?0:page.getRows().size());
+		}else {
+			vm = ""+value;
+		}
+		
+		return "ttl: "+ttlInMillis+" ms, key: "+key+", value: "+vm;
 	}
-
 }

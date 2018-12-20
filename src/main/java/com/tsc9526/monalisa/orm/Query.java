@@ -40,6 +40,7 @@ import com.tsc9526.monalisa.orm.executor.HandlerResultSet;
 import com.tsc9526.monalisa.orm.executor.ResultSetsExecutor;
 import com.tsc9526.monalisa.orm.executor.UpdateExecutor;
 import com.tsc9526.monalisa.orm.generator.DBExchange;
+import com.tsc9526.monalisa.tools.Tools;
 import com.tsc9526.monalisa.tools.agent.AgentClass;
 import com.tsc9526.monalisa.tools.cache.Cache;
 import com.tsc9526.monalisa.tools.cache.CacheKey;
@@ -94,13 +95,19 @@ public class Query {
  	
 	private static ThreadLocal<Boolean> putCacheMode = new ThreadLocal<Boolean>();
 	
-	public static void setCachePutMode() {
-		putCacheMode.set(true);
+	/**
+	 * Indicates whether or not always call the real query and put the results in the cache
+	 * 
+	 * @param putCache true: alway call ; false: first cache, then do real call if cache miss.
+	 */
+	public static void setPutCacheMode(boolean putCache) {
+		if(putCache) {
+			putCacheMode.set(true);
+		}else {
+			putCacheMode.remove();
+		}
 	}
-	
-	public static void removeCachePutMode() {
-		putCacheMode.remove();
-	}
+	 
 	
 	/**
 	 * Weather if show the running sql, default: false
@@ -360,11 +367,11 @@ public class Query {
 				cache.putObject(key, value,ttlInMillis); 
 				
 				if(isDebug()){
-					logger.info("Cached, "+CacheManager.getCachedInfo(key, value, ttlInMillis));
+					logger.info("Cached, "+Tools.getCachedInfo(key, value, ttlInMillis));
 				}
 			}else {
 				if(isDebug()){
-					logger.info("Loaded from cache, "+CacheManager.getCachedInfo(key, value, ttlInMillis));
+					logger.info("Loaded from cache, "+Tools.getCachedInfo(key, value, ttlInMillis));
 				}
 			} 
 			
@@ -687,7 +694,8 @@ public class Query {
 	
 	public CacheKey getCacheKey() {
 		CacheKey cacheKey = new CacheKey();
-
+		cacheKey.setTag(tag);
+		
 		cacheKey.update("dbkey:" + db.getKey());
 		cacheKey.update("tag:" + (tag == null ? "" : tag.toString()));
 		cacheKey.update("sql:" + getSql());

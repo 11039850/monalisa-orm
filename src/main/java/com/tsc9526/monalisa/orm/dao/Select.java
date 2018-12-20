@@ -38,6 +38,7 @@ public class Select<T extends Model,S extends Select> {
 	protected DBConfig db;
 	protected long      ttlInMillis=0;
 	protected long      autoRefreshInMillis = 0;
+	protected Object    cacheTag;
 	
 	public Select(T model){
 		this.model=model;		 
@@ -354,6 +355,16 @@ public class Select<T extends Model,S extends Select> {
 		this.autoRefreshInMillis = autoRefreshInMillis;
 		return (S)this;
 	}
+ 
+	public Object getCacheTag() {
+		return cacheTag;
+	}
+
+	public void setCacheTag(Object cacheTag) {
+		this.cacheTag = cacheTag;
+	}
+
+	
 	
 	protected HandlerResultSet getResultCreator(Query query) {
 		return new HandlerResultSet(query,model.getClass()){
@@ -371,7 +382,7 @@ public class Select<T extends Model,S extends Select> {
 		
 		query.use(db);
 		
-		query.setTag("@"+db.getKey()+"#"+model.table().name());
+		query.setTag(cacheTag!=null ? cacheTag : ("@"+db.getKey()+"#"+model.table().name()));
 		  
 		query.setCache(db.getCfg().getCache(model));	
 		query.setCacheTime(ttlInMillis,autoRefreshInMillis);
@@ -451,6 +462,11 @@ public class Select<T extends Model,S extends Select> {
 		 */ 
 		public $SelectForExample setCacheTime(int ttlInMillis, int autoRefreshInMillis ){
 			Select.this.setCacheTime(ttlInMillis, autoRefreshInMillis);
+			return this;
+		}
+		
+		public $SelectForExample setCacheTag(Object cacheTag){
+			Select.this.setCacheTag( cacheTag);
 			return this;
 		}
 		
