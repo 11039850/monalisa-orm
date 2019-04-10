@@ -1,5 +1,7 @@
 # Features
 
+[![Join the chat at https://gitter.im/monalisa-orm/community](https://badges.gitter.im/monalisa-orm/community.svg)](https://gitter.im/monalisa-orm/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 * Using the database takes only 1 line of code
 * Generic ORM functions(CRUD)
 * Auto-Generate DTOs
